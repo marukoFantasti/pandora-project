@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pandora 採点UI</title>
+<style>
+:root {
+  --bg: #0f1117;
+  --surface: #1a1d27;
+  --card: #22263a;
+  --border: #2e3350;
+  --accent: #cd4f7c;
+  --green: #2ecc71;
+  --red: #e74c3c;
+  --amber: #f39c12;
+  --text1: #f0f2ff;
+  --text2: #a0a8cc;
+  --text3: #5a6080;
+  --radius: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text1); font-family: 'Hiragino Sans','Yu Gothic',sans-serif; min-height: 100vh; }
+
+/* Header */
+.header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 10px 16px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; }
+.header h1 { font-size: 15px; font-weight: 700; color: var(--text1); }
+.header-sub { font-size: 11px; color: var(--text3); }
+.badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+.badge-accent { background: #3d1525; color: var(--accent); }
+.toggle-btn { background: var(--border); border: none; color: var(--text1); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.15s; }
+.toggle-btn:hover { background: var(--card); }
+
+/* Layout */
+.layout { display: grid; grid-template-columns: 280px 1fr; height: calc(100vh - 49px); transition: grid-template-columns 0.25s ease; }
+.layout.sidebar-hidden { grid-template-columns: 0px 1fr; }
+
+/* Sidebar */
+.sidebar { background: var(--surface); border-right: 1px solid var(--border); overflow-y: auto; overflow-x: hidden; transition: all 0.25s ease; }
+.layout.sidebar-hidden .sidebar { border-right: none; }
+.sidebar-hdr { padding: 14px 16px; font-size: 11px; font-weight: 700; color: var(--text3); letter-spacing: 0.08em; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.sub-item { padding: 12px 16px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.15s; white-space: nowrap; overflow: hidden; }
+.sub-item:hover { background: var(--card); }
+.sub-item.active { background: var(--card); border-left: 3px solid var(--accent); }
+.sub-item-id { font-size: 10px; color: var(--text3); font-family: monospace; margin-bottom: 4px; }
+.sub-item-date { font-size: 11px; color: var(--text2); margin-bottom: 4px; }
+.sub-item-meta { display: flex; gap: 6px; align-items: center; }
+.sub-tag { font-size: 10px; padding: 2px 7px; border-radius: 10px; }
+.tag-math { background: #1a2d4a; color: #5b9bd5; }
+.tag-domestic { background: #1a3a2a; color: #5bd5a0; }
+.tag-overseas { background: #3a1a3a; color: #c57bd5; }
+.sub-score { font-size: 11px; margin-left: auto; }
+.score-done { color: var(--green); }
+.score-pending { color: var(--amber); }
+
+/* Main */
+.main { overflow-y: auto; padding: 20px 28px; }
+.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 12px; color: var(--text3); }
+.empty-icon { font-size: 48px; }
+
+/* Submission header */
+.sub-header { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 20px; margin-bottom: 16px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.sub-header-info { flex: 1; }
+.sub-header-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.sub-header-meta { font-size: 12px; color: var(--text2); display: flex; gap: 12px; flex-wrap: wrap; }
+.btn { padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer; font-family: inherit; font-size: 12px; font-weight: 700; transition: opacity 0.15s; }
+.btn:hover { opacity: 0.85; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-ghost { background: var(--border); color: var(--text1); }
+.btn-green { background: #1a4a2a; color: var(--green); border: 1px solid var(--green); }
+
+/* Progress bar */
+.progress-wrap { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 20px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+.progress-bar { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--green); border-radius: 3px; transition: width 0.3s; }
+.progress-text { font-size: 12px; color: var(--text2); white-space: nowrap; }
+
+/* Problem card */
+.problem-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 20px; overflow: hidden; transition: border-color 0.2s; }
+.problem-card.correct { border-color: var(--green); }
+.problem-card.incorrect { border-color: var(--red); }
+.problem-card.partial { border-color: var(--amber); }
+.problem-card.calc { border-color: #f97316; }
+
+.problem-header { padding: 10px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.02); }
+.q-num { font-size: 13px; font-weight: 700; color: var(--text1); }
+.q-unit { font-size: 11px; color: var(--text3); }
+.q-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-left: auto; }
+.q-tag { font-size: 10px; padding: 2px 8px; border-radius: 10px; background: var(--border); color: var(--text2); }
+
+/* 問題ボディ：左（問題文+正解+採点）/ 右（手書きキャンバス縦並び） */
+.problem-body { display: flex; flex-direction: column; }
+.problem-top { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-bottom: 1px solid var(--border); }
+.problem-col-left { padding: 14px 20px; border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px; }
+.problem-col-right { padding: 14px 20px; display: flex; flex-direction: column; gap: 8px; }
+.problem-canvases { padding: 16px 20px; display: flex; flex-direction: column; gap: 16px; }
+.col-label { font-size: 10px; font-weight: 700; color: var(--text3); letter-spacing: 0.08em; margin-bottom: 6px; }
+.problem-text { font-size: 13px; color: var(--text1); line-height: 1.8; }
+.answer-text { font-size: 13px; color: #5bd5a0; line-height: 1.7; font-weight: 600; }
+
+/* キャンバス（縦並び・大きく） */
+.canvas-block { display: flex; flex-direction: column; }
+.canvas-wrap { position: relative; width: 100%; }
+.canvas-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 8px; cursor: crosshair; touch-action: none; }
+.canvas-img { width: 100%; max-height: 320px; object-fit: contain; border-radius: 8px; border: 1px solid var(--border); background: #fff; display: block; }
+.no-canvas { font-size: 11px; color: var(--text3); font-style: italic; padding: 20px 0; }
+
+/* 採点コントロール（左カラム内） */
+.grading-ctrl { display: flex; flex-direction: column; gap: 8px; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border); }
+.grade-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.grade-btn { flex: 1 1 calc(50% - 4px); padding: 8px 0; border-radius: 8px; border: 1px solid; cursor: pointer; font-size: 12px; font-weight: 700; font-family: inherit; transition: all 0.15s; text-align: center; min-width: 80px; }
+.grade-btn-correct { background: transparent; border-color: var(--green); color: var(--green); }
+.grade-btn-correct.active, .grade-btn-correct:hover { background: var(--green); color: #000; }
+.grade-btn-partial { background: transparent; border-color: var(--amber); color: var(--amber); }
+.grade-btn-partial.active, .grade-btn-partial:hover { background: var(--amber); color: #000; }
+.grade-btn-incorrect { background: transparent; border-color: var(--red); color: var(--red); }
+.grade-btn-incorrect.active, .grade-btn-incorrect:hover { background: var(--red); color: #fff; }
+.grade-btn-calc { background: transparent; border-color: #f97316; color: #f97316; }
+.grade-btn-calc.active, .grade-btn-calc:hover { background: #f97316; color: #000; }
+.grade-note { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; font-size: 11px; color: var(--text1); font-family: inherit; outline: none; }
+.grade-note:focus { border-color: var(--accent); }
+
+/* 先生コメントキャンバス */
+.teacher-canvas-wrap { padding: 12px 20px; border-top: 1px solid var(--border); background: rgba(255,255,255,0.01); }
+.teacher-canvas-label { font-size: 10px; color: var(--text3); margin-bottom: 6px; }
+
+/* Save bar */
+.save-bar { position: sticky; bottom: 0; background: var(--surface); border-top: 1px solid var(--border); padding: 12px 28px; display: flex; align-items: center; gap: 12px; }
+.save-status { font-size: 12px; color: var(--text3); flex: 1; }
+
+/* Loading */
+.loading { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 40px; color: var(--text3); font-size: 13px; }
+.spinner { width: 18px; height: 18px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* AI採点 */
+.ai-btn { width: 100%; padding: 7px 0; border-radius: 8px; border: 1px solid #a78bfa; background: transparent; color: #a78bfa; font-size: 12px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.ai-btn:hover { background: #a78bfa; color: #000; }
+.ai-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.ai-feedback { margin-top: 8px; background: #1a1530; border: 1px solid #a78bfa44; border-radius: 8px; padding: 10px 12px; font-size: 11px; color: #c4b5fd; line-height: 1.7; white-space: pre-wrap; }
+.ai-feedback-label { font-size: 10px; color: #a78bfa; font-weight: 700; margin-bottom: 4px; }
+.ai-thinking { color: #a78bfa88; font-style: italic; }
+
+/* Filters */
+.filter-bar { padding: 10px 16px; border-bottom: 1px solid var(--border); background: var(--bg); display: flex; flex-direction: column; gap: 8px; }
+.filter-row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.filter-label { font-size: 10px; color: var(--text3); font-weight: 700; white-space: nowrap; min-width: 32px; }
+.filter-btn { font-size: 10px; padding: 3px 10px; border-radius: 12px; border: 1px solid var(--border); background: transparent; color: var(--text2); cursor: pointer; font-family: inherit; transition: all 0.15s; white-space: nowrap; }
+.filter-btn.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.filter-count { font-size: 10px; color: var(--text3); margin-left: auto; }
+
+/* Filters */
+.filter-bar { padding: 10px 16px; border-bottom: 1px solid var(--border); background: var(--bg); display: flex; flex-direction: column; gap: 8px; }
+.filter-row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.filter-label { font-size: 10px; color: var(--text3); font-weight: 700; white-space: nowrap; min-width: 32px; }
+.filter-btn { font-size: 10px; padding: 3px 10px; border-radius: 12px; border: 1px solid var(--border); background: transparent; color: var(--text2); cursor: pointer; font-family: inherit; transition: all 0.15s; white-space: nowrap; }
+.filter-btn.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.filter-count { font-size: 10px; color: var(--text3); margin-left: auto; }
+</style>
+</head>
+<body>
+
+<div class="header" id="app-content">
+  <button class="toggle-btn" onclick="toggleSidebar()" title="サイドバーを開閉">☰</button>
+  <div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <h1>📝 Pandora 採点UI</h1>
+      <span class="badge badge-accent">Teacher</span>
+    </div>
+  </div>
+  <div style="display:flex;gap:4px;margin-left:auto">
+    <button id="tab-grading" onclick="switchTab('grading')" style="padding:6px 18px;border-radius:8px;border:none;background:var(--accent);color:#fff;font-size:12px;font-weight:700;cursor:pointer">✏️ 採点</button>
+    <button id="tab-analytics" onclick="switchTab('analytics')" style="padding:6px 18px;border-radius:8px;border:none;background:var(--border);color:var(--text2);font-size:12px;font-weight:700;cursor:pointer">📊 分析</button>
+  </div>
+</div>
+
+<div class="layout" id="app-layout">
+  <div class="sidebar">
+    <div class="sidebar-hdr">提出一覧</div>
+    <div class="filter-bar">
+      <div class="filter-row">
+        <span class="filter-label">採点</span>
+        <button class="filter-btn on" id="f-all" onclick="setFilter('status','all')">すべて</button>
+        <button class="filter-btn" id="f-pending" onclick="setFilter('status','pending')">未採点</button>
+        <button class="filter-btn" id="f-done" onclick="setFilter('status','done')">採点済</button>
+        <span class="filter-count" id="filter-count"></span>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">モード</span>
+        <button class="filter-btn on" id="fm-all" onclick="setFilter('mode','all')">すべて</button>
+        <button class="filter-btn" id="fm-domestic" onclick="setFilter('mode','domestic')">国内</button>
+        <button class="filter-btn" id="fm-overseas" onclick="setFilter('mode','overseas')">海外</button>
+      </div>
+    </div>
+    <div id="sub-list"><div class="loading"><div class="spinner"></div>読み込み中...</div></div>
+  </div>
+  <div class="main" id="main-area">
+    <div class="empty-state">
+      <div class="empty-icon">📋</div>
+      <div>左から提出を選んでください</div>
+    </div>
+  </div>
+</div>
+
+<div id="analytics-panel" style="display:none;padding:24px;max-width:1100px;margin:0 auto">
+  <div id="analytics-content"><div class="loading"><div class="spinner"></div>分析データを読み込み中...</div></div>
+</div>
+
+<script>
+
+// ===== タブ切替 =====
+function switchTab(tab) {
+  var layout = document.getElementById('app-layout');
+  var analytics = document.getElementById('analytics-panel');
+  var btnG = document.getElementById('tab-grading');
+  var btnA = document.getElementById('tab-analytics');
+  if (tab === 'grading') {
+    layout.style.display = '';
+    analytics.style.display = 'none';
+    btnG.style.background = 'var(--accent)'; btnG.style.color = '#fff';
+    btnA.style.background = 'var(--border)'; btnA.style.color = 'var(--text2)';
+  } else {
+    layout.style.display = 'none';
+    analytics.style.display = 'block';
+    btnG.style.background = 'var(--border)'; btnG.style.color = 'var(--text2)';
+    btnA.style.background = 'var(--accent)'; btnA.style.color = '#fff';
+    renderAnalytics();
+  }
+}
+
+// ===== 分析描画 =====
+function renderAnalytics() {
+  var el = document.getElementById('analytics-content');
+  if (!allSubs || allSubs.length === 0) {
+    el.innerHTML = '<div style="text-align:center;padding:60px;color:var(--text3)">提出データがありません</div>';
+    return;
+  }
+
+  // ── 生徒ごとの集計（student_idベース、なければstudent_nameにフォールバック）──
+  var studentMap = {}; // key → { id, name, total, correct, partial, incorrect, kanji_total, kanji_correct, unitMap, tagMap, submissions[] }
+
+  allSubs.forEach(function(s) {
+    var sd = s.submission_data || {};
+    // student_id（S-0001形式）があればそれを優先、なければ名前をキーに
+    var sid  = s.student_id || sd.student_id || null;
+    var name = s.student_name || sd.student_name || '不明';
+    var key  = sid || name;
+
+    if (!studentMap[key]) studentMap[key] = {
+      id: sid, name: name,
+      total:0, correct:0, partial:0, incorrect:0,
+      kanji_total:0, kanji_correct:0,
+      unitMap:{}, tagMap:{}, submissions:[]
+    };
+    var st = studentMap[key];
+    // IDが後から判明した場合に補完
+    if (sid && !st.id) st.id = sid;
+    st.submissions.push(s);
+
+    // 算数問題
+    var problems = sd.problems || [];
+    problems.forEach(function(p) {
+      st.total++;
+      var pid = p.problem_id || ('q_' + st.total);
+      var gs = gradeState[pid] || {};
+      if (gs.result === 'correct') st.correct++;
+      else if (gs.result === 'partial' || gs.result === 'partial_calc') st.partial++;
+      else if (gs.result === 'incorrect') st.incorrect++;
+
+      // 単元別集計
+      var uname = p.unit_name || p.unit_id || null;
+      var diff  = p.diff || 'unknown';
+      if (uname) {
+        if (!st.unitMap[uname]) st.unitMap[uname] = { total:0, correct:0, byDiff:{} };
+        st.unitMap[uname].total++;
+        if (gs.result === 'correct') st.unitMap[uname].correct++;
+        if (!st.unitMap[uname].byDiff[diff]) st.unitMap[uname].byDiff[diff] = { total:0, correct:0 };
+        st.unitMap[uname].byDiff[diff].total++;
+        if (gs.result === 'correct') st.unitMap[uname].byDiff[diff].correct++;
+      }
+
+      // つまづきタグ集計（タグ種別を問わず全タグ）
+      var tags = p.tags || [];
+      tags.forEach(function(tag) {
+        if (!st.tagMap[tag]) st.tagMap[tag] = { total:0, correct:0 };
+        st.tagMap[tag].total++;
+        if (gs.result === 'correct') st.tagMap[tag].correct++;
+      });
+    });
+
+    // 漢字
+    var kanji = sd.kanji || [];
+    kanji.forEach(function(k) {
+      st.kanji_total++;
+      if (k.is_correct) st.kanji_correct++;
+    });
+  });
+
+  // ── 全体タグ集計 ──
+  var globalTagMap = {};
+  allSubs.forEach(function(s) {
+    var sd = s.submission_data || {};
+    (sd.problems || []).forEach(function(p) {
+      var pid = p.problem_id || '';
+      var gs = gradeState[pid] || {};
+      (p.tags || []).forEach(function(tag) {
+        if (!globalTagMap[tag]) globalTagMap[tag] = { total:0, correct:0 };
+        globalTagMap[tag].total++;
+        if (gs.result === 'correct') globalTagMap[tag].correct++;
+      });
+    });
+  });
+
+  var studentKeys = Object.keys(studentMap);
+  var tagNames = Object.keys(globalTagMap).filter(function(t){ return globalTagMap[t].total >= 1; });
+
+  // ── 描画 ──
+  var html = '';
+
+  // サマリーカード
+  var totalProblems = 0, totalCorrect = 0;
+  studentKeys.forEach(function(n){ totalProblems += studentMap[n].total; totalCorrect += studentMap[n].correct; });
+  var overallRate = totalProblems > 0 ? Math.round(totalCorrect / totalProblems * 100) : 0;
+
+  html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:28px">';
+  html += card('提出数', allSubs.length + '件', '📥');
+  html += card('生徒数', studentKeys.length + '名', '👤');
+  html += card('全体正答率', overallRate + '%', '✅');
+  html += card('タグ種類', tagNames.length + '種', '🏷️');
+  html += '</div>';
+
+  // 生徒別正答率テーブル
+  html += '<div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:24px">';
+  html += '<div style="font-size:13px;font-weight:700;margin-bottom:14px">👤 生徒ごとの正答率</div>';
+  html += '<table style="width:100%;border-collapse:collapse;font-size:12px">';
+  html += '<tr style="border-bottom:2px solid var(--border)">' +
+    '<th style="text-align:left;padding:6px 8px;color:var(--text3)">生徒名</th>' +
+    '<th style="text-align:left;padding:6px 8px;color:var(--text3)">生徒ID</th>' +
+    '<th style="text-align:center;padding:6px 8px;color:var(--text3)">提出回数</th>' +
+    '<th style="text-align:center;padding:6px 8px;color:var(--text3)">問題数</th>' +
+    '<th style="text-align:center;padding:6px 8px;color:var(--text3)">正解</th>' +
+    '<th style="text-align:center;padding:6px 8px;color:var(--text3)">部分点</th>' +
+    '<th style="text-align:center;padding:6px 8px;color:var(--text3)">不正解</th>' +
+    '<th style="text-align:center;padding:6px 8px;color:var(--text3)">正答率</th>' +
+    '<th style="text-align:center;padding:6px 8px;color:var(--text3)">漢字</th>' +
+  '</tr>';
+
+  var studentKeys = Object.keys(studentMap);
+  studentKeys.sort(function(a,b){
+    var ra = studentMap[a].total > 0 ? studentMap[a].correct/studentMap[a].total : 0;
+    var rb = studentMap[b].total > 0 ? studentMap[b].correct/studentMap[b].total : 0;
+    return rb - ra;
+  }).forEach(function(key, i) {
+    var st = studentMap[key];
+    var rate = st.total > 0 ? Math.round(st.correct / st.total * 100) : 0;
+    var kanjiRate = st.kanji_total > 0 ? Math.round(st.kanji_correct / st.kanji_total * 100) : null;
+    var rateColor = rate >= 80 ? 'var(--green)' : rate >= 60 ? 'var(--orange)' : 'var(--red)';
+    var bg = i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.02)';
+    var idBadge = st.id
+      ? '<span style="font-size:10px;background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1px 5px;color:var(--text3)">' + st.id + '</span>'
+      : '<span style="font-size:10px;color:var(--text3)">—</span>';
+    html += '<tr style="border-bottom:1px solid var(--border);background:' + bg + '">' +
+      '<td style="padding:7px 8px;font-weight:600">' + st.name + '</td>' +
+      '<td style="padding:7px 8px">' + idBadge + '</td>' +
+      '<td style="text-align:center;padding:7px 8px">' + st.submissions.length + '</td>' +
+      '<td style="text-align:center;padding:7px 8px">' + st.total + '</td>' +
+      '<td style="text-align:center;padding:7px 8px;color:var(--green)">' + st.correct + '</td>' +
+      '<td style="text-align:center;padding:7px 8px;color:var(--orange)">' + st.partial + '</td>' +
+      '<td style="text-align:center;padding:7px 8px;color:var(--red)">' + st.incorrect + '</td>' +
+      '<td style="text-align:center;padding:7px 8px">' +
+        '<div style="display:flex;align-items:center;gap:6px">' +
+          '<div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden">' +
+            '<div style="height:100%;width:' + rate + '%;background:' + rateColor + ';border-radius:4px"></div>' +
+          '</div>' +
+          '<span style="font-weight:700;color:' + rateColor + ';min-width:34px;text-align:right">' + rate + '%</span>' +
+        '</div>' +
+      '</td>' +
+      '<td style="text-align:center;padding:7px 8px;color:var(--text2)">' + (kanjiRate !== null ? kanjiRate + '%' : '—') + '</td>' +
+    '</tr>';
+
+    // 単元別詳細（3問以上あるものを展開）
+    var units = Object.keys(st.unitMap).filter(function(u){ return st.unitMap[u].total >= 3; });
+    if (units.length > 0) {
+      units.sort(function(a,b){
+        var ra = st.unitMap[a].correct/st.unitMap[a].total;
+        var rb = st.unitMap[b].correct/st.unitMap[b].total;
+        return ra - rb;
+      }).forEach(function(u){
+        var um = st.unitMap[u];
+        var ur = Math.round(um.correct/um.total*100);
+        var uc = ur >= 80 ? 'var(--green)' : ur >= 60 ? 'var(--orange)' : 'var(--red)';
+        // 難易度別内訳
+        var diffStr = Object.keys(um.byDiff).map(function(d){
+          var dm = um.byDiff[d];
+          var dr = Math.round(dm.correct/dm.total*100);
+          return d + ':' + dr + '%(' + dm.total + '問)';
+        }).join(' / ');
+        html += '<tr style="background:rgba(0,0,0,0.015);border-bottom:1px solid var(--border)">' +
+          '<td colspan="2" style="padding:4px 8px 4px 24px;font-size:11px;color:var(--text2)">└ ' + u + '</td>' +
+          '<td colspan="4" style="padding:4px 8px;font-size:10px;color:var(--text3)">' + diffStr + '</td>' +
+          '<td colspan="2" style="text-align:center;padding:4px 8px">' +
+            '<span style="font-size:11px;font-weight:700;color:' + uc + '">' + ur + '%</span>' +
+            '<span style="font-size:10px;color:var(--text3);margin-left:4px">(' + um.total + '問)</span>' +
+          '</td>' +
+          '<td></td>' +
+        '</tr>';
+      });
+    }
+  });
+  html += '</table></div>';
+
+  // タグ別弱点分析
+  if (tagNames.length > 0) {
+    var tagsSorted = tagNames.slice().sort(function(a,b){
+      var ra = globalTagMap[a].total > 0 ? globalTagMap[a].correct/globalTagMap[a].total : 0;
+      var rb = globalTagMap[b].total > 0 ? globalTagMap[b].correct/globalTagMap[b].total : 0;
+      return ra - rb; // 正答率低い順
+    });
+
+    html += '<div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px">';
+    html += '<div style="font-size:13px;font-weight:700;margin-bottom:6px">🏷️ 単元別弱点分析（正答率低い順）</div>';
+    html += '<div style="font-size:11px;color:var(--text3);margin-bottom:14px">採点済み問題のみ集計。タグが付与されていない問題は除外されます。</div>';
+    html += '<div style="display:grid;gap:8px">';
+    tagsSorted.forEach(function(tag) {
+      var t = globalTagMap[tag];
+      var rate = t.total > 0 ? Math.round(t.correct / t.total * 100) : 0;
+      var rateColor = rate >= 80 ? 'var(--green)' : rate >= 60 ? 'var(--orange)' : 'var(--red)';
+      var alert = rate < 60 ? ' ⚠️' : '';
+      html += '<div style="display:flex;align-items:center;gap:10px">' +
+        '<div style="min-width:160px;font-size:11px;color:var(--text1)">' + tag + alert + '</div>' +
+        '<div style="flex:1;height:10px;background:var(--border);border-radius:5px;overflow:hidden">' +
+          '<div style="height:100%;width:' + rate + '%;background:' + rateColor + ';border-radius:5px;transition:width 0.4s"></div>' +
+        '</div>' +
+        '<div style="min-width:50px;text-align:right;font-size:11px;font-weight:700;color:' + rateColor + '">' + rate + '%</div>' +
+        '<div style="min-width:40px;text-align:right;font-size:10px;color:var(--text3)">' + t.total + '問</div>' +
+      '</div>';
+    });
+    html += '</div></div>';
+  } else {
+    html += '<div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;color:var(--text3);font-size:12px">タグ付きの採点済み問題がまだありません。採点後に分析が表示されます。</div>';
+  }
+
+  el.innerHTML = html;
+}
+
+function card(label, value, icon) {
+  return '<div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center">' +
+    '<div style="font-size:22px;margin-bottom:4px">' + icon + '</div>' +
+    '<div style="font-size:20px;font-weight:700;color:var(--text1)">' + value + '</div>' +
+    '<div style="font-size:11px;color:var(--text3);margin-top:2px">' + label + '</div>' +
+  '</div>';
+}
+
+// ===== サイドバートグル =====
+var sidebarVisible = true;
+function toggleSidebar() {
+  sidebarVisible = !sidebarVisible;
+  var layout = document.getElementById('app-layout');
+  if (sidebarVisible) {
+    layout.classList.remove('sidebar-hidden');
+  } else {
+    layout.classList.add('sidebar-hidden');
+  }
+  // レイアウト変更後にオーバーレイキャンバスを全て再同期
+  setTimeout(resyncAllOverlays, 300);
+}
+
+function resyncAllOverlays() {
+  // eq / ans（数学）
+  document.querySelectorAll('[id^="ec-"]').forEach(function(cvs) {
+    var pid = cvs.id.replace('ec-', '');
+    syncOverlay('eq', pid);
+  });
+  document.querySelectorAll('[id^="ac-"]').forEach(function(cvs) {
+    var pid = cvs.id.replace('ac-', '');
+    syncOverlay('ans', pid);
+  });
+  // kanji
+  document.querySelectorAll('[id^="kec-"]').forEach(function(cvs) {
+    var pid = cvs.id.replace('kec-', '');
+    syncOverlay('keq', pid);
+  });
+}
+
+// ===== フィルター =====
+var allSubs = [];
+var activeFilters = { status: 'all', mode: 'all' };
+var gradedIds = new Set();
+
+function setFilter(type, val) {
+  activeFilters[type] = val;
+
+  // ボタン状態更新
+  if (type === 'status') {
+    ['all','pending','done'].forEach(function(v) {
+      var el = document.getElementById('f-' + v);
+      if (el) el.className = 'filter-btn' + (v === val ? ' on' : '');
+    });
+  }
+  if (type === 'mode') {
+    ['all','domestic','overseas'].forEach(function(v) {
+      var el = document.getElementById('fm-' + v);
+      if (el) el.className = 'filter-btn' + (v === val ? ' on' : '');
+    });
+  }
+
+  applyFilters();
+}
+
+function applyFilters() {
+  var filtered = allSubs.filter(function(s) {
+    var statusOk = true;
+    if (activeFilters.status === 'pending') statusOk = !gradedIds.has(s.id);
+    if (activeFilters.status === 'done') statusOk = gradedIds.has(s.id);
+
+    var modeOk = true;
+    if (activeFilters.mode !== 'all') modeOk = (s.mode || '') === activeFilters.mode;
+
+    return statusOk && modeOk;
+  });
+
+  var cnt = document.getElementById('filter-count');
+  if (cnt) cnt.textContent = filtered.length + '件';
+
+  renderSubList(filtered);
+}
+
+const SUPABASE_URL = 'https://upmflhdbhbyzoeldrvvw.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_K8Y_bNHVA4szRXFM_EcDkA_LBckunu5';
+
+const headers = {
+  'apikey': SUPABASE_KEY,
+  'Authorization': 'Bearer ' + SUPABASE_KEY,
+  'Content-Type': 'application/json'
+};
+
+// 採点状態
+var gradeState = {}; // { problem_id: { result: 'correct'|'partial'|'incorrect', note: '' } }
+var currentSub = null;
+
+// 提出一覧を取得
+async function loadSubmissions() {
+  var el = document.getElementById('sub-list');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div>読み込み中...</div>';
+
+  const res = await fetch(SUPABASE_URL + '/rest/v1/submissions?select=*&order=created_at.desc', { headers });
+  allSubs = await res.json();
+
+  // 採点済みIDを取得
+  const rRes = await fetch(SUPABASE_URL + '/rest/v1/results?select=submission_id', { headers });
+  const rData = await rRes.json();
+  gradedIds = new Set((rData || []).map(function(r){ return r.submission_id; }));
+
+  // 件数表示
+  var cnt = document.getElementById('filter-count');
+  if (cnt) cnt.textContent = allSubs.length + '件';
+
+  applyFilters();
+}
+
+function renderSubList(subs) {
+  var el = document.getElementById('sub-list');
+  if (!subs || subs.length === 0) {
+    el.innerHTML = '<div style="padding:20px;font-size:12px;color:var(--text3)">提出データがありません</div>';
+    return;
+  }
+  el.innerHTML = subs.map(function(s) {
+    var d = new Date(s.created_at);
+    var dateStr = d.getFullYear() + '/' + (d.getMonth()+1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + String(d.getMinutes()).padStart(2,'0');
+    var mode = s.mode || '不明';
+    var subject = s.subject || 'math';
+    return '<div class="sub-item" onclick="selectSub(\'' + s.id + '\')" id="si-' + s.id + '">' +
+      '<div class="sub-item-id">' + s.id.substr(0,8) + '...</div>' +
+      '<div class="sub-item-date">' + dateStr + '</div>' +
+      '<div class="sub-item-meta">' +
+        '<span class="sub-tag tag-' + subject + '">' + subject + '</span>' +
+        '<span class="sub-tag tag-' + mode + '">' + mode + '</span>' +
+        '<span class="sub-score ' + (gradedIds.has(s.id) ? 'score-done' : 'score-pending') + '" id="score-' + s.id + '">' + (gradedIds.has(s.id) ? '採点済' : '未採点') + '</span>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+async function selectSub(id) {
+  // アクティブ状態
+  document.querySelectorAll('.sub-item').forEach(function(el) { el.classList.remove('active'); });
+  var item = document.getElementById('si-' + id);
+  if (item) item.classList.add('active');
+
+  var main = document.getElementById('main-area');
+  main.innerHTML = '<div class="loading"><div class="spinner"></div>読み込み中...</div>';
+
+  // 提出データ取得
+  const res = await fetch(SUPABASE_URL + '/rest/v1/submissions?id=eq.' + id + '&select=*', { headers });
+  const data = await res.json();
+  if (!data || !data[0]) { main.innerHTML = '<div class="empty-state"><div>データが見つかりません</div></div>'; return; }
+
+  currentSub = data[0];
+  gradeState = {};
+
+  // 既存の採点結果を取得
+  const rRes = await fetch(SUPABASE_URL + '/rest/v1/results?submission_id=eq.' + id + '&select=*', { headers });
+  const rData = await rRes.json();
+  if (rData && rData.length > 0) {
+    rData.forEach(function(r) {
+      gradeState[r.problem_id || r.problem_number] = {
+        result: r.answer_correct ? 'correct' : (r.equation_correct ? 'partial' : 'incorrect'),
+        note: r.ai_feedback || '',
+        saved: true
+      };
+    });
+  }
+
+  renderGrading(currentSub);
+}
+
+function renderGrading(sub) {
+  var rawSd = sub.submission_data || {};
+  var sd = typeof rawSd === 'string' ? JSON.parse(rawSd) : rawSd;
+  var problems = sd.problems || [];
+  var kanji = sd.kanji || [];
+  var main = document.getElementById('main-area');
+
+  var d = new Date(sub.created_at);
+  var dateStr = d.getFullYear() + '/' + (d.getMonth()+1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + String(d.getMinutes()).padStart(2,'0');
+
+  var html = '';
+
+  // ヘッダー
+  var nameCanvas = sd.name_canvas || null;
+  html += '<div class="sub-header">' +
+    (nameCanvas ? '<div style="margin-right:16px"><div style="font-size:10px;color:var(--text3);margin-bottom:4px">✍️ 名前</div><img src="' + nameCanvas + '" style="height:60px;width:auto;max-width:200px;border-radius:6px;border:1px solid var(--border);background:#fff;display:block"></div>' : '<div style="margin-right:16px;font-size:11px;color:var(--text3)">名前なし</div>') +
+    '<div class="sub-header-info">' +
+      '<div class="sub-header-title">提出 #' + sub.id.substr(0,8) + '</div>' +
+      '<div class="sub-header-meta">' +
+        '<span>📅 ' + dateStr + '</span>' +
+        '<span>📚 ' + (sub.subject || 'math') + '</span>' +
+        '<span>🌐 ' + (sub.mode || '-') + '</span>' +
+        '<span>🎓 ' + (sub.student_name || '-') + '</span>' +
+        (sub.assignment_id ? '<span>🔑 ' + sub.assignment_id + '</span>' : '') +
+      '</div>' +
+    '</div>' +
+  '</div>';
+
+  var totalCount = problems.length + kanji.length;
+
+  // プログレスバー
+  html += '<div class="progress-wrap">' +
+    '<div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>' +
+    '<div class="progress-text" id="progress-text">0 / ' + totalCount + ' 問採点済み</div>' +
+  '</div>';
+
+  // 数学問題カード
+  problems.forEach(function(p, i) {
+    var pid = p.problem_id || p.id || (i+1);
+    var gs = gradeState[pid] || {};
+    var cardClass = gs.result ? ' ' + gs.result : '';
+
+    html += '<div class="problem-card' + cardClass + '" id="pc-' + pid + '">';
+
+    // ヘッダー
+    html += '<div class="problem-header">' +
+      '<span class="q-num">Q' + (i+1) + '</span>' +
+      '<span class="q-unit">' + (p.unit || p.chapter || '') + '</span>' +
+      '<span class="q-unit" style="color:var(--accent)">【' + (p.level || '') + '】</span>' +
+      '<div class="q-tags">' +
+        (p.tags || []).map(function(t) { return '<span class="q-tag">' + t + '</span>'; }).join('') +
+      '</div>' +
+    '</div>';
+
+    // ボディ（3カラム）
+    html += '<div class="problem-body">';
+
+    // 上段：問題文(左) + 採点コントロール(右)
+    html += '<div class="problem-top">';
+
+    // 左：問題文・正解
+    html += '<div class="problem-col-left">' +
+      '<div><div class="col-label">問題</div>' +
+      '<div class="problem-text">' + (p.question || p.jp || '-') + '</div></div>' +
+      '<div><div class="col-label">正解</div>' +
+      '<div class="answer-text">' + (p.answer || '-') + '</div></div>' +
+    '</div>';
+
+    // 右：採点コントロール
+    html += '<div class="problem-col-right grading-ctrl">' +
+      '<div class="grade-row">' +
+        '<button class="grade-btn grade-btn-correct' + (gs.result === 'correct' ? ' active' : '') + '" onclick="setGrade(\'' + pid + '\', \'correct\')">✓ 正解</button>' +
+        '<button class="grade-btn grade-btn-partial' + (gs.result === 'partial' ? ' active' : '') + '" onclick="setGrade(\'' + pid + '\', \'partial\')">△ 式のみ</button>' +
+        '<button class="grade-btn grade-btn-incorrect' + (gs.result === 'incorrect' ? ' active' : '') + '" onclick="setGrade(\'' + pid + '\', \'incorrect\')">✗ 不正解</button>' +
+        '<button class="grade-btn grade-btn-calc' + (gs.result === 'calc' ? ' active' : '') + '" onclick="setGrade(\'' + pid + '\', \'calc\')">△ 計算ミス</button>' +
+      '</div>' +
+      '<button class="ai-btn" id="ai-btn-' + pid + '" onclick="aiGrade(\'' + pid + '\')">🤖 AI採点</button>' +
+      '<div id="ai-result-' + pid + '"></div>' +
+
+    '</div>';
+
+    html += '</div>'; // problem-top
+
+    // 下段：キャンバス全幅縦並び
+    html += '<div class="problem-canvases">';
+    html += '<div class="canvas-block"><div class="col-label">✏️ 生徒の式 <span style="font-size:10px;color:#e74c3c;font-weight:normal">（赤ペンで添削できます）</span></div>';
+    if (p.equation_canvas && p.equation_canvas !== 'null') {
+      html += '<div class="canvas-wrap" id="ew-' + pid + '">' +
+        '<img class="canvas-img" src="' + p.equation_canvas + '" alt="式" id="ei-' + pid + '" onload="syncOverlay(\'eq\',\'' + pid + '\')">' +
+        '<canvas class="canvas-overlay" id="ec-' + pid + '"' +
+          ' onmousedown="ovStart(event,\'eq\',\'' + pid + '\')" onmousemove="ovMove(event,\'eq\',\'' + pid + '\')" onmouseup="ovEnd()" onmouseleave="ovEnd()"' +
+          ' ontouchstart="ovStart(event,\'eq\',\'' + pid + '\')" ontouchmove="ovMove(event,\'eq\',\'' + pid + '\')" ontouchend="ovEnd()">' +
+        '</canvas>' +
+      '</div>' +
+      '<div style="display:flex;gap:8px;margin-top:4px">' +
+        '<button id="ov-pen-eq-' + pid + '" onclick="setOvMode(\'eq\',\'' + pid + '\',\'pen\')" style="background:var(--accent);border:none;color:#fff;padding:3px 10px;border-radius:6px;font-size:11px;cursor:pointer">✏️ ペン</button>' +
+        '<button id="ov-era-eq-' + pid + '" onclick="setOvMode(\'eq\',\'' + pid + '\',\'eraser\')" style="background:var(--border);border:none;color:var(--text2);padding:3px 10px;border-radius:6px;font-size:11px;cursor:pointer">□ 消しゴム</button>' +
+        '<button onclick="ovClear(\'eq\',\'' + pid + '\')" style="background:var(--border);border:none;color:var(--text2);padding:3px 10px;border-radius:6px;font-size:11px;cursor:pointer">🗑️ 消す</button>' +
+      '</div>';
+    } else {
+      html += '<div class="no-canvas">未記入</div>';
+    }
+    html += '</div>';
+    html += '<div class="canvas-block"><div class="col-label">🔢 生徒の答え <span style="font-size:10px;color:#e74c3c;font-weight:normal">（赤ペンで添削できます）</span></div>';
+    if (p.answer_canvas && p.answer_canvas !== 'null') {
+      html += '<div class="canvas-wrap" id="aw-' + pid + '">' +
+        '<img class="canvas-img" src="' + p.answer_canvas + '" alt="答え" id="ai-' + pid + '" onload="syncOverlay(\'ans\',\'' + pid + '\')">' +
+        '<canvas class="canvas-overlay" id="ac-' + pid + '"' +
+          ' onmousedown="ovStart(event,\'ans\',\'' + pid + '\')" onmousemove="ovMove(event,\'ans\',\'' + pid + '\')" onmouseup="ovEnd()" onmouseleave="ovEnd()"' +
+          ' ontouchstart="ovStart(event,\'ans\',\'' + pid + '\')" ontouchmove="ovMove(event,\'ans\',\'' + pid + '\')" ontouchend="ovEnd()">' +
+        '</canvas>' +
+      '</div>' +
+      '<div style="display:flex;gap:8px;margin-top:4px">' +
+        '<button id="ov-pen-ans-' + pid + '" onclick="setOvMode(\'ans\',\'' + pid + '\',\'pen\')" style="background:var(--accent);border:none;color:#fff;padding:3px 10px;border-radius:6px;font-size:11px;cursor:pointer">✏️ ペン</button>' +
+        '<button id="ov-era-ans-' + pid + '" onclick="setOvMode(\'ans\',\'' + pid + '\',\'eraser\')" style="background:var(--border);border:none;color:var(--text2);padding:3px 10px;border-radius:6px;font-size:11px;cursor:pointer">□ 消しゴム</button>' +
+        '<button onclick="ovClear(\'ans\',\'' + pid + '\')" style="background:var(--border);border:none;color:var(--text2);padding:3px 10px;border-radius:6px;font-size:11px;cursor:pointer">🗑️ 消す</button>' +
+      '</div>';
+    } else {
+      html += '<div class="no-canvas">未記入</div>';
+    }
+    html += '</div>';
+    html += '</div>'; // problem-canvases
+
+    html += '</div>'; // problem-body
+
+    // 先生手書きコメントキャンバス
+    html += '<div class="teacher-canvas-wrap">' +
+      '<div class="teacher-canvas-label">📝 先生のコメント（手書き）</div>' +
+      '<canvas id="tc-' + pid + '" width="1200" height="150" ' +
+        'style="width:100%;height:150px;border:1px dashed var(--accent);border-radius:6px;background:#fff;display:block;touch-action:none;cursor:crosshair"' +
+        'onmousedown="tcStart(event,\'' + pid + '\')" onmousemove="tcMove(event,\'' + pid + '\')" onmouseup="tcEnd()" onmouseleave="tcEnd()"' +
+        'ontouchstart="tcStart(event,\'' + pid + '\')" ontouchmove="tcMove(event,\'' + pid + '\')" ontouchend="tcEnd()">' +
+      '</canvas>' +
+      '<button onclick="tcClear(\'' + pid + '\')" style="margin-top:4px;background:var(--border);border:none;color:var(--text2);padding:3px 10px;border-radius:6px;font-size:11px;cursor:pointer">🗑️ 消す</button>' +
+    '</div>';
+
+    html += '</div>'; // problem-card
+  });
+
+  // 保存バー
+  html += '<div class="save-bar">' +
+    '<div class="save-status" id="save-status">採点して保存ボタンを押してください</div>' +
+    '<button class="btn btn-ghost" id="ai-grade-all-btn" onclick="aiGradeAll()">🤖 全問AI採点</button>' +
+    '<button class="btn btn-primary" onclick="saveResults()">💾 採点結果を保存</button>' +
+  '</div>';
+
+  // 漢字セクション（算数の後）
+  if (kanji.length > 0) {
+    html += '<div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:12px 20px;margin-bottom:20px">' +
+      '<div style="font-size:13px;font-weight:700;margin-bottom:12px">🈶 漢字テスト（' + kanji.length + '問）</div>';
+
+    kanji.forEach(function(k, ki) {
+      var kid = 'k_' + (k.id || ki);
+      var gs = gradeState[kid] || {};
+      if (!gs.result && typeof k.is_correct !== 'undefined') {
+        gs.result = k.is_correct ? 'correct' : 'incorrect';
+        gradeState[kid] = gs;
+      }
+      var cardClass = gs.result ? ' ' + gs.result : '';
+
+      html += '<div class="problem-card' + cardClass + '" id="pc-' + kid + '" style="margin-bottom:12px">' +
+        '<div class="problem-top">' +
+          '<div class="problem-col-left">' +
+            '<div><div class="col-label">Q' + (ki+1) + ' 正解</div>' +
+            '<div style="font-size:20px;font-weight:700;color:var(--green)">' + (k.correct || '-') + '</div>' +
+            '<div style="font-size:12px;color:var(--text3)">(' + (k.reading || '') + ')</div></div>' +
+            '<div><div class="col-label">生徒の選択</div>' +
+            '<div style="font-size:18px;font-weight:700;color:' + (k.is_correct ? 'var(--green)' : 'var(--red)') + '">' + (k.selected || '未選択') + '</div></div>' +
+            '<div class="grading-ctrl">' +
+              '<div class="grade-row">' +
+                '<button class="grade-btn grade-btn-correct' + (gs.result === 'correct' ? ' active' : '') + '" onclick="setGrade(\'' + kid + '\', \'correct\')">✓ 正解</button>' +
+                '<button class="grade-btn grade-btn-incorrect' + (gs.result === 'incorrect' ? ' active' : '') + '" onclick="setGrade(\'' + kid + '\', \'incorrect\')">✗ 不正解</button>' +
+              '</div>' +
+
+            '</div>' +
+          '</div>' +
+          '<div class="problem-col-right">' +
+            '<div class="canvas-block"><div class="col-label">✏️ 生徒の手書き（赤ペンで添削）</div>' +
+            (k.canvas && k.canvas !== 'null' ?
+              '<div class="canvas-wrap" id="kew-' + kid + '">' +
+                '<img class="canvas-img" src="' + k.canvas + '" alt="漢字" id="kei-' + kid + '" onload="syncOverlay(\'keq\',\'' + kid + '\')">' +
+                '<canvas class="canvas-overlay" id="kec-' + kid + '"' +
+                  ' onmousedown="ovStart(event,\'keq\',\'' + kid + '\')" onmousemove="ovMove(event,\'keq\',\'' + kid + '\')" onmouseup="ovEnd()" onmouseleave="ovEnd()"' +
+                  ' ontouchstart="ovStart(event,\'keq\',\'' + kid + '\')" ontouchmove="ovMove(event,\'keq\',\'' + kid + '\')" ontouchend="ovEnd()">' +
+                '</canvas>' +
+              '</div>' +
+              '<div style="display:flex;gap:8px;margin-top:4px">' +
+                '<button id="ov-pen-' + kid + '" onclick="setOvMode(\'keq\',\'' + kid + '\',\'pen\')" style="background:var(--accent);border:none;color:#fff;padding:3px 10px;border-radius:6px;font-size:11px;cursor:pointer">✏️ ペン</button>' +
+                '<button id="ov-era-' + kid + '" onclick="setOvMode(\'keq\',\'' + kid + '\',\'eraser\')" style="background:var(--border);border:none;color:var(--text2);padding:3px 10px;border-radius:6px;font-size:11px;cursor:pointer">□ 消しゴム</button>' +
+                '<button onclick="ovClear(\'keq\',\'' + kid + '\')" style="background:var(--border);border:none;color:var(--text2);padding:3px 10px;border-radius:6px;font-size:11px;cursor:pointer">🗑️ 消す</button>' +
+              '</div>'
+              : '<div class="no-canvas">未記入</div>') +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    });
+
+    html += '</div>';
+  }
+
+  main.innerHTML = html;
+  updateProgress(problems.length);
+}
+
+function setGrade(pid, result) {
+  if (!gradeState[pid]) gradeState[pid] = {};
+  gradeState[pid].result = result;
+
+  // UIを更新
+  var card = document.getElementById('pc-' + pid);
+  if (card) {
+    card.className = 'problem-card ' + result; // correct/partial/incorrect/calc
+    card.querySelectorAll('.grade-btn').forEach(function(btn) { btn.classList.remove('active'); });
+    var cls = { correct: 'grade-btn-correct', partial: 'grade-btn-partial', incorrect: 'grade-btn-incorrect' };
+    var activeBtn = card.querySelector('.' + cls[result]);
+    if (activeBtn) activeBtn.classList.add('active');
+  }
+
+  var problems = (currentSub.submission_data || {}).problems || [];
+  updateProgress(problems.length);
+}
+
+function setNote(pid, note) {
+  if (!gradeState[pid]) gradeState[pid] = {};
+  gradeState[pid].note = note;
+}
+
+function updateProgress(total) {
+  var done = Object.keys(gradeState).filter(function(k) { return gradeState[k].result; }).length;
+  var pct = total > 0 ? Math.round(done / total * 100) : 0;
+  var fill = document.getElementById('progress-fill');
+  var text = document.getElementById('progress-text');
+  if (fill) fill.style.width = pct + '%';
+  if (text) text.textContent = done + ' / ' + total + ' 問採点済み';
+}
+
+// 先生手書きキャンバス
+var tcDrawing = false;
+var tcLast = null;
+var tcCurrent = null;
+
+function tcGetPos(e, canvas) {
+  var rect = canvas.getBoundingClientRect();
+  var sx = canvas.width / rect.width, sy = canvas.height / rect.height;
+  if (e.touches) return { x: (e.touches[0].clientX - rect.left) * sx, y: (e.touches[0].clientY - rect.top) * sy };
+  return { x: (e.clientX - rect.left) * sx, y: (e.clientY - rect.top) * sy };
+}
+
+function tcStart(e, pid) {
+  e.preventDefault();
+  tcCurrent = pid;
+  var canvas = document.getElementById('tc-' + pid);
+  if (!canvas._init) {
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    canvas._init = true;
+  }
+  tcDrawing = true;
+  tcLast = tcGetPos(e, canvas);
+}
+
+function tcMove(e, pid) {
+  e.preventDefault();
+  if (!tcDrawing) return;
+  var canvas = document.getElementById('tc-' + pid);
+  var ctx = canvas.getContext('2d');
+  var pos = tcGetPos(e, canvas);
+  ctx.strokeStyle = '#e74c3c';
+  ctx.lineWidth = 4;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.beginPath();
+  ctx.moveTo(tcLast.x, tcLast.y);
+  ctx.lineTo(pos.x, pos.y);
+  ctx.stroke();
+  tcLast = pos;
+}
+
+function tcEnd() { tcDrawing = false; }
+
+function tcClear(pid) {
+  var canvas = document.getElementById('tc-' + pid);
+  var ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+function tcGetData(pid) {
+  var canvas = document.getElementById('tc-' + pid);
+  if (!canvas || !canvas._init) return null;
+  return canvas.toDataURL();
+}
+
+async function saveResults() {
+  if (!currentSub) return;
+  var status = document.getElementById('save-status');
+  status.textContent = '保存中...';
+
+  var sd = currentSub.submission_data || {};
+  var problems = sd.problems || [];
+
+  var rows = problems.map(function(p, i) {
+    var pid = p.problem_id || p.id || (i+1);
+    var gs = gradeState[pid] || {};
+    return {
+      submission_id: currentSub.id,
+      assignment_id: currentSub.assignment_id || null,
+      student_id: currentSub.student_id || null,
+      problem_id: String(pid),
+      problem_number: i + 1,
+      unit_name: p.unit || p.chapter || null,
+      chapter_name: p.chapter || null,
+      level: p.level || null,
+      tags: p.tags || [],
+      equation_correct: gs.result === 'correct' || gs.result === 'partial',
+      answer_correct: gs.result === 'correct',
+      ai_feedback: gs.note || null,
+      teacher_canvas: tcGetData(String(pid)),
+      teacher_verified: true,
+    };
+  }).filter(function(r) { return gradeState[r.problem_id] && gradeState[r.problem_id].result; });
+
+  if (rows.length === 0) {
+    status.textContent = '採点されていない問題があります';
+    return;
+  }
+
+  try {
+    // 既存の結果を削除してから再挿入
+    await fetch(SUPABASE_URL + '/rest/v1/results?submission_id=eq.' + currentSub.id, {
+      method: 'DELETE', headers
+    });
+
+    const res = await fetch(SUPABASE_URL + '/rest/v1/results', {
+      method: 'POST',
+      headers: Object.assign({}, headers, { 'Prefer': 'return=minimal' }),
+      body: JSON.stringify(rows)
+    });
+
+    if (res.ok) {
+      status.textContent = '✓ ' + rows.length + '問の採点結果を保存しました';
+      // サイドバーのスコア表示を更新
+      var scoreEl = document.getElementById('score-' + currentSub.id);
+      if (scoreEl) {
+        var correct = rows.filter(function(r) { return r.answer_correct; }).length;
+        scoreEl.textContent = correct + '/' + rows.length + '問正解';
+        scoreEl.className = 'sub-score score-done';
+      }
+      // フィルター用セットを更新
+      gradedIds.add(currentSub.id);
+    } else {
+      var err = await res.json();
+      status.textContent = 'エラー: ' + (err.message || res.status);
+    }
+  } catch(e) {
+    status.textContent = 'エラー: ' + e.message;
+  }
+}
+
+
+
+// ===== 生徒キャンバスへの赤ペンオーバーレイ =====
+var ovDrawing = false;
+var ovLast = null;
+var ovMode = {}; // {canvasId: 'pen'|'eraser'}
+
+function getCanvas(type, pid) {
+  if (type === 'eq') return document.getElementById('ec-' + pid);
+  if (type === 'ans') return document.getElementById('ac-' + pid);
+  if (type === 'keq') return document.getElementById('kec-' + pid);
+  return null;
+}
+
+function syncOverlay(type, pid) {
+  var imgId = type === 'eq' ? 'ei-' + pid : type === 'ans' ? 'ai-' + pid : 'kei-' + pid;
+  var img = document.getElementById(imgId);
+  var cvs = getCanvas(type, pid);
+  if (!img || !cvs) return;
+  // 表示サイズに合わせる（max-height でリサイズ後のサイズ）
+  var w = img.offsetWidth;
+  var h = img.offsetHeight;
+  if (w === 0 || h === 0) {
+    // まだレイアウトされていなければ少し待つ
+    setTimeout(function(){ syncOverlay(type, pid); }, 100);
+    return;
+  }
+  cvs.width = w;
+  cvs.height = h;
+  cvs.style.width = w + 'px';
+  cvs.style.height = h + 'px';
+}
+
+function ovPos(e, cvs) {
+  var r = cvs.getBoundingClientRect();
+  var src = e.touches ? e.touches[0] : e;
+  return { x: src.clientX - r.left, y: src.clientY - r.top };
+}
+
+function ovStart(e, type, pid) {
+  e.preventDefault();
+  ovDrawing = true;
+  var cvs = getCanvas(type, pid);
+  ovLast = ovPos(e, cvs);
+  var ctx = cvs.getContext('2d');
+  var mode = ovMode[cvs.id] || 'pen';
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  if (mode === 'eraser') {
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.lineWidth = 19;
+  } else {
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.strokeStyle = '#e74c3c';
+    ctx.lineWidth = 2;
+    // 最初の1点を打つ
+    ctx.beginPath();
+    ctx.arc(ovLast.x, ovLast.y, 1, 0, Math.PI * 2);
+    ctx.fillStyle = '#e74c3c';
+    ctx.fill();
+  }
+  ctx.globalCompositeOperation = 'source-over';
+}
+
+function ovMove(e, type, pid) {
+  if (!ovDrawing) return;
+  e.preventDefault();
+  var cvs = getCanvas(type, pid);
+  var pos = ovPos(e, cvs);
+  var ctx = cvs.getContext('2d');
+  var mode = ovMode[cvs.id] || 'pen';
+  if (mode === 'eraser') {
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.lineWidth = 19;
+  } else {
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.strokeStyle = '#e74c3c';
+    ctx.lineWidth = 2;
+  }
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.beginPath();
+  ctx.moveTo(ovLast.x, ovLast.y);
+  ctx.lineTo(pos.x, pos.y);
+  ctx.stroke();
+  ctx.globalCompositeOperation = 'source-over';
+  ovLast = pos;
+}
+
+function ovEnd() { ovDrawing = false; ovLast = null; }
+
+function setOvMode(type, pid, mode) {
+  var cvs = getCanvas(type, pid);
+  if (!cvs) return;
+  ovMode[cvs.id] = mode;
+  cvs.style.cursor = mode === 'eraser' ? 'cell' : 'crosshair';
+  // ボタン状態更新
+  var penBtn = document.getElementById('ov-pen-' + type + '-' + pid) || document.getElementById('ov-pen-' + pid);
+  var eraBtn = document.getElementById('ov-era-' + type + '-' + pid) || document.getElementById('ov-era-' + pid);
+  if (penBtn) { penBtn.style.background = mode === 'pen' ? 'var(--accent)' : 'var(--border)'; penBtn.style.color = mode === 'pen' ? '#fff' : 'var(--text2)'; }
+  if (eraBtn) { eraBtn.style.background = mode === 'eraser' ? '#e74c3c' : 'var(--border)'; eraBtn.style.color = mode === 'eraser' ? '#fff' : 'var(--text2)'; }
+}
+
+function ovClear(type, pid) {
+  var cvs = getCanvas(type, pid);
+  if (cvs) cvs.getContext('2d').clearRect(0, 0, cvs.width, cvs.height);
+}
+
+// ===== AI自動採点 =====
+async function aiGrade(pid) {
+  // 問題データを取得
+  var sd = typeof currentSub.submission_data === 'string'
+    ? JSON.parse(currentSub.submission_data)
+    : (currentSub.submission_data || {});
+  var problems = sd.problems || [];
+  var p = problems.find(function(x) {
+    return String(x.problem_id || x.id) === String(pid);
+  });
+  if (!p) { alert('問題データが見つかりません'); return; }
+
+  var btn = document.getElementById('ai-btn-' + pid);
+  var resultDiv = document.getElementById('ai-result-' + pid);
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ 判定中...'; }
+  if (resultDiv) resultDiv.innerHTML = '<div class="ai-feedback"><span class="ai-thinking">AIが採点しています...</span></div>';
+
+  // プロンプト構築
+  var question = p.question || p.jp || '';
+  var correctAnswer = p.answer || '';
+  var hasEq = p.equation_canvas && p.equation_canvas !== 'null';
+  var hasAns = p.answer_canvas && p.answer_canvas !== 'null';
+
+    var prompt = [
+    '小学生・中学生の数学の答案を採点してください。',
+    '【問題】' + question,
+    '【模範解答】' + correctAnswer,
+    '以下の画像を見て採点してください。',
+    (hasEq ? '・画像1: 生徒が書いた式' : '・式: 未記入'),
+    (hasAns ? '・画像2: 生徒が書いた答え' : '・答え: 未記入'),
+    '',
+    '以下のJSON形式のみで返答してください（他のテキスト不要）:',
+    '{',
+    '  "result": "correct" または "partial" または "incorrect",',
+    '  "answer_ok": true または false,',
+    '  "equation_ok": true または false,',
+    '  "feedback": "日本語で簡潔に。正解なら空文字。間違いなら何が間違いか・式のどこが足りないかを具体的に。"',
+    '}'
+  ].join('\n');
+
+    // 画像をcontent配列に組み立て
+  var userContent = [];
+
+  if (hasEq) {
+    var eqData = p.equation_canvas.split(',')[1] || p.equation_canvas;
+    userContent.push({ type: 'image', source: { type: 'base64', media_type: 'image/png', data: eqData } });
+  }
+  if (hasAns) {
+    var ansData = p.answer_canvas.split(',')[1] || p.answer_canvas;
+    userContent.push({ type: 'image', source: { type: 'base64', media_type: 'image/png', data: ansData } });
+  }
+  userContent.push({ type: 'text', text: prompt });
+
+  try {
+    var res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: userContent }]
+      })
+    });
+
+    var data = await res.json();
+    var raw = (data.content || []).filter(function(b){ return b.type === 'text'; }).map(function(b){ return b.text; }).join('');
+
+    // JSONを抽出
+    var jsonMatch = raw.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('JSON解析失敗: ' + raw);
+    var result = JSON.parse(jsonMatch[0]);
+
+    // gradeStateを自動セット
+    setGrade(pid, result.result);
+
+    // メモ欄にフィードバックを反映
+    if (result.feedback) {
+      setNote(pid, result.feedback);
+      var noteEl = document.getElementById('note-' + pid);
+      if (noteEl) noteEl.value = result.feedback;
+    }
+
+    // 結果表示
+    var icon = result.result === 'correct' ? '✅' : result.result === 'partial' ? '⚠️' : '❌';
+    var label = result.result === 'correct' ? '正解' : result.result === 'partial' ? '式のみ正解' : '不正解';
+    var feedbackHtml = result.feedback
+      ? '<div class="ai-feedback-label">📝 AI フィードバック</div>' +
+        '<div>' + result.feedback.split('\n').join('<br>') + '</div>'
+      : '';
+
+    if (resultDiv) resultDiv.innerHTML =
+      '<div class="ai-feedback">' +
+        '<strong>' + icon + ' ' + label + '</strong>' +
+        (feedbackHtml ? '<div style="margin-top:6px">' + feedbackHtml + '</div>' : '') +
+      '</div>';
+
+    if (btn) { btn.disabled = false; btn.innerHTML = '🤖 AI再採点'; }
+
+  } catch(e) {
+    if (resultDiv) resultDiv.innerHTML = '<div class="ai-feedback" style="border-color:#e74c3c44;color:#e74c3c">エラー: ' + e.message + '</div>';
+    if (btn) { btn.disabled = false; btn.innerHTML = '🤖 AI採点'; }
+  }
+}
+
+// 全問題を一括AI採点
+async function aiGradeAll() {
+  var sd = typeof currentSub.submission_data === 'string'
+    ? JSON.parse(currentSub.submission_data)
+    : (currentSub.submission_data || {});
+  var problems = sd.problems || [];
+  var saveBtn = document.getElementById('ai-grade-all-btn');
+  if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = '⏳ 採点中... (0/' + problems.length + ')'; }
+
+  for (var i = 0; i < problems.length; i++) {
+    var p = problems[i];
+    var pid = String(p.problem_id || p.id || (i+1));
+    if (saveBtn) saveBtn.textContent = '⏳ 採点中... (' + (i+1) + '/' + problems.length + ')';
+    await aiGrade(pid);
+    // API rate limit対策
+    await new Promise(function(r){ setTimeout(r, 500); });
+  }
+
+  if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = '🤖 全問AI採点'; }
+}
+
+// 初期化
+loadSubmissions();
+</script>
+</body>
+</html>

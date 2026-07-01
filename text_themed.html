@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>かけ算のきまり｜小3</title>
+<style>
+  :root {
+    --c1: #2d5f8a;
+    --c2: #4a7fae;
+    --c3: #6fa3cf;
+    --bg-light: #f4f8fc;
+    --c-line: #9fb6cc;
+    --c-dash: #b9c9da;
+    --c-dash2: #cfe0ee;
+    --c-placeholder-text: #8a9bb0;
+    --c-placeholder-strong: #5d7894;
+    --c-placeholder2: #a7b8c9;
+    --band1: #d8e6f2;
+    --band2: #eaf2f9;
+    --table-hl: #dde8f2;
+    --stripe1: #fafcfe;
+    --stripe2: #f1f5f9;
+  }
+  body.theme-ocean {
+    --c1: #0c6b7a;
+    --c2: #18a3b6;
+    --c3: #6fd4e0;
+    --bg-light: #eafcfd;
+    --c-line: #9fdbe2;
+    --c-dash: #aee6ec;
+    --c-dash2: #d6f3f5;
+    --c-placeholder-text: #5fb2bd;
+    --c-placeholder-strong: #1a7e8c;
+    --c-placeholder2: #8fd2da;
+    --band1: #cdf1f4;
+    --band2: #e6fafb;
+    --table-hl: #c6edf1;
+    --stripe1: #f3fdfe;
+    --stripe2: #e3f8fa;
+  }
+  body.theme-space {
+    --c1: #3a2a6e;
+    --c2: #6c4fc7;
+    --c3: #a78bfa;
+    --bg-light: #f5f2fe;
+    --c-line: #c4b3f0;
+    --c-dash: #d2c2f5;
+    --c-dash2: #e6dcfb;
+    --c-placeholder-text: #9783c9;
+    --c-placeholder-strong: #5b3fa0;
+    --c-placeholder2: #b6a3e6;
+    --band1: #e6dcfb;
+    --band2: #f2ecfd;
+    --table-hl: #ddd0f7;
+    --stripe1: #faf8fe;
+    --stripe2: #f0eafd;
+  }
+  body.theme-dino {
+    --c1: #3e6b2f;
+    --c2: #6fa050;
+    --c3: #a3cb84;
+    --bg-light: #f3f9ee;
+    --c-line: #b6d49f;
+    --c-dash: #c4dfb1;
+    --c-dash2: #e0eed4;
+    --c-placeholder-text: #8bae73;
+    --c-placeholder-strong: #4f7d3c;
+    --c-placeholder2: #aacb91;
+    --band1: #ddedce;
+    --band2: #eef6e6;
+    --table-hl: #d4e8c4;
+    --stripe1: #f9fcf6;
+    --stripe2: #eef6e6;
+  }
+
+  /* テーマ切替バー（印刷時非表示） */
+  .theme-switcher {
+    position: sticky; top: 0; z-index: 50;
+    background: #1a1a2e; padding: 10px 16px;
+    display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+  }
+  .theme-switcher span { color: #aaa; font-size: 12px; margin-right: 6px; }
+  .theme-switcher button {
+    border: none; border-radius: 20px; padding: 6px 16px; font-size: 12px;
+    font-weight: 700; cursor: pointer; color: #fff; opacity: 0.6; transition: opacity 0.15s;
+  }
+  .theme-switcher button.active { opacity: 1; box-shadow: 0 0 0 2px #fff inset; }
+  .theme-switcher button[data-t="default"] { background: #2d5f8a; }
+  .theme-switcher button[data-t="ocean"]   { background: #18a3b6; }
+  .theme-switcher button[data-t="space"]   { background: #6c4fc7; }
+  .theme-switcher button[data-t="dino"]    { background: #6fa050; }
+  @media print { .theme-switcher { display: none; } }
+
+  /* マスコット差し替え用 */
+  .mascot-svg { position: absolute; top: 4px; right: 8px; width: 64px; height: 64px; z-index: 2; }
+  .mascot-svg svg { width: 100%; height: 100%; }
+  .mascot-default, .mascot-ocean, .mascot-space, .mascot-dino { display: none; }
+  body.theme-ocean .mascot-ocean { display: block; }
+  body.theme-space .mascot-space { display: block; }
+  body.theme-dino .mascot-dino { display: block; }
+  body:not(.theme-ocean):not(.theme-space):not(.theme-dino) .mascot-default { display: block; }
+
+  /* 背景装飾 */
+  .bg-deco { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; opacity: 0; transition: opacity 0.2s; }
+  body.theme-ocean .bg-deco-ocean { opacity: 1; }
+  body.theme-space .bg-deco-space { opacity: 1; }
+  body.theme-dino .bg-deco-dino { opacity: 1; }
+  .bg-deco { z-index: 0 !important; }
+  .topband, .point-box, .example-box, .section-band, .qgroup, .mascot-svg, .footer-note { position: relative; z-index: 1; }
+
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Hiragino Maru Gothic ProN","BIZ UDPGothic","Yu Gothic",sans-serif;
+    color: #1a1a2e;
+    margin: 0;
+    background: #fff;
+    line-height: 1.7;
+  }
+  .page {
+    width: 210mm;
+    height: 297mm;
+    margin: 0 auto 8mm auto;
+    padding: 14mm 12mm;
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+    box-sizing: border-box;
+    box-shadow: 0 0 0 1px #ddd;
+  }
+  @media print { .page { box-shadow: none; } }
+  .page:last-child { page-break-after: auto; }
+
+  /* ── ヘッダー帯 ── */
+  .topband {
+    background: linear-gradient(90deg, var(--c1) 0%, var(--c2) 50%, var(--c3) 100%);
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .topband .chno {
+    background: #fff;
+    color: var(--c1);
+    font-weight: 900;
+    font-size: 20px;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .topband .titles { flex: 1; }
+  .topband .ch-label { font-size: 11px; opacity: 0.85; letter-spacing: 0.05em; }
+  .topband .ch-title { font-size: 20px; font-weight: 900; margin-top: 1px; }
+  .pageno { font-size: 11px; color: #fff; opacity: 0.9; white-space: nowrap; }
+
+  /* ── ポイント枠 ── */
+  .point-box {
+    border: 2px solid var(--c1);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    background: var(--bg-light);
+  }
+  .point-box .label {
+    display: inline-block;
+    background: var(--c1);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+  }
+  .point-box ol { margin: 0; padding-left: 20px; font-size: 13px; }
+  .point-box li { margin-bottom: 4px; }
+  .point-box .sub { color: #555; font-size: 12px; }
+
+  /* ── 例題枠 ── */
+  .example-box {
+    border: 2px solid var(--c1);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .example-head {
+    background: linear-gradient(90deg, var(--c1), var(--c2));
+    color: #fff;
+    padding: 7px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .example-head .ex-tag {
+    background: #fff;
+    color: var(--c1);
+    border-radius: 5px;
+    padding: 1px 8px;
+    font-size: 12px;
+    font-weight: 900;
+  }
+  .example-body {
+    padding: 10px 14px;
+    font-size: 12.5px;
+    background: #fff;
+  }
+  .example-placeholder {
+    border: 2px dashed var(--c-dash);
+    border-radius: 8px;
+    padding: 16px 14px;
+    text-align: center;
+    color: var(--c-placeholder-text);
+    font-size: 12.5px;
+    background: repeating-linear-gradient(135deg, var(--stripe1), var(--stripe1) 10px, var(--stripe2) 10px, var(--stripe2) 20px);
+  }
+  .example-placeholder strong { display: block; font-size: 14px; color: var(--c-placeholder-strong); margin-bottom: 4px; }
+
+  .tokikata {
+    border-top: 1.5px dashed var(--c-line);
+    margin-top: 12px;
+    padding-top: 12px;
+  }
+  .tokikata .tk-label {
+    display: inline-block;
+    background: var(--c2);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 5px;
+    margin-bottom: 6px;
+  }
+  .tokikata-placeholder {
+    border: 2px dashed var(--c-dash2);
+    border-radius: 6px;
+    padding: 12px;
+    color: var(--c-placeholder2);
+    font-size: 12px;
+    text-align: center;
+  }
+
+  /* ── 確認問題・練習問題 見出し帯 ── */
+  .section-band {
+    background: linear-gradient(90deg, var(--band1) 0%, var(--band2) 50%, var(--band1) 100%);
+    border-radius: 24px;
+    text-align: center;
+    padding: 9px 0;
+    margin: 14px 0 10px 0;
+    font-weight: 900;
+    font-size: 16px;
+    color: var(--c1);
+    letter-spacing: 0.3em;
+  }
+
+  /* ── 問題ブロック ── */
+  .qgroup {
+    margin-bottom: 10px;
+    background: rgba(255,255,255,0.88);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .qnum {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    background: var(--c1);
+    color: #fff;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 900;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+  .qtitle { display: flex; align-items: center; font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+  .qtitle .qsub { font-weight: 400; color: #444; }
+
+  .qrow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 24px;
+  }
+  .qitem { font-size: 12.5px; padding-left: 8px; }
+  .qitem .qmark { color: var(--c1); font-weight: 700; margin-right: 4px; }
+  .answer-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    font-size: 12px;
+    color: #444;
+  }
+  .answer-line .bracket {
+    flex: 1;
+    border-bottom: 1.5px solid var(--c-line);
+    height: 18px;
+  }
+
+  .footer-note {
+    position: absolute;
+    bottom: 6mm;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 9.5px;
+    color: #b6c2cf;
+    letter-spacing: 0.1em;
+  }
+</style>
+</head>
+<body>
+
+<div class="theme-switcher">
+  <span>🎨 テーマ：</span>
+  <button data-t="default" class="active" onclick="setTheme('default')">標準</button>
+  <button data-t="ocean" onclick="setTheme('ocean')">🌊 海</button>
+  <button data-t="space" onclick="setTheme('space')">🚀 宇宙</button>
+  <button data-t="dino" onclick="setTheme('dino')">🦕 恐竜</button>
+</div>
+
+<!-- ============ PAGE 1 ============ -->
+<div class="page">
+  <div class="mascot-svg">
+    <svg class="mascot-default" viewBox="0 0 64 64"><circle cx="32" cy="32" r="26" fill="var(--c2)" opacity="0.15"/><path d="M14 38 Q20 30 26 38 Q32 30 38 38 Q44 30 50 38" fill="none" stroke="var(--c2)" stroke-width="3" stroke-linecap="round"/><circle cx="32" cy="24" r="6" fill="var(--c1)"/></svg>
+    <svg class="mascot-ocean" viewBox="0 0 64 64">
+      <ellipse cx="30" cy="34" rx="20" ry="13" fill="#4fc3d1"/>
+      <path d="M48 30 L60 22 L58 34 L60 46 L48 38 Z" fill="#3aa8b6"/>
+      <path d="M22 22 Q26 10 34 16 Q30 22 22 22 Z" fill="#5fd0dd"/>
+      <circle cx="20" cy="30" r="2.4" fill="#0c4a52"/>
+      <path d="M10 36 Q14 33 18 36" fill="none" stroke="#0c4a52" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M30 46 Q34 50 38 46" fill="none" stroke="#2c7a85" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <svg class="mascot-space" viewBox="0 0 64 64">
+      <circle cx="32" cy="30" r="17" fill="#c9bdf4"/>
+      <ellipse cx="32" cy="34" rx="22" ry="6" fill="none" stroke="#7c5fd6" stroke-width="2.5"/>
+      <circle cx="26" cy="27" r="2.6" fill="#3a2a6e"/>
+      <circle cx="38" cy="27" r="2.6" fill="#3a2a6e"/>
+      <path d="M26 36 Q32 40 38 36" fill="none" stroke="#3a2a6e" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="14" cy="14" r="1.6" fill="#a78bfa"/>
+      <circle cx="52" cy="18" r="1.2" fill="#a78bfa"/>
+      <circle cx="50" cy="48" r="1.8" fill="#a78bfa"/>
+    </svg>
+    <svg class="mascot-dino" viewBox="0 0 64 64">
+      <ellipse cx="30" cy="38" rx="18" ry="14" fill="#7cb45f"/>
+      <circle cx="46" cy="26" r="11" fill="#7cb45f"/>
+      <path d="M40 16 L43 8 L46 16 Z" fill="#5e9344"/>
+      <path d="M46 16 L49 8 L52 16 Z" fill="#5e9344"/>
+      <circle cx="49" cy="24" r="2.2" fill="#2c4a1e"/>
+      <path d="M16 46 Q8 44 6 50" fill="none" stroke="#5e9344" stroke-width="4" stroke-linecap="round"/>
+      <path d="M40 22 Q44 24 42 28" fill="none" stroke="#3e6b2f" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <svg class="bg-deco bg-deco-ocean" viewBox="0 0 700 1027" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="oceanGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#eafcfd"/>
+        <stop offset="55%" stop-color="#cdf1f4"/>
+        <stop offset="100%" stop-color="#9fe1e8"/>
+      </linearGradient>
+    </defs>
+    <rect x="0" y="0" width="700" height="1027" fill="url(#oceanGrad)"/>
+    <path d="M0 1027 Q60 950 120 1027 T240 1027 T360 1027 T480 1027 T600 1027 T720 1027 L720 1027 L0 1027 Z" fill="#7fd1de"/>
+    <path d="M0 940 Q60 900 120 940 T240 940 T360 940 T480 940 T600 940 T720 940 L720 1027 L0 1027 Z" fill="#9fe1e8"/>
+    <g opacity="0.85">
+      <ellipse cx="90" cy="160" rx="34" ry="18" fill="#5fc4d0"/>
+      <path d="M124 160 L150 145 L148 160 L150 175 Z" fill="#5fc4d0"/>
+      <circle cx="78" cy="155" r="3" fill="#0c4a52"/>
+      <path d="M60 168 Q70 165 78 168" fill="none" stroke="#0c4a52" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <g opacity="0.7">
+      <ellipse cx="600" cy="280" rx="24" ry="13" fill="#5fc4d0"/>
+      <path d="M624 280 L642 270 L640 280 L642 290 Z" fill="#5fc4d0"/>
+      <circle cx="591" cy="276" r="2.2" fill="#0c4a52"/>
+    </g>
+    <g fill="#3aa8b6" opacity="0.55">
+      <ellipse cx="40" cy="870" rx="60" ry="22"/>
+      <ellipse cx="180" cy="900" rx="50" ry="18"/>
+      <ellipse cx="560" cy="880" rx="70" ry="24"/>
+    </g>
+    <g stroke="#2c7a85" stroke-width="4" fill="none" opacity="0.5" stroke-linecap="round">
+      <path d="M50 900 Q60 850 50 800 Q40 760 55 720"/>
+      <path d="M620 920 Q635 870 622 820 Q612 780 628 740"/>
+      <path d="M150 940 Q160 900 148 860"/>
+    </g>
+    <circle cx="620" cy="600" r="10" fill="#cdeef3" opacity="0.85"/>
+    <circle cx="640" cy="630" r="6" fill="#cdeef3" opacity="0.8"/>
+    <circle cx="600" cy="650" r="4" fill="#cdeef3" opacity="0.75"/>
+    <circle cx="60" cy="500" r="8" fill="#cdeef3" opacity="0.8"/>
+    <circle cx="42" cy="530" r="5" fill="#cdeef3" opacity="0.7"/>
+    <path d="M380 420 Q400 400 420 420 Q400 440 380 420 Z" fill="#bfe9ee" opacity="0.7"/>
+    <path d="M260 480 Q280 460 300 480 Q280 500 260 480 Z" fill="#bfe9ee" opacity="0.6"/>
+    <ellipse cx="350" cy="60" rx="44" ry="10" fill="#ffffff" opacity="0.7"/>
+    <ellipse cx="500" cy="100" rx="34" ry="8" fill="#ffffff" opacity="0.6"/>
+  </svg>
+  <svg class="bg-deco bg-deco-space" viewBox="0 0 700 1027" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="spaceGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#f5f2fe"/>
+        <stop offset="50%" stop-color="#e6dcfb"/>
+        <stop offset="100%" stop-color="#d2c2f5"/>
+      </linearGradient>
+    </defs>
+    <rect x="0" y="0" width="700" height="1027" fill="url(#spaceGrad)"/>
+    <g fill="#c4b3f0">
+      <circle cx="40" cy="60" r="2.4"/><circle cx="90" cy="40" r="1.6"/><circle cx="140" cy="90" r="2"/>
+      <circle cx="660" cy="90" r="2.6"/><circle cx="620" cy="150" r="1.6"/><circle cx="660" cy="230" r="2.2"/>
+      <circle cx="30" cy="200" r="1.6"/><circle cx="80" cy="260" r="2"/>
+      <circle cx="40" cy="880" r="2.4"/><circle cx="80" cy="920" r="1.6"/><circle cx="140" cy="950" r="2"/>
+      <circle cx="660" cy="850" r="2.4"/><circle cx="630" cy="940" r="1.8"/><circle cx="590" cy="900" r="2"/>
+      <circle cx="20" cy="500" r="1.8"/><circle cx="670" cy="520" r="2"/>
+      <circle cx="350" cy="40" r="1.6"/><circle cx="350" cy="950" r="1.6"/>
+    </g>
+    <g fill="#a78bfa">
+      <path d="M58 56 L63 58 L58 60 L56 65 L54 60 L49 58 L54 56 L56 51 Z"/>
+      <path d="M598 870 L603 872 L598 874 L596 879 L594 874 L589 872 L594 870 L596 865 Z"/>
+      <path d="M120 110 L123 112 L120 113 L119 116 L117 113 L114 112 L117 111 L119 108 Z"/>
+      <path d="M610 280 L613 282 L610 283 L609 286 L607 283 L604 282 L607 281 L609 278 Z"/>
+    </g>
+    <circle cx="600" cy="160" r="46" fill="#9783c9" opacity="0.55"/>
+    <ellipse cx="600" cy="160" rx="74" ry="16" fill="none" stroke="#ddd2fb" stroke-width="3" opacity="0.8"/>
+    <circle cx="90" cy="820" r="32" fill="#7c5fd6" opacity="0.4"/>
+    <circle cx="90" cy="820" r="32" fill="none" stroke="#c4b3f0" stroke-width="2" opacity="0.6"/>
+    <g opacity="0.75">
+      <path d="M250 700 L262 660 L274 700 L262 692 Z" fill="#ddd2fb"/>
+      <ellipse cx="262" cy="704" rx="9" ry="5" fill="#a78bfa"/>
+      <path d="M252 700 L246 716 L256 706 Z" fill="#a78bfa"/>
+      <path d="M272 700 L278 716 L268 706 Z" fill="#a78bfa"/>
+    </g>
+    <path d="M40 600 Q200 560 250 700" fill="none" stroke="#ddd2fb" stroke-width="2" stroke-dasharray="4 6" opacity="0.6"/>
+  </svg>
+  <svg class="bg-deco bg-deco-dino" viewBox="0 0 700 1027" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="dinoGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#f3f9ee"/>
+        <stop offset="55%" stop-color="#e0eed4"/>
+        <stop offset="100%" stop-color="#c4dfb1"/>
+      </linearGradient>
+    </defs>
+    <rect x="0" y="0" width="700" height="1027" fill="url(#dinoGrad)"/>
+    <path d="M0 1027 Q120 940 240 1027 T480 1027 T720 1027 L720 1027 L0 1027 Z" fill="#a3cb84" opacity="0.7"/>
+    <g opacity="0.65" fill="#6fa050">
+      <path d="M60 1027 L50 880 L66 920 L60 850 L78 900 L70 1027 Z"/>
+      <path d="M630 1027 L618 860 L638 910 L630 820 L654 880 L646 1027 Z"/>
+      <path d="M340 1027 L330 920 L348 950 L342 1027 Z"/>
+    </g>
+    <g fill="#cfe4bd" opacity="0.6">
+      <ellipse cx="40" cy="900" rx="9" ry="6"/><ellipse cx="48" cy="912" rx="5" ry="3.5"/>
+      <ellipse cx="58" cy="905" rx="5" ry="3.5"/><ellipse cx="30" cy="908" rx="5" ry="3.5"/>
+      <ellipse cx="150" cy="935" rx="9" ry="6"/><ellipse cx="158" cy="947" rx="5" ry="3.5"/>
+      <ellipse cx="168" cy="940" rx="5" ry="3.5"/><ellipse cx="140" cy="943" rx="5" ry="3.5"/>
+      <ellipse cx="630" cy="60" rx="9" ry="6"/><ellipse cx="638" cy="72" rx="5" ry="3.5"/>
+      <ellipse cx="648" cy="65" rx="5" ry="3.5"/><ellipse cx="620" cy="68" rx="5" ry="3.5"/>
+    </g>
+    <g opacity="0.6">
+      <ellipse cx="600" cy="500" rx="20" ry="10" fill="#7cb45f"/>
+      <circle cx="612" cy="494" r="7" fill="#7cb45f"/>
+      <circle cx="615" cy="491" r="1.6" fill="#2c4a1e"/>
+      <path d="M580 506 Q570 510 562 518" fill="none" stroke="#5e9344" stroke-width="3" stroke-linecap="round"/>
+    </g>
+    <g opacity="0.5">
+      <ellipse cx="90" cy="350" rx="16" ry="8" fill="#7cb45f"/>
+      <circle cx="100" cy="346" r="5.5" fill="#7cb45f"/>
+    </g>
+    <circle cx="650" cy="900" r="4" fill="#a3cb84" opacity="0.5"/>
+    <circle cx="20" cy="60" r="4" fill="#a3cb84" opacity="0.5"/>
+    <path d="M450 200 Q480 170 470 130" fill="none" stroke="#5e9344" stroke-width="4" opacity="0.4" stroke-linecap="round"/>
+    <ellipse cx="465" cy="120" rx="14" ry="9" fill="#7cb45f" opacity="0.4"/>
+  </svg>
+  <div class="topband">
+    <div class="chno">1</div>
+    <div class="titles">
+      <div class="ch-label">第1章　かけ算のきまり</div>
+      <div class="ch-title">① かけ算のきまり</div>
+    </div>
+    <div class="pageno">小3 算数</div>
+  </div>
+
+  <div class="point-box">
+    <div class="label">ポイント</div>
+    <ol>
+      <li>どんな数に0をかけても、答えは0になる。0にどんな数をかけても、答えは0になる。</li>
+      <li>かける数が1ふえると、答えはかけられる数だけ大きくなる。かける数が1へると、答えはかけられる数だけ小さくなる。</li>
+      <li>かけられる数とかける数を入れかえても、答えは同じになる。<span class="sub">（交かんのきまり）</span></li>
+      <li>かける数やかけられる数を分けても、答えは同じになる。<span class="sub">（分配のきまり）</span></li>
+    </ol>
+  </div>
+
+  <div class="example-box">
+    <div class="example-head"><span class="ex-tag">例題1</span>0のかけ算</div>
+    <div class="example-body">
+      <div class="example-placeholder">
+        <strong>〔 例題1：rei_01 〕</strong>
+        ここに先生が作成した例題（問題文・図）が入ります
+      </div>
+      <div class="tokikata">
+        <div class="tk-label">とき方</div>
+        <div class="tokikata-placeholder">先生が作成した解説（とき方）がここに入ります</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-band">確 認 問 題</div>
+
+  <div class="qgroup">
+    <div class="qtitle"><span class="qnum">1</span>次の計算をしましょう。</div>
+    <div class="qrow">
+      <div class="qitem"><span class="qmark">(1)</span>5 × 0</div>
+      <div class="qitem"><span class="qmark">(2)</span>8 × 0</div>
+      <div class="qitem"><span class="qmark">(3)</span>0 × 4</div>
+      <div class="qitem"><span class="qmark">(4)</span>0 × 9</div>
+    </div>
+    <div class="answer-line">(1)<div class="bracket"></div>(2)<div class="bracket"></div></div>
+    <div class="answer-line">(3)<div class="bracket"></div>(4)<div class="bracket"></div></div>
+  </div>
+
+  <div class="qgroup">
+    <div class="qtitle"><span class="qnum">2</span>□にあてはまる数を書きましょう。</div>
+    <div class="qrow">
+      <div class="qitem"><span class="qmark">(1)</span>3 × 6 ＝ 3 × 5 ＋ □</div>
+      <div class="qitem"><span class="qmark">(2)</span>9 × 4 ＝ 9 × 3 ＋ □</div>
+      <div class="qitem"><span class="qmark">(3)</span>4 × 9 ＝ 4 × 10 － □</div>
+      <div class="qitem"><span class="qmark">(4)</span>6 × 7 ＝ 6 × 8 － □</div>
+    </div>
+    <div class="answer-line">(1)<div class="bracket"></div>(2)<div class="bracket"></div></div>
+    <div class="answer-line">(3)<div class="bracket"></div>(4)<div class="bracket"></div></div>
+  </div>
+
+  <div class="qgroup">
+    <div class="qtitle"><span class="qnum">3</span>□にあてはまる数を書きましょう。</div>
+    <div class="qrow">
+      <div class="qitem"><span class="qmark">(1)</span>8 × 6 ＝ □ × 8</div>
+      <div class="qitem"><span class="qmark">(2)</span>5 × 9 ＝ 9 × □</div>
+    </div>
+    <div class="answer-line">(1)<div class="bracket"></div>(2)<div class="bracket"></div></div>
+  </div>
+
+  <div class="footer-note">Pandora Project ｜ 算数テキスト試作版</div>
+</div>
+
+<!-- ============ PAGE 2 ============ -->
+<div class="page">
+  <div class="mascot-svg">
+    <svg class="mascot-default" viewBox="0 0 64 64"><circle cx="32" cy="32" r="26" fill="var(--c2)" opacity="0.15"/><path d="M14 38 Q20 30 26 38 Q32 30 38 38 Q44 30 50 38" fill="none" stroke="var(--c2)" stroke-width="3" stroke-linecap="round"/><circle cx="32" cy="24" r="6" fill="var(--c1)"/></svg>
+    <svg class="mascot-ocean" viewBox="0 0 64 64">
+      <ellipse cx="30" cy="34" rx="20" ry="13" fill="#4fc3d1"/>
+      <path d="M48 30 L60 22 L58 34 L60 46 L48 38 Z" fill="#3aa8b6"/>
+      <path d="M22 22 Q26 10 34 16 Q30 22 22 22 Z" fill="#5fd0dd"/>
+      <circle cx="20" cy="30" r="2.4" fill="#0c4a52"/>
+      <path d="M10 36 Q14 33 18 36" fill="none" stroke="#0c4a52" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M30 46 Q34 50 38 46" fill="none" stroke="#2c7a85" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <svg class="mascot-space" viewBox="0 0 64 64">
+      <circle cx="32" cy="30" r="17" fill="#c9bdf4"/>
+      <ellipse cx="32" cy="34" rx="22" ry="6" fill="none" stroke="#7c5fd6" stroke-width="2.5"/>
+      <circle cx="26" cy="27" r="2.6" fill="#3a2a6e"/>
+      <circle cx="38" cy="27" r="2.6" fill="#3a2a6e"/>
+      <path d="M26 36 Q32 40 38 36" fill="none" stroke="#3a2a6e" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="14" cy="14" r="1.6" fill="#a78bfa"/>
+      <circle cx="52" cy="18" r="1.2" fill="#a78bfa"/>
+      <circle cx="50" cy="48" r="1.8" fill="#a78bfa"/>
+    </svg>
+    <svg class="mascot-dino" viewBox="0 0 64 64">
+      <ellipse cx="30" cy="38" rx="18" ry="14" fill="#7cb45f"/>
+      <circle cx="46" cy="26" r="11" fill="#7cb45f"/>
+      <path d="M40 16 L43 8 L46 16 Z" fill="#5e9344"/>
+      <path d="M46 16 L49 8 L52 16 Z" fill="#5e9344"/>
+      <circle cx="49" cy="24" r="2.2" fill="#2c4a1e"/>
+      <path d="M16 46 Q8 44 6 50" fill="none" stroke="#5e9344" stroke-width="4" stroke-linecap="round"/>
+      <path d="M40 22 Q44 24 42 28" fill="none" stroke="#3e6b2f" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <svg class="bg-deco bg-deco-ocean" viewBox="0 0 700 1027" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="oceanGrad2" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#eafcfd"/>
+        <stop offset="55%" stop-color="#cdf1f4"/>
+        <stop offset="100%" stop-color="#9fe1e8"/>
+      </linearGradient>
+    </defs>
+    <rect x="0" y="0" width="700" height="1027" fill="url(#oceanGrad2)"/>
+    <path d="M0 1027 Q60 950 120 1027 T240 1027 T360 1027 T480 1027 T600 1027 T720 1027 L720 1027 L0 1027 Z" fill="#7fd1de"/>
+    <path d="M0 940 Q60 900 120 940 T240 940 T360 940 T480 940 T600 940 T720 940 L720 1027 L0 1027 Z" fill="#9fe1e8"/>
+    <g opacity="0.85">
+      <ellipse cx="90" cy="160" rx="34" ry="18" fill="#5fc4d0"/>
+      <path d="M124 160 L150 145 L148 160 L150 175 Z" fill="#5fc4d0"/>
+      <circle cx="78" cy="155" r="3" fill="#0c4a52"/>
+      <path d="M60 168 Q70 165 78 168" fill="none" stroke="#0c4a52" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <g opacity="0.7">
+      <ellipse cx="600" cy="280" rx="24" ry="13" fill="#5fc4d0"/>
+      <path d="M624 280 L642 270 L640 280 L642 290 Z" fill="#5fc4d0"/>
+      <circle cx="591" cy="276" r="2.2" fill="#0c4a52"/>
+    </g>
+    <g fill="#3aa8b6" opacity="0.55">
+      <ellipse cx="40" cy="870" rx="60" ry="22"/>
+      <ellipse cx="180" cy="900" rx="50" ry="18"/>
+      <ellipse cx="560" cy="880" rx="70" ry="24"/>
+    </g>
+    <g stroke="#2c7a85" stroke-width="4" fill="none" opacity="0.5" stroke-linecap="round">
+      <path d="M50 900 Q60 850 50 800 Q40 760 55 720"/>
+      <path d="M620 920 Q635 870 622 820 Q612 780 628 740"/>
+      <path d="M150 940 Q160 900 148 860"/>
+    </g>
+    <circle cx="620" cy="600" r="10" fill="#cdeef3" opacity="0.85"/>
+    <circle cx="640" cy="630" r="6" fill="#cdeef3" opacity="0.8"/>
+    <circle cx="600" cy="650" r="4" fill="#cdeef3" opacity="0.75"/>
+    <circle cx="60" cy="500" r="8" fill="#cdeef3" opacity="0.8"/>
+    <circle cx="42" cy="530" r="5" fill="#cdeef3" opacity="0.7"/>
+    <path d="M380 420 Q400 400 420 420 Q400 440 380 420 Z" fill="#bfe9ee" opacity="0.7"/>
+    <path d="M260 480 Q280 460 300 480 Q280 500 260 480 Z" fill="#bfe9ee" opacity="0.6"/>
+    <ellipse cx="350" cy="60" rx="44" ry="10" fill="#ffffff" opacity="0.7"/>
+    <ellipse cx="500" cy="100" rx="34" ry="8" fill="#ffffff" opacity="0.6"/>
+  </svg>
+  <svg class="bg-deco bg-deco-space" viewBox="0 0 700 1027" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="spaceGrad2" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#f5f2fe"/>
+        <stop offset="50%" stop-color="#e6dcfb"/>
+        <stop offset="100%" stop-color="#d2c2f5"/>
+      </linearGradient>
+    </defs>
+    <rect x="0" y="0" width="700" height="1027" fill="url(#spaceGrad2)"/>
+    <g fill="#c4b3f0">
+      <circle cx="40" cy="60" r="2.4"/><circle cx="90" cy="40" r="1.6"/><circle cx="140" cy="90" r="2"/>
+      <circle cx="660" cy="90" r="2.6"/><circle cx="620" cy="150" r="1.6"/><circle cx="660" cy="230" r="2.2"/>
+      <circle cx="30" cy="200" r="1.6"/><circle cx="80" cy="260" r="2"/>
+      <circle cx="40" cy="880" r="2.4"/><circle cx="80" cy="920" r="1.6"/><circle cx="140" cy="950" r="2"/>
+      <circle cx="660" cy="850" r="2.4"/><circle cx="630" cy="940" r="1.8"/><circle cx="590" cy="900" r="2"/>
+      <circle cx="20" cy="500" r="1.8"/><circle cx="670" cy="520" r="2"/>
+      <circle cx="350" cy="40" r="1.6"/><circle cx="350" cy="950" r="1.6"/>
+    </g>
+    <g fill="#a78bfa">
+      <path d="M58 56 L63 58 L58 60 L56 65 L54 60 L49 58 L54 56 L56 51 Z"/>
+      <path d="M598 870 L603 872 L598 874 L596 879 L594 874 L589 872 L594 870 L596 865 Z"/>
+      <path d="M120 110 L123 112 L120 113 L119 116 L117 113 L114 112 L117 111 L119 108 Z"/>
+      <path d="M610 280 L613 282 L610 283 L609 286 L607 283 L604 282 L607 281 L609 278 Z"/>
+    </g>
+    <circle cx="600" cy="160" r="46" fill="#9783c9" opacity="0.55"/>
+    <ellipse cx="600" cy="160" rx="74" ry="16" fill="none" stroke="#ddd2fb" stroke-width="3" opacity="0.8"/>
+    <circle cx="90" cy="820" r="32" fill="#7c5fd6" opacity="0.4"/>
+    <circle cx="90" cy="820" r="32" fill="none" stroke="#c4b3f0" stroke-width="2" opacity="0.6"/>
+    <g opacity="0.75">
+      <path d="M250 700 L262 660 L274 700 L262 692 Z" fill="#ddd2fb"/>
+      <ellipse cx="262" cy="704" rx="9" ry="5" fill="#a78bfa"/>
+      <path d="M252 700 L246 716 L256 706 Z" fill="#a78bfa"/>
+      <path d="M272 700 L278 716 L268 706 Z" fill="#a78bfa"/>
+    </g>
+    <path d="M40 600 Q200 560 250 700" fill="none" stroke="#ddd2fb" stroke-width="2" stroke-dasharray="4 6" opacity="0.6"/>
+  </svg>
+  <svg class="bg-deco bg-deco-dino" viewBox="0 0 700 1027" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="dinoGrad2" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#f3f9ee"/>
+        <stop offset="55%" stop-color="#e0eed4"/>
+        <stop offset="100%" stop-color="#c4dfb1"/>
+      </linearGradient>
+    </defs>
+    <rect x="0" y="0" width="700" height="1027" fill="url(#dinoGrad2)"/>
+    <path d="M0 1027 Q120 940 240 1027 T480 1027 T720 1027 L720 1027 L0 1027 Z" fill="#a3cb84" opacity="0.7"/>
+    <g opacity="0.65" fill="#6fa050">
+      <path d="M60 1027 L50 880 L66 920 L60 850 L78 900 L70 1027 Z"/>
+      <path d="M630 1027 L618 860 L638 910 L630 820 L654 880 L646 1027 Z"/>
+      <path d="M340 1027 L330 920 L348 950 L342 1027 Z"/>
+    </g>
+    <g fill="#cfe4bd" opacity="0.6">
+      <ellipse cx="40" cy="900" rx="9" ry="6"/><ellipse cx="48" cy="912" rx="5" ry="3.5"/>
+      <ellipse cx="58" cy="905" rx="5" ry="3.5"/><ellipse cx="30" cy="908" rx="5" ry="3.5"/>
+      <ellipse cx="150" cy="935" rx="9" ry="6"/><ellipse cx="158" cy="947" rx="5" ry="3.5"/>
+      <ellipse cx="168" cy="940" rx="5" ry="3.5"/><ellipse cx="140" cy="943" rx="5" ry="3.5"/>
+      <ellipse cx="630" cy="60" rx="9" ry="6"/><ellipse cx="638" cy="72" rx="5" ry="3.5"/>
+      <ellipse cx="648" cy="65" rx="5" ry="3.5"/><ellipse cx="620" cy="68" rx="5" ry="3.5"/>
+    </g>
+    <g opacity="0.6">
+      <ellipse cx="600" cy="500" rx="20" ry="10" fill="#7cb45f"/>
+      <circle cx="612" cy="494" r="7" fill="#7cb45f"/>
+      <circle cx="615" cy="491" r="1.6" fill="#2c4a1e"/>
+      <path d="M580 506 Q570 510 562 518" fill="none" stroke="#5e9344" stroke-width="3" stroke-linecap="round"/>
+    </g>
+    <g opacity="0.5">
+      <ellipse cx="90" cy="350" rx="16" ry="8" fill="#7cb45f"/>
+      <circle cx="100" cy="346" r="5.5" fill="#7cb45f"/>
+    </g>
+    <circle cx="650" cy="900" r="4" fill="#a3cb84" opacity="0.5"/>
+    <circle cx="20" cy="60" r="4" fill="#a3cb84" opacity="0.5"/>
+    <path d="M450 200 Q480 170 470 130" fill="none" stroke="#5e9344" stroke-width="4" opacity="0.4" stroke-linecap="round"/>
+    <ellipse cx="465" cy="120" rx="14" ry="9" fill="#7cb45f" opacity="0.4"/>
+  </svg>
+  <div class="topband">
+    <div class="chno">1</div>
+    <div class="titles">
+      <div class="ch-label">第1章　かけ算のきまり</div>
+      <div class="ch-title">① かけ算のきまり（つづき）</div>
+    </div>
+    <div class="pageno">小3 算数</div>
+  </div>
+
+  <div class="example-box">
+    <div class="example-head"><span class="ex-tag">例題2</span>かけ算のきまり</div>
+    <div class="example-body">
+      <div class="example-placeholder">
+        <strong>〔 例題2：rei_02 〕</strong>
+        ここに先生が作成した例題（問題文・図）が入ります
+      </div>
+      <div class="tokikata">
+        <div class="tk-label">とき方</div>
+        <div class="tokikata-placeholder">先生が作成した解説（とき方）がここに入ります</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="example-box">
+    <div class="example-head"><span class="ex-tag">例題3</span>10のかけ算</div>
+    <div class="example-body">
+      <div class="example-placeholder">
+        <strong>〔 例題3：rei_04 〕</strong>
+        ここに先生が作成した例題（問題文・図）が入ります
+      </div>
+      <div class="tokikata">
+        <div class="tk-label">とき方</div>
+        <div class="tokikata-placeholder">先生が作成した解説（とき方）がここに入ります</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-band">確 認 問 題</div>
+
+  <div class="qgroup">
+    <div class="qtitle"><span class="qnum">4</span>□にあてはまる数を書きましょう。</div>
+    <div class="qrow">
+      <div class="qitem"><span class="qmark">(1)</span>4 × 6 ＝ □ × 4</div>
+      <div class="qitem"><span class="qmark">(2)</span>2 × 7 ＝ 2 × 6 ＋ □</div>
+      <div class="qitem"><span class="qmark">(3)</span>9 × 3 ＝ 9 × 4 － □</div>
+      <div class="qitem"><span class="qmark">(4)</span>7 × □ ＝ 7 × 4 ＋ 7 × 2</div>
+    </div>
+    <div class="answer-line">(1)<div class="bracket"></div>(2)<div class="bracket"></div></div>
+    <div class="answer-line">(3)<div class="bracket"></div>(4)<div class="bracket"></div></div>
+  </div>
+
+  <div class="qgroup">
+    <div class="qtitle"><span class="qnum">5</span>次の計算をしましょう。</div>
+    <div class="qrow">
+      <div class="qitem"><span class="qmark">(1)</span>10 × 3</div>
+      <div class="qitem"><span class="qmark">(2)</span>10 × 7</div>
+      <div class="qitem"><span class="qmark">(3)</span>6 × 10</div>
+      <div class="qitem"><span class="qmark">(4)</span>9 × 10</div>
+    </div>
+    <div class="answer-line">(1)<div class="bracket"></div>(2)<div class="bracket"></div></div>
+    <div class="answer-line">(3)<div class="bracket"></div>(4)<div class="bracket"></div></div>
+  </div>
+
+  <div class="footer-note">Pandora Project ｜ 算数テキスト試作版</div>
+</div>
+
+<!-- ============ PAGE 3：確認問題まとめ ============ -->
+<div class="page">
+  <div class="mascot-svg">
+    <svg class="mascot-default" viewBox="0 0 64 64"><circle cx="32" cy="32" r="26" fill="var(--c2)" opacity="0.15"/><path d="M14 38 Q20 30 26 38 Q32 30 38 38 Q44 30 50 38" fill="none" stroke="var(--c2)" stroke-width="3" stroke-linecap="round"/><circle cx="32" cy="24" r="6" fill="var(--c1)"/></svg>
+    <svg class="mascot-ocean" viewBox="0 0 64 64">
+      <ellipse cx="30" cy="34" rx="20" ry="13" fill="#4fc3d1"/>
+      <path d="M48 30 L60 22 L58 34 L60 46 L48 38 Z" fill="#3aa8b6"/>
+      <path d="M22 22 Q26 10 34 16 Q30 22 22 22 Z" fill="#5fd0dd"/>
+      <circle cx="20" cy="30" r="2.4" fill="#0c4a52"/>
+      <path d="M10 36 Q14 33 18 36" fill="none" stroke="#0c4a52" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M30 46 Q34 50 38 46" fill="none" stroke="#2c7a85" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <svg class="mascot-space" viewBox="0 0 64 64">
+      <circle cx="32" cy="30" r="17" fill="#c9bdf4"/>
+      <ellipse cx="32" cy="34" rx="22" ry="6" fill="none" stroke="#7c5fd6" stroke-width="2.5"/>
+      <circle cx="26" cy="27" r="2.6" fill="#3a2a6e"/>
+      <circle cx="38" cy="27" r="2.6" fill="#3a2a6e"/>
+      <path d="M26 36 Q32 40 38 36" fill="none" stroke="#3a2a6e" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="14" cy="14" r="1.6" fill="#a78bfa"/>
+      <circle cx="52" cy="18" r="1.2" fill="#a78bfa"/>
+      <circle cx="50" cy="48" r="1.8" fill="#a78bfa"/>
+    </svg>
+    <svg class="mascot-dino" viewBox="0 0 64 64">
+      <ellipse cx="30" cy="38" rx="18" ry="14" fill="#7cb45f"/>
+      <circle cx="46" cy="26" r="11" fill="#7cb45f"/>
+      <path d="M40 16 L43 8 L46 16 Z" fill="#5e9344"/>
+      <path d="M46 16 L49 8 L52 16 Z" fill="#5e9344"/>
+      <circle cx="49" cy="24" r="2.2" fill="#2c4a1e"/>
+      <path d="M16 46 Q8 44 6 50" fill="none" stroke="#5e9344" stroke-width="4" stroke-linecap="round"/>
+      <path d="M40 22 Q44 24 42 28" fill="none" stroke="#3e6b2f" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <svg class="bg-deco bg-deco-ocean" viewBox="0 0 700 1027" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="oceanGrad3" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#eafcfd"/>
+        <stop offset="55%" stop-color="#cdf1f4"/>
+        <stop offset="100%" stop-color="#9fe1e8"/>
+      </linearGradient>
+    </defs>
+    <rect x="0" y="0" width="700" height="1027" fill="url(#oceanGrad3)"/>
+    <path d="M0 1027 Q60 950 120 1027 T240 1027 T360 1027 T480 1027 T600 1027 T720 1027 L720 1027 L0 1027 Z" fill="#7fd1de"/>
+    <path d="M0 940 Q60 900 120 940 T240 940 T360 940 T480 940 T600 940 T720 940 L720 1027 L0 1027 Z" fill="#9fe1e8"/>
+    <g opacity="0.85">
+      <ellipse cx="90" cy="160" rx="34" ry="18" fill="#5fc4d0"/>
+      <path d="M124 160 L150 145 L148 160 L150 175 Z" fill="#5fc4d0"/>
+      <circle cx="78" cy="155" r="3" fill="#0c4a52"/>
+      <path d="M60 168 Q70 165 78 168" fill="none" stroke="#0c4a52" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <g opacity="0.7">
+      <ellipse cx="600" cy="280" rx="24" ry="13" fill="#5fc4d0"/>
+      <path d="M624 280 L642 270 L640 280 L642 290 Z" fill="#5fc4d0"/>
+      <circle cx="591" cy="276" r="2.2" fill="#0c4a52"/>
+    </g>
+    <g fill="#3aa8b6" opacity="0.55">
+      <ellipse cx="40" cy="870" rx="60" ry="22"/>
+      <ellipse cx="180" cy="900" rx="50" ry="18"/>
+      <ellipse cx="560" cy="880" rx="70" ry="24"/>
+    </g>
+    <g stroke="#2c7a85" stroke-width="4" fill="none" opacity="0.5" stroke-linecap="round">
+      <path d="M50 900 Q60 850 50 800 Q40 760 55 720"/>
+      <path d="M620 920 Q635 870 622 820 Q612 780 628 740"/>
+      <path d="M150 940 Q160 900 148 860"/>
+    </g>
+    <circle cx="620" cy="600" r="10" fill="#cdeef3" opacity="0.85"/>
+    <circle cx="640" cy="630" r="6" fill="#cdeef3" opacity="0.8"/>
+    <circle cx="600" cy="650" r="4" fill="#cdeef3" opacity="0.75"/>
+    <circle cx="60" cy="500" r="8" fill="#cdeef3" opacity="0.8"/>
+    <circle cx="42" cy="530" r="5" fill="#cdeef3" opacity="0.7"/>
+    <path d="M380 420 Q400 400 420 420 Q400 440 380 420 Z" fill="#bfe9ee" opacity="0.7"/>
+    <path d="M260 480 Q280 460 300 480 Q280 500 260 480 Z" fill="#bfe9ee" opacity="0.6"/>
+    <ellipse cx="350" cy="60" rx="44" ry="10" fill="#ffffff" opacity="0.7"/>
+    <ellipse cx="500" cy="100" rx="34" ry="8" fill="#ffffff" opacity="0.6"/>
+  </svg>
+  <svg class="bg-deco bg-deco-space" viewBox="0 0 700 1027" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="spaceGrad3" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#f5f2fe"/>
+        <stop offset="50%" stop-color="#e6dcfb"/>
+        <stop offset="100%" stop-color="#d2c2f5"/>
+      </linearGradient>
+    </defs>
+    <rect x="0" y="0" width="700" height="1027" fill="url(#spaceGrad3)"/>
+    <g fill="#c4b3f0">
+      <circle cx="40" cy="60" r="2.4"/><circle cx="90" cy="40" r="1.6"/><circle cx="140" cy="90" r="2"/>
+      <circle cx="660" cy="90" r="2.6"/><circle cx="620" cy="150" r="1.6"/><circle cx="660" cy="230" r="2.2"/>
+      <circle cx="30" cy="200" r="1.6"/><circle cx="80" cy="260" r="2"/>
+      <circle cx="40" cy="880" r="2.4"/><circle cx="80" cy="920" r="1.6"/><circle cx="140" cy="950" r="2"/>
+      <circle cx="660" cy="850" r="2.4"/><circle cx="630" cy="940" r="1.8"/><circle cx="590" cy="900" r="2"/>
+      <circle cx="20" cy="500" r="1.8"/><circle cx="670" cy="520" r="2"/>
+      <circle cx="350" cy="40" r="1.6"/><circle cx="350" cy="950" r="1.6"/>
+    </g>
+    <g fill="#a78bfa">
+      <path d="M58 56 L63 58 L58 60 L56 65 L54 60 L49 58 L54 56 L56 51 Z"/>
+      <path d="M598 870 L603 872 L598 874 L596 879 L594 874 L589 872 L594 870 L596 865 Z"/>
+      <path d="M120 110 L123 112 L120 113 L119 116 L117 113 L114 112 L117 111 L119 108 Z"/>
+      <path d="M610 280 L613 282 L610 283 L609 286 L607 283 L604 282 L607 281 L609 278 Z"/>
+    </g>
+    <circle cx="600" cy="160" r="46" fill="#9783c9" opacity="0.55"/>
+    <ellipse cx="600" cy="160" rx="74" ry="16" fill="none" stroke="#ddd2fb" stroke-width="3" opacity="0.8"/>
+    <circle cx="90" cy="820" r="32" fill="#7c5fd6" opacity="0.4"/>
+    <circle cx="90" cy="820" r="32" fill="none" stroke="#c4b3f0" stroke-width="2" opacity="0.6"/>
+    <g opacity="0.75">
+      <path d="M250 700 L262 660 L274 700 L262 692 Z" fill="#ddd2fb"/>
+      <ellipse cx="262" cy="704" rx="9" ry="5" fill="#a78bfa"/>
+      <path d="M252 700 L246 716 L256 706 Z" fill="#a78bfa"/>
+      <path d="M272 700 L278 716 L268 706 Z" fill="#a78bfa"/>
+    </g>
+    <path d="M40 600 Q200 560 250 700" fill="none" stroke="#ddd2fb" stroke-width="2" stroke-dasharray="4 6" opacity="0.6"/>
+  </svg>
+  <svg class="bg-deco bg-deco-dino" viewBox="0 0 700 1027" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="dinoGrad3" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#f3f9ee"/>
+        <stop offset="55%" stop-color="#e0eed4"/>
+        <stop offset="100%" stop-color="#c4dfb1"/>
+      </linearGradient>
+    </defs>
+    <rect x="0" y="0" width="700" height="1027" fill="url(#dinoGrad3)"/>
+    <path d="M0 1027 Q120 940 240 1027 T480 1027 T720 1027 L720 1027 L0 1027 Z" fill="#a3cb84" opacity="0.7"/>
+    <g opacity="0.65" fill="#6fa050">
+      <path d="M60 1027 L50 880 L66 920 L60 850 L78 900 L70 1027 Z"/>
+      <path d="M630 1027 L618 860 L638 910 L630 820 L654 880 L646 1027 Z"/>
+      <path d="M340 1027 L330 920 L348 950 L342 1027 Z"/>
+    </g>
+    <g fill="#cfe4bd" opacity="0.6">
+      <ellipse cx="40" cy="900" rx="9" ry="6"/><ellipse cx="48" cy="912" rx="5" ry="3.5"/>
+      <ellipse cx="58" cy="905" rx="5" ry="3.5"/><ellipse cx="30" cy="908" rx="5" ry="3.5"/>
+      <ellipse cx="150" cy="935" rx="9" ry="6"/><ellipse cx="158" cy="947" rx="5" ry="3.5"/>
+      <ellipse cx="168" cy="940" rx="5" ry="3.5"/><ellipse cx="140" cy="943" rx="5" ry="3.5"/>
+      <ellipse cx="630" cy="60" rx="9" ry="6"/><ellipse cx="638" cy="72" rx="5" ry="3.5"/>
+      <ellipse cx="648" cy="65" rx="5" ry="3.5"/><ellipse cx="620" cy="68" rx="5" ry="3.5"/>
+    </g>
+    <g opacity="0.6">
+      <ellipse cx="600" cy="500" rx="20" ry="10" fill="#7cb45f"/>
+      <circle cx="612" cy="494" r="7" fill="#7cb45f"/>
+      <circle cx="615" cy="491" r="1.6" fill="#2c4a1e"/>
+      <path d="M580 506 Q570 510 562 518" fill="none" stroke="#5e9344" stroke-width="3" stroke-linecap="round"/>
+    </g>
+    <g opacity="0.5">
+      <ellipse cx="90" cy="350" rx="16" ry="8" fill="#7cb45f"/>
+      <circle cx="100" cy="346" r="5.5" fill="#7cb45f"/>
+    </g>
+    <circle cx="650" cy="900" r="4" fill="#a3cb84" opacity="0.5"/>
+    <circle cx="20" cy="60" r="4" fill="#a3cb84" opacity="0.5"/>
+    <path d="M450 200 Q480 170 470 130" fill="none" stroke="#5e9344" stroke-width="4" opacity="0.4" stroke-linecap="round"/>
+    <ellipse cx="465" cy="120" rx="14" ry="9" fill="#7cb45f" opacity="0.4"/>
+  </svg>
+  <div class="topband">
+    <div class="chno">1</div>
+    <div class="titles">
+      <div class="ch-label">第1章　かけ算のきまり</div>
+      <div class="ch-title">確認問題（まとめ）</div>
+    </div>
+    <div class="pageno">小3 算数</div>
+  </div>
+
+  <div class="qgroup">
+    <div class="qtitle"><span class="qnum">1</span>次の計算をしましょう。</div>
+    <div class="qrow">
+      <div class="qitem"><span class="qmark">(1)</span>7 × 0</div>
+      <div class="qitem"><span class="qmark">(2)</span>0 × 6</div>
+      <div class="qitem"><span class="qmark">(3)</span>0 × 0</div>
+      <div class="qitem"><span class="qmark">(4)</span>9 × 0</div>
+    </div>
+    <div class="answer-line">(1)<div class="bracket"></div>(2)<div class="bracket"></div></div>
+    <div class="answer-line">(3)<div class="bracket"></div>(4)<div class="bracket"></div></div>
+  </div>
+
+  <div class="qgroup">
+    <div class="qtitle"><span class="qnum">2</span>□にあてはまる数を書きましょう。</div>
+    <div class="qrow">
+      <div class="qitem"><span class="qmark">(1)</span>5 × 7 ＝ 5 × 6 ＋ □</div>
+      <div class="qitem"><span class="qmark">(2)</span>8 × 5 ＝ 8 × 6 － □</div>
+      <div class="qitem"><span class="qmark">(3)</span>3 × 8 ＝ 8 × □</div>
+      <div class="qitem"><span class="qmark">(4)</span>6 × 9 ＝ 6 × 5 ＋ 6 × □</div>
+      <div class="qitem"><span class="qmark">(5)</span>4 × 7 ＝ □ × 4</div>
+      <div class="qitem"><span class="qmark">(6)</span>8 × 6 ＝ 2 × 6 ＋ □ × 6</div>
+    </div>
+    <div class="answer-line">(1)<div class="bracket"></div>(2)<div class="bracket"></div></div>
+    <div class="answer-line">(3)<div class="bracket"></div>(4)<div class="bracket"></div></div>
+    <div class="answer-line">(5)<div class="bracket"></div>(6)<div class="bracket"></div></div>
+  </div>
+
+  <div class="qgroup">
+    <div class="qtitle"><span class="qnum">3</span>□にあてはまる数を書きましょう。</div>
+    <div class="qrow">
+      <div class="qitem"><span class="qmark">(1)</span>3 × □ ＝ 21</div>
+      <div class="qitem"><span class="qmark">(2)</span>□ × 6 ＝ 48</div>
+      <div class="qitem"><span class="qmark">(3)</span>7 × □ ＝ 63</div>
+      <div class="qitem"><span class="qmark">(4)</span>□ × 9 ＝ 27</div>
+    </div>
+    <div class="answer-line">(1)<div class="bracket"></div>(2)<div class="bracket"></div></div>
+    <div class="answer-line">(3)<div class="bracket"></div>(4)<div class="bracket"></div></div>
+  </div>
+
+  <div class="qgroup">
+    <div class="qtitle"><span class="qnum">4</span>次の計算をしましょう。</div>
+    <div class="qrow">
+      <div class="qitem"><span class="qmark">(1)</span>5 × 10</div>
+      <div class="qitem"><span class="qmark">(2)</span>10 × 9</div>
+      <div class="qitem"><span class="qmark">(3)</span>10 × 4</div>
+      <div class="qitem"><span class="qmark">(4)</span>8 × 10</div>
+    </div>
+    <div class="answer-line">(1)<div class="bracket"></div>(2)<div class="bracket"></div></div>
+    <div class="answer-line">(3)<div class="bracket"></div>(4)<div class="bracket"></div></div>
+  </div>
+
+  <div class="footer-note">Pandora Project ｜ 算数テキスト試作版</div>
+</div>
+
+<!-- ============ PAGE 4：練習問題まとめ ============ -->
+<div class="page">
+  <div class="mascot-svg">
+    <svg class="mascot-default" viewBox="0 0 64 64"><circle cx="32" cy="32" r="26" fill="var(--c2)" opacity="0.15"/><path d="M14 38 Q20 30 26 38 Q32 30 38 38 Q44 30 50 38" fill="none" stroke="var(--c2)" stroke-width="3" stroke-linecap="round"/><circle cx="32" cy="24" r="6" fill="var(--c1)"/></svg>
+    <svg class="mascot-ocean" viewBox="0 0 64 64">
+      <ellipse cx="30" cy="34" rx="20" ry="13" fill="#4fc3d1"/>
+      <path d="M48 30 L60 22 L58 34 L60 46 L48 38 Z" fill="#3aa8b6"/>
+      <path d="M22 22 Q26 10 34 16 Q30 22 22 22 Z" fill="#5fd0dd"/>
+      <circle cx="20" cy="30" r="2.4" fill="#0c4a52"/>
+      <path d="M10 36 Q14 33 18 36" fill="none" stroke="#0c4a52" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M30 46 Q34 50 38 46" fill="none" stroke="#2c7a85" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <svg class="mascot-space" viewBox="0 0 64 64">
+      <circle cx="32" cy="30" r="17" fill="#c9bdf4"/>
+      <ellipse cx="32" cy="34" rx="22" ry="6" fill="none" stroke="#7c5fd6" stroke-width="2.5"/>
+      <circle cx="26" cy="27" r="2.6" fill="#3a2a6e"/>
+      <circle cx="38" cy="27" r="2.6" fill="#3a2a6e"/>
+      <path d="M26 36 Q32 40 38 36" fill="none" stroke="#3a2a6e" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="14" cy="14" r="1.6" fill="#a78bfa"/>
+      <circle cx="52" cy="18" r="1.2" fill="#a78bfa"/>
+      <circle cx="50" cy="48" r="1.8" fill="#a78bfa"/>
+    </svg>
+    <svg class="mascot-dino" viewBox="0 0 64 64">
+      <ellipse cx="30" cy="38" rx="18" ry="14" fill="#7cb45f"/>
+      <circle cx="46" cy="26" r="11" fill="#7cb45f"/>
+      <path d="M40 16 L43 8 L46 16 Z" fill="#5e9344"/>
+      <path d="M46 16 L49 8 L52 16 Z" fill="#5e9344"/>
+      <circle cx="49" cy="24" r="2.2" fill="#2c4a1e"/>
+      <path d="M16 46 Q8 44 6 50" fill="none" stroke="#5e9344" stroke-width="4" stroke-linecap="round"/>
+      <path d="M40 22 Q44 24 42 28" fill="none" stroke="#3e6b2f" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <svg class="bg-deco bg-deco-ocean" viewBox="0 0 700 1027" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="oceanGrad4" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#eafcfd"/>
+        <stop offset="55%" stop-color="#cdf1f4"/>
+        <stop offset="100%" stop-color="#9fe1e8"/>
+      </linearGradient>
+    </defs>
+    <rect x="0" y="0" width="700" height="1027" fill="url(#oceanGrad4)"/>
+    <path d="M0 1027 Q60 950 120 1027 T240 1027 T360 1027 T480 1027 T600 1027 T720 1027 L720 1027 L0 1027 Z" fill="#7fd1de"/>
+    <path d="M0 940 Q60 900 120 940 T240 940 T360 940 T480 940 T600 940 T720 940 L720 1027 L0 1027 Z" fill="#9fe1e8"/>
+    <g opacity="0.85">
+      <ellipse cx="90" cy="160" rx="34" ry="18" fill="#5fc4d0"/>
+      <path d="M124 160 L150 145 L148 160 L150 175 Z" fill="#5fc4d0"/>
+      <circle cx="78" cy="155" r="3" fill="#0c4a52"/>
+      <path d="M60 168 Q70 165 78 168" fill="none" stroke="#0c4a52" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <g opacity="0.7">
+      <ellipse cx="600" cy="280" rx="24" ry="13" fill="#5fc4d0"/>
+      <path d="M624 280 L642 270 L640 280 L642 290 Z" fill="#5fc4d0"/>
+      <circle cx="591" cy="276" r="2.2" fill="#0c4a52"/>
+    </g>
+    <g fill="#3aa8b6" opacity="0.55">
+      <ellipse cx="40" cy="870" rx="60" ry="22"/>
+      <ellipse cx="180" cy="900" rx="50" ry="18"/>
+      <ellipse cx="560" cy="880" rx="70" ry="24"/>
+    </g>
+    <g stroke="#2c7a85" stroke-width="4" fill="none" opacity="0.5" stroke-linecap="round">
+      <path d="M50 900 Q60 850 50 800 Q40 760 55 720"/>
+      <path d="M620 920 Q635 870 622 820 Q612 780 628 740"/>
+      <path d="M150 940 Q160 900 148 860"/>
+    </g>
+    <circle cx="620" cy="600" r="10" fill="#cdeef3" opacity="0.85"/>
+    <circle cx="640" cy="630" r="6" fill="#cdeef3" opacity="0.8"/>
+    <circle cx="600" cy="650" r="4" fill="#cdeef3" opacity="0.75"/>
+    <circle cx="60" cy="500" r="8" fill="#cdeef3" opacity="0.8"/>
+    <circle cx="42" cy="530" r="5" fill="#cdeef3" opacity="0.7"/>
+    <path d="M380 420 Q400 400 420 420 Q400 440 380 420 Z" fill="#bfe9ee" opacity="0.7"/>
+    <path d="M260 480 Q280 460 300 480 Q280 500 260 480 Z" fill="#bfe9ee" opacity="0.6"/>
+    <ellipse cx="350" cy="60" rx="44" ry="10" fill="#ffffff" opacity="0.7"/>
+    <ellipse cx="500" cy="100" rx="34" ry="8" fill="#ffffff" opacity="0.6"/>
+  </svg>
+  <svg class="bg-deco bg-deco-space" viewBox="0 0 700 1027" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="spaceGrad4" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#f5f2fe"/>
+        <stop offset="50%" stop-color="#e6dcfb"/>
+        <stop offset="100%" stop-color="#d2c2f5"/>
+      </linearGradient>
+    </defs>
+    <rect x="0" y="0" width="700" height="1027" fill="url(#spaceGrad4)"/>
+    <g fill="#c4b3f0">
+      <circle cx="40" cy="60" r="2.4"/><circle cx="90" cy="40" r="1.6"/><circle cx="140" cy="90" r="2"/>
+      <circle cx="660" cy="90" r="2.6"/><circle cx="620" cy="150" r="1.6"/><circle cx="660" cy="230" r="2.2"/>
+      <circle cx="30" cy="200" r="1.6"/><circle cx="80" cy="260" r="2"/>
+      <circle cx="40" cy="880" r="2.4"/><circle cx="80" cy="920" r="1.6"/><circle cx="140" cy="950" r="2"/>
+      <circle cx="660" cy="850" r="2.4"/><circle cx="630" cy="940" r="1.8"/><circle cx="590" cy="900" r="2"/>
+      <circle cx="20" cy="500" r="1.8"/><circle cx="670" cy="520" r="2"/>
+      <circle cx="350" cy="40" r="1.6"/><circle cx="350" cy="950" r="1.6"/>
+    </g>
+    <g fill="#a78bfa">
+      <path d="M58 56 L63 58 L58 60 L56 65 L54 60 L49 58 L54 56 L56 51 Z"/>
+      <path d="M598 870 L603 872 L598 874 L596 879 L594 874 L589 872 L594 870 L596 865 Z"/>
+      <path d="M120 110 L123 112 L120 113 L119 116 L117 113 L114 112 L117 111 L119 108 Z"/>
+      <path d="M610 280 L613 282 L610 283 L609 286 L607 283 L604 282 L607 281 L609 278 Z"/>
+    </g>
+    <circle cx="600" cy="160" r="46" fill="#9783c9" opacity="0.55"/>
+    <ellipse cx="600" cy="160" rx="74" ry="16" fill="none" stroke="#ddd2fb" stroke-width="3" opacity="0.8"/>
+    <circle cx="90" cy="820" r="32" fill="#7c5fd6" opacity="0.4"/>
+    <circle cx="90" cy="820" r="32" fill="none" stroke="#c4b3f0" stroke-width="2" opacity="0.6"/>
+    <g opacity="0.75">
+      <path d="M250 700 L262 660 L274 700 L262 692 Z" fill="#ddd2fb"/>
+      <ellipse cx="262" cy="704" rx="9" ry="5" fill="#a78bfa"/>
+      <path d="M252 700 L246 716 L256 706 Z" fill="#a78bfa"/>
+      <path d="M272 700 L278 716 L268 706 Z" fill="#a78bfa"/>
+    </g>
+    <path d="M40 600 Q200 560 250 700" fill="none" stroke="#ddd2fb" stroke-width="2" stroke-dasharray="4 6" opacity="0.6"/>
+  </svg>
+  <svg class="bg-deco bg-deco-dino" viewBox="0 0 700 1027" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="dinoGrad4" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#f3f9ee"/>
+        <stop offset="55%" stop-color="#e0eed4"/>
+        <stop offset="100%" stop-color="#c4dfb1"/>
+      </linearGradient>
+    </defs>
+    <rect x="0" y="0" width="700" height="1027" fill="url(#dinoGrad4)"/>
+    <path d="M0 1027 Q120 940 240 1027 T480 1027 T720 1027 L720 1027 L0 1027 Z" fill="#a3cb84" opacity="0.7"/>
+    <g opacity="0.65" fill="#6fa050">
+      <path d="M60 1027 L50 880 L66 920 L60 850 L78 900 L70 1027 Z"/>
+      <path d="M630 1027 L618 860 L638 910 L630 820 L654 880 L646 1027 Z"/>
+      <path d="M340 1027 L330 920 L348 950 L342 1027 Z"/>
+    </g>
+    <g fill="#cfe4bd" opacity="0.6">
+      <ellipse cx="40" cy="900" rx="9" ry="6"/><ellipse cx="48" cy="912" rx="5" ry="3.5"/>
+      <ellipse cx="58" cy="905" rx="5" ry="3.5"/><ellipse cx="30" cy="908" rx="5" ry="3.5"/>
+      <ellipse cx="150" cy="935" rx="9" ry="6"/><ellipse cx="158" cy="947" rx="5" ry="3.5"/>
+      <ellipse cx="168" cy="940" rx="5" ry="3.5"/><ellipse cx="140" cy="943" rx="5" ry="3.5"/>
+      <ellipse cx="630" cy="60" rx="9" ry="6"/><ellipse cx="638" cy="72" rx="5" ry="3.5"/>
+      <ellipse cx="648" cy="65" rx="5" ry="3.5"/><ellipse cx="620" cy="68" rx="5" ry="3.5"/>
+    </g>
+    <g opacity="0.6">
+      <ellipse cx="600" cy="500" rx="20" ry="10" fill="#7cb45f"/>
+      <circle cx="612" cy="494" r="7" fill="#7cb45f"/>
+      <circle cx="615" cy="491" r="1.6" fill="#2c4a1e"/>
+      <path d="M580 506 Q570 510 562 518" fill="none" stroke="#5e9344" stroke-width="3" stroke-linecap="round"/>
+    </g>
+    <g opacity="0.5">
+      <ellipse cx="90" cy="350" rx="16" ry="8" fill="#7cb45f"/>
+      <circle cx="100" cy="346" r="5.5" fill="#7cb45f"/>
+    </g>
+    <circle cx="650" cy="900" r="4" fill="#a3cb84" opacity="0.5"/>
+    <circle cx="20" cy="60" r="4" fill="#a3cb84" opacity="0.5"/>
+    <path d="M450 200 Q480 170 470 130" fill="none" stroke="#5e9344" stroke-width="4" opacity="0.4" stroke-linecap="round"/>
+    <ellipse cx="465" cy="120" rx="14" ry="9" fill="#7cb45f" opacity="0.4"/>
+  </svg>
+  <div class="topband">
+    <div class="chno">1</div>
+    <div class="titles">
+      <div class="ch-label">第1章　かけ算のきまり</div>
+      <div class="ch-title">練習問題（まとめ）</div>
+    </div>
+    <div class="pageno">小3 算数</div>
+  </div>
+
+  <div class="qgroup">
+    <div class="qtitle"><span class="qnum">1</span>てん取りゲームをしたら、右の表のようになりました。とく点をもとめましょう。</div>
+    <div style="font-size:12.5px; padding-left:8px; margin-bottom:8px">
+      6点のところに 0こ、4点のところに 5こ、0点のところに 8こ入りました。それぞれのとく点をもとめる式を書いて、答えをもとめましょう。
+    </div>
+    <div class="answer-line">6点<div class="bracket"></div></div>
+    <div class="answer-line">4点<div class="bracket"></div></div>
+    <div class="answer-line">0点<div class="bracket"></div></div>
+  </div>
+
+  <div class="qgroup">
+    <div class="qtitle"><span class="qnum">2</span>次の計算をしましょう。</div>
+    <div class="qrow">
+      <div class="qitem"><span class="qmark">(1)</span>4 × 0</div>
+      <div class="qitem"><span class="qmark">(2)</span>0 × 0</div>
+      <div class="qitem"><span class="qmark">(3)</span>10 × 10</div>
+      <div class="qitem"><span class="qmark">(4)</span>0 × 10</div>
+    </div>
+    <div class="answer-line">(1)<div class="bracket"></div>(2)<div class="bracket"></div></div>
+    <div class="answer-line">(3)<div class="bracket"></div>(4)<div class="bracket"></div></div>
+  </div>
+
+  <div class="qgroup">
+    <div class="qtitle"><span class="qnum">3</span>□にあてはまる数を書きましょう。</div>
+    <div class="qrow">
+      <div class="qitem"><span class="qmark">(1)</span>8 × 4 ＝ 8 × 3 ＋ □</div>
+      <div class="qitem"><span class="qmark">(2)</span>6 × 8 ＝ 6 × 9 － □</div>
+      <div class="qitem"><span class="qmark">(3)</span>10 × □ ＝ 4 × 10</div>
+      <div class="qitem"><span class="qmark">(4)</span>9 × □ ＝ 9 × 4 ＋ 9 × 3</div>
+      <div class="qitem"><span class="qmark">(5)</span>□ × 8 ＝ 56</div>
+      <div class="qitem"><span class="qmark">(6)</span>□ × 6 ＝ 0</div>
+    </div>
+    <div class="answer-line">(1)<div class="bracket"></div>(2)<div class="bracket"></div></div>
+    <div class="answer-line">(3)<div class="bracket"></div>(4)<div class="bracket"></div></div>
+    <div class="answer-line">(5)<div class="bracket"></div>(6)<div class="bracket"></div></div>
+  </div>
+
+  <div class="qgroup">
+    <div class="qtitle"><span class="qnum">4</span>次の表は、かけ算の表の一部です。●でかくれた数はいくつですか。</div>
+    <table style="width:100%; border-collapse:collapse; font-size:13px; margin-top:6px">
+      <tr>
+        <td style="border:1px solid var(--c-line); padding:8px; text-align:center">15</td>
+        <td style="border:1px solid var(--c-line); padding:8px; text-align:center">20</td>
+        <td style="border:1px solid var(--c-line); padding:8px; text-align:center">25</td>
+        <td style="border:1px solid var(--c-line); padding:8px; text-align:center">30</td>
+      </tr>
+      <tr>
+        <td style="border:1px solid var(--c-line); padding:8px; text-align:center">18</td>
+        <td style="border:1px solid var(--c-line); padding:8px; text-align:center">24</td>
+        <td style="border:1px solid var(--c-line); padding:8px; text-align:center">30</td>
+        <td style="border:1px solid var(--c-line); padding:8px; text-align:center; background:var(--table-hl)">●</td>
+      </tr>
+      <tr>
+        <td style="border:1px solid var(--c-line); padding:8px; text-align:center">21</td>
+        <td style="border:1px solid var(--c-line); padding:8px; text-align:center">28</td>
+        <td style="border:1px solid var(--c-line); padding:8px; text-align:center">35</td>
+        <td style="border:1px solid var(--c-line); padding:8px; text-align:center">42</td>
+      </tr>
+    </table>
+    <div class="answer-line" style="margin-top:10px">答え<div class="bracket" style="max-width:120px"></div></div>
+  </div>
+
+  <div class="footer-note">Pandora Project ｜ 算数テキスト試作版</div>
+</div>
+
+<script>
+  function setTheme(name) {
+    document.body.className = name === 'default' ? '' : 'theme-' + name;
+    document.querySelectorAll('.theme-switcher button').forEach(function(b){
+      b.classList.toggle('active', b.dataset.t === name);
+    });
+  }
+  setTheme('default');
+</script>
+
+</body>
+</html>

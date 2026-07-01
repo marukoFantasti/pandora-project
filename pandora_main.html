@@ -1,0 +1,2705 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pandora1 — 問題バンク v1781788380</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f5f7;--surface:#fff;--border:#d2d2d7;--border2:#e5e5ea;--border3:#f2f2f2;
+  --text:#1d1d1f;--text2:#6e6e73;--text3:#aeaeb2;
+  --accent:#cd4f7c;--accent-bg:#fbeaf0;
+  --green-bg:#e2efda;--green-text:#27500a;
+  --amber-bg:#faeeda;--amber-text:#633806;
+  --red-bg:#fce4d6;--red-text:#8b0000;
+  --hover:#f5f5f7;--acc:#f5f5f7;
+  --input-bg:#f5f5f7;--input-text:#1d1d1f;
+  --purple:#a78bfa;
+}
+body.dark{
+  --bg:#1c1c1e;--surface:#2c2c2e;--border:#3a3a3c;--border2:#3a3a3c;--border3:#3a3a3c;
+  --text:#f2f2f7;--text2:#aeaeb2;--text3:#636366;
+  --accent:#e87aa0;--accent-bg:#3a1a2a;
+  --green-bg:#1a3a1a;--green-text:#7dd87d;
+  --amber-bg:#3a2a00;--amber-text:#ffcc66;
+  --red-bg:#3a1a1a;--red-text:#ff6b6b;
+  --hover:#2c2c2e;--acc:#2c2c2e;
+  --input-bg:#3a3a3c;--input-text:#f2f2f7;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans",sans-serif;background:var(--bg);color:var(--text);font-size:13px}
+.topbar{display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:10}
+.logo{font-size:16px;font-weight:700;letter-spacing:-.5px}
+.logo span{color:var(--accent)}
+.logo-sub{font-size:11px;color:var(--text3);margin-left:2px}
+.ctrl{display:flex;gap:8px;margin-left:auto}
+.cbtn{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:transparent;cursor:pointer;font-size:12px;color:var(--text2)}
+.cbtn:hover{background:var(--hover)}
+.workspace{display:grid;grid-template-columns:180px 0.4fr 1fr;height:calc(100vh - 49px);overflow:hidden}.workspace>*{overflow-y:auto;height:100%;}
+
+/* 学年セレクター */
+.grade-sel{padding:8px 8px 4px;border-bottom:1px solid var(--border2);margin-bottom:4px}
+.gs-group{display:flex;gap:4px;margin-bottom:6px}
+.gs-btn{flex:1;padding:4px 0;border-radius:6px;border:1px solid var(--border);background:transparent;cursor:pointer;font-size:11px;font-weight:600;color:var(--text3);font-family:inherit}
+.gs-btn:hover{background:var(--hover);color:var(--text2)}
+.gs-btn.gs-on{background:var(--accent-bg);color:var(--accent);border-color:transparent}
+.gs-years{display:flex;gap:4px}
+.gy-btn{flex:1;padding:3px 0;border-radius:6px;border:1px solid var(--border);background:transparent;cursor:pointer;font-size:12px;font-weight:700;color:var(--text2);font-family:inherit}
+.gy-btn:hover{background:var(--hover)}
+.gy-btn.gy-on{background:var(--accent);color:#fff;border-color:transparent}
+body.imode .gs-btn{font-size:15px;padding:6px}
+body.imode .gy-btn{font-size:17px;padding:5px}
+
+/* サイドバー */
+.sb{border-right:1px solid var(--border);background:var(--surface);overflow-y:auto;padding:8px 0}
+.sb-label{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.06em;padding:6px 12px 4px;text-transform:uppercase}
+.type-row{display:flex;align-items:center;gap:0;padding:6px 12px;cursor:pointer;font-size:12px;color:var(--text2)}
+.type-row:hover{background:var(--hover)}
+.type-row.on{display:flex;align-items:center;gap:0;color:var(--accent);font-weight:600}.type-row.on .dot{background:var(--accent)}.type-row.on .dot-r{background:var(--accent)}.type-row.on .dot-g{background:var(--accent)}.type-row.on .dot-a{background:var(--accent)}.type-row.on .dot-js{background:var(--accent)}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-right:6px;background:var(--text3)}
+.dot-r{display:inline-block;width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-right:6px;background:#e91e8c}.dot-g{display:inline-block;width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-right:6px;background:#4caf50}.dot-a{display:inline-block;width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-right:6px;background:#ff6d00}.dot-js{display:inline-block;width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-right:6px;background:#2e7d32}
+.divider{height:1px;background:var(--border2);margin:6px 12px}
+.ch-label{font-size:10px;font-weight:700;color:var(--text3);padding:6px 12px 2px}
+.unit-item{padding:6px 12px;cursor:pointer;font-size:12px;color:var(--text2);border-left:2px solid transparent;line-height:1.4}
+.unit-item:hover{background:var(--hover)}
+.unit-item.on{background:var(--accent-bg);color:var(--accent);border-left-color:var(--accent);font-weight:600}
+/* 参考問題パネル */
+.ref-panel{border-right:1px solid var(--border);background:var(--surface);display:grid;grid-template-rows:auto 1fr 30%;overflow:hidden;height:100%}
+.panel-hdr{padding:9px 14px;border-bottom:1px solid var(--border2);background:var(--acc);font-size:12px;font-weight:700;color:var(--text);flex-shrink:0}
+.ref-list{overflow-y:auto;border-bottom:1px solid var(--border2)}
+.ref-item{padding:9px 14px;cursor:pointer;border-bottom:1px solid var(--border3);border-left:2px solid transparent}
+.ref-item:hover{background:var(--hover)}
+.ref-item.on{background:var(--accent-bg);border-left-color:var(--accent)}
+.ref-badge{display:inline-block;font-size:10px;padding:1px 6px;border-radius:10px;margin-bottom:3px;font-weight:600}
+.b-ex{background:var(--accent-bg);color:var(--accent)}
+.b-cf{background:var(--green-bg);color:var(--green-text)}
+.b-pr{background:var(--amber-bg);color:var(--amber-text)}
+.b-js{background:#e8f5e9;color:#2e7d32}
+.ref-text-preview{font-size:12px;color:var(--text);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ref-item.on .ref-text-preview{color:var(--accent)}
+
+
+.back-btn{background:none;border:none;font-size:11px;color:var(--text2);cursor:pointer;padding:0;margin-bottom:10px;font-family:inherit}
+.back-btn:hover{color:var(--accent)}
+.ref-ptext{font-size:13px;color:var(--text);line-height:1.8;white-space:pre-wrap;margin-bottom:10px}
+.ref-ans-label{font-size:10px;font-weight:700;color:var(--text3);margin-bottom:4px;letter-spacing:.06em}
+.ref-ans{background:var(--acc);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--text2);white-space:pre-wrap;line-height:1.7}
+/* オリジナル編集 */
+.edit-panel{overflow-y:auto;background:var(--bg);height:100%}
+.edit-inner{padding:14px}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:300px;color:var(--text3);gap:8px}
+.empty-icon{font-size:28px;opacity:.3}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px}
+.card-title{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.ai-dot{width:6px;height:6px;border-radius:50%;background:var(--purple);animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+.ai-box{background:var(--acc);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;font-size:13px;color:var(--text2);line-height:1.8;min-height:80px;white-space:pre-wrap;margin-bottom:8px}
+.ai-btns{display:flex;gap:6px;flex-wrap:wrap}
+.ai-btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:11px;color:var(--text2);font-family:inherit}
+.ai-btn:hover{border-color:var(--purple);color:var(--purple)}
+.copy-btn{display:block;width:100%;margin-top:6px;padding:4px;border-radius:6px;border:1px dashed var(--border);background:transparent;font-size:11px;color:var(--text3);cursor:pointer;font-family:inherit}
+.copy-btn:hover{border-color:var(--accent);color:var(--accent)}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.flabel{font-size:11px;color:var(--text2);font-weight:500}
+.req{color:#e05;font-size:10px}
+.field textarea,.field input,.field select{padding:7px 10px;border-radius:8px;border:1px solid var(--border);background:var(--input-bg);color:var(--input-text);font-size:13px;font-family:inherit}
+.field textarea:focus,.field input:focus,.field select:focus{outline:none;border-color:var(--accent)}
+.field textarea{resize:vertical;min-height:68px;line-height:1.7}
+.ans-row{display:flex;gap:8px}
+.ans-row textarea{flex:1}
+.calc-btn{padding:7px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:11px;color:var(--text2);white-space:nowrap;font-family:inherit;flex-shrink:0}
+.calc-btn:hover{border-color:var(--green-text);color:var(--green-text)}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{padding:4px 10px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:11px;cursor:pointer;font-family:inherit}
+.tag:hover{border-color:var(--accent);color:var(--accent)}
+.tag.on{background:var(--accent-bg);color:var(--accent);border-color:transparent;font-weight:600}
+/* AI提案タグ */
+.tag.ai-sug{border-color:var(--purple);color:var(--purple);background:rgba(167,139,250,.08)}
+.tag.ai-sug.on{background:rgba(167,139,250,.2);color:var(--purple);border-color:var(--purple);font-weight:600}
+/* 承認/却下ボタン */
+.btn-approve{background:#27ae60;color:#fff;border:none;padding:8px 20px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700;font-family:inherit}
+.btn-approve:hover{background:#219d55}
+.btn-reject{background:var(--acc);color:var(--text2);border:1px solid var(--border);padding:8px 20px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700;font-family:inherit}
+.btn-reject:hover{border-color:#e05;color:#e05}
+.ai-tag-section{background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.25);border-radius:8px;padding:10px 12px;margin-bottom:10px}
+.ai-tag-header{display:flex;align-items:center;gap:6px;margin-bottom:8px;font-size:11px;font-weight:700;color:var(--purple)}
+.tag-section-label{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.06em;margin-bottom:6px;margin-top:8px}
+.reject-area{margin-top:8px;display:none}
+.reject-area textarea{width:100%;padding:7px 10px;border-radius:8px;border:1px solid var(--border);background:var(--input-bg);color:var(--input-text);font-size:12px;font-family:inherit;resize:vertical;min-height:52px}
+.reject-area textarea:focus{outline:none;border-color:#e05}
+.card-desc{font-size:11px;color:var(--text3);margin-bottom:10px}
+.ai-tag-box-inner{font-size:12px;color:var(--text3);min-height:40px;line-height:1.7}
+.ai-tag-reason-inner{font-size:11px;color:var(--purple);background:rgba(167,139,250,.08);border-radius:6px;padding:8px;margin-top:6px;line-height:1.6}
+body.imode .card-desc{font-size:16px!important}
+body.imode .ai-tag-header{font-size:16px!important}
+body.imode .ai-tag-box-inner{font-size:16px!important;min-height:60px!important}
+body.imode .ai-tag-reason-inner{font-size:15px!important}
+body.imode .ai-tag-section{padding:14px}
+body.imode #btn-ai-solve{font-size:16px;padding:10px 20px}
+body.imode #ai-solve-box{font-size:16px;line-height:2;max-height:300px}
+body.imode #tv-ok,body.imode #tv-fix,body.imode #tv-skip{font-size:16px;padding:8px 18px}
+body.imode #f-validation-note,body.imode #f-reject{font-size:16px;min-height:80px}
+.btn-row{display:flex;gap:8px;margin-top:4px}
+.btn{padding:8px 20px;border-radius:8px;border:none;cursor:pointer;font-size:12px;font-weight:700;font-family:inherit}
+.btn-p{background:var(--accent);color:#fff}
+.btn-s{background:var(--acc);color:var(--text2);border:1px solid var(--border)}
+.msg{padding:7px 12px;border-radius:8px;font-size:12px;margin-bottom:8px}
+.msg-ok{background:var(--green-bg);color:var(--green-text)}
+.msg-err{background:var(--red-bg);color:var(--red-text)}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+/* imode */
+body.imode .unit-item{font-size:22px;padding:9px 14px}
+body.imode .type-row{font-size:20px;padding:8px 14px}
+body.imode .ref-text-preview{font-size:22px}
+body.imode .ref-ptext{font-size:26px}
+body.imode .ref-ans{font-size:24px}
+body.imode .ai-box{font-size:24px}
+body.imode .field textarea,body.imode .field input,body.imode .field select{font-size:22px}
+body.imode .flabel{font-size:18px}
+body.imode .tag{font-size:16px;padding:6px 14px}
+body.imode .btn{font-size:20px;padding:12px 24px}
+
+*::-webkit-scrollbar{width:4px}
+*::-webkit-scrollbar-thumb{background:#ddd;border-radius:4px}
+
+.ch-row{display:flex;align-items:center;gap:4px;padding:5px 12px;cursor:pointer;font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.04em;user-select:none}
+.ch-row:hover,.ch-row.open{color:var(--text2)}
+.ch-arr{font-size:10px;width:10px;flex-shrink:0}
+#unit-list .unit-item{padding-left:22px}
+/* ======== I-mode ======== */
+/* サイドバー */
+body.imode .type-row{font-size:20px;padding:8px 14px}
+body.imode .dot{width:10px;height:10px}
+body.imode .ch-row{font-size:18px;padding:8px 14px}
+body.imode .ch-arr{font-size:14px}
+body.imode .unit-item{font-size:20px;padding:9px 14px 9px 26px}
+body.imode .sb-label{font-size:14px}
+/* 参考問題パネル */
+body.imode .ref-badge{font-size:14px;padding:3px 10px}
+body.imode .ref-text-preview{font-size:20px;line-height:1.6}
+body.imode .ref-item{padding:12px 14px}
+body.imode .ref-ptext{font-size:24px;line-height:2}
+body.imode .ref-ans{font-size:22px;line-height:1.9}
+body.imode .ref-ans-label{font-size:14px}
+body.imode #fig-toggle{font-size:18px!important;padding:6px 16px!important}
+body.imode .field .flabel span{font-size:16px!important}
+/* メイン編集エリア */
+body.imode .card-title{font-size:15px}
+body.imode .ai-box{font-size:22px;min-height:100px}
+body.imode .ai-btn{font-size:16px;padding:7px 16px}
+body.imode .copy-btn{font-size:15px;padding:7px}
+body.imode .flabel{font-size:18px}
+body.imode .req{font-size:14px}
+body.imode #f-text{font-size:22px;min-height:120px}
+body.imode #f-ans{font-size:22px;min-height:80px}
+body.imode .calc-btn{font-size:16px;padding:10px 14px}
+body.imode .field select{font-size:18px;padding:9px 12px}
+body.imode .grid3{grid-template-columns:1fr 1fr;gap:10px}
+body.imode .tag{font-size:16px;padding:6px 14px}
+body.imode .btn{font-size:20px;padding:14px 28px}
+body.imode .msg-ok,body.imode .msg-err{font-size:18px}
+body.imode .workspace{grid-template-columns:260px 0.7fr 2fr}
+body.imode .panel-hdr{font-size:16px;padding:12px 16px}
+/* AIタグ提案エリア imode */
+body.imode .ai-tag-section{padding:16px!important;font-size:16px!important}
+body.imode .ai-tag-header{font-size:15px!important}
+body.imode .tag-section-label{font-size:14px!important}
+body.imode #ai-tag-box{font-size:16px!important;min-height:60px!important}
+body.imode #ai-tag-reason{font-size:15px!important}
+body.imode .ai-tag-section .ai-btn{font-size:16px!important;padding:10px 20px!important}
+body.imode #btn-ai-why{font-size:16px!important;padding:10px 20px!important}
+body.imode #btn-ai-tags{font-size:16px!important;padding:10px 20px!important}
+/* タグ検証カード imode */
+body.imode #btn-ai-solve{font-size:16px!important;padding:10px 20px!important}
+body.imode #ai-solve-box{font-size:16px!important;line-height:2!important;max-height:300px!important}
+body.imode #tv-ok,body.imode #tv-fix,body.imode #tv-skip{font-size:16px!important;padding:8px 18px!important}
+body.imode #f-validation-note,body.imode #f-reject{font-size:16px!important;min-height:80px!important}
+body.imode .tag-section-label+.tags .tag{font-size:16px!important;padding:6px 14px!important}
+
+
+/* ======== スプラッシュ ======== */
+#splash{position:fixed;inset:0;background:#0a0a0f;z-index:200;overflow:hidden;cursor:pointer}
+#sp-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#sp-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:2;pointer-events:none}
+#sp-title{font-family:'Courier New',monospace;font-size:52px;font-weight:700;letter-spacing:6px;opacity:0;transition:opacity 5s ease-in;white-space:nowrap}
+#sp-title .sp-p{color:#a78bfa}
+#sp-title .sp-one{color:#cd4f7c}
+#sp-title.show{opacity:1}
+#sp-sub1{font-family:'Courier New',monospace;font-size:24px;letter-spacing:5px;color:#e0e0e0;margin-top:28px;opacity:0;transition:opacity 1.2s;min-height:36px}
+#sp-sub3{font-family:'Courier New',monospace;font-size:22px;font-weight:600;letter-spacing:5px;color:#a78bfa;margin-top:12px;opacity:0;transition:opacity 1.2s;min-height:32px}
+.sp-cur{display:inline-block;width:2px;height:1em;background:currentColor;vertical-align:middle;animation:sp-blink .6s step-end infinite}
+@keyframes sp-blink{50%{opacity:0}}
+#sp-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:0;height:0;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95) 0%,rgba(205,79,124,.4) 40%,transparent 70%);pointer-events:none;z-index:3;opacity:0}
+#sp-flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:4}
+#sp-skip{position:absolute;bottom:20px;right:24px;font-family:'Courier New',monospace;font-size:11px;color:rgba(255,255,255,.3)}
+
+.fig-btn{font-size:11px;padding:4px 10px;border-radius:10px;border:1px solid transparent;cursor:pointer;font-weight:600;display:inline-block;line-height:1.4}
+.fig-btn.fig-on{background:#e8f0fe;color:#1a73e8;border-color:#c5d3f8}
+.fig-btn.fig-off{background:var(--acc);color:var(--text3);border-color:var(--border)}
+.fig-btn:hover{opacity:.8}
+body.imode .fig-btn{font-size:18px;padding:6px 16px}
+
+.fig-label{font-size:11px;padding:3px 8px;border-radius:10px;font-weight:600}
+.fig-label.fig-on{background:#1a73e8;color:#fff}
+.fig-label.fig-off{background:var(--acc);color:var(--text3)}
+body.imode .fig-label{font-size:18px;padding:5px 14px}
+body.imode .fig-label.fig-on{background:#1a73e8;color:#fff;font-size:18px}
+body.imode .fig-label.fig-off{background:var(--border);color:var(--text2);font-size:18px}
+
+.ref-detail{padding:0}
+.ref-problem-area{padding:14px;overflow-y:auto;align-content:start}
+.ref-answer-area{padding:10px 14px;overflow-y:auto;background:var(--acc);border-top:2px solid var(--border2)}
+body.imode .ref-problem-area{padding:18px}
+body.imode .ref-answer-area{padding:14px 18px}
+</style>
+</head>
+<body>
+
+<div id="splash">
+  <canvas id="sp-canvas"></canvas>
+  <div id="sp-center">
+    <div id="sp-title"><span class="sp-p">Pandora</span> <span class="sp-one">1</span></div>
+    <div id="sp-sub1"><span id="sp-t2"></span><span class="sp-cur" id="sp-c2" style="display:none"></span></div>
+    <div id="sp-sub3"><span id="sp-t4"></span><span class="sp-cur" id="sp-c4" style="display:none"></span></div>
+  </div>
+  <div id="sp-glow"></div>
+  <div id="sp-flash"></div>
+  <div id="sp-skip">クリックでスキップ</div>
+</div>
+<div class="topbar">
+  <span class="logo"><span style="color:#a78bfa">Pandora</span> <span style="color:#cd4f7c">1</span></span>
+  <div style="display:flex;gap:2px;margin-left:12px">
+    <button class="cbtn" id="tab-bank" onclick="switchTab('bank')" style="background:var(--accent-bg);color:var(--accent);border-color:var(--accent)">📚 問題バンク</button>
+    <button class="cbtn" id="tab-quiz" onclick="switchTab('quiz')" style="">📝 課題生成</button>
+  </div>
+  <div class="ctrl">
+    <button class="cbtn" id="dark-btn" onclick="toggleDark()">🌙 ダーク</button>
+    <button class="cbtn" id="imode-btn" onclick="toggleImode()">🤍　I-mode</button>
+    <button class="cbtn" id="api-key-btn" onclick="openApiKeyModal()" style="border-color:#a78bfa;color:#a78bfa">🔑 APIキー</button>
+  </div>
+</div>
+
+<!-- APIキー設定モーダル -->
+<div id="api-key-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;align-items:center;justify-content:center">
+  <div style="background:var(--surface);border-radius:16px;padding:28px 32px;width:420px;max-width:90vw;border:1px solid var(--border)">
+    <div style="font-size:15px;font-weight:700;margin-bottom:6px">🔑 Anthropic APIキー設定</div>
+    <div style="font-size:11px;color:var(--text3);margin-bottom:16px">キーはこのブラウザのlocalStorageにのみ保存されます。外部には送信されません。</div>
+    <input id="api-key-input" type="password" placeholder="sk-ant-..." style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:var(--input-bg);color:var(--input-text);font-size:13px;font-family:inherit;box-sizing:border-box;margin-bottom:8px">
+    <div id="api-key-status" style="font-size:11px;margin-bottom:12px;min-height:16px"></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button onclick="closeApiKeyModal()" style="padding:8px 18px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-family:inherit;font-size:12px">キャンセル</button>
+      <button onclick="saveApiKey()" style="padding:8px 18px;border-radius:8px;border:none;background:#a78bfa;color:#fff;cursor:pointer;font-family:inherit;font-size:12px;font-weight:700">保存</button>
+      <button onclick="clearApiKey()" style="padding:8px 18px;border-radius:8px;border:1px solid #e05;background:transparent;color:#e05;cursor:pointer;font-family:inherit;font-size:12px">削除</button>
+    </div>
+  </div>
+</div>
+<!-- 課題生成タブ -->
+<div id="quiz-tab" style="display:none;padding:24px;max-width:800px;margin:0 auto">
+  <div style="font-size:18px;font-weight:700;margin-bottom:16px;color:var(--text1)">📝 課題生成</div>
+
+  <!-- モード切り替え -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">課題モード</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <label style="cursor:pointer;display:flex;align-items:flex-start;gap:10px;padding:12px 16px;border-radius:10px;border:2px solid var(--border);flex:1;min-width:200px;transition:border-color .2s" id="mode-domestic-card">
+        <input type="radio" name="q-mode" value="domestic" id="mode-domestic" checked onchange="updateModeUI()" style="margin-top:3px;accent-color:var(--accent)">
+        <div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:3px">🇯🇵 国内向け（算数×英語）</div>
+          <div style="font-size:11px;color:var(--text3)">日本語で算数を解きながら英語表現も学ぶ。英語学習中の日本人生徒向け。</div>
+        </div>
+      </label>
+      <label style="cursor:pointer;display:flex;align-items:flex-start;gap:10px;padding:12px 16px;border-radius:10px;border:2px solid var(--border);flex:1;min-width:200px;transition:border-color .2s" id="mode-overseas-card">
+        <input type="radio" name="q-mode" value="overseas" id="mode-overseas" onchange="updateModeUI()" style="margin-top:3px;accent-color:var(--accent)">
+        <div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:3px">🌏 海外向け（算数を日本語で）</div>
+          <div style="font-size:11px;color:var(--text3)">日本語で算数を学ぶ。英語ナビ付き。在日外国人・海外日本語学習者向け。</div>
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <!-- 日本語レベル選択（海外向け時のみ表示） -->
+  <div class="card" id="jp-level-card" style="display:none;margin-bottom:16px">
+    <div class="card-title">日本語レベル <span style="font-size:11px;color:var(--text3);font-weight:400">/ Japanese Level</span></div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">
+      <button class="tag jp-lvl-btn" data-level="N5" onclick="selectJpLevel(this)" style="border-color:#43a047;color:#43a047">N5</button>
+      <button class="tag jp-lvl-btn" data-level="N4" onclick="selectJpLevel(this)" style="border-color:#1a9fd4;color:#1a9fd4">N4</button>
+      <button class="tag jp-lvl-btn on" data-level="N3" onclick="selectJpLevel(this)" style="border-color:#7b1fa2;color:#7b1fa2">N3</button>
+      <button class="tag jp-lvl-btn" data-level="N2" onclick="selectJpLevel(this)" style="border-color:#e65100;color:#e65100">N2</button>
+      <button class="tag jp-lvl-btn" data-level="N1" onclick="selectJpLevel(this)" style="border-color:#c62828;color:#c62828">N1</button>
+      <button class="tag jp-lvl-btn" data-level="native" onclick="selectJpLevel(this)" style="border-color:#a78bfa;color:#a78bfa">native</button>
+    </div>
+    <div id="jp-level-desc" style="font-size:11px;color:var(--text3);padding:6px 10px;background:var(--accent-bg);border-radius:6px"></div>
+  </div>
+
+  <!-- 学年選択 -->
+  <div class="card">
+    <div class="card-title">学年・単元</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+      <button class="tag" id="qg-g01" data-grade="g01" onclick="toggleQGrade(this)">小1</button>
+      <button class="tag" id="qg-g02" data-grade="g02" onclick="toggleQGrade(this)">小2</button>
+      <button class="tag" id="qg-g03" data-grade="g03" onclick="toggleQGrade(this)">小3</button>
+      <button class="tag" id="qg-g04" data-grade="g04" onclick="toggleQGrade(this)">小4</button>
+      <button class="tag" id="qg-g05" data-grade="g05" onclick="toggleQGrade(this)">小5</button>
+      <button class="tag" id="qg-g06" data-grade="g06" onclick="toggleQGrade(this)">小6</button>
+      <button class="tag" id="qg-jhs1" data-grade="jhs1" onclick="toggleQGrade(this)">中1</button>
+      <button class="tag" id="qg-jhs2" data-grade="jhs2" onclick="toggleQGrade(this)">中2</button>
+      <button class="tag" id="qg-jhs3" data-grade="jhs3" onclick="toggleQGrade(this)">中3</button>
+    </div>
+    <!-- 単元選択（最大2つ） -->
+    <div class="flabel" style="margin-bottom:6px">単元（最大3つ選択）</div>
+    <div id="q-unit-area" style="display:flex;flex-wrap:wrap;gap:6px;min-height:32px;color:var(--text3);font-size:12px">学年を選択してください</div>
+  </div>
+
+  <!-- 問題設定 -->
+  <div class="card">
+    <div class="card-title">問題設定</div>
+
+    <!-- 問題レベル（複数選択） -->
+    <div class="flabel" style="margin-bottom:6px">問題レベル（複数選択可）</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+      <label style="display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;border:1px solid var(--border);cursor:pointer;font-size:12px;background:var(--acc)" id="ql-all-label">
+        <input type="checkbox" id="ql-all" onchange="toggleLevelAll(this)" style="accent-color:var(--accent)"> すべて
+      </label>
+      <label style="display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;border:1px solid #7b1fa2;cursor:pointer;font-size:12px" id="ql-ex-label">
+        <input type="checkbox" class="ql-cb" value="example_follow" onchange="updateLevelUI()" style="accent-color:#7b1fa2"> <span style="color:#7b1fa2;font-weight:700">例</span> 例題紐づき
+      </label>
+      <label style="display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;border:1px solid #1a9fd4;cursor:pointer;font-size:12px" id="ql-cf-label">
+        <input type="checkbox" class="ql-cb" value="confirmation" onchange="updateLevelUI()" style="accent-color:#1a9fd4"> <span style="color:#1a9fd4;font-weight:700">確</span> 確認問題
+      </label>
+      <label style="display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;border:1px solid #e65100;cursor:pointer;font-size:12px" id="ql-pr-label">
+        <input type="checkbox" class="ql-cb" value="practice" onchange="updateLevelUI()" style="accent-color:#e65100"> <span style="color:#e65100;font-weight:700">練</span> 練習問題
+      </label>
+      <label style="align-items:center;gap:5px;padding:6px 12px;border-radius:8px;border:1px solid #2e7d32;cursor:pointer;font-size:12px;display:none" id="ql-js-label">
+        <input type="checkbox" class="ql-cb" value="jissen" onchange="updateLevelUI()" style="accent-color:#2e7d32"> <span style="color:#2e7d32;font-weight:700">実</span> 実践問題
+      </label>
+    </div>
+    <div style="font-size:11px;color:var(--text3);margin-bottom:12px">複数選択すると、レベル別に問題が生成されます。生徒の分析に活用できます。</div>
+
+    <div class="grid3">
+      <div class="field">
+        <div class="flabel">問題数（単元ごと）</div>
+        <select id="q-count">
+          <option value="3">3問</option>
+          <option value="5" selected>5問</option>
+          <option value="8">8問</option>
+          <option value="10">10問</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="flabel">難易度</div>
+        <select id="q-diff">
+          <option value="all">すべて</option>
+          <option value="easy">easy</option>
+          <option value="medium">medium</option>
+          <option value="hard">hard</option>
+        </select>
+      </div>
+    </div>
+    <!-- タグフィルター -->
+    <div class="flabel" style="margin-bottom:6px;margin-top:10px">タグフィルター（任意）</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px">
+      <button class="tag" data-qtag="符号ミス誘発">符号ミス誘発</button>
+      <button class="tag" data-qtag="分数計算">分数計算</button>
+      <button class="tag" data-qtag="単位変換">単位変換</button>
+      <button class="tag" data-qtag="なるほど！">なるほど！</button>
+      <button class="tag" data-qtag="純粋に楽しい">純粋に楽しい</button>
+      <button class="tag" data-qtag="⭐️ 重要問題">⭐️ 重要問題</button>
+    </div>
+  </div>
+
+  <!-- テーマ -->
+  <div class="card">
+    <div class="card-title">テーマ（任意）</div>
+    <input type="text" id="q-theme" placeholder="例：ドラえもんをテーマにして、サッカーで例えて、宇宙の話を使って…" style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:var(--input-bg);color:var(--input-text);font-size:13px;font-family:inherit;box-sizing:border-box">
+    <div style="font-size:11px;color:var(--text3);margin-top:6px">テーマを入れると、AIがそのキャラクターや世界観に合わせた問題文に書き換えます。</div>
+  </div>
+
+  <!-- 生徒選択 -->
+  <div class="card" id="student-select-card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div class="card-title" style="margin-bottom:0">対象生徒（任意）</div>
+      <button onclick="loadStudents()" style="padding:4px 12px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text2);font-size:11px;cursor:pointer;font-family:inherit">🔄 再読み込み</button>
+    </div>
+    <select id="q-student" style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:var(--input-bg);color:var(--input-text);font-size:13px;font-family:inherit">
+      <option value="">-- 生徒を選択（選択しない場合は汎用課題）--</option>
+    </select>
+    <div id="student-load-status" style="font-size:11px;color:var(--text3);margin-top:6px"></div>
+  </div>
+
+  <!-- 復習コーナー設定 -->
+  <div class="card" id="review-card" style="display:none">
+    <div class="card-title">📚 復習コーナー設定</div>
+    <div style="font-size:11px;color:var(--text3);margin-bottom:14px">通常問題の後に復習問題を追加します。間違えた問題の数字を変えて再生成します。</div>
+
+    <!-- 前回の復習 -->
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
+      <label style="display:flex;align-items:center;gap:6px;cursor:pointer;min-width:140px">
+        <input type="checkbox" id="rev-prev-on" onchange="updateReviewUI()" style="accent-color:var(--accent)">
+        <span style="font-size:13px;font-weight:600">前回の復習</span>
+      </label>
+      <div style="font-size:11px;color:var(--text3);flex:1">前回提出で間違えた問題を数字変えて再出題</div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-size:11px;color:var(--text3)">問題数</span>
+        <select id="rev-prev-count" disabled style="padding:4px 8px;border-radius:6px;border:1px solid var(--border);background:var(--input-bg);color:var(--input-text);font-size:12px">
+          <option value="2">2問</option>
+          <option value="3" selected>3問</option>
+          <option value="5">5問</option>
+          <option value="all">全問</option>
+        </select>
+      </div>
+      <div id="rev-prev-status" style="font-size:11px;min-width:80px"></div>
+    </div>
+
+    <!-- 前々回の復習 -->
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
+      <label style="display:flex;align-items:center;gap:6px;cursor:pointer;min-width:140px">
+        <input type="checkbox" id="rev-prev2-on" onchange="updateReviewUI()" style="accent-color:var(--accent)">
+        <span style="font-size:13px;font-weight:600">前々回の復習</span>
+      </label>
+      <div style="font-size:11px;color:var(--text3);flex:1">前々回提出で間違えた問題を数字変えて再出題</div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-size:11px;color:var(--text3)">問題数</span>
+        <select id="rev-prev2-count" disabled style="padding:4px 8px;border-radius:6px;border:1px solid var(--border);background:var(--input-bg);color:var(--input-text);font-size:12px">
+          <option value="2">2問</option>
+          <option value="3" selected>3問</option>
+          <option value="5">5問</option>
+          <option value="all">全問</option>
+        </select>
+      </div>
+      <div id="rev-prev2-status" style="font-size:11px;min-width:80px"></div>
+    </div>
+
+    <!-- 弱点克服 -->
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 0">
+      <label style="display:flex;align-items:center;gap:6px;cursor:pointer;min-width:140px" id="rev-weak-label">
+        <input type="checkbox" id="rev-weak-on" onchange="updateReviewUI()" style="accent-color:var(--accent)">
+        <span style="font-size:13px;font-weight:600">弱点克服</span>
+      </label>
+      <div style="font-size:11px;color:var(--text3);flex:1" id="rev-weak-desc">累計10回以上提出した生徒のみ利用可。苦手単元から出題。</div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-size:11px;color:var(--text3)">問題数</span>
+        <select id="rev-weak-count" disabled style="padding:4px 8px;border-radius:6px;border:1px solid var(--border);background:var(--input-bg);color:var(--input-text);font-size:12px">
+          <option value="2">2問</option>
+          <option value="3" selected>3問</option>
+          <option value="5">5問</option>
+        </select>
+      </div>
+      <div id="rev-weak-status" style="font-size:11px;min-width:80px"></div>
+    </div>
+  </div>
+
+  <!-- 生成ボタン -->
+  <div style="display:flex;gap:10px;margin-bottom:16px;align-items:center">
+    <button id="q-gen-btn" onclick="generateQuiz()" style="padding:12px 28px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">✨ 問題を生成する</button>
+    <div id="q-status" style="font-size:12px;color:var(--text3)"></div>
+  </div>
+
+  <!-- JSON出力 -->
+  <div id="q-preview" style="display:none">
+    <div class="card">
+      <div class="card-title">生成された問題 JSON</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:10px">このJSONをコピーして、Claude.aiに「student_quizのHTMLを作って」と一緒に貼り付けてください。</div>
+      <textarea id="q-json-output" readonly style="width:100%;min-height:280px;padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--input-bg);color:var(--input-text);font-size:11px;font-family:monospace;resize:vertical;box-sizing:border-box;line-height:1.6"></textarea>
+      <div style="display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap">
+        <button id="q-copy-btn" onclick="copyQuizJSON()" style="padding:9px 22px;border-radius:8px;border:none;background:var(--accent);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">📋 JSONをコピー</button>
+        <div id="q-copy-status" style="font-size:12px;color:#27ae60"></div>
+      </div>
+    </div>
+    <!-- Claude.aiへの指示テンプレ -->
+    <div class="card" style="margin-top:12px">
+      <div class="card-title">Claude.aiへの貼り付け用プロンプト</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:8px">このプロンプトをJSONと一緒にClaude.aiに貼り付けてください。</div>
+      <textarea id="q-prompt-template" readonly style="width:100%;min-height:100px;padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--input-bg);color:var(--input-text);font-size:12px;font-family:inherit;resize:vertical;box-sizing:border-box;line-height:1.7"></textarea>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button onclick="copyPromptTemplate()" style="padding:9px 22px;border-radius:8px;border:none;background:#f59e0b;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">📋 プロンプトをコピー</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="workspace" id="bank-tab">
+  <div class="sb">
+    <div class="grade-sel">
+      <div class="gs-group">
+        <button class="gs-btn gs-on" id="gs-sho" onclick="setSchool('sho')">小学校</button>
+        <button class="gs-btn" id="gs-chu" onclick="setSchool('chu')">中学校</button>
+      </div>
+      <div class="gs-years" id="gs-years">
+        <button class="gy-btn" id="gy-g01" onclick="setGrade('g01')">小1</button>
+        <button class="gy-btn" id="gy-g02" onclick="setGrade('g02')">小2</button>
+        <button class="gy-btn" id="gy-g03" onclick="setGrade('g03')">小3</button>
+        <button class="gy-btn gy-on" id="gy-g04" onclick="setGrade('g04')">小4</button>
+        <button class="gy-btn" id="gy-g05" onclick="setGrade('g05')">小5</button>
+        <button class="gy-btn" id="gy-g06" onclick="setGrade('g06')">小6</button>
+      </div>
+    </div>
+    <div class="sb-label">問題タイプ</div>
+    <div class="type-row on" id="t-all" onclick="setType('all')"><span class="dot"></span>すべて</div>
+    <div class="type-row" id="t-ex" onclick="setType('example_follow')"><span class="dot dot-r"></span>例題紐づき</div>
+    <div class="type-row" id="t-cf" onclick="setType('confirmation')"><span class="dot dot-g"></span>確認問題</div>
+    <div class="type-row" id="t-pr" onclick="setType('practice')"><span class="dot dot-a"></span>練習問題</div>
+    <div class="type-row" id="t-js" onclick="setType('jissen')" style="display:none"><span class="dot" style="background:#2e7d32"></span>実践問題</div>
+    <div class="divider"></div>
+    <div class="sb-label">単元</div>
+    <div id="unit-list"></div>
+  </div>
+  <div class="ref-panel">
+    <div class="panel-hdr">参考問題 <span style="font-size:10px;color:var(--text3);font-weight:400;margin-left:4px">ウィンパス小4</span></div>
+    <div class="ref-list" id="ref-list"><div style="padding:16px 14px;font-size:12px;color:var(--text3)">← 単元を選択してください</div></div>
+    <div class="ref-problem-area" id="ref-problem-area" style="display:none"></div>
+    <div class="ref-answer-area" id="ref-answer-area" style="display:none"></div>
+  </div>
+  <div class="edit-panel">
+    <div class="edit-inner" id="edit-inner">
+      <div class="empty"><div class="empty-icon">✏️</div><div>参考問題を選択してください</div></div>
+    </div>
+  </div>
+</div>
+<script>
+var ALL_UNITS={"g01": [{"unit_id": "g01_c01_u01", "chapter_id": "g01_c01", "chapter_name": "なかまづくり", "unit_name": "なかまづくり"}, {"unit_id": "g01_c02_u01", "chapter_id": "g01_c02", "chapter_name": "なかまくらべ", "unit_name": "なかまくらべ"}, {"unit_id": "g01_c03_u01", "chapter_id": "g01_c03", "chapter_name": "5までのかずのあらわしかた", "unit_name": "5までのかずのあらわしかた"}, {"unit_id": "g01_c04_u01", "chapter_id": "g01_c04", "chapter_name": "5までのかずのならびかた", "unit_name": "5までのかずのならびかた"}, {"unit_id": "g01_c05_u01", "chapter_id": "g01_c05", "chapter_name": "10までのかずのあらわしかた", "unit_name": "10までのかずのあらわしかた"}, {"unit_id": "g01_c06_u01", "chapter_id": "g01_c06", "chapter_name": "10までのかずのならびかた", "unit_name": "10までのかずのならびかた"}, {"unit_id": "g01_c07_u01", "chapter_id": "g01_c07", "chapter_name": "0というかず", "unit_name": "0というかず"}, {"unit_id": "g01_c08_u01", "chapter_id": "g01_c08", "chapter_name": "まえからなんばんめ", "unit_name": "まえからなんばんめ"}, {"unit_id": "g01_c09_u01", "chapter_id": "g01_c09", "chapter_name": "まえからなん人", "unit_name": "まえからなん人"}, {"unit_id": "g01_c10_u01", "chapter_id": "g01_c10", "chapter_name": "いくつといくつ", "unit_name": "いくつといくつ"}, {"unit_id": "g01_c11_u01", "chapter_id": "g01_c11", "chapter_name": "10づくり", "unit_name": "10づくり"}, {"unit_id": "g01_c12_u01", "chapter_id": "g01_c12", "chapter_name": "たしざんのけいさん①", "unit_name": "たしざんのけいさん①"}, {"unit_id": "g01_c13_u01", "chapter_id": "g01_c13", "chapter_name": "たしざんのけいさん②", "unit_name": "たしざんのけいさん②"}, {"unit_id": "g01_c14_u01", "chapter_id": "g01_c14", "chapter_name": "0のたしざん", "unit_name": "0のたしざん"}, {"unit_id": "g01_c15_u01", "chapter_id": "g01_c15", "chapter_name": "ひきざんのけいさん①", "unit_name": "ひきざんのけいさん①"}, {"unit_id": "g01_c16_u01", "chapter_id": "g01_c16", "chapter_name": "ひきざんのけいさん②", "unit_name": "ひきざんのけいさん②"}, {"unit_id": "g01_c17_u01", "chapter_id": "g01_c17", "chapter_name": "0のひきざん", "unit_name": "0のひきざん"}, {"unit_id": "g01_c18_u01", "chapter_id": "g01_c18", "chapter_name": "ちがいはいくつ", "unit_name": "ちがいはいくつ"}, {"unit_id": "g01_c19_u01", "chapter_id": "g01_c19", "chapter_name": "20までのかずのあらわしかた", "unit_name": "20までのかずのあらわしかた"}, {"unit_id": "g01_c20_u01", "chapter_id": "g01_c20", "chapter_name": "20までのかずのしくみ", "unit_name": "20までのかずのしくみ"}, {"unit_id": "g01_c21_u01", "chapter_id": "g01_c21", "chapter_name": "20までのかずのならびかた①", "unit_name": "20までのかずのならびかた①"}, {"unit_id": "g01_c22_u01", "chapter_id": "g01_c22", "chapter_name": "20までのかずのならびかた②", "unit_name": "20までのかずのならびかた②"}, {"unit_id": "g01_c23_u01", "chapter_id": "g01_c23", "chapter_name": "かずしらべ", "unit_name": "かずしらべ"}, {"unit_id": "g01_c24_u01", "chapter_id": "g01_c24", "chapter_name": "ながさくらべ", "unit_name": "ながさくらべ"}, {"unit_id": "g01_c25_u01", "chapter_id": "g01_c25", "chapter_name": "かさくらべ", "unit_name": "かさくらべ"}, {"unit_id": "g01_c26_u01", "chapter_id": "g01_c26", "chapter_name": "ひろさくらべ", "unit_name": "ひろさくらべ"}, {"unit_id": "g01_c27_u01", "chapter_id": "g01_c27", "chapter_name": "3つのかずのたしざん", "unit_name": "3つのかずのたしざん"}, {"unit_id": "g01_c28_u01", "chapter_id": "g01_c28", "chapter_name": "3つのかずのひきざん", "unit_name": "3つのかずのひきざん"}, {"unit_id": "g01_c29_u01", "chapter_id": "g01_c29", "chapter_name": "3つのかずのけいさん", "unit_name": "3つのかずのけいさん"}, {"unit_id": "g01_c30_u01", "chapter_id": "g01_c30", "chapter_name": "くり上がりのあるたしざん①", "unit_name": "くり上がりのあるたしざん①"}, {"unit_id": "g01_c31_u01", "chapter_id": "g01_c31", "chapter_name": "くり上がりのあるたしざん②", "unit_name": "くり上がりのあるたしざん②"}, {"unit_id": "g01_c32_u01", "chapter_id": "g01_c32", "chapter_name": "くり下がりのあるひきざん①", "unit_name": "くり下がりのあるひきざん①"}, {"unit_id": "g01_c33_u01", "chapter_id": "g01_c33", "chapter_name": "くり下がりのあるひきざん②", "unit_name": "くり下がりのあるひきざん②"}, {"unit_id": "g01_c34_u01", "chapter_id": "g01_c34", "chapter_name": "かたちあそび", "unit_name": "かたちあそび"}, {"unit_id": "g01_c35_u01", "chapter_id": "g01_c35", "chapter_name": "かたちうつし", "unit_name": "かたちうつし"}, {"unit_id": "g01_c36_u01", "chapter_id": "g01_c36", "chapter_name": "かたちづくり", "unit_name": "かたちづくり"}, {"unit_id": "g01_c37_u01", "chapter_id": "g01_c37", "chapter_name": "100までのかずのあらわしかた", "unit_name": "100までのかずのあらわしかた"}, {"unit_id": "g01_c38_u01", "chapter_id": "g01_c38", "chapter_name": "100までのかずのしくみ", "unit_name": "100までのかずのしくみ"}, {"unit_id": "g01_c39_u01", "chapter_id": "g01_c39", "chapter_name": "100までのかずのならびかた①", "unit_name": "100までのかずのならびかた①"}, {"unit_id": "g01_c40_u01", "chapter_id": "g01_c40", "chapter_name": "100までのかずのならびかた②", "unit_name": "100までのかずのならびかた②"}, {"unit_id": "g01_c41_u01", "chapter_id": "g01_c41", "chapter_name": "100よりおおきいかずのあらわしかた", "unit_name": "100よりおおきいかずのあらわしかた"}, {"unit_id": "g01_c42_u01", "chapter_id": "g01_c42", "chapter_name": "100よりおおきいかずのならびかた", "unit_name": "100よりおおきいかずのならびかた"}, {"unit_id": "g01_c43_u01", "chapter_id": "g01_c43", "chapter_name": "なんじなんじはん", "unit_name": "なんじなんじはん"}, {"unit_id": "g01_c44_u01", "chapter_id": "g01_c44", "chapter_name": "なんじなんぷん", "unit_name": "なんじなんぷん"}, {"unit_id": "g01_c45_u01", "chapter_id": "g01_c45", "chapter_name": "ぶんしょうだい①", "unit_name": "ぶんしょうだい①"}, {"unit_id": "g01_c46_u01", "chapter_id": "g01_c46", "chapter_name": "ぶんしょうだい②", "unit_name": "ぶんしょうだい②"}, {"unit_id": "g01_c47_u01", "chapter_id": "g01_c47", "chapter_name": "ぶんしょうだい③", "unit_name": "ぶんしょうだい③"}, {"unit_id": "g01_c48_u01", "chapter_id": "g01_c48", "chapter_name": "おおきいかずのけいさん①", "unit_name": "おおきいかずのけいさん①"}, {"unit_id": "g01_c49_u01", "chapter_id": "g01_c49", "chapter_name": "おおきいかずのけいさん②", "unit_name": "おおきいかずのけいさん②"}, {"unit_id": "g01_c50_u01", "chapter_id": "g01_c50", "chapter_name": "おなじかずずつ", "unit_name": "おなじかずずつ"}], "g02": [{"unit_id": "g02_c01_u01", "chapter_id": "g02_c01", "chapter_name": "ひょうとグラフ", "unit_name": "ひょうとグラフ"}, {"unit_id": "g02_c02_u01", "chapter_id": "g02_c02", "chapter_name": "時こくと時間①", "unit_name": "時こくと時間①"}, {"unit_id": "g02_c03_u01", "chapter_id": "g02_c03", "chapter_name": "時こくと時間②", "unit_name": "時こくと時間②"}, {"unit_id": "g02_c04_u01", "chapter_id": "g02_c04", "chapter_name": "時こくと時間③", "unit_name": "時こくと時間③"}, {"unit_id": "g02_c05_u01", "chapter_id": "g02_c05", "chapter_name": "2けたの数のたし算", "unit_name": "2けたの数のたし算"}, {"unit_id": "g02_c06_u01", "chapter_id": "g02_c06", "chapter_name": "くり上がりのあるたし算", "unit_name": "くり上がりのあるたし算"}, {"unit_id": "g02_c07_u01", "chapter_id": "g02_c07", "chapter_name": "たし算のたしかめ", "unit_name": "たし算のたしかめ"}, {"unit_id": "g02_c08_u01", "chapter_id": "g02_c08", "chapter_name": "2けたの数のひき算", "unit_name": "2けたの数のひき算"}, {"unit_id": "g02_c09_u01", "chapter_id": "g02_c09", "chapter_name": "くり下がりのあるひき算", "unit_name": "くり下がりのあるひき算"}, {"unit_id": "g02_c10_u01", "chapter_id": "g02_c10", "chapter_name": "ひき算のたしかめ", "unit_name": "ひき算のたしかめ"}, {"unit_id": "g02_c11_u01", "chapter_id": "g02_c11", "chapter_name": "3つの数のたし算とひき算", "unit_name": "3つの数のたし算とひき算"}, {"unit_id": "g02_c12_u01", "chapter_id": "g02_c12", "chapter_name": "2けたの数のたし算とひき算のりよう", "unit_name": "2けたの数のたし算とひき算のりよう"}, {"unit_id": "g02_c13_u01", "chapter_id": "g02_c13", "chapter_name": "長さのはかり方とたんい", "unit_name": "長さのはかり方とたんい"}, {"unit_id": "g02_c14_u01", "chapter_id": "g02_c14", "chapter_name": "長さの計算", "unit_name": "長さの計算"}, {"unit_id": "g02_c15_u01", "chapter_id": "g02_c15", "chapter_name": "1000までの数のあらわし方", "unit_name": "1000までの数のあらわし方"}, {"unit_id": "g02_c16_u01", "chapter_id": "g02_c16", "chapter_name": "1000までの数のしくみ", "unit_name": "1000までの数のしくみ"}, {"unit_id": "g02_c17_u01", "chapter_id": "g02_c17", "chapter_name": "1000までの数の大きさ", "unit_name": "1000までの数の大きさ"}, {"unit_id": "g02_c18_u01", "chapter_id": "g02_c18", "chapter_name": "何十、何百のたし算とひき算", "unit_name": "何十、何百のたし算とひき算"}, {"unit_id": "g02_c19_u01", "chapter_id": "g02_c19", "chapter_name": "かさのはかり方とたんい", "unit_name": "かさのはかり方とたんい"}, {"unit_id": "g02_c20_u01", "chapter_id": "g02_c20", "chapter_name": "かさの計算", "unit_name": "かさの計算"}, {"unit_id": "g02_c21_u01", "chapter_id": "g02_c21", "chapter_name": "答えが3けたになるたし算", "unit_name": "答えが3けたになるたし算"}, {"unit_id": "g02_c22_u01", "chapter_id": "g02_c22", "chapter_name": "3けたの数のたし算", "unit_name": "3けたの数のたし算"}, {"unit_id": "g02_c23_u01", "chapter_id": "g02_c23", "chapter_name": "(3けた)-(2けた)のひき算①", "unit_name": "(3けた)-(2けた)のひき算①"}, {"unit_id": "g02_c24_u01", "chapter_id": "g02_c24", "chapter_name": "(3けた)-(2けた)のひき算②", "unit_name": "(3けた)-(2けた)のひき算②"}, {"unit_id": "g02_c25_u01", "chapter_id": "g02_c25", "chapter_name": "計算のけっかの見つもり", "unit_name": "計算のけっかの見つもり"}, {"unit_id": "g02_c26_u01", "chapter_id": "g02_c26", "chapter_name": "3けたの数のたし算とひき算のりよう", "unit_name": "3けたの数のたし算とひき算のりよう"}, {"unit_id": "g02_c27_u01", "chapter_id": "g02_c27", "chapter_name": "三角形と四角形①", "unit_name": "三角形と四角形①"}, {"unit_id": "g02_c28_u01", "chapter_id": "g02_c28", "chapter_name": "三角形と四角形②", "unit_name": "三角形と四角形②"}, {"unit_id": "g02_c29_u01", "chapter_id": "g02_c29", "chapter_name": "長方形と正方形", "unit_name": "長方形と正方形"}, {"unit_id": "g02_c30_u01", "chapter_id": "g02_c30", "chapter_name": "直角三角形", "unit_name": "直角三角形"}, {"unit_id": "g02_c31_u01", "chapter_id": "g02_c31", "chapter_name": "かけ算", "unit_name": "かけ算"}, {"unit_id": "g02_c32_u01", "chapter_id": "g02_c32", "chapter_name": "5のだん、2のだんの九九", "unit_name": "5のだん、2のだんの九九"}, {"unit_id": "g02_c33_u01", "chapter_id": "g02_c33", "chapter_name": "3のだん、4のだんの九九", "unit_name": "3のだん、4のだんの九九"}, {"unit_id": "g02_c34_u01", "chapter_id": "g02_c34", "chapter_name": "6のだん、7のだんの九九", "unit_name": "6のだん、7のだんの九九"}, {"unit_id": "g02_c35_u01", "chapter_id": "g02_c35", "chapter_name": "8のだん、9のだん、1のだんの九九", "unit_name": "8のだん、9のだん、1のだんの九九"}, {"unit_id": "g02_c36_u01", "chapter_id": "g02_c36", "chapter_name": "ばいとかけ算", "unit_name": "ばいとかけ算"}, {"unit_id": "g02_c37_u01", "chapter_id": "g02_c37", "chapter_name": "九九のひょうときまり", "unit_name": "九九のひょうときまり"}, {"unit_id": "g02_c38_u01", "chapter_id": "g02_c38", "chapter_name": "(2けた)×(1けた)のかけ算", "unit_name": "(2けた)×(1けた)のかけ算"}, {"unit_id": "g02_c39_u01", "chapter_id": "g02_c39", "chapter_name": "かけ算のりよう", "unit_name": "かけ算のりよう"}, {"unit_id": "g02_c40_u01", "chapter_id": "g02_c40", "chapter_name": "1万までの数のあらわし方", "unit_name": "1万までの数のあらわし方"}, {"unit_id": "g02_c41_u01", "chapter_id": "g02_c41", "chapter_name": "1万までの数のしくみ", "unit_name": "1万までの数のしくみ"}, {"unit_id": "g02_c42_u01", "chapter_id": "g02_c42", "chapter_name": "1万までの数の大きさ", "unit_name": "1万までの数の大きさ"}, {"unit_id": "g02_c43_u01", "chapter_id": "g02_c43", "chapter_name": "長い長さのあらわし方", "unit_name": "長い長さのあらわし方"}, {"unit_id": "g02_c44_u01", "chapter_id": "g02_c44", "chapter_name": "長い長さのたんい", "unit_name": "長い長さのたんい"}, {"unit_id": "g02_c45_u01", "chapter_id": "g02_c45", "chapter_name": "図をつかった考え方①", "unit_name": "図をつかった考え方①"}, {"unit_id": "g02_c46_u01", "chapter_id": "g02_c46", "chapter_name": "図をつかった考え方②", "unit_name": "図をつかった考え方②"}, {"unit_id": "g02_c47_u01", "chapter_id": "g02_c47", "chapter_name": "図をつかった考え方③", "unit_name": "図をつかった考え方③"}, {"unit_id": "g02_c48_u01", "chapter_id": "g02_c48", "chapter_name": "はこの形①", "unit_name": "はこの形①"}, {"unit_id": "g02_c49_u01", "chapter_id": "g02_c49", "chapter_name": "はこの形②", "unit_name": "はこの形②"}, {"unit_id": "g02_c50_u01", "chapter_id": "g02_c50", "chapter_name": "はこを広げた形", "unit_name": "はこを広げた形"}, {"unit_id": "g02_c51_u01", "chapter_id": "g02_c51", "chapter_name": "分数", "unit_name": "分数"}], "g03": [{"unit_id": "g03_c01_u01", "chapter_id": "g03_c01", "chapter_name": "かけ算のきまり", "unit_name": "かけ算のきまり"}, {"unit_id": "g03_c02_u01", "chapter_id": "g03_c02", "chapter_name": "かけ算のきまりとり用", "unit_name": "かけ算のきまりとり用"}, {"unit_id": "g03_c03_u01", "chapter_id": "g03_c03", "chapter_name": "時間のたし算とひき算、短い時間", "unit_name": "時間のたし算とひき算"}, {"unit_id": "g03_c03_u02", "chapter_id": "g03_c03", "chapter_name": "時間のたし算とひき算、短い時間", "unit_name": "短い時間"}, {"unit_id": "g03_c04_u01", "chapter_id": "g03_c04", "chapter_name": "(2けたの数)÷(1けたの数)のわり算の計算", "unit_name": "わり算の計算"}, {"unit_id": "g03_c05_u01", "chapter_id": "g03_c05", "chapter_name": "(2けたの数)÷(1けたの数)のわり算の問題", "unit_name": "わり算の問題"}, {"unit_id": "g03_c06_u01", "chapter_id": "g03_c06", "chapter_name": "答えが九九にないわり算とわり算のり用", "unit_name": "答えが九九にないわり算"}, {"unit_id": "g03_c07_u01", "chapter_id": "g03_c07", "chapter_name": "円", "unit_name": "円"}, {"unit_id": "g03_c08_u01", "chapter_id": "g03_c08", "chapter_name": "球", "unit_name": "球"}, {"unit_id": "g03_c09_u01", "chapter_id": "g03_c09", "chapter_name": "3けたや4けたの数のたし算", "unit_name": "3けたや4けたの数のたし算"}, {"unit_id": "g03_c10_u01", "chapter_id": "g03_c10", "chapter_name": "3けたや4けたの数のひき算", "unit_name": "3けたや4けたの数のひき算"}, {"unit_id": "g03_c11_u01", "chapter_id": "g03_c11", "chapter_name": "たし算とひき算の暗算とり用", "unit_name": "たし算とひき算の暗算とり用"}, {"unit_id": "g03_c12_u01", "chapter_id": "g03_c12", "chapter_name": "表とグラフ", "unit_name": "表とグラフ"}, {"unit_id": "g03_c13_u01", "chapter_id": "g03_c13", "chapter_name": "いろいろなぼうグラフ", "unit_name": "いろいろなぼうグラフ"}, {"unit_id": "g03_c14_u01", "chapter_id": "g03_c14", "chapter_name": "あまりのあるわり算", "unit_name": "あまりのあるわり算"}, {"unit_id": "g03_c15_u01", "chapter_id": "g03_c15", "chapter_name": "あまりの考え方", "unit_name": "あまりの考え方"}, {"unit_id": "g03_c16_u01", "chapter_id": "g03_c16", "chapter_name": "万の位の数、億の位の数", "unit_name": "万の位の数、億の位の数"}, {"unit_id": "g03_c17_u01", "chapter_id": "g03_c17", "chapter_name": "大きい数のり用", "unit_name": "大きい数のり用"}, {"unit_id": "g03_c18_u01", "chapter_id": "g03_c18", "chapter_name": "(2けたの数)×(1けたの数)のかけ算", "unit_name": "(2けたの数)×(1けたの数)のかけ算"}, {"unit_id": "g03_c19_u01", "chapter_id": "g03_c19", "chapter_name": "(3けたの数)×(1けたの数)のかけ算", "unit_name": "(3けたの数)×(1けたの数)のかけ算"}, {"unit_id": "g03_c20_u01", "chapter_id": "g03_c20", "chapter_name": "1けたの数をかけるかけ算のり用", "unit_name": "1けたの数をかけるかけ算のり用"}, {"unit_id": "g03_c21_u01", "chapter_id": "g03_c21", "chapter_name": "長い長さ", "unit_name": "長い長さ"}, {"unit_id": "g03_c22_u01", "chapter_id": "g03_c22", "chapter_name": "小数の表し方", "unit_name": "小数の表し方"}, {"unit_id": "g03_c23_u01", "chapter_id": "g03_c23", "chapter_name": "小数のしくみ", "unit_name": "小数のしくみ"}, {"unit_id": "g03_c24_u01", "chapter_id": "g03_c24", "chapter_name": "小数のたし算とひき算", "unit_name": "小数のたし算とひき算"}, {"unit_id": "g03_c25_u01", "chapter_id": "g03_c25", "chapter_name": "二等辺三角形、正三角形、角", "unit_name": "二等辺三角形、正三角形、角"}, {"unit_id": "g03_c26_u01", "chapter_id": "g03_c26", "chapter_name": "分数のしくみと大きさ", "unit_name": "分数のしくみと大きさ"}, {"unit_id": "g03_c27_u01", "chapter_id": "g03_c27", "chapter_name": "分数のたし算とひき算", "unit_name": "分数のたし算とひき算"}, {"unit_id": "g03_c28_u01", "chapter_id": "g03_c28", "chapter_name": "□を使った式", "unit_name": "□を使った式"}, {"unit_id": "g03_c29_u01", "chapter_id": "g03_c29", "chapter_name": "2けたの数をかけるかけ算", "unit_name": "2けたの数をかけるかけ算"}, {"unit_id": "g03_c30_u01", "chapter_id": "g03_c30", "chapter_name": "3けたや4けたの数をかけるかけ算", "unit_name": "3けたや4けたの数をかけるかけ算"}, {"unit_id": "g03_c31_u01", "chapter_id": "g03_c31", "chapter_name": "かけ算のり用", "unit_name": "かけ算のり用"}, {"unit_id": "g03_c32_u01", "chapter_id": "g03_c32", "chapter_name": "重さ", "unit_name": "重さ"}], "g04": [{"unit_id": "g04_c01_u01", "chapter_id": "g04_c01", "chapter_name": "大きい数", "unit_name": "大きい数の表し方"}, {"unit_id": "g04_c01_u02", "chapter_id": "g04_c01", "chapter_name": "大きい数", "unit_name": "大きい数のしくみ"}, {"unit_id": "g04_c01_u03", "chapter_id": "g04_c01", "chapter_name": "大きい数", "unit_name": "大きい数の計算"}, {"unit_id": "g04_c02_u01", "chapter_id": "g04_c02", "chapter_name": "変化とグラフ・表", "unit_name": "折れ線グラフ"}, {"unit_id": "g04_c02_u02", "chapter_id": "g04_c02", "chapter_name": "変化とグラフ・表", "unit_name": "いろいろな折れ線グラフ"}, {"unit_id": "g04_c02_u03", "chapter_id": "g04_c02", "chapter_name": "変化とグラフ・表", "unit_name": "整理のしかた"}, {"unit_id": "g04_c03_u01", "chapter_id": "g04_c03", "chapter_name": "1けたの数でわるわり算", "unit_name": "1けたの数でわるわり算"}, {"unit_id": "g04_c03_u02", "chapter_id": "g04_c03", "chapter_name": "1けたの数でわるわり算", "unit_name": "1けたの数でわるわり算の利用"}, {"unit_id": "g04_c04_u01", "chapter_id": "g04_c04", "chapter_name": "三角形と角", "unit_name": "角の大きさ"}, {"unit_id": "g04_c04_u02", "chapter_id": "g04_c04", "chapter_name": "三角形と角", "unit_name": "角度の計算"}, {"unit_id": "g04_c05_u01", "chapter_id": "g04_c05", "chapter_name": "垂直・平行と図形", "unit_name": "垂直と平行"}, {"unit_id": "g04_c05_u02", "chapter_id": "g04_c05", "chapter_name": "垂直・平行と図形", "unit_name": "台形と平行四辺形"}, {"unit_id": "g04_c05_u03", "chapter_id": "g04_c05", "chapter_name": "垂直・平行と図形", "unit_name": "いろいろな四角形と対角線"}, {"unit_id": "g04_c06_u01", "chapter_id": "g04_c06", "chapter_name": "小数のたし算とひき算", "unit_name": "小数の表し方"}, {"unit_id": "g04_c06_u02", "chapter_id": "g04_c06", "chapter_name": "小数のたし算とひき算", "unit_name": "小数のしくみ"}, {"unit_id": "g04_c06_u03", "chapter_id": "g04_c06", "chapter_name": "小数のたし算とひき算", "unit_name": "小数のたし算とひき算"}, {"unit_id": "g04_c07_u01", "chapter_id": "g04_c07", "chapter_name": "整数のわり算", "unit_name": "2けたの数でわるわり算"}, {"unit_id": "g04_c07_u02", "chapter_id": "g04_c07", "chapter_name": "整数のわり算", "unit_name": "整数のわり算"}, {"unit_id": "g04_c07_u03", "chapter_id": "g04_c07", "chapter_name": "整数のわり算", "unit_name": "整数のわり算の利用"}, {"unit_id": "g04_c08_u01", "chapter_id": "g04_c08", "chapter_name": "がい数", "unit_name": "がい数"}, {"unit_id": "g04_c08_u02", "chapter_id": "g04_c08", "chapter_name": "がい数", "unit_name": "見積もり"}, {"unit_id": "g04_c09_u01", "chapter_id": "g04_c09", "chapter_name": "式と計算", "unit_name": "計算のじゅんじょ"}, {"unit_id": "g04_c09_u02", "chapter_id": "g04_c09", "chapter_name": "式と計算", "unit_name": "計算のきまり"}, {"unit_id": "g04_c09_u03", "chapter_id": "g04_c09", "chapter_name": "式と計算", "unit_name": "かけ算とわり算のくふう"}, {"unit_id": "g04_c09_u04", "chapter_id": "g04_c09", "chapter_name": "式と計算", "unit_name": "□を使った式"}, {"unit_id": "g04_c10_u01", "chapter_id": "g04_c10", "chapter_name": "面積", "unit_name": "長方形や正方形の面積"}, {"unit_id": "g04_c10_u02", "chapter_id": "g04_c10", "chapter_name": "面積", "unit_name": "面積の求め方"}, {"unit_id": "g04_c10_u03", "chapter_id": "g04_c10", "chapter_name": "面積", "unit_name": "面積のいろいろな単位"}, {"unit_id": "g04_c10_u04", "chapter_id": "g04_c10", "chapter_name": "面積", "unit_name": "面積の問題"}, {"unit_id": "g04_c11_u01", "chapter_id": "g04_c11", "chapter_name": "小数のかけ算とわり算", "unit_name": "小数×整数"}, {"unit_id": "g04_c11_u02", "chapter_id": "g04_c11", "chapter_name": "小数のかけ算とわり算", "unit_name": "小数÷整数①"}, {"unit_id": "g04_c11_u03", "chapter_id": "g04_c11", "chapter_name": "小数のかけ算とわり算", "unit_name": "小数÷整数②"}, {"unit_id": "g04_c12_u01", "chapter_id": "g04_c12", "chapter_name": "分数", "unit_name": "いろいろな分数"}, {"unit_id": "g04_c12_u02", "chapter_id": "g04_c12", "chapter_name": "分数", "unit_name": "分数のたし算とひき算"}, {"unit_id": "g04_c13_u01", "chapter_id": "g04_c13", "chapter_name": "変わり方", "unit_name": "変わり方"}, {"unit_id": "g04_c14_u01", "chapter_id": "g04_c14", "chapter_name": "立体", "unit_name": "直方体と立方体"}, {"unit_id": "g04_c14_u02", "chapter_id": "g04_c14", "chapter_name": "立体", "unit_name": "辺や面の垂直と平行"}], "g05": [{"unit_id": "g05_c01_u01", "chapter_id": "g05_c01", "chapter_name": "小数のかけ算とわり算", "unit_name": "整数×小数"}, {"unit_id": "g05_c01_u02", "chapter_id": "g05_c01", "chapter_name": "小数のかけ算とわり算", "unit_name": "小数×小数"}, {"unit_id": "g05_c01_u03", "chapter_id": "g05_c01", "chapter_name": "小数のかけ算とわり算", "unit_name": "整数÷小数"}, {"unit_id": "g05_c01_u04", "chapter_id": "g05_c01", "chapter_name": "小数のかけ算とわり算", "unit_name": "小数÷小数"}, {"unit_id": "g05_c01_u05", "chapter_id": "g05_c01", "chapter_name": "小数のかけ算とわり算", "unit_name": "小数のかけ算とわり算の利用"}, {"unit_id": "g05_c01_u06", "chapter_id": "g05_c01", "chapter_name": "小数のかけ算とわり算", "unit_name": "小数の倍"}, {"unit_id": "g05_c02_u01", "chapter_id": "g05_c02", "chapter_name": "直方体や立方体の体積", "unit_name": "直方体や立方体の体積"}, {"unit_id": "g05_c02_u02", "chapter_id": "g05_c02", "chapter_name": "直方体や立方体の体積", "unit_name": "いろいろな体積"}, {"unit_id": "g05_c03_u01", "chapter_id": "g05_c03", "chapter_name": "2つの量の変わり方", "unit_name": "2つの量の変わり方"}, {"unit_id": "g05_c04_u01", "chapter_id": "g05_c04", "chapter_name": "図形の角と合同", "unit_name": "合同な図形"}, {"unit_id": "g05_c04_u02", "chapter_id": "g05_c04", "chapter_name": "図形の角と合同", "unit_name": "三角形の角"}, {"unit_id": "g05_c04_u03", "chapter_id": "g05_c04", "chapter_name": "図形の角と合同", "unit_name": "四角形・多角形の角"}, {"unit_id": "g05_c05_u01", "chapter_id": "g05_c05", "chapter_name": "整数の性質", "unit_name": "偶数と奇数"}, {"unit_id": "g05_c05_u02", "chapter_id": "g05_c05", "chapter_name": "整数の性質", "unit_name": "倍数と公倍数"}, {"unit_id": "g05_c05_u03", "chapter_id": "g05_c05", "chapter_name": "整数の性質", "unit_name": "倍数と公倍数の利用"}, {"unit_id": "g05_c05_u04", "chapter_id": "g05_c05", "chapter_name": "整数の性質", "unit_name": "約数と公約数"}, {"unit_id": "g05_c05_u05", "chapter_id": "g05_c05", "chapter_name": "整数の性質", "unit_name": "公約数の利用"}, {"unit_id": "g05_c06_u01", "chapter_id": "g05_c06", "chapter_name": "分数のたし算とひき算", "unit_name": "約分"}, {"unit_id": "g05_c06_u02", "chapter_id": "g05_c06", "chapter_name": "分数のたし算とひき算", "unit_name": "通分"}, {"unit_id": "g05_c06_u03", "chapter_id": "g05_c06", "chapter_name": "分数のたし算とひき算", "unit_name": "分数の性質"}, {"unit_id": "g05_c06_u04", "chapter_id": "g05_c06", "chapter_name": "分数のたし算とひき算", "unit_name": "分数のたし算とひき算"}, {"unit_id": "g05_c06_u05", "chapter_id": "g05_c06", "chapter_name": "分数のたし算とひき算", "unit_name": "いろいろな分数のたし算とひき算"}, {"unit_id": "g05_c07_u01", "chapter_id": "g05_c07", "chapter_name": "平均", "unit_name": "平均"}, {"unit_id": "g05_c08_u01", "chapter_id": "g05_c08", "chapter_name": "単位量あたりの大きさ", "unit_name": "単位量あたりの大きさ"}, {"unit_id": "g05_c09_u01", "chapter_id": "g05_c09", "chapter_name": "速さ", "unit_name": "速さ"}, {"unit_id": "g05_c09_u02", "chapter_id": "g05_c09", "chapter_name": "速さ", "unit_name": "速さの利用"}, {"unit_id": "g05_c10_u01", "chapter_id": "g05_c10", "chapter_name": "図形の面積", "unit_name": "平行四辺形の面積"}, {"unit_id": "g05_c10_u02", "chapter_id": "g05_c10", "chapter_name": "図形の面積", "unit_name": "三角形の面積"}, {"unit_id": "g05_c10_u03", "chapter_id": "g05_c10", "chapter_name": "図形の面積", "unit_name": "台形の面積"}, {"unit_id": "g05_c10_u04", "chapter_id": "g05_c10", "chapter_name": "図形の面積", "unit_name": "三角形・四角形の面積"}, {"unit_id": "g05_c11_u01", "chapter_id": "g05_c11", "chapter_name": "割合とグラフ", "unit_name": "割合"}, {"unit_id": "g05_c11_u02", "chapter_id": "g05_c11", "chapter_name": "割合とグラフ", "unit_name": "百分率と歩合"}, {"unit_id": "g05_c11_u03", "chapter_id": "g05_c11", "chapter_name": "割合とグラフ", "unit_name": "帯グラフと円グラフ"}, {"unit_id": "g05_c11_u04", "chapter_id": "g05_c11", "chapter_name": "割合とグラフ", "unit_name": "いろいろな帯グラフや円グラフ"}, {"unit_id": "g05_c11_u05", "chapter_id": "g05_c11", "chapter_name": "割合とグラフ", "unit_name": "割合についての問題"}, {"unit_id": "g05_c12_u01", "chapter_id": "g05_c12", "chapter_name": "円と正多角形", "unit_name": "正多角形"}, {"unit_id": "g05_c12_u02", "chapter_id": "g05_c12", "chapter_name": "円と正多角形", "unit_name": "円"}, {"unit_id": "g05_c13_u01", "chapter_id": "g05_c13", "chapter_name": "立体", "unit_name": "角柱と円柱"}], "g06": [{"unit_id": "g06_c01_u01", "chapter_id": "g06_c01", "chapter_name": "対称な図形", "unit_name": "①線対称"}, {"unit_id": "g06_c01_u02", "chapter_id": "g06_c01", "chapter_name": "対称な図形", "unit_name": "②点対称"}, {"unit_id": "g06_c01_u03", "chapter_id": "g06_c01", "chapter_name": "対称な図形", "unit_name": "③多角形と対称"}, {"unit_id": "g06_c02_u01", "chapter_id": "g06_c02", "chapter_name": "文字と式", "unit_name": "④文字を使った式"}, {"unit_id": "g06_c02_u02", "chapter_id": "g06_c02", "chapter_name": "文字と式", "unit_name": "⑤逆算"}, {"unit_id": "g06_c03_u01", "chapter_id": "g06_c03", "chapter_name": "分数のかけ算とわり算", "unit_name": "⑥分数×整数"}, {"unit_id": "g06_c03_u02", "chapter_id": "g06_c03", "chapter_name": "分数のかけ算とわり算", "unit_name": "⑦分数÷整数"}, {"unit_id": "g06_c03_u03", "chapter_id": "g06_c03", "chapter_name": "分数のかけ算とわり算", "unit_name": "⑧分数×分数"}, {"unit_id": "g06_c03_u04", "chapter_id": "g06_c03", "chapter_name": "分数のかけ算とわり算", "unit_name": "⑨分数÷分数"}, {"unit_id": "g06_c03_u05", "chapter_id": "g06_c03", "chapter_name": "分数のかけ算とわり算", "unit_name": "⑩いろいろな分数の計算"}, {"unit_id": "g06_c04_u01", "chapter_id": "g06_c04", "chapter_name": "速さと割合の問題", "unit_name": "⑪速さと分数"}, {"unit_id": "g06_c04_u02", "chapter_id": "g06_c04", "chapter_name": "速さと割合の問題", "unit_name": "⑫速さの問題"}, {"unit_id": "g06_c04_u03", "chapter_id": "g06_c04", "chapter_name": "速さと割合の問題", "unit_name": "⑬割合と分数①"}, {"unit_id": "g06_c04_u04", "chapter_id": "g06_c04", "chapter_name": "速さと割合の問題", "unit_name": "⑭割合と分数②"}, {"unit_id": "g06_c05_u01", "chapter_id": "g06_c05", "chapter_name": "比", "unit_name": "⑮比"}, {"unit_id": "g06_c05_u02", "chapter_id": "g06_c05", "chapter_name": "比", "unit_name": "⑯比の利用"}, {"unit_id": "g06_c05_u03", "chapter_id": "g06_c05", "chapter_name": "比", "unit_name": "⑰比の問題"}, {"unit_id": "g06_c06_u01", "chapter_id": "g06_c06", "chapter_name": "図形の拡大と縮小", "unit_name": "⑱拡大図と縮図"}, {"unit_id": "g06_c06_u02", "chapter_id": "g06_c06", "chapter_name": "図形の拡大と縮小", "unit_name": "⑲縮図の利用"}, {"unit_id": "g06_c07_u01", "chapter_id": "g06_c07", "chapter_name": "データの整理と活用", "unit_name": "⑳データの代表値とちらばり"}, {"unit_id": "g06_c07_u02", "chapter_id": "g06_c07", "chapter_name": "データの整理と活用", "unit_name": "㉑度数分布表とヒストグラム"}, {"unit_id": "g06_c07_u03", "chapter_id": "g06_c07", "chapter_name": "データの整理と活用", "unit_name": "㉒いろいろなグラフ"}, {"unit_id": "g06_c08_u01", "chapter_id": "g06_c08", "chapter_name": "円の面積", "unit_name": "㉓円の面積"}, {"unit_id": "g06_c09_u01", "chapter_id": "g06_c09", "chapter_name": "体積", "unit_name": "㉔角柱や円柱の体積"}, {"unit_id": "g06_c10_u01", "chapter_id": "g06_c10", "chapter_name": "およその大きさ", "unit_name": "㉕およその大きさ"}, {"unit_id": "g06_c11_u01", "chapter_id": "g06_c11", "chapter_name": "比例と反比例", "unit_name": "㉖比例"}, {"unit_id": "g06_c11_u02", "chapter_id": "g06_c11", "chapter_name": "比例と反比例", "unit_name": "㉗比例の式と利用"}, {"unit_id": "g06_c11_u03", "chapter_id": "g06_c11", "chapter_name": "比例と反比例", "unit_name": "㉘比例のグラフ"}, {"unit_id": "g06_c11_u04", "chapter_id": "g06_c11", "chapter_name": "比例と反比例", "unit_name": "㉙反比例"}, {"unit_id": "g06_c11_u05", "chapter_id": "g06_c11", "chapter_name": "比例と反比例", "unit_name": "㉚反比例の式と利用"}, {"unit_id": "g06_c11_u06", "chapter_id": "g06_c11", "chapter_name": "比例と反比例", "unit_name": "㉛反比例のグラフ"}, {"unit_id": "g06_c12_u01", "chapter_id": "g06_c12", "chapter_name": "場合の数", "unit_name": "㉜場合の数"}], "jhs1": [{"unit_id": "jhs_c01_u01", "chapter_id": "jhs_c01", "chapter_name": "正負の数", "unit_name": "正負の数"}, {"unit_id": "jhs_c02_u01", "chapter_id": "jhs_c02", "chapter_name": "文字と式、式の計算(1)", "unit_name": "文字と式、式の計算(1)"}, {"unit_id": "jhs_c03_u01", "chapter_id": "jhs_c03", "chapter_name": "文字と式、式の計算(2)", "unit_name": "文字と式、式の計算(2)"}, {"unit_id": "jhs_c04_u01", "chapter_id": "jhs_c04", "chapter_name": "1次方程式、連立方程式(1)", "unit_name": "1次方程式、連立方程式(1)"}, {"unit_id": "jhs_c05_u01", "chapter_id": "jhs_c05", "chapter_name": "1次方程式、連立方程式(2)", "unit_name": "1次方程式、連立方程式(2)"}, {"unit_id": "jhs_c06_u01", "chapter_id": "jhs_c06", "chapter_name": "比例・反比例", "unit_name": "比例・反比例"}], "jhs2": [{"unit_id": "jhs_c07_u01", "chapter_id": "jhs_c07", "chapter_name": "1次関数(1)", "unit_name": "1次関数(1)"}, {"unit_id": "jhs_c08_u01", "chapter_id": "jhs_c08", "chapter_name": "1次関数(2)", "unit_name": "1次関数(2)"}, {"unit_id": "jhs_c09_u01", "chapter_id": "jhs_c09", "chapter_name": "資料の活用", "unit_name": "資料の活用"}, {"unit_id": "jhs_c10_u01", "chapter_id": "jhs_c10", "chapter_name": "確率", "unit_name": "確率"}, {"unit_id": "jhs_c11_u01", "chapter_id": "jhs_c11", "chapter_name": "平面図形", "unit_name": "平面図形"}, {"unit_id": "jhs_c12_u01", "chapter_id": "jhs_c12", "chapter_name": "図形の調べ方", "unit_name": "図形の調べ方"}, {"unit_id": "jhs_c13_u01", "chapter_id": "jhs_c13", "chapter_name": "三角形・平行四辺形", "unit_name": "三角形・平行四辺形"}, {"unit_id": "jhs_c14_u01", "chapter_id": "jhs_c14", "chapter_name": "空間図形", "unit_name": "空間図形"}], "jhs3": [{"unit_id": "jhs_c15_u01", "chapter_id": "jhs_c15", "chapter_name": "多項式", "unit_name": "多項式"}, {"unit_id": "jhs_c16_u01", "chapter_id": "jhs_c16", "chapter_name": "平方根", "unit_name": "平方根"}, {"unit_id": "jhs_c17_u01", "chapter_id": "jhs_c17", "chapter_name": "2次方程式", "unit_name": "2次方程式"}, {"unit_id": "jhs_c18_u01", "chapter_id": "jhs_c18", "chapter_name": "関数y=ax²(1)", "unit_name": "関数y=ax²(1)"}, {"unit_id": "jhs_c19_u01", "chapter_id": "jhs_c19", "chapter_name": "関数y=ax²(2)", "unit_name": "関数y=ax²(2)"}, {"unit_id": "jhs_c20_u01", "chapter_id": "jhs_c20", "chapter_name": "相似な図形(1)", "unit_name": "相似な図形(1)"}, {"unit_id": "jhs_c21_u01", "chapter_id": "jhs_c21", "chapter_name": "相似な図形(2)", "unit_name": "相似な図形(2)"}, {"unit_id": "jhs_c22_u01", "chapter_id": "jhs_c22", "chapter_name": "円", "unit_name": "円"}, {"unit_id": "jhs_c23_u01", "chapter_id": "jhs_c23", "chapter_name": "三平方の定理(1)", "unit_name": "三平方の定理(1)"}, {"unit_id": "jhs_c24_u01", "chapter_id": "jhs_c24", "chapter_name": "三平方の定理(2)、標本調査", "unit_name": "三平方の定理(2)、標本調査"}]};
+var ALL_REFS = null; // GASから動的取得
+var GAS_URL = "https://script.google.com/macros/s/AKfycbzhv23W5nHuCxBiBZWWxJju1E_lBp4VQIvoNZD-aReJzB0xRaa1yRo9RndAV8hW6odI/exec";
+
+// GASからALL_REFSを取得し、UIを初期化する
+function loadAllRefsFromGAS(callback) {
+  fetch(GAS_URL)
+    .then(function(r) { return r.json(); })
+    .then(function(res) {
+      ALL_REFS = (res.ok && res.data) ? res.data : {};
+      if (callback) callback();
+    })
+    .catch(function(e) {
+      console.error('GAS取得エラー:', e);
+      ALL_REFS = {};
+      if (callback) callback();
+    });
+}
+
+var selGrade="g04";
+var UNITS=ALL_UNITS[selGrade];
+var REF_PROBLEMS = null; // loadAllRefsFromGAS後に設定
+
+
+
+var SEL_SCHOOL='sho';
+
+// ======== タブ切り替え ========
+function switchTab(tab){
+  var bankTab=document.getElementById('bank-tab');
+  var quizTab=document.getElementById('quiz-tab');
+  var btnBank=document.getElementById('tab-bank');
+  var btnQuiz=document.getElementById('tab-quiz');
+  if(tab==='bank'){
+    bankTab.style.display='';
+    quizTab.style.display='none';
+    btnBank.style.background='var(--accent-bg)';btnBank.style.color='var(--accent)';btnBank.style.borderColor='var(--accent)';
+    btnQuiz.style.background='';btnQuiz.style.color='';btnQuiz.style.borderColor='';
+  } else {
+    bankTab.style.display='none';
+    quizTab.style.display='block';
+    btnQuiz.style.background='var(--accent-bg)';btnQuiz.style.color='var(--accent)';btnQuiz.style.borderColor='var(--accent)';
+    btnBank.style.background='';btnBank.style.color='';btnBank.style.borderColor='';
+  }
+}
+
+// ======== 課題生成 ========
+var qSelectedGrades=[];
+var qSelectedUnits=[];
+var qGeneratedProblems=[];
+
+function toggleQGrade(btn){
+  var g=btn.dataset.grade;
+  var idx=qSelectedGrades.indexOf(g);
+  if(idx>-1){
+    qSelectedGrades.splice(idx,1);
+    btn.classList.remove('on');
+  } else {
+    qSelectedGrades.push(g);
+    btn.classList.add('on');
+  }
+  // 中学/小学でタブ切り替え
+  var hasJHS = qSelectedGrades.some(function(gr){ return gr.startsWith('jhs'); });
+  var hasSho = qSelectedGrades.some(function(gr){ return !gr.startsWith('jhs'); });
+  if(hasJHS && !hasSho) updateTypeTabs('jhs1');
+  else if(!hasJHS && qSelectedGrades.length > 0) updateTypeTabs('g04');
+  renderQUnits();
+}
+
+function renderQUnits(){
+  var area=document.getElementById('q-unit-area');
+  qSelectedUnits=[];
+  if(qSelectedGrades.length===0){area.innerHTML='<span style="color:var(--text3);font-size:12px">学年を選択してください</span>';return;}
+  area.innerHTML='';
+  qSelectedGrades.forEach(function(g){
+    var units=ALL_UNITS[g]||[];
+    units.forEach(function(u){
+      var btn=document.createElement('button');
+      btn.className='tag';btn.dataset.unitId=u.unit_id;btn.dataset.grade=g;
+      btn.textContent=u.chapter_name+'：'+u.unit_name;
+      btn.style.fontSize='10px';
+      btn.addEventListener('click',function(){
+        if(this.classList.contains('on')){
+          this.classList.remove('on');
+          qSelectedUnits=qSelectedUnits.filter(function(x){return x!==u.unit_id;});
+        } else {
+          if(qSelectedUnits.length>=3){alert('単元は最大3つまで選択できます');return;}
+          this.classList.add('on');
+          qSelectedUnits.push(u.unit_id);
+        }
+      });
+      area.appendChild(btn);
+    });
+  });
+}
+
+var JP_LEVEL_DESC={
+  N5:'ひらがな・カタカナのみ。漢字なし、ふりがなあり。/ Hiragana & Katakana only.',
+  N4:'基本の漢字（小1〜2レベル）＋ふりがなあり。/ Basic kanji with furigana.',
+  N3:'日常の漢字（小3〜4レベル）。重要語にふりがなあり。/ Everyday kanji, furigana on key words.',
+  N2:'中級の漢字（小5〜中1レベル）。ふりがななし。/ Intermediate kanji, no furigana.',
+  N1:'上級の漢字（中2〜3レベル）。ふりがななし。/ Advanced kanji.',
+  native:'漢字フル使用。ふりがななし。/ Full kanji, no furigana.',
+};
+var selectedJpLevel='N3';
+
+function selectJpLevel(btn){
+  document.querySelectorAll('.jp-lvl-btn').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  selectedJpLevel=btn.dataset.level;
+  var desc=document.getElementById('jp-level-desc');
+  if(desc) desc.textContent=JP_LEVEL_DESC[selectedJpLevel]||'';
+}
+
+function toggleLevelAll(cb){
+  document.querySelectorAll('.ql-cb').forEach(function(c){c.checked=cb.checked;});
+  updateLevelUI();
+}
+function updateLevelUI(){
+  var cbs=document.querySelectorAll('.ql-cb');
+  var checked=[].filter.call(cbs,function(c){return c.checked;});
+  var allCb=document.getElementById('ql-all');
+  if(allCb) allCb.checked=(checked.length===cbs.length);
+}
+function getSelectedLevels(){
+  var cbs=document.querySelectorAll('.ql-cb:checked');
+  var vals=[].map.call(cbs,function(c){return c.value;});
+  return vals.length>0?vals:['all'];
+}
+
+// 初期化
+setTimeout(function(){
+  updateModeUI();
+  selectJpLevel(document.querySelector('.jp-lvl-btn[data-level="N3"]'));
+  // デフォルトで「すべて」をチェック
+  document.getElementById('ql-all').checked=true;
+  toggleLevelAll(document.getElementById('ql-all'));
+},100);
+
+const LEVEL_LABEL={'example_follow':'例題紐づき','confirmation':'確認問題','practice':'練習問題','jissen':'実践問題'};
+const LEVEL_COLOR={'example_follow':'#7b1fa2','confirmation':'#1a9fd4','practice':'#e65100','jissen':'#2e7d32'};
+
+// ===== 復習コーナー =====
+var _SB_URL = 'https://upmflhdbhbyzoeldrvvw.supabase.co';
+var _SB_KEY = 'sb_publishable_K8Y_bNHVA4szRXFM_EcDkA_LBckunu5';
+
+function updateReviewUI() {
+  var onPrev  = document.getElementById('rev-prev-on').checked;
+  var onPrev2 = document.getElementById('rev-prev2-on').checked;
+  var onWeak  = document.getElementById('rev-weak-on').checked;
+  document.getElementById('rev-prev-count').disabled  = !onPrev;
+  document.getElementById('rev-prev2-count').disabled = !onPrev2;
+  document.getElementById('rev-weak-count').disabled  = !onWeak;
+}
+
+// 生徒選択時に復習カードを表示し、提出履歴を確認
+document.addEventListener('change', function(e){
+  if (e.target.id !== 'q-student') return;
+  var sid = e.target.value;
+  var card = document.getElementById('review-card');
+  if (!sid) { card.style.display = 'none'; return; }
+  card.style.display = 'block';
+  checkSubmissionHistory(sid);
+});
+
+function checkSubmissionHistory(sid) {
+  // Supabaseから提出履歴を取得（最新3件）
+  fetch(_SB_URL + '/rest/v1/submissions?student_id=eq.' + sid + '&order=submitted_at.desc&limit=3&select=id,submitted_at,submission_data', {
+    headers: { 'apikey': _SB_KEY, 'Authorization': 'Bearer ' + _SB_KEY }
+  }).then(function(r){ return r.json(); }).then(function(subs){
+    // 前回
+    var prevEl = document.getElementById('rev-prev-status');
+    var prev2El = document.getElementById('rev-prev2-status');
+    var weakEl = document.getElementById('rev-weak-status');
+    var weakLabel = document.getElementById('rev-weak-label');
+
+    if (subs.length >= 1) {
+      var dt = new Date(subs[0].submitted_at);
+      prevEl.innerHTML = '<span style="color:var(--green)">✓ ' + dt.getMonth()+1 + '/' + dt.getDate() + '</span>';
+      window._revSub1 = subs[0];
+    } else {
+      prevEl.innerHTML = '<span style="color:var(--text3)">データなし</span>';
+      document.getElementById('rev-prev-on').disabled = true;
+      window._revSub1 = null;
+    }
+
+    if (subs.length >= 2) {
+      var dt2 = new Date(subs[1].submitted_at);
+      var daysSince2 = Math.floor((Date.now() - dt2.getTime()) / (1000 * 60 * 60 * 24));
+      if (daysSince2 >= 7) {
+        prev2El.innerHTML = '<span style="color:var(--green)">✓ ' + (dt2.getMonth()+1) + '/' + dt2.getDate() + '</span>';
+        window._revSub2 = subs[1];
+      } else {
+        var remain = 7 - daysSince2;
+        prev2El.innerHTML = '<span style="color:var(--orange)">あと' + remain + '日</span>';
+        document.getElementById('rev-prev2-on').disabled = true;
+        document.getElementById('rev-prev2-on').checked = false;
+        window._revSub2 = null;
+      }
+    } else {
+      prev2El.innerHTML = '<span style="color:var(--text3)">データなし</span>';
+      document.getElementById('rev-prev2-on').disabled = true;
+      window._revSub2 = null;
+    }
+
+    // 弱点克服：累計10回以上かチェック
+    fetch(_SB_URL + '/rest/v1/submissions?student_id=eq.' + sid + '&select=id', {
+      headers: { 'apikey': _SB_KEY, 'Authorization': 'Bearer ' + _SB_KEY }
+    }).then(function(r){ return r.json(); }).then(function(all){
+      var total = all.length;
+      if (total >= 10) {
+        weakEl.innerHTML = '<span style="color:var(--green)">✓ 累計' + total + '回</span>';
+        document.getElementById('rev-weak-on').disabled = false;
+      } else {
+        weakEl.innerHTML = '<span style="color:var(--orange)">あと' + (10-total) + '回</span>';
+        document.getElementById('rev-weak-on').disabled = true;
+        document.getElementById('rev-weak-on').checked = false;
+      }
+    }).catch(function(){
+      weakEl.innerHTML = '<span style="color:var(--text3)">確認失敗</span>';
+    });
+  }).catch(function(){
+    document.getElementById('rev-prev-status').textContent = '取得失敗';
+  });
+}
+
+// 間違い問題を抽出して数字変えて再生成
+function generateReviewProblems(sub, maxCount, onDone) {
+  if (!sub) { onDone([]); return; }
+  var sd = sub.submission_data || {};
+  var problems = sd.problems || [];
+  // 不正解・部分点の問題を抽出（gradeStateがなければis_correctで判断）
+  var wrong = problems.filter(function(p){
+    var gs = window.gradeState && window.gradeState[p.problem_id];
+    if (gs) return gs.result === 'incorrect' || gs.result === 'partial' || gs.result === 'partial_calc';
+    return true; // gradeStateがなければ全問対象
+  });
+  if (wrong.length === 0) { onDone([]); return; }
+
+  // maxCountが'all'でなければ上限を適用
+  var limit = maxCount === 'all' ? wrong.length : parseInt(maxCount);
+  wrong = wrong.slice(0, limit);
+
+  var refText = wrong.map(function(p, i){
+    return '【参考' + (i+1) + '】問題文：' + (p.question||p.problem||'') + '／正解：' + (p.answer||'');
+  }).join('\n');
+
+  var prompt = '以下の参考問題と同じ単元・難易度で、数字・固有名詞・設定だけ変えた問題を' + wrong.length + '問作ってください。\n' +
+    '問題の構造・解き方は同じにしてください。\n\n' + refText + '\n\n' +
+    '以下のJSON形式のみで出力してください（他のテキスト不要）:\n' +
+    '{"problems":[{"number":1,"question":"問題文","answer":"答え","unit_name":"単元名","diff":"難易度"},...]}';
+
+  fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST', headers: apiHeaders(),
+    body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 2000,
+      messages: [{ role: 'user', content: prompt }] })
+  }).then(function(r){ return r.json(); }).then(function(d){
+    var txt = (d.content||[]).map(function(c){ return c.text||''; }).join('');
+    var parsed = {};
+    try { parsed = JSON.parse(txt.replace(/```json|```/g,'').trim()); } catch(e) { parsed = {problems:[]}; }
+    var probs = (parsed.problems||[]).map(function(p, i){
+      return Object.assign({}, p, {
+        problem_id: 'rev_' + sub.id + '_q' + (i+1),
+        tags: wrong[i] ? (wrong[i].tags||[]) : [],
+        review_type: 'retry'
+      });
+    });
+
+    // Layer 2.5 チェック
+    if (probs.length === 0) { onDone([]); return; }
+    var checkText = probs.map(function(p,i){
+      return '【問'+(i+1)+'】\n問題文：'+(p.question||'')+'\n正解：'+(p.answer||'');
+    }).join('\n\n');
+    fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST', headers: apiHeaders(),
+      body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 300,
+        system: 'あなたは算数・数学の問題の整合性チェッカーです。',
+        messages: [{ role: 'user', content:
+          '以下の問題に数値の矛盾・論理的不整合がないか確認してください。\n\n' + checkText +
+          '\n\n{"ok":true} または {"ok":false,"issues":[...]} のJSONのみで返してください。' }] })
+    }).then(function(r){ return r.json(); }).then(function(cd){
+      var ctxt = (cd.content||[]).map(function(c){ return c.text||''; }).join('');
+      var cres = {};
+      try { cres = JSON.parse(ctxt.replace(/```json|```/g,'').trim()); } catch(e) { cres = {ok:true}; }
+      if (!cres.ok) {
+        // NGなら再生成1回だけ試みてスキップ
+        console.warn('復習問題の整合性NG:', cres.issues);
+      }
+      onDone(probs);
+    }).catch(function(){ onDone(probs); });
+  }).catch(function(){ onDone([]); });
+}
+
+// ===== 生徒選択（Lethe API） =====
+var _allStudents = [];
+
+function loadStudents() {
+  var statusEl = document.getElementById('student-load-status');
+  statusEl.textContent = '読み込み中...';
+  var LETHE_URL = 'https://script.google.com/macros/s/AKfycbxlXsrnt14jxxZrnKUSSdq4KG8LU96eDTPjrkyXdSGZ-Gmehha5HHNPMZTnQo6OrIy7oA/exec';
+  fetch(LETHE_URL, {
+    method: 'POST',
+    body: JSON.stringify({ action: 'getStudents' })
+  }).then(function(r){ return r.json(); }).then(function(d){
+    if (!d.success) { statusEl.textContent = '読み込みエラー: ' + (d.error||'不明'); return; }
+    _allStudents = d.students || [];
+    var mode = document.querySelector('input[name="q-mode"]:checked').value;
+    filterStudentsByMode(mode);
+    statusEl.textContent = '生徒データ読み込み完了（' + _allStudents.length + '名）';
+  }).catch(function(e){
+    statusEl.textContent = '通信エラー: ' + e.message;
+  });
+}
+
+function filterStudentsByMode(mode) {
+  var sel = document.getElementById('q-student');
+  if (!sel) return;
+  var current = sel.value;
+  sel.innerHTML = '<option value="">-- 生徒を選択（選択しない場合は汎用課題）--</option>';
+  _allStudents
+    .filter(function(s){ return s.mode === mode || !s.mode; })
+    .forEach(function(s){
+      var opt = document.createElement('option');
+      opt.value = s.student_id;
+      opt.dataset.name = s.name;
+      opt.dataset.mode = s.mode || 'domestic';
+      opt.dataset.jpLevel = s.jp_level || '';
+      opt.dataset.grade = s.grade || '';
+      opt.textContent = s.name + '（' + s.grade + '）' + (s.jp_level ? ' [' + s.jp_level + ']' : '');
+      sel.appendChild(opt);
+    });
+  // 以前の選択を復元
+  if (current) sel.value = current;
+}
+
+// ページ読み込み時に自動取得
+window.addEventListener('load', function(){ loadStudents(); });
+
+function generateQuiz(){
+  if(qSelectedGrades.length===0){alert('学年を選択してください');return;}
+  var selectedLevels=getSelectedLevels();
+  var count=parseInt(document.getElementById('q-count').value);
+  var diff=document.getElementById('q-diff').value;
+  var theme=document.getElementById('q-theme').value.trim();
+  var mode=document.querySelector('input[name="q-mode"]:checked').value;
+
+  var btn=document.getElementById('q-gen-btn');
+  var status=document.getElementById('q-status');
+  btn.textContent='⟳ 生成中...';btn.disabled=true;
+  document.getElementById('q-preview').style.display='none';
+
+  // 単元リストを決定（未選択なら全単元扱い）
+  var targetUnits=qSelectedUnits.length>0?qSelectedUnits:['all'];
+
+  // 確認問題プール（水増し用・全単元から）
+  var confirmPool=[];
+  qSelectedGrades.forEach(function(gr){
+    (ALL_REFS[gr]||[]).forEach(function(p){
+      if(targetUnits[0]!=='all'&&targetUnits.indexOf(p.unit_id)<0)return;
+      if(p.type!=='confirmation')return;
+      if(diff!=='all'&&p.diff!==diff)return;
+      if(p.has_figure)return;
+      confirmPool.push(p);
+    });
+  });
+  var confirmShuffled=confirmPool.slice().sort(function(){return Math.random()-0.5;});
+
+  function buildRefs(lvl, unitFilter, myCount){
+    var pool=[];
+    qSelectedGrades.forEach(function(g){
+      (ALL_REFS[g]||[]).forEach(function(p){
+        if(unitFilter[0]!=='all'&&unitFilter.indexOf(p.unit_id)<0)return;
+        if(lvl!=='all'&&p.type!==lvl)return;
+        if(diff!=='all'&&p.diff!==diff)return;
+        if(p.has_figure)return;
+        pool.push(p);
+      });
+    });
+    var refs=pool.slice().sort(function(){return Math.random()-0.5;});
+    if(refs.length<myCount){
+      refs=refs.concat(confirmShuffled.filter(function(p){
+        return !refs.some(function(r){return r.id===p.id;});
+      }));
+    }
+    while(refs.length<myCount){
+      refs=refs.concat(refs.slice(0,myCount-refs.length));
+    }
+    return refs.slice(0,myCount);
+  }
+
+  // 「すべて」を選んだ場合は全3レベルに展開
+  if(selectedLevels.length===1 && selectedLevels[0]==='all'){
+    selectedLevels=['example_follow','confirmation','practice'];
+  }
+
+  // 組み合わせ別固定比率（確認問題優先）
+  var COMBO_RATIO = {
+    'example_follow':                          { example_follow:1 },
+    'confirmation':                            { confirmation:1 },
+    'practice':                                { practice:1 },
+    'confirmation,example_follow':             { example_follow:2, confirmation:3 },
+    'confirmation,practice':                   { confirmation:3, practice:2 },
+    'example_follow,practice':                 { example_follow:1, practice:4 },
+    'confirmation,example_follow,practice':    { example_follow:2, confirmation:5, practice:3 },
+  };
+  var comboKey = selectedLevels.slice().sort().join(',');
+  var LEVEL_RATIO = COMBO_RATIO[comboKey] || (function(){
+    var r = {}; selectedLevels.forEach(function(l){ r[l]=1; }); return r;
+  })();
+  var levelCountMap = {};
+
+  if(selectedLevels.length === 1){
+    levelCountMap[selectedLevels[0]] = count;
+  } else {
+    var ratioTotal = selectedLevels.reduce(function(s,l){ return s+(LEVEL_RATIO[l]||1); }, 0);
+    // 確認→練習→例題の順で「残り全部」を受け取る（確認が一番多くなる）
+    var LAST_PREF = ['confirmation','practice','example_follow'];
+    var lastLevel = null;
+    LAST_PREF.forEach(function(lp){
+      if(!lastLevel && selectedLevels.indexOf(lp)>=0) lastLevel = lp;
+    });
+    var assigned = 0;
+    selectedLevels.forEach(function(l){
+      if(l === lastLevel) return;
+      levelCountMap[l] = Math.max(1, Math.floor(count * (LEVEL_RATIO[l]||1) / ratioTotal));
+      assigned += levelCountMap[l];
+    });
+    levelCountMap[lastLevel] = Math.max(1, count - assigned);
+  }
+
+  var levelBreakdown = selectedLevels.map(function(l){
+    return (LEVEL_LABEL[l]||l) + levelCountMap[l] + '問';
+  }).join('・');
+
+  var levelGroups=[];
+  selectedLevels.forEach(function(lvl){
+    var myCount=levelCountMap[lvl]||1;
+    var refs=buildRefs(lvl,targetUnits,myCount);
+    levelGroups.push({level:lvl,refs:refs,count:myCount});
+  });
+
+  // 単元が複数選択されている場合、単元ごとにcount問×レベル配分で生成
+  var totalCount;
+  var refText;
+  if(targetUnits[0]==='all'||targetUnits.length<=1){
+    totalCount=levelGroups.reduce(function(s,g){return s+g.count;},0);
+    refText=levelGroups.map(function(g){
+      var label=LEVEL_LABEL[g.level]||g.level;
+      return '=== '+label+' ===\n'+g.refs.map(function(p){
+        return '【'+label+'】【'+p.chapter_name+'：'+p.unit_name+'】\n問題: '+p.text+'\n解答: '+p.answer;
+      }).join('\n\n');
+    }).join('\n\n');
+  } else {
+    totalCount=count*targetUnits.length;
+    refText=targetUnits.map(function(unitId){
+      var unitLabel='';
+      qSelectedGrades.forEach(function(g){
+        (ALL_REFS[g]||[]).forEach(function(p){
+          if(p.unit_id===unitId)unitLabel=p.chapter_name+'：'+p.unit_name;
+        });
+      });
+      var unitRefText=selectedLevels.map(function(lvl){
+        var myCount=levelCountMap[lvl]||1;
+        var refs=buildRefs(lvl,[unitId],myCount);
+        var label=LEVEL_LABEL[lvl]||lvl;
+        return refs.map(function(p){
+          return '【'+label+'】【'+p.chapter_name+'：'+p.unit_name+'】\n問題: '+p.text+'\n解答: '+p.answer;
+        }).join('\n\n');
+      }).join('\n\n');
+      return '=== 単元：'+unitLabel+' ===\n'+unitRefText;
+    }).join('\n\n');
+  }
+
+  if(levelGroups.length===0){alert('条件に合う参考問題が見つかりません。条件を変えてみてください。');btn.textContent='✨ 問題を生成する';btn.disabled=false;return;}
+
+  var levelDesc=selectedLevels.map(function(l){return LEVEL_LABEL[l]||l;}).join('・');
+  var unitDesc=targetUnits[0]==='all'?'全単元':'単元×'+targetUnits.length;
+  status.textContent=totalCount+'問（'+unitDesc+'・'+levelBreakdown+'）を生成中…';
+
+  var themeInstruction=theme
+    ?'問題文の設定・登場人物を「'+theme+'」の世界観に合わせて書き直してください。数式・計算内容は変えないでください。'
+    :'参考問題と同じ構造で、数字や設定を変えた新しい問題を作ってください。';
+
+  var jpLevelInstruction='';
+  if(mode==='overseas'){
+    var lvInstructions={
+      N5:'【日本語レベルN5】問題文はひらがな・カタカナのみで書いてください。漢字は使わないでください。readingフィールドも同じ文を入れてください。',
+      N4:'【日本語レベルN4】問題文は小学1〜2年生レベルの基本漢字のみ使用し、それ以外の漢字にはrubyタグでふりがなを付けてください（例：<ruby>配る<rt>くばる</rt></ruby>）。',
+      N3:'【日本語レベルN3】問題文は日常的な漢字（小学3〜4年生レベル）を使用し、難しい漢字にはrubyタグでふりがなを付けてください。',
+      N2:'【日本語レベルN2】問題文は中学1年生レベルの漢字を使用してください。ふりがなは不要です。',
+      N1:'【日本語レベルN1】問題文は中学2〜3年生レベルの漢字を使用してください。ふりがなは不要です。',
+      native:'【日本語レベルnative】問題文は漢字を自由に使用してください。ふりがなは不要です。',
+    };
+    jpLevelInstruction='\n'+(lvInstructions[selectedJpLevel]||'');
+  }
+
+  var modeInstruction=mode==='domestic'
+    ?'各問題に、内容に関連する英語表現（english_phrase）と語彙（vocab_word, vocab_meaning）を付けてください。またreading（問題文のひらがな読み）も付けてください。さらにwords配列として問題文中の重要語彙を2つ抽出し、meaning（英語意味）とexample（使用例）を付けてください。'
+    :'問題文はシンプルな日本語にしてください（外国人学習者向け）。英語ヒント（english_hint）を短く付けてください。またreading（問題文のひらがな読み、ひらがなのみ）を付けてください。さらにwords配列として問題文中の重要語彙を2つ抽出し、meaning（英語意味）とexample（使用例）を付けてください。'+jpLevelInstruction;
+
+  // 海外向けのみ漢字クイズを追加生成
+  var kanjiInstruction=mode==='overseas'
+    ?'\n\nさらに、問題文に登場する漢字から3つ選んで漢字クイズを作ってください。kanji_quiz配列として出力してください。各クイズは：reading（ひらがな読み）、en（英語意味）、correct（正しい熟語・漢字）、choices（正解含む3択・形の似た別の漢字熟語）、hint（英語ヒント）を含めてください。choicesは正解と見た目が似ていて紛らわしいものにしてください。'
+    :'';
+
+  var jsonFormat=mode==='domestic'
+    ?'{"problems":[{"number":1,"unit":"単元名","chapter":"章名","level":"example_follow","question":"問題文","answer":"解答","reading":"ひらがな","english_phrase":"英語表現","vocab_word":"英単語","vocab_meaning":"意味","words":[{"word":"語彙","meaning":"意味","example":"例"}]}]}'
+    :'{"problems":[{"number":1,"unit":"単元名","chapter":"章名","level":"example_follow","question":"問題文","answer":"解答","reading":"ひらがな","english_hint":"English hint","words":[{"word":"語彙","meaning":"意味","example":"例"}]}],"kanji_quiz":[{"reading":"きょり","en":"distance","correct":"距離","choices":["距離","道理","遠路"],"hint":"How far is it?"}]}';
+
+  // レベル別問題数を固定比率で計算（確認優先）
+
+  var variationInstruction=
+    '\n【必須】合計'+totalCount+'問を必ず出力してください。'+
+    (targetUnits.length>1?'単元'+targetUnits.length+'つ×（':'')+'レベル別内訳：'+levelBreakdown+
+    (targetUnits.length>1?'）=合計'+totalCount+'問':'')+'。この内訳を必ず守ってください。'+
+    '\n【重要】確認問題（confirmation）を多めに出してください。例題紐づき（example_follow）は少なくしてください。'+
+    '\n参考問題が足りない場合は、同じ問題から数字・固有名詞・設定を変えて複数問作ってください。'+
+    '\n各問題には必ずlevelフィールドに正確な問題レベル（example_follow/confirmation/practice）を入れてください。';
+
+  var prompt='算数・数学の問題を作成してください。\n'+
+    themeInstruction+'\n'+modeInstruction+kanjiInstruction+variationInstruction+'\n\n'+
+    '以下のJSON形式のみで出力してください（他のテキスト不要）:\n'+
+    jsonFormat+'\n\n【参考問題】\n'+refText;
+
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',headers:apiHeaders(),
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:8000,
+      messages:[{role:'user',content:prompt}]})
+  }).then(function(r){
+    if(!r.ok){
+      return r.json().then(function(e){
+        throw new Error('API error '+r.status+': '+(e.error&&e.error.message||JSON.stringify(e)));
+      }).catch(function(){
+        throw new Error('API error '+r.status);
+      });
+    }
+    return r.json();
+  }).then(function(d){
+    var txt=d.content?d.content.map(function(c){return c.text||'';}).join(''):'{}';
+    var parsed={};
+    try{parsed=JSON.parse(txt.replace(/```json|```/g,'').trim());}catch(e){parsed={problems:[]};}
+
+    // 参考問題からタグマップを作成（problem番号→tags）
+    var refTagMap={};
+    var refIdx=0;
+    levelGroups.forEach(function(g){
+      g.refs.forEach(function(p){
+        refTagMap[refIdx+1]=(p.tags||[]);
+        refIdx++;
+      });
+    });
+
+    // assignment_id生成
+    var assignmentId='asgn_'+Date.now()+'_'+Math.random().toString(36).substr(2,6);
+
+    var problems=parsed.problems||[];
+    // 各問題にタグを付与
+    problems=problems.map(function(p,i){
+      return Object.assign({},p,{
+        problem_id:assignmentId+'_q'+(i+1),
+        tags:refTagMap[p.number||i+1]||[]
+      });
+    });
+
+    // ── Layer 2.5: 論理整合性チェック ──────────────────────
+    function checkConsistency(problemsArr, kanjiArr, maxRetry, onOk, onFail){
+      if(maxRetry<=0){ onFail('3回再生成しましたが整合性が確認できませんでした。問題を確認してください。'); return; }
+      var checkText = problemsArr.map(function(p,i){
+        return '【問'+(i+1)+'】\n問題文：'+(p.question||p.problem||'')+'\n正解：'+(p.answer||'');
+      }).join('\n\n');
+      fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST', headers:apiHeaders(),
+        body:JSON.stringify({
+          model:'claude-haiku-4-5-20251001', max_tokens:300,
+          system:'あなたは算数・数学の問題の整合性チェッカーです。問題文中の数値・条件・答えに矛盾や不整合がないか確認します。',
+          messages:[{role:'user',content:
+            '以下の問題に数値の矛盾・論理的不整合・解答不能な条件がないか確認してください。\n\n'+
+            checkText+
+            '\n\n結果をJSONのみで返してください（他のテキスト不要）:\n{"ok":true} または {"ok":false,"issues":["問題番号と矛盾の説明",...]}'}]
+        })
+      }).then(function(r){ return r.json(); }).then(function(d){
+        var txt = (d.content||[]).map(function(c){return c.text||'';}).join('');
+        var result = {};
+        try{ result = JSON.parse(txt.replace(/```json|```/g,'').trim()); }catch(e){ result={ok:true}; }
+        if(result.ok){
+          onOk();
+        } else {
+          // NG → ステータスに警告を出しつつ自動再生成
+          var issueText = (result.issues||['不整合あり']).join(' / ');
+          document.getElementById('q-status').innerHTML=
+            '<span style="color:var(--orange)">⚠️ 整合性NG（'+issueText+'）→ 再生成中… ('+(4-maxRetry)+'/3)</span>';
+          // 同じプロンプトで再生成
+          fetch('https://api.anthropic.com/v1/messages',{
+            method:'POST', headers:apiHeaders(),
+            body:JSON.stringify({model:'claude-haiku-4-5-20251001', max_tokens:8000,
+              messages:[{role:'user',content:prompt}]})
+          }).then(function(r){ return r.json(); }).then(function(d2){
+            var txt2 = (d2.content||[]).map(function(c){return c.text||'';}).join('');
+            var parsed2 = {};
+            try{ parsed2 = JSON.parse(txt2.replace(/```json|```/g,'').trim()); }catch(e){ parsed2={problems:[]}; }
+            var newProblems = (parsed2.problems||[]).map(function(p,i){
+              return Object.assign({},p,{ problem_id:assignmentId+'_q'+(i+1), tags:refTagMap[p.number||i+1]||[] });
+            });
+            checkConsistency(newProblems, parsed2.kanji_quiz||[], maxRetry-1, function(){
+              problems = newProblems;
+              parsed.kanji_quiz = parsed2.kanji_quiz||[];
+              onOk();
+            }, onFail);
+          }).catch(function(){ onOk(); }); // 再生成失敗時はスキップ
+        }
+      }).catch(function(){ onOk(); }); // チェック失敗時はスキップ
+    }
+    // ─────────────────────────────────────────────────────────
+
+    function finalizeOutput(){
+      var outputJson={
+        meta:{
+          assignment_id:assignmentId,
+          mode:mode,
+          theme:theme||null,
+          jp_level:mode==='overseas'?selectedJpLevel:null,
+          grades:qSelectedGrades,
+          units:qSelectedUnits,
+          levels:selectedLevels,
+          count:totalCount,
+          generated_at:new Date().toISOString()
+        },
+        problems:problems,
+        kanji_quiz:mode==='overseas'?(parsed.kanji_quiz||[]):[]
+      };
+      window._quizJson=outputJson;
+      document.getElementById('q-json-output').value=JSON.stringify(outputJson,null,2);
+    }
+
+    document.getElementById('q-status').innerHTML='<span style="color:var(--accent)">🔍 整合性チェック中...</span>';
+    checkConsistency(problems, parsed.kanji_quiz||[], 3,
+      function(){ // OK → 復習問題生成へ
+        document.getElementById('q-status').innerHTML='<span style="color:var(--accent)">📚 復習問題を生成中...</span>';
+        generateAllReviewProblems(function(reviewSections){
+          finalizeOutput(reviewSections);
+          var msg = '✅ 整合性OK';
+          if (reviewSections.length > 0) {
+            msg += ' ＋ 復習' + reviewSections.reduce(function(s,r){ return s+r.problems.length; },0) + '問';
+          }
+          document.getElementById('q-status').innerHTML='<span style="color:var(--green)">' + msg + '</span>';
+        });
+      },
+      function(msg){ // 3回NGで諦める
+        finalizeOutput([]);
+        document.getElementById('q-status').innerHTML='<span style="color:var(--red)">⚠️ '+msg+'</span>';
+      }
+    );
+
+    function generateAllReviewProblems(onDone) {
+      var sections = [];
+      var onPrev  = document.getElementById('rev-prev-on') && document.getElementById('rev-prev-on').checked;
+      var onPrev2 = document.getElementById('rev-prev2-on') && document.getElementById('rev-prev2-on').checked;
+      var tasks = [];
+
+      if (onPrev && window._revSub1) {
+        var c1 = document.getElementById('rev-prev-count').value;
+        tasks.push({ sub: window._revSub1, count: c1, label: '前回の復習' });
+      }
+      if (onPrev2 && window._revSub2) {
+        var c2 = document.getElementById('rev-prev2-count').value;
+        tasks.push({ sub: window._revSub2, count: c2, label: '前々回の復習' });
+      }
+
+      if (tasks.length === 0) { onDone([]); return; }
+
+      var results = [];
+      var done = 0;
+      tasks.forEach(function(t){
+        generateReviewProblems(t.sub, t.count, function(probs){
+          if (probs.length > 0) results.push({ label: t.label, problems: probs });
+          done++;
+          if (done === tasks.length) onDone(results);
+        });
+      });
+    }
+
+    // プロンプトテンプレ
+    var modeDesc=mode==='domestic'
+      ?'国内向け（算数×英語）：日本語で算数を解きながら英語表現も学ぶ'
+      :'海外向け（算数を日本語で）：外国人向けシンプル日本語＋英語ヒント付き';
+    var levelsDesc=levelBreakdown;
+    var promptTemplate=
+      '以下のJSONをもとに、student_quizのHTMLを作ってください。\n\n'+
+      '【モード】'+modeDesc+'\n'+
+      (theme?'【テーマ】'+theme+'\n':'')+
+      (mode==='overseas'?'【日本語レベル】'+selectedJpLevel+'\n':'')+
+      '【問題レベル】'+levelsDesc+'\n'+
+      '【問題数】'+outputJson.meta.count+'問\n\n'+
+      '【フォーマット参考】'+(mode==='overseas'?'student_quiz_v11_soccer.html':'student_quiz_v13b_disney.html')+'と同じ構成で。\n'+
+      '- SVGイラストはテーマに合わせたオリジナルキャラを作る（各問題72×72px）\n'+
+      '- 手書きキャンバス（DrawCanvas）を各問題に付ける\n'+
+      '- 単元バッジの横に問題レベルバッジを表示する（例題:紫/確認:青/練習:橙）\n'+
+      (mode==='overseas'
+        ?'- 📖ことば / 🇬🇧English hint ボタンを各問題に付ける\n'+
+          '- 今日の漢字コーナー（kanji_quizデータを使用）：reading=英語の意味、選択肢は熟語・漢字ごと、手書きキャンバス付き\n'
+        :'- 🌍 ＋Englishボタン（english_phrase・vocab_word表示）を各問題に付ける\n')+
+      '- Supabase送信ボタンを付ける\n'+
+      '- 送信データにlevel（問題レベル）を含める\n'+
+      '- URLパラメータ ?sid= を受け取り、送信データの student_id にセットする。例: const sid = new URLSearchParams(location.search).get(\'sid\') || null;\n'+
+      (outputJson.meta.student_id
+        ? '- この課題の対象生徒: student_id="' + outputJson.meta.student_id + '", student_name="' + (outputJson.meta.student_name||'') + '"（URLに ?sid=' + outputJson.meta.student_id + ' を付けて配布する想定）\n'
+        : '')+
+      '- Supabase URL: https://upmflhdbhbyzoeldrvvw.supabase.co\n'+
+      '- Supabase KEY: sb_publishable_K8Y_bNHVA4szRXFM_EcDkA_LBckunu5\n\n'+
+      '【JSON】\n（ここにJSONを貼り付けてください）';
+
+    document.getElementById('q-prompt-template').value=promptTemplate;
+    document.getElementById('q-preview').style.display='block';
+    btn.textContent='✨ 問題を生成する';btn.disabled=false;
+    status.textContent=outputJson.meta.count+'問生成完了（'+levelsDesc+'）';
+  }).catch(function(e){
+    status.textContent='エラー: '+e.message;
+    btn.textContent='✨ 問題を生成する';btn.disabled=false;
+  });
+}
+function updateModeUI(){
+  var domestic=document.getElementById('mode-domestic').checked;
+  var dc=document.getElementById('mode-domestic-card');
+  var oc=document.getElementById('mode-overseas-card');
+  filterStudentsByMode(domestic ? 'domestic' : 'overseas');
+  var lvCard=document.getElementById('jp-level-card');
+  dc.style.borderColor=domestic?'var(--accent)':'var(--border)';
+  dc.style.background=domestic?'var(--accent-bg)':'transparent';
+  oc.style.borderColor=domestic?'var(--border)':'var(--accent)';
+  oc.style.background=domestic?'transparent':'var(--accent-bg)';
+  if(lvCard) lvCard.style.display=domestic?'none':'block';
+  var desc=document.getElementById('jp-level-desc');
+  if(desc&&!desc.textContent) desc.textContent=JP_LEVEL_DESC[selectedJpLevel]||'';
+}
+
+// 初期化
+setTimeout(function(){updateModeUI();selectJpLevel(document.querySelector('.jp-lvl-btn[data-level="N3"]'));},100);
+
+
+function copyQuizJSON(){
+  var ta=document.getElementById('q-json-output');
+  ta.select();document.execCommand('copy');
+  var s=document.getElementById('q-copy-status');
+  s.textContent='✓ コピーしました';
+  setTimeout(function(){s.textContent='';},2000);
+}
+
+function copyPromptTemplate(){
+  var ta=document.getElementById('q-prompt-template');
+  ta.select();document.execCommand('copy');
+}
+
+function generateQuizHTML(){
+  var json=window._quizJson;
+  if(!json||!json.problems||json.problems.length===0){alert('先に問題を生成してください');return;}
+  var mode=json.meta.mode;
+  var theme=json.meta.theme||'';
+  var jpLevel=json.meta.jp_level||'N3';
+  var kanjiQuiz=json.kanji_quiz||[];
+
+  // 問題データJS生成
+  var problemsJS=json.problems.map(function(p,i){
+    var wordsJS=JSON.stringify(p.words||[]);
+    if(mode==='domestic'){
+      return '  {id:'+(i+1)+',unit:'+JSON.stringify(p.unit||'')+',chapter:'+JSON.stringify(p.chapter||'')+
+        ',level:'+JSON.stringify(p.level||'')+
+        ',jp:<span>'+escHtml(p.question)+'</span>'+
+        ',reading:'+JSON.stringify(p.reading||'')+
+        ',answer:'+JSON.stringify(p.answer||'')+
+        ',english_phrase:'+JSON.stringify(p.english_phrase||'')+
+        ',vocab_word:'+JSON.stringify(p.vocab_word||'')+
+        ',vocab_meaning:'+JSON.stringify(p.vocab_meaning||'')+
+        ',words:'+wordsJS+'}';
+    } else {
+      return '  {id:'+(i+1)+',unit:'+JSON.stringify(p.unit||'')+',chapter:'+JSON.stringify(p.chapter||'')+
+        ',level:'+JSON.stringify(p.level||'')+
+        ',jp:<span>'+escHtml(p.question)+'</span>'+
+        ',reading:'+JSON.stringify(p.reading||'')+
+        ',answer:'+JSON.stringify(p.answer||'')+
+        ',hint:'+JSON.stringify(p.english_hint||'')+
+        ',words:'+wordsJS+'}';
+    }
+  }).join(',\n');
+
+  // 漢字クイズJS（海外向けのみ）
+  var kanjiJS=kanjiQuiz.length>0
+    ?JSON.stringify(kanjiQuiz,null,2)
+    :'[]';
+
+  var html=buildBaseTemplate(mode,theme,jpLevel,problemsJS,kanjiJS,json.meta);
+  var blob=new Blob([html],{type:'text/html'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='student_quiz_'+(theme.replace(/[^\w\u3040-\u9fff]/g,'')||'quiz')+'.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function escHtml(str){
+  return (str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/\n/g,'<br/>');
+}
+
+function buildBaseTemplate(mode,theme,jpLevel,problemsJS,kanjiJS,meta){
+  var isOverseas=mode==='overseas';
+  return '<!DOCTYPE html>\n<html lang="ja">\n<head>\n'+
+  '<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">\n'+
+  '<title>算数クイズ '+(theme||'')+'</title>\n'+
+  '<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"><\/script>\n'+
+  '<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"><\/script>\n'+
+  '<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"><\/script>\n'+
+  '<style>* { box-sizing: border-box; margin: 0; padding: 0; } body { background: #f0f4ff; font-family: \'Hiragino Sans\',\'Yu Gothic\',sans-serif; } ruby { ruby-align: center; } rt { font-size: 10px; color: #888; }</style>\n'+
+  '</head>\n<body>\n<div id="root"></div>\n'+
+  '<script type="text/babel">\n\n'+
+  '// ★ SVGイラストはここに追加してください\n'+
+  '// const illustrations = { 1: <svg>...</svg>, ... }\n'+
+  'const illustrations = {};\n\n'+
+  '// ★ 問題データ（Pandora生成）\n'+
+  'const questions = [\n'+problemsJS+'\n];\n\n'+
+  (isOverseas ? '// ★ 漢字クイズデータ（Pandora生成）\nconst kanjiQuizData = '+kanjiJS+';\n\n' : '')+
+  buildCoreComponents(isOverseas,theme,meta)+
+  '\nReactDOM.render(React.createElement(App), document.getElementById("root"));\n'+
+  '<\/script>\n</body>\n</html>';
+}
+
+function buildCoreComponents(isOverseas,theme,meta){
+  var SUPABASE_URL='https://upmflhdbhbyzoeldrvvw.supabase.co';
+  var SUPABASE_KEY='sb_publishable_K8Y_bNHVA4szRXFM_EcDkA_LBckunu5';
+
+  return `
+const LEVEL_BADGE = {
+  example_follow: { label:"例題", color:"#7b1fa2", bg:"#f3e5f5" },
+  confirmation:   { label:"確認", color:"#1a9fd4", bg:"#e1f5fe" },
+  practice:       { label:"練習", color:"#e65100", bg:"#fff3e0" },
+};
+
+function DrawCanvas({ id, height=120, label, canvasRef: externalRef }) {
+  const internalRef = React.useRef(null);
+  const canvasRef = externalRef || internalRef;
+  const isDrawing = React.useRef(false);
+  const lastPos = React.useRef(null);
+  const [hasDrawing, setHasDrawing] = React.useState(false);
+  const getPos=(e,canvas)=>{const rect=canvas.getBoundingClientRect();const sx=canvas.width/rect.width,sy=canvas.height/rect.height;if(e.touches)return{x:(e.touches[0].clientX-rect.left)*sx,y:(e.touches[0].clientY-rect.top)*sy};return{x:(e.clientX-rect.left)*sx,y:(e.clientY-rect.top)*sy};};
+  React.useEffect(()=>{const canvas=canvasRef.current;const ctx=canvas.getContext("2d");ctx.fillStyle="#fffde7";ctx.fillRect(0,0,canvas.width,canvas.height);ctx.strokeStyle="#1a237e";ctx.lineWidth=3;ctx.lineCap="round";ctx.lineJoin="round";const onTS=(e)=>{e.preventDefault();isDrawing.current=true;lastPos.current=getPos(e,canvas);setHasDrawing(true);};const onTM=(e)=>{e.preventDefault();if(!isDrawing.current)return;const pos=getPos(e,canvas);const c2=canvas.getContext("2d");c2.beginPath();c2.moveTo(lastPos.current.x,lastPos.current.y);c2.lineTo(pos.x,pos.y);c2.stroke();lastPos.current=pos;};const onTE=(e)=>{e.preventDefault();isDrawing.current=false;};canvas.addEventListener("touchstart",onTS,{passive:false});canvas.addEventListener("touchmove",onTM,{passive:false});canvas.addEventListener("touchend",onTE,{passive:false});return()=>{canvas.removeEventListener("touchstart",onTS);canvas.removeEventListener("touchmove",onTM);canvas.removeEventListener("touchend",onTE);};},[]); const sd=(e)=>{isDrawing.current=true;lastPos.current=getPos(e,canvasRef.current);setHasDrawing(true);};const dr=(e)=>{if(!isDrawing.current)return;const c=canvasRef.current;const ctx=c.getContext("2d");const pos=getPos(e,c);ctx.beginPath();ctx.moveTo(lastPos.current.x,lastPos.current.y);ctx.lineTo(pos.x,pos.y);ctx.stroke();lastPos.current=pos;};const sp=()=>{isDrawing.current=false;};const clear=()=>{const c=canvasRef.current;const ctx=c.getContext("2d");ctx.fillStyle="#fffde7";ctx.fillRect(0,0,c.width,c.height);setHasDrawing(false);};
+  return (
+    <div style={{marginTop:10}}>
+      {label&&<p style={{fontSize:12,color:"#5c6bc0",fontWeight:"bold",margin:"0 0 5px 0"}}>{label}</p>}
+      <canvas ref={canvasRef} width={500} height={height*5} onMouseDown={sd} onMouseMove={dr} onMouseUp={sp} onMouseLeave={sp}
+        style={{width:"100%",height,border:"2px dashed #9fa8da",borderRadius:10,background:"#fffde7",display:"block",touchAction:"none",cursor:"crosshair"}}/>
+      {hasDrawing&&<button onClick={clear} style={{marginTop:4,background:"#f5f5f5",border:"1px solid #ddd",color:"#666",padding:"3px 10px",borderRadius:6,fontSize:11,cursor:"pointer"}}>🗑️ Clear</button>}
+    </div>
+  );
+}
+
+function App() {
+  const [showHint, setShowHint] = React.useState({});
+  const [showWords, setShowWords] = React.useState({});
+  const [kanjiAnswers, setKanjiAnswers] = React.useState({});
+  const [submitted, setSubmitted] = React.useState(false);
+  const [submitting, setSubmitting] = React.useState(false);
+  const [submitError, setSubmitError] = React.useState(null);
+  const [speaking, setSpeaking] = React.useState(null);
+
+  const nameCanvasRef = React.useRef(null);
+  const eqRefs = React.useRef({});
+  const ansRefs = React.useRef({});
+  const kanjiRefs = React.useRef({});
+  questions.forEach(q=>{
+    if(!eqRefs.current[q.id]) eqRefs.current[q.id]=React.createRef();
+    if(!ansRefs.current[q.id]) ansRefs.current[q.id]=React.createRef();
+  });
+  ${isOverseas ? 'kanjiQuizData.forEach(k=>{ const kid="k"+kanjiQuizData.indexOf(k); if(!kanjiRefs.current[kid]) kanjiRefs.current[kid]=React.createRef(); });' : ''}
+
+  const speak=(text)=>{window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="ja-JP";u.rate=0.8;setSpeaking(text);u.onend=()=>setSpeaking(null);window.speechSynthesis.speak(u);};
+  const handleKanji=(id,choice)=>{if(kanjiAnswers[id])return;setKanjiAnswers(prev=>({...prev,[id]:choice}));};
+
+  const handleSubmit=async()=>{
+    setSubmitting(true);setSubmitError(null);
+    try{
+      const payload={
+        student_name:"（手書き）",week:1,grade:${meta.grades?.[0]?.replace('g','')||4},
+        ${isOverseas ? 'jp_level:'+JSON.stringify(meta.jp_level||'N3')+',' : ''}
+        name_canvas:nameCanvasRef.current?.toDataURL()||null,
+        questions:questions.map(q=>({
+          id:q.id,unit:q.unit,chapter:q.chapter,level:q.level,
+          equation_canvas:eqRefs.current[q.id]?.current?.toDataURL()||null,
+          answer_canvas:ansRefs.current[q.id]?.current?.toDataURL()||null,
+        })),
+        ${isOverseas ? 'kanji:kanjiQuizData.map((k,i)=>{const kid="k"+i;return{id:kid,selected:kanjiAnswers[kid]||null,correct:k.correct,canvas:kanjiRefs.current[kid]?.current?.toDataURL()||null};}),' : ''}
+        submitted_at:new Date().toISOString(),
+      };
+      const res=await fetch("${SUPABASE_URL}/rest/v1/submissions",{method:"POST",
+        headers:{"Content-Type":"application/json","apikey":"${SUPABASE_KEY}","Authorization":"Bearer ${SUPABASE_KEY}","Prefer":"return=minimal"},
+        body:JSON.stringify(payload)});
+      if(!res.ok)throw new Error("Error: "+res.status);
+      setSubmitted(true);window.scrollTo({top:0,behavior:"smooth"});
+    }catch(e){setSubmitError(e.message);}finally{setSubmitting(false);}
+  };
+
+  if(submitted){
+    return (
+      <div style={{minHeight:"100vh",background:"#f0f4ff",paddingBottom:40}}>
+        <div style={{background:"linear-gradient(135deg,#1a9fd4,#0277bd)",color:"white",padding:"20px 16px"}}>
+          <h1 style={{fontSize:18,fontWeight:"bold",margin:"0 0 4px 0"}}>✅ 提出完了！ / Submitted!</h1>
+          <p style={{fontSize:12,margin:0,opacity:0.85}}>先生に届いたよ！Well done! 🎉</p>
+        </div>
+        <div style={{padding:"14px 12px"}}>
+          {questions.map((q,idx)=>{
+            const lb=LEVEL_BADGE[q.level]||{};
+            return (
+              <div key={q.id} style={{background:"white",borderRadius:14,marginBottom:10,padding:"12px",border:"2px solid #dde3f0"}}>
+                <div style={{display:"flex",gap:5,marginBottom:6,flexWrap:"wrap"}}>
+                  <span style={{background:"#1a9fd4",color:"white",borderRadius:6,padding:"2px 8px",fontSize:12,fontWeight:"bold"}}>Q{idx+1}</span>
+                  <span style={{background:lb.bg,color:lb.color,borderRadius:6,padding:"2px 8px",fontSize:11,fontWeight:"bold"}}>{lb.label}</span>
+                </div>
+                {eqRefs.current[q.id]?.current&&<img src={eqRefs.current[q.id].current.toDataURL()} style={{width:"100%",borderRadius:8,border:"1px solid #ddd",marginBottom:4}}/>}
+                {ansRefs.current[q.id]?.current&&<img src={ansRefs.current[q.id].current.toDataURL()} style={{width:"100%",borderRadius:8,border:"1px solid #ddd"}}/>}
+              </div>
+            );
+          })}
+          <button onClick={()=>setSubmitted(false)} style={{width:"100%",background:"#f5f5f5",border:"2px solid #ddd",color:"#666",padding:"13px",borderRadius:14,fontSize:14,cursor:"pointer",fontWeight:"bold"}}>← 戻る / Go back</button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{minHeight:"100vh",background:"#f0f4ff",paddingBottom:100,overflowX:"hidden"}}>
+      <div style={{background:"linear-gradient(135deg,#1a9fd4,#0277bd)",color:"white",padding:"16px 16px 12px",position:"sticky",top:0,zIndex:100,boxShadow:"0 2px 10px rgba(0,0,0,0.2)"}}>
+        <h1 style={{fontSize:16,fontWeight:"bold",margin:"0 0 3px 0"}}>${isOverseas ? '🔵 算数で日本語を学ぼう！' : '🔵 算数×英語を学ぼう！'}</h1>
+        <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
+          <span style={{background:"rgba(255,255,255,0.2)",borderRadius:6,padding:"2px 8px",fontSize:11}}>${theme}</span>
+          ${isOverseas ? '<span style={{background:"rgba(255,255,255,0.2)",borderRadius:6,padding:"2px 8px",fontSize:11}}>'+JSON.stringify(meta.jp_level||'N3')+'</span>' : ''}
+        </div>
+      </div>
+      <div style={{padding:"12px"}}>
+        <div style={{background:"white",borderRadius:14,marginBottom:14,border:"2px solid #1a9fd4",overflow:"hidden"}}>
+          <div style={{padding:"12px"}}>
+            <p style={{fontSize:14,fontWeight:"bold",color:"#1a9fd4",margin:"0 0 2px 0"}}>✏️ なまえ / Your name</p>
+            <DrawCanvas id="name" height={70} label={null} canvasRef={nameCanvasRef}/>
+          </div>
+        </div>
+
+        {questions.map((q,idx)=>{
+          const lb=LEVEL_BADGE[q.level]||{label:q.level,color:"#888",bg:"#f5f5f5"};
+          const illus=illustrations[q.id];
+          return (
+            <div key={q.id} style={{background:"white",borderRadius:14,marginBottom:14,border:"2px solid #dde3f0",overflow:"hidden",boxShadow:"0 2px 6px rgba(0,0,0,0.07)"}}>
+              <div style={{background:"linear-gradient(90deg,#1a9fd4,#0277bd)",padding:"8px 14px",display:"flex",gap:6,alignItems:"center",flexWrap:"wrap"}}>
+                <span style={{background:"white",color:"#0277bd",borderRadius:6,padding:"2px 8px",fontSize:12,fontWeight:"bold"}}>Q{idx+1}</span>
+                <span style={{background:"#e3f2fd",color:"#0277bd",borderRadius:6,padding:"2px 8px",fontSize:11}}>{q.unit}</span>
+                <span style={{background:lb.bg,color:lb.color,borderRadius:6,padding:"2px 8px",fontSize:11,fontWeight:"bold"}}>{lb.label}</span>
+              </div>
+              <div style={{padding:"14px 12px"}}>
+                <div style={{display:"flex",gap:10,alignItems:"flex-start",marginBottom:12}}>
+                  {illus&&<div style={{flexShrink:0}}>{illus}</div>}
+                  <p style={{fontSize:15,lineHeight:2.1,color:"#1a1a1a",fontWeight:"500",margin:0,wordBreak:"break-word"}}>{q.jp}</p>
+                </div>
+                <button onClick={()=>speak(q.reading)}
+                  style={{background:speaking===q.reading?"#e3f2fd":"#f5f5f5",border:"1px solid #ddd",color:speaking===q.reading?"#1a9fd4":"#666",padding:"5px 12px",borderRadius:8,fontSize:12,cursor:"pointer",marginBottom:12}}>
+                  {speaking===q.reading?"🔊 Playing...":"🔊 読んでみよう / Read aloud"}
+                </button>
+                <DrawCanvas id={"eq_"+q.id} height={150} label="📐 式を書こう / Write your equation" canvasRef={eqRefs.current[q.id]}/>
+                <DrawCanvas id={"ans_"+q.id} height={110} label="✍️ 答えを書こう / Write your answer" canvasRef={ansRefs.current[q.id]}/>
+                <div style={{display:"flex",gap:8,marginTop:12,flexWrap:"wrap"}}>
+                  <button onClick={()=>setShowWords(p=>({...p,[q.id]:!p[q.id]}))}
+                    style={{background:showWords[q.id]?"#fff3e0":"#f5f5f5",border:"1px solid "+(showWords[q.id]?"#ff9800":"#ddd"),color:showWords[q.id]?"#e65100":"#666",padding:"6px 12px",borderRadius:8,fontSize:12,cursor:"pointer"}}>
+                    📖 ことば / Words
+                  </button>
+                  <button onClick={()=>setShowHint(p=>({...p,[q.id]:!p[q.id]}))}
+                    style={{background:showHint[q.id]?"#e8f5e9":"#f5f5f5",border:"1px solid "+(showHint[q.id]?"#43a047":"#ddd"),color:showHint[q.id]?"#2e7d32":"#666",padding:"6px 12px",borderRadius:8,fontSize:12,cursor:"pointer"}}>
+                    🇬🇧 English hint
+                  </button>
+                </div>
+              </div>
+              {showWords[q.id]&&(
+                <div style={{borderTop:"1px solid #fff3e0",background:"#fffbf0",padding:"12px"}}>
+                  <p style={{fontSize:11,color:"#e65100",fontWeight:"bold",margin:"0 0 8px 0"}}>📖 ことば / Words</p>
+                  {(q.words||[]).map((w,i)=>(
+                    <div key={i} style={{background:"white",border:"1px solid #ffe0b2",borderRadius:10,padding:"8px 10px",marginBottom:6}}>
+                      <p style={{fontSize:14,fontWeight:"bold",color:"#333",margin:"0 0 2px 0"}}>{w.word}</p>
+                      <p style={{fontSize:13,color:"#1a73e8",margin:"0 0 2px 0"}}>🇬🇧 {w.meaning}</p>
+                      <p style={{fontSize:11,color:"#888",margin:0}}>例: {w.example}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {showHint[q.id]&&(
+                <div style={{borderTop:"1px solid #e8f5e9",background:"#f1f8f1",padding:"12px"}}>
+                  <p style={{fontSize:11,color:"#2e7d32",fontWeight:"bold",margin:"0 0 4px 0"}}>🇬🇧 English hint</p>
+                  <p style={{fontSize:14,color:"#333",margin:0,fontStyle:"italic"}}>{q.hint}</p>
+                </div>
+              )}
+            </div>
+          );
+        })}
+
+        ${isOverseas ? `
+        {kanjiQuizData.length>0&&(
+          <div>
+            <div style={{background:"linear-gradient(135deg,#e65100,#bf360c)",borderRadius:14,padding:"14px 16px",marginBottom:12}}>
+              <h2 style={{color:"white",fontSize:16,fontWeight:"bold",margin:"0 0 2px 0"}}>🈳 今日の漢字 / Today's Kanji</h2>
+              <p style={{color:"rgba(255,255,255,0.8)",fontSize:12,margin:0}}>読みから漢字を選ぼう！</p>
+            </div>
+            {kanjiQuizData.map((k,ki)=>{
+              const kid="k"+ki;
+              const selected=kanjiAnswers[kid];
+              const isCorrect=selected===k.correct;
+              if(!kanjiRefs.current[kid]) kanjiRefs.current[kid]=React.createRef();
+              return (
+                <div key={kid} style={{background:"white",borderRadius:14,marginBottom:14,border:"2px solid "+(selected?(isCorrect?"#43a047":"#e53935"):"#dde3f0"),overflow:"hidden",boxShadow:"0 2px 6px rgba(0,0,0,0.07)"}}>
+                  <div style={{padding:"14px 12px"}}>
+                    <div style={{display:"flex",gap:6,marginBottom:10}}>
+                      <span style={{background:"#e65100",color:"white",borderRadius:6,padding:"2px 8px",fontSize:12,fontWeight:"bold"}}>漢字</span>
+                    </div>
+                    <p style={{fontSize:18,fontWeight:"bold",color:"#222",margin:"0 0 4px 0"}}>{k.en} = {k.reading}</p>
+                    <p style={{fontSize:12,color:"#888",margin:"0 0 10px 0",fontStyle:"italic"}}>{k.hint}</p>
+                    <p style={{fontSize:14,color:"#333",margin:"0 0 10px 0",fontWeight:"bold"}}>「{k.reading}」の漢字はどれ？ / Which kanji?</p>
+                    <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:10}}>
+                      {(k.choices||[]).map(choice=>{
+                        let bg="#f5f5f5",border="1px solid #ddd",color="#333";
+                        if(selected){if(choice===k.correct){bg="#e8f5e9";border="1px solid #43a047";color="#2e7d32";}else if(choice===selected){bg="#ffebee";border="1px solid #e53935";color="#c62828";}}
+                        return <button key={choice} onClick={()=>handleKanji(kid,choice)}
+                          style={{background:bg,border,color,padding:"12px 16px",borderRadius:10,fontSize:20,cursor:selected?"default":"pointer",fontWeight:"bold",minWidth:70}}>{choice}</button>;
+                      })}
+                    </div>
+                    {selected&&<p style={{fontSize:14,fontWeight:"bold",color:isCorrect?"#43a047":"#e53935",marginBottom:10}}>{isCorrect?"✓ 正解！Correct! 🎉":"✗ 正解は「"+k.correct+"」/ The answer is「"+k.correct+"」"}</p>}
+                    <DrawCanvas id={kid} height={160} label="✍️ 書いてみよう！/ Let's write it!" canvasRef={kanjiRefs.current[kid]}/>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}` : ''}
+
+        {submitError&&<div style={{background:"#ffebee",border:"1px solid #e53935",borderRadius:10,padding:"10px 14px",marginBottom:8,fontSize:13,color:"#c62828"}}>⚠️ {submitError}</div>}
+        <button onClick={handleSubmit} disabled={submitting}
+          style={{width:"100%",background:submitting?"#90a4ae":"linear-gradient(135deg,#1a9fd4,#0277bd)",color:"white",border:"none",padding:"17px",borderRadius:16,fontSize:16,cursor:submitting?"default":"pointer",fontWeight:"bold",boxShadow:submitting?"none":"0 4px 14px rgba(26,159,212,0.4)",transition:"all 0.2s"}}>
+          {submitting?"⏳ Submitting...":"📬 できた！提出する / Submit!"}
+        </button>
+      </div>
+    </div>
+  );
+}
+`;
+}
+
+// 課題生成タグクリック
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('[data-qtag]').forEach(function(btn){
+    btn.addEventListener('click',function(){this.classList.toggle('on');});
+  });
+});
+
+function updateTypeTabs(g){
+  var isJHS = g.startsWith('jhs');
+  var texEl=document.getElementById('t-ex');
+  var tjsEl=document.getElementById('t-js');
+  if(texEl) texEl.style.display = isJHS ? 'none' : 'block';
+  if(tjsEl) tjsEl.style.display = isJHS ? 'block' : 'none';
+  var qlExEl=document.getElementById('ql-ex-label');
+  var qlJsEl=document.getElementById('ql-js-label');
+  if(qlExEl) qlExEl.style.display = isJHS ? 'none' : 'flex';
+  if(qlJsEl) qlJsEl.style.display = isJHS ? 'flex' : 'none';
+  if(isJHS && selType==='example_follow') setType('all');
+  if(!isJHS && selType==='jissen') setType('all');
+}
+
+function setSchool(s){
+  SEL_SCHOOL=s;
+  var isSho=s==='sho';
+  document.getElementById('gs-sho').classList.toggle('gs-on',isSho);
+  document.getElementById('gs-chu').classList.toggle('gs-on',!isSho);
+  var years=document.getElementById('gs-years');
+  if(isSho){
+    years.innerHTML=
+      '<button class="gy-btn" id="gy-g01" onclick="setGrade(\'g01\')">小1</button>'+
+      '<button class="gy-btn" id="gy-g02" onclick="setGrade(\'g02\')">小2</button>'+
+      '<button class="gy-btn" id="gy-g03" onclick="setGrade(\'g03\')">小3</button>'+
+      '<button class="gy-btn gy-on" id="gy-g04" onclick="setGrade(\'g04\')">小4</button>'+
+      '<button class="gy-btn" id="gy-g05" onclick="setGrade(\'g05\')">小5</button>'+
+      '<button class="gy-btn" id="gy-g06" onclick="setGrade(\'g06\')">小6</button>';
+    setGrade('g04');
+    updateTypeTabs('g04');
+  } else {
+    years.innerHTML=
+      '<button class="gy-btn gy-on" id="gy-jhs1" onclick="setGrade(\'jhs1\')">中1</button>'+
+      '<button class="gy-btn" id="gy-jhs2" onclick="setGrade(\'jhs2\')">中2</button>'+
+      '<button class="gy-btn" id="gy-jhs3" onclick="setGrade(\'jhs3\')">中3</button>';
+    setGrade('jhs1');
+    updateTypeTabs('jhs1');
+  }
+}
+
+function setGrade(g){
+  selGrade=g;
+  UNITS=ALL_UNITS[g]||[];
+  REF_PROBLEMS=(ALL_REFS && ALL_REFS[g])||[];
+  selUnit=null; selRef=null; origBank=[];
+  var btns=document.getElementById('gs-years').querySelectorAll('.gy-btn');
+  for(var i=0;i<btns.length;i++) btns[i].classList.remove('gy-on');
+  var active=document.getElementById('gy-'+g);
+  if(active) active.classList.add('gy-on');
+  var labels={"g01":"ウィンパス小1","g02":"ウィンパス小2","g03":"ウィンパス小3","g04":"ウィンパス小4","g05":"ウィンパス小5","g06":"ウィンパス小6","jhs1":"ウィンニングフィニッシュ中1","jhs2":"ウィンニングフィニッシュ中2","jhs3":"ウィンニングフィニッシュ中3"};
+  var hdr=document.querySelector('.panel-hdr span');
+  if(hdr) hdr.textContent=labels[g]||g;
+  document.getElementById('edit-inner').innerHTML='<div class="empty"><div class="empty-icon">✏️</div><div>参考問題を選択してください</div></div>';
+  document.getElementById('ref-list').innerHTML='<div style="padding:16px 14px;font-size:12px;color:var(--text3)">← 単元を選択してください</div>';
+  document.getElementById('ref-problem-area').style.display='none';
+  document.getElementById('ref-answer-area').style.display='none';
+  // 中学校/小学校でタブを切り替え
+  updateTypeTabs(g);
+  renderUnits(); renderRefList();
+}
+
+var selUnit=null, selType='all', selRef=null, origBank=[];
+
+function toggleDark(){
+  var on=document.body.classList.toggle('dark');
+  document.getElementById('dark-btn').textContent=on?'☀️ ライト':'🌙 ダーク';
+  localStorage.setItem('p1-dark',on?'1':'0');
+}
+function toggleImode(){
+  var on=document.body.classList.toggle('imode');
+  document.getElementById('imode-btn').textContent=on?'🩷　I-mode':'🤍　I-mode';
+  localStorage.setItem('p1-imode',on?'1':'0');
+  applyImodeToCards(on);
+}
+function applyImodeToCards(on){
+  var sz=on?'16px':'';
+  var pd=on?'10px 20px':'';
+  ['btn-ai-solve','tv-ok','tv-fix','tv-skip','btn-ai-tags','btn-ai-why'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el){
+      el.style.setProperty('font-size',on?'16px':'','important');
+      el.style.setProperty('padding',on?'10px 20px':'','important');
+    }
+  });
+  var solveBox=document.getElementById('ai-solve-box');
+  if(solveBox) solveBox.style.setProperty('font-size',on?'16px':'','important');
+  var tagBox=document.getElementById('ai-tag-box');
+  if(tagBox) tagBox.style.setProperty('font-size',on?'16px':'','important');
+  var tagReason=document.getElementById('ai-tag-reason');
+  if(tagReason) tagReason.style.setProperty('font-size',on?'15px':'','important');
+  var vnote=document.getElementById('f-validation-note');
+  if(vnote) vnote.style.setProperty('font-size',on?'16px':'','important');
+  var freject=document.getElementById('f-reject');
+  if(freject) freject.style.setProperty('font-size',on?'16px':'','important');
+  var approve=document.getElementById('btn-save-sheet');
+  if(approve){
+    approve.style.setProperty('font-size',on?'18px':'','important');
+    approve.style.setProperty('padding',on?'12px 24px':'','important');
+  }
+  // タグボタン全体
+  document.querySelectorAll('#tag-area .tag,#tag-area2 .tag').forEach(function(t){
+    t.style.setProperty('font-size',on?'16px':'','important');
+    t.style.setProperty('padding',on?'6px 14px':'','important');
+  });
+}
+if(localStorage.getItem('p1-dark')==='1'){document.body.classList.add('dark');document.getElementById('dark-btn').textContent='☀️ ライト';}
+if(localStorage.getItem('p1-imode')==='1'){document.body.classList.add('imode');document.getElementById('imode-btn').textContent='🩷　I-mode';}
+
+function renderUnits(){
+  var chs={},chOrder=[];
+  for(var i=0;i<UNITS.length;i++){
+    var u=UNITS[i];
+    if(!chs[u.chapter_name]){chs[u.chapter_name]=[];chOrder.push(u.chapter_name);}
+    chs[u.chapter_name].push(u);
+  }
+  var h='';
+  for(var k=0;k<chOrder.length;k++){
+    var ch=chOrder[k];
+    var hasActive=false;
+    for(var j=0;j<chs[ch].length;j++){if(chs[ch][j].unit_id===selUnit){hasActive=true;break;}}
+    var open=hasActive||(sessionStorage.getItem('ch-'+k)==='1');
+    h+='<div class="ch-row'+(open?' open':'')+'" data-k="'+k+'" data-eid="chg-'+k+'" onclick="toggleCh(this)">';
+    h+='<span class="ch-arr">'+(open?'▾':'▸')+'</span> '+ch+'</div>';
+    h+='<div id="chg-'+k+'" style="display:'+(open?'block':'none')+'">';
+    for(var j=0;j<chs[ch].length;j++){
+      var u=chs[ch][j];
+      h+='<div class="unit-item'+(selUnit===u.unit_id?' on':'')+'" data-id="'+u.unit_id+'" onclick="pickUnit(this.dataset.id)">'+u.unit_name+'</div>';
+    }
+    h+='</div>';
+  }
+  document.getElementById('unit-list').innerHTML=h;
+}
+
+function toggleCh(row){
+  var k=row.dataset.k;
+  var eid=row.dataset.eid;
+  var el=document.getElementById(eid);
+  var open=el.style.display==='none';
+  el.style.display=open?'block':'none';
+  row.classList.toggle('open',open);
+  row.querySelector('.ch-arr').textContent=open?'▾':'▸';
+  sessionStorage.setItem('ch-'+k,open?'1':'0');
+}
+function pickUnit(id){
+  selUnit=id; selRef=null;
+  renderUnits(); renderRefList();
+  document.getElementById('edit-inner').innerHTML='<div class="empty"><div class="empty-icon">✏️</div><div>参考問題を選択してください</div></div>';
+}
+
+function setType(t){
+  selType=t; selRef=null;
+  var ids=['all','ex','cf','pr'];
+  for(var i=0;i<ids.length;i++) document.getElementById('t-'+ids[i]).classList.remove('on');
+  var m={'all':'all','example_follow':'ex','confirmation':'cf','practice':'pr'};
+  document.getElementById('t-'+(m[t]||'all')).classList.add('on');
+  renderRefList();
+}
+
+function renderRefList(){
+  var ps=[];
+  for(var i=0;i<REF_PROBLEMS.length;i++){
+    var p=REF_PROBLEMS[i];
+    if(selUnit && p.unit_id!==selUnit) continue;
+    if(selType!=='all' && p.type!==selType) continue;
+    ps.push(p);
+  }
+  var tl={example_follow:'例題',confirmation:'確認',practice:'練習',jissen:'実践'};
+  var tc={example_follow:'b-ex',confirmation:'b-cf',practice:'b-pr',jissen:'b-js'};
+  var h='';
+  for(var i=0;i<ps.length;i++){
+    var p=ps[i];
+    var nl=p.text.indexOf('\n');var first=nl>-1?p.text.substring(0,nl):p.text;
+    h+='<div class="ref-item'+(p.id===selRef?' on':'')+'" data-id="'+p.id+'" onclick="pickRef(this.dataset.id)">';
+    h+='<div style="display:flex;align-items:center;gap:4px;margin-bottom:3px">';
+    h+='<span class="ref-badge '+(tc[p.type]||'')+'">'+(tl[p.type]||p.type)+'</span>';
+    h+=(p.has_figure?'<span class="ref-badge" style="background:#e8f0fe;color:#1a4a8c">図</span>':'');
+    h+='</div>';
+    h+='<div class="ref-text-preview">'+esc(first)+'</div></div>';
+  }
+  if(!h) h='<div style="padding:20px 14px;font-size:12px;color:var(--text3)">該当なし</div>';
+  document.getElementById('ref-list').innerHTML=h;
+}
+
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function nl2br(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}
+
+function pickRef(id){
+  selRef=id;
+  var p=null;
+  for(var i=0;i<REF_PROBLEMS.length;i++){if(REF_PROBLEMS[i].id===id){p=REF_PROBLEMS[i];break;}}
+  if(!p) return;
+  var items=document.querySelectorAll('.ref-item');
+  for(var i=0;i<items.length;i++) items[i].classList.toggle('on',items[i].dataset.id===id);
+  var tc={example_follow:'b-ex',confirmation:'b-cf',practice:'b-pr',jissen:'b-js'};
+  var tl={example_follow:'例題紐づき',confirmation:'確認問題',practice:'練習問題',jissen:'実践問題'};
+  // 問題文エリア（上）
+  var pa=document.getElementById('ref-problem-area');
+  pa.innerHTML=
+    '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px">'+
+      '<span class="ref-badge '+(tc[p.type]||'')+'">'+( tl[p.type]||p.type)+'</span>'+
+      (p.has_figure?'<span class="ref-badge" style="background:#e8f0fe;color:#1a4a8c">図</span>':'')+
+      '<span style="font-size:10px;color:var(--text3);margin-left:auto">'+p.id+'</span>'+
+    '</div>'+
+    '<div class="ref-ptext">'+nl2br(p.text)+'</div>';
+  pa.style.display='block';
+  // 解答エリア（下1/3）
+  var aa=document.getElementById('ref-answer-area');
+  aa.innerHTML='<div class="ref-ans-label">解答</div><div class="ref-ans">'+nl2br(p.answer)+'</div>';
+  aa.style.display='block';
+  renderEditor(p);
+}
+function backToList(){
+  document.getElementById('ref-problem-area').style.display='none';
+  document.getElementById('ref-answer-area').style.display='none';
+  selRef=null;
+  renderRefList();
+  document.getElementById('edit-inner').innerHTML='<div class="empty"><div class="empty-icon">✏️</div><div>参考問題を選択してください</div></div>';
+}
+
+function renderEditor(rp){
+  var el=document.getElementById('edit-inner');
+  el.innerHTML='<div id="fmsg"></div>';
+  var tsel=function(v,c){return v===c?' selected':'';};
+
+  // カード1: AI生成
+  var c1=document.createElement('div');c1.className='card';
+  c1.innerHTML=
+    '<div class="card-title"><span class="ai-dot"></span>問題文（AI生成）'+
+    '<span style="font-size:10px;color:var(--text3);margin-left:auto">'+rp.id+'</span></div>'+
+    '<div class="ai-box" id="ai-box">ボタンを押してAIに問題を生成させてください</div>'+
+    '<div class="ai-btns">'+
+      '<button class="ai-btn" id="bn-num">🔢 数字を変える</button>'+
+      '<button class="ai-btn" id="bn-fun">🎉 おもしろ問題</button>'+
+      '<button class="ai-btn" id="bn-split-num" style="border-color:#f59e0b;color:#f59e0b">✂️ バラして数字を変える</button>'+
+      '<button class="ai-btn" id="bn-split-fun" style="border-color:#f59e0b;color:#f59e0b">✂️ バラしておもしろ問題</button>'+
+    '</div>'+
+    '<div id="split-nav" style="display:none;margin-top:8px;padding:8px 10px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:8px;font-size:11px;color:#f59e0b">'+
+      '<span id="split-label">小問 1 / ?</span>'+
+      '<div style="display:flex;gap:6px;margin-top:6px">'+
+        '<button id="split-prev" style="padding:4px 12px;border-radius:6px;border:1px solid #f59e0b;background:transparent;color:#f59e0b;cursor:pointer;font-size:11px;font-family:inherit">← 前</button>'+
+        '<button id="split-next" style="padding:4px 12px;border-radius:6px;border:none;background:#f59e0b;color:#fff;cursor:pointer;font-size:11px;font-family:inherit;font-weight:700">次の小問 →</button>'+
+        '<button id="split-done" style="padding:4px 12px;border-radius:6px;border:none;background:#27ae60;color:#fff;cursor:pointer;font-size:11px;font-family:inherit;font-weight:700">✓ 最後の小問</button>'+
+        '<button id="split-cancel" style="padding:4px 12px;border-radius:6px;border:1px solid #e05;background:transparent;color:#e05;cursor:pointer;font-size:11px;font-family:inherit">✗ やり直し</button>'+
+      '</div>'+
+    '</div>'+
+    '<button class="copy-btn" id="btn-copy">↓ 記入欄にコピー</button>';
+  el.appendChild(c1);
+  document.getElementById('bn-num').addEventListener('click',function(){aiGen('num');});
+  document.getElementById('bn-fun').addEventListener('click',function(){aiGen('fun');});
+  document.getElementById('bn-split-num').addEventListener('click',function(){aiGenSplit('num');});
+  document.getElementById('bn-split-fun').addEventListener('click',function(){aiGenSplit('fun');});
+  document.getElementById('btn-copy').addEventListener('click',copyAI);
+
+  // カード2: 記入用
+  var c2=document.createElement('div');c2.className='card';
+  c2.innerHTML=
+    '<div class="card-title">問題文（記入用）</div>'+
+    '<div class="field">'+
+      '<div class="flabel">問題文 <span class="req">必須</span></div>'+
+      '<textarea id="f-text" rows="5" placeholder="問題文を入力（AIをたたき台にしてもOK）"></textarea>'+
+    '</div>'+
+    '<div class="field">'+
+      '<div class="flabel">解答 <span class="req">必須</span></div>'+
+      '<div class="ans-row">'+
+        '<textarea id="f-ans" rows="3" placeholder="解答を入力"></textarea>'+
+        '<button class="calc-btn" id="btn-calc">🧮 自動計算</button>'+
+      '</div>'+
+    '</div>';
+  el.appendChild(c2);
+  document.getElementById('btn-calc').addEventListener('click',aiCalc);
+
+  // カード3: 設定・タグ
+  var c3=document.createElement('div');c3.className='card';
+  c3.innerHTML=
+    '<div class="card-title">設定 / タグ</div>'+
+    '<div class="grid3">'+
+      '<div class="field"><div class="flabel">問題タイプ</div>'+
+      '<select id="f-type">'+
+        '<option value="example_follow"'+tsel('example_follow',rp.type)+'>例題紐づき</option>'+
+        '<option value="confirmation"'+tsel('confirmation',rp.type)+'>確認問題</option>'+
+        '<option value="practice"'+tsel('practice',rp.type)+'>練習問題</option>'+
+      '</select></div>'+
+      '<div class="field"><div class="flabel">難易度</div>'+
+      '<select id="f-diff">'+
+        '<option value="easy">easy</option>'+
+        '<option value="medium" selected>medium</option>'+
+        '<option value="hard">hard</option>'+
+      '</select></div>'+
+      '<div class="field"><div class="flabel">作成者</div>'+
+      '<select id="f-author">'+
+        '<option value="marko">まるこ</option>'+
+        '<option value="ai_r">アイ</option>'+
+      '</select></div>'+
+      '<div class="field"><div class="flabel">図の有無 '+(rp.has_figure?'<span style="font-size:10px;color:#1a73e8">(参考問題: 図あり)</span>':'<span style="font-size:10px;color:var(--text3)">(参考問題: 図なし)</span>')+'</div>'+
+      '<select id="f-fig">'+
+        '<option value="false"'+(rp.has_figure?'':' selected')+'>図なし</option>'+
+        '<option value="true"'+(rp.has_figure?' selected':'')+'>図あり</option>'+
+      '</select></div>'+
+    '</div>'+
+    // AIタグ提案エリア
+    '<div class="ai-tag-section">'+
+      '<div class="ai-tag-header"><span class="ai-dot"></span>AIタグ提案</div>'+
+      '<div id="ai-tag-box" class="ai-tag-box-inner">問題文を入力後、「AIにタグを提案させる」を押してください</div>'+
+      '<div id="ai-tag-reason" class="ai-tag-reason-inner" style="display:none"></div>'+
+      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">'+
+        '<button class="ai-btn" id="btn-ai-tags">✨ AIにタグを提案させる</button>'+
+        '<button class="ai-btn" id="btn-ai-why" style="display:none">💬 なぜこのタグ？</button>'+
+      '</div>'+
+    '</div>'+
+    // 品質タグ（人間確定エリア）
+    '<div class="field">'+
+      '<div class="flabel">品質タグ <span style="font-size:10px;color:var(--text3)">（クリックで確定）</span></div>'+
+      // つまずきカテゴリ
+      '<div class="tag-section-label">【つまずき系】</div>'+
+      '<div id="tag-area" class="tags">'+
+        '<button class="tag" data-tag="符号ミス誘発">符号ミス誘発</button>'+
+        '<button class="tag" data-tag="分数計算">分数計算</button>'+
+        '<button class="tag" data-tag="単位変換">単位変換</button>'+
+        '<button class="tag" data-tag="括弧の展開">括弧の展開</button>'+
+        '<button class="tag" data-tag="移項ミス">移項ミス</button>'+
+        '<button class="tag" data-tag="係数見落とし">係数見落とし</button>'+
+        '<button class="tag" data-tag="掛割混同">掛割混同</button>'+
+        '<button class="tag" data-tag="小数点の位置">小数点の位置</button>'+
+      '</div>'+
+      '<div class="tag-section-label" style="margin-top:8px">【良問系】</div>'+
+      '<div id="tag-area2" class="tags">'+
+        '<button class="tag" data-tag="純粋に楽しい">純粋に楽しい</button>'+
+        '<button class="tag" data-tag="数字の選び方が巧み">数字の選び方が巧み</button>'+
+        '<button class="tag" data-tag="なるほど！">なるほど！</button>'+
+        '<button class="tag" data-tag="数字の不恰好さ">数字の不恰好さ</button>'+
+        '<button class="tag" data-tag="⭐️ 重要問題">⭐️ 重要問題</button>'+
+        '<button class="tag" data-tag="📈 レベルアップ">📈 レベルアップ</button>'+
+        '<button class="tag" data-tag="計算力アップ">計算力アップ</button>'+
+        '<button class="tag" data-tag="暗算してみよう">暗算してみよう</button>'+
+        '<button class="tag" data-tag="式を立ててみよう">式を立ててみよう</button>'+
+      '</div>'+
+    '</div>'+
+    '<div class="field" style="margin-top:8px">'+
+      '<div class="flabel">メモ</div>'+
+      '<input type="text" id="f-notes" placeholder="気づいたことなど">'+
+    '</div>';
+  el.appendChild(c3);
+
+  // タグクリックイベント
+  var tgs=document.querySelectorAll('#tag-area .tag, #tag-area2 .tag');
+  for(var i=0;i<tgs.length;i++) tgs[i].addEventListener('click',function(){this.classList.toggle('on');});
+
+  // AIタグ提案ボタン
+  document.getElementById('btn-ai-tags').addEventListener('click',aiSuggestTags);
+  document.getElementById('btn-ai-why').addEventListener('click',aiWhyTags);
+
+  // タグ検証カード（AIに解かせる）
+  var c4=document.createElement('div');c4.className='card';
+  c4.innerHTML=
+    '<div class="card-title">タグ検証（AIに解かせる）</div>'+
+    '<div class="card-desc">AIに問題を解かせて、タグの妥当性を確認します。解答過程はその場で確認するだけでOK（保存不要）。</div>'+
+    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">'+
+      '<button class="ai-btn" id="btn-ai-solve">✏️ AIに解かせる</button>'+
+    '</div>'+
+    '<div id="ai-solve-box" style="display:none;background:rgba(100,200,100,.06);border:1px solid rgba(100,200,100,.25);border-radius:8px;padding:10px 12px;font-size:12px;line-height:1.8;color:var(--text2);white-space:pre-wrap;max-height:200px;overflow-y:auto;margin-bottom:10px"></div>'+
+    // tag_validation
+    '<div class="field">'+
+      '<div class="flabel">タグ検証結果 <span style="font-size:10px;color:var(--text3)">（解答過程を見て判断）</span></div>'+
+      '<div style="display:flex;gap:8px;margin-top:4px">'+
+        '<button class="tag" id="tv-ok" data-val="ok">✓ タグOK</button>'+
+        '<button class="tag" id="tv-fix" data-val="needs_fix">△ 要修正</button>'+
+        '<button class="tag" id="tv-skip" data-val="skipped">— スキップ</button>'+
+      '</div>'+
+    '</div>'+
+    // validation_note
+    '<div id="vn-area" style="display:none;margin-top:8px">'+
+      '<div class="flabel" style="margin-bottom:4px">修正メモ <span style="font-size:10px;color:var(--text3)">（任意）</span></div>'+
+      '<textarea id="f-validation-note" style="width:100%;padding:7px 10px;border-radius:8px;border:1px solid var(--border);background:var(--input-bg);color:var(--input-text);font-size:12px;font-family:inherit;resize:vertical;min-height:52px" placeholder="例：移項ミスより係数見落としの方が正確"></textarea>'+
+    '</div>';
+  el.appendChild(c4);
+
+  // AIに解かせるボタン
+  document.getElementById('btn-ai-solve').addEventListener('click',aiSolveProblem);
+
+  // tag_validationボタン
+  var tvBtns=document.querySelectorAll('#tv-ok,#tv-fix,#tv-skip');
+  for(var i=0;i<tvBtns.length;i++){
+    tvBtns[i].addEventListener('click',function(){
+      for(var j=0;j<tvBtns.length;j++) tvBtns[j].classList.remove('on');
+      this.classList.add('on');
+      window._tagValidation=this.dataset.val;
+      var vnArea=document.getElementById('vn-area');
+      vnArea.style.display=(this.dataset.val==='needs_fix')?'block':'none';
+    });
+  }
+
+  // 承認/却下カード
+  var c5=document.createElement('div');c5.className='card';
+  c5.innerHTML=
+    '<div class="card-title">保存</div>'+
+    '<div class="btn-row" style="margin-top:8px">'+
+      '<button style="padding:8px 20px;border-radius:8px;border:none;background:#2e7d32;color:#fff;cursor:pointer;font-family:inherit;font-size:12px;font-weight:700" id="btn-save-sheet">💾 スプシに保存</button>'+
+      '<button class="btn btn-s" id="btn-clear-edit">↺ クリア</button>'+
+    '</div>';
+  el.appendChild(c5);
+
+  document.getElementById('btn-save-sheet').addEventListener('click',function(){saveToSheet(rp);});
+  document.getElementById('btn-clear-edit').addEventListener('click',function(){pickRef(rp.id);});
+  // I-mode状態を動的カードに即時反映
+  applyImodeToCards(document.body.classList.contains('imode'));
+}
+
+
+
+function toggleFig(btn){
+  var on=btn.dataset.fig==='0';
+  btn.dataset.fig=on?'1':'0';
+  btn.textContent=on?'📐 図あり':'図なし';
+  btn.style.background=on?'#e8f0fe':'var(--acc)';
+  btn.style.color=on?'#1a73e8':'var(--text3)';
+  // オリジナル編集の図の有無セレクトも連動
+  var fsel=document.getElementById('f-fig');
+  if(fsel) fsel.value=on?'true':'false';
+  // REF_PROBLEMSのデータも更新
+  for(var i=0;i<REF_PROBLEMS.length;i++){
+    if(REF_PROBLEMS[i].id===selRef){REF_PROBLEMS[i].has_figure=on;break;}
+  }
+}
+
+function copyAI(){
+  var box=document.getElementById('ai-box');
+  var ft=document.getElementById('f-text');
+  var fa=document.getElementById('f-ans');
+  if(!box||!ft) return;
+  var txt=box.textContent;
+  if(!txt||txt.indexOf('ボタン')>-1||txt.indexOf('考えて')>-1) return;
+  var lines=txt.split('\n');
+  var ai=-1;
+  for(var i=0;i<lines.length;i++){
+    if(/^(解答|答え)[：:]/.test(lines[i])){ai=i;break;}
+  }
+  if(ai>-1){
+    ft.value=lines.slice(0,ai).join('\n').trim();
+    if(fa) fa.value=lines.slice(ai).join('\n').replace('解答：','').replace('解答:','').replace('答え：','').replace('答え:','').trim();
+  } else {
+    ft.value=txt;
+  }
+}
+
+function aiCalc(){
+  var ft=document.getElementById('f-text');
+  var fa=document.getElementById('f-ans');
+  var btn=document.getElementById('btn-calc');
+  if(!ft||!ft.value.trim()){alert('問題文を入力してください');return;}
+  if(btn){btn.textContent='計算中...';btn.disabled=true;}
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',headers:apiHeaders(),
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:400,
+      messages:[{role:'user',content:'以下の算数問題を解いて、解答だけを出力してください。\n\n'+ft.value}]})
+  }).then(function(r){return r.json();}).then(function(d){
+    if(fa) fa.value=d.content?d.content.map(function(c){return c.text||'';}).join(''):'';
+    if(btn){btn.textContent='🧮 自動計算';btn.disabled=false;}
+  }).catch(function(e){
+    if(fa) fa.value='エラー: '+e.message;
+    if(btn){btn.textContent='🧮 自動計算';btn.disabled=false;}
+  });
+}
+
+// ======== バラして生成 ========
+window._splitProblems=[];
+window._splitIndex=0;
+window._splitGroupId='';
+
+function aiGenSplit(mode){
+  var p=null;
+  for(var i=0;i<REF_PROBLEMS.length;i++){if(REF_PROBLEMS[i].id===selRef){p=REF_PROBLEMS[i];break;}}
+  if(!p) return;
+  var btnId=mode==='num'?'bn-split-num':'bn-split-fun';
+  var btn=document.getElementById(btnId);
+  var box=document.getElementById('ai-box');
+  btn.textContent='⟳ 分割中...';btn.disabled=true;
+  box.textContent='AIが小問に分割しています...';
+  document.getElementById('split-nav').style.display='none';
+
+  var styleDesc=mode==='num'
+    ? '数字だけを変えて、同じ形式の新しい問題として書き直してください。'
+    : '身近なものを使ったおもしろい問題として書き直してください。小学・中学生向け。';
+
+  var prompt='以下の算数・数学の問題には(1)(2)などの小問が含まれています。'+styleDesc+'\n'+
+    '【重要】(1)(2)などの番号が付いた小問の数だけに分割してください。それ以上には分割しないでください。\n'+
+    '各小問は「73841560000000について答えなさい。(1)〜」のように、問題の前提文を含めて単独で解ける形にしてください。\n'+
+    '必ず以下のJSON形式のみで出力してください（他のテキスト不要）:\n'+
+    '{"problems":[{"text":"問題文（前提文含む）","answer":"解答"},{"text":"問題文（前提文含む）","answer":"解答"}]}\n\n'+
+    '参考問題:\n'+p.text+'\n\n解答:\n'+p.answer;
+
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',headers:apiHeaders(),
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1000,
+      messages:[{role:'user',content:prompt}]})
+  }).then(function(r){return r.json();}).then(function(d){
+    var txt=d.content?d.content.map(function(c){return c.text||'';}).join(''):'{}';
+    var parsed={};
+    try{parsed=JSON.parse(txt.replace(/```json|```/g,'').trim());}catch(e){parsed={problems:[]};}
+    var probs=parsed.problems||[];
+
+    if(probs.length<=1){
+      box.textContent='この問題は小問に分割できませんでした。通常の生成をお使いください。';
+      btn.textContent=mode==='num'?'✂️ バラして数字を変える':'✂️ バラしておもしろ問題';
+      btn.disabled=false;
+      return;
+    }
+
+    // split_group_idを生成（参考問題ID＋タイムスタンプ）
+    window._splitGroupId='grp_'+p.id+'_'+Date.now();
+    // ロールバック用スナップショット
+    window._origBankSnapshot=origBank.length;
+    window._splitProblems=probs;
+    window._splitIndex=0;
+    window._splitMode=mode;
+    showSplitProblem(0);
+    btn.textContent=mode==='num'?'✂️ バラして数字を変える':'✂️ バラしておもしろ問題';
+    btn.disabled=false;
+  }).catch(function(e){
+    box.textContent='エラー: '+e.message;
+    btn.textContent=mode==='num'?'✂️ バラして数字を変える':'✂️ バラしておもしろ問題';
+    btn.disabled=false;
+  });
+}
+
+function showSplitProblem(idx){
+  var probs=window._splitProblems;
+  if(!probs||idx<0||idx>=probs.length) return;
+  window._splitIndex=idx;
+  var box=document.getElementById('ai-box');
+  var nav=document.getElementById('split-nav');
+  var label=document.getElementById('split-label');
+  var prev=document.getElementById('split-prev');
+  var next=document.getElementById('split-next');
+  var done=document.getElementById('split-done');
+
+  var p=probs[idx];
+  box.textContent='問題文: '+p.text+'\n\n解答: '+p.answer;
+  label.textContent='小問 '+(idx+1)+' / '+probs.length;
+  nav.style.display='block';
+  prev.style.display=idx>0?'inline-block':'none';
+  var isLast=idx===probs.length-1;
+  next.style.display=isLast?'none':'inline-block';
+  done.style.display=isLast?'inline-block':'none';
+
+  // 記入欄に自動コピー
+  var ft=document.getElementById('f-text');
+  var fa=document.getElementById('f-ans');
+  if(ft) ft.value=p.text;
+  if(fa) fa.value=p.answer;
+
+  // ナビボタンのイベント（毎回付け替え）
+  var cancel=document.getElementById('split-cancel');
+  cancel.onclick=function(){
+    // スナップショット以降に追加されたデータを削除
+    if(typeof window._origBankSnapshot==='number'){
+      origBank.splice(window._origBankSnapshot);
+    }
+    nav.style.display='none';
+    box.textContent='やり直しました。バラして生成のデータは削除されました。';
+    window._splitProblems=[];
+    window._splitGroupId='';
+    window._origBankSnapshot=undefined;
+    resetTagsAndValidation();
+  };
+  prev.onclick=function(){showSplitProblem(idx-1);};
+  next.onclick=function(){
+    showSplitProblem(idx+1);
+    resetTagsAndValidation();
+  };
+  done.onclick=function(){
+    nav.style.display='none';
+    box.textContent='全小問の入力が完了しました。各小問を「💾 スプシに保存」で保存してください。';
+    window._splitProblems=[];
+    window._splitGroupId='';
+    resetTagsAndValidation();
+  };
+}
+
+function resetTagsAndValidation(){
+  // タグリセット
+  var tgs=document.querySelectorAll('#tag-area .tag,#tag-area2 .tag');
+  for(var i=0;i<tgs.length;i++) tgs[i].classList.remove('on','ai-sug');
+  // AI提案リセット
+  window._lastAiSuggestedTags=[];
+  window._tagValidation='';
+  var tagBox=document.getElementById('ai-tag-box');
+  if(tagBox) tagBox.textContent='問題文を入力後、「AIにタグを提案させる」を押してください';
+  var solveBox=document.getElementById('ai-solve-box');
+  if(solveBox){solveBox.style.display='none';solveBox.innerHTML='';}
+  var tvBtns=document.querySelectorAll('#tv-ok,#tv-fix,#tv-skip');
+  for(var i=0;i<tvBtns.length;i++) tvBtns[i].classList.remove('on');
+  var vn=document.getElementById('f-validation-note');
+  if(vn){vn.value='';document.getElementById('vn-area').style.display='none';}
+}
+
+function aiGen(mode){
+  var p=null;
+  for(var i=0;i<REF_PROBLEMS.length;i++){if(REF_PROBLEMS[i].id===selRef){p=REF_PROBLEMS[i];break;}}
+  if(!p) return;
+  var btnId=mode==='num'?'bn-num':'bn-fun';
+  var btn=document.getElementById(btnId);
+  var box=document.getElementById('ai-box');
+  if(!btn||!box) return;
+  btn.textContent='⟳ 生成中...';btn.disabled=true;
+  box.textContent='AIが考えています...';
+  var prompt=mode==='num'
+    ?'以下の算数問題の数字だけを変えて、同じ形式の新しい問題を1問作ってください。問題文のみ出力してください。\n\n参考問題:\n'+p.text+'\n\n解答:\n'+p.answer
+    :'以下の算数問題を参考に、身近なものを使ったおもしろい問題を1問作ってください。小学4年生向け。問題文と解答を出力してください。\n\n参考問題:\n'+p.text;
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',headers:apiHeaders(),
+    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,messages:[{role:'user',content:prompt}]})
+  }).then(function(r){return r.json();}).then(function(d){
+    box.textContent=d.content?d.content.map(function(c){return c.text||'';}).join(''):'失敗';
+    btn.textContent=mode==='num'?'🔢 数字を変える':'🎉 おもしろ問題';btn.disabled=false;
+  }).catch(function(e){
+    box.textContent='エラー: '+e.message;
+    btn.textContent=mode==='num'?'🔢 数字を変える':'🎉 おもしろ問題';btn.disabled=false;
+  });
+}
+
+// ======== APIキー管理 ========
+function getApiKey(){return localStorage.getItem('pandora_api_key')||'';}
+function openApiKeyModal(){
+  var modal=document.getElementById('api-key-modal');
+  var input=document.getElementById('api-key-input');
+  var status=document.getElementById('api-key-status');
+  modal.style.display='flex';
+  var k=getApiKey();
+  input.value=k?'sk-ant-...（保存済み）':'';
+  status.textContent=k?'✓ APIキーが設定されています':'未設定';
+  status.style.color=k?'#27ae60':'#e05';
+}
+function closeApiKeyModal(){
+  document.getElementById('api-key-modal').style.display='none';
+}
+function saveApiKey(){
+  var v=document.getElementById('api-key-input').value.trim();
+  if(!v||v==='sk-ant-...（保存済み）'){closeApiKeyModal();return;}
+  if(!v.startsWith('sk-ant-')){
+    document.getElementById('api-key-status').textContent='⚠️ sk-ant- で始まるキーを入力してください';
+    document.getElementById('api-key-status').style.color='#e05';
+    return;
+  }
+  localStorage.setItem('pandora_api_key',v);
+  document.getElementById('api-key-status').textContent='✓ 保存しました';
+  document.getElementById('api-key-status').style.color='#27ae60';
+  document.getElementById('api-key-btn').style.borderColor='#27ae60';
+  document.getElementById('api-key-btn').style.color='#27ae60';
+  document.getElementById('api-key-btn').textContent='🔑 APIキー ✓';
+  setTimeout(closeApiKeyModal,800);
+}
+function clearApiKey(){
+  localStorage.removeItem('pandora_api_key');
+  document.getElementById('api-key-input').value='';
+  document.getElementById('api-key-status').textContent='削除しました';
+  document.getElementById('api-key-status').style.color='var(--text3)';
+  document.getElementById('api-key-btn').style.borderColor='#a78bfa';
+  document.getElementById('api-key-btn').style.color='#a78bfa';
+  document.getElementById('api-key-btn').textContent='🔑 APIキー';
+}
+function apiHeaders(){
+  var k=getApiKey();
+  if(!k){openApiKeyModal();throw new Error('APIキーが未設定です');}
+  return{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'};
+}
+// 初期化時にキー設定済みならボタン色を変える
+(function(){
+  if(getApiKey()){
+    window.addEventListener('DOMContentLoaded',function(){
+      var btn=document.getElementById('api-key-btn');
+      if(btn){btn.style.borderColor='#27ae60';btn.style.color='#27ae60';btn.textContent='🔑 APIキー ✓';}
+    });
+  }
+})();
+
+// ======== AIタグ提案 ========
+var TAG_LIST=[
+  '符号ミス誘発','分数計算','単位変換','括弧の展開','移項ミス','係数見落とし','掛割混同','小数点の位置',
+  '純粋に楽しい','数字の選び方が巧み','なるほど！','数字の不恰好さ','⭐️ 重要問題','📈 レベルアップ','計算力アップ','暗算してみよう','式を立ててみよう'
+];
+
+function aiSolveProblem(){
+  var ft=document.getElementById('f-text');
+  var btn=document.getElementById('btn-ai-solve');
+  var box=document.getElementById('ai-solve-box');
+  if(!ft||!ft.value.trim()){alert('先に問題文を入力してください');return;}
+  btn.textContent='⟳ 解答中...';btn.disabled=true;
+  box.style.display='block';
+  box.textContent='AIが問題を解いています...';
+
+  var prompt='以下の数学・算数の問題を、小学生・中学生が解くように、ステップごとに丁寧に解いてください。\n'+
+    '途中でつまずきやすいポイントがあれば★マークで指摘してください。\n'+
+    '最後に「つまずきポイント:」として箇条書きで整理してください。\n\n'+
+    '問題: '+ft.value.trim();
+
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',headers:apiHeaders(),
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:800,
+      messages:[{role:'user',content:prompt}]})
+  }).then(function(r){return r.json();}).then(function(d){
+    var txt=d.content?d.content.map(function(c){return c.text||'';}).join(''):'応答なし';
+    box.innerHTML=txt.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+    btn.textContent='✏️ 再度解かせる';btn.disabled=false;
+  }).catch(function(e){
+    box.textContent='エラー: '+e.message;
+    btn.textContent='✏️ AIに解かせる';btn.disabled=false;
+  });
+}
+
+function aiSuggestTags(){
+  var ft=document.getElementById('f-text');
+  var fa=document.getElementById('f-ans');
+  var btn=document.getElementById('btn-ai-tags');
+  var box=document.getElementById('ai-tag-box');
+  var whyBtn=document.getElementById('btn-ai-why');
+  if(!ft||!ft.value.trim()){alert('先に問題文を入力してください');return;}
+  btn.textContent='⟳ 提案中...';btn.disabled=true;
+  box.style.color='var(--text3)';box.textContent='AIがタグを考えています...';
+  var reasonEl=document.getElementById('ai-tag-reason');
+  if(reasonEl){reasonEl.style.display='none';reasonEl.textContent='';}
+  if(whyBtn) whyBtn.style.display='none';
+
+  var prompt='あなたは算数・数学の問題を評価する教育専門家です。\n以下の問題を見て、当てはまるタグをリストから選んでください。\n\n【タグリスト】\n'+TAG_LIST.join('、')+'\n\n【問題文】\n'+ft.value.trim()+'\n\n'+(fa&&fa.value.trim()?'【解答】\n'+fa.value.trim()+'\n\n':'')+
+    '次のJSON形式のみで出力してください（他のテキスト不要）:\n{"tags":["タグ1","タグ2"],"reason":"選んだ理由を50字以内で"}';
+
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',headers:apiHeaders(),
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:300,
+      messages:[{role:'user',content:prompt}]})
+  }).then(function(r){return r.json();}).then(function(d){
+    var txt=d.content?d.content.map(function(c){return c.text||'';}).join(''):'{}';
+    var parsed={};
+    try{
+      var clean=txt.replace(/```json|```/g,'').trim();
+      parsed=JSON.parse(clean);
+    }catch(e){parsed={tags:[],reason:'パース失敗: '+txt.slice(0,60)};}
+
+    var sugTags=parsed.tags||[];
+    window._lastAiSuggestedTags=sugTags;
+    window._lastAiReason=parsed.reason||'';
+
+    // タグボタンにAI提案スタイルを適用
+    var allTags=document.querySelectorAll('#tag-area .tag, #tag-area2 .tag');
+    for(var i=0;i<allTags.length;i++){
+      var t=allTags[i];
+      var tname=t.dataset.tag||t.textContent;
+      t.classList.remove('ai-sug');
+      if(sugTags.indexOf(tname)>-1){
+        t.classList.add('ai-sug');
+        if(!t.classList.contains('on')) t.classList.add('on');
+      }
+    }
+
+    if(sugTags.length===0){
+      box.textContent='このタグリストから当てはまるものはありませんでした';
+    } else {
+      box.innerHTML='<span style="color:var(--purple);font-weight:600">AI提案: </span>'+
+        sugTags.map(function(t){return '<span style="background:rgba(167,139,250,.15);color:var(--purple);border-radius:10px;padding:2px 8px;font-size:11px;display:inline-block;margin:1px">'+t+'</span>';}).join(' ');
+    }
+    if(whyBtn) whyBtn.style.display='inline-block';
+    btn.textContent='✨ 再提案';btn.disabled=false;
+  }).catch(function(e){
+    box.textContent='エラー: '+e.message;
+    btn.textContent='✨ AIにタグを提案させる';btn.disabled=false;
+  });
+}
+
+function aiWhyTags(){
+  var ft=document.getElementById('f-text');
+  var btn=document.getElementById('btn-ai-why');
+  var reasonEl=document.getElementById('ai-tag-reason');
+  if(!reasonEl) return;
+
+  // すでに根拠を表示中なら閉じる
+  if(reasonEl.style.display==='block'){
+    reasonEl.style.display='none';
+    btn.textContent='💬 なぜこのタグ？';
+    return;
+  }
+
+  var cached=window._lastAiReason;
+  if(cached){
+    reasonEl.textContent='💡 '+cached;
+    reasonEl.style.display='block';
+    btn.textContent='💬 根拠を隠す';
+    return;
+  }
+
+  // キャッシュがなければAPIに問い合わせ
+  if(!ft||!ft.value.trim()){return;}
+  btn.textContent='⟳ 考え中...';btn.disabled=true;
+  var sugTags=window._lastAiSuggestedTags||[];
+  var prompt='算数問題に「'+sugTags.join('、')+'」というタグを提案しました。その理由を2〜3文で説明してください。\n\n問題文:\n'+ft.value.trim();
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',headers:apiHeaders(),
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:200,
+      messages:[{role:'user',content:prompt}]})
+  }).then(function(r){return r.json();}).then(function(d){
+    var txt=d.content?d.content.map(function(c){return c.text||'';}).join(''):'';
+    window._lastAiReason=txt;
+    reasonEl.textContent='💡 '+txt;
+    reasonEl.style.display='block';
+    btn.textContent='💬 根拠を隠す';btn.disabled=false;
+  }).catch(function(e){
+    reasonEl.textContent='エラー: '+e.message;
+    reasonEl.style.display='block';
+    btn.textContent='💬 なぜこのタグ？';btn.disabled=false;
+  });
+}
+
+function saveToSheet(rp) {
+  var ft = document.getElementById('f-text');
+  var fa = document.getElementById('f-ans');
+  if (!ft || !fa || !ft.value.trim() || !fa.value.trim()) {
+    alert('問題文と解答を入力してください');
+    return;
+  }
+
+  var btn = document.getElementById('btn-save-sheet');
+  btn.textContent = '💾 保存中...';
+  btn.disabled = true;
+
+  // 現在の単元情報を取得
+  var unit = null;
+  if (selUnit && UNITS) {
+    unit = UNITS.find(function(u){ return u.unit_id === selUnit; });
+  }
+
+  var humanTags = [];
+  var hts = document.querySelectorAll('#tag-area .tag.on, #tag-area2 .tag.on');
+  for (var i = 0; i < hts.length; i++) humanTags.push(hts[i].dataset.tag || hts[i].textContent);
+  var aiTags = window._lastAiSuggestedTags || [];
+
+  var problem = {
+    grade:        selGrade || '',
+    chapter_id:   unit ? unit.chapter_id : (rp ? rp.chapter_id : ''),
+    chapter_name: unit ? unit.chapter_name : (rp ? rp.chapter_name : ''),
+    unit_id:      selUnit || (rp ? rp.unit_id : ''),
+    unit_name:    unit ? unit.unit_name : (rp ? rp.unit_name : ''),
+    type:         document.getElementById('f-type') ? document.getElementById('f-type').value : (rp ? rp.type : ''),
+    linked_example: rp ? (rp.linked_example || '') : '',
+    diff:         document.getElementById('f-diff') ? document.getElementById('f-diff').value : 'medium',
+    text:         ft.value.trim(),
+    answer:       fa.value.trim(),
+    has_figure:   'FALSE',
+    figure_params: '',
+    tags:                humanTags.join('、'),
+    ai_suggested_tags:   aiTags.join('、'),
+    human_final_tags:    humanTags.join('、'),
+    rejection_reason:    '',
+    note:         document.getElementById('f-note') ? document.getElementById('f-note').value : '',
+  };
+
+  // ── Layer 2.5: オリジナル問題 整合性チェック ──
+  btn.textContent = '🔍 チェック中...';
+
+  function doSave() {
+    btn.textContent = '💾 保存中...';
+    fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'addOriginal', problem: problem })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      if (res.ok) {
+        btn.textContent = '✓ 保存しました';
+        btn.style.background = '#1b5e20';
+        setTimeout(function(){ btn.textContent = '💾 スプシに保存'; btn.style.background = '#2e7d32'; btn.disabled = false; }, 2000);
+      } else {
+        alert('保存エラー: ' + (res.error || '不明'));
+        btn.textContent = '💾 スプシに保存';
+        btn.disabled = false;
+      }
+    })
+    .catch(function(e){
+      alert('通信エラー: ' + e.message);
+      btn.textContent = '💾 スプシに保存';
+      btn.disabled = false;
+    });
+  }
+
+  fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST', headers: apiHeaders(),
+    body: JSON.stringify({
+      model: 'claude-haiku-4-5-20251001', max_tokens: 300,
+      system: 'あなたは算数・数学の問題の整合性チェッカーです。問題文中の数値・条件・答えに矛盾や不整合がないか確認します。',
+      messages: [{ role: 'user', content:
+        '以下の問題に数値の矛盾・論理的不整合・解答不能な条件がないか確認してください。\n\n' +
+        '問題文：' + problem.text + '\n正解：' + problem.answer +
+        '\n\n結果をJSONのみで返してください（他のテキスト不要）:\n{"ok":true} または {"ok":false,"issues":["矛盾の説明",...]}' }]
+    })
+  }).then(function(r){ return r.json(); }).then(function(d){
+    var txt = (d.content||[]).map(function(c){ return c.text||''; }).join('');
+    var result = {};
+    try { result = JSON.parse(txt.replace(/```json|```/g,'').trim()); } catch(e) { result = {ok:true}; }
+    if (result.ok) {
+      doSave();
+    } else {
+      var issues = (result.issues||['不整合の可能性あり']).join('\n・');
+      var proceed = confirm('⚠️ 整合性チェックで問題が見つかりました：\n\n・' + issues + '\n\nそれでも保存しますか？');
+      if (proceed) {
+        doSave();
+      } else {
+        btn.textContent = '💾 スプシに保存';
+        btn.style.background = '#2e7d32';
+        btn.disabled = false;
+      }
+    }
+  }).catch(function(){
+    doSave();
+  });
+}
+
+function saveProblem(refId,unitId,approvalStatus){
+  var ft=document.getElementById('f-text');
+  var fa=document.getElementById('f-ans');
+  if(!ft||!fa||!ft.value.trim()||!fa.value.trim()){
+    var msg=document.getElementById('fmsg');
+    if(msg) msg.innerHTML='<div class="msg msg-err">問題文と解答は必須です</div>';
+    return;
+  }
+  // 人間確定タグ（両エリアから取得）
+  var humanTags=[];
+  var hts=document.querySelectorAll('#tag-area .tag.on, #tag-area2 .tag.on');
+  for(var i=0;i<hts.length;i++) humanTags.push(hts[i].dataset.tag||hts[i].textContent);
+  // AI提案タグ（グローバル変数から）
+  var aiTags=window._lastAiSuggestedTags||[];
+  // 却下理由
+  var rejectReason='';
+  var fr=document.getElementById('f-reject');
+  if(fr) rejectReason=fr.value.trim();
+
+  origBank.push({
+    id:'orig_'+unitId+'_'+String(origBank.length+1).padStart(3,'0'),
+    ref_id:refId,unit_id:unitId,
+    type:document.getElementById('f-type').value,
+    text:ft.value.trim(),answer:fa.value.trim(),
+    diff:document.getElementById('f-diff').value,
+    author:document.getElementById('f-author').value,
+    // 学習データ用3列
+    ai_suggested_tags:aiTags.join('、'),
+    human_final_tags:humanTags.join('、'),
+    rejection_reason:rejectReason,
+    // タグ検証2列
+    tag_validation:window._tagValidation||'',
+    validation_note:document.getElementById('f-validation-note')?document.getElementById('f-validation-note').value.trim():'',
+    // セット情報
+    split_group_id:window._splitGroupId||'',
+    split_order:window._splitGroupId?(window._splitIndex+1):0,
+    // 後方互換
+    tags:humanTags.join('、'),
+    notes:document.getElementById('f-notes')?document.getElementById('f-notes').value:'',
+    approval:approvalStatus||'manual',
+  });
+  window._lastAiSuggestedTags=[];
+  window._tagValidation='';
+  // バラして生成フロー中でない場合はsplit情報をクリア
+  if(!window._splitProblems||window._splitProblems.length===0){
+    window._splitGroupId='';
+  }
+  var msg=document.getElementById('fmsg');
+  if(msg){
+    var label=approvalStatus==='approved'?'✓ 承認・保存しました':'💾 保存しました';
+    msg.innerHTML='<div class="msg msg-ok">'+label+'</div>';
+    setTimeout(function(){if(msg)msg.innerHTML='';},3000);
+  }
+}
+
+// ======== スプラッシュ ========
+(function(){
+  var canvas=document.getElementById('sp-canvas');
+  var ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  var WORDS=['国語','数学','理科','社会','英語','速さ×時間','x²+y²','H₂O','光合成','桜',
+    '俳句','細胞','縄文','経度','貿易','比例','分数','漢字','植物','電流',
+    '地層','文法','音楽','体積','角度','割合','方程式','詩','hope','learn',
+    'equal','grow','seek','化学','歴史','地理','公民','図形','三角形','素数'];
+  var COLORS=['rgba(205,79,124,.4)','rgba(205,79,124,.25)','rgba(200,180,200,.38)',
+    'rgba(180,160,200,.35)','rgba(220,210,220,.38)','rgba(160,140,180,.3)',
+    'rgba(167,139,250,.28)','rgba(230,220,230,.32)'];
+  var particles=[],exploding=false,explodeStart=0,spawnIv=null,animId=null;
+  var ED=7000,PL=5000;
+
+  function Particle(){
+    var a=Math.random()*Math.PI*2,s=.3+Math.random()*3.5;
+    this.x=canvas.width/2;this.y=canvas.height/2;
+    this.word=WORDS[Math.floor(Math.random()*WORDS.length)];
+    this.vx=Math.cos(a)*s;this.vy=Math.sin(a)*s-.8;
+    this.size=6+Math.random()*7;this.color=COLORS[Math.floor(Math.random()*COLORS.length)];
+    this.gravity=.012+Math.random()*.022;this.friction=.993;
+    this.born=performance.now();this.life=PL*(.7+Math.random()*.6);this.alpha=1;
+  }
+  Particle.prototype.update=function(now){
+    this.vy+=this.gravity;this.vx*=this.friction;this.vy*=this.friction;
+    this.x+=this.vx;this.y+=this.vy;
+    var age=now-this.born,f=this.life*.7;
+    if(age>f)this.alpha=Math.max(0,1-(age-f)/(this.life*.3));
+  };
+  Particle.prototype.dead=function(){return performance.now()-this.born>this.life;};
+  Particle.prototype.draw=function(){
+    if(this.alpha<=.01)return;
+    ctx.save();ctx.globalAlpha=this.alpha*.7;ctx.fillStyle=this.color;
+    ctx.font=this.size+'px Courier New,monospace';ctx.fillText(this.word,this.x,this.y);ctx.restore();
+  };
+
+  function spawn(){
+    for(var i=0;i<80;i++)particles.push(new Particle());
+    spawnIv=setInterval(function(){
+      var e=performance.now()-explodeStart;if(e>ED){clearInterval(spawnIv);return;}
+      var n=Math.floor(12*(1-e/ED))+3;
+      for(var i=0;i<n;i++)particles.push(new Particle());
+    },120);
+  }
+  function loop(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    if(exploding){
+      var now=performance.now();
+      for(var i=0;i<particles.length;i++){particles[i].update(now);particles[i].draw();}
+      particles=particles.filter(function(p){return !p.dead();});
+    }
+    animId=requestAnimationFrame(loop);
+  }
+  function spType(elId,curId,text,speed,cb){
+    var el=document.getElementById(elId),cur=document.getElementById(curId);
+    cur.style.display='inline-block';var i=0;
+    function next(){
+      if(i>=text.length){setTimeout(function(){cur.style.display='none';if(cb)cb();},400);return;}
+      el.textContent=text.slice(0,++i);setTimeout(next,speed+(Math.random()*25-12));
+    }
+    setTimeout(next,0);
+  }
+  function doGlow(cb){
+    var g=document.getElementById('sp-glow');
+    g.style.transition='width .35s,height .35s,opacity .35s';
+    g.style.width='200px';g.style.height='200px';g.style.opacity='.7';
+    setTimeout(function(){
+      var fl=document.getElementById('sp-flash');
+      fl.style.transition='opacity .06s';fl.style.opacity='.3';
+      setTimeout(function(){
+        fl.style.transition='opacity .5s';fl.style.opacity='0';
+        g.style.transition='width .7s,height .7s,opacity .7s';
+        g.style.width='400px';g.style.height='400px';g.style.opacity='0';
+        if(cb)setTimeout(cb,80);
+      },60);
+    },380);
+  }
+  function showFinal(){
+    document.getElementById('sp-sub1').style.opacity='1';
+    spType('sp-t2','sp-c2','Hope for Everyone',110,function(){
+      setTimeout(function(){
+        document.getElementById('sp-sub3').style.opacity='1';
+        spType('sp-t4','sp-c4','Pandora Project',75,function(){
+          setTimeout(endSplash,3000);
+        });
+      },600);
+    });
+  }
+  function endSplash(){
+    clearInterval(spawnIv);cancelAnimationFrame(animId);
+    var sp=document.getElementById('splash');
+    sp.style.transition='opacity .8s';sp.style.opacity='0';
+    setTimeout(function(){sp.style.display='none';},800);
+  }
+  function skip(){
+    clearInterval(spawnIv);cancelAnimationFrame(animId);
+    document.getElementById('splash').style.display='none';
+  }
+  document.getElementById('splash').addEventListener('click',skip);
+  loop();
+  setTimeout(function(){document.getElementById('sp-title').classList.add('show');},300);
+  setTimeout(function(){
+    document.getElementById('sp-title').style.transition='opacity .5s';
+    document.getElementById('sp-title').style.opacity='0';
+    doGlow(function(){
+      exploding=true;explodeStart=performance.now();spawn();
+      setTimeout(showFinal,ED+15000);
+    });
+  },10000);
+})();
+
+
+// GASからALL_REFSを取得してからUI初期化
+loadAllRefsFromGAS(function() {
+  // 現在のgradeでREF_PROBLEMSを設定してレンダリング
+  REF_PROBLEMS = (ALL_REFS && ALL_REFS[selGrade]) || [];
+  renderUnits();
+  renderRefList();
+});
+</script>
+</body>
+</html>
