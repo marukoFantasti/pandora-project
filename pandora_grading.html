@@ -50,6 +50,8 @@ body { background: var(--bg); color: var(--text1); font-family: 'Hiragino Sans',
 .tag-domestic { background: #1a3a2a; color: #5bd5a0; }
 .tag-overseas { background: #3a1a3a; color: #c57bd5; }
 .sub-score { font-size: 11px; margin-left: auto; }
+.sub-item-copy { margin-top: 8px; width: 100%; padding: 5px 0; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--text2); font-size: 11px; font-family: inherit; cursor: pointer; }
+.sub-item-copy:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 .score-done { color: var(--green); }
 .score-pending { color: var(--amber); }
 
@@ -543,7 +545,7 @@ async function loadSubmissions() {
   var el = document.getElementById('sub-list');
   el.innerHTML = '<div class="loading"><div class="spinner"></div>読み込み中...</div>';
 
-  const res = await fetch(SUPABASE_URL + '/rest/v1/submissions?select=*&order=created_at.desc', { headers });
+  const res = await fetch(SUPABASE_URL + '/rest/v1/submissions?select=*&order=submitted_at.desc', { headers });
   allSubs = await res.json();
 
   // 採点済みIDを取得
@@ -565,7 +567,7 @@ function renderSubList(subs) {
     return;
   }
   el.innerHTML = subs.map(function(s) {
-    var d = new Date(s.created_at);
+    var d = new Date(s.submitted_at);
     var dateStr = d.getFullYear() + '/' + (d.getMonth()+1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + String(d.getMinutes()).padStart(2,'0');
     var mode = s.mode || '不明';
     var subject = s.subject || 'math';
@@ -577,8 +579,22 @@ function renderSubList(subs) {
         '<span class="sub-tag tag-' + mode + '">' + mode + '</span>' +
         '<span class="sub-score ' + (gradedIds.has(s.id) ? 'score-done' : 'score-pending') + '" id="score-' + s.id + '">' + (gradedIds.has(s.id) ? '採点済' : '未採点') + '</span>' +
       '</div>' +
+      '<button class="sub-item-copy" id="copy-' + s.id + '" onclick="event.stopPropagation();copyResultUrl(\'' + s.id + '\')">🔗 結果URLをコピー</button>' +
     '</div>';
   }).join('');
+}
+
+function copyResultUrl(id) {
+  var url = location.origin + location.pathname.replace(/pandora_grading\.html$/, 'result_view.html') + '?id=' + id;
+  var btn = document.getElementById('copy-' + id);
+  navigator.clipboard.writeText(url).then(function() {
+    if (!btn) return;
+    var orig = btn.textContent;
+    btn.textContent = '✓ コピーしました';
+    setTimeout(function() { btn.textContent = orig; }, 1500);
+  }).catch(function() {
+    if (btn) btn.textContent = 'コピー失敗';
+  });
 }
 
 async function selectSub(id) {
@@ -621,7 +637,7 @@ function renderGrading(sub) {
   var kanji = sd.kanji || [];
   var main = document.getElementById('main-area');
 
-  var d = new Date(sub.created_at);
+  var d = new Date(sub.submitted_at);
   var dateStr = d.getFullYear() + '/' + (d.getMonth()+1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + String(d.getMinutes()).padStart(2,'0');
 
   var html = '';
@@ -920,6 +936,8 @@ async function saveResults() {
   var rows = problems.map(function(p, i) {
     var pid = p.problem_id || p.id || (i+1);
     var gs = gradeState[pid] || {};
+    var eqOverlay = ovGetData('eq', String(pid));
+    var ansOverlay = ovGetData('ans', String(pid));
     return {
       submission_id: currentSub.id,
       assignment_id: currentSub.assignment_id || null,
@@ -934,6 +952,7 @@ async function saveResults() {
       answer_correct: gs.result === 'correct',
       ai_feedback: gs.note || null,
       teacher_canvas: tcGetData(String(pid)),
+      red_pen_canvas: (eqOverlay || ansOverlay) ? { equation: eqOverlay, answer: ansOverlay } : null,
       teacher_verified: true,
     };
   }).filter(function(r) { return gradeState[r.problem_id] && gradeState[r.problem_id].result; });
@@ -1018,6 +1037,7 @@ function ovStart(e, type, pid) {
   e.preventDefault();
   ovDrawing = true;
   var cvs = getCanvas(type, pid);
+  cvs._init = true;
   ovLast = ovPos(e, cvs);
   var ctx = cvs.getContext('2d');
   var mode = ovMode[cvs.id] || 'pen';
@@ -1081,6 +1101,12 @@ function setOvMode(type, pid, mode) {
 function ovClear(type, pid) {
   var cvs = getCanvas(type, pid);
   if (cvs) cvs.getContext('2d').clearRect(0, 0, cvs.width, cvs.height);
+}
+
+function ovGetData(type, pid) {
+  var cvs = getCanvas(type, pid);
+  if (!cvs || !cvs._init) return null;
+  return cvs.toDataURL();
 }
 
 // ===== AI自動採点 =====
