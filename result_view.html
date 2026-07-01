@@ -18,6 +18,9 @@
   .qnum { background: #1a9fd4; color: #fff; border-radius: 6px; padding: 2px 9px; font-size: 12px; font-weight: bold; }
   .unit { background: #f5f5f5; color: #666; border-radius: 6px; padding: 2px 9px; font-size: 11px; }
   .badge { border-radius: 20px; padding: 3px 12px; font-size: 12px; font-weight: bold; margin-left: auto; }
+  .question-block { margin-bottom: 10px; }
+  .question-text { font-size: 14px; line-height: 1.5; margin-bottom: 4px; }
+  .answer-text { font-size: 12px; color: #999; }
   .canvases { display: flex; flex-direction: column; gap: 10px; }
   .canvas-block .label { font-size: 11px; color: #5c6bc0; font-weight: bold; margin-bottom: 4px; }
   .stack { position: relative; line-height: 0; }
@@ -180,6 +183,13 @@ async function main() {
       (p.unit || p.chapter ? '<span class="unit">' + esc(p.unit || p.chapter) + '</span>' : '') +
       '<span class="badge" style="background:' + badge.bg + ';color:' + badge.color + '">' + badge.label + '</span>' +
     '</div>';
+
+    if (p.question) {
+      html += '<div class="question-block">' +
+        '<div class="question-text">' + esc(p.question) + '</div>' +
+        (p.answer ? '<div class="answer-text">正解：' + esc(p.answer) + '</div>' : '') +
+      '</div>';
+    }
 
     html += '<div class="canvases">';
     html += renderCanvasBlock('✏️ 式', p.equation_canvas, redPen.equation);
