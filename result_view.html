@@ -26,6 +26,15 @@
   .teacher-block { margin-top: 12px; }
   .teacher-block .label { font-size: 11px; color: #cd4f7c; font-weight: bold; margin-bottom: 4px; }
   .teacher-img { width: 100%; border-radius: 8px; border: 1px dashed #cd4f7c; background: #fff; display: block; }
+  .summary { text-align: center; }
+  .summary-rate { display: flex; flex-direction: column; align-items: center; margin-bottom: 12px; }
+  .rate-num { font-size: 36px; font-weight: bold; line-height: 1; }
+  .rate-label { font-size: 12px; color: #888; margin-top: 2px; }
+  .summary-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 12px; }
+  .stat { display: flex; flex-direction: column; align-items: center; background: #f7f8fc; border-radius: 10px; padding: 8px 4px; }
+  .stat-num { font-size: 20px; font-weight: bold; }
+  .stat-label { font-size: 10px; color: #888; margin-top: 2px; }
+  .summary-msg { font-size: 14px; font-weight: bold; color: #333; }
 </style>
 </head>
 <body>
@@ -38,6 +47,7 @@ const headers = { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY 
 const RESULT_BADGE = {
   correct:   { label: '✓ 正解',       bg: '#e8f5e9', color: '#2e7d32' },
   partial:   { label: '△ 式のみ正解', bg: '#fff3e0', color: '#e65100' },
+  calc:      { label: '△ 計算ミス',   bg: '#fff3e0', color: '#f97316' },
   incorrect: { label: '✗ 不正解',     bg: '#ffebee', color: '#c62828' },
   ungraded:  { label: '⏳ 採点待ち',   bg: '#f5f5f5', color: '#888' },
 };
@@ -48,9 +58,39 @@ function esc(s) {
 
 function gradeOf(r) {
   if (!r) return 'ungraded';
+  if (r.grade_result) return r.grade_result;
   if (r.answer_correct) return 'correct';
   if (r.equation_correct) return 'partial';
   return 'incorrect';
+}
+
+function achievementMessage(rate) {
+  if (rate >= 90) return '🌟 素晴らしい！ほぼ完璧だね！';
+  if (rate >= 70) return '😊 よくできました！';
+  if (rate >= 50) return '💪 もう少し復習してみよう';
+  return '📚 一緒に復習しよう！';
+}
+
+function renderSummary(counts) {
+  var graded = counts.correct + counts.partial + counts.calc + counts.incorrect;
+  if (graded === 0) {
+    return '<div class="card summary"><div class="msg" style="padding:16px 0">まだ採点中です。もう少し待ってね！</div></div>';
+  }
+  var rate = Math.round(counts.correct / graded * 100);
+  var rateColor = rate >= 80 ? '#2e7d32' : rate >= 50 ? '#e65100' : '#c62828';
+  return '<div class="card summary">' +
+    '<div class="summary-rate">' +
+      '<span class="rate-num" style="color:' + rateColor + '">' + rate + '%</span>' +
+      '<span class="rate-label">正答率</span>' +
+    '</div>' +
+    '<div class="summary-grid">' +
+      '<div class="stat"><span class="stat-num" style="color:#2e7d32">' + counts.correct + '</span><span class="stat-label">正解</span></div>' +
+      '<div class="stat"><span class="stat-num" style="color:#e65100">' + counts.partial + '</span><span class="stat-label">式のみ正解</span></div>' +
+      '<div class="stat"><span class="stat-num" style="color:#f97316">' + counts.calc + '</span><span class="stat-label">計算ミス</span></div>' +
+      '<div class="stat"><span class="stat-num" style="color:#c62828">' + counts.incorrect + '</span><span class="stat-label">不正解</span></div>' +
+    '</div>' +
+    '<div class="summary-msg">' + achievementMessage(rate) + '</div>' +
+  '</div>';
 }
 
 function renderCanvasBlock(label, baseImg, overlayImg) {
@@ -113,6 +153,13 @@ async function main() {
   if (problems.length === 0) {
     html += '<div class="msg">問題データがありません</div>';
   }
+
+  const counts = { correct: 0, partial: 0, calc: 0, incorrect: 0 };
+  problems.forEach(function(p, i) {
+    const g = gradeOf(resultsByPid[String(p.problem_id || p.id || (i + 1))]);
+    if (counts.hasOwnProperty(g)) counts[g]++;
+  });
+  if (problems.length > 0) html += renderSummary(counts);
 
   problems.forEach(function(p, i) {
     const pid = String(p.problem_id || p.id || (i + 1));

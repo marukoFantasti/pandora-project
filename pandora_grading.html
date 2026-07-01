@@ -52,6 +52,8 @@ body { background: var(--bg); color: var(--text1); font-family: 'Hiragino Sans',
 .sub-score { font-size: 11px; margin-left: auto; }
 .sub-item-copy { margin-top: 8px; width: 100%; padding: 5px 0; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--text2); font-size: 11px; font-family: inherit; cursor: pointer; }
 .sub-item-copy:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+.sub-item-reset { margin-top: 6px; width: 100%; padding: 5px 0; border-radius: 6px; border: 1px solid var(--red); background: transparent; color: var(--red); font-size: 11px; font-family: inherit; cursor: pointer; }
+.sub-item-reset:hover { background: var(--red); color: #fff; }
 .score-done { color: var(--green); }
 .score-pending { color: var(--amber); }
 
@@ -250,7 +252,7 @@ function renderAnalytics() {
 
     if (!studentMap[key]) studentMap[key] = {
       id: sid, name: name,
-      total:0, correct:0, partial:0, incorrect:0,
+      total:0, correct:0, partial:0, calc:0, incorrect:0,
       kanji_total:0, kanji_correct:0,
       unitMap:{}, tagMap:{}, submissions:[]
     };
@@ -266,7 +268,8 @@ function renderAnalytics() {
       var pid = p.problem_id || ('q_' + st.total);
       var gs = gradeState[pid] || {};
       if (gs.result === 'correct') st.correct++;
-      else if (gs.result === 'partial' || gs.result === 'partial_calc') st.partial++;
+      else if (gs.result === 'partial') st.partial++;
+      else if (gs.result === 'calc') st.calc++;
       else if (gs.result === 'incorrect') st.incorrect++;
 
       // 単元別集計
@@ -342,6 +345,7 @@ function renderAnalytics() {
     '<th style="text-align:center;padding:6px 8px;color:var(--text3)">問題数</th>' +
     '<th style="text-align:center;padding:6px 8px;color:var(--text3)">正解</th>' +
     '<th style="text-align:center;padding:6px 8px;color:var(--text3)">部分点</th>' +
+    '<th style="text-align:center;padding:6px 8px;color:var(--text3)">計算ミス</th>' +
     '<th style="text-align:center;padding:6px 8px;color:var(--text3)">不正解</th>' +
     '<th style="text-align:center;padding:6px 8px;color:var(--text3)">正答率</th>' +
     '<th style="text-align:center;padding:6px 8px;color:var(--text3)">漢字</th>' +
@@ -368,6 +372,7 @@ function renderAnalytics() {
       '<td style="text-align:center;padding:7px 8px">' + st.total + '</td>' +
       '<td style="text-align:center;padding:7px 8px;color:var(--green)">' + st.correct + '</td>' +
       '<td style="text-align:center;padding:7px 8px;color:var(--orange)">' + st.partial + '</td>' +
+      '<td style="text-align:center;padding:7px 8px;color:#f97316">' + st.calc + '</td>' +
       '<td style="text-align:center;padding:7px 8px;color:var(--red)">' + st.incorrect + '</td>' +
       '<td style="text-align:center;padding:7px 8px">' +
         '<div style="display:flex;align-items:center;gap:6px">' +
@@ -537,7 +542,7 @@ const headers = {
 };
 
 // 採点状態
-var gradeState = {}; // { problem_id: { result: 'correct'|'partial'|'incorrect', note: '' } }
+var gradeState = {}; // { problem_id: { result: 'correct'|'partial'|'calc'|'incorrect', note: '' } }
 var currentSub = null;
 
 // 提出一覧を取得
@@ -580,6 +585,7 @@ function renderSubList(subs) {
         '<span class="sub-score ' + (gradedIds.has(s.id) ? 'score-done' : 'score-pending') + '" id="score-' + s.id + '">' + (gradedIds.has(s.id) ? '採点済' : '未採点') + '</span>' +
       '</div>' +
       '<button class="sub-item-copy" id="copy-' + s.id + '" onclick="event.stopPropagation();copyResultUrl(\'' + s.id + '\')">🔗 結果URLをコピー</button>' +
+      '<button class="sub-item-reset" id="reset-' + s.id + '" style="display:' + (gradedIds.has(s.id) ? '' : 'none') + '" onclick="event.stopPropagation();resetGrading(\'' + s.id + '\')">🔄 未採点に戻す</button>' +
     '</div>';
   }).join('');
 }
@@ -595,6 +601,37 @@ function copyResultUrl(id) {
   }).catch(function() {
     if (btn) btn.textContent = 'コピー失敗';
   });
+}
+
+// サイドバーの採点状況バッジ・「未採点に戻す」ボタンの表示を更新
+function updateSubItemScore(id, graded, label) {
+  var scoreEl = document.getElementById('score-' + id);
+  if (scoreEl) {
+    scoreEl.textContent = graded ? (label || '採点済') : '未採点';
+    scoreEl.className = 'sub-score ' + (graded ? 'score-done' : 'score-pending');
+  }
+  var resetBtn = document.getElementById('reset-' + id);
+  if (resetBtn) resetBtn.style.display = graded ? '' : 'none';
+}
+
+async function resetGrading(id) {
+  if (!confirm('本当に採点をクリアしますか？この操作は取り消せません')) return;
+  try {
+    await fetch(SUPABASE_URL + '/rest/v1/results?submission_id=eq.' + id, {
+      method: 'DELETE', headers
+    });
+  } catch (e) {
+    alert('削除に失敗しました: ' + e.message);
+    return;
+  }
+
+  gradedIds.delete(id);
+  updateSubItemScore(id, false);
+
+  if (currentSub && currentSub.id === id) {
+    gradeState = {};
+    renderGrading(currentSub);
+  }
 }
 
 async function selectSub(id) {
@@ -620,7 +657,7 @@ async function selectSub(id) {
   if (rData && rData.length > 0) {
     rData.forEach(function(r) {
       gradeState[r.problem_id || r.problem_number] = {
-        result: r.answer_correct ? 'correct' : (r.equation_correct ? 'partial' : 'incorrect'),
+        result: r.grade_result || (r.answer_correct ? 'correct' : (r.equation_correct ? 'partial' : 'incorrect')),
         note: r.ai_feedback || '',
         saved: true
       };
@@ -948,8 +985,9 @@ async function saveResults() {
       chapter_name: p.chapter || null,
       level: p.level || null,
       tags: p.tags || [],
-      equation_correct: gs.result === 'correct' || gs.result === 'partial',
+      equation_correct: gs.result === 'correct' || gs.result === 'partial' || gs.result === 'calc',
       answer_correct: gs.result === 'correct',
+      grade_result: gs.result,
       ai_feedback: gs.note || null,
       teacher_canvas: tcGetData(String(pid)),
       red_pen_canvas: (eqOverlay || ansOverlay) ? { equation: eqOverlay, answer: ansOverlay } : null,
@@ -976,15 +1014,10 @@ async function saveResults() {
 
     if (res.ok) {
       status.textContent = '✓ ' + rows.length + '問の採点結果を保存しました';
-      // サイドバーのスコア表示を更新
-      var scoreEl = document.getElementById('score-' + currentSub.id);
-      if (scoreEl) {
-        var correct = rows.filter(function(r) { return r.answer_correct; }).length;
-        scoreEl.textContent = correct + '/' + rows.length + '問正解';
-        scoreEl.className = 'sub-score score-done';
-      }
-      // フィルター用セットを更新
+      // サイドバーのスコア表示・フィルター用セットを更新
+      var correct = rows.filter(function(r) { return r.answer_correct; }).length;
       gradedIds.add(currentSub.id);
+      updateSubItemScore(currentSub.id, true, correct + '/' + rows.length + '問正解');
     } else {
       var err = await res.json();
       status.textContent = 'エラー: ' + (err.message || res.status);

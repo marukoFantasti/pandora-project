@@ -793,7 +793,7 @@ function generateReviewProblems(sub, maxCount, onDone) {
   // 不正解・部分点の問題を抽出（gradeStateがなければis_correctで判断）
   var wrong = problems.filter(function(p){
     var gs = window.gradeState && window.gradeState[p.problem_id];
-    if (gs) return gs.result === 'incorrect' || gs.result === 'partial' || gs.result === 'partial_calc';
+    if (gs) return gs.result === 'incorrect' || gs.result === 'partial' || gs.result === 'calc';
     return true; // gradeStateがなければ全問対象
   });
   if (wrong.length === 0) { onDone([]); return; }
