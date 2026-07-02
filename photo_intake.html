@@ -53,6 +53,13 @@ body { margin: 0; background: var(--bg); color: var(--text1); font-family: 'Hira
 .corner-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
 #photo-canvas, #corrected-canvas { border: 1px solid var(--border); border-radius: 8px; display: block; max-width: 100%; background: #000; }
 #photo-canvas { cursor: crosshair; }
+.crop-row { border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; }
+.crop-qnum { font-size: 12px; font-weight: 700; color: var(--text1); margin-bottom: 8px; }
+.crop-pid { font-size: 10px; color: var(--text3); font-weight: 400; margin-left: 6px; font-family: monospace; }
+.crop-imgs { display: flex; gap: 10px; flex-wrap: wrap; }
+.crop-img-block { flex: 1; min-width: 140px; }
+.crop-img-label { font-size: 10px; color: var(--text3); margin-bottom: 4px; }
+.crop-img { width: 100%; border: 1px solid var(--border); border-radius: 6px; background: #fffde7; display: block; }
 .hidden { display: none !important; }
 </style>
 </head>
@@ -104,6 +111,21 @@ body { margin: 0; background: var(--bg); color: var(--text1); font-family: 'Hira
     <canvas id="corrected-canvas"></canvas>
   </div>
 
+  <!-- ⑦⑧ 自動切り出し・プレビュー -->
+  <div class="card hidden" id="crop-card">
+    <div class="card-title">⑦⑧ 自動切り出し・プレビュー</div>
+    <div class="card-desc">layout_dataの座標（mm）を補正済みcanvasのピクセル座標に変換し、各問題の式欄・答え欄を切り出しました。生徒が読み取れる状態か確認してください。</div>
+    <div id="crop-list"></div>
+  </div>
+
+  <!-- ⑨ Supabase保存 -->
+  <div class="card hidden" id="save-card">
+    <div class="card-title">⑨ Supabaseへ取り込み</div>
+    <div class="card-desc">上記の切り出し結果を、通常のブラウザ提出（student_quiz系）と同じデータ形式でsubmissionsテーブルに保存します。</div>
+    <button class="btn" id="save-btn" onclick="saveIntake()">📥 この内容で取り込む</button>
+    <div class="status-muted" id="save-status" style="margin-top:10px"></div>
+  </div>
+
 </div>
 
 <div id="qr-reader-file" style="display:none"></div>
@@ -116,6 +138,9 @@ const SB_HEADERS = { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_K
 let photoImage = null;
 let corners = [];
 let html5QrCode = null;
+let currentQrData = null;
+let currentLayoutData = null;
+let croppedProblems = [];
 
 function esc(s) {
   return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -141,6 +166,9 @@ document.getElementById('photo-input').addEventListener('change', function(e) {
 
 function resetPipeline() {
   corners = [];
+  currentQrData = null;
+  currentLayoutData = null;
+  croppedProblems = [];
   document.getElementById('qr-status').textContent = '読み取り中...';
   document.getElementById('qr-status').className = 'status-muted';
   document.getElementById('qr-json-box').classList.add('hidden');
@@ -148,6 +176,9 @@ function resetPipeline() {
   document.getElementById('sheet-status').className = 'status-muted';
   document.getElementById('sheet-json-box').classList.add('hidden');
   document.getElementById('correction-card').classList.add('hidden');
+  document.getElementById('crop-card').classList.add('hidden');
+  document.getElementById('save-card').classList.add('hidden');
+  document.getElementById('save-btn').disabled = false;
   document.getElementById('corner-reset-btn').disabled = true;
   updateCornerStatus();
 }
@@ -163,6 +194,7 @@ function scanQrFromFile(file) {
     try { parsed = JSON.parse(decodedText); } catch (e) { parsed = null; }
 
     if (parsed) {
+      currentQrData = parsed;
       statusEl.textContent = '✓ QRコードを読み取りました';
       statusEl.className = 'status-ok';
       boxEl.textContent = JSON.stringify(parsed, null, 2);
@@ -203,7 +235,8 @@ function fetchAnswerSheet(qr) {
       statusEl.className = 'status-err';
       return;
     }
-    statusEl.textContent = '✓ レコードを取得しました（layout_dataは次の段階で使用します）';
+    currentLayoutData = rows[0].layout_data;
+    statusEl.textContent = '✓ レコードを取得しました';
     statusEl.className = 'status-ok';
     boxEl.textContent = JSON.stringify(rows[0].layout_data, null, 2);
     boxEl.classList.remove('hidden');
@@ -277,9 +310,12 @@ document.getElementById('photo-canvas').addEventListener('click', function(e) {
 
 function resetCorners() {
   corners = [];
+  croppedProblems = [];
   redrawPhotoAndMarkers();
   updateCornerStatus();
   document.getElementById('correction-card').classList.add('hidden');
+  document.getElementById('crop-card').classList.add('hidden');
+  document.getElementById('save-card').classList.add('hidden');
 }
 
 // ===== ⑤ アフィン変換による補正プレビュー =====
@@ -337,6 +373,142 @@ function runCorrection() {
   octx.setTransform(1, 0, 0, 1, 0, 0);
 
   card.classList.remove('hidden');
+
+  if (currentLayoutData) {
+    cropProblems();
+  } else {
+    const cropCard = document.getElementById('crop-card');
+    cropCard.classList.remove('hidden');
+    document.getElementById('crop-list').innerHTML = '<div class="status-muted">layout_dataが取得できていないため、自動切り出しはスキップされました。</div>';
+    document.getElementById('save-card').classList.add('hidden');
+  }
+}
+
+// ===== ⑦⑧ 自動切り出し・プレビュー =====
+function getLayoutProblems(layoutData) {
+  if (!layoutData) return [];
+  if (Array.isArray(layoutData)) return layoutData;
+  if (Array.isArray(layoutData.problems)) return layoutData.problems;
+  return [];
+}
+
+function cropBox(sourceCanvas, box, scale) {
+  if (!box) return null;
+  const sx = box.x * scale, sy = box.y * scale;
+  const sw = box.width * scale, sh = box.height * scale;
+  if (sw <= 0 || sh <= 0) return null;
+  const out = document.createElement('canvas');
+  out.width = Math.max(1, Math.round(sw));
+  out.height = Math.max(1, Math.round(sh));
+  out.getContext('2d').drawImage(sourceCanvas, sx, sy, sw, sh, 0, 0, out.width, out.height);
+  return out;
+}
+
+function cropProblems() {
+  const layoutProblems = getLayoutProblems(currentLayoutData);
+  const listEl = document.getElementById('crop-list');
+  const cropCard = document.getElementById('crop-card');
+  const saveCard = document.getElementById('save-card');
+  cropCard.classList.remove('hidden');
+
+  if (layoutProblems.length === 0) {
+    listEl.innerHTML = '<div class="status-muted">layout_dataに問題データが含まれていません。</div>';
+    saveCard.classList.add('hidden');
+    croppedProblems = [];
+    return;
+  }
+
+  const correctedCanvas = document.getElementById('corrected-canvas');
+  const scale = correctedCanvas.width / 210; // mm → px（A4幅210mm基準、縦横共通スケール）
+  croppedProblems = [];
+  let html = '';
+
+  layoutProblems.forEach(function(p, i) {
+    const pid = p.problem_id || p.id || String(i + 1);
+    const eqCanvas = cropBox(correctedCanvas, p.equation_box, scale);
+    const ansCanvas = cropBox(correctedCanvas, p.answer_box, scale);
+    const eqUrl = eqCanvas ? eqCanvas.toDataURL() : null;
+    const ansUrl = ansCanvas ? ansCanvas.toDataURL() : null;
+
+    croppedProblems.push({ problem_id: pid, equation_canvas: eqUrl, answer_canvas: ansUrl });
+
+    html += '<div class="crop-row">' +
+      '<div class="crop-qnum">Q' + (i + 1) + '<span class="crop-pid">' + esc(pid) + '</span></div>' +
+      '<div class="crop-imgs">' +
+        '<div class="crop-img-block"><div class="crop-img-label">式</div>' +
+          (eqUrl ? '<img class="crop-img" src="' + eqUrl + '">' : '<div class="status-muted">equation_boxなし</div>') +
+        '</div>' +
+        '<div class="crop-img-block"><div class="crop-img-label">答え</div>' +
+          (ansUrl ? '<img class="crop-img" src="' + ansUrl + '">' : '<div class="status-muted">answer_boxなし</div>') +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  });
+
+  listEl.innerHTML = html;
+  saveCard.classList.remove('hidden');
+}
+
+// ===== ⑨ Supabase保存 =====
+function saveIntake() {
+  const btn = document.getElementById('save-btn');
+  const statusEl = document.getElementById('save-status');
+
+  if (!currentQrData || !currentQrData.student_id || !currentQrData.assignment_id) {
+    statusEl.textContent = 'QRコードの読み取り結果（student_id/assignment_id）がありません';
+    statusEl.className = 'status-err';
+    return;
+  }
+  if (!croppedProblems || croppedProblems.length === 0) {
+    statusEl.textContent = '切り出した問題がありません';
+    statusEl.className = 'status-err';
+    return;
+  }
+
+  btn.disabled = true;
+  statusEl.textContent = '保存中...';
+  statusEl.className = 'status-muted';
+
+  const payload = {
+    student_id: currentQrData.student_id,
+    assignment_id: currentQrData.assignment_id,
+    mode: null,
+    subject: 'math',
+    submission_data: {
+      student_id: currentQrData.student_id,
+      student_name: null,
+      problems: croppedProblems.map(function(p) {
+        return {
+          problem_id: p.problem_id,
+          equation_canvas: p.equation_canvas,
+          answer_canvas: p.answer_canvas,
+          unit: null,
+          chapter: null,
+          level: null,
+          tags: [],
+          question: null,
+          answer: null
+        };
+      }),
+      kanji: [],
+      source: 'photo_intake'
+    },
+    submitted_at: new Date().toISOString()
+  };
+
+  fetch(SUPABASE_URL + '/rest/v1/submissions', {
+    method: 'POST',
+    headers: Object.assign({}, SB_HEADERS, { 'Content-Type': 'application/json', 'Prefer': 'return=minimal' }),
+    body: JSON.stringify(payload)
+  }).then(function(r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    statusEl.innerHTML = '✓ 取り込み完了　<a href="pandora_grading.html" style="color:var(--accent)">📝 採点UIで確認する →</a>';
+    statusEl.className = 'status-ok';
+  }).catch(function(e) {
+    statusEl.textContent = '保存に失敗しました: ' + e.message;
+    statusEl.className = 'status-err';
+    btn.disabled = false;
+  });
 }
 </script>
 </body>
