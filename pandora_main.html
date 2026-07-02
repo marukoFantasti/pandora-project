@@ -1277,7 +1277,8 @@ function generateQuiz(){
         '- 送信データにlevel（問題レベル）を含める\n'+
         '- URLパラメータ ?sid= を受け取り、送信データの student_id にセットする。例: const sid = new URLSearchParams(location.search).get(\'sid\') || null;\n'+
         (outputJson.meta.student_id
-          ? '- この課題の対象生徒: student_id="' + outputJson.meta.student_id + '", student_name="' + (outputJson.meta.student_name||'') + '"（URLに ?sid=' + outputJson.meta.student_id + ' を付けて配布する想定）\n'
+          ? '- この課題の対象生徒: student_id="' + outputJson.meta.student_id + '", student_name="' + (outputJson.meta.student_name||'') + '"（URLに ?sid=' + outputJson.meta.student_id + ' を付けて配布する想定）\n'+
+            '- Supabaseへの送信データ（payload）には、トップレベルとsubmission_dataの両方にstudent_nameフィールドを必ず含めること。student_idだけでなくstudent_nameも一緒に送信しないと、採点UIのサイドバーに名前が表示されない。\n'
           : '')+
         '- Supabase URL: https://upmflhdbhbyzoeldrvvw.supabase.co\n'+
         '- Supabase KEY: sb_publishable_K8Y_bNHVA4szRXFM_EcDkA_LBckunu5\n\n'+
