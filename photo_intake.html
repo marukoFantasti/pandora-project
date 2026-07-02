@@ -88,6 +88,12 @@ body { margin: 0; background: var(--bg); color: var(--text1); font-family: 'Hira
     <div class="status-muted" id="qr-status">写真をアップロードすると自動で読み取ります。</div>
     <div class="json-box hidden" id="qr-json-box"></div>
 
+    <div class="hidden" id="qr-closeup-area">
+      <div class="card-desc" style="margin-top:12px;padding-top:12px;border-top:1px dashed var(--border)">📷 QRコード部分だけ拡大してもう一枚撮影してください</div>
+      <input class="file-input" type="file" id="qr-closeup-input" accept="image/*">
+      <div class="status-muted" id="qr-closeup-status" style="margin-top:6px"></div>
+    </div>
+
     <div class="hidden" id="qr-manual-form">
       <div class="card-desc" style="margin-top:12px;padding-top:12px;border-top:1px dashed var(--border)">QRコードが読み取れない場合は、下記に手入力して照会できます。</div>
       <label class="manual-label">assignment_id</label>
@@ -175,6 +181,25 @@ function isHeicFile(file) {
     name.endsWith('.heic') || name.endsWith('.heif');
 }
 
+// HEIC/HEIFファイルであればJPEGに変換して返す（それ以外はそのまま返す）。
+// ①紙全体の写真、②QRコード拡大写真、どちらの入力でも共通して使う。
+function convertHeicIfNeeded(file) {
+  if (!isHeicFile(file)) return Promise.resolve(file);
+
+  if (typeof window.heic2any !== 'function') {
+    console.error('heic2any is not loaded (window.heic2any is not a function)');
+    return Promise.reject(new Error('HEIC変換ライブラリの読み込みに失敗しました'));
+  }
+
+  return heic2any({ blob: file, toType: 'image/jpeg', quality: 0.9 }).then(function(converted) {
+    const blob = Array.isArray(converted) ? converted[0] : converted;
+    return new File([blob], file.name.replace(/\.(heic|heif)$/i, '.jpg'), { type: 'image/jpeg' });
+  }).catch(function(error) {
+    console.error('HEIC conversion failed:', error && error.message, error);
+    throw new Error('HEIC形式の変換に失敗しました。設定アプリ→カメラ→フォーマットで「互換性優先」に変更するか、JPEGで再送信してもらってください');
+  });
+}
+
 function processPhotoFile(file) {
   const img = new Image();
   img.onload = function() {
@@ -198,26 +223,36 @@ document.getElementById('photo-input').addEventListener('change', function(e) {
     statusEl.textContent = '📷 HEIC画像を変換中...';
     statusEl.className = 'status-muted';
 
-    if (typeof window.heic2any !== 'function') {
-      console.error('heic2any is not loaded (window.heic2any is not a function)');
-      statusEl.textContent = 'HEIC変換ライブラリの読み込みに失敗しました';
-      statusEl.className = 'status-err';
-      return;
-    }
-
-    heic2any({ blob: file, toType: 'image/jpeg', quality: 0.9 }).then(function(converted) {
-      const blob = Array.isArray(converted) ? converted[0] : converted;
-      const jpegFile = new File([blob], file.name.replace(/\.(heic|heif)$/i, '.jpg'), { type: 'image/jpeg' });
+    convertHeicIfNeeded(file).then(function(jpegFile) {
       processPhotoFile(jpegFile);
     }).catch(function(error) {
-      console.error('HEIC conversion failed:', error && error.message, error);
-      statusEl.textContent = 'HEIC形式の変換に失敗しました。設定アプリ→カメラ→フォーマットで「互換性優先」に変更するか、JPEGで再送信してもらってください';
+      statusEl.textContent = error.message;
       statusEl.className = 'status-err';
     });
     return;
   }
 
   processPhotoFile(file);
+});
+
+// QRコード部分だけを拡大撮影した写真（②の救済手段）
+document.getElementById('qr-closeup-input').addEventListener('change', function(e) {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+
+  const closeupStatus = document.getElementById('qr-closeup-status');
+  closeupStatus.textContent = '読み取り中...';
+  closeupStatus.className = 'status-muted';
+
+  convertHeicIfNeeded(file).then(function(imgFile) {
+    return decodeQrFromImageFile(imgFile);
+  }).then(function(parsed) {
+    useQrData(parsed, 'QRコード拡大写真から読み取りました');
+  }).catch(function(err) {
+    console.log('[qr-closeup] failed:', err);
+    closeupStatus.textContent = 'まだ読み取れません。手動入力欄もご利用いただけます';
+    closeupStatus.className = 'status-err';
+  });
 });
 
 function resetPipeline() {
@@ -228,6 +263,10 @@ function resetPipeline() {
   document.getElementById('qr-status').textContent = '読み取り中...';
   document.getElementById('qr-status').className = 'status-muted';
   document.getElementById('qr-json-box').classList.add('hidden');
+  document.getElementById('qr-closeup-area').classList.add('hidden');
+  document.getElementById('qr-closeup-input').value = '';
+  document.getElementById('qr-closeup-status').textContent = '';
+  document.getElementById('qr-closeup-status').className = 'status-muted';
   document.getElementById('qr-manual-form').classList.add('hidden');
   document.getElementById('manual-assignment-id').value = '';
   document.getElementById('manual-student-id').value = '';
@@ -277,25 +316,24 @@ function resizeImageForQrScan(file) {
   });
 }
 
-function scanQrFromFile(file) {
-  const statusEl = document.getElementById('qr-status');
-  const boxEl = document.getElementById('qr-json-box');
-
+// 画像ファイルからQRコードをデコードしてJSONとしてパースするまでの
+// 共通処理。①紙全体の写真、②QRコード拡大写真、どちらからも呼ばれる。
+// 成功時はパース済みオブジェクトでresolve、失敗時はErrorでreject
+// （JSONとして解析できなかった場合はerr.rawTextに生テキストを積む）。
+function decodeQrFromImageFile(file) {
   if (typeof Html5Qrcode !== 'function') {
     console.error('Html5Qrcode is not loaded (script did not load in time)');
-    statusEl.textContent = '✗ QRコード読み取りライブラリの読み込みに失敗しました';
-    statusEl.className = 'status-err';
-    return;
+    return Promise.reject(new Error('QRコード読み取りライブラリの読み込みに失敗しました'));
   }
 
   const scanFilePromise = QR_SCAN_RESIZE_ENABLED
     ? resizeImageForQrScan(file)
     : Promise.resolve(file);
 
-  console.log('[scanQrFromFile] resize enabled:', QR_SCAN_RESIZE_ENABLED, '/ input file:', file.name, file.type, file.size + 'bytes');
+  console.log('[decodeQrFromImageFile] resize enabled:', QR_SCAN_RESIZE_ENABLED, '/ input file:', file.name, file.type, file.size + 'bytes');
 
-  scanFilePromise.then(function(scanFile) {
-    console.log('[scanQrFromFile] scanning file:', scanFile.name, scanFile.type, scanFile.size + 'bytes');
+  return scanFilePromise.then(function(scanFile) {
+    console.log('[decodeQrFromImageFile] scanning file:', scanFile.name, scanFile.type, scanFile.size + 'bytes');
     // scanFile()を呼ぶたびに毎回新しいインスタンスを作る。インスタンスを
     // 使い回すと前回のスキャンの内部状態が残り、読み取りが不安定に
     // なることがある（同じ画像でも成功/失敗が入れ替わる報告の主因）。
@@ -305,23 +343,40 @@ function scanQrFromFile(file) {
     // UIに表示したくないのでfalseを指定している。
     return qrInstance.scanFile(scanFile, false);
   }).then(function(decodedText) {
-    console.log('[scanQrFromFile] decode success:', decodedText);
+    console.log('[decodeQrFromImageFile] decode success:', decodedText);
     let parsed = null;
     try { parsed = JSON.parse(decodedText); } catch (e) { parsed = null; }
 
-    if (parsed) {
-      useQrData(parsed, 'QRコードを読み取りました');
-    } else {
-      statusEl.textContent = '⚠️ QRコードは読み取れましたが、JSONとして解析できませんでした';
-      statusEl.className = 'status-err';
-      boxEl.textContent = decodedText;
-      boxEl.classList.remove('hidden');
-      showManualQrForm();
+    if (!parsed) {
+      const err = new Error('QRコードは読み取れましたが、JSONとして解析できませんでした');
+      err.rawText = decodedText;
+      throw err;
     }
+    return parsed;
+  });
+}
+
+function scanQrFromFile(file) {
+  const statusEl = document.getElementById('qr-status');
+  const boxEl = document.getElementById('qr-json-box');
+
+  decodeQrFromImageFile(file).then(function(parsed) {
+    useQrData(parsed, 'QRコードを読み取りました');
   }).catch(function(err) {
-    console.log('[scanQrFromFile] decode failed:', err);
-    statusEl.textContent = '✗ QRコードを読み取れませんでした（' + err + '）';
-    statusEl.className = 'status-err';
+    console.log('[scanQrFromFile] failed:', err);
+    if (err && err.rawText != null) {
+      statusEl.textContent = '⚠️ ' + err.message;
+      statusEl.className = 'status-err';
+      boxEl.textContent = err.rawText;
+      boxEl.classList.remove('hidden');
+    } else {
+      // html5-qrcodeはscanFile()失敗時に文字列でrejectすることがあるため
+      // Errorインスタンスとは限らない（err.messageが無い場合はerr自体を使う）
+      const msg = (err && err.message) ? err.message : err;
+      statusEl.textContent = '✗ QRコードを読み取れませんでした（' + msg + '）';
+      statusEl.className = 'status-err';
+    }
+    showQrCloseupArea();
     showManualQrForm();
   });
 }
@@ -337,8 +392,17 @@ function useQrData(qr, statusLabel) {
   statusEl.className = 'status-ok';
   boxEl.textContent = JSON.stringify(qr, null, 2);
   boxEl.classList.remove('hidden');
+  hideQrCloseupArea();
   hideManualQrForm();
   fetchAnswerSheet(qr);
+}
+
+function showQrCloseupArea() {
+  document.getElementById('qr-closeup-area').classList.remove('hidden');
+}
+
+function hideQrCloseupArea() {
+  document.getElementById('qr-closeup-area').classList.add('hidden');
 }
 
 function showManualQrForm() {
