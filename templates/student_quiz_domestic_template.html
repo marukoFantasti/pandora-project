@@ -81,7 +81,7 @@ function renderAccent(katakana){
 const questions = [
   // ▼▼▼ ここに問題データを差し込む ▼▼▼
   // 各要素の形式: { id, problem_id, tags:[], question, unit, chapter, level,
-  //   jp:<span>ふりがな付きJSX</span>, reading:"ひらがな全文", answer,
+  //   jp:<span>ふりがな付きJSX</span>, answer,
   //   vocab_word:"英単語", vocab_katakana:"カタカナ読み（アクセントの
   //     モーラを * で挟む。例: "サ*ンド*イッチ" なら "ンド" を強調表示）",
   //   vocab_meaning:"日本語訳", example_en:"英語の例文", example_jp:"例文の日本語訳" }
@@ -296,11 +296,6 @@ function App() {
                   <p style={{fontSize:15,lineHeight:2.1,color:"#1a1a1a",fontWeight:"500",margin:0,wordBreak:"break-word"}}>{q.jp}</p>
                 </div>
 
-                <button onClick={()=>speak(q.reading)}
-                  style={{background:speaking===q.reading?"#e3f2fd":"#f5f5f5",border:`1px solid ${speaking===q.reading?"#1a9fd4":"#ddd"}`,color:speaking===q.reading?"#1a9fd4":"#666",padding:"5px 12px",borderRadius:8,fontSize:12,cursor:"pointer",marginBottom:12}}>
-                  {speaking===q.reading?"🔊 Playing...":"🔊 読んでみよう / Read aloud"}
-                </button>
-
                 <DrawCanvas id={`eq_${q.id}`} height={225} internalHeight={225} label="📐 式を書こう / Write your equation" canvasRef={eqRefs.current[q.id]}/>
                 <DrawCanvas id={`ans_${q.id}`} height={110} label="✍️ 答えを書こう / Write your answer" canvasRef={ansRefs.current[q.id]}/>
 
@@ -365,8 +360,8 @@ function App() {
           {vocabQuiz.map((v,i)=>{
             const answered=quizAnswers[v.id];
             return (
-              <div key={v.id} style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap",padding:"7px 4px",borderBottom:i<vocabQuiz.length-1?"1px solid #f3e5f5":"none"}}>
-                <span style={{fontSize:13,fontWeight:"bold",color:"#4a148c",flex:"1 1 120px",minWidth:90}}>{v.meaning}</span>
+              <div key={v.id} style={{padding:"8px 4px",borderBottom:i<vocabQuiz.length-1?"1px solid #f3e5f5":"none"}}>
+                <span style={{display:"block",fontSize:13,fontWeight:"bold",color:"#4a148c",marginBottom:6}}>{v.meaning}</span>
                 <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
                   {v.choices.map(choice=>{
                     const isSelected=answered===choice;
@@ -377,7 +372,7 @@ function App() {
                       else if(isSelected){bg="#ffebee";border="1px solid #e53935";color="#c62828";}
                     }
                     return <button key={choice} onClick={()=>handleQuizAnswer(v.id,choice)} disabled={!!answered}
-                      style={{background:bg,border,color,padding:"5px 10px",borderRadius:8,fontSize:12,fontWeight:"bold",cursor:answered?"default":"pointer"}}>
+                      style={{flex:"1 1 auto",background:bg,border,color,padding:"6px 10px",borderRadius:8,fontSize:12,fontWeight:"bold",cursor:answered?"default":"pointer"}}>
                       {choice}
                     </button>;
                   })}
