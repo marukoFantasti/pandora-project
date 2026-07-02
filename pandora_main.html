@@ -1971,6 +1971,7 @@ function saveApiKey(){
   setTimeout(closeApiKeyModal,800);
 }
 function clearApiKey(){
+  if(!confirm('APIキーを削除しますか？')) return;
   localStorage.removeItem('pandora_api_key');
   document.getElementById('api-key-input').value='';
   document.getElementById('api-key-status').textContent='削除しました';
@@ -1981,7 +1982,7 @@ function clearApiKey(){
 }
 function apiHeaders(){
   var k=getApiKey();
-  if(!k){openApiKeyModal();throw new Error('APIキーが未設定です');}
+  if(!k){openApiKeyModal();throw new Error('APIキーが未設定です（別タブ・別ウィンドウやプライベートブラウジングでは保存したキーが引き継がれないことがあります。このタブでキーを再設定してください）');}
   return{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'};
 }
 // 初期化時にキー設定済みならボタン色を変える
