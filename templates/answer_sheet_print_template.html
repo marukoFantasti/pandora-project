@@ -27,15 +27,17 @@
   座標の絶対位置」に配置する（flexレイアウトではなくposition:
   absoluteで固定配置。CSSの見た目とlayout_dataの数値が必ず一致する
   ようにするため）：
-    問題1: 式 y=20-45mm / 答え y=45-60mm
-    問題2: 式 y=65-90mm / 答え y=90-105mm
-    問題3: 式 y=110-135mm / 答え y=135-150mm
-    問題4: 式 y=155-180mm / 答え y=180-195mm
-    問題5: 式 y=200-225mm / 答え y=225-240mm
-    （すべて x=15mm, width=180mm。上マージン20mm、各ブロック
-    高さ40mm、ブロック間の余白5mm）
+    問題1: 式 y=18-48mm  / 答え y=48-66mm
+    問題2: 式 y=66-96mm  / 答え y=96-114mm
+    問題3: 式 y=114-144mm / 答え y=144-162mm
+    問題4: 式 y=162-192mm / 答え y=192-210mm
+    問題5: 式 y=210-240mm / 答え y=240-258mm
+    （すべて x=15mm, width=180mm。上マージン18mm、各ブロック
+    高さ48mm＝式30mm＋答え18mm、ブロック間の余白なし＝隣接する
+    問題同士が枠線を共有する形で連続配置。5問合計で18mm〜258mm
+    の240mmを使用）
   QRコードと目視用フッターテキストは、問題群と重ならないよう
-  ページ下部余白（y=248mm以降）に配置。ページ上部（y=0-20mm）には
+  ページ下部余白（y=268mm以降）に配置。ページ上部（y=0-18mm）には
   課題ID・生徒名の一行ラベルのみ配置（layout_dataには含まれない）。
 
   questions.lengthに応じて自動でページ分割される（10問なら2ページ、
@@ -110,16 +112,16 @@ body { background: #e8e8e8; font-family: 'Hiragino Sans','Yu Gothic',sans-serif;
 .eq-box .box-qtext { font-size: 10px; color: #222; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
 .eq-box .box-lines {
   position: absolute; top: 7mm; left: 0; right: 0; bottom: 0;
-  background-image: repeating-linear-gradient(to bottom, transparent, transparent 6.5mm, #ccc 6.5mm, #ccc 6.7mm);
+  background-image: repeating-linear-gradient(to bottom, transparent, transparent 5.8mm, #ccc 5.8mm, #ccc 6mm);
 }
 .ans-box .box-tag {
   position: absolute; top: 0; left: 0; font-size: 8px; color: #999; background: #fff;
   padding: 0 1mm; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd; border-bottom-right-radius: 3px;
 }
-.qr-canvas-wrap { position: absolute; left: 165mm; top: 248mm; width: 30mm; height: 30mm; }
-.qr-canvas-wrap canvas, .qr-canvas-wrap img { width: 30mm !important; height: 30mm !important; }
-.footer-text { position: absolute; left: 108mm; top: 280mm; width: 87mm; font-size: 8px; color: #444; line-height: 1.4; }
-.layout-save-status { position: absolute; left: 15mm; top: 280mm; width: 90mm; font-size: 9px; color: #888; }
+.qr-canvas-wrap { position: absolute; left: 169mm; top: 268mm; width: 26mm; height: 26mm; }
+.qr-canvas-wrap canvas, .qr-canvas-wrap img { width: 26mm !important; height: 26mm !important; }
+.footer-text { position: absolute; left: 15mm; top: 268mm; width: 145mm; font-size: 8px; color: #444; line-height: 1.4; }
+.layout-save-status { position: absolute; left: 15mm; top: 281mm; width: 145mm; font-size: 9px; color: #888; }
 .layout-save-ok { color: #2e7d32; }
 .layout-save-err { color: #c62828; }
 .empty-msg { text-align: center; color: #888; font-size: 13px; padding: 40px 0; }
@@ -155,14 +157,15 @@ const PER_PAGE = 5;
 const totalPages = Math.max(1, Math.ceil(questions.length / PER_PAGE));
 
 // 1ページ5問分の固定mm座標（A4ページ左上(0,0)基準）。
-// 上マージン20mm、各問題ブロック高さ40mm（式25mm+答え15mm）、ブロック間余白5mm。
+// 上マージン18mm、各問題ブロック高さ48mm（式30mm+答え18mm）、ブロック間余白なし
+// （隣接する問題同士が枠線を共有して連続配置。5問合計で18mm〜258mmの240mmを使用）。
 const PAGE_MARGIN_X = 15;
 const PROBLEM_WIDTH = 180;
 const PROBLEM_LAYOUT_MM = [0, 1, 2, 3, 4].map(function(i) {
-  const top = 20 + i * 45;
+  const top = 18 + i * 48;
   return {
-    equation_box: { x: PAGE_MARGIN_X, y: top, width: PROBLEM_WIDTH, height: 25 },
-    answer_box:   { x: PAGE_MARGIN_X, y: top + 25, width: PROBLEM_WIDTH, height: 15 }
+    equation_box: { x: PAGE_MARGIN_X, y: top, width: PROBLEM_WIDTH, height: 30 },
+    answer_box:   { x: PAGE_MARGIN_X, y: top + 30, width: PROBLEM_WIDTH, height: 18 }
   };
 });
 
