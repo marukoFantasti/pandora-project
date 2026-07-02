@@ -219,9 +219,16 @@ function resetPipeline() {
 }
 
 // ===== ② QRコード読み取り（html5-qrcode） =====
+// 検証中フラグ：長辺1600pxへの事前リサイズが、QRコード領域（写真全体に
+// 対してごく一部）を過度に縮小し逆に読み取り精度を下げている疑いがある
+// ため、一時的にリサイズを無効化できるようにしている。
+// true  = リサイズしてからscanFile()に渡す
+// false = 元の解像度のままscanFile()に渡す（検証用。現在はこちら）
+const QR_SCAN_RESIZE_ENABLED = false;
+
 // iPhone写真（長辺3000〜4000px超）をそのまま渡すと、QRコードが写真全体に
-// 対して小さくなり内部デコードで見逃されることがあるため、事前に
-// 長辺1600px程度へ縮小してから渡す。
+// 対して小さくなり内部デコードで見逃される可能性があるため用意した
+// リサイズ処理（QR_SCAN_RESIZE_ENABLEDがtrueの時のみ使用）。
 function resizeImageForQrScan(file) {
   return new Promise(function(resolve, reject) {
     const img = new Image();
@@ -233,6 +240,7 @@ function resizeImageForQrScan(file) {
       canvas.height = Math.max(1, Math.round(img.height * scale));
       canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
       URL.revokeObjectURL(img.src);
+      console.log('[resizeImageForQrScan] original:', img.width + 'x' + img.height, '-> resized:', canvas.width + 'x' + canvas.height);
       canvas.toBlob(function(blob) {
         if (!blob) { reject(new Error('画像の縮小に失敗しました')); return; }
         resolve(new File([blob], 'qr-scan.jpg', { type: 'image/jpeg' }));
@@ -254,7 +262,14 @@ function scanQrFromFile(file) {
     return;
   }
 
-  resizeImageForQrScan(file).then(function(scanFile) {
+  const scanFilePromise = QR_SCAN_RESIZE_ENABLED
+    ? resizeImageForQrScan(file)
+    : Promise.resolve(file);
+
+  console.log('[scanQrFromFile] resize enabled:', QR_SCAN_RESIZE_ENABLED, '/ input file:', file.name, file.type, file.size + 'bytes');
+
+  scanFilePromise.then(function(scanFile) {
+    console.log('[scanQrFromFile] scanning file:', scanFile.name, scanFile.type, scanFile.size + 'bytes');
     // scanFile()を呼ぶたびに毎回新しいインスタンスを作る。インスタンスを
     // 使い回すと前回のスキャンの内部状態が残り、読み取りが不安定に
     // なることがある（同じ画像でも成功/失敗が入れ替わる報告の主因）。
@@ -264,6 +279,7 @@ function scanQrFromFile(file) {
     // UIに表示したくないのでfalseを指定している。
     return qrInstance.scanFile(scanFile, false);
   }).then(function(decodedText) {
+    console.log('[scanQrFromFile] decode success:', decodedText);
     let parsed = null;
     try { parsed = JSON.parse(decodedText); } catch (e) { parsed = null; }
 
@@ -281,6 +297,7 @@ function scanQrFromFile(file) {
       boxEl.classList.remove('hidden');
     }
   }).catch(function(err) {
+    console.log('[scanQrFromFile] decode failed:', err);
     statusEl.textContent = '✗ QRコードを読み取れませんでした（' + err + '）';
     statusEl.className = 'status-err';
   });
