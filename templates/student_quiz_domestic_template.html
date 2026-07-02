@@ -9,8 +9,9 @@
     {{PAGE_TITLE}}      - <title>タグの中身
     {{QUIZ_META}}       - const QUIZ_META = {...}; の定義
     {{QUESTIONS}}       - questions配列の中身（各要素にvocab_word/
-                          vocab_meaningを含めると単語マッチングに
-                          自動で反映される）
+                          vocab_katakana/vocab_meaning/example_en/
+                          example_jpを含めると+Englishパネルと
+                          単語クイズに自動で反映される）
     {{ILLUSTRATIONS}}   - illustrationsオブジェクトの中身
 
   【著作権注意】illustrations・questionsに実在の著作物
@@ -20,10 +21,12 @@
   【骨格に含まれる主な機能】
   - DrawCanvas: ペン/消しゴム/全消去、canvas解像度1200x{height}固定
     （幅を変えると採点UI側で歪んで表示されるので変更しないこと）
-  - +Englishパネル（単語・例文・音声読み上げ、questions[].hint等を使用）
+  - +Englishパネル（1問=1単語カード。questions[].vocab_word/
+    vocab_katakana/vocab_meaning/example_en/example_jpを使用し、
+    単語・例文それぞれに🔊読み上げボタン付き）
   - レベルバッジ（例題:紫/確認:青/練習:橙、questions[].levelで判定）
-  - 単語マッチングコーナー（questions[].vocab_word/vocab_meaningから
-    自動で最大6件抽出。無ければ0件で自然に非表示になる）
+  - 単語クイズ（questions全問のvocab_meaningを問題文にした3択クイズ。
+    正解はvocab_word、誤答2つは他問題のvocab_wordからランダム抽出）
   - Supabase送信: student_id/student_name の両方を必ず含める
     （どちらか欠けると採点UI側で表示が壊れる）
   ═══════════════════════════════════════════════════════════════
@@ -67,11 +70,21 @@ const UNIT_COLORS = {
   "式と計算":     { color:"#2e7d32", bg:"#e8f5e9" },
 };
 
+// カタカナ読みのアクセント表記（"サ*ンド*イッチ" の * で挟まれた部分を強調）
+function renderAccent(katakana){
+  if(!katakana) return null;
+  const parts = katakana.split("*");
+  if(parts.length < 3) return katakana;
+  return <>{parts[0]}<strong style={{color:"#e65100",textDecoration:"underline"}}>{parts[1]}</strong>{parts.slice(2).join("")}</>;
+}
+
 const questions = [
   // ▼▼▼ ここに問題データを差し込む ▼▼▼
   // 各要素の形式: { id, problem_id, tags:[], question, unit, chapter, level,
-  //   jp:<span>ふりがな付きJSX</span>, reading:"ひらがな全文",
-  //   answer, hint, words:[{word,meaning,example}, ...] }
+  //   jp:<span>ふりがな付きJSX</span>, reading:"ひらがな全文", answer,
+  //   vocab_word:"英単語", vocab_katakana:"カタカナ読み（アクセントの
+  //     モーラを * で挟む。例: "サ*ンド*イッチ" なら "ンド" を強調表示）",
+  //   vocab_meaning:"日本語訳", example_en:"英語の例文", example_jp:"例文の日本語訳" }
   // level は 'example_follow' | 'confirmation' | 'practice' のいずれか
   // {{QUESTIONS}}
 ];
@@ -114,10 +127,8 @@ function DrawCanvas({ id, height=120, label, canvasRef: externalRef, internalHei
 }
 
 function App() {
-  const [showHint, setShowHint] = React.useState({});
-  const [showWords, setShowWords] = React.useState({});
-  const [vocabSelected, setVocabSelected] = React.useState({left:null,right:null});
-  const [vocabMatched, setVocabMatched] = React.useState({});
+  const [showEnglish, setShowEnglish] = React.useState({});
+  const [quizAnswers, setQuizAnswers] = React.useState({});
   const [speaking, setSpeaking] = React.useState(null);
   const [submitted, setSubmitted] = React.useState(false);
   const [submitting, setSubmitting] = React.useState(false);
@@ -132,37 +143,42 @@ function App() {
   });
 
 
-  const speak=(text)=>{window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="ja-JP";u.rate=0.8;setSpeaking(text);u.onend=()=>setSpeaking(null);window.speechSynthesis.speak(u);};
+  const speak=(text,lang="ja-JP")=>{
+    window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang=lang;
+    u.rate=0.8;
+    if(lang.startsWith("en")){
+      const FEMALE_HINTS=["Samantha","Female","Google US English","Victoria","Karen","Moira","Tessa","Fiona","Zira","Susan","Allison","Ava"];
+      const voices=window.speechSynthesis.getVoices()||[];
+      const enVoices=voices.filter(v=>v.lang&&v.lang.toLowerCase().startsWith("en")&&v.name!=="Kyoko");
+      const femaleVoice=enVoices.find(v=>FEMALE_HINTS.some(h=>v.name.includes(h)))
+        || enVoices.find(v=>/female/i.test(v.name));
+      if(femaleVoice) u.voice=femaleVoice; // 見つからなければブラウザのデフォルト音声にフォールバック
+    }
+    setSpeaking(text);
+    u.onend=()=>setSpeaking(null);
+    window.speechSynthesis.speak(u);
+  };
 
-  // 単語マッチング用データ（questionsの vocab_word/vocab_meaning から自動抽出、最大6件）
-  const vocabPool = React.useMemo(()=>questions.filter(q=>q.vocab_word&&q.vocab_meaning).slice(0,6).map(q=>({id:"v"+q.id, en:q.vocab_word, jp:q.vocab_meaning})),[]);
-  const shuffledVocabJp = React.useMemo(()=>[...vocabPool].sort(()=>Math.random()-0.5),[]);
-  const handleVocabLeft=(id)=>{
-    if(vocabMatched[id])return;
-    setVocabSelected(prev=>{
-      const newLeft=prev.left===id?null:id;
-      if(newLeft&&prev.right){
-        const correctJp=vocabPool.find(v=>v.id===newLeft)?.jp;
-        const selectedJp=shuffledVocabJp.find(v=>v.id===prev.right)?.jp;
-        if(correctJp===selectedJp){setVocabMatched(m=>({...m,[newLeft]:true,[`jp_${prev.right}`]:true}));return{left:null,right:null};}
-        return{left:newLeft,right:prev.right};
-      }
-      return{...prev,left:newLeft};
+  // 単語クイズ用データ（questionsの vocab_word/vocab_meaning から自動生成、3択）
+  const vocabQuiz = React.useMemo(()=>{
+    const withVocab = questions.filter(q=>q.vocab_word&&q.vocab_meaning);
+    return withVocab.map(q=>{
+      const distractors = withVocab
+        .filter(o=>o.id!==q.id && o.vocab_word!==q.vocab_word)
+        .map(o=>o.vocab_word)
+        .sort(()=>Math.random()-0.5)
+        .slice(0,2);
+      const choices = [...distractors, q.vocab_word].sort(()=>Math.random()-0.5);
+      return { id:q.id, meaning:q.vocab_meaning, correct:q.vocab_word, choices };
     });
+  },[]);
+  const handleQuizAnswer=(id,choice)=>{
+    if(quizAnswers[id])return;
+    setQuizAnswers(prev=>({...prev,[id]:choice}));
   };
-  const handleVocabRight=(id)=>{
-    if(vocabMatched[`jp_${id}`])return;
-    setVocabSelected(prev=>{
-      const newRight=prev.right===id?null:id;
-      if(prev.left&&newRight){
-        const correctJp=vocabPool.find(v=>v.id===prev.left)?.jp;
-        const selectedJp=shuffledVocabJp.find(v=>v.id===newRight)?.jp;
-        if(correctJp===selectedJp){setVocabMatched(m=>({...m,[prev.left]:true,[`jp_${newRight}`]:true}));return{left:null,right:null};}
-        return{left:prev.left,right:newRight};
-      }
-      return{...prev,right:newRight};
-    });
-  };
+  const quizCorrectCount = vocabQuiz.filter(v=>quizAnswers[v.id]===v.correct).length;
 
   const SUPABASE_URL="https://upmflhdbhbyzoeldrvvw.supabase.co";
   const SUPABASE_KEY="sb_publishable_K8Y_bNHVA4szRXFM_EcDkA_LBckunu5";
@@ -202,9 +218,9 @@ function App() {
             answer_canvas:ansRefs.current[q.id]?.current?.toDataURL()||null,
           })),
           kanji:[],
-          vocab_score:Object.keys(vocabMatched).filter(k=>!k.startsWith("jp_")).length,
-          vocab_total:vocabPool.length,
-          english_opened_count:null,
+          vocab_score:quizCorrectCount,
+          vocab_total:vocabQuiz.length,
+          english_opened_count:Object.keys(showEnglish).filter(k=>showEnglish[k]).length,
         },
         submitted_at:new Date().toISOString(),
       };
@@ -289,44 +305,45 @@ function App() {
                 <DrawCanvas id={`ans_${q.id}`} height={110} label="✍️ 答えを書こう / Write your answer" canvasRef={ansRefs.current[q.id]}/>
 
                 <div style={{display:"flex",gap:8,marginTop:12,flexWrap:"wrap",alignItems:"center"}}>
-                  <button onClick={()=>setShowWords(p=>({...p,[q.id]:!p[q.id]}))}
-                    style={{background:showWords[q.id]?"#fff3e0":"#f5f5f5",border:`1px solid ${showWords[q.id]?"#ff9800":"#ddd"}`,color:showWords[q.id]?"#e65100":"#666",padding:"6px 12px",borderRadius:8,fontSize:12,cursor:"pointer"}}>
-                    📖 ことば / Words
-                  </button>
-                  <button onClick={()=>setShowHint(p=>({...p,[q.id]:!p[q.id]}))}
-                    style={{background:showHint[q.id]?"#e8f5e9":"#f5f5f5",border:`1px solid ${showHint[q.id]?"#43a047":"#ddd"}`,color:showHint[q.id]?"#2e7d32":"#666",padding:"6px 12px",borderRadius:8,fontSize:12,cursor:"pointer"}}>
-                    🇬🇧 English hint
+                  <button onClick={()=>setShowEnglish(p=>({...p,[q.id]:!p[q.id]}))}
+                    style={{background:showEnglish[q.id]?"#e8f5e9":"#f5f5f5",border:`1px solid ${showEnglish[q.id]?"#43a047":"#ddd"}`,color:showEnglish[q.id]?"#2e7d32":"#666",padding:"6px 12px",borderRadius:8,fontSize:12,cursor:"pointer"}}>
+                    🌍 +English
                   </button>
                   <button onClick={()=>{
                     if(idx < questions.length-1){
                       const next=document.getElementById('q-'+questions[idx+1].id);
                       if(next) next.scrollIntoView({behavior:'smooth',block:'start'});
                     } else {
-                      const kanjiEl=document.getElementById('kanji-section');
-                      if(kanjiEl) kanjiEl.scrollIntoView({behavior:'smooth',block:'start'});
+                      const quizEl=document.getElementById('vocab-quiz-section');
+                      if(quizEl) quizEl.scrollIntoView({behavior:'smooth',block:'start'});
                     }
                   }} style={{marginLeft:"auto",background:idx < questions.length-1?"#1a9fd4":"#e53935",color:"white",border:"none",padding:"8px 18px",borderRadius:10,fontSize:13,fontWeight:"bold",cursor:"pointer",boxShadow:"0 2px 6px rgba(0,0,0,0.2)"}}>
-                    {idx < questions.length-1 ? "次の問題へ ▼" : "単語マッチングへ ▼"}
+                    {idx < questions.length-1 ? "次の問題へ ▼" : "単語クイズへ ▼"}
                   </button>
                 </div>
               </div>
 
-              {showWords[q.id]&&(
-                <div style={{borderTop:"1px solid #fff3e0",background:"#fffbf0",padding:"12px"}}>
-                  <p style={{fontSize:11,color:"#e65100",fontWeight:"bold",margin:"0 0 8px 0"}}>📖 ことば / Words</p>
-                  {q.words.map((w,i)=>(
-                    <div key={i} style={{background:"white",border:"1px solid #ffe0b2",borderRadius:10,padding:"8px 10px",marginBottom:6}}>
-                      <p style={{fontSize:14,fontWeight:"bold",color:"#333",margin:"0 0 2px 0"}}>{w.word}</p>
-                      <p style={{fontSize:13,color:"#1a73e8",margin:"0 0 2px 0"}}>🇬🇧 {w.meaning}</p>
-                      <p style={{fontSize:11,color:"#888",margin:0}}>例: {w.example}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-              {showHint[q.id]&&(
+              {showEnglish[q.id]&&(
                 <div style={{borderTop:"1px solid #e8f5e9",background:"#f1f8f1",padding:"12px"}}>
-                  <p style={{fontSize:11,color:"#2e7d32",fontWeight:"bold",margin:"0 0 4px 0"}}>🇬🇧 English hint</p>
-                  <p style={{fontSize:14,color:"#333",margin:0,fontStyle:"italic"}}>{q.hint}</p>
+                  <p style={{fontSize:11,color:"#2e7d32",fontWeight:"bold",margin:"0 0 8px 0"}}>📖 今日の単語</p>
+                  <div style={{background:"white",border:"1px solid #c8e6c9",borderRadius:10,padding:"10px 12px",marginBottom:8}}>
+                    <p style={{fontSize:20,fontWeight:"bold",color:"#333",margin:"0 0 2px 0"}}>{q.vocab_word}</p>
+                    <p style={{fontSize:14,color:"#555",margin:"0 0 4px 0"}}>{renderAccent(q.vocab_katakana)}</p>
+                    <p style={{fontSize:13,color:"#1a73e8",margin:"0 0 6px 0"}}>🇯🇵 {q.vocab_meaning}</p>
+                    <button onClick={()=>speak(q.vocab_word,"en-US")}
+                      style={{background:speaking===q.vocab_word?"#e3f2fd":"#f5f5f5",border:`1px solid ${speaking===q.vocab_word?"#1a9fd4":"#ddd"}`,color:speaking===q.vocab_word?"#1a9fd4":"#666",padding:"4px 10px",borderRadius:8,fontSize:11,cursor:"pointer"}}>
+                      {speaking===q.vocab_word?"🔊 Playing...":"🔊 単語を聞く"}
+                    </button>
+                  </div>
+                  <div style={{borderTop:"1px dashed #a5d6a7",margin:"8px 0"}}/>
+                  <div style={{background:"white",border:"1px solid #c8e6c9",borderRadius:10,padding:"10px 12px"}}>
+                    <p style={{fontSize:14,color:"#333",margin:"0 0 4px 0",fontStyle:"italic"}}>{q.example_en}</p>
+                    <p style={{fontSize:12,color:"#888",margin:"0 0 6px 0"}}>{q.example_jp}</p>
+                    <button onClick={()=>speak(q.example_en,"en-US")}
+                      style={{background:speaking===q.example_en?"#e3f2fd":"#f5f5f5",border:`1px solid ${speaking===q.example_en?"#1a9fd4":"#ddd"}`,color:speaking===q.example_en?"#1a9fd4":"#666",padding:"4px 10px",borderRadius:8,fontSize:11,cursor:"pointer"}}>
+                      {speaking===q.example_en?"🔊 Playing...":"🔊 例文を聞く"}
+                    </button>
+                  </div>
                 </div>
               )}
 
@@ -334,46 +351,41 @@ function App() {
           );
         })}
 
-        {/* 単語マッチングコーナー */}
-        <div id="kanji-section" style={{background:"linear-gradient(135deg,#7b1fa2,#4a148c)",borderRadius:14,padding:"14px 16px",marginBottom:12}}>
-          <h2 style={{color:"white",fontSize:16,fontWeight:"bold",margin:"0 0 2px 0"}}>🧩 単語マッチング / Word Matching</h2>
-          <p style={{color:"rgba(255,255,255,0.8)",fontSize:12,margin:0}}>英語 → 日本語の意味をタップして繋げよう！</p>
+        {/* 単語クイズ */}
+        <div id="vocab-quiz-section" style={{background:"linear-gradient(135deg,#7b1fa2,#4a148c)",borderRadius:14,padding:"14px 16px",marginBottom:12}}>
+          <h2 style={{color:"white",fontSize:16,fontWeight:"bold",margin:"0 0 2px 0"}}>🧩 単語クイズ / Vocabulary Quiz</h2>
+          <p style={{color:"rgba(255,255,255,0.8)",fontSize:12,margin:0}}>日本語の意味に合う英単語を選ぼう！</p>
         </div>
 
-        <div style={{background:"white",borderRadius:14,marginBottom:14,padding:"14px 12px",boxShadow:"0 2px 6px rgba(0,0,0,0.07)",border:"2px solid #e1bee7"}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-            <p style={{fontSize:14,fontWeight:"bold",color:"#7b1fa2",margin:0}}>📝 単語マッチング</p>
-            <span style={{background:"#7b1fa2",color:"white",borderRadius:20,padding:"3px 12px",fontSize:13,fontWeight:"bold"}}>{Object.keys(vocabMatched).filter(k=>!k.startsWith("jp_")).length} / {vocabPool.length}</span>
+        <div style={{background:"white",borderRadius:14,marginBottom:14,padding:"10px 12px",boxShadow:"0 2px 6px rgba(0,0,0,0.07)",border:"2px solid #e1bee7"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8,padding:"0 4px"}}>
+            <p style={{fontSize:14,fontWeight:"bold",color:"#7b1fa2",margin:0}}>📝 単語クイズ</p>
+            <span style={{background:"#7b1fa2",color:"white",borderRadius:20,padding:"3px 12px",fontSize:13,fontWeight:"bold"}}>{quizCorrectCount} / {vocabQuiz.length}</span>
           </div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-            <div>
-              {vocabPool.map(v=>{
-                const matched=vocabMatched[v.id];
-                const sel=vocabSelected.left===v.id;
-                return <button key={v.id} onClick={()=>handleVocabLeft(v.id)}
-                  style={{display:"block",width:"100%",marginBottom:6,padding:"10px 8px",borderRadius:10,fontSize:14,fontWeight:"bold",cursor:matched?"default":"pointer",textAlign:"center",
-                    background:matched?"#e8f5e9":sel?"#fff9c4":"#f5f5f5",
-                    border:`2px solid ${matched?"#43a047":sel?"#f9a825":"#ddd"}`,
-                    color:matched?"#2e7d32":sel?"#f57f17":"#333",opacity:matched?0.7:1}}>
-                  {v.en}{matched?" ✓":""}
-                </button>;
-              })}
-            </div>
-            <div>
-              {shuffledVocabJp.map(v=>{
-                const matched=vocabMatched[`jp_${v.id}`];
-                const sel=vocabSelected.right===v.id;
-                return <button key={v.id} onClick={()=>handleVocabRight(v.id)}
-                  style={{display:"block",width:"100%",marginBottom:6,padding:"10px 8px",borderRadius:10,fontSize:14,fontWeight:"bold",cursor:matched?"default":"pointer",textAlign:"center",
-                    background:matched?"#e8f5e9":sel?"#fff9c4":"#f5f5f5",
-                    border:`2px solid ${matched?"#43a047":sel?"#f9a825":"#ddd"}`,
-                    color:matched?"#2e7d32":sel?"#f57f17":"#333",opacity:matched?0.7:1}}>
-                  {v.jp}{matched?" ✓":""}
-                </button>;
-              })}
-            </div>
-          </div>
-          {vocabPool.length>0 && Object.keys(vocabMatched).filter(k=>!k.startsWith("jp_")).length===vocabPool.length && <p style={{textAlign:"center",fontSize:15,fontWeight:"bold",color:"#43a047",marginTop:10}}>🎉 全問正解！Perfect!</p>}
+          {vocabQuiz.map((v,i)=>{
+            const answered=quizAnswers[v.id];
+            return (
+              <div key={v.id} style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap",padding:"7px 4px",borderBottom:i<vocabQuiz.length-1?"1px solid #f3e5f5":"none"}}>
+                <span style={{fontSize:13,fontWeight:"bold",color:"#4a148c",flex:"1 1 120px",minWidth:90}}>{v.meaning}</span>
+                <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
+                  {v.choices.map(choice=>{
+                    const isSelected=answered===choice;
+                    const isCorrectChoice=choice===v.correct;
+                    let bg="#f5f5f5",border="1px solid #ddd",color="#333";
+                    if(answered){
+                      if(isCorrectChoice){bg="#e8f5e9";border="1px solid #43a047";color="#2e7d32";}
+                      else if(isSelected){bg="#ffebee";border="1px solid #e53935";color="#c62828";}
+                    }
+                    return <button key={choice} onClick={()=>handleQuizAnswer(v.id,choice)} disabled={!!answered}
+                      style={{background:bg,border,color,padding:"5px 10px",borderRadius:8,fontSize:12,fontWeight:"bold",cursor:answered?"default":"pointer"}}>
+                      {choice}
+                    </button>;
+                  })}
+                </div>
+              </div>
+            );
+          })}
+          {vocabQuiz.length>0 && quizCorrectCount===vocabQuiz.length && <p style={{textAlign:"center",fontSize:15,fontWeight:"bold",color:"#43a047",marginTop:10}}>🎉 全問正解！Perfect!</p>}
         </div>
 
                 {submitError&&<div style={{background:"#ffebee",border:"1px solid #e53935",borderRadius:10,padding:"10px 14px",marginBottom:8,fontSize:13,color:"#c62828"}}>⚠️ {submitError}</div>}
