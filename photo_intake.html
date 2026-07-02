@@ -773,7 +773,17 @@ function cropProblems() {
     const eqUrl = eqCanvas ? eqCanvas.toDataURL() : null;
     const ansUrl = ansCanvas ? ansCanvas.toDataURL() : null;
 
-    croppedProblems.push({ problem_id: pid, equation_canvas: eqUrl, answer_canvas: ansUrl });
+    croppedProblems.push({
+      problem_id: pid,
+      equation_canvas: eqUrl,
+      answer_canvas: ansUrl,
+      question: p.question || null,
+      answer: p.answer || null,
+      unit: p.unit || null,
+      chapter: p.chapter || null,
+      level: p.level || null,
+      tags: p.tags || []
+    });
 
     html += '<div class="crop-row">' +
       '<div class="crop-qnum">Q' + (i + 1) + '<span class="crop-pid">' + esc(pid) + '</span></div>' +
@@ -825,12 +835,12 @@ function saveIntake() {
           problem_id: p.problem_id,
           equation_canvas: p.equation_canvas,
           answer_canvas: p.answer_canvas,
-          unit: null,
-          chapter: null,
-          level: null,
-          tags: [],
-          question: null,
-          answer: null
+          unit: p.unit || null,
+          chapter: p.chapter || null,
+          level: p.level || null,
+          tags: p.tags || [],
+          question: p.question || null,
+          answer: p.answer || null
         };
       }),
       kanji: [],

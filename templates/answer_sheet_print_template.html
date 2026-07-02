@@ -17,10 +17,16 @@
     {{STUDENT_ID}}     - 生徒ID（同上）
     {{STUDENT_NAME}}   - 生徒名（同上）
     {{QUESTIONS}}      - questions配列の中身。各要素の形式：
-                         { id, problem_id, question, unit, level }
+                         { id, problem_id, question, answer, unit,
+                           chapter, level, tags }
                          level は 'example_follow' | 'confirmation'
                          | 'practice' のいずれか（バッジ表示用、
-                         省略可）
+                         省略可）。answer/chapter/tagsは印刷表示には
+                         使わないが、layout_data経由でSupabaseの
+                         answer_sheetsに保存され、photo_intake.htmlが
+                         写真取り込み時のsubmissions保存に使うため、
+                         生成側（pandora_main.htmlのプロンプト）は
+                         questionsに必ず含めること
 
   【座標系（重要）】1ページ5問固定。各問題の式欄・答え欄は、
   PROBLEM_LAYOUT_MM で定義した「A4ページ左上(0,0)を基準としたmm
@@ -52,13 +58,16 @@
 
   【layout_dataの自動保存】
   renderPages() がページを描画するたび、そのページの5問分の
-  equation_box/answer_box座標（PROBLEM_LAYOUT_MMそのもの）を
-  problem_idと紐づけてSupabaseのanswer_sheetsテーブルに保存する：
+  equation_box/answer_box座標（PROBLEM_LAYOUT_MMそのもの）と、
+  questions配列由来のquestion/answer/unit/chapter/level/tagsを
+  problem_idと紐づけてSupabaseのanswer_sheetsテーブルに保存する
+  （photo_intake.htmlが写真取り込み時、これらの値をそのまま
+  submissionsのproblems[]に転記するために使う）：
     1. 同じ assignment_id + student_id + page の既存行をDELETE
        （PostgRESTにON CONFLICTがないため、上書きは削除→挿入で行う）
     2. { assignment_id, student_id, page, total_pages, layout_data:
-       { problems: [{ problem_id, equation_box, answer_box }, ...] } }
-       をPOST
+       { problems: [{ problem_id, equation_box, answer_box, question,
+       answer, unit, chapter, level, tags }, ...] } } をPOST
   保存結果（成功/失敗）は各ページ下部に小さく表示する
   （class="no-print" のため印刷はされず、画面確認用）。
 
@@ -147,8 +156,10 @@ const STUDENT_NAME = "{{STUDENT_NAME}}";
 
 const questions = [
   // ▼▼▼ ここに問題データを差し込む ▼▼▼
-  // 各要素の形式: { id, problem_id, question, unit, level }
-  // level は 'example_follow' | 'confirmation' | 'practice' のいずれか（省略可）
+  // 各要素の形式: { id, problem_id, question, answer, unit, chapter, level, tags }
+  // level は 'example_follow' | 'confirmation' | 'practice' のいずれか（省略可）。
+  // answer/chapter/tagsは印刷には使わないが、layout_data経由でanswer_sheetsに
+  // 保存されphoto_intake.htmlのsubmissions保存に使われるため必ず含めること
   // {{QUESTIONS}}
 ];
 
@@ -257,7 +268,13 @@ function saveLayoutData(page, pageQuestions) {
     return {
       problem_id: q.problem_id || q.id,
       equation_box: boxes.equation_box,
-      answer_box: boxes.answer_box
+      answer_box: boxes.answer_box,
+      question: q.question || null,
+      answer: q.answer || null,
+      unit: q.unit || null,
+      chapter: q.chapter || null,
+      level: q.level || null,
+      tags: q.tags || []
     };
   });
 
