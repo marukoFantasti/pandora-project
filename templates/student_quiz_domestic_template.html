@@ -53,7 +53,6 @@
 //   assignment_id: "asgn_xxxx", mode: "domestic", grades: ["g03"],
 //   theme_title: "算数×英語を学ぼう！", theme_label: "テーマ名",
 //   theme_icon: "🐰", grade_label: "小3",
-//   theme_label: "テーマ名", theme_icon: "🔵", grade_label: "小4",
 //   student_name: "阿部 優子"  // 生徒を選んで生成した場合のみ
 // };
 // {{QUIZ_META}}
@@ -117,6 +116,8 @@ function DrawCanvas({ id, height=120, label, canvasRef: externalRef, internalHei
 function App() {
   const [showHint, setShowHint] = React.useState({});
   const [showWords, setShowWords] = React.useState({});
+  const [vocabSelected, setVocabSelected] = React.useState({left:null,right:null});
+  const [vocabMatched, setVocabMatched] = React.useState({});
   const [speaking, setSpeaking] = React.useState(null);
   const [submitted, setSubmitted] = React.useState(false);
   const [submitting, setSubmitting] = React.useState(false);
