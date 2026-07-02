@@ -39,6 +39,8 @@ body.imode .ai-btn { font-size: 15px; padding: 10px 0; }
 body.imode .btn-primary, body.imode .btn-ghost { font-size: 15px; padding: 10px 20px; }
 body.imode .filter-btn { font-size: 14px; padding: 6px 12px; }
 body.imode .sub-item-copy, body.imode .sub-item-reset { font-size: 13px; padding: 8px 0; }
+body.imode .problem-text { font-size: 17px; line-height: 1.9; }
+body.imode .answer-text { font-size: 17px; }
 
 /* Header */
 .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 10px 16px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; }
@@ -60,6 +62,7 @@ body.imode .sub-item-copy, body.imode .sub-item-reset { font-size: 13px; padding
 .sub-item { padding: 12px 16px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.15s; white-space: nowrap; overflow: hidden; }
 .sub-item:hover { background: var(--card); }
 .sub-item.active { background: var(--card); border-left: 3px solid var(--accent); }
+.sub-item-name { font-size: 14px; font-weight: 700; color: var(--text1); margin-bottom: 3px; }
 .sub-item-id { font-size: 10px; color: var(--text3); font-family: monospace; margin-bottom: 4px; }
 .sub-item-date { font-size: 11px; color: var(--text2); margin-bottom: 4px; }
 .sub-item-meta { display: flex; gap: 6px; align-items: center; }
@@ -599,8 +602,10 @@ function renderSubList(subs) {
     var dateStr = d.getFullYear() + '/' + (d.getMonth()+1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + String(d.getMinutes()).padStart(2,'0');
     var mode = s.mode || '不明';
     var subject = s.subject || 'math';
+    var name = s.student_name || '名前未設定';
     return '<div class="sub-item" onclick="selectSub(\'' + s.id + '\')" id="si-' + s.id + '">' +
-      '<div class="sub-item-id">' + s.id.substr(0,8) + '...</div>' +
+      '<div class="sub-item-name">' + name + '</div>' +
+      '<div class="sub-item-id">' + s.id.substr(0,8) + '...' + (s.student_id ? ' ・ ID: ' + s.student_id : '') + '</div>' +
       '<div class="sub-item-date">' + dateStr + '</div>' +
       '<div class="sub-item-meta">' +
         '<span class="sub-tag tag-' + subject + '">' + subject + '</span>' +
