@@ -45,7 +45,7 @@
 
   【QRコード】
   - 使用ライブラリ: qrcodejs
-    https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.4.4/qrcode.min.js
+    https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js
   - 中身は以下のJSON文字列（ページごとに page の値だけ変わる）：
     {"assignment_id":"{{ASSIGNMENT_ID}}","student_id":"{{STUDENT_ID}}",
      "page":<そのページの番号>,"total_pages":<総ページ数>}
@@ -73,7 +73,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{ASSIGNMENT_ID}} 解答用紙</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.4.4/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 @page { size: A4; margin: 0; }
