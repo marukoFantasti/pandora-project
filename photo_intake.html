@@ -16,6 +16,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>写真取り込み | Pandora</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
 <style>
 :root {
   --bg: #0f1117;
@@ -147,12 +148,14 @@ function esc(s) {
 }
 
 // ===== ① 写真アップロード =====
-document.getElementById('photo-input').addEventListener('change', function(e) {
-  const file = e.target.files && e.target.files[0];
-  if (!file) return;
+function isHeicFile(file) {
+  const type = (file.type || '').toLowerCase();
+  const name = (file.name || '').toLowerCase();
+  return type === 'image/heic' || type === 'image/heif' ||
+    name.endsWith('.heic') || name.endsWith('.heif');
+}
 
-  resetPipeline();
-
+function processPhotoFile(file) {
   const img = new Image();
   img.onload = function() {
     photoImage = img;
@@ -162,6 +165,31 @@ document.getElementById('photo-input').addEventListener('change', function(e) {
   img.src = URL.createObjectURL(file);
 
   scanQrFromFile(file);
+}
+
+document.getElementById('photo-input').addEventListener('change', function(e) {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+
+  resetPipeline();
+
+  if (isHeicFile(file)) {
+    const statusEl = document.getElementById('qr-status');
+    statusEl.textContent = '📷 HEIC画像を変換中...';
+    statusEl.className = 'status-muted';
+
+    heic2any({ blob: file, toType: 'image/jpeg', quality: 0.9 }).then(function(converted) {
+      const blob = Array.isArray(converted) ? converted[0] : converted;
+      const jpegFile = new File([blob], file.name.replace(/\.(heic|heif)$/i, '.jpg'), { type: 'image/jpeg' });
+      processPhotoFile(jpegFile);
+    }).catch(function() {
+      statusEl.textContent = 'HEIC形式の変換に失敗しました。設定アプリ→カメラ→フォーマットで「互換性優先」に変更するか、JPEGで再送信してもらってください';
+      statusEl.className = 'status-err';
+    });
+    return;
+  }
+
+  processPhotoFile(file);
 });
 
 function resetPipeline() {
