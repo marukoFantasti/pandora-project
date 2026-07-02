@@ -118,8 +118,8 @@ body { background: #e8e8e8; font-family: 'Hiragino Sans','Yu Gothic',sans-serif;
   position: absolute; top: 0; left: 0; font-size: 8px; color: #999; background: #fff;
   padding: 0 1mm; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd; border-bottom-right-radius: 3px;
 }
-.qr-canvas-wrap { position: absolute; left: 169mm; top: 268mm; width: 26mm; height: 26mm; }
-.qr-canvas-wrap canvas, .qr-canvas-wrap img { width: 26mm !important; height: 26mm !important; }
+.qr-canvas-wrap { position: absolute; left: 175mm; top: 268mm; width: 15mm; height: 15mm; }
+.qr-canvas-wrap canvas, .qr-canvas-wrap img { width: 15mm !important; height: 15mm !important; }
 .footer-text { position: absolute; left: 15mm; top: 268mm; width: 145mm; font-size: 8px; color: #444; line-height: 1.4; }
 .layout-save-status { position: absolute; left: 15mm; top: 281mm; width: 145mm; font-size: 9px; color: #888; }
 .layout-save-ok { color: #2e7d32; }
@@ -237,8 +237,8 @@ function renderPages() {
     });
     new QRCode(document.getElementById('qr-' + page), {
       text: payload,
-      width: 110,
-      height: 110,
+      width: 80,
+      height: 80,
       correctLevel: QRCode.CorrectLevel.M
     });
 
