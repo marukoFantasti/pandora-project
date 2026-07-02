@@ -1,0 +1,191 @@
+<!--
+  ═══════════════════════════════════════════════════════════════
+  answer_sheet 印刷用テンプレート（解答用紙・A4印刷専用）
+  ═══════════════════════════════════════════════════════════════
+  student_quiz_domestic/overseas_template.html（Web提出用、React+
+  DrawCanvas）とは別物。こちらはSupabase送信もキャンバス手書きも
+  一切なく、印刷して紙に手書きさせるための静的HTML。
+
+  【使い方】このHTMLの{{...}}プレースホルダーを埋めて生成する：
+    {{ASSIGNMENT_ID}}  - 課題ID（QRコード・隅の目視用テキストに使用）
+    {{STUDENT_ID}}     - 生徒ID（同上）
+    {{STUDENT_NAME}}   - 生徒名（同上）
+    {{QUESTIONS}}      - questions配列の中身。各要素の形式：
+                         { id, problem_id, question, unit, level }
+                         level は 'example_follow' | 'confirmation'
+                         | 'practice' のいずれか（バッジ表示用、
+                         省略可）
+
+  【ページ構成】
+  - 1ページ5問固定。questions.lengthに応じて自動でページ分割
+    （10問なら2ページ、7問なら2ページ目に2問、など端数も可）
+  - 各ページはA4サイズ（@pageルールで size:A4 / margin指定）
+  - 各問題に「式を書く欄」（罫線）「答えを書く欄」（枠）を配置
+
+  【QRコード】
+  - 使用ライブラリ: qrcodejs
+    https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.4.4/qrcode.min.js
+  - 各ページ右上に約40mm四方で配置
+  - 中身は以下のJSON文字列（ページごとに page の値だけ変わる）：
+    {"assignment_id":"{{ASSIGNMENT_ID}}","student_id":"{{STUDENT_ID}}",
+     "page":<そのページの番号>,"total_pages":<総ページ数>}
+  - QRコードの下に目視用テキストで
+    「assignment_id: {{ASSIGNMENT_ID}} | {{STUDENT_NAME}}
+    ({{STUDENT_ID}}) | X/Yページ」も併記する
+
+  【著作権注意】イラスト等は使用しない。罫線ベースのシンプルな
+  デザインのみ（世界観演出はWeb提出用テンプレートの役割であり、
+  印刷して実用に使う本テンプレートには不要）。
+  ═══════════════════════════════════════════════════════════════
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ASSIGNMENT_ID}} 解答用紙</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.4.4/qrcode.min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+@page { size: A4; margin: 12mm; }
+body { background: #e8e8e8; font-family: 'Hiragino Sans','Yu Gothic',sans-serif; color: #000; }
+.no-print { }
+.print-btn {
+  position: fixed; top: 16px; right: 16px; z-index: 10;
+  padding: 10px 20px; background: #1a9fd4; color: #fff; border: none;
+  border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25); font-family: inherit;
+}
+.page {
+  width: 210mm; min-height: 297mm; background: #fff;
+  margin: 12mm auto; padding: 14mm; position: relative;
+  box-shadow: 0 0 8px rgba(0,0,0,0.18);
+}
+.page-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 18px;
+}
+.page-title { font-size: 18px; font-weight: bold; }
+.page-student { font-size: 12px; color: #333; margin-top: 4px; }
+.qr-box { text-align: center; }
+.qr-box .qr-canvas-wrap { width: 40mm; height: 40mm; }
+.qr-box .qr-canvas-wrap canvas, .qr-box .qr-canvas-wrap img { width: 40mm !important; height: 40mm !important; }
+.footer-text { font-size: 9px; color: #444; margin-top: 4px; max-width: 44mm; line-height: 1.4; }
+.problem {
+  border: 1px solid #999; border-radius: 6px;
+  padding: 12px 14px; margin-bottom: 20px;
+}
+.problem-head { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+.qnum {
+  display: inline-block; background: #000; color: #fff;
+  border-radius: 4px; padding: 2px 9px; font-size: 12px; font-weight: bold;
+}
+.badge { display: inline-block; border: 1px solid #888; color: #333; border-radius: 4px; padding: 1px 8px; font-size: 11px; }
+.question-text { font-size: 14px; line-height: 1.8; margin-bottom: 12px; word-break: break-word; }
+.answer-area { display: flex; gap: 16px; flex-wrap: wrap; }
+.field { flex: 1; min-width: 220px; }
+.field-label { font-size: 11px; color: #555; font-weight: bold; margin-bottom: 4px; }
+.lines {
+  border: 1px solid #666; border-radius: 4px; height: 74px;
+  background-image: repeating-linear-gradient(to bottom, transparent, transparent 23px, #ccc 23px, #ccc 24px);
+}
+.answer-box { border: 1px solid #666; border-radius: 4px; height: 44px; }
+.empty-msg { text-align: center; color: #888; font-size: 13px; padding: 40px 0; }
+@media print {
+  body { background: #fff; }
+  .no-print { display: none !important; }
+  .page { margin: 0; box-shadow: none; page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+}
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">🖨️ 印刷する</button>
+<div id="pages"></div>
+
+<script>
+const ASSIGNMENT_ID = "{{ASSIGNMENT_ID}}";
+const STUDENT_ID = "{{STUDENT_ID}}";
+const STUDENT_NAME = "{{STUDENT_NAME}}";
+
+const questions = [
+  // ▼▼▼ ここに問題データを差し込む ▼▼▼
+  // 各要素の形式: { id, problem_id, question, unit, level }
+  // level は 'example_follow' | 'confirmation' | 'practice' のいずれか（省略可）
+  // {{QUESTIONS}}
+];
+
+const LEVEL_LABEL = { example_follow: '例題', confirmation: '確認', practice: '練習' };
+const PER_PAGE = 5;
+const totalPages = Math.max(1, Math.ceil(questions.length / PER_PAGE));
+
+function esc(s) {
+  return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderPages() {
+  const container = document.getElementById('pages');
+
+  if (questions.length === 0) {
+    container.innerHTML = '<div class="page"><div class="empty-msg">問題データがありません</div></div>';
+    return;
+  }
+
+  let html = '';
+  for (let page = 1; page <= totalPages; page++) {
+    const start = (page - 1) * PER_PAGE;
+    const pageQuestions = questions.slice(start, start + PER_PAGE);
+    const footerText = 'assignment_id: ' + esc(ASSIGNMENT_ID) + ' | ' + esc(STUDENT_NAME) + '(' + esc(STUDENT_ID) + ') | ' + page + '/' + totalPages + 'ページ';
+
+    html += '<div class="page" id="page-' + page + '">';
+    html += '<div class="page-header">' +
+      '<div>' +
+        '<div class="page-title">' + esc(ASSIGNMENT_ID) + ' 解答用紙</div>' +
+        '<div class="page-student">' + esc(STUDENT_NAME) + '（' + esc(STUDENT_ID) + '）</div>' +
+      '</div>' +
+      '<div class="qr-box">' +
+        '<div class="qr-canvas-wrap" id="qr-' + page + '"></div>' +
+        '<div class="footer-text">' + footerText + '</div>' +
+      '</div>' +
+    '</div>';
+
+    pageQuestions.forEach(function(q, i) {
+      const num = start + i + 1;
+      html += '<div class="problem">' +
+        '<div class="problem-head">' +
+          '<span class="qnum">Q' + num + '</span>' +
+          (q.unit ? '<span class="badge">' + esc(q.unit) + '</span>' : '') +
+          (q.level ? '<span class="badge">' + esc(LEVEL_LABEL[q.level] || q.level) + '</span>' : '') +
+        '</div>' +
+        '<div class="question-text">' + esc(q.question || '') + '</div>' +
+        '<div class="answer-area">' +
+          '<div class="field"><div class="field-label">式を書く欄</div><div class="lines"></div></div>' +
+          '<div class="field"><div class="field-label">答えを書く欄</div><div class="answer-box"></div></div>' +
+        '</div>' +
+      '</div>';
+    });
+
+    html += '</div>';
+  }
+  container.innerHTML = html;
+
+  for (let page = 1; page <= totalPages; page++) {
+    const payload = JSON.stringify({
+      assignment_id: ASSIGNMENT_ID,
+      student_id: STUDENT_ID,
+      page: page,
+      total_pages: totalPages
+    });
+    new QRCode(document.getElementById('qr-' + page), {
+      text: payload,
+      width: 150,
+      height: 150,
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  }
+}
+
+renderPages();
+</script>
+</body>
+</html>
