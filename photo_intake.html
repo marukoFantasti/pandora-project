@@ -162,11 +162,13 @@ body { margin: 0; background: var(--bg); color: var(--text1); font-family: 'Hira
 const SUPABASE_URL = "https://upmflhdbhbyzoeldrvvw.supabase.co";
 const SUPABASE_KEY = "sb_publishable_K8Y_bNHVA4szRXFM_EcDkA_LBckunu5";
 const SB_HEADERS = { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY };
+const LETHE_URL = "https://script.google.com/macros/s/AKfycbxlXsrnt14jxxZrnKUSSdq4KG8LU96eDTPjrkyXdSGZ-Gmehha5HHNPMZTnQo6OrIy7oA/exec";
 
 let photoImage = null;
 let corners = [];
 let currentQrData = null;
 let currentLayoutData = null;
+let currentStudentName = null;
 let croppedProblems = [];
 
 function esc(s) {
@@ -259,6 +261,7 @@ function resetPipeline() {
   corners = [];
   currentQrData = null;
   currentLayoutData = null;
+  currentStudentName = null;
   croppedProblems = [];
   document.getElementById('qr-status').textContent = '読み取り中...';
   document.getElementById('qr-status').className = 'status-muted';
@@ -433,6 +436,31 @@ function submitManualQr() {
   }, '手入力の情報で照会します');
 }
 
+// Lethe（生徒名簿API）からstudent_idに対応する生徒名を検索してcurrentStudentNameに保持する。
+// QRコード/手動入力にはstudent_id/assignment_id/page/total_pagesしか含まれず、
+// student_nameがどこにも無いため、⑨の保存直前ではなくstudent_id確定時点
+// （③のSupabase照会と同じタイミング）で先に引いておく。
+function lookupStudentName(studentId) {
+  if (!studentId) return;
+  currentStudentName = null;
+
+  fetch(LETHE_URL, {
+    method: 'POST',
+    body: JSON.stringify({ action: 'getStudents' })
+  }).then(function(r) { return r.json(); }).then(function(d) {
+    if (!d.success) {
+      console.error('[lookupStudentName] Lethe error:', d.error);
+      return;
+    }
+    const students = d.students || [];
+    const match = students.find(function(s) { return String(s.student_id) === String(studentId); });
+    currentStudentName = match ? match.name : null;
+    console.log('[lookupStudentName] student_id:', studentId, '-> name:', currentStudentName);
+  }).catch(function(e) {
+    console.error('[lookupStudentName] failed:', e);
+  });
+}
+
 // ===== ③ Supabase answer_sheets 照会 =====
 function fetchAnswerSheet(qr) {
   const statusEl = document.getElementById('sheet-status');
@@ -446,6 +474,10 @@ function fetchAnswerSheet(qr) {
     statusEl.className = 'status-err';
     return;
   }
+
+  // student_idが確定したこのタイミングで、Letheから生徒名を引いておく
+  // （QR/手動入力にはstudent_nameが含まれないため、⑨の保存時に使う）
+  lookupStudentName(qr.student_id);
 
   console.log('[fetchAnswerSheet] qr data:', qr,
     '/ assignment_id:', JSON.stringify(qr.assignment_id), typeof qr.assignment_id,
@@ -824,12 +856,13 @@ function saveIntake() {
 
   const payload = {
     student_id: currentQrData.student_id,
+    student_name: currentStudentName || null,
     assignment_id: currentQrData.assignment_id,
     mode: null,
     subject: 'math',
     submission_data: {
       student_id: currentQrData.student_id,
-      student_name: null,
+      student_name: currentStudentName || null,
       problems: croppedProblems.map(function(p) {
         return {
           problem_id: p.problem_id,

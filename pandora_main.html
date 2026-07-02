@@ -1305,7 +1305,9 @@ function generateQuiz(){
           '右上にQRコード（assignment_id・student_id・page・total_pagesをJSON文字列でエンコード）を印刷してください。\n'+
           '紙面の隅に目視用テキストで\n'+
           '「assignment_id: '+outputJson.meta.assignment_id+' | '+(outputJson.meta.student_name||'')+'('+(outputJson.meta.student_id||'')+') | {page}/{total_pages}ページ」も併記してください。\n'+
-          '印刷を想定したCSS（@pageルール、白黒印刷でも見やすい配色）にしてください。\n\n'+
+          '印刷を想定したCSS（@pageルール、白黒印刷でも見やすい配色）にしてください。\n'+
+          'questions配列は必ず { id, problem_id, question, answer, unit, chapter, level, tags } の形式で組み立てること。\n'+
+          '（answer/chapter/tagsは紙面には印刷しないが、QRコードと紐づけてSupabaseのanswer_sheetsテーブルに保存され、後で写真を撮って取り込む際に採点データとして使われるため省略しないこと。levelは\'example_follow\'|\'confirmation\'|\'practice\'のいずれか。）\n\n'+
           '【JSON】\n（ここにJSONを貼り付けてください）';
         document.getElementById('q-prompt-template').value=promptTemplate;
         document.getElementById('q-preview').style.display='block';
