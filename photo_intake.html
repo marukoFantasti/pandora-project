@@ -262,21 +262,43 @@ function fetchAnswerSheet(qr) {
     return;
   }
 
+  console.log('[fetchAnswerSheet] qr data:', qr,
+    '/ assignment_id:', JSON.stringify(qr.assignment_id), typeof qr.assignment_id,
+    '/ student_id:', JSON.stringify(qr.student_id), typeof qr.student_id,
+    '/ page:', JSON.stringify(qr.page), typeof qr.page);
+
   const url = SUPABASE_URL + '/rest/v1/answer_sheets?assignment_id=eq.' + encodeURIComponent(qr.assignment_id) +
     '&student_id=eq.' + encodeURIComponent(qr.student_id) + '&page=eq.' + encodeURIComponent(qr.page);
 
-  fetch(url, { headers: SB_HEADERS }).then(function(r) { return r.json(); }).then(function(rows) {
-    if (!rows || rows.length === 0) {
+  console.log('[fetchAnswerSheet] request URL:', url);
+
+  fetch(url, { headers: SB_HEADERS }).then(function(r) {
+    console.log('[fetchAnswerSheet] response status:', r.status, 'ok:', r.ok);
+    return r.json().then(function(body) {
+      return { status: r.status, ok: r.ok, body: body };
+    });
+  }).then(function(result) {
+    console.log('[fetchAnswerSheet] response body:', result.body);
+    const rows = result.body;
+
+    if (!result.ok) {
+      statusEl.textContent = '照会に失敗しました（HTTP ' + result.status + '）: ' + (rows && rows.message ? rows.message : JSON.stringify(rows));
+      statusEl.className = 'status-err';
+      return;
+    }
+    if (!Array.isArray(rows) || rows.length === 0) {
       statusEl.textContent = '該当するanswer_sheetsレコードが見つかりませんでした';
       statusEl.className = 'status-err';
       return;
     }
     currentLayoutData = rows[0].layout_data;
+    console.log('[fetchAnswerSheet] currentLayoutData set to:', currentLayoutData);
     statusEl.textContent = '✓ レコードを取得しました';
     statusEl.className = 'status-ok';
     boxEl.textContent = JSON.stringify(rows[0].layout_data, null, 2);
     boxEl.classList.remove('hidden');
   }).catch(function(e) {
+    console.error('[fetchAnswerSheet] failed:', e);
     statusEl.textContent = '照会に失敗しました: ' + e.message;
     statusEl.className = 'status-err';
   });
@@ -409,6 +431,8 @@ function runCorrection() {
   octx.setTransform(1, 0, 0, 1, 0, 0);
 
   card.classList.remove('hidden');
+
+  console.log('[runCorrection] currentLayoutData at crop time:', currentLayoutData);
 
   if (currentLayoutData) {
     cropProblems();
