@@ -1124,6 +1124,8 @@ function generateQuiz(){
       });
     });
 
+    var outputJson;
+
     // ── Layer 2.5: 論理整合性チェック ──────────────────────
     function checkConsistency(problemsArr, kanjiArr, maxRetry, onOk, onFail){
       if(maxRetry<=0){ onFail('3回再生成しましたが整合性が確認できませんでした。問題を確認してください。'); return; }
@@ -1175,7 +1177,7 @@ function generateQuiz(){
     // ─────────────────────────────────────────────────────────
 
     function finalizeOutput(){
-      var outputJson={
+      outputJson={
         meta:{
           assignment_id:assignmentId,
           mode:mode,
@@ -1205,11 +1207,13 @@ function generateQuiz(){
             msg += ' ＋ 復習' + reviewSections.reduce(function(s,r){ return s+r.problems.length; },0) + '問';
           }
           document.getElementById('q-status').innerHTML='<span style="color:var(--green)">' + msg + '</span>';
+          showPreview();
         });
       },
       function(msg){ // 3回NGで諦める
         finalizeOutput([]);
         document.getElementById('q-status').innerHTML='<span style="color:var(--red)">⚠️ '+msg+'</span>';
+        showPreview();
       }
     );
 
@@ -1241,40 +1245,42 @@ function generateQuiz(){
       });
     }
 
-    // プロンプトテンプレ
-    var modeDesc=mode==='domestic'
-      ?'国内向け（算数×英語）：日本語で算数を解きながら英語表現も学ぶ'
-      :'海外向け（算数を日本語で）：外国人向けシンプル日本語＋英語ヒント付き';
-    var levelsDesc=levelBreakdown;
-    var promptTemplate=
-      '以下のJSONをもとに、student_quizのHTMLを作ってください。\n\n'+
-      '【モード】'+modeDesc+'\n'+
-      (theme?'【テーマ】'+theme+'\n':'')+
-      (mode==='overseas'?'【日本語レベル】'+selectedJpLevel+'\n':'')+
-      '【問題レベル】'+levelsDesc+'\n'+
-      '【問題数】'+outputJson.meta.count+'問\n\n'+
-      '【フォーマット参考】'+(mode==='overseas'?'student_quiz_v11_soccer.html':'student_quiz_v13b_disney.html')+'と同じ構成で。\n'+
-      '- SVGイラストはテーマに合わせたオリジナルキャラを作る（各問題72×72px）\n'+
-      '- 手書きキャンバス（DrawCanvas）を各問題に付ける\n'+
-      '- 単元バッジの横に問題レベルバッジを表示する（例題:紫/確認:青/練習:橙）\n'+
-      (mode==='overseas'
-        ?'- 📖ことば / 🇬🇧English hint ボタンを各問題に付ける\n'+
-          '- 今日の漢字コーナー（kanji_quizデータを使用）：reading=英語の意味、選択肢は熟語・漢字ごと、手書きキャンバス付き\n'
-        :'- 🌍 ＋Englishボタン（english_phrase・vocab_word表示）を各問題に付ける\n')+
-      '- Supabase送信ボタンを付ける\n'+
-      '- 送信データにlevel（問題レベル）を含める\n'+
-      '- URLパラメータ ?sid= を受け取り、送信データの student_id にセットする。例: const sid = new URLSearchParams(location.search).get(\'sid\') || null;\n'+
-      (outputJson.meta.student_id
-        ? '- この課題の対象生徒: student_id="' + outputJson.meta.student_id + '", student_name="' + (outputJson.meta.student_name||'') + '"（URLに ?sid=' + outputJson.meta.student_id + ' を付けて配布する想定）\n'
-        : '')+
-      '- Supabase URL: https://upmflhdbhbyzoeldrvvw.supabase.co\n'+
-      '- Supabase KEY: sb_publishable_K8Y_bNHVA4szRXFM_EcDkA_LBckunu5\n\n'+
-      '【JSON】\n（ここにJSONを貼り付けてください）';
+    function showPreview(){
+      // プロンプトテンプレ
+      var modeDesc=mode==='domestic'
+        ?'国内向け（算数×英語）：日本語で算数を解きながら英語表現も学ぶ'
+        :'海外向け（算数を日本語で）：外国人向けシンプル日本語＋英語ヒント付き';
+      var levelsDesc=levelBreakdown;
+      var promptTemplate=
+        '以下のJSONをもとに、student_quizのHTMLを作ってください。\n\n'+
+        '【モード】'+modeDesc+'\n'+
+        (theme?'【テーマ】'+theme+'\n':'')+
+        (mode==='overseas'?'【日本語レベル】'+selectedJpLevel+'\n':'')+
+        '【問題レベル】'+levelsDesc+'\n'+
+        '【問題数】'+outputJson.meta.count+'問\n\n'+
+        '【フォーマット参考】'+(mode==='overseas'?'student_quiz_v11_soccer.html':'student_quiz_v13b_disney.html')+'と同じ構成で。\n'+
+        '- SVGイラストはテーマに合わせたオリジナルキャラを作る（各問題72×72px）\n'+
+        '- 手書きキャンバス（DrawCanvas）を各問題に付ける\n'+
+        '- 単元バッジの横に問題レベルバッジを表示する（例題:紫/確認:青/練習:橙）\n'+
+        (mode==='overseas'
+          ?'- 📖ことば / 🇬🇧English hint ボタンを各問題に付ける\n'+
+            '- 今日の漢字コーナー（kanji_quizデータを使用）：reading=英語の意味、選択肢は熟語・漢字ごと、手書きキャンバス付き\n'
+          :'- 🌍 ＋Englishボタン（english_phrase・vocab_word表示）を各問題に付ける\n')+
+        '- Supabase送信ボタンを付ける\n'+
+        '- 送信データにlevel（問題レベル）を含める\n'+
+        '- URLパラメータ ?sid= を受け取り、送信データの student_id にセットする。例: const sid = new URLSearchParams(location.search).get(\'sid\') || null;\n'+
+        (outputJson.meta.student_id
+          ? '- この課題の対象生徒: student_id="' + outputJson.meta.student_id + '", student_name="' + (outputJson.meta.student_name||'') + '"（URLに ?sid=' + outputJson.meta.student_id + ' を付けて配布する想定）\n'
+          : '')+
+        '- Supabase URL: https://upmflhdbhbyzoeldrvvw.supabase.co\n'+
+        '- Supabase KEY: sb_publishable_K8Y_bNHVA4szRXFM_EcDkA_LBckunu5\n\n'+
+        '【JSON】\n（ここにJSONを貼り付けてください）';
 
-    document.getElementById('q-prompt-template').value=promptTemplate;
-    document.getElementById('q-preview').style.display='block';
-    btn.textContent='✨ 問題を生成する';btn.disabled=false;
-    status.textContent=outputJson.meta.count+'問生成完了（'+levelsDesc+'）';
+      document.getElementById('q-prompt-template').value=promptTemplate;
+      document.getElementById('q-preview').style.display='block';
+      btn.textContent='✨ 問題を生成する';btn.disabled=false;
+      status.textContent=outputJson.meta.count+'問生成完了（'+levelsDesc+'）';
+    }
   }).catch(function(e){
     status.textContent='エラー: '+e.message;
     btn.textContent='✨ 問題を生成する';btn.disabled=false;
