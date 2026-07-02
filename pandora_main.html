@@ -906,6 +906,11 @@ function generateQuiz(){
   var theme=document.getElementById('q-theme').value.trim();
   var mode=document.querySelector('input[name="q-mode"]:checked').value;
 
+  var qStudentSel=document.getElementById('q-student');
+  var qStudentOpt=qStudentSel&&qStudentSel.selectedOptions[0];
+  var selectedStudentId=qStudentSel&&qStudentSel.value?qStudentSel.value:null;
+  var selectedStudentName=qStudentOpt?(qStudentOpt.dataset.name||''):'';
+
   var btn=document.getElementById('q-gen-btn');
   var status=document.getElementById('q-status');
   btn.textContent='⟳ 生成中...';btn.disabled=true;
@@ -1187,6 +1192,8 @@ function generateQuiz(){
           units:qSelectedUnits,
           levels:selectedLevels,
           count:totalCount,
+          student_id:selectedStudentId,
+          student_name:selectedStudentName||null,
           generated_at:new Date().toISOString()
         },
         problems:problems,
