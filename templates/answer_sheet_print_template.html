@@ -3,11 +3,17 @@
   answer_sheet 印刷用テンプレート（解答用紙・A4印刷専用）
   ═══════════════════════════════════════════════════════════════
   student_quiz_domestic/overseas_template.html（Web提出用、React+
-  DrawCanvas）とは別物。こちらはSupabase送信もキャンバス手書きも
+  DrawCanvas）とは別物。こちらは生徒の手書きキャンバス送信は
   一切なく、印刷して紙に手書きさせるための静的HTML。
 
+  ただしこのファイル自身が「layout_data（各問題の式欄・答え欄の
+  mm座標）」を自動計算し、表示時にSupabaseのanswer_sheetsテーブルへ
+  自動保存する（photo_intake.htmlが後でこのlayout_dataを読み、
+  写真から各問題を自動切り出しするために使う）。
+
   【使い方】このHTMLの{{...}}プレースホルダーを埋めて生成する：
-    {{ASSIGNMENT_ID}}  - 課題ID（QRコード・隅の目視用テキストに使用）
+    {{ASSIGNMENT_ID}}  - 課題ID（QRコード・レイアウト保存・隅の
+                         目視用テキストに使用）
     {{STUDENT_ID}}     - 生徒ID（同上）
     {{STUDENT_NAME}}   - 生徒名（同上）
     {{QUESTIONS}}      - questions配列の中身。各要素の形式：
@@ -16,22 +22,43 @@
                          | 'practice' のいずれか（バッジ表示用、
                          省略可）
 
-  【ページ構成】
-  - 1ページ5問固定。questions.lengthに応じて自動でページ分割
-    （10問なら2ページ、7問なら2ページ目に2問、など端数も可）
-  - 各ページはA4サイズ（@pageルールで size:A4 / margin指定）
-  - 各問題に「式を書く欄」（罫線）「答えを書く欄」（枠）を配置
+  【座標系（重要）】1ページ5問固定。各問題の式欄・答え欄は、
+  PROBLEM_LAYOUT_MM で定義した「A4ページ左上(0,0)を基準としたmm
+  座標の絶対位置」に配置する（flexレイアウトではなくposition:
+  absoluteで固定配置。CSSの見た目とlayout_dataの数値が必ず一致する
+  ようにするため）：
+    問題1: 式 y=20-45mm / 答え y=45-60mm
+    問題2: 式 y=65-90mm / 答え y=90-105mm
+    問題3: 式 y=110-135mm / 答え y=135-150mm
+    問題4: 式 y=155-180mm / 答え y=180-195mm
+    問題5: 式 y=200-225mm / 答え y=225-240mm
+    （すべて x=15mm, width=180mm。上マージン20mm、各ブロック
+    高さ40mm、ブロック間の余白5mm）
+  QRコードと目視用フッターテキストは、問題群と重ならないよう
+  ページ下部余白（y=248mm以降）に配置。ページ上部（y=0-20mm）には
+  課題ID・生徒名の一行ラベルのみ配置（layout_dataには含まれない）。
+
+  questions.lengthに応じて自動でページ分割される（10問なら2ページ、
+  7問なら2ページ目に2問、など端数も可）。
 
   【QRコード】
   - 使用ライブラリ: qrcodejs
     https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.4.4/qrcode.min.js
-  - 各ページ右上に約40mm四方で配置
   - 中身は以下のJSON文字列（ページごとに page の値だけ変わる）：
     {"assignment_id":"{{ASSIGNMENT_ID}}","student_id":"{{STUDENT_ID}}",
      "page":<そのページの番号>,"total_pages":<総ページ数>}
-  - QRコードの下に目視用テキストで
-    「assignment_id: {{ASSIGNMENT_ID}} | {{STUDENT_NAME}}
-    ({{STUDENT_ID}}) | X/Yページ」も併記する
+
+  【layout_dataの自動保存】
+  renderPages() がページを描画するたび、そのページの5問分の
+  equation_box/answer_box座標（PROBLEM_LAYOUT_MMそのもの）を
+  problem_idと紐づけてSupabaseのanswer_sheetsテーブルに保存する：
+    1. 同じ assignment_id + student_id + page の既存行をDELETE
+       （PostgRESTにON CONFLICTがないため、上書きは削除→挿入で行う）
+    2. { assignment_id, student_id, page, total_pages, layout_data:
+       { problems: [{ problem_id, equation_box, answer_box }, ...] } }
+       をPOST
+  保存結果（成功/失敗）は各ページ下部に小さく表示する
+  （class="no-print" のため印刷はされず、画面確認用）。
 
   【著作権注意】イラスト等は使用しない。罫線ベースのシンプルな
   デザインのみ（世界観演出はWeb提出用テンプレートの役割であり、
@@ -47,9 +74,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.4.4/qrcode.min.js"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-@page { size: A4; margin: 12mm; }
+@page { size: A4; margin: 0; }
 body { background: #e8e8e8; font-family: 'Hiragino Sans','Yu Gothic',sans-serif; color: #000; }
-.no-print { }
 .print-btn {
   position: fixed; top: 16px; right: 16px; z-index: 10;
   padding: 10px 20px; background: #1a9fd4; color: #fff; border: none;
@@ -57,39 +83,45 @@ body { background: #e8e8e8; font-family: 'Hiragino Sans','Yu Gothic',sans-serif;
   box-shadow: 0 2px 8px rgba(0,0,0,0.25); font-family: inherit;
 }
 .page {
-  width: 210mm; min-height: 297mm; background: #fff;
-  margin: 12mm auto; padding: 14mm; position: relative;
+  width: 210mm; height: 297mm; background: #fff;
+  margin: 12mm auto; position: relative; overflow: hidden;
   box-shadow: 0 0 8px rgba(0,0,0,0.18);
 }
-.page-header {
-  display: flex; justify-content: space-between; align-items: flex-start;
-  border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 18px;
+.page-topline {
+  position: absolute; top: 5mm; left: 15mm; right: 15mm;
+  display: flex; justify-content: space-between; align-items: baseline;
+  border-bottom: 1px solid #000; padding-bottom: 2mm;
 }
-.page-title { font-size: 18px; font-weight: bold; }
-.page-student { font-size: 12px; color: #333; margin-top: 4px; }
-.qr-box { text-align: center; }
-.qr-box .qr-canvas-wrap { width: 40mm; height: 40mm; }
-.qr-box .qr-canvas-wrap canvas, .qr-box .qr-canvas-wrap img { width: 40mm !important; height: 40mm !important; }
-.footer-text { font-size: 9px; color: #444; margin-top: 4px; max-width: 44mm; line-height: 1.4; }
-.problem {
-  border: 1px solid #999; border-radius: 6px;
-  padding: 12px 14px; margin-bottom: 20px;
+.page-title { font-weight: bold; font-size: 13px; }
+.page-student { font-size: 10px; color: #333; }
+.problem-box { position: absolute; border: 1px solid #666; border-radius: 3px; overflow: hidden; background: #fff; }
+.eq-box .box-label {
+  display: flex; align-items: center; gap: 3px; height: 7mm; padding: 0 2mm;
+  background: #f2f2f2; border-bottom: 1px solid #999; overflow: hidden; white-space: nowrap;
 }
-.problem-head { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
-.qnum {
-  display: inline-block; background: #000; color: #fff;
-  border-radius: 4px; padding: 2px 9px; font-size: 12px; font-weight: bold;
+.eq-box .qnum {
+  display: inline-block; background: #000; color: #fff; border-radius: 3px;
+  padding: 0 5px; font-size: 10px; font-weight: bold; flex-shrink: 0;
 }
-.badge { display: inline-block; border: 1px solid #888; color: #333; border-radius: 4px; padding: 1px 8px; font-size: 11px; }
-.question-text { font-size: 14px; line-height: 1.8; margin-bottom: 12px; word-break: break-word; }
-.answer-area { display: flex; gap: 16px; flex-wrap: wrap; }
-.field { flex: 1; min-width: 220px; }
-.field-label { font-size: 11px; color: #555; font-weight: bold; margin-bottom: 4px; }
-.lines {
-  border: 1px solid #666; border-radius: 4px; height: 74px;
-  background-image: repeating-linear-gradient(to bottom, transparent, transparent 23px, #ccc 23px, #ccc 24px);
+.eq-box .badge {
+  display: inline-block; border: 1px solid #888; color: #333; border-radius: 3px;
+  padding: 0 5px; font-size: 9px; flex-shrink: 0;
 }
-.answer-box { border: 1px solid #666; border-radius: 4px; height: 44px; }
+.eq-box .box-qtext { font-size: 10px; color: #222; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+.eq-box .box-lines {
+  position: absolute; top: 7mm; left: 0; right: 0; bottom: 0;
+  background-image: repeating-linear-gradient(to bottom, transparent, transparent 6.5mm, #ccc 6.5mm, #ccc 6.7mm);
+}
+.ans-box .box-tag {
+  position: absolute; top: 0; left: 0; font-size: 8px; color: #999; background: #fff;
+  padding: 0 1mm; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd; border-bottom-right-radius: 3px;
+}
+.qr-canvas-wrap { position: absolute; left: 165mm; top: 248mm; width: 30mm; height: 30mm; }
+.qr-canvas-wrap canvas, .qr-canvas-wrap img { width: 30mm !important; height: 30mm !important; }
+.footer-text { position: absolute; left: 108mm; top: 280mm; width: 87mm; font-size: 8px; color: #444; line-height: 1.4; }
+.layout-save-status { position: absolute; left: 15mm; top: 280mm; width: 90mm; font-size: 9px; color: #888; }
+.layout-save-ok { color: #2e7d32; }
+.layout-save-err { color: #c62828; }
 .empty-msg { text-align: center; color: #888; font-size: 13px; padding: 40px 0; }
 @media print {
   body { background: #fff; }
@@ -104,6 +136,9 @@ body { background: #e8e8e8; font-family: 'Hiragino Sans','Yu Gothic',sans-serif;
 <div id="pages"></div>
 
 <script>
+const SUPABASE_URL = "https://upmflhdbhbyzoeldrvvw.supabase.co";
+const SUPABASE_KEY = "sb_publishable_K8Y_bNHVA4szRXFM_EcDkA_LBckunu5";
+
 const ASSIGNMENT_ID = "{{ASSIGNMENT_ID}}";
 const STUDENT_ID = "{{STUDENT_ID}}";
 const STUDENT_NAME = "{{STUDENT_NAME}}";
@@ -119,8 +154,43 @@ const LEVEL_LABEL = { example_follow: '例題', confirmation: '確認', practice
 const PER_PAGE = 5;
 const totalPages = Math.max(1, Math.ceil(questions.length / PER_PAGE));
 
+// 1ページ5問分の固定mm座標（A4ページ左上(0,0)基準）。
+// 上マージン20mm、各問題ブロック高さ40mm（式25mm+答え15mm）、ブロック間余白5mm。
+const PAGE_MARGIN_X = 15;
+const PROBLEM_WIDTH = 180;
+const PROBLEM_LAYOUT_MM = [0, 1, 2, 3, 4].map(function(i) {
+  const top = 20 + i * 45;
+  return {
+    equation_box: { x: PAGE_MARGIN_X, y: top, width: PROBLEM_WIDTH, height: 25 },
+    answer_box:   { x: PAGE_MARGIN_X, y: top + 25, width: PROBLEM_WIDTH, height: 15 }
+  };
+});
+
 function esc(s) {
   return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function boxStyle(box) {
+  return 'left:' + box.x + 'mm;top:' + box.y + 'mm;width:' + box.width + 'mm;height:' + box.height + 'mm';
+}
+
+function buildProblemBoxHtml(q, globalIndex, boxes) {
+  const num = globalIndex + 1;
+  const lb = q.level ? (LEVEL_LABEL[q.level] || q.level) : '';
+  return (
+    '<div class="problem-box eq-box" style="' + boxStyle(boxes.equation_box) + '">' +
+      '<div class="box-label">' +
+        '<span class="qnum">Q' + num + '</span>' +
+        (q.unit ? '<span class="badge">' + esc(q.unit) + '</span>' : '') +
+        (lb ? '<span class="badge">' + esc(lb) + '</span>' : '') +
+        (q.question ? '<span class="box-qtext">' + esc(q.question) + '</span>' : '') +
+      '</div>' +
+      '<div class="box-lines"></div>' +
+    '</div>' +
+    '<div class="problem-box ans-box" style="' + boxStyle(boxes.answer_box) + '">' +
+      '<span class="box-tag">答え</span>' +
+    '</div>'
+  );
 }
 
 function renderPages() {
@@ -138,34 +208,20 @@ function renderPages() {
     const footerText = 'assignment_id: ' + esc(ASSIGNMENT_ID) + ' | ' + esc(STUDENT_NAME) + '(' + esc(STUDENT_ID) + ') | ' + page + '/' + totalPages + 'ページ';
 
     html += '<div class="page" id="page-' + page + '">';
-    html += '<div class="page-header">' +
-      '<div>' +
-        '<div class="page-title">' + esc(ASSIGNMENT_ID) + ' 解答用紙</div>' +
-        '<div class="page-student">' + esc(STUDENT_NAME) + '（' + esc(STUDENT_ID) + '）</div>' +
-      '</div>' +
-      '<div class="qr-box">' +
-        '<div class="qr-canvas-wrap" id="qr-' + page + '"></div>' +
-        '<div class="footer-text">' + footerText + '</div>' +
-      '</div>' +
+    html += '<div class="page-topline">' +
+      '<span class="page-title">' + esc(ASSIGNMENT_ID) + ' 解答用紙</span>' +
+      '<span class="page-student">' + esc(STUDENT_NAME) + '（' + esc(STUDENT_ID) + '） ・ ' + page + '/' + totalPages + 'ページ</span>' +
     '</div>';
 
     pageQuestions.forEach(function(q, i) {
-      const num = start + i + 1;
-      html += '<div class="problem">' +
-        '<div class="problem-head">' +
-          '<span class="qnum">Q' + num + '</span>' +
-          (q.unit ? '<span class="badge">' + esc(q.unit) + '</span>' : '') +
-          (q.level ? '<span class="badge">' + esc(LEVEL_LABEL[q.level] || q.level) + '</span>' : '') +
-        '</div>' +
-        '<div class="question-text">' + esc(q.question || '') + '</div>' +
-        '<div class="answer-area">' +
-          '<div class="field"><div class="field-label">式を書く欄</div><div class="lines"></div></div>' +
-          '<div class="field"><div class="field-label">答えを書く欄</div><div class="answer-box"></div></div>' +
-        '</div>' +
-      '</div>';
+      html += buildProblemBoxHtml(q, start + i, PROBLEM_LAYOUT_MM[i]);
     });
 
-    html += '</div>';
+    html += '<div class="qr-canvas-wrap" id="qr-' + page + '"></div>';
+    html += '<div class="footer-text">' + footerText + '</div>';
+    html += '<div class="layout-save-status no-print" id="layout-status-' + page + '">レイアウト情報を保存中...</div>';
+
+    html += '</div>'; // .page
   }
   container.innerHTML = html;
 
@@ -178,11 +234,65 @@ function renderPages() {
     });
     new QRCode(document.getElementById('qr-' + page), {
       text: payload,
-      width: 150,
-      height: 150,
+      width: 110,
+      height: 110,
       correctLevel: QRCode.CorrectLevel.M
     });
+
+    const start = (page - 1) * PER_PAGE;
+    const pageQuestions = questions.slice(start, start + PER_PAGE);
+    saveLayoutData(page, pageQuestions);
   }
+}
+
+// ページのlayout_data（式欄・答え欄のmm座標）をSupabaseへ自動保存。
+// 同じassignment_id+student_id+pageの既存行は削除してから挿入する（上書き代わり）。
+function saveLayoutData(page, pageQuestions) {
+  const statusEl = document.getElementById('layout-status-' + page);
+  const problems = pageQuestions.map(function(q, i) {
+    const boxes = PROBLEM_LAYOUT_MM[i];
+    return {
+      problem_id: q.problem_id || q.id,
+      equation_box: boxes.equation_box,
+      answer_box: boxes.answer_box
+    };
+  });
+
+  const delUrl = SUPABASE_URL + '/rest/v1/answer_sheets?assignment_id=eq.' + encodeURIComponent(ASSIGNMENT_ID) +
+    '&student_id=eq.' + encodeURIComponent(STUDENT_ID) + '&page=eq.' + page;
+
+  fetch(delUrl, {
+    method: 'DELETE',
+    headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }
+  }).then(function() {
+    return fetch(SUPABASE_URL + '/rest/v1/answer_sheets', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        apikey: SUPABASE_KEY,
+        Authorization: 'Bearer ' + SUPABASE_KEY,
+        Prefer: 'return=minimal'
+      },
+      body: JSON.stringify({
+        assignment_id: ASSIGNMENT_ID,
+        student_id: STUDENT_ID,
+        page: page,
+        total_pages: totalPages,
+        layout_data: { problems: problems }
+      })
+    });
+  }).then(function(r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    if (statusEl) {
+      statusEl.textContent = '✓ レイアウト情報を保存しました（ページ' + page + '/' + totalPages + '）';
+      statusEl.className = 'layout-save-status no-print layout-save-ok';
+    }
+  }).catch(function(e) {
+    if (statusEl) {
+      statusEl.textContent = '⚠️ レイアウト情報の保存に失敗しました: ' + e.message;
+      statusEl.className = 'layout-save-status no-print layout-save-err';
+    }
+  });
 }
 
 renderPages();
