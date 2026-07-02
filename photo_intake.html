@@ -561,59 +561,143 @@ function resetCorners() {
   document.getElementById('save-card').classList.add('hidden');
 }
 
-// ===== ⑤ アフィン変換による補正プレビュー =====
-// 3点対応から2Dアフィン変換行列を求める（Cramer's ruleによる3x3連立方程式の解）
-function det3(m) {
-  return m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) -
-         m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]) +
-         m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
+// ===== ⑤ 射影変換（Homography）による補正プレビュー =====
+// 汎用のGauss-Jordan消去法（部分ピボット選択付き）でA*x=bを解く。
+// 8元連立方程式（Homography計算）に使う。
+function gaussSolve(A, b) {
+  const n = A.length;
+  const M = A.map(function(row, i) { return row.concat([b[i]]); });
+  for (let col = 0; col < n; col++) {
+    let pivotRow = col;
+    let maxVal = Math.abs(M[col][col]);
+    for (let r = col + 1; r < n; r++) {
+      if (Math.abs(M[r][col]) > maxVal) { maxVal = Math.abs(M[r][col]); pivotRow = r; }
+    }
+    if (maxVal < 1e-9) return null; // 特異行列（4点が縮退している等）
+    if (pivotRow !== col) { const tmp = M[col]; M[col] = M[pivotRow]; M[pivotRow] = tmp; }
+    const pivot = M[col][col];
+    for (let c = col; c <= n; c++) M[col][c] /= pivot;
+    for (let r = 0; r < n; r++) {
+      if (r === col) continue;
+      const factor = M[r][col];
+      if (factor === 0) continue;
+      for (let c = col; c <= n; c++) M[r][c] -= factor * M[col][c];
+    }
+  }
+  return M.map(function(row) { return row[n]; });
 }
 
-function solve3x3(M, v) {
-  const D = det3(M);
-  if (Math.abs(D) < 1e-9) return null;
-  const Mx = [[v[0], M[0][1], M[0][2]], [v[1], M[1][1], M[1][2]], [v[2], M[2][1], M[2][2]]];
-  const My = [[M[0][0], v[0], M[0][2]], [M[1][0], v[1], M[1][2]], [M[2][0], v[2], M[2][2]]];
-  const Mz = [[M[0][0], M[0][1], v[0]], [M[1][0], M[1][1], v[1]], [M[2][0], M[2][1], v[2]]];
-  return [det3(Mx) / D, det3(My) / D, det3(Mz) / D];
+// 4点対応(src[4]->dst[4])から3x3のHomography行列を求める。
+// H[2][2]=1に正規化した8元連立方程式をgaussSolve()で解く標準的な手法。
+// 戻り値Hは「元画像(src)の座標 -> 補正後(dst)の座標」への変換（正変換）。
+function computeHomography(srcPts, dstPts) {
+  const A = [];
+  const b = [];
+  for (let i = 0; i < 4; i++) {
+    const x = srcPts[i][0], y = srcPts[i][1];
+    const X = dstPts[i][0], Y = dstPts[i][1];
+    A.push([x, y, 1, 0, 0, 0, -x * X, -y * X]);
+    b.push(X);
+    A.push([0, 0, 0, x, y, 1, -x * Y, -y * Y]);
+    b.push(Y);
+  }
+  const h = gaussSolve(A, b);
+  if (!h) return null;
+  return [
+    [h[0], h[1], h[2]],
+    [h[3], h[4], h[5]],
+    [h[6], h[7], 1]
+  ];
 }
 
-function computeAffine(srcPts, dstPts) {
-  const M = srcPts.map(function(p) { return [p[0], p[1], 1]; });
-  const vx = dstPts.map(function(p) { return p[0]; });
-  const vy = dstPts.map(function(p) { return p[1]; });
-  const abe = solve3x3(M, vx);
-  const cdf = solve3x3(M, vy);
-  if (!abe || !cdf) return null;
-  return [abe[0], cdf[0], abe[1], cdf[1], abe[2], cdf[2]]; // [a,b,c,d,e,f]
+// 3x3行列の逆行列（余因子行列＝伴随行列の転置を行列式で割る、標準的な閉形式）
+function invert3x3Matrix(H) {
+  const a = H[0][0], b = H[0][1], c = H[0][2];
+  const d = H[1][0], e = H[1][1], f = H[1][2];
+  const g = H[2][0], h = H[2][1], i = H[2][2];
+
+  const c00 = e * i - f * h, c01 = -(d * i - f * g), c02 = d * h - e * g;
+  const c10 = -(b * i - c * h), c11 = a * i - c * g, c12 = -(a * h - b * g);
+  const c20 = b * f - c * e, c21 = -(a * f - c * d), c22 = a * e - b * d;
+
+  const det = a * c00 + b * c01 + c * c02;
+  if (Math.abs(det) < 1e-12) return null;
+
+  return [
+    [c00 / det, c10 / det, c20 / det],
+    [c01 / det, c11 / det, c21 / det],
+    [c02 / det, c12 / det, c22 / det]
+  ];
+}
+
+// 逆Homography（dst->srcへの変換）を使い、出力canvasの各ピクセルに対応する
+// 元画像の座標を逆算してピクセル単位でコピーする（最近傍補間）。
+// Canvas 2Dには射影変換の描画命令がないため、getImageData/putImageDataで
+// 手動でワーピングする。
+function warpPerspective(sourceCanvas, Hinv, outW, outH) {
+  const outCanvas = document.createElement('canvas');
+  outCanvas.width = outW;
+  outCanvas.height = outH;
+  const outCtx = outCanvas.getContext('2d');
+  const outImageData = outCtx.createImageData(outW, outH);
+  const outData = outImageData.data;
+
+  const srcCtx = sourceCanvas.getContext('2d');
+  const srcW = sourceCanvas.width, srcH = sourceCanvas.height;
+  const srcData = srcCtx.getImageData(0, 0, srcW, srcH).data;
+
+  for (let Y = 0; Y < outH; Y++) {
+    for (let X = 0; X < outW; X++) {
+      const w = Hinv[2][0] * X + Hinv[2][1] * Y + Hinv[2][2];
+      const sx = Math.round((Hinv[0][0] * X + Hinv[0][1] * Y + Hinv[0][2]) / w);
+      const sy = Math.round((Hinv[1][0] * X + Hinv[1][1] * Y + Hinv[1][2]) / w);
+      const outIdx = (Y * outW + X) * 4;
+      if (sx >= 0 && sx < srcW && sy >= 0 && sy < srcH) {
+        const srcIdx = (sy * srcW + sx) * 4;
+        outData[outIdx] = srcData[srcIdx];
+        outData[outIdx + 1] = srcData[srcIdx + 1];
+        outData[outIdx + 2] = srcData[srcIdx + 2];
+        outData[outIdx + 3] = 255;
+      } else {
+        outData[outIdx] = 255;
+        outData[outIdx + 1] = 255;
+        outData[outIdx + 2] = 255;
+        outData[outIdx + 3] = 255;
+      }
+    }
+  }
+
+  outCtx.putImageData(outImageData, 0, 0);
+  return outCanvas;
 }
 
 function runCorrection() {
-  // 左上(0)・右上(1)・左下(3)の3点を使用（右下(2)は近似のため未使用）
+  // 左上(0)・右上(1)・右下(2)・左下(3)の4点すべてを使用した射影変換
   const srcPts = [
     [corners[0].x, corners[0].y],
     [corners[1].x, corners[1].y],
+    [corners[2].x, corners[2].y],
     [corners[3].x, corners[3].y]
   ];
-  const outputW = 420, outputH = 594; // A4比率 210:297 の近似サイズ
-  const dstPts = [[0, 0], [outputW, 0], [0, outputH]];
-  const m = computeAffine(srcPts, dstPts);
+  // A4比率(210:297)を維持した固定サイズ。150dpi相当（処理負荷を抑えるため）。
+  const outputW = 1240, outputH = 1754;
+  const dstPts = [[0, 0], [outputW, 0], [outputW, outputH], [0, outputH]];
+  const H = computeHomography(srcPts, dstPts);
+  const Hinv = H ? invert3x3Matrix(H) : null;
 
   const card = document.getElementById('correction-card');
-  if (!m) {
+  if (!Hinv) {
     card.classList.remove('hidden');
     return;
   }
 
+  const sourceCanvas = document.getElementById('photo-canvas');
+  const warped = warpPerspective(sourceCanvas, Hinv, outputW, outputH);
+
   const outCanvas = document.getElementById('corrected-canvas');
   outCanvas.width = outputW;
   outCanvas.height = outputH;
-  const octx = outCanvas.getContext('2d');
-  octx.setTransform(1, 0, 0, 1, 0, 0);
-  octx.clearRect(0, 0, outputW, outputH);
-  octx.setTransform(m[0], m[1], m[2], m[3], m[4], m[5]);
-  octx.drawImage(document.getElementById('photo-canvas'), 0, 0);
-  octx.setTransform(1, 0, 0, 1, 0, 0);
+  outCanvas.getContext('2d').drawImage(warped, 0, 0);
 
   card.classList.remove('hidden');
 
@@ -635,6 +719,18 @@ function getLayoutProblems(layoutData) {
   if (Array.isArray(layoutData)) return layoutData;
   if (Array.isArray(layoutData.problems)) return layoutData.problems;
   return [];
+}
+
+// layout_dataの座標(mm)の上下左右に余白を追加する（多少の補正ズレを吸収するため）
+const CROP_MARGIN_MM = 2;
+function expandBoxMm(box, marginMm) {
+  if (!box) return null;
+  return {
+    x: box.x - marginMm,
+    y: box.y - marginMm,
+    width: box.width + marginMm * 2,
+    height: box.height + marginMm * 2
+  };
 }
 
 function cropBox(sourceCanvas, box, scale) {
@@ -670,8 +766,10 @@ function cropProblems() {
 
   layoutProblems.forEach(function(p, i) {
     const pid = p.problem_id || p.id || String(i + 1);
-    const eqCanvas = cropBox(correctedCanvas, p.equation_box, scale);
-    const ansCanvas = cropBox(correctedCanvas, p.answer_box, scale);
+    const eqBox = expandBoxMm(p.equation_box, CROP_MARGIN_MM);
+    const ansBox = expandBoxMm(p.answer_box, CROP_MARGIN_MM);
+    const eqCanvas = cropBox(correctedCanvas, eqBox, scale);
+    const ansCanvas = cropBox(correctedCanvas, ansBox, scale);
     const eqUrl = eqCanvas ? eqCanvas.toDataURL() : null;
     const ansUrl = ansCanvas ? ansCanvas.toDataURL() : null;
 
