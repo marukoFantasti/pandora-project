@@ -418,6 +418,16 @@ body.imode .ref-answer-area{padding:14px 18px}
     <div style="font-size:11px;color:var(--text3);margin-top:6px">テーマを入れると、AIがそのキャラクターや世界観に合わせた問題文に書き換えます。</div>
   </div>
 
+  <!-- 出力形式 -->
+  <div class="card">
+    <div class="card-title">出力形式</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button type="button" class="tag outfmt-btn on" id="outfmt-web" data-fmt="web" onclick="selectOutputFormat('web')" style="padding:8px 16px;font-size:13px">📱 Web提出用</button>
+      <button type="button" class="tag outfmt-btn" id="outfmt-print" data-fmt="print" onclick="selectOutputFormat('print')" style="padding:8px 16px;font-size:13px">🖨️ 印刷用（解答用紙）</button>
+    </div>
+    <div id="outfmt-note" style="font-size:11px;color:var(--orange);margin-top:6px;display:none">先に生徒を選択してください（印刷用は生徒と用紙を1対1で紐づけるため）</div>
+  </div>
+
   <!-- 生徒選択 -->
   <div class="card" id="student-select-card">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
@@ -719,11 +729,34 @@ function updateReviewUI() {
 document.addEventListener('change', function(e){
   if (e.target.id !== 'q-student') return;
   var sid = e.target.value;
+  updateOutputFormatUI();
   var card = document.getElementById('review-card');
   if (!sid) { card.style.display = 'none'; return; }
   card.style.display = 'block';
   checkSubmissionHistory(sid);
 });
+
+// ===== 出力形式（Web提出用 / 印刷用） =====
+var selectedOutputFormat = 'web';
+function selectOutputFormat(fmt){
+  var sid = document.getElementById('q-student').value;
+  if (fmt === 'print' && !sid) return; // 生徒未選択では印刷用に切り替えられない
+  selectedOutputFormat = fmt;
+  document.querySelectorAll('.outfmt-btn').forEach(function(b){
+    b.classList.toggle('on', b.dataset.fmt === fmt);
+  });
+}
+function updateOutputFormatUI(){
+  var sid = document.getElementById('q-student').value;
+  var printBtn = document.getElementById('outfmt-print');
+  var note = document.getElementById('outfmt-note');
+  printBtn.disabled = !sid;
+  printBtn.style.opacity = sid ? '1' : '.5';
+  printBtn.style.cursor = sid ? 'pointer' : 'not-allowed';
+  note.style.display = sid ? 'none' : 'block';
+  if (!sid && selectedOutputFormat === 'print') selectOutputFormat('web');
+}
+setTimeout(updateOutputFormatUI, 100);
 
 function checkSubmissionHistory(sid) {
   // Supabaseから提出履歴を取得（最新3件）
@@ -1263,7 +1296,24 @@ function generateQuiz(){
       var templateUrl=mode==='overseas'
         ?'https://raw.githubusercontent.com/marukoFantasti/pandora-project/main/templates/student_quiz_overseas_template.html'
         :'https://raw.githubusercontent.com/marukoFantasti/pandora-project/main/templates/student_quiz_domestic_template.html';
-      var promptTemplate=
+      var promptTemplate;
+      if(selectedOutputFormat==='print'){
+        promptTemplate=
+          '以下のJSONをもとに、印刷用の解答用紙HTMLを作成してください。\n'+
+          'A4サイズ、1ページ5問、10問なら2ページ構成。\n'+
+          '各問題に「式を書く欄」「答えを書く欄」を配置してください。\n'+
+          '右上にQRコード（assignment_id・student_id・page・total_pagesをJSON文字列でエンコード）を印刷してください。\n'+
+          '紙面の隅に目視用テキストで\n'+
+          '「assignment_id: '+outputJson.meta.assignment_id+' | '+(outputJson.meta.student_name||'')+'('+(outputJson.meta.student_id||'')+') | {page}/{total_pages}ページ」も併記してください。\n'+
+          '印刷を想定したCSS（@pageルール、白黒印刷でも見やすい配色）にしてください。\n\n'+
+          '【JSON】\n（ここにJSONを貼り付けてください）';
+        document.getElementById('q-prompt-template').value=promptTemplate;
+        document.getElementById('q-preview').style.display='block';
+        btn.textContent='✨ 問題を生成する';btn.disabled=false;
+        status.textContent=outputJson.meta.count+'問生成完了（'+levelsDesc+'）';
+        return;
+      }
+      promptTemplate=
         '以下のJSONをもとに、student_quizのHTMLを作ってください。\n\n'+
         'HTMLを作成する際は、必ず以下のテンプレートを先に読み込み、その骨格構造（DrawCanvas、+Englishパネル、レベルバッジ、Supabase送信ロジック等）を一切変更せず、questions・illustrations・QUIZ_METAの中身だけを差し込むこと。\n'+
         'テンプレートURL（'+mode+'モード）: '+templateUrl+'\n'+
