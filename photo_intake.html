@@ -51,6 +51,8 @@ body { margin: 0; background: var(--bg); color: var(--text1); font-family: 'Hira
 .status-err { color: var(--red); }
 .status-muted { color: var(--text3); font-size: 12px; }
 .json-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: 11px; font-family: monospace; color: var(--text2); white-space: pre-wrap; word-break: break-all; max-height: 220px; overflow: auto; margin-top: 8px; }
+.manual-label { display: block; font-size: 11px; color: var(--text2); margin-bottom: 3px; }
+.manual-input { width: 100%; padding: 7px 9px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface); color: var(--text1); font-size: 12px; font-family: inherit; box-sizing: border-box; }
 .corner-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
 #photo-canvas, #corrected-canvas { border: 1px solid var(--border); border-radius: 8px; display: block; max-width: 100%; background: #000; }
 #photo-canvas { cursor: crosshair; }
@@ -85,6 +87,25 @@ body { margin: 0; background: var(--bg); color: var(--text1); font-family: 'Hira
     <div class="card-title">② QRコード読み取り結果</div>
     <div class="status-muted" id="qr-status">写真をアップロードすると自動で読み取ります。</div>
     <div class="json-box hidden" id="qr-json-box"></div>
+
+    <div class="hidden" id="qr-manual-form">
+      <div class="card-desc" style="margin-top:12px;padding-top:12px;border-top:1px dashed var(--border)">QRコードが読み取れない場合は、下記に手入力して照会できます。</div>
+      <label class="manual-label">assignment_id</label>
+      <input type="text" id="manual-assignment-id" class="manual-input">
+      <label class="manual-label" style="margin-top:8px">student_id</label>
+      <input type="text" id="manual-student-id" class="manual-input">
+      <div style="display:flex;gap:10px;margin-top:8px">
+        <div style="flex:1">
+          <label class="manual-label">page</label>
+          <input type="number" id="manual-page" class="manual-input" value="1" min="1">
+        </div>
+        <div style="flex:1">
+          <label class="manual-label">total_pages</label>
+          <input type="number" id="manual-total-pages" class="manual-input" value="1" min="1">
+        </div>
+      </div>
+      <button class="btn" style="margin-top:10px" onclick="submitManualQr()">この情報で照会する</button>
+    </div>
   </div>
 
   <!-- ③ Supabase該当レコード -->
@@ -207,6 +228,11 @@ function resetPipeline() {
   document.getElementById('qr-status').textContent = '読み取り中...';
   document.getElementById('qr-status').className = 'status-muted';
   document.getElementById('qr-json-box').classList.add('hidden');
+  document.getElementById('qr-manual-form').classList.add('hidden');
+  document.getElementById('manual-assignment-id').value = '';
+  document.getElementById('manual-student-id').value = '';
+  document.getElementById('manual-page').value = '1';
+  document.getElementById('manual-total-pages').value = '1';
   document.getElementById('sheet-status').textContent = 'QR読み取りが成功すると自動で照会します。';
   document.getElementById('sheet-status').className = 'status-muted';
   document.getElementById('sheet-json-box').classList.add('hidden');
@@ -284,23 +310,63 @@ function scanQrFromFile(file) {
     try { parsed = JSON.parse(decodedText); } catch (e) { parsed = null; }
 
     if (parsed) {
-      currentQrData = parsed;
-      statusEl.textContent = '✓ QRコードを読み取りました';
-      statusEl.className = 'status-ok';
-      boxEl.textContent = JSON.stringify(parsed, null, 2);
-      boxEl.classList.remove('hidden');
-      fetchAnswerSheet(parsed);
+      useQrData(parsed, 'QRコードを読み取りました');
     } else {
       statusEl.textContent = '⚠️ QRコードは読み取れましたが、JSONとして解析できませんでした';
       statusEl.className = 'status-err';
       boxEl.textContent = decodedText;
       boxEl.classList.remove('hidden');
+      showManualQrForm();
     }
   }).catch(function(err) {
     console.log('[scanQrFromFile] decode failed:', err);
     statusEl.textContent = '✗ QRコードを読み取れませんでした（' + err + '）';
     statusEl.className = 'status-err';
+    showManualQrForm();
   });
+}
+
+// QRコード読み取り成功時・手動入力時のどちらからでも呼ばれる共通経路。
+// assignment_id/student_id/page/total_pagesさえ確定すれば、以降の
+// ③Supabase照会〜⑨保存の処理はソースを問わず共通で動く。
+function useQrData(qr, statusLabel) {
+  const statusEl = document.getElementById('qr-status');
+  const boxEl = document.getElementById('qr-json-box');
+  currentQrData = qr;
+  statusEl.textContent = '✓ ' + (statusLabel || '情報を確定しました');
+  statusEl.className = 'status-ok';
+  boxEl.textContent = JSON.stringify(qr, null, 2);
+  boxEl.classList.remove('hidden');
+  hideManualQrForm();
+  fetchAnswerSheet(qr);
+}
+
+function showManualQrForm() {
+  document.getElementById('qr-manual-form').classList.remove('hidden');
+}
+
+function hideManualQrForm() {
+  document.getElementById('qr-manual-form').classList.add('hidden');
+}
+
+// ②' QRコードが読み取れない場合の手動フォールバック入力
+function submitManualQr() {
+  const assignmentId = document.getElementById('manual-assignment-id').value.trim();
+  const studentId = document.getElementById('manual-student-id').value.trim();
+  const page = parseInt(document.getElementById('manual-page').value, 10) || 1;
+  const totalPages = parseInt(document.getElementById('manual-total-pages').value, 10) || 1;
+
+  if (!assignmentId || !studentId) {
+    alert('assignment_id と student_id を入力してください');
+    return;
+  }
+
+  useQrData({
+    assignment_id: assignmentId,
+    student_id: studentId,
+    page: page,
+    total_pages: totalPages
+  }, '手入力の情報で照会します');
 }
 
 // ===== ③ Supabase answer_sheets 照会 =====
