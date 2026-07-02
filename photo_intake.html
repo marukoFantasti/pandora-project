@@ -178,11 +178,19 @@ document.getElementById('photo-input').addEventListener('change', function(e) {
     statusEl.textContent = '📷 HEIC画像を変換中...';
     statusEl.className = 'status-muted';
 
+    if (typeof window.heic2any !== 'function') {
+      console.error('heic2any is not loaded (window.heic2any is not a function)');
+      statusEl.textContent = 'HEIC変換ライブラリの読み込みに失敗しました';
+      statusEl.className = 'status-err';
+      return;
+    }
+
     heic2any({ blob: file, toType: 'image/jpeg', quality: 0.9 }).then(function(converted) {
       const blob = Array.isArray(converted) ? converted[0] : converted;
       const jpegFile = new File([blob], file.name.replace(/\.(heic|heif)$/i, '.jpg'), { type: 'image/jpeg' });
       processPhotoFile(jpegFile);
-    }).catch(function() {
+    }).catch(function(error) {
+      console.error('HEIC conversion failed:', error && error.message, error);
       statusEl.textContent = 'HEIC形式の変換に失敗しました。設定アプリ→カメラ→フォーマットで「互換性優先」に変更するか、JPEGで再送信してもらってください';
       statusEl.className = 'status-err';
     });
