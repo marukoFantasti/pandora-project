@@ -19,8 +19,26 @@
   --text3: #5a6080;
   --radius: 10px;
 }
+body.light {
+  --bg: #f5f5f7;
+  --surface: #ffffff;
+  --card: #f0f0f5;
+  --border: #d9d9e3;
+  --text1: #1d1d1f;
+  --text2: #6e6e73;
+  --text3: #aeaeb2;
+}
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: var(--bg); color: var(--text1); font-family: 'Hiragino Sans','Yu Gothic',sans-serif; min-height: 100vh; }
+.cbtn { padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border); background: transparent; cursor: pointer; font-size: 12px; color: var(--text2); font-family: inherit; }
+.cbtn:hover { background: var(--card); }
+
+/* I-mode: 大きめの文字・タップ領域 */
+body.imode .grade-btn { font-size: 15px; padding: 8px 0; }
+body.imode .ai-btn { font-size: 15px; padding: 10px 0; }
+body.imode .btn-primary, body.imode .btn-ghost { font-size: 15px; padding: 10px 20px; }
+body.imode .filter-btn { font-size: 14px; padding: 6px 12px; }
+body.imode .sub-item-copy, body.imode .sub-item-reset { font-size: 13px; padding: 8px 0; }
 
 /* Header */
 .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 10px 16px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; }
@@ -175,6 +193,11 @@ body { background: var(--bg); color: var(--text1); font-family: 'Hiragino Sans',
   <div style="display:flex;gap:4px;margin-left:auto">
     <button id="tab-grading" onclick="switchTab('grading')" style="padding:6px 18px;border-radius:8px;border:none;background:var(--accent);color:#fff;font-size:12px;font-weight:700;cursor:pointer">✏️ 採点</button>
     <button id="tab-analytics" onclick="switchTab('analytics')" style="padding:6px 18px;border-radius:8px;border:none;background:var(--border);color:var(--text2);font-size:12px;font-weight:700;cursor:pointer">📊 分析</button>
+  </div>
+  <div style="display:flex;gap:4px">
+    <a href="pandora_main.html" style="padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:12px;text-decoration:none;display:inline-block">📝 メインへ</a>
+    <button class="cbtn" id="dark-btn" onclick="toggleDark()">☀️ ライト</button>
+    <button class="cbtn" id="imode-btn" onclick="toggleImode()">🤍　I-mode</button>
   </div>
 </div>
 
@@ -1265,6 +1288,26 @@ async function aiGradeAll() {
   }
 
   if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = '🤖 全問AI採点'; }
+}
+
+// ===== ダークモード / I-mode =====
+function toggleDark() {
+  var isLight = document.body.classList.toggle('light');
+  document.getElementById('dark-btn').textContent = isLight ? '🌙 ダーク' : '☀️ ライト';
+  localStorage.setItem('pg-light', isLight ? '1' : '0');
+}
+function toggleImode() {
+  var on = document.body.classList.toggle('imode');
+  document.getElementById('imode-btn').textContent = on ? '🩷　I-mode' : '🤍　I-mode';
+  localStorage.setItem('pg-imode', on ? '1' : '0');
+}
+if (localStorage.getItem('pg-light') === '1') {
+  document.body.classList.add('light');
+  document.getElementById('dark-btn').textContent = '🌙 ダーク';
+}
+if (localStorage.getItem('pg-imode') === '1') {
+  document.body.classList.add('imode');
+  document.getElementById('imode-btn').textContent = '🩷　I-mode';
 }
 
 // 初期化
