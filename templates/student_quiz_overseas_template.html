@@ -1,0 +1,378 @@
+<!--
+  ═══════════════════════════════════════════════════════════════
+  student_quiz テンプレート（海外向け・日本語学習者用）
+  ═══════════════════════════════════════════════════════════════
+  出典: student_quiz_doraemon_overseas.html の骨格部分のみを抽出
+  （採点モード ?teacher=1 機能は不使用のため削除済み、2026-07-02）
+
+  【使い方】このHTMLの{{...}}プレースホルダーを埋めて生成する：
+    {{PAGE_TITLE}}    - <title>タグの中身
+    {{QUIZ_META}}      - const QUIZ_META = {...}; の定義
+    {{KANJI_QUIZ}}      - kanjiQuiz配列の中身（無ければ空のまま）
+    {{QUESTIONS}}       - questions配列の中身
+    {{ILLUSTRATIONS}}   - illustrationsオブジェクトの中身
+
+  【著作権注意】illustrations・questionsに実在の著作物
+  （アニメ・ゲーム・企業キャラクター等）は使用しないこと。
+  テーマに寄せたオリジナルキャラクター・モチーフのみ可。
+
+  【骨格に含まれる主な機能】
+  - DrawCanvas: ペン/消しゴム/全消去、canvas解像度1200x{height}固定
+    （幅を変えると採点UI側で歪んで表示されるので変更しないこと）
+  - +Englishパネル（単語・例文・音声読み上げ）
+  - 漢字クイズ（選択式、kanjiQuiz空なら非表示）
+  - Supabase送信: student_id/student_name の両方を必ず含める
+    （どちらか欠けると採点UI側で表示が壊れる）
+  ═══════════════════════════════════════════════════════════════
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{PAGE_TITLE}}</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #f0f4ff; font-family: 'Hiragino Sans','Yu Gothic',sans-serif; }
+    ruby { ruby-align: center; }
+    rt { font-size: 10px; color: #888; }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+// ▼▼▼ QUIZ_META をここに定義する（Pandora側で埋め込む） ▼▼▼
+// 例: const QUIZ_META = {
+//   assignment_id: "asgn_xxxx", mode: "overseas", grades: ["g04"],
+//   jp_level: "N4", theme_title: "算数で日本語を学ぼう！",
+//   theme_label: "テーマ名", theme_icon: "🔵", grade_label: "小4",
+//   student_name: "阿部 優子"  // 生徒を選んで生成した場合のみ
+// };
+// {{QUIZ_META}}
+
+const kanjiQuiz = [
+  // ▼▼▼ 漢字クイズがある場合はここに差し込む（無ければ空配列のまま） ▼▼▼
+  // 形式: { id, reading, en, correct, choices:[...], hint }
+  // {{KANJI_QUIZ}}
+];
+
+function KanjiIllustration({id}) {
+  if(id==="k1") return <svg viewBox="0 0 80 60" width="80" height="60"><circle cx="40" cy="25" r="18" fill="#1a9fd4"/><circle cx="40" cy="23" r="14" fill="#f5f5f5"/><circle cx="35" cy="19" r="3" fill="white"/><circle cx="35" cy="19" r="1.8" fill="#111"/><circle cx="45" cy="19" r="3" fill="white"/><circle cx="45" cy="19" r="1.8" fill="#111"/><ellipse cx="40" cy="25" rx="4" ry="3" fill="#e53935"/><ellipse cx="40" cy="38" rx="12" ry="7" fill="#1a9fd4"/></svg>;
+  if(id==="k2") return <svg viewBox="0 0 80 60" width="80" height="60"><ellipse cx="25" cy="30" rx="12" ry="14" fill="#f5c5a3"/><rect x="19" y="24" width="6" height="5" rx="1.5" fill="white" stroke="#555" strokeWidth="1"/><rect x="27" y="24" width="6" height="5" rx="1.5" fill="white" stroke="#555" strokeWidth="1"/><circle cx="22" cy="26.5" r="1.5" fill="#333"/><circle cx="30" cy="26.5" r="1.5" fill="#333"/><rect x="17" y="42" width="16" height="10" rx="3" fill="#ff9800"/><text x="58" y="32" textAnchor="middle" fontSize="16" fill="#1a9fd4" fontWeight="bold">×3</text></svg>;
+  return <svg viewBox="0 0 80 60" width="80" height="60"><rect x="10" y="8" width="60" height="40" rx="6" fill="#37474f"/><rect x="14" y="12" width="52" height="14" rx="3" fill="#b2dfdb"/><text x="40" y="23" textAnchor="middle" fontSize="10" fill="#004d40" fontWeight="bold">計算</text><rect x="14" y="28" width="52" height="12" rx="3" fill="#546e7a"/><text x="40" y="37" textAnchor="middle" fontSize="9" fill="white">= ?</text></svg>;
+}
+
+const LEVEL_BADGE = {
+  example_follow: { label:"例題", color:"#7b1fa2", bg:"#f3e5f5" },
+  confirmation:   { label:"確認", color:"#1a9fd4", bg:"#e1f5fe" },
+  practice:       { label:"練習", color:"#e65100", bg:"#fff3e0" },
+};
+const UNIT_COLORS = {
+  "整数のわり算": { color:"#1a73e8", bg:"#e8f0fe" },
+  "式と計算":     { color:"#2e7d32", bg:"#e8f5e9" },
+};
+
+const questions = [
+  // ▼▼▼ ここに問題データを差し込む ▼▼▼
+  // 各要素の形式: { id, problem_id, tags:[], question, unit, chapter, level,
+  //   jp:<span>ふりがな付きJSX</span>, reading:"ひらがな全文",
+  //   answer, hint, words:[{word,meaning,example}, ...] }
+  // level は 'example_follow' | 'confirmation' | 'practice' のいずれか
+  // {{QUESTIONS}}
+];
+
+// SVGイラスト
+const illustrations = {
+  // ▼▼▼ ここに問題ごとのSVGイラストを差し込む ▼▼▼
+  // キー: questions配列の各要素のid（1, 2, 3...）
+  // 値: 72x72程度のオリジナルSVGイラスト（実在キャラクター・著作物の
+  //     再現は禁止。テーマに合わせたオリジナルキャラクター/モチーフのみ）
+  // {{ILLUSTRATIONS}}
+};
+
+function DrawCanvas({ id, height=120, label, canvasRef: externalRef, internalHeight=150 }) {
+  const internalRef = React.useRef(null);
+  const canvasRef = externalRef || internalRef;
+  const isDrawing = React.useRef(false);
+  const lastPos = React.useRef(null);
+  const [hasDrawing, setHasDrawing] = React.useState(false);
+  const [isEraser, setIsEraser] = React.useState(false);
+  const getPos=(e,canvas)=>{const rect=canvas.getBoundingClientRect();const sx=canvas.width/rect.width,sy=canvas.height/rect.height;if(e.touches)return{x:(e.touches[0].clientX-rect.left)*sx,y:(e.touches[0].clientY-rect.top)*sy};return{x:(e.clientX-rect.left)*sx,y:(e.clientY-rect.top)*sy};};
+  React.useEffect(()=>{const canvas=canvasRef.current;const ctx=canvas.getContext("2d");ctx.fillStyle="#fffde7";ctx.fillRect(0,0,canvas.width,canvas.height);const onTS=(e)=>{e.preventDefault();isDrawing.current=true;lastPos.current=getPos(e,canvas);setHasDrawing(true);};const onTM=(e)=>{e.preventDefault();if(!isDrawing.current)return;const pos=getPos(e,canvas);const c2=canvas.getContext("2d");if(eraserRef.current){c2.globalCompositeOperation="destination-out";c2.lineWidth=30;}else{c2.globalCompositeOperation="source-over";c2.strokeStyle="#1a237e";c2.lineWidth=3;}c2.lineCap="round";c2.lineJoin="round";c2.beginPath();c2.moveTo(lastPos.current.x,lastPos.current.y);c2.lineTo(pos.x,pos.y);c2.stroke();lastPos.current=pos;};const onTE=(e)=>{e.preventDefault();isDrawing.current=false;};canvas.addEventListener("touchstart",onTS,{passive:false});canvas.addEventListener("touchmove",onTM,{passive:false});canvas.addEventListener("touchend",onTE,{passive:false});return()=>{canvas.removeEventListener("touchstart",onTS);canvas.removeEventListener("touchmove",onTM);canvas.removeEventListener("touchend",onTE);};},[]); 
+  const eraserRef = React.useRef(false);
+  const sd=(e)=>{isDrawing.current=true;lastPos.current=getPos(e,canvasRef.current);setHasDrawing(true);};
+  const dr=(e)=>{if(!isDrawing.current)return;const c=canvasRef.current;const ctx=c.getContext("2d");const pos=getPos(e,c);if(eraserRef.current){ctx.globalCompositeOperation="destination-out";ctx.lineWidth=30;}else{ctx.globalCompositeOperation="source-over";ctx.strokeStyle="#1a237e";ctx.lineWidth=3;}ctx.lineCap="round";ctx.lineJoin="round";ctx.beginPath();ctx.moveTo(lastPos.current.x,lastPos.current.y);ctx.lineTo(pos.x,pos.y);ctx.stroke();lastPos.current=pos;};
+  const sp=()=>{isDrawing.current=false;};
+  const clear=()=>{const c=canvasRef.current;const ctx=c.getContext("2d");ctx.globalCompositeOperation="source-over";ctx.fillStyle="#fffde7";ctx.fillRect(0,0,c.width,c.height);setHasDrawing(false);};
+  const toggleEraser=()=>{eraserRef.current=!eraserRef.current;setIsEraser(eraserRef.current);};
+  return (
+    <div style={{marginTop:10}}>
+      {label&&<p style={{fontSize:12,color:"#5c6bc0",fontWeight:"bold",margin:"0 0 5px 0"}}>{label}</p>}
+      <canvas ref={canvasRef} width={1200} height={300} onMouseDown={sd} onMouseMove={dr} onMouseUp={sp} onMouseLeave={sp}
+        style={{width:"100%",height:internalHeight,border:isEraser?"2px dashed #e74c3c":"2px dashed #9fa8da",borderRadius:10,background:"#fffde7",display:"block",touchAction:isEraser?"none":"pan-y",cursor:isEraser?"cell":"crosshair"}}/>
+      <div style={{display:"flex",gap:6,marginTop:4}}>
+        <button onClick={toggleEraser} style={{background:isEraser?"#ffeaa7":"#f5f5f5",border:isEraser?"1px solid #e74c3c":"1px solid #ddd",color:isEraser?"#e74c3c":"#666",padding:"3px 10px",borderRadius:6,fontSize:11,cursor:"pointer"}}>{isEraser?"✏️ ペン":"🧹 消しゴム"}</button>
+        {hasDrawing&&<button onClick={clear} style={{background:"#f5f5f5",border:"1px solid #ddd",color:"#666",padding:"3px 10px",borderRadius:6,fontSize:11,cursor:"pointer"}}>🗑️ 全消し</button>}
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [showHint, setShowHint] = React.useState({});
+  const [kanjiAnswers, setKanjiAnswers] = React.useState({});
+  const [showWords, setShowWords] = React.useState({});
+  const [speaking, setSpeaking] = React.useState(null);
+  const [submitted, setSubmitted] = React.useState(false);
+  const [submitting, setSubmitting] = React.useState(false);
+  const [submitError, setSubmitError] = React.useState(null);
+
+  const nameCanvasRef = React.useRef(null);
+  const kanjiRefs = React.useRef({});
+  kanjiQuiz.forEach(k=>{ if(!kanjiRefs.current[k.id]) kanjiRefs.current[k.id]=React.createRef(); });
+  const eqRefs = React.useRef({});
+  const ansRefs = React.useRef({});
+  questions.forEach(q=>{
+    if(!eqRefs.current[q.id]) eqRefs.current[q.id]=React.createRef();
+    if(!ansRefs.current[q.id]) ansRefs.current[q.id]=React.createRef();
+  });
+
+  const handleKanji=(id,choice)=>{if(kanjiAnswers[id])return;setKanjiAnswers(prev=>({...prev,[id]:choice}));};
+
+  const speak=(text)=>{window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="ja-JP";u.rate=0.8;setSpeaking(text);u.onend=()=>setSpeaking(null);window.speechSynthesis.speak(u);};
+
+  const SUPABASE_URL="https://upmflhdbhbyzoeldrvvw.supabase.co";
+  const SUPABASE_KEY="sb_publishable_K8Y_bNHVA4szRXFM_EcDkA_LBckunu5";
+  // Pandoraが生成するHTMLには assignment_id と mode が埋め込まれる
+  const ASSIGNMENT_ID=typeof QUIZ_META!=="undefined"?QUIZ_META.assignment_id:null;
+  const QUIZ_MODE=typeof QUIZ_META!=="undefined"?QUIZ_META.mode:"overseas";
+  const QUIZ_GRADE=typeof QUIZ_META!=="undefined"?(QUIZ_META.grades||[])[0]:null;
+  const JP_LEVEL=typeof QUIZ_META!=="undefined"?QUIZ_META.jp_level:"N4";
+  // URLの ?sid=S-0001 から生徒IDを取得（Pandoraで生徒を選んで生成した場合のみ付与される）
+  const STUDENT_ID=new URLSearchParams(location.search).get('sid')||null;
+  const STUDENT_NAME=typeof QUIZ_META!=="undefined"?(QUIZ_META.student_name||null):null;
+
+  const handleSubmit=async()=>{
+    setSubmitting(true);setSubmitError(null);
+    try{
+      const payload={
+        assignment_id:ASSIGNMENT_ID,
+        student_id:STUDENT_ID,
+        student_name:STUDENT_NAME,
+        grade:QUIZ_GRADE?parseInt(QUIZ_GRADE.replace(/[^0-9]/g,'')):null,
+        subject:"math",
+        mode:QUIZ_MODE,
+        week:1,
+        submission_data:{
+          student_id:STUDENT_ID,
+          student_name:STUDENT_NAME,
+          jp_level:JP_LEVEL,
+          name_canvas:nameCanvasRef.current?.toDataURL()||null,
+          problems:questions.map(q=>({
+            problem_id:q.problem_id||null,
+            id:q.id,
+            unit:q.unit,
+            chapter:q.chapter,
+            level:q.level,
+            tags:q.tags||[],
+            question:q.question||null,
+            answer:q.answer||null,
+            equation_canvas:eqRefs.current[q.id]?.current?.toDataURL()||null,
+            answer_canvas:ansRefs.current[q.id]?.current?.toDataURL()||null,
+          })),
+          kanji:kanjiQuiz.map(k=>({
+            id:k.id,
+            reading:k.reading,
+            correct:k.correct,
+            selected:kanjiAnswers[k.id]||null,
+            is_correct:kanjiAnswers[k.id]===k.correct,
+            canvas:kanjiRefs.current[k.id]?.current?.toDataURL()||null,
+          })),
+          kanji_score:kanjiQuiz.filter(k=>kanjiAnswers[k.id]===k.correct).length,
+          kanji_total:kanjiQuiz.length,
+          english_opened_count:null,
+        },
+        submitted_at:new Date().toISOString(),
+      };
+      const res=await fetch(`${SUPABASE_URL}/rest/v1/submissions`,{method:"POST",
+        headers:{"Content-Type":"application/json","apikey":SUPABASE_KEY,"Authorization":`Bearer ${SUPABASE_KEY}`,"Prefer":"return=minimal"},
+        body:JSON.stringify(payload)});
+      if(!res.ok)throw new Error(`Error: ${res.status}`);
+      setSubmitted(true);window.scrollTo({top:0,behavior:"smooth"});
+    }catch(e){setSubmitError(e.message);}finally{setSubmitting(false);}
+  };
+
+  if(submitted){
+    return (
+      <div style={{minHeight:"100vh",background:"#f0f4ff",paddingBottom:40}}>
+        <div style={{background:"linear-gradient(135deg,#1a9fd4,#0277bd)",color:"white",padding:"20px 16px"}}>
+          <h1 style={{fontSize:18,fontWeight:"bold",margin:"0 0 4px 0"}}>✅ 提出完了！ / Submitted!</h1>
+          <p style={{fontSize:12,margin:0,opacity:0.85}}>先生に届いたよ！Well done! 🎉</p>
+        </div>
+        <div style={{padding:"14px 12px"}}>
+          {questions.map((q,idx)=>{
+            const lb=LEVEL_BADGE[q.level]||{};const uc=UNIT_COLORS[q.unit]||{color:"#555",bg:"#f5f5f5"};
+            return (
+              <div key={q.id} style={{background:"white",borderRadius:14,marginBottom:10,padding:"12px",border:"2px solid #dde3f0",boxShadow:"0 2px 6px rgba(0,0,0,0.06)"}}>
+                <div style={{display:"flex",gap:5,marginBottom:6,flexWrap:"wrap"}}>
+                  <span style={{background:"#1a9fd4",color:"white",borderRadius:6,padding:"2px 8px",fontSize:12,fontWeight:"bold"}}>Q{idx+1}</span>
+                  <span style={{background:uc.bg,color:uc.color,borderRadius:6,padding:"2px 8px",fontSize:11}}>{q.unit}</span>
+                  <span style={{background:lb.bg,color:lb.color,borderRadius:6,padding:"2px 8px",fontSize:11,fontWeight:"bold"}}>{lb.label}</span>
+                </div>
+                {eqRefs.current[q.id]?.current&&<img src={eqRefs.current[q.id].current.toDataURL()} style={{width:"100%",borderRadius:8,border:"1px solid #ddd",marginBottom:4}}/>}
+                {ansRefs.current[q.id]?.current&&<img src={ansRefs.current[q.id].current.toDataURL()} style={{width:"100%",borderRadius:8,border:"1px solid #ddd"}}/>}
+              </div>
+            );
+          })}
+          <button onClick={()=>setSubmitted(false)} style={{width:"100%",background:"#f5f5f5",border:"2px solid #ddd",color:"#666",padding:"13px",borderRadius:14,fontSize:14,cursor:"pointer",fontWeight:"bold"}}>← 戻る / Go back</button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{minHeight:"100vh",background:"#f0f4ff",paddingBottom:100,overflowX:"hidden"}}>
+      <div style={{background:"linear-gradient(135deg,#1a9fd4,#0277bd)",color:"white",padding:"16px 16px 12px",position:"sticky",top:0,zIndex:100,boxShadow:"0 2px 10px rgba(0,0,0,0.2)"}}>
+        <h1 style={{fontSize:16,fontWeight:"bold",margin:"0 0 3px 0"}}>{QUIZ_META.theme_icon||"📘"} {QUIZ_META.theme_title||"算数で日本語を学ぼう！"}</h1>
+        <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
+          {QUIZ_META.theme_label && <span style={{background:"rgba(255,255,255,0.2)",borderRadius:6,padding:"2px 8px",fontSize:11}}>{QUIZ_META.theme_label}</span>}
+          <span style={{background:"rgba(255,255,255,0.2)",borderRadius:6,padding:"2px 8px",fontSize:11}}>{JP_LEVEL}</span>
+          {QUIZ_META.grade_label && <span style={{background:"rgba(255,255,255,0.2)",borderRadius:6,padding:"2px 8px",fontSize:11}}>{QUIZ_META.grade_label}</span>}
+          <span style={{background:"rgba(255,255,255,0.15)",borderRadius:6,padding:"2px 8px",fontSize:11}}>{questions.length}問</span>
+        </div>
+      </div>
+
+      <div style={{padding:"12px"}}>
+        <div style={{background:"white",borderRadius:14,marginBottom:14,border:"2px solid #1a9fd4",overflow:"hidden",boxShadow:"0 2px 6px rgba(0,0,0,0.07)"}}>
+          <div style={{padding:"12px"}}>
+            <p style={{fontSize:14,fontWeight:"bold",color:"#1a9fd4",margin:"0 0 2px 0"}}>✏️ なまえ / Your name</p>
+            <DrawCanvas id="name" height={70} label={null} canvasRef={nameCanvasRef}/>
+          </div>
+        </div>
+
+        {questions.map((q,idx)=>{
+          const lb=LEVEL_BADGE[q.level]||{label:q.level,color:"#888",bg:"#f5f5f5"};
+          const uc=UNIT_COLORS[q.unit]||{color:"#555",bg:"#f5f5f5"};
+          return (
+            <div key={q.id} id={'q-'+q.id} style={{background:"white",borderRadius:14,marginBottom:14,border:"2px solid #dde3f0",overflow:"hidden",boxShadow:"0 2px 6px rgba(0,0,0,0.07)"}}>
+              <div style={{background:"linear-gradient(90deg,#1a9fd4,#0277bd)",padding:"8px 14px",display:"flex",gap:6,alignItems:"center",flexWrap:"wrap"}}>
+                <span style={{background:"white",color:"#0277bd",borderRadius:6,padding:"2px 8px",fontSize:12,fontWeight:"bold"}}>Q{idx+1}</span>
+                <span style={{background:uc.bg,color:uc.color,borderRadius:6,padding:"2px 8px",fontSize:11,fontWeight:"bold"}}>{q.unit}</span>
+                <span style={{background:lb.bg,color:lb.color,borderRadius:6,padding:"2px 8px",fontSize:11,fontWeight:"bold"}}>{lb.label}</span>
+              </div>
+
+              <div style={{padding:"14px 12px"}}>
+                <div style={{display:"flex",gap:10,alignItems:"flex-start",marginBottom:12}}>
+                  <div style={{flexShrink:0}}>{illustrations[q.id]}</div>
+                  <p style={{fontSize:15,lineHeight:2.1,color:"#1a1a1a",fontWeight:"500",margin:0,wordBreak:"break-word"}}>{q.jp}</p>
+                </div>
+
+                <button onClick={()=>speak(q.reading)}
+                  style={{background:speaking===q.reading?"#e3f2fd":"#f5f5f5",border:`1px solid ${speaking===q.reading?"#1a9fd4":"#ddd"}`,color:speaking===q.reading?"#1a9fd4":"#666",padding:"5px 12px",borderRadius:8,fontSize:12,cursor:"pointer",marginBottom:12}}>
+                  {speaking===q.reading?"🔊 Playing...":"🔊 読んでみよう / Read aloud"}
+                </button>
+
+                <DrawCanvas id={`eq_${q.id}`} height={225} internalHeight={225} label="📐 式を書こう / Write your equation" canvasRef={eqRefs.current[q.id]}/>
+                <DrawCanvas id={`ans_${q.id}`} height={110} label="✍️ 答えを書こう / Write your answer" canvasRef={ansRefs.current[q.id]}/>
+
+                <div style={{display:"flex",gap:8,marginTop:12,flexWrap:"wrap",alignItems:"center"}}>
+                  <button onClick={()=>setShowWords(p=>({...p,[q.id]:!p[q.id]}))}
+                    style={{background:showWords[q.id]?"#fff3e0":"#f5f5f5",border:`1px solid ${showWords[q.id]?"#ff9800":"#ddd"}`,color:showWords[q.id]?"#e65100":"#666",padding:"6px 12px",borderRadius:8,fontSize:12,cursor:"pointer"}}>
+                    📖 ことば / Words
+                  </button>
+                  <button onClick={()=>setShowHint(p=>({...p,[q.id]:!p[q.id]}))}
+                    style={{background:showHint[q.id]?"#e8f5e9":"#f5f5f5",border:`1px solid ${showHint[q.id]?"#43a047":"#ddd"}`,color:showHint[q.id]?"#2e7d32":"#666",padding:"6px 12px",borderRadius:8,fontSize:12,cursor:"pointer"}}>
+                    🇬🇧 English hint
+                  </button>
+                  <button onClick={()=>{
+                    if(idx < questions.length-1){
+                      const next=document.getElementById('q-'+questions[idx+1].id);
+                      if(next) next.scrollIntoView({behavior:'smooth',block:'start'});
+                    } else {
+                      const kanjiEl=document.getElementById('kanji-section');
+                      if(kanjiEl) kanjiEl.scrollIntoView({behavior:'smooth',block:'start'});
+                    }
+                  }} style={{marginLeft:"auto",background:idx < questions.length-1?"#1a9fd4":"#e53935",color:"white",border:"none",padding:"8px 18px",borderRadius:10,fontSize:13,fontWeight:"bold",cursor:"pointer",boxShadow:"0 2px 6px rgba(0,0,0,0.2)"}}>
+                    {idx < questions.length-1 ? "次の問題へ ▼" : "漢字コーナーへ ▼"}
+                  </button>
+                </div>
+              </div>
+
+              {showWords[q.id]&&(
+                <div style={{borderTop:"1px solid #fff3e0",background:"#fffbf0",padding:"12px"}}>
+                  <p style={{fontSize:11,color:"#e65100",fontWeight:"bold",margin:"0 0 8px 0"}}>📖 ことば / Words</p>
+                  {q.words.map((w,i)=>(
+                    <div key={i} style={{background:"white",border:"1px solid #ffe0b2",borderRadius:10,padding:"8px 10px",marginBottom:6}}>
+                      <p style={{fontSize:14,fontWeight:"bold",color:"#333",margin:"0 0 2px 0"}}>{w.word}</p>
+                      <p style={{fontSize:13,color:"#1a73e8",margin:"0 0 2px 0"}}>🇬🇧 {w.meaning}</p>
+                      <p style={{fontSize:11,color:"#888",margin:0}}>例: {w.example}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {showHint[q.id]&&(
+                <div style={{borderTop:"1px solid #e8f5e9",background:"#f1f8f1",padding:"12px"}}>
+                  <p style={{fontSize:11,color:"#2e7d32",fontWeight:"bold",margin:"0 0 4px 0"}}>🇬🇧 English hint</p>
+                  <p style={{fontSize:14,color:"#333",margin:0,fontStyle:"italic"}}>{q.hint}</p>
+                </div>
+              )}
+
+            </div>
+          );
+        })}
+
+        {/* 今日の漢字コーナー */}
+        <div id="kanji-section" style={{background:"linear-gradient(135deg,#e65100,#bf360c)",borderRadius:14,padding:"14px 16px",marginBottom:12}}>
+          <h2 style={{color:"white",fontSize:16,fontWeight:"bold",margin:"0 0 2px 0"}}>🈳 今日の漢字 / Today's Kanji 🔵</h2>
+          <p style={{color:"rgba(255,255,255,0.8)",fontSize:12,margin:0}}>距・倍・計　選んで、書いてみよう！</p>
+        </div>
+
+        {kanjiQuiz.map(k=>{
+          const selected=kanjiAnswers[k.id];const isCorrect=selected===k.correct;
+          return (
+            <div key={k.id} style={{background:"white",borderRadius:14,marginBottom:14,border:`2px solid ${selected?(isCorrect?"#43a047":"#e53935"):"#dde3f0"}`,overflow:"hidden",boxShadow:"0 2px 6px rgba(0,0,0,0.07)"}}>
+              <div style={{padding:"14px 12px"}}>
+                <div style={{display:"flex",gap:6,marginBottom:10}}>
+                  <span style={{background:"#e65100",color:"white",borderRadius:6,padding:"2px 8px",fontSize:12,fontWeight:"bold"}}>漢字</span>
+                </div>
+                <div style={{display:"flex",gap:12,alignItems:"center",marginBottom:10}}>
+                  <div style={{flexShrink:0}}><KanjiIllustration id={k.id}/></div>
+                  <div>
+                    <p style={{fontSize:18,fontWeight:"bold",color:"#222",margin:"0 0 6px 0"}}>{k.en} = {k.reading}</p>
+                    <p style={{fontSize:13,color:"#888",margin:0,fontStyle:"italic"}}>{k.hint}</p>
+                  </div>
+                </div>
+                <p style={{fontSize:14,color:"#333",margin:"0 0 10px 0",fontWeight:"bold"}}>「{k.reading}」の漢字はどれ？ / Which kanji?</p>
+                <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:10}}>
+                  {k.choices.map(choice=>{
+                    let bg="#f5f5f5",border="#ddd",color="#333";
+                    if(selected){if(choice===k.correct){bg="#e8f5e9";border="#43a047";color="#2e7d32";}else if(choice===selected&&choice!==k.correct){bg="#ffebee";border="#e53935";color="#c62828";}}
+                    return <button key={choice} onClick={()=>handleKanji(k.id,choice)}
+                      style={{background:bg,border:`2px solid ${border}`,color,padding:"12px 16px",borderRadius:10,fontSize:20,cursor:selected?"default":"pointer",fontWeight:"bold",minWidth:70}}>{choice}</button>;
+                  })}
+                </div>
+                {selected&&<p style={{fontSize:14,fontWeight:"bold",color:isCorrect?"#43a047":"#e53935",marginBottom:10}}>{isCorrect?"✓ 正解！Correct! 🎉":`✗ 正解は「${k.correct}」/ The answer is「${k.correct}」`}</p>}
+                <DrawCanvas id={k.id} height={160} label="✍️ 書いてみよう！/ Let's write it!" canvasRef={kanjiRefs.current[k.id]}/>
+              </div>
+            </div>
+          );
+        })}
+
+        {submitError&&<div style={{background:"#ffebee",border:"1px solid #e53935",borderRadius:10,padding:"10px 14px",marginBottom:8,fontSize:13,color:"#c62828"}}>⚠️ {submitError}</div>}
+        <button onClick={handleSubmit} disabled={submitting}
+          style={{width:"100%",background:submitting?"#90a4ae":"linear-gradient(135deg,#1a9fd4,#0277bd)",color:"white",border:"none",padding:"17px",borderRadius:16,fontSize:16,cursor:submitting?"default":"pointer",fontWeight:"bold",boxShadow:submitting?"none":"0 4px 14px rgba(26,159,212,0.4)",transition:"all 0.2s"}}>
+          {submitting?"⏳ Submitting...":"📬 できた！提出する / Submit!"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.render(React.createElement(App), document.getElementById("root"));
+</script>
+</body>
+</html>

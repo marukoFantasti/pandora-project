@@ -1258,8 +1258,15 @@ function generateQuiz(){
         ?'国内向け（算数×英語）：日本語で算数を解きながら英語表現も学ぶ'
         :'海外向け（算数を日本語で）：外国人向けシンプル日本語＋英語ヒント付き';
       var levelsDesc=levelBreakdown;
+      var templateUrl=mode==='overseas'
+        ?'https://raw.githubusercontent.com/marukoFantasti/pandora-project/main/templates/student_quiz_overseas_template.html'
+        :'https://raw.githubusercontent.com/marukoFantasti/pandora-project/main/templates/student_quiz_domestic_template.html';
       var promptTemplate=
         '以下のJSONをもとに、student_quizのHTMLを作ってください。\n\n'+
+        'HTMLを作成する際は、必ず以下のテンプレートを先に読み込み、その骨格構造（DrawCanvas、+Englishパネル、レベルバッジ、Supabase送信ロジック等）を一切変更せず、questions・illustrations・QUIZ_METAの中身だけを差し込むこと。\n'+
+        'テンプレートURL（'+mode+'モード）: '+templateUrl+'\n'+
+        'テンプレートのDrawCanvasのcanvas width={1200}は絶対に変更しないこと（変更すると採点UI側で画像が歪んで表示される）。\n'+
+        'Supabase送信データには必ずstudent_id・student_nameの両方を含めること。\n\n'+
         '【モード】'+modeDesc+'\n'+
         (theme?'【テーマ】'+theme+'\n':'')+
         (mode==='overseas'?'【日本語レベル】'+selectedJpLevel+'\n':'')+
