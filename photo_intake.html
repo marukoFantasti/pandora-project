@@ -543,6 +543,12 @@ function drawPhotoToCanvas(img) {
   fullResCanvas.width = img.width;
   fullResCanvas.height = img.height;
   fullResCanvas.getContext('2d').drawImage(img, 0, 0);
+
+  console.log('[drawPhotoToCanvas] img.width/height (naturalWidth/Height):', img.width, img.height,
+    '/ img.naturalWidth/Height:', img.naturalWidth, img.naturalHeight);
+  console.log('[drawPhotoToCanvas] displayCanvas(photo-canvas).width/height:', canvas.width, canvas.height,
+    '/ scale=', scale);
+  console.log('[drawPhotoToCanvas] fullResCanvas.width/height:', fullResCanvas.width, fullResCanvas.height);
 }
 
 function redrawPhotoAndMarkers() {
@@ -742,6 +748,13 @@ function runCorrection() {
   const displayCanvas = document.getElementById('photo-canvas');
   const scaleToFullRes = fullResCanvas.width / displayCanvas.width;
 
+  console.log('[runCorrection] displayCanvas.width/height:', displayCanvas.width, displayCanvas.height);
+  console.log('[runCorrection] fullResCanvas.width/height:', fullResCanvas.width, fullResCanvas.height);
+  console.log('[runCorrection] scaleToFullRes:', scaleToFullRes,
+    '(displayCanvas縦横比=', displayCanvas.width / displayCanvas.height,
+    ' / fullResCanvas縦横比=', fullResCanvas.width / fullResCanvas.height, ')');
+  console.log('[runCorrection] raw corners (displayCanvas px, TL/TR/BR/BL):', JSON.parse(JSON.stringify(corners)));
+
   // 左上(0)・右上(1)・右下(2)・左下(3)の4点すべてを使用した射影変換
   const srcPts = [
     [corners[0].x * scaleToFullRes, corners[0].y * scaleToFullRes],
@@ -749,6 +762,18 @@ function runCorrection() {
     [corners[2].x * scaleToFullRes, corners[2].y * scaleToFullRes],
     [corners[3].x * scaleToFullRes, corners[3].y * scaleToFullRes]
   ];
+  console.log('[runCorrection] srcPts (fullResCanvas px, TL/TR/BR/BL):', srcPts,
+    '/ fullResCanvas bounds: 0..' + fullResCanvas.width + ' x 0..' + fullResCanvas.height);
+
+  // srcPtsがfullResCanvasの範囲から大きく外れていないか確認（範囲外なら
+  // スケール変換がおかしい可能性が高い＝補正結果が白くなる典型パターン）
+  srcPts.forEach(function(p, i) {
+    if (p[0] < 0 || p[0] > fullResCanvas.width || p[1] < 0 || p[1] > fullResCanvas.height) {
+      console.error('[runCorrection] srcPts[' + i + ']がfullResCanvasの範囲外です:', p,
+        '（fullResCanvas: ' + fullResCanvas.width + 'x' + fullResCanvas.height + '）');
+    }
+  });
+
   // A4比率(210:297)を維持した固定サイズ。300dpi相当（切り出し画像の解像度を優先）。
   // ベンチマーク上は300dpiでも1画素あたりの処理は数十ms程度（8.7Mピクセルで
   // 約50ms、実機のgetImageData/putImageDataのオーバーヘッドを加味しても
@@ -760,6 +785,7 @@ function runCorrection() {
 
   const card = document.getElementById('correction-card');
   if (!Hinv) {
+    console.error('[runCorrection] computeHomography/invert3x3Matrix が null を返しました（4点が縮退している可能性）');
     card.classList.remove('hidden');
     return;
   }
