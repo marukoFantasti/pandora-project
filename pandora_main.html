@@ -1081,6 +1081,13 @@ function generateQuiz(){
     ?'問題文の設定・登場人物を「'+theme+'」の世界観に合わせて書き直してください。数式・計算内容は変えないでください。'
     :'参考問題と同じ構造で、数字や設定を変えた新しい問題を作ってください。';
 
+  var multiPartInstruction=
+    '\n【重要】参考問題が(1)(2)(3)のように複数の独立した式・小問で構成されている場合、'+
+    '生成する問題でも小問の数と各小問の具体的な数値・条件をすべてそのままquestionの文中に書き出してください。'+
+    '複数の式を1つの穴埋め文に要約したり、「(1)〜(4)全ての場合を書きなさい」のように各小問の具体的な数値を省略した曖昧な指示に置き換えたりしないでください。'+
+    '（悪い例：「にんじんを□本ずつ3わにあげます。答えが0になる場合、□にあてはまる数をかきなさい。(1)〜(4)全ての場合をかきなさい」のように元の4つの式(0本×3わ／5本×0わ／0本×0わ／1本×0わ)の内容を1つの穴埋めに集約するのはNG。'+
+    '良い例：「次の計算をしなさい。(1)0本×3わ (2)5本×0わ (3)0本×0わ (4)1本×0わ」のように各小問の式をそのまま維持する）';
+
   var jpLevelInstruction='';
   if(mode==='overseas'){
     var lvInstructions={
@@ -1118,7 +1125,7 @@ function generateQuiz(){
     '\n各問題には必ずlevelフィールドに正確な問題レベル（example_follow/confirmation/practice）を入れてください。';
 
   var prompt='算数・数学の問題を作成してください。\n'+
-    themeInstruction+'\n'+modeInstruction+kanjiInstruction+variationInstruction+'\n\n'+
+    themeInstruction+multiPartInstruction+'\n'+modeInstruction+kanjiInstruction+variationInstruction+'\n\n'+
     '以下のJSON形式のみで出力してください（他のテキスト不要）:\n'+
     jsonFormat+'\n\n【参考問題】\n'+refText;
 
