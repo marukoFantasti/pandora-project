@@ -418,16 +418,6 @@ body.imode .ref-answer-area{padding:14px 18px}
     <div style="font-size:11px;color:var(--text3);margin-top:6px">テーマを入れると、AIがそのキャラクターや世界観に合わせた問題文に書き換えます。</div>
   </div>
 
-  <!-- 出力形式 -->
-  <div class="card">
-    <div class="card-title">出力形式</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button type="button" class="tag outfmt-btn on" id="outfmt-web" data-fmt="web" onclick="selectOutputFormat('web')" style="padding:8px 16px;font-size:13px">📱 Web提出用</button>
-      <button type="button" class="tag outfmt-btn" id="outfmt-print" data-fmt="print" onclick="selectOutputFormat('print')" style="padding:8px 16px;font-size:13px">🖨️ 印刷用（解答用紙）</button>
-    </div>
-    <div id="outfmt-note" style="font-size:11px;color:var(--orange);margin-top:6px;display:none">先に生徒を選択してください（印刷用は生徒と用紙を1対1で紐づけるため）</div>
-  </div>
-
   <!-- 生徒選択 -->
   <div class="card" id="student-select-card">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
@@ -438,6 +428,16 @@ body.imode .ref-answer-area{padding:14px 18px}
       <option value="">-- 生徒を選択（選択しない場合は汎用課題）--</option>
     </select>
     <div id="student-load-status" style="font-size:11px;color:var(--text3);margin-top:6px"></div>
+  </div>
+
+  <!-- 出力形式 -->
+  <div class="card">
+    <div class="card-title">出力形式</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button type="button" class="tag outfmt-btn on" id="outfmt-web" data-fmt="web" onclick="selectOutputFormat('web')" style="padding:8px 16px;font-size:13px">📱 Web提出用</button>
+      <button type="button" class="tag outfmt-btn" id="outfmt-print" data-fmt="print" onclick="selectOutputFormat('print')" style="padding:8px 16px;font-size:13px">🖨️ 印刷用（解答用紙）</button>
+    </div>
+    <div id="outfmt-note" style="font-size:11px;color:var(--orange);margin-top:6px;display:none">先に生徒を選択してください（印刷用は生徒と用紙を1対1で紐づけるため）</div>
   </div>
 
   <!-- 復習コーナー設定 -->
@@ -526,15 +526,6 @@ body.imode .ref-answer-area{padding:14px 18px}
       <textarea id="q-prompt-template" readonly style="width:100%;min-height:100px;padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--input-bg);color:var(--input-text);font-size:12px;font-family:inherit;resize:vertical;box-sizing:border-box;line-height:1.7"></textarea>
       <div style="display:flex;gap:8px;margin-top:8px">
         <button onclick="copyPromptTemplate()" style="padding:9px 22px;border-radius:8px;border:none;background:#f59e0b;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">📋 プロンプトをコピー</button>
-      </div>
-    </div>
-    <!-- 印刷用モード時のみ表示：Web閲覧用問題画面の指示テンプレ -->
-    <div class="card" id="q-prompt-web-card" style="margin-top:12px;display:none">
-      <div class="card-title">Claude.aiへの貼り付け用プロンプト（Web閲覧用問題画面）</div>
-      <div style="font-size:11px;color:var(--text3);margin-bottom:8px">生徒がスマホ/タブレットで問題文を読むための画面用です。上と同じJSONと一緒に、別途Claude.aiに貼り付けてください（式・答えは紙の解答用紙に書く運用のため、こちらは手書きCanvas・提出ボタンなしの閲覧専用画面になります）。</div>
-      <textarea id="q-prompt-template-web" readonly style="width:100%;min-height:100px;padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--input-bg);color:var(--input-text);font-size:12px;font-family:inherit;resize:vertical;box-sizing:border-box;line-height:1.7"></textarea>
-      <div style="display:flex;gap:8px;margin-top:8px">
-        <button onclick="copyPromptTemplateWeb()" style="padding:9px 22px;border-radius:8px;border:none;background:#f59e0b;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">📋 プロンプトをコピー</button>
       </div>
     </div>
   </div>
@@ -1324,7 +1315,8 @@ function generateQuiz(){
       var promptTemplate;
       if(selectedOutputFormat==='print'){
         promptTemplate=
-          '以下のJSONをもとに、印刷用の解答用紙HTMLを作成してください。\n\n'+
+          '以下のJSONをもとに、①印刷用解答用紙HTML と ②Web閲覧用問題画面HTML の両方を作成してください（生徒はWeb画面で問題文を読み、式と答えは紙の解答用紙に手書きします）。\n\n'+
+          '========== ①印刷用解答用紙HTML ==========\n'+
           'HTMLを作成する際は、必ず以下のテンプレートを先に読み込み、その骨格構造（@pageルール、QRコード表示、式を書く欄・答えを書く欄のレイアウト等）を一切変更せず、{{ASSIGNMENT_ID}}/{{STUDENT_ID}}/{{STUDENT_NAME}}/{{QUESTIONS}}のプレースホルダーに、このJSONを差し込んで解答用紙HTMLを作成してください。\n'+
           'テンプレートURL: https://raw.githubusercontent.com/marukoFantasti/pandora-project/main/templates/answer_sheet_print_template.html\n\n'+
           'A4サイズ、1ページ5問、10問なら2ページ構成。\n'+
@@ -1335,13 +1327,8 @@ function generateQuiz(){
           '印刷を想定したCSS（@pageルール、白黒印刷でも見やすい配色）にしてください。\n'+
           'questions配列は必ず { id, problem_id, question, answer, unit, chapter, level, tags } の形式で組み立てること。\n'+
           '（answer/chapter/tagsは紙面には印刷しないが、QRコードと紐づけてSupabaseのanswer_sheetsテーブルに保存され、後で写真を撮って取り込む際に採点データとして使われるため省略しないこと。levelは\'example_follow\'|\'confirmation\'|\'practice\'のいずれか。）\n\n'+
-          '【JSON】\n（ここにJSONを貼り付けてください）';
-
-        // 印刷用モードでは、生徒がスマホ/タブレットで問題文を読むための
-        // Web閲覧用画面も同時に生成する（式・答えは紙の解答用紙に書く運用のため、
-        // 手書きCanvas・提出ボタンは持たない）。
-        var promptTemplateWeb=
-          '以下のJSONをもとに、Web閲覧用の問題画面HTMLを作成してください。生徒はこの画面で問題文を読み、式と答えは別途配布される紙の解答用紙に手書きします。この画面自体はSupabaseへの送信を一切行いません。\n\n'+
+          '========== ②Web閲覧用問題画面HTML ==========\n'+
+          '生徒はこの画面で問題文を読み、式と答えは別途配布される紙の解答用紙に手書きします。この画面自体はSupabaseへの送信を一切行いません。\n\n'+
           'HTMLを作成する際は、必ず以下のテンプレートを先に読み込み、その骨格構造（テーマの世界観、レベルバッジ、+Englishパネル、単語クイズ等）を一切変更せず、questions・illustrations・QUIZ_METAの中身だけを差し込んでください。ただし以下の点だけテンプレートから変更してください：\n'+
           '- 各問題のDrawCanvas（式を書く欄・答えを書く欄）は削除し、代わりに「✏️ 式と答えは解答用紙に書いてね / Write your equation and answer on your answer sheet!」という案内メッセージを表示すること\n'+
           '- なまえ欄のDrawCanvasも削除すること（名前は解答用紙に書く）\n'+
@@ -1356,17 +1343,14 @@ function generateQuiz(){
             ?'- 📖ことば / 🇬🇧English hint ボタンを各問題に付ける\n'
             :'- 🌍 ＋Englishボタン（english_phrase・vocab_word表示）を各問題に付ける\n')+
           '- 印刷された解答用紙の問題番号（Q1〜Q'+outputJson.meta.count+'）と、この画面の問題番号が一致するようにする\n\n'+
-          '【JSON】\n（上記の解答用紙用プロンプトと同じJSONを貼り付けてください）';
+          '【JSON】（①②共通で使い回してください）\n（ここにJSONを貼り付けてください）';
 
         document.getElementById('q-prompt-template').value=promptTemplate;
-        document.getElementById('q-prompt-template-web').value=promptTemplateWeb;
-        document.getElementById('q-prompt-web-card').style.display='block';
         document.getElementById('q-preview').style.display='block';
         btn.textContent='✨ 問題を生成する';btn.disabled=false;
         status.textContent=outputJson.meta.count+'問生成完了（'+levelsDesc+'）';
         return;
       }
-      document.getElementById('q-prompt-web-card').style.display='none';
       promptTemplate=
         '以下のJSONをもとに、student_quizのHTMLを作ってください。\n\n'+
         'HTMLを作成する際は、必ず以下のテンプレートを先に読み込み、その骨格構造（DrawCanvas、+Englishパネル、レベルバッジ、Supabase送信ロジック等）を一切変更せず、questions・illustrations・QUIZ_METAの中身だけを差し込むこと。\n'+
@@ -1436,11 +1420,6 @@ function copyQuizJSON(){
 
 function copyPromptTemplate(){
   var ta=document.getElementById('q-prompt-template');
-  ta.select();document.execCommand('copy');
-}
-
-function copyPromptTemplateWeb(){
-  var ta=document.getElementById('q-prompt-template-web');
   ta.select();document.execCommand('copy');
 }
 
