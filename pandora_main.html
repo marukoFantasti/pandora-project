@@ -982,7 +982,10 @@ function generateQuiz(){
         return !refs.some(function(r){return r.id===p.id;});
       }));
     }
-    while(refs.length<myCount){
+    if(refs.length===0){
+      console.warn('[buildRefs] 該当する参考問題が0件です（lvl='+lvl+', unitFilter='+unitFilter+'）。水増しをスキップします。');
+    }
+    while(refs.length>0 && refs.length<myCount){
       refs=refs.concat(refs.slice(0,myCount-refs.length));
     }
     return refs.slice(0,myCount);
