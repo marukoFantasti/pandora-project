@@ -528,6 +528,15 @@ body.imode .ref-answer-area{padding:14px 18px}
         <button onclick="copyPromptTemplate()" style="padding:9px 22px;border-radius:8px;border:none;background:#f59e0b;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">📋 プロンプトをコピー</button>
       </div>
     </div>
+    <!-- 印刷用モード時のみ表示：Web閲覧用問題画面の指示テンプレ -->
+    <div class="card" id="q-prompt-web-card" style="margin-top:12px;display:none">
+      <div class="card-title">Claude.aiへの貼り付け用プロンプト（Web閲覧用問題画面）</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:8px">生徒がスマホ/タブレットで問題文を読むための画面用です。上と同じJSONと一緒に、別途Claude.aiに貼り付けてください（式・答えは紙の解答用紙に書く運用のため、こちらは手書きCanvas・提出ボタンなしの閲覧専用画面になります）。</div>
+      <textarea id="q-prompt-template-web" readonly style="width:100%;min-height:100px;padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--input-bg);color:var(--input-text);font-size:12px;font-family:inherit;resize:vertical;box-sizing:border-box;line-height:1.7"></textarea>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button onclick="copyPromptTemplateWeb()" style="padding:9px 22px;border-radius:8px;border:none;background:#f59e0b;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">📋 プロンプトをコピー</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1327,12 +1336,37 @@ function generateQuiz(){
           'questions配列は必ず { id, problem_id, question, answer, unit, chapter, level, tags } の形式で組み立てること。\n'+
           '（answer/chapter/tagsは紙面には印刷しないが、QRコードと紐づけてSupabaseのanswer_sheetsテーブルに保存され、後で写真を撮って取り込む際に採点データとして使われるため省略しないこと。levelは\'example_follow\'|\'confirmation\'|\'practice\'のいずれか。）\n\n'+
           '【JSON】\n（ここにJSONを貼り付けてください）';
+
+        // 印刷用モードでは、生徒がスマホ/タブレットで問題文を読むための
+        // Web閲覧用画面も同時に生成する（式・答えは紙の解答用紙に書く運用のため、
+        // 手書きCanvas・提出ボタンは持たない）。
+        var promptTemplateWeb=
+          '以下のJSONをもとに、Web閲覧用の問題画面HTMLを作成してください。生徒はこの画面で問題文を読み、式と答えは別途配布される紙の解答用紙に手書きします。この画面自体はSupabaseへの送信を一切行いません。\n\n'+
+          'HTMLを作成する際は、必ず以下のテンプレートを先に読み込み、その骨格構造（テーマの世界観、レベルバッジ、+Englishパネル、単語クイズ等）を一切変更せず、questions・illustrations・QUIZ_METAの中身だけを差し込んでください。ただし以下の点だけテンプレートから変更してください：\n'+
+          '- 各問題のDrawCanvas（式を書く欄・答えを書く欄）は削除し、代わりに「✏️ 式と答えは解答用紙に書いてね / Write your equation and answer on your answer sheet!」という案内メッセージを表示すること\n'+
+          '- なまえ欄のDrawCanvasも削除すること（名前は解答用紙に書く）\n'+
+          '- 「できた！提出する」ボタンとSupabase送信ロジック（fetch等）は完全に削除すること（この画面はデータを送信しない）\n'+
+          'テンプレートURL（'+mode+'モード）: '+templateUrl+'\n\n'+
+          '【モード】'+modeDesc+'\n'+
+          (theme?'【テーマ】'+theme+'\n':'')+
+          '【問題数】'+outputJson.meta.count+'問\n\n'+
+          '- SVGイラストはテーマに合わせたオリジナルキャラを作り、questions配列の全ての問題についてillustrationsオブジェクトに72×72pxのSVGを必ず用意すること（省略不可）。\n'+
+          '- 単元バッジ・問題レベルバッジ（例題:紫/確認:青/練習:橙）はWeb提出用と同じ仕様のまま維持する\n'+
+          (mode==='overseas'
+            ?'- 📖ことば / 🇬🇧English hint ボタンを各問題に付ける\n'
+            :'- 🌍 ＋Englishボタン（english_phrase・vocab_word表示）を各問題に付ける\n')+
+          '- 印刷された解答用紙の問題番号（Q1〜Q'+outputJson.meta.count+'）と、この画面の問題番号が一致するようにする\n\n'+
+          '【JSON】\n（上記の解答用紙用プロンプトと同じJSONを貼り付けてください）';
+
         document.getElementById('q-prompt-template').value=promptTemplate;
+        document.getElementById('q-prompt-template-web').value=promptTemplateWeb;
+        document.getElementById('q-prompt-web-card').style.display='block';
         document.getElementById('q-preview').style.display='block';
         btn.textContent='✨ 問題を生成する';btn.disabled=false;
         status.textContent=outputJson.meta.count+'問生成完了（'+levelsDesc+'）';
         return;
       }
+      document.getElementById('q-prompt-web-card').style.display='none';
       promptTemplate=
         '以下のJSONをもとに、student_quizのHTMLを作ってください。\n\n'+
         'HTMLを作成する際は、必ず以下のテンプレートを先に読み込み、その骨格構造（DrawCanvas、+Englishパネル、レベルバッジ、Supabase送信ロジック等）を一切変更せず、questions・illustrations・QUIZ_METAの中身だけを差し込むこと。\n'+
@@ -1402,6 +1436,11 @@ function copyQuizJSON(){
 
 function copyPromptTemplate(){
   var ta=document.getElementById('q-prompt-template');
+  ta.select();document.execCommand('copy');
+}
+
+function copyPromptTemplateWeb(){
+  var ta=document.getElementById('q-prompt-template-web');
   ta.select();document.execCommand('copy');
 }
 
