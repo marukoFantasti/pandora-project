@@ -892,11 +892,11 @@ var _allStudents = [];
 function loadStudents() {
   var statusEl = document.getElementById('student-load-status');
   statusEl.textContent = '読み込み中...';
-  var LETHE_URL = 'https://script.google.com/macros/s/AKfycbxlXsrnt14jxxZrnKUSSdq4KG8LU96eDTPjrkyXdSGZ-Gmehha5HHNPMZTnQo6OrIy7oA/exec';
-  fetch(LETHE_URL, {
-    method: 'POST',
-    body: JSON.stringify({ action: 'getStudents' })
-  }).then(function(r){ return r.json(); }).then(function(d){
+  var LETHE_URL = 'https://script.google.com/macros/s/AKfycbzhVxLsrnt14jxxZrnKUSSdq4KG8LU96eDTPjrkyXdSGZ-GmehhaSHiNPMZTnQo6OrIy7oA/exec';
+  // POST（+JSONボディ）だとGAS側のリダイレクト(302)をfetch()が自動的に
+  // GETへ変換してボディを破棄してしまい不安定になるため、photo_intake.htmlの
+  // lookupStudentName()と同様のシンプルなGET（カスタムヘッダーなし）に揃える。
+  fetch(LETHE_URL + '?action=getStudents').then(function(r){ return r.json(); }).then(function(d){
     if (!d.success) { statusEl.textContent = '読み込みエラー: ' + (d.error||'不明'); return; }
     _allStudents = d.students || [];
     var mode = document.querySelector('input[name="q-mode"]:checked').value;
