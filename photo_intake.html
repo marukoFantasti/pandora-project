@@ -165,6 +165,7 @@ const SB_HEADERS = { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_K
 const LETHE_URL = "https://script.google.com/macros/s/AKfycbxlXsrnt14jxxZrnKUSSdq4KG8LU96eDTPjrkyXdSGZ-Gmehha5HHNPMZTnQo6OrIy7oA/exec";
 
 let photoImage = null;
+let fullResCanvas = null;
 let corners = [];
 let currentQrData = null;
 let currentLayoutData = null;
@@ -259,6 +260,7 @@ document.getElementById('qr-closeup-input').addEventListener('change', function(
 
 function resetPipeline() {
   corners = [];
+  fullResCanvas = null;
   currentQrData = null;
   currentLayoutData = null;
   currentStudentName = null;
@@ -532,6 +534,15 @@ function drawPhotoToCanvas(img) {
   redrawPhotoAndMarkers();
   document.getElementById('corner-reset-btn').disabled = false;
   updateCornerStatus();
+
+  // 表示用canvas（520px幅に縮小、四隅タップUI専用）とは別に、射影変換の
+  // 元絵として使うフル解像度canvasを保持しておく。表示用canvasをそのまま
+  // warpPerspective()のソースにすると、出力を大きくするほど引き伸ばされて
+  // ぼやける（画質劣化の主因）。
+  fullResCanvas = document.createElement('canvas');
+  fullResCanvas.width = img.width;
+  fullResCanvas.height = img.height;
+  fullResCanvas.getContext('2d').drawImage(img, 0, 0);
 }
 
 function redrawPhotoAndMarkers() {
@@ -663,7 +674,9 @@ function invert3x3Matrix(H) {
 }
 
 // 逆Homography（dst->srcへの変換）を使い、出力canvasの各ピクセルに対応する
-// 元画像の座標を逆算してピクセル単位でコピーする（最近傍補間）。
+// 元画像の座標を逆算してピクセル単位でコピーする（バイリニア補間：
+// 逆算した座標周囲4ピクセルを距離に応じた重みで混ぜる。最近傍補間だと
+// 拡大時にジャギー/ブロックノイズが出て文字の輪郭が粗くなるため採用）。
 // Canvas 2Dには射影変換の描画命令がないため、getImageData/putImageDataで
 // 手動でワーピングする。
 function warpPerspective(sourceCanvas, Hinv, outW, outH) {
@@ -681,14 +694,33 @@ function warpPerspective(sourceCanvas, Hinv, outW, outH) {
   for (let Y = 0; Y < outH; Y++) {
     for (let X = 0; X < outW; X++) {
       const w = Hinv[2][0] * X + Hinv[2][1] * Y + Hinv[2][2];
-      const sx = Math.round((Hinv[0][0] * X + Hinv[0][1] * Y + Hinv[0][2]) / w);
-      const sy = Math.round((Hinv[1][0] * X + Hinv[1][1] * Y + Hinv[1][2]) / w);
+      const xs = (Hinv[0][0] * X + Hinv[0][1] * Y + Hinv[0][2]) / w;
+      const ys = (Hinv[1][0] * X + Hinv[1][1] * Y + Hinv[1][2]) / w;
       const outIdx = (Y * outW + X) * 4;
-      if (sx >= 0 && sx < srcW && sy >= 0 && sy < srcH) {
-        const srcIdx = (sy * srcW + sx) * 4;
-        outData[outIdx] = srcData[srcIdx];
-        outData[outIdx + 1] = srcData[srcIdx + 1];
-        outData[outIdx + 2] = srcData[srcIdx + 2];
+
+      if (xs >= 0 && xs <= srcW - 1 && ys >= 0 && ys <= srcH - 1) {
+        const x0 = Math.floor(xs), y0 = Math.floor(ys);
+        // 右端・下端ぎりぎりのxs/ysでもx1/y1が範囲外に出ないようクランプ
+        const x1 = Math.min(x0 + 1, srcW - 1);
+        const y1 = Math.min(y0 + 1, srcH - 1);
+        const fx = xs - x0, fy = ys - y0;
+
+        const i00 = (y0 * srcW + x0) * 4;
+        const i10 = (y0 * srcW + x1) * 4;
+        const i01 = (y1 * srcW + x0) * 4;
+        const i11 = (y1 * srcW + x1) * 4;
+
+        const w00 = (1 - fx) * (1 - fy);
+        const w10 = fx * (1 - fy);
+        const w01 = (1 - fx) * fy;
+        const w11 = fx * fy;
+
+        for (let c = 0; c < 3; c++) {
+          outData[outIdx + c] = Math.round(
+            srcData[i00 + c] * w00 + srcData[i10 + c] * w10 +
+            srcData[i01 + c] * w01 + srcData[i11 + c] * w11
+          );
+        }
         outData[outIdx + 3] = 255;
       } else {
         outData[outIdx] = 255;
@@ -704,12 +736,18 @@ function warpPerspective(sourceCanvas, Hinv, outW, outH) {
 }
 
 function runCorrection() {
+  // 四隅は表示用canvas（520px幅に縮小済み）の座標でタップされているため、
+  // フル解像度canvas上の座標に変換してから使う（そうしないと結局
+  // 520px相当の解像度しか使えず、出力を引き伸ばした分ぼやけてしまう）。
+  const displayCanvas = document.getElementById('photo-canvas');
+  const scaleToFullRes = fullResCanvas.width / displayCanvas.width;
+
   // 左上(0)・右上(1)・右下(2)・左下(3)の4点すべてを使用した射影変換
   const srcPts = [
-    [corners[0].x, corners[0].y],
-    [corners[1].x, corners[1].y],
-    [corners[2].x, corners[2].y],
-    [corners[3].x, corners[3].y]
+    [corners[0].x * scaleToFullRes, corners[0].y * scaleToFullRes],
+    [corners[1].x * scaleToFullRes, corners[1].y * scaleToFullRes],
+    [corners[2].x * scaleToFullRes, corners[2].y * scaleToFullRes],
+    [corners[3].x * scaleToFullRes, corners[3].y * scaleToFullRes]
   ];
   // A4比率(210:297)を維持した固定サイズ。300dpi相当（切り出し画像の解像度を優先）。
   // ベンチマーク上は300dpiでも1画素あたりの処理は数十ms程度（8.7Mピクセルで
@@ -726,8 +764,7 @@ function runCorrection() {
     return;
   }
 
-  const sourceCanvas = document.getElementById('photo-canvas');
-  const warped = warpPerspective(sourceCanvas, Hinv, outputW, outputH);
+  const warped = warpPerspective(fullResCanvas, Hinv, outputW, outputH);
 
   const outCanvas = document.getElementById('corrected-canvas');
   outCanvas.width = outputW;
