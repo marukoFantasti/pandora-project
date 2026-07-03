@@ -711,8 +711,11 @@ function runCorrection() {
     [corners[2].x, corners[2].y],
     [corners[3].x, corners[3].y]
   ];
-  // A4比率(210:297)を維持した固定サイズ。150dpi相当（処理負荷を抑えるため）。
-  const outputW = 1240, outputH = 1754;
+  // A4比率(210:297)を維持した固定サイズ。300dpi相当（切り出し画像の解像度を優先）。
+  // ベンチマーク上は300dpiでも1画素あたりの処理は数十ms程度（8.7Mピクセルで
+  // 約50ms、実機のgetImageData/putImageDataのオーバーヘッドを加味しても
+  // 体感で問題ないレベルのため、Web Workerや解像度の妥協は不要と判断。
+  const outputW = 2480, outputH = 3508;
   const dstPts = [[0, 0], [outputW, 0], [outputW, outputH], [0, outputH]];
   const H = computeHomography(srcPts, dstPts);
   const Hinv = H ? invert3x3Matrix(H) : null;
