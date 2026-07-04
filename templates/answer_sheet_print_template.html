@@ -43,8 +43,9 @@
     問題同士が枠線を共有する形で連続配置。5問合計で18mm〜258mm
     の240mmを使用）
   QRコードと目視用フッターテキストは、問題群と重ならないよう
-  ページ下部余白（y=268mm以降）に配置。ページ上部（y=0-18mm）には
-  課題ID・生徒名の一行ラベルのみ配置（layout_dataには含まれない）。
+  ページ下部余白（QRはy=262mm以降、フッターテキストはy=268mm以降）
+  に配置。ページ上部（y=0-18mm）には課題ID・生徒名の一行ラベル
+  のみ配置（layout_dataには含まれない）。
 
   questions.lengthに応じて自動でページ分割される（10問なら2ページ、
   7問なら2ページ目に2問、など端数も可）。
@@ -52,6 +53,9 @@
   【QRコード】
   - 使用ライブラリ: qrcodejs
     https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js
+  - 表示サイズ25mm四方（生成解像度200x200px、correctLevel=H＝高い
+    誤り訂正率。印刷・撮影による多少のかすれ・汚れでも読み取れるよう
+    大きめ・高耐性にしている）
   - 中身は以下のJSON文字列（ページごとに page の値だけ変わる）：
     {"assignment_id":"{{ASSIGNMENT_ID}}","student_id":"{{STUDENT_ID}}",
      "page":<そのページの番号>,"total_pages":<総ページ数>}
@@ -127,8 +131,8 @@ body { background: #e8e8e8; font-family: 'Hiragino Sans','Yu Gothic',sans-serif;
   position: absolute; top: 0; left: 0; font-size: 8px; color: #999; background: #fff;
   padding: 0 1mm; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd; border-bottom-right-radius: 3px;
 }
-.qr-canvas-wrap { position: absolute; left: 175mm; top: 268mm; width: 15mm; height: 15mm; }
-.qr-canvas-wrap canvas, .qr-canvas-wrap img { width: 15mm !important; height: 15mm !important; }
+.qr-canvas-wrap { position: absolute; left: 165mm; top: 262mm; width: 25mm; height: 25mm; }
+.qr-canvas-wrap canvas, .qr-canvas-wrap img { width: 25mm !important; height: 25mm !important; }
 .footer-text { position: absolute; left: 15mm; top: 268mm; width: 145mm; font-size: 8px; color: #444; line-height: 1.4; }
 .layout-save-status { position: absolute; left: 15mm; top: 281mm; width: 145mm; font-size: 9px; color: #888; }
 .layout-save-ok { color: #2e7d32; }
@@ -248,9 +252,9 @@ function renderPages() {
     });
     new QRCode(document.getElementById('qr-' + page), {
       text: payload,
-      width: 80,
-      height: 80,
-      correctLevel: QRCode.CorrectLevel.M
+      width: 200,
+      height: 200,
+      correctLevel: QRCode.CorrectLevel.H
     });
 
     const start = (page - 1) * PER_PAGE;
