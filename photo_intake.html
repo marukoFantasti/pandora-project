@@ -755,7 +755,7 @@ function runCorrection() {
   console.log('[runCorrection] scaleToFullRes:', scaleToFullRes,
     '(displayCanvas縦横比=', displayCanvas.width / displayCanvas.height,
     ' / fullResCanvas縦横比=', fullResCanvas.width / fullResCanvas.height, ')');
-  console.log('[runCorrection] raw corners (displayCanvas px, TL/TR/BR/BL):', JSON.parse(JSON.stringify(corners)));
+  console.log('[runCorrection] raw corners (displayCanvas px, TL/TR/BR/BL):', JSON.stringify(corners));
 
   // 左上(0)・右上(1)・右下(2)・左下(3)の4点すべてを使用した射影変換
   const srcPts = [
@@ -764,7 +764,7 @@ function runCorrection() {
     [corners[2].x * scaleToFullRes, corners[2].y * scaleToFullRes],
     [corners[3].x * scaleToFullRes, corners[3].y * scaleToFullRes]
   ];
-  console.log('[runCorrection] srcPts (fullResCanvas px, TL/TR/BR/BL):', srcPts,
+  console.log('[runCorrection] srcPts (fullResCanvas px, TL/TR/BR/BL):', JSON.stringify(srcPts),
     '/ fullResCanvas bounds: 0..' + fullResCanvas.width + ' x 0..' + fullResCanvas.height);
 
   // srcPtsがfullResCanvasの範囲から大きく外れていないか確認（範囲外なら
