@@ -1258,12 +1258,47 @@ function generateQuiz(){
       document.getElementById('q-json-output').value=JSON.stringify(outputJson,null,2);
     }
 
+    // JSON生成完了時に、assignmentsテーブルへ課題行をUPSERTしておく。
+    // これをしないと、印刷用・Web提出用どちらのフローでも、後で
+    // submissionsへ書き込む際にassignment_idの外部キー制約違反(HTTP 409)
+    // になる（assignmentsに対応する行が存在しないため）。
+    // 再生成時に重複エラーにならないよう、Prefer: resolution=merge-duplicates
+    // でUPSERTする（assignment_idにUNIQUE制約がSupabase側に必要）。
+    function upsertAssignment(){
+      var meta=outputJson.meta;
+      // on_conflict=assignment_id を明示しないと、PostgRESTは
+      // 主キーではないUNIQUE制約に対してON CONFLICTを推論できず、
+      // Prefer: resolution=merge-duplicatesが効かずに通常のINSERTとして
+      // 実行され、重複時に409（一意制約違反）になる（実機検証済み）。
+      fetch(_SB_URL + '/rest/v1/assignments?on_conflict=assignment_id', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': _SB_KEY,
+          'Authorization': 'Bearer ' + _SB_KEY,
+          'Prefer': 'resolution=merge-duplicates,return=minimal'
+        },
+        body: JSON.stringify({
+          assignment_id: meta.assignment_id,
+          student_id: meta.student_id,
+          grade: (meta.grades||[])[0] ? parseInt((meta.grades[0]||'').replace(/[^0-9]/g,'')) || null : null,
+          subject: 'math',
+          mode: meta.mode,
+          assignment_data: { count: meta.count, theme: meta.theme || null },
+          assigned_at: meta.generated_at
+        })
+      }).catch(function(e){
+        console.error('[upsertAssignment] failed:', e);
+      });
+    }
+
     document.getElementById('q-status').innerHTML='<span style="color:var(--accent)">🔍 整合性チェック中...</span>';
     checkConsistency(problems, parsed.kanji_quiz||[], 3,
       function(){ // OK → 復習問題生成へ
         document.getElementById('q-status').innerHTML='<span style="color:var(--accent)">📚 復習問題を生成中...</span>';
         generateAllReviewProblems(function(reviewSections){
           finalizeOutput(reviewSections);
+          upsertAssignment();
           var msg = '✅ 整合性OK';
           if (reviewSections.length > 0) {
             msg += ' ＋ 復習' + reviewSections.reduce(function(s,r){ return s+r.problems.length; },0) + '問';
@@ -1274,6 +1309,7 @@ function generateQuiz(){
       },
       function(msg){ // 3回NGで諦める
         finalizeOutput([]);
+        upsertAssignment();
         document.getElementById('q-status').innerHTML='<span style="color:var(--red)">⚠️ '+msg+'</span>';
         showPreview();
       }
