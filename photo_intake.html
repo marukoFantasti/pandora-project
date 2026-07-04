@@ -902,6 +902,18 @@ function cropProblems() {
   saveCard.classList.remove('hidden');
 }
 
+// 同じproblem_idの問題は新しい方で上書きし、それ以外は既存配列に追加する。
+// ページ数（1枚〜何枚でも）に関わらず同じロジックで動作する汎用マージ。
+function mergeProblems(existingProblems, newProblems) {
+  const merged = existingProblems.slice();
+  newProblems.forEach(function(np) {
+    const idx = merged.findIndex(function(p) { return p.problem_id === np.problem_id; });
+    if (idx >= 0) merged[idx] = np;
+    else merged.push(np);
+  });
+  return merged;
+}
+
 // ===== ⑨ Supabase保存 =====
 function saveIntake() {
   const btn = document.getElementById('save-btn');
@@ -922,38 +934,69 @@ function saveIntake() {
   statusEl.textContent = '保存中...';
   statusEl.className = 'status-muted';
 
-  const payload = {
-    student_id: currentQrData.student_id,
-    student_name: currentStudentName || null,
-    assignment_id: currentQrData.assignment_id,
-    mode: null,
-    subject: 'math',
-    submission_data: {
-      student_id: currentQrData.student_id,
-      student_name: currentStudentName || null,
-      problems: croppedProblems.map(function(p) {
-        return {
-          problem_id: p.problem_id,
-          equation_canvas: p.equation_canvas,
-          answer_canvas: p.answer_canvas,
-          unit: p.unit || null,
-          chapter: p.chapter || null,
-          level: p.level || null,
-          tags: p.tags || [],
-          question: p.question || null,
-          answer: p.answer || null
-        };
-      }),
-      kanji: [],
-      source: 'photo_intake'
-    },
-    submitted_at: new Date().toISOString()
-  };
+  const newProblems = croppedProblems.map(function(p) {
+    return {
+      problem_id: p.problem_id,
+      equation_canvas: p.equation_canvas,
+      answer_canvas: p.answer_canvas,
+      unit: p.unit || null,
+      chapter: p.chapter || null,
+      level: p.level || null,
+      tags: p.tags || [],
+      question: p.question || null,
+      answer: p.answer || null
+    };
+  });
 
-  fetch(SUPABASE_URL + '/rest/v1/submissions', {
-    method: 'POST',
-    headers: Object.assign({}, SB_HEADERS, { 'Content-Type': 'application/json', 'Prefer': 'return=minimal' }),
-    body: JSON.stringify(payload)
+  // 同じassignment_id+student_idの提出が既にあれば、そのsubmission_data.problems
+  // に今回のページ分をマージしてUPDATEする（1ページ目=新規作成、2ページ目以降=
+  // 既存提出へのマージ、という同一ロジックで何ページあっても対応できる）。
+  const findUrl = SUPABASE_URL + '/rest/v1/submissions?assignment_id=eq.' + encodeURIComponent(currentQrData.assignment_id) +
+    '&student_id=eq.' + encodeURIComponent(currentQrData.student_id) + '&select=*&order=submitted_at.desc&limit=1';
+
+  fetch(findUrl, { headers: SB_HEADERS }).then(function(r) { return r.json(); }).then(function(rows) {
+    const existing = (rows && rows.length > 0) ? rows[0] : null;
+
+    if (existing) {
+      const existingSd = typeof existing.submission_data === 'string' ? JSON.parse(existing.submission_data) : (existing.submission_data || {});
+      const mergedProblems = mergeProblems(existingSd.problems || [], newProblems);
+
+      return fetch(SUPABASE_URL + '/rest/v1/submissions?id=eq.' + existing.id, {
+        method: 'PATCH',
+        headers: Object.assign({}, SB_HEADERS, { 'Content-Type': 'application/json', 'Prefer': 'return=minimal' }),
+        body: JSON.stringify({
+          student_name: currentStudentName || existing.student_name || null,
+          submission_data: Object.assign({}, existingSd, {
+            student_id: currentQrData.student_id,
+            student_name: currentStudentName || existingSd.student_name || null,
+            problems: mergedProblems,
+            kanji: existingSd.kanji || [],
+            source: 'photo_intake'
+          }),
+          submitted_at: new Date().toISOString()
+        })
+      });
+    }
+
+    return fetch(SUPABASE_URL + '/rest/v1/submissions', {
+      method: 'POST',
+      headers: Object.assign({}, SB_HEADERS, { 'Content-Type': 'application/json', 'Prefer': 'return=minimal' }),
+      body: JSON.stringify({
+        student_id: currentQrData.student_id,
+        student_name: currentStudentName || null,
+        assignment_id: currentQrData.assignment_id,
+        mode: null,
+        subject: 'math',
+        submission_data: {
+          student_id: currentQrData.student_id,
+          student_name: currentStudentName || null,
+          problems: newProblems,
+          kanji: [],
+          source: 'photo_intake'
+        },
+        submitted_at: new Date().toISOString()
+      })
+    });
   }).then(function(r) {
     if (!r.ok) throw new Error('HTTP ' + r.status);
     statusEl.innerHTML = '✓ 取り込み完了　<a href="pandora_grading.html" style="color:var(--accent)">📝 採点UIで確認する →</a>';
