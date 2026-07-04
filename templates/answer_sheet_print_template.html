@@ -43,7 +43,8 @@
     問題同士が枠線を共有する形で連続配置。5問合計で18mm〜258mm
     の240mmを使用）
   QRコードと目視用フッターテキストは、問題群と重ならないよう
-  ページ下部余白（QRはy=262mm以降、フッターテキストはy=268mm以降）
+  ページ下部余白（ページ番号ラベルはy=258mm以降、QRはy=264mm以降、
+  フッターテキストはy=268mm以降）
   に配置。ページ上部（y=0-18mm）には課題ID・生徒名の一行ラベル
   のみ配置（layout_dataには含まれない）。
 
@@ -131,7 +132,13 @@ body { background: #e8e8e8; font-family: 'Hiragino Sans','Yu Gothic',sans-serif;
   position: absolute; top: 0; left: 0; font-size: 8px; color: #999; background: #fff;
   padding: 0 1mm; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd; border-bottom-right-radius: 3px;
 }
-.qr-canvas-wrap { position: absolute; left: 165mm; top: 262mm; width: 25mm; height: 25mm; }
+.page-number-label {
+  position: absolute; left: 165mm; top: 258mm; width: 25mm; height: 6mm;
+  background: #000; color: #fff; font-size: 17px; font-weight: bold;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 3px 3px 0 0; letter-spacing: 0.5px;
+}
+.qr-canvas-wrap { position: absolute; left: 165mm; top: 264mm; width: 25mm; height: 25mm; }
 .qr-canvas-wrap canvas, .qr-canvas-wrap img { width: 25mm !important; height: 25mm !important; }
 .footer-text { position: absolute; left: 15mm; top: 268mm; width: 145mm; font-size: 8px; color: #444; line-height: 1.4; }
 .layout-save-status { position: absolute; left: 15mm; top: 281mm; width: 145mm; font-size: 9px; color: #888; }
@@ -235,6 +242,7 @@ function renderPages() {
       html += buildProblemBoxHtml(q, start + i, PROBLEM_LAYOUT_MM[i]);
     });
 
+    html += '<div class="page-number-label">' + page + ' / ' + totalPages + '</div>';
     html += '<div class="qr-canvas-wrap" id="qr-' + page + '"></div>';
     html += '<div class="footer-text">' + footerText + '</div>';
     html += '<div class="layout-save-status no-print" id="layout-status-' + page + '">レイアウト情報を保存中...</div>';

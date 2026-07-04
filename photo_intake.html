@@ -972,6 +972,10 @@ function saveIntake() {
     };
   });
 
+  // 最終的にsubmissions行へ保存されたproblem_idの一覧（新規作成/マージ
+  // どちらの経路でも入る）。保存後、これを使って何ページ分が揃ったか判定する。
+  let savedProblemIds = newProblems.map(function(p) { return p.problem_id; });
+
   // 同じassignment_id+student_idの提出が既にあれば、そのsubmission_data.problems
   // に今回のページ分をマージしてUPDATEする（1ページ目=新規作成、2ページ目以降=
   // 既存提出へのマージ、という同一ロジックで何ページあっても対応できる）。
@@ -984,6 +988,7 @@ function saveIntake() {
     if (existing) {
       const existingSd = typeof existing.submission_data === 'string' ? JSON.parse(existing.submission_data) : (existing.submission_data || {});
       const mergedProblems = mergeProblems(existingSd.problems || [], newProblems);
+      savedProblemIds = mergedProblems.map(function(p) { return p.problem_id; });
 
       return fetch(SUPABASE_URL + '/rest/v1/submissions?id=eq.' + existing.id, {
         method: 'PATCH',
@@ -1023,13 +1028,68 @@ function saveIntake() {
     });
   }).then(function(r) {
     if (!r.ok) throw new Error('HTTP ' + r.status);
-    statusEl.innerHTML = '✓ 取り込み完了　<a href="pandora_grading.html" style="color:var(--accent)">📝 採点UIで確認する →</a>';
+    return checkPagesCompletion(currentQrData.assignment_id, currentQrData.student_id, savedProblemIds);
+  }).then(function(completion) {
+    showIntakeCompletionGuidance(completion);
     statusEl.className = 'status-ok';
   }).catch(function(e) {
     statusEl.textContent = '保存に失敗しました: ' + e.message;
     statusEl.className = 'status-err';
     btn.disabled = false;
   });
+}
+
+// assignment_id+student_idに紐づく全ページ（answer_sheets）のうち、
+// savedProblemIdsで何ページ分が揃っているかを判定する。
+// answer_sheetsが無い（layout_data未整備の古い課題等）場合はnullを返す。
+function checkPagesCompletion(assignmentId, studentId, savedProblemIds) {
+  const url = SUPABASE_URL + '/rest/v1/answer_sheets?assignment_id=eq.' + encodeURIComponent(assignmentId) +
+    '&student_id=eq.' + encodeURIComponent(studentId) + '&select=page,total_pages,layout_data&order=page.asc';
+
+  return fetch(url, { headers: SB_HEADERS }).then(function(r) { return r.json(); }).then(function(sheets) {
+    if (!sheets || sheets.length === 0) return null;
+
+    const totalPages = sheets[0].total_pages || sheets.length;
+    const importedPages = [];
+    const missingPages = [];
+
+    sheets.forEach(function(sheet) {
+      const pageProblemIds = getLayoutProblems(sheet.layout_data).map(function(p) { return p.problem_id; });
+      const allCovered = pageProblemIds.length > 0 && pageProblemIds.every(function(pid) { return savedProblemIds.indexOf(pid) >= 0; });
+      if (allCovered) importedPages.push(sheet.page);
+      else missingPages.push(sheet.page);
+    });
+
+    return { totalPages: totalPages, importedPages: importedPages, missingPages: missingPages };
+  }).catch(function() {
+    return null;
+  });
+}
+
+// 保存完了後の案内表示。何ページ揃ったか判定できた場合は残りページ数を案内し、
+// ①のアップロード欄へスクロール・フォーカスして次の写真をすぐ選べるようにする。
+function showIntakeCompletionGuidance(completion) {
+  const statusEl = document.getElementById('save-status');
+  const link = '<a href="pandora_grading.html" style="color:var(--accent)">📝 採点UIで確認する →</a>';
+
+  if (!completion) {
+    statusEl.innerHTML = '✓ 取り込み完了　' + link;
+    return;
+  }
+
+  const remaining = completion.totalPages - completion.importedPages.length;
+  if (remaining <= 0) {
+    statusEl.innerHTML = '✓ 全' + completion.totalPages + 'ページの取り込みが完了しました　' + link;
+  } else {
+    const nextPage = completion.missingPages[0];
+    statusEl.innerHTML = '✓ ' + completion.importedPages.length + '/' + completion.totalPages + 'ページを取り込みました。次は' + nextPage + 'ページ目の写真をアップロードしてください　' + link;
+
+    const photoInput = document.getElementById('photo-input');
+    if (photoInput) {
+      photoInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      photoInput.focus();
+    }
+  }
 }
 </script>
 </body>
