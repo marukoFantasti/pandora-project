@@ -743,6 +743,27 @@ function warpPerspective(sourceCanvas, Hinv, outW, outH) {
   return outCanvas;
 }
 
+// タップされた4点を、実際のタップ順序に関係なく座標だけから
+// TL/TR/BR/BLに自動分類する。4点の重心を求め、各点が重心から見て
+// 左上/右上/右下/左下のどの象限にあるかで割り当てる（案内文の順序
+// 通りにタップされなかった場合、四角形がねじれて射影変換が破綻し
+// 補正結果が白紙になる不具合の対策）。
+function sortCornersTLTRBRBL(pts) {
+  const cx = (pts[0].x + pts[1].x + pts[2].x + pts[3].x) / 4;
+  const cy = (pts[0].y + pts[1].y + pts[2].y + pts[3].y) / 4;
+  const byQuadrant = { tl: null, tr: null, br: null, bl: null };
+  pts.forEach(function(p) {
+    const key = p.x < cx ? (p.y < cy ? 'tl' : 'bl') : (p.y < cy ? 'tr' : 'br');
+    byQuadrant[key] = p;
+  });
+  if (byQuadrant.tl && byQuadrant.tr && byQuadrant.br && byQuadrant.bl) {
+    return [byQuadrant.tl, byQuadrant.tr, byQuadrant.br, byQuadrant.bl];
+  }
+  // 象限判定できない（重心と一致する等の縮退ケース）場合はタップ順のまま使う
+  console.warn('[sortCornersTLTRBRBL] 象限分類に失敗、タップ順のまま使用します:', JSON.stringify(pts));
+  return pts;
+}
+
 function runCorrection() {
   // 四隅は表示用canvas（520px幅に縮小済み）の座標でタップされているため、
   // フル解像度canvas上の座標に変換してから使う（そうしないと結局
@@ -755,14 +776,17 @@ function runCorrection() {
   console.log('[runCorrection] scaleToFullRes:', scaleToFullRes,
     '(displayCanvas縦横比=', displayCanvas.width / displayCanvas.height,
     ' / fullResCanvas縦横比=', fullResCanvas.width / fullResCanvas.height, ')');
-  console.log('[runCorrection] raw corners (displayCanvas px, TL/TR/BR/BL):', JSON.stringify(corners));
+  console.log('[runCorrection] raw corners（タップ順そのまま）:', JSON.stringify(corners));
+
+  const sortedCorners = sortCornersTLTRBRBL(corners);
+  console.log('[runCorrection] sorted corners (displayCanvas px, TL/TR/BR/BL):', JSON.stringify(sortedCorners));
 
   // 左上(0)・右上(1)・右下(2)・左下(3)の4点すべてを使用した射影変換
   const srcPts = [
-    [corners[0].x * scaleToFullRes, corners[0].y * scaleToFullRes],
-    [corners[1].x * scaleToFullRes, corners[1].y * scaleToFullRes],
-    [corners[2].x * scaleToFullRes, corners[2].y * scaleToFullRes],
-    [corners[3].x * scaleToFullRes, corners[3].y * scaleToFullRes]
+    [sortedCorners[0].x * scaleToFullRes, sortedCorners[0].y * scaleToFullRes],
+    [sortedCorners[1].x * scaleToFullRes, sortedCorners[1].y * scaleToFullRes],
+    [sortedCorners[2].x * scaleToFullRes, sortedCorners[2].y * scaleToFullRes],
+    [sortedCorners[3].x * scaleToFullRes, sortedCorners[3].y * scaleToFullRes]
   ];
   console.log('[runCorrection] srcPts (fullResCanvas px, TL/TR/BR/BL):', JSON.stringify(srcPts),
     '/ fullResCanvas bounds: 0..' + fullResCanvas.width + ' x 0..' + fullResCanvas.height);
