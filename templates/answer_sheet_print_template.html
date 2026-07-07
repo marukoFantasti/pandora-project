@@ -59,9 +59,19 @@
     確実にQRコードを描画するため）。ライブラリを更新する場合は、
     https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js
     の中身をそのまま該当scriptブロックに再度貼り付ける。
-  - 表示サイズ25mm四方（生成解像度200x200px、correctLevel=H＝高い
-    誤り訂正率。印刷・撮影による多少のかすれ・汚れでも読み取れるよう
-    大きめ・高耐性にしている）
+  - 外枠25mm四方（.qr-canvas-wrap）、生成解像度200x200px、
+    correctLevel=H＝高い誤り訂正率。印刷・撮影による多少のかすれ・
+    汚れでも読み取れるよう大きめ・高耐性にしている
+  - クワイエットゾーン（QRコード周囲の余白）: qrcodejs自体には余白
+    指定オプションがないため、.qr-canvas-wrap側でpadding:2.5mmを
+    確保し、実際にスキャン対象となるQRコード本体は外枠25mmの内側
+    20mm四方に描画する（.qr-canvas-wrapの背景を白にし、canvas/imgを
+    100%指定でその内側にflexで中央配置）。実測では本文のJSON
+    ペイロード相当で約53モジュール構成になり、20mm四方に対する
+    2.5mmの余白は約6〜7モジュール分に相当し、国際規格の目安
+    （4モジュール以上）を安全マージン込みで満たす。以前は余白なしで
+    外枠いっぱいにQRを描画していたが、実機での読み取り不安定の
+    一因と考えられたため、この形に修正した。
   - 中身は以下のJSON文字列（ページごとに page の値だけ変わる）：
     {"assignment_id":"{{ASSIGNMENT_ID}}","student_id":"{{STUDENT_ID}}",
      "page":<そのページの番号>,"total_pages":<総ページ数>}
@@ -575,8 +585,15 @@ body { background: #e8e8e8; font-family: 'Hiragino Sans','Yu Gothic',sans-serif;
   display: flex; align-items: center; justify-content: center;
   border-radius: 3px 3px 0 0; letter-spacing: 0.5px;
 }
-.qr-canvas-wrap { position: absolute; left: 165mm; top: 264mm; width: 25mm; height: 25mm; }
-.qr-canvas-wrap canvas, .qr-canvas-wrap img { width: 25mm !important; height: 25mm !important; }
+.qr-canvas-wrap {
+  position: absolute; left: 165mm; top: 264mm; width: 25mm; height: 25mm;
+  box-sizing: border-box; background: #fff;
+  padding: 2.5mm; /* クワイエットゾーン（QRコード周囲の余白）。実測53モジュール
+    構成のQRで、20mm四方の実描画エリアに対し約6〜7モジュール分の余白に相当し、
+    国際規格の目安（4モジュール以上）を安全マージン込みで満たす */
+  display: flex; align-items: center; justify-content: center;
+}
+.qr-canvas-wrap canvas, .qr-canvas-wrap img { width: 100% !important; height: 100% !important; display: block; }
 .footer-text { position: absolute; left: 15mm; top: 268mm; width: 145mm; font-size: 8px; color: #444; line-height: 1.4; }
 .layout-save-status { position: absolute; left: 15mm; top: 281mm; width: 145mm; font-size: 9px; color: #888; }
 .layout-save-ok { color: #2e7d32; }
