@@ -259,9 +259,52 @@ function switchTab(tab) {
 }
 
 // ===== 分析描画 =====
-function renderAnalytics() {
+// loadSubmissions()のallSubsはsubmission_data（重いJSONB列）を含まないため、
+// 分析タブはここで別途、submission_data込みのデータを取得する。分析タブは
+// 明示的にクリックされたときだけ呼ばれる（switchTab参照）ため、ページ読み込み
+// のたびに重いクエリが走ることはない。
+//
+// 【既知の制約】検証の結果、submission_data込みの取得はlimitを絞っても
+// 確実にはタイムアウト（PostgREST 57014 statement_timeout）を回避できない
+// ことを確認した。原因は行数ではなく、各行のequation_canvas/answer_canvas
+// （Base64手書き画像）の合計データ量そのものが大きいことにあり、どの行が
+// たまたま含まれるかによって同じlimitでも成功/失敗が変動する。根本的な
+// 解決には、Supabase側でcanvasを含まない集計用のビュー/RPCを用意する等の
+// スキーマ変更が必要（本HTMLの編集だけでは対応しきれない）。
+// 当面の緩和策として、大きめのlimitから順に小さくしながら再試行し、
+// 全て失敗した場合のみ「分析データを取得できません」と表示する。
+async function fetchAnalyticsSubs() {
+  var analyticsFields = 'id,student_id,student_name,mode,submission_data';
+  var candidateLimits = [30, 15, 8, 4, 2];
+  for (var i = 0; i < candidateLimits.length; i++) {
+    var lim = candidateLimits[i];
+    try {
+      var res = await fetch(SUPABASE_URL + '/rest/v1/submissions?select=' + analyticsFields + '&order=submitted_at.desc&limit=' + lim, { headers });
+      var body = await res.json();
+      if (res.ok && Array.isArray(body)) {
+        if (i > 0) console.warn('[renderAnalytics] limit=' + lim + 'に縮小して取得成功（それより大きいlimitはタイムアウト等で失敗）。分析は直近' + lim + '件のみが対象。');
+        return body;
+      }
+      console.warn('[renderAnalytics] limit=' + lim + 'での取得に失敗:', body);
+    } catch (e) {
+      console.warn('[renderAnalytics] limit=' + lim + 'でのfetchに失敗:', e);
+    }
+  }
+  return null; // 全limitで失敗＝取得不能
+}
+
+async function renderAnalytics() {
   var el = document.getElementById('analytics-content');
-  if (!allSubs || allSubs.length === 0) {
+  el.innerHTML = '<div class="loading"><div class="spinner"></div>読み込み中...</div>';
+
+  var analyticsSubs = await fetchAnalyticsSubs();
+
+  if (analyticsSubs === null) {
+    console.error('[renderAnalytics] submission_dataの取得にすべてのlimitで失敗しました（データ量過多によるタイムアウトの可能性）。');
+    el.innerHTML = '<div style="text-align:center;padding:60px;color:var(--red)">⚠️ 分析データを取得できませんでした（データ量が大きすぎる可能性があります）。時間をおいて再度お試しください。</div>';
+    return;
+  }
+  if (analyticsSubs.length === 0) {
     el.innerHTML = '<div style="text-align:center;padding:60px;color:var(--text3)">提出データがありません</div>';
     return;
   }
@@ -269,7 +312,7 @@ function renderAnalytics() {
   // ── 生徒ごとの集計（student_idベース、なければstudent_nameにフォールバック）──
   var studentMap = {}; // key → { id, name, total, correct, partial, incorrect, miniquiz_total, miniquiz_correct, unitMap, tagMap, submissions[] }
 
-  allSubs.forEach(function(s) {
+  analyticsSubs.forEach(function(s) {
     var sd = s.submission_data || {};
     // student_id（S-0001形式）があればそれを優先、なければ名前をキーに
     var sid  = s.student_id || sd.student_id || null;
@@ -331,7 +374,7 @@ function renderAnalytics() {
 
   // ── 全体タグ集計 ──
   var globalTagMap = {};
-  allSubs.forEach(function(s) {
+  analyticsSubs.forEach(function(s) {
     var sd = s.submission_data || {};
     (sd.problems || []).forEach(function(p) {
       var pid = p.problem_id || '';
@@ -356,7 +399,7 @@ function renderAnalytics() {
   var overallRate = totalProblems > 0 ? Math.round(totalCorrect / totalProblems * 100) : 0;
 
   html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:28px">';
-  html += card('提出数', allSubs.length + '件', '📥');
+  html += card('提出数', analyticsSubs.length + '件', '📥');
   html += card('生徒数', studentKeys.length + '名', '👤');
   html += card('全体正答率', overallRate + '%', '✅');
   html += card('タグ種類', tagNames.length + '種', '🏷️');
@@ -521,6 +564,12 @@ function resyncAllOverlays() {
 var allSubs = [];
 var activeFilters = { status: 'all', mode: 'all' };
 var gradedIds = new Set();
+// サイドバー一覧・分析タブとも、この件数を上限に最新分のみ取得する。
+// submission_data（各問題のequation_canvas/answer_canvas等、Base64の
+// 手書き画像を含む）は行数が増えるとクエリが非常に重くなり、PostgRESTの
+// クエリタイムアウト（57014 query_canceled）を引き起こすため、無制限に
+// 増え続けるデータ量に対する安全マージンとして上限を設けている。
+var SUB_LIST_LIMIT = 100;
 
 function setFilter(type, val) {
   activeFilters[type] = val;
@@ -578,7 +627,12 @@ async function loadSubmissions() {
   var el = document.getElementById('sub-list');
   el.innerHTML = '<div class="loading"><div class="spinner"></div>読み込み中...</div>';
 
-  const res = await fetch(SUPABASE_URL + '/rest/v1/submissions?select=*&order=submitted_at.desc', { headers });
+  // サイドバー一覧の表示（renderSubList）に必要な最小限のフィールドのみ取得する。
+  // submission_data（各問題のequation_canvas/answer_canvas等、Base64の手書き画像を
+  // 含む重いJSONB列）は一覧表示には不要なため含めない。詳細を開いたとき（selectSub）
+  // にその1件だけ改めてsubmission_data込みで取得する。
+  const listFields = 'id,assignment_id,student_id,student_name,submitted_at,grade,subject,mode';
+  const res = await fetch(SUPABASE_URL + '/rest/v1/submissions?select=' + listFields + '&order=submitted_at.desc&limit=' + SUB_LIST_LIMIT, { headers });
   allSubs = await res.json();
 
   // 採点済みIDを取得
