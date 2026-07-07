@@ -267,7 +267,7 @@ function renderAnalytics() {
   }
 
   // ── 生徒ごとの集計（student_idベース、なければstudent_nameにフォールバック）──
-  var studentMap = {}; // key → { id, name, total, correct, partial, incorrect, kanji_total, kanji_correct, unitMap, tagMap, submissions[] }
+  var studentMap = {}; // key → { id, name, total, correct, partial, incorrect, miniquiz_total, miniquiz_correct, unitMap, tagMap, submissions[] }
 
   allSubs.forEach(function(s) {
     var sd = s.submission_data || {};
@@ -279,7 +279,7 @@ function renderAnalytics() {
     if (!studentMap[key]) studentMap[key] = {
       id: sid, name: name,
       total:0, correct:0, partial:0, calc:0, incorrect:0,
-      kanji_total:0, kanji_correct:0,
+      miniquiz_total:0, miniquiz_correct:0,
       unitMap:{}, tagMap:{}, submissions:[]
     };
     var st = studentMap[key];
@@ -319,12 +319,14 @@ function renderAnalytics() {
       });
     });
 
-    // 漢字
-    var kanji = sd.kanji || [];
-    kanji.forEach(function(k) {
-      st.kanji_total++;
-      if (k.is_correct) st.kanji_correct++;
-    });
+    // ミニクイズ（domestic: 単語3択クイズ vocab_score/vocab_total /
+    // overseas: 漢字クイズ kanji_score/kanji_total）。フィールド名が
+    // モードで異なるため、存在する方を使い「ミニクイズ正答率」として
+    // 両モード共通の指標に統一して集計する。
+    var miniQuizCorrect = typeof sd.vocab_score === 'number' ? sd.vocab_score : (typeof sd.kanji_score === 'number' ? sd.kanji_score : 0);
+    var miniQuizTotal = typeof sd.vocab_total === 'number' ? sd.vocab_total : (typeof sd.kanji_total === 'number' ? sd.kanji_total : 0);
+    st.miniquiz_correct += miniQuizCorrect;
+    st.miniquiz_total += miniQuizTotal;
   });
 
   // ── 全体タグ集計 ──
@@ -374,7 +376,7 @@ function renderAnalytics() {
     '<th style="text-align:center;padding:6px 8px;color:var(--text3)">計算ミス</th>' +
     '<th style="text-align:center;padding:6px 8px;color:var(--text3)">不正解</th>' +
     '<th style="text-align:center;padding:6px 8px;color:var(--text3)">正答率</th>' +
-    '<th style="text-align:center;padding:6px 8px;color:var(--text3)">漢字</th>' +
+    '<th style="text-align:center;padding:6px 8px;color:var(--text3)">ミニクイズ</th>' +
   '</tr>';
 
   var studentKeys = Object.keys(studentMap);
@@ -385,7 +387,7 @@ function renderAnalytics() {
   }).forEach(function(key, i) {
     var st = studentMap[key];
     var rate = st.total > 0 ? Math.round(st.correct / st.total * 100) : 0;
-    var kanjiRate = st.kanji_total > 0 ? Math.round(st.kanji_correct / st.kanji_total * 100) : null;
+    var miniquizRate = st.miniquiz_total > 0 ? Math.round(st.miniquiz_correct / st.miniquiz_total * 100) : null;
     var rateColor = rate >= 80 ? 'var(--green)' : rate >= 60 ? 'var(--orange)' : 'var(--red)';
     var bg = i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.02)';
     var idBadge = st.id
@@ -408,7 +410,7 @@ function renderAnalytics() {
           '<span style="font-weight:700;color:' + rateColor + ';min-width:34px;text-align:right">' + rate + '%</span>' +
         '</div>' +
       '</td>' +
-      '<td style="text-align:center;padding:7px 8px;color:var(--text2)">' + (kanjiRate !== null ? kanjiRate + '%' : '—') + '</td>' +
+      '<td style="text-align:center;padding:7px 8px;color:var(--text2)">' + (miniquizRate !== null ? miniquizRate + '%' : '—') + '</td>' +
     '</tr>';
 
     // 単元別詳細（3問以上あるものを展開）

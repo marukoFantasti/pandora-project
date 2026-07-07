@@ -194,7 +194,7 @@ function App() {
           })),
           kanji_score:kanjiQuiz.filter(k=>kanjiAnswers[k.id]===k.correct).length,
           kanji_total:kanjiQuiz.length,
-          english_opened_count:null,
+          english_opened_count:Array.from(new Set(Object.keys(showWords).filter(k=>showWords[k]).concat(Object.keys(showHint).filter(k=>showHint[k])))).length,
         },
         submitted_at:new Date().toISOString(),
       };
