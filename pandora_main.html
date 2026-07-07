@@ -1175,15 +1175,29 @@ function generateQuiz(){
     var outputJson;
 
     // ── Layer 2.5: 論理整合性チェック ──────────────────────
-    function checkConsistency(problemsArr, kanjiArr, maxRetry, onOk, onFail){
-      if(maxRetry<=0){ onFail('3回再生成しましたが整合性が確認できませんでした。問題を確認してください。'); return; }
+    function checkConsistency(problemsArr, kanjiArr, maxRetry, onOk, onFail, retryReason){
+      if(maxRetry<=0){
+        if(retryReason==='indeterminate'){
+          // NGと確定したわけではなく、パース失敗やfetch失敗が続いて判定不能のまま
+          // 再試行上限に達した場合。無条件にonFail（「整合性NGが確定した」という
+          // 誤ったメッセージ）にはせず、チェックをスキップして続行しつつ、
+          // ユーザーに見える形で警告を残す。
+          console.warn('[checkConsistency] 判定不能（パース失敗またはfetch失敗）のまま再試行上限に達したため、整合性チェックをスキップして続行します。');
+          document.getElementById('q-status').innerHTML=
+            '<span style="color:var(--red)">⚠️ 整合性チェックが完了できませんでした（応答解析または通信エラーが続いたため）。内容を手動でご確認ください。</span>';
+          onOk();
+          return;
+        }
+        onFail('3回再生成しましたが整合性が確認できませんでした。問題を確認してください。');
+        return;
+      }
       var checkText = problemsArr.map(function(p,i){
         return '【問'+(i+1)+'】（level: '+(p.level||'不明')+'）\n問題文：'+(p.question||p.problem||'')+'\n正解：'+(p.answer||'');
       }).join('\n\n');
       fetch('https://api.anthropic.com/v1/messages',{
         method:'POST', headers:apiHeaders(),
         body:JSON.stringify({
-          model:'claude-haiku-4-5-20251001', max_tokens:300,
+          model:'claude-haiku-4-5-20251001', max_tokens:1000,
           system:'あなたは算数・数学の問題の整合性チェッカーです。問題文中の数値・条件・答えに矛盾や不整合がないか確認します。',
           messages:[{role:'user',content:
             '以下の問題に次の観点で問題がないか確認してください。\n'+
@@ -1198,7 +1212,10 @@ function generateQuiz(){
             '5. 問題文自体に、生徒が求めるべき計算の答えが数値として明示されている場合はNGとする（例：九九や計算パターンを提示する際、右辺の答えまで書いてしまっている）。答えの部分は「7×2=□」のように空欄（□）にすること。\n'+
             '6. 各問題のlevelに応じて、問題文中に計算の式・手順を示してよいかを判定する。levelが\'example_follow\'（例題）の場合のみ、問題文中に計算の式・手順・矢印図等を示すことを許可する（生徒にやり方を見せる例題としての役割があるため）。'+
             'levelが\'confirmation\'（確認）または\'practice\'（練習・実践）の場合は、問題文中に計算式（□を使った空欄形式を除く）や、矢印を使った途中計算の手順、中間結果の数値を書いてはならず、NGとする。文章題として状況を説明し、「〜を計算しなさい」「〜は何個でしょう」のように問いで終わるだけにすること。'+
-            'ただし、OK例（りんご配りのような「次の□に当てはまる数をかきなさい」形式で、答えの部分が空欄□になっている九九・計算パターン提示）は、基準5で別途カバーされる対象であり、levelに関わらずこの基準6の対象外（NGにしない）とする。\n'+
+            'ただし、OK例（りんご配りのような「次の□に当てはまる数をかきなさい」形式で、答えの部分が空欄□になっている九九・計算パターン提示）は、基準5で別途カバーされる対象であり、levelに関わらずこの基準6の対象外（NGにしない）とする。'+
+            '重要：この基準6は、矢印を使った途中式（例：35→+18→53→-12→□）のような目立つ形式に限らず、「次の計算をしなさい」に類する文言の直後に算用数字と演算子（+ - × ÷ 等、全角半角を問わない）の組み合わせが続くケース全般に適用する。「(1)85-30」のような、一見example_followで許可されている書き方と見た目がほぼ同じシンプルな数式であっても、levelがconfirmation/practiceであれば例外なく機械的にNGとすること。「exampleで許可されている書き方に似ているから大丈夫だろう」という類推や見た目の複雑さでの判断は一切行わず、levelの値だけを基準に厳密に判定すること。\n'+
+            '7. 問題のunit（またはchapter）フィールドが示す計算の種類（たし算・ひき算・かけ算等）と、実際に問題文で要求されている計算内容が一致しているか確認する。単元名が示す演算が問題文中で一切行われておらず、本文中の数字をそのまま書き写すだけの読み取り問題になっている等、単元名と問題の実際の中身がズレている場合はNGとする。\n'+
+            '8. 文章題の答えが、現実の数量として成立しているか確認する。在庫・個数・人数等が負の数になる、本来整数であるべき場面で割り切れない小数になる等、現実にありえない結果を答えとしている場合はNGとする。特に、answerフィールド自体に「不可能」「矛盾」「足りない」等、生成AI自身がその問題が破綻していることに気づいていると読み取れる記述がある場合は、その時点で確実にNGとする。\n'+
             '  NG例1：「うさりんがにんじんを60本もっていて、くまきちがにんじんを30本もってきました。2匹があわせてもっているにんじんは何本でしょう。次の計算をしなさい。(1) 60 + 30 (2) 90 + 10」'+
             '→ 本文は60本・30本と数量を確定させているのに、(2)の「90+10」の「10」は本文に一度も登場せず導出できないためNG。\n'+
             '  NG例2：「うさりんはにんじんを60本もっています。くまきちがにんじんを30本くれました。うさりんがもっているにんじんは全部で何本になりますか。次の計算をしなさい。(1)60+30 (2)60+0」'+
@@ -1209,6 +1226,12 @@ function generateQuiz(){
             '→ 式の右辺（14、21、28、35）が問題文自体に書かれてしまっており、生徒が計算する余地がない。「7×2=□」のように答えの部分を空欄にすべき。\n'+
             '  NG例5（level: confirmation）：「くまきちは、どんぐりを35個持っていました。うさりんが18個くれたので、くまきちのどんぐりは53個になりました。その後、りすくんに12個あげました。くまきちの手順を矢印で表して、最後に何個になったか計算しなさい。（35→＋18→53→－12→□）」'+
             '→ levelがconfirmation（確認レベル、生徒が自分で式を立てられるか確認する段階）なのに、計算手順「35→＋18→53→－12→□」を本文自体に書いてしまい、さらに中間結果「53個」まで明かしてしまっている。生徒がやることは最後の引き算だけになり、確認レベルとして機能していないためNG。\n'+
+            '  NG例6（level: confirmation）：「くまきちのおうちには、ニンジンが85本ありました。うさりんにニンジンを30本あげました。くまきちのおうちに残っているニンジンは何本でしょうか。次の計算をしなさい。(1)85 - 30」'+
+            '→ 矢印を使った途中式のような目立つ形ではなく、「次の計算をしなさい。(1)85-30」という一見シンプルな書き方だが、levelがconfirmationであるにもかかわらず計算式を本文自体に書いてしまっている。この形式はexample_followで許可されている書き方と見た目が似ているが、それに惑わされず、levelがconfirmation/practiceであれば同様にNGとすること（基準6参照）。\n'+
+            '  NG例7（unit: "2けたの数のひき算"）：「うさりんとくまきちは、ぼうしのお店でぼうしを買いました。うさりんは40こ、くまきちは70こ買いました。次の計算をしなさい。(1)うさりんが買ったぼうしの数 (2)くまきちが買ったぼうしの数」'+
+            '→ 単元が「ひき算」なのに、(1)(2)は本文中の数字（40こ・70こ）をそのまま書き写すだけで、引き算はおろかどんな計算も発生していない。単元名と問題の実際の中身が完全にズレているためNG。\n'+
+            '  NG例8：「朝に仕入れた綿菓子は全部で68本でした。午前中に47本売れました。午後にさらに23本売れた場合、最終的に残っている綿菓子は何本でしょうか。」（answer：「(1)21本 (2)(-2)は不可能なため、計算上は-2本ですが、実際には売る綿菓子が不足しています。…」）'+
+            '→ 68-47-23=-2となり、在庫が負の数になるという現実にありえない状況。しかもanswerフィールド自体が「不可能」「不足しています」と矛盾に気づいているにもかかわらず、そのまま出力されてしまっているためNG。\n'+
             '  OK例：「うさりんとお友達で、りんごを配っています。次の□に当てはまる数をかきなさい。(1) 5×3=□、5×4=□ (2) 6×3=□、6×4=□」'+
             '→ 本文は具体的な数量を確定させておらず、一般的な計算パターンの例示なので、(2)の数値が(1)と違っていてもOK。答えの部分も空欄（□）になっており、生徒が計算する余地が残っている。\n\n'+
             checkText+
@@ -1216,13 +1239,27 @@ function generateQuiz(){
         })
       }).then(function(r){ return r.json(); }).then(function(d){
         var txt = (d.content||[]).map(function(c){return c.text||'';}).join('');
-        var result = {};
-        try{ result = JSON.parse(txt.replace(/```json|```/g,'').trim()); }catch(e){ result={ok:true}; }
+        var result = null;
+        try{ result = JSON.parse(txt.replace(/```json|```/g,'').trim()); }catch(e){ result = null; }
+        if(result===null){
+          // パース失敗＝判定不能。かつてはここで暗黙にOK扱いしていたが、Haikuが
+          // 実際にはNGと判定していても（出力がmax_tokens超過等で途中で切れて
+          // JSONとして壊れた場合など）握りつぶされてしまうため、判定不能として
+          // 再試行対象に含める。生の応答をconsole.errorに残し、次回同じ切り分けが
+          // 必要になったときに原因を追えるようにする。
+          console.error('[checkConsistency] 応答をJSONとして解析できませんでした。生の応答:', txt);
+          document.getElementById('q-status').innerHTML=
+            '<span style="color:var(--orange)">⚠️ 整合性チェックの応答を解析できませんでした→再試行中… ('+(4-maxRetry)+'/3)</span>';
+          checkConsistency(problemsArr, kanjiArr, maxRetry-1, onOk, onFail, 'indeterminate');
+          return;
+        }
         if(result.ok){
+          console.log('[checkConsistency] 整合性チェックOK');
           onOk();
         } else {
           // NG → ステータスに警告を出しつつ自動再生成
           var issueText = (result.issues||['不整合あり']).join(' / ');
+          console.warn('[checkConsistency] 整合性NG:', issueText);
           document.getElementById('q-status').innerHTML=
             '<span style="color:var(--orange)">⚠️ 整合性NG（'+issueText+'）→ 再生成中… ('+(4-maxRetry)+'/3)</span>';
           // 同じプロンプトで再生成
@@ -1232,8 +1269,18 @@ function generateQuiz(){
               messages:[{role:'user',content:prompt}]})
           }).then(function(r){ return r.json(); }).then(function(d2){
             var txt2 = (d2.content||[]).map(function(c){return c.text||'';}).join('');
-            var parsed2 = {};
-            try{ parsed2 = JSON.parse(txt2.replace(/```json|```/g,'').trim()); }catch(e){ parsed2={problems:[]}; }
+            var parsed2 = null;
+            try{ parsed2 = JSON.parse(txt2.replace(/```json|```/g,'').trim()); }catch(e){ parsed2 = null; }
+            if(parsed2===null){
+              // 再生成の応答も判定不能扱い（かつては{problems:[]}にフォールバックし、
+              // 空の問題配列がそのまま次のチェックに渡って実質スルーされていた）。
+              // 現在の（NGと判定済みの）problemsArrのまま、判定不能として再試行する。
+              console.error('[checkConsistency] 再生成の応答をJSONとして解析できませんでした。生の応答:', txt2);
+              document.getElementById('q-status').innerHTML=
+                '<span style="color:var(--orange)">⚠️ 再生成の応答を解析できませんでした→再試行中… ('+(4-maxRetry)+'/3)</span>';
+              checkConsistency(problemsArr, kanjiArr, maxRetry-1, onOk, onFail, 'indeterminate');
+              return;
+            }
             var newProblems = (parsed2.problems||[]).map(function(p,i){
               return Object.assign({},p,{ problem_id:assignmentId+'_q'+(i+1), tags:refTagMap[p.number||i+1]||[] });
             });
@@ -1242,9 +1289,22 @@ function generateQuiz(){
               parsed.kanji_quiz = parsed2.kanji_quiz||[];
               onOk();
             }, onFail);
-          }).catch(function(){ onOk(); }); // 再生成失敗時はスキップ
+          }).catch(function(e){
+            // 再生成のfetch自体が失敗。かつては無条件にonOk()へ倒していたため、
+            // NGと判定された内容がそのまま素通りしていた。判定不能として再試行する。
+            console.error('[checkConsistency] 再生成のfetchが失敗しました:', e);
+            document.getElementById('q-status').innerHTML=
+              '<span style="color:var(--orange)">⚠️ 再生成の通信に失敗しました→再試行中… ('+(4-maxRetry)+'/3)</span>';
+            checkConsistency(problemsArr, kanjiArr, maxRetry-1, onOk, onFail, 'indeterminate');
+          });
         }
-      }).catch(function(){ onOk(); }); // チェック失敗時はスキップ
+      }).catch(function(e){
+        // 整合性チェックのfetch自体が失敗。同様に無条件onOk()をやめ、判定不能として再試行する。
+        console.error('[checkConsistency] 整合性チェックのfetchが失敗しました:', e);
+        document.getElementById('q-status').innerHTML=
+          '<span style="color:var(--orange)">⚠️ 整合性チェックの通信に失敗しました→再試行中… ('+(4-maxRetry)+'/3)</span>';
+        checkConsistency(problemsArr, kanjiArr, maxRetry-1, onOk, onFail, 'indeterminate');
+      });
     }
     // ─────────────────────────────────────────────────────────
 
