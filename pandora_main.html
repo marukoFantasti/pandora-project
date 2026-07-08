@@ -621,6 +621,76 @@ var qSelectedGrades=[];
 var qSelectedUnits=[];
 var qGeneratedProblems=[];
 
+// ======== 教育漢字（学年別漢字配当表、data/kyoiku_kanji.json）========
+// by_grade=学年ごとの新出漢字、cumulative_by_grade=その学年までに習う累積漢字（学年をキーにした配列）。
+var KYOIKU_KANJI = null;
+var KYOIKU_KANJI_PROMISE = null;
+function loadKyoikuKanji(){
+  if(KYOIKU_KANJI) return Promise.resolve(KYOIKU_KANJI);
+  if(KYOIKU_KANJI_PROMISE) return KYOIKU_KANJI_PROMISE;
+  KYOIKU_KANJI_PROMISE = fetch('data/kyoiku_kanji.json').then(function(r){ return r.json(); }).then(function(d){
+    KYOIKU_KANJI = d;
+    return d;
+  }).catch(function(e){
+    // 読み込み失敗時は空データにフォールバックする（漢字制限チェックはスキップされ、
+    // 誤って正常な問題をNG判定してしまうことは避ける）。
+    console.error('[loadKyoikuKanji] 教育漢字データ（data/kyoiku_kanji.json）の読み込みに失敗しました:', e);
+    KYOIKU_KANJI = {by_grade:{}, cumulative_by_grade:{}};
+    return KYOIKU_KANJI;
+  });
+  return KYOIKU_KANJI_PROMISE;
+}
+// qSelectedGradesの学年キー（'g01'〜'g06'、'jhs1'等）を教育漢字データの学年キー（'1'〜'6'）に変換する。
+// 中学（jhs*）は学年別漢字配当表の対象外だが、中学生は小学校配当漢字を習得済みとみなし、
+// 学年6の累積（1026字＝小学校配当漢字の全体）を割り当てる。
+function kyoikuGradeKeyFor(g){
+  var m=/^g0?([1-6])$/.exec(g||'');
+  if(m) return m[1];
+  if(g && g.indexOf('jhs')===0) return '6';
+  return null;
+}
+// 選択された複数学年のうち、最も上の学年のcumulative_by_grade（学年配当漢字の累積リスト）を返す。
+// cumulative_by_gradeは各学年ごとに「その学年までに習う漢字」を表す配列なので、
+// 最上位学年のリストが他の（下位の）選択学年のリストを包含する。
+function getCumulativeKanjiForGrades(grades){
+  if(!KYOIKU_KANJI || !KYOIKU_KANJI.cumulative_by_grade) return [];
+  var maxNum=0;
+  (grades||[]).forEach(function(g){
+    var k=kyoikuGradeKeyFor(g);
+    if(k) maxNum=Math.max(maxNum, parseInt(k,10));
+  });
+  if(maxNum===0) return [];
+  return KYOIKU_KANJI.cumulative_by_grade[String(maxNum)]||[];
+}
+// problemsArr（生成された問題配列）のquestion/answerフィールドから漢字を抽出し、
+// 対象学年（grades）のcumulative_by_gradeに含まれない漢字を機械的に検出する。
+// 基準11（学年相応の語彙難易度）のうち、漢字の学年適合性についてはLLMの感覚的な
+// 判断に頼らず、この関数の照合結果を確実な根拠として使う。
+function findOutOfGradeKanji(problemsArr, grades){
+  var allowed=getCumulativeKanjiForGrades(grades);
+  if(allowed.length===0){
+    // 教育漢字データ未読み込み、または対象学年を特定できない（中学以上のみ等）場合は
+    // チェック対象外とする（誤NGを避ける）。
+    return {ok:true, issues:[]};
+  }
+  var allowedSet={};
+  allowed.forEach(function(k){ allowedSet[k]=true; });
+  var kanjiRe=/[一-鿿]/g;
+  var issues=[];
+  (problemsArr||[]).forEach(function(p,i){
+    var text=(p.question||p.problem||'')+(p.answer!==undefined&&p.answer!==null?String(p.answer):'');
+    var found=text.match(kanjiRe)||[];
+    var outOfList=[];
+    found.forEach(function(ch){
+      if(!allowedSet[ch] && outOfList.indexOf(ch)<0) outOfList.push(ch);
+    });
+    if(outOfList.length>0){
+      issues.push('問'+(i+1)+'：学年配当外の漢字「'+outOfList.join('、')+'」が含まれています（ひらがな表記に置き換えてください）');
+    }
+  });
+  return {ok:issues.length===0, issues:issues};
+}
+
 function toggleQGrade(btn){
   var g=btn.dataset.grade;
   var idx=qSelectedGrades.indexOf(g);
@@ -929,10 +999,13 @@ function filterStudentsByMode(mode) {
 }
 
 // ページ読み込み時に自動取得
-window.addEventListener('load', function(){ loadStudents(); });
+window.addEventListener('load', function(){ loadStudents(); loadKyoikuKanji(); });
 
 function generateQuiz(){
   if(qSelectedGrades.length===0){alert('学年を選択してください');return;}
+  // 基準11の機械的漢字チェック・プロンプトへの漢字リスト埋め込みに教育漢字データが
+  // 必要なため、以降の処理は読み込み完了後（loadKyoikuKanji()のPromise解決後）に実行する。
+  loadKyoikuKanji().then(function(){
   var selectedLevels=getSelectedLevels();
   var count=parseInt(document.getElementById('q-count').value);
   var diff=document.getElementById('q-diff').value;
@@ -1119,6 +1192,14 @@ function generateQuiz(){
     ?'{"problems":[{"number":1,"unit":"単元名","chapter":"章名","level":"example_follow","question":"問題文","answer":"解答","reading":"ひらがな","english_phrase":"英語表現","vocab_word":"英単語","vocab_meaning":"意味","words":[{"word":"語彙","meaning":"意味","example":"例"}]}]}'
     :'{"problems":[{"number":1,"unit":"単元名","chapter":"章名","level":"example_follow","question":"問題文","answer":"解答","reading":"ひらがな","english_hint":"English hint","words":[{"word":"語彙","meaning":"意味","example":"例"}]}],"kanji_quiz":[{"reading":"きょり","en":"distance","correct":"距離","choices":["距離","道理","遠路"],"hint":"How far is it?"}]}';
 
+  // 対象学年（qSelectedGrades）のcumulative_by_grade（その学年までに習う累積漢字）を
+  // 文字列としてプロンプトに埋め込み、それ以外の漢字を使わせないよう制約する。
+  var kyoikuKanjiList=getCumulativeKanjiForGrades(qSelectedGrades);
+  var kanjiConstraintInstruction=kyoikuKanjiList.length>0
+    ?'\n【重要・使用できる漢字の制限】問題文・選択肢等で使用する漢字は、対象学年（'+qSelectedGrades.join('、')+'）のcumulative_by_grade（その学年までに習う累積漢字）に含まれる漢字のみを使用すること。それ以外の漢字は、ひらがなで表記すること。'+
+      '\n使用できる漢字一覧（'+kyoikuKanjiList.length+'字）：'+kyoikuKanjiList.join('')
+    :'';
+
   // レベル別問題数を固定比率で計算（確認優先）
 
   var variationInstruction=
@@ -1130,7 +1211,7 @@ function generateQuiz(){
     '\n各問題には必ずlevelフィールドに正確な問題レベル（example_follow/confirmation/practice）を入れてください。';
 
   var prompt='算数・数学の問題を作成してください。\n'+
-    themeInstruction+multiPartInstruction+'\n'+modeInstruction+kanjiInstruction+variationInstruction+'\n\n'+
+    themeInstruction+multiPartInstruction+'\n'+modeInstruction+kanjiInstruction+kanjiConstraintInstruction+variationInstruction+'\n\n'+
     '以下のJSON形式のみで出力してください（他のテキスト不要）:\n'+
     jsonFormat+'\n\n【参考問題】\n'+refText;
 
@@ -1193,9 +1274,65 @@ function generateQuiz(){
         onFail('3回再生成しましたが整合性が確認できませんでした。問題を確認してください。');
         return;
       }
-      // 基準11（語彙・漢字の学年相応性）の判定にはgradesフィールドの情報が必要なため、
-      // 対象学年をチェックテキストの先頭に付与する（qSelectedGradesは学年選択UIの
-      // グローバル状態で、この問題バッチ全体に共通の対象学年を保持している）。
+
+      // NG判定時の「同じプロンプトで再生成→再チェック」処理を1箇所にまとめる。
+      // 基準11の機械的漢字チェック・Haikuによる基準1〜11チェックのどちらがNGを
+      // 検出した場合でも、同じ再生成フローに合流させる。
+      function regenerateAndRetry(issueText){
+        console.warn('[checkConsistency] 整合性NG:', issueText);
+        document.getElementById('q-status').innerHTML=
+          '<span style="color:var(--orange)">⚠️ 整合性NG（'+issueText+'）→ 再生成中… ('+(4-maxRetry)+'/3)</span>';
+        fetch('https://api.anthropic.com/v1/messages',{
+          method:'POST', headers:apiHeaders(),
+          body:JSON.stringify({model:'claude-haiku-4-5-20251001', max_tokens:8000,
+            messages:[{role:'user',content:prompt}]})
+        }).then(function(r){ return r.json(); }).then(function(d2){
+          var txt2 = (d2.content||[]).map(function(c){return c.text||'';}).join('');
+          var parsed2 = null;
+          try{ parsed2 = JSON.parse(txt2.replace(/```json|```/g,'').trim()); }catch(e){ parsed2 = null; }
+          if(parsed2===null){
+            // 再生成の応答も判定不能扱い（かつては{problems:[]}にフォールバックし、
+            // 空の問題配列がそのまま次のチェックに渡って実質スルーされていた）。
+            // 現在の（NGと判定済みの）problemsArrのまま、判定不能として再試行する。
+            console.error('[checkConsistency] 再生成の応答をJSONとして解析できませんでした。生の応答:', txt2);
+            document.getElementById('q-status').innerHTML=
+              '<span style="color:var(--orange)">⚠️ 再生成の応答を解析できませんでした→再試行中… ('+(4-maxRetry)+'/3)</span>';
+            checkConsistency(problemsArr, kanjiArr, maxRetry-1, onOk, onFail, 'indeterminate');
+            return;
+          }
+          var newProblems = (parsed2.problems||[]).map(function(p,i){
+            return Object.assign({},p,{ problem_id:assignmentId+'_q'+(i+1), tags:refTagMap[p.number||i+1]||[] });
+          });
+          checkConsistency(newProblems, parsed2.kanji_quiz||[], maxRetry-1, function(){
+            problems = newProblems;
+            parsed.kanji_quiz = parsed2.kanji_quiz||[];
+            onOk();
+          }, onFail);
+        }).catch(function(e){
+          // 再生成のfetch自体が失敗。かつては無条件にonOk()へ倒していたため、
+          // NGと判定された内容がそのまま素通りしていた。判定不能として再試行する。
+          console.error('[checkConsistency] 再生成のfetchが失敗しました:', e);
+          document.getElementById('q-status').innerHTML=
+            '<span style="color:var(--orange)">⚠️ 再生成の通信に失敗しました→再試行中… ('+(4-maxRetry)+'/3)</span>';
+          checkConsistency(problemsArr, kanjiArr, maxRetry-1, onOk, onFail, 'indeterminate');
+        });
+      }
+
+      // 基準11（学年に対する語彙難易度チェック）のうち、漢字が対象学年の教育漢字配当表
+      // （cumulative_by_grade）の範囲内かどうかは、LLMの感覚的な判断に頼らず、
+      // ここで学年配当漢字リストと機械的に照合して確実に検証する。
+      // リスト外の漢字が1文字でも見つかった場合、Haikuへの問い合わせを待たずにNG確定させ、
+      // 具体的にどの文字が対象外かをissuesに含めて再生成する。
+      var kanjiCheck = findOutOfGradeKanji(problemsArr, qSelectedGrades);
+      if(!kanjiCheck.ok){
+        regenerateAndRetry(kanjiCheck.issues.join(' / '));
+        return;
+      }
+
+      // 基準11の残り（不自然な造語表現等、漢字リスト照合だけでは判定できない語彙の
+      // 自然さ）の判定にはgradesフィールドの情報が必要なため、対象学年をチェック
+      // テキストの先頭に付与する（qSelectedGradesは学年選択UIのグローバル状態で、
+      // この問題バッチ全体に共通の対象学年を保持している）。
       var gradeLabel = (qSelectedGrades && qSelectedGrades.length) ? qSelectedGrades.join('、') : '不明';
       var checkText = '【対象学年】'+gradeLabel+'\n\n'+problemsArr.map(function(p,i){
         return '【問'+(i+1)+'】（level: '+(p.level||'不明')+'）\n問題文：'+(p.question||p.problem||'')+'\n正解：'+(p.answer||'');
@@ -1225,7 +1362,7 @@ function generateQuiz(){
             '【カテゴリ：数学的正確性】基準1〜8はいずれも「問題文の文面と数値・条件が整合しているか」（数値的整合性）を扱うものだが、以下の基準9・10は文面の整合性とは別次元の、「計算そのものが数学的に正しいか」を扱う。\n'+
             '9. questionに書かれた式・条件から、answerフィールドの計算結果が実際に正しく導き出せる値になっているか、Haiku自身が実際に計算して検算すること。文面上の整合性に問題がなくても、計算結果自体が誤っていればNGとする。\n'+
             '10. 問題文中の数式で、埋めるべき□（未知数）が2つ以上ある場合、それらを一意に決定できるだけの情報（式の本数、制約条件）が本文に揃っているかを確認する。未知数の数に対して式や制約条件が不足しており、一意に解が定まらない場合はNGとする。\n'+
-            '11. 問題文中の語彙・表現が、チェックテキスト冒頭の【対象学年】が示す学年の児童にとって理解可能なレベルか確認する。その学年の教育漢字配当表を大きく超える漢字語（例：小3向けなのに「装飾」「工房」等の高学年〜中学レベルの熟語）や、実際には使われない不自然な造語表現（例：「リボン巻き」）が含まれる場合はNGとする。学年相応のやさしい言葉（例：「リボン作り」「花を並べる」等）に置き換えるべきと判断できる場合は、issuesにその具体的な置き換え案を含めて指摘すること。ただし、教科名として学年相応に定着している言葉（例：小3の「工作」＝図画工作）は対象外とし、NGにしない。\n'+
+            '11. 問題文中の語彙・表現が、チェックテキスト冒頭の【対象学年】が示す学年の児童にとって自然な言葉づかいか確認する。使用漢字が学年配当漢字の範囲内かどうかはシステム側で別途機械的に照合済みのため、ここでは判断しなくてよい。実際には使われない不自然な造語表現（例：「リボン巻き」）が含まれる場合はNGとする。学年相応のやさしい言葉（例：「リボン作り」「花を並べる」等）に置き換えるべきと判断できる場合は、issuesにその具体的な置き換え案を含めて指摘すること。ただし、教科名として学年相応に定着している言葉（例：小3の「工作」＝図画工作）は対象外とし、NGにしない。\n'+
             '  NG例1：「うさりんがにんじんを60本もっていて、くまきちがにんじんを30本もってきました。2匹があわせてもっているにんじんは何本でしょう。次の計算をしなさい。(1) 60 + 30 (2) 90 + 10」'+
             '→ 本文は60本・30本と数量を確定させているのに、(2)の「90+10」の「10」は本文に一度も登場せず導出できないためNG。\n'+
             '  NG例2：「うさりんはにんじんを60本もっています。くまきちがにんじんを30本くれました。うさりんがもっているにんじんは全部で何本になりますか。次の計算をしなさい。(1)60+30 (2)60+0」'+
@@ -1246,8 +1383,8 @@ function generateQuiz(){
             '→ 1分30秒=90秒、2分30秒=150秒なので、90+□=150より□=60が正しい。しかしanswerには誤って「30」と記載されており、実際に検算すると値が一致しないためNG。\n'+
             '  NG例10：「1分□秒＋35秒＝①□分②□秒」'+
             '→ 左辺にも右辺にも未知数（□）があり、式は1本しかないのに未知数が2つ（左辺の秒・右辺の分と秒）ある。式の本数に対して未知数が多すぎ、一意に解を定めることができないためNG。\n'+
-            '  NG例11（対象学年：g03、小学3年生）：「みんなでリボン巻きの装飾を工房で作りました。次の計算をしなさい。(1) 12+8」'+
-            '→ 「装飾」「工房」「リボン巻き」（実際には使われない造語）は、小学3年生の学習範囲・日常語彙を明らかに超えている。「リボン作り」「花を並べる」のような学年相応のやさしい言葉に置き換えるべきでありNG。なお「工作」（図画工作）のように教科名として学年相応に定着している言葉は対象外（NGにしない）。\n'+
+            '  NG例11（対象学年：g03、小学3年生）：「みんなでリボン巻きのかざりを作りました。次の計算をしなさい。(1) 12+8」'+
+            '→ 「リボン巻き」（実際には使われない造語）は、小学3年生の日常語彙として不自然である。「リボン作り」のような学年相応のやさしい言葉に置き換えるべきでありNG。なお「工作」（図画工作）のように教科名として学年相応に定着している言葉は対象外（NGにしない）。\n'+
             '  OK例：「うさりんとお友達で、りんごを配っています。次の□に当てはまる数をかきなさい。(1) 5×3=□、5×4=□ (2) 6×3=□、6×4=□」'+
             '→ 本文は具体的な数量を確定させておらず、一般的な計算パターンの例示なので、(2)の数値が(1)と違っていてもOK。答えの部分も空欄（□）になっており、生徒が計算する余地が残っている。\n\n'+
             checkText+
@@ -1275,44 +1412,7 @@ function generateQuiz(){
         } else {
           // NG → ステータスに警告を出しつつ自動再生成
           var issueText = (result.issues||['不整合あり']).join(' / ');
-          console.warn('[checkConsistency] 整合性NG:', issueText);
-          document.getElementById('q-status').innerHTML=
-            '<span style="color:var(--orange)">⚠️ 整合性NG（'+issueText+'）→ 再生成中… ('+(4-maxRetry)+'/3)</span>';
-          // 同じプロンプトで再生成
-          fetch('https://api.anthropic.com/v1/messages',{
-            method:'POST', headers:apiHeaders(),
-            body:JSON.stringify({model:'claude-haiku-4-5-20251001', max_tokens:8000,
-              messages:[{role:'user',content:prompt}]})
-          }).then(function(r){ return r.json(); }).then(function(d2){
-            var txt2 = (d2.content||[]).map(function(c){return c.text||'';}).join('');
-            var parsed2 = null;
-            try{ parsed2 = JSON.parse(txt2.replace(/```json|```/g,'').trim()); }catch(e){ parsed2 = null; }
-            if(parsed2===null){
-              // 再生成の応答も判定不能扱い（かつては{problems:[]}にフォールバックし、
-              // 空の問題配列がそのまま次のチェックに渡って実質スルーされていた）。
-              // 現在の（NGと判定済みの）problemsArrのまま、判定不能として再試行する。
-              console.error('[checkConsistency] 再生成の応答をJSONとして解析できませんでした。生の応答:', txt2);
-              document.getElementById('q-status').innerHTML=
-                '<span style="color:var(--orange)">⚠️ 再生成の応答を解析できませんでした→再試行中… ('+(4-maxRetry)+'/3)</span>';
-              checkConsistency(problemsArr, kanjiArr, maxRetry-1, onOk, onFail, 'indeterminate');
-              return;
-            }
-            var newProblems = (parsed2.problems||[]).map(function(p,i){
-              return Object.assign({},p,{ problem_id:assignmentId+'_q'+(i+1), tags:refTagMap[p.number||i+1]||[] });
-            });
-            checkConsistency(newProblems, parsed2.kanji_quiz||[], maxRetry-1, function(){
-              problems = newProblems;
-              parsed.kanji_quiz = parsed2.kanji_quiz||[];
-              onOk();
-            }, onFail);
-          }).catch(function(e){
-            // 再生成のfetch自体が失敗。かつては無条件にonOk()へ倒していたため、
-            // NGと判定された内容がそのまま素通りしていた。判定不能として再試行する。
-            console.error('[checkConsistency] 再生成のfetchが失敗しました:', e);
-            document.getElementById('q-status').innerHTML=
-              '<span style="color:var(--orange)">⚠️ 再生成の通信に失敗しました→再試行中… ('+(4-maxRetry)+'/3)</span>';
-            checkConsistency(problemsArr, kanjiArr, maxRetry-1, onOk, onFail, 'indeterminate');
-          });
+          regenerateAndRetry(issueText);
         }
       }).catch(function(e){
         // 整合性チェックのfetch自体が失敗。同様に無条件onOk()をやめ、判定不能として再試行する。
@@ -1518,6 +1618,7 @@ function generateQuiz(){
     status.textContent='エラー: '+e.message;
     btn.textContent='✨ 問題を生成する';btn.disabled=false;
   });
+  }); // loadKyoikuKanji().then
 }
 function updateModeUI(){
   var domestic=document.getElementById('mode-domestic').checked;
