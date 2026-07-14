@@ -411,13 +411,6 @@ body.imode .ref-answer-area{padding:14px 18px}
     </div>
   </div>
 
-  <!-- テーマ -->
-  <div class="card">
-    <div class="card-title">テーマ（任意）</div>
-    <input type="text" id="q-theme" placeholder="例：ドラえもんをテーマにして、サッカーで例えて、宇宙の話を使って…" style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:var(--input-bg);color:var(--input-text);font-size:13px;font-family:inherit;box-sizing:border-box">
-    <div style="font-size:11px;color:var(--text3);margin-top:6px">テーマを入れると、AIがそのキャラクターや世界観に合わせた問題文に書き換えます。</div>
-  </div>
-
   <!-- 生徒選択 -->
   <div class="card" id="student-select-card">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
@@ -428,6 +421,13 @@ body.imode .ref-answer-area{padding:14px 18px}
       <option value="">-- 生徒を選択（選択しない場合は汎用課題）--</option>
     </select>
     <div id="student-load-status" style="font-size:11px;color:var(--text3);margin-top:6px"></div>
+  </div>
+
+  <!-- テーマ -->
+  <div class="card">
+    <div class="card-title">テーマ（任意）</div>
+    <input type="text" id="q-theme" placeholder="例：ドラえもんをテーマにして、サッカーで例えて、宇宙の話を使って…" style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:var(--input-bg);color:var(--input-text);font-size:13px;font-family:inherit;box-sizing:border-box">
+    <div style="font-size:11px;color:var(--text3);margin-top:6px">テーマを入れると、AIがそのキャラクターや世界観に合わせた問題文に書き換えます。生徒を選択すると、その生徒の希望キャラクター・希望テーマが自動で入力されます（手動で書き換え可）。</div>
   </div>
 
   <!-- 出力形式 -->
@@ -804,6 +804,14 @@ document.addEventListener('change', function(e){
   if (!sid) { card.style.display = 'none'; return; }
   card.style.display = 'block';
   checkSubmissionHistory(sid);
+  var opt = e.target.selectedOptions[0];
+  if (opt) {
+    var character = opt.dataset.character || '';
+    var theme = opt.dataset.theme || '';
+    if (character || theme) {
+      document.getElementById('q-theme').value = '希望キャラクター：' + character + '　希望テーマ：' + theme;
+    }
+  }
 });
 
 // ===== 出力形式（Web提出用 / 印刷用） =====
@@ -991,6 +999,8 @@ function filterStudentsByMode(mode) {
       opt.dataset.mode = s.mode || 'domestic';
       opt.dataset.jpLevel = s.jp_level || '';
       opt.dataset.grade = s.grade || '';
+      opt.dataset.character = s.character || '';
+      opt.dataset.theme = s.theme || '';
       opt.textContent = s.name + '（' + s.grade + '）' + (s.jp_level ? ' [' + s.jp_level + ']' : '');
       sel.appendChild(opt);
     });
