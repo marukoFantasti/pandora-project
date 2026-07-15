@@ -569,6 +569,7 @@ body.imode .ref-answer-area{padding:14px 18px}
     </div>
   </div>
 </div>
+<script src="pattern_bank/pattern_generator.js"></script>
 <script>
 var ALL_UNITS={"g01": [{"unit_id": "g01_c01_u01", "chapter_id": "g01_c01", "chapter_name": "なかまづくり", "unit_name": "なかまづくり"}, {"unit_id": "g01_c02_u01", "chapter_id": "g01_c02", "chapter_name": "なかまくらべ", "unit_name": "なかまくらべ"}, {"unit_id": "g01_c03_u01", "chapter_id": "g01_c03", "chapter_name": "5までのかずのあらわしかた", "unit_name": "5までのかずのあらわしかた"}, {"unit_id": "g01_c04_u01", "chapter_id": "g01_c04", "chapter_name": "5までのかずのならびかた", "unit_name": "5までのかずのならびかた"}, {"unit_id": "g01_c05_u01", "chapter_id": "g01_c05", "chapter_name": "10までのかずのあらわしかた", "unit_name": "10までのかずのあらわしかた"}, {"unit_id": "g01_c06_u01", "chapter_id": "g01_c06", "chapter_name": "10までのかずのならびかた", "unit_name": "10までのかずのならびかた"}, {"unit_id": "g01_c07_u01", "chapter_id": "g01_c07", "chapter_name": "0というかず", "unit_name": "0というかず"}, {"unit_id": "g01_c08_u01", "chapter_id": "g01_c08", "chapter_name": "まえからなんばんめ", "unit_name": "まえからなんばんめ"}, {"unit_id": "g01_c09_u01", "chapter_id": "g01_c09", "chapter_name": "まえからなん人", "unit_name": "まえからなん人"}, {"unit_id": "g01_c10_u01", "chapter_id": "g01_c10", "chapter_name": "いくつといくつ", "unit_name": "いくつといくつ"}, {"unit_id": "g01_c11_u01", "chapter_id": "g01_c11", "chapter_name": "10づくり", "unit_name": "10づくり"}, {"unit_id": "g01_c12_u01", "chapter_id": "g01_c12", "chapter_name": "たしざんのけいさん①", "unit_name": "たしざんのけいさん①"}, {"unit_id": "g01_c13_u01", "chapter_id": "g01_c13", "chapter_name": "たしざんのけいさん②", "unit_name": "たしざんのけいさん②"}, {"unit_id": "g01_c14_u01", "chapter_id": "g01_c14", "chapter_name": "0のたしざん", "unit_name": "0のたしざん"}, {"unit_id": "g01_c15_u01", "chapter_id": "g01_c15", "chapter_name": "ひきざんのけいさん①", "unit_name": "ひきざんのけいさん①"}, {"unit_id": "g01_c16_u01", "chapter_id": "g01_c16", "chapter_name": "ひきざんのけいさん②", "unit_name": "ひきざんのけいさん②"}, {"unit_id": "g01_c17_u01", "chapter_id": "g01_c17", "chapter_name": "0のひきざん", "unit_name": "0のひきざん"}, {"unit_id": "g01_c18_u01", "chapter_id": "g01_c18", "chapter_name": "ちがいはいくつ", "unit_name": "ちがいはいくつ"}, {"unit_id": "g01_c19_u01", "chapter_id": "g01_c19", "chapter_name": "20までのかずのあらわしかた", "unit_name": "20までのかずのあらわしかた"}, {"unit_id": "g01_c20_u01", "chapter_id": "g01_c20", "chapter_name": "20までのかずのしくみ", "unit_name": "20までのかずのしくみ"}, {"unit_id": "g01_c21_u01", "chapter_id": "g01_c21", "chapter_name": "20までのかずのならびかた①", "unit_name": "20までのかずのならびかた①"}, {"unit_id": "g01_c22_u01", "chapter_id": "g01_c22", "chapter_name": "20までのかずのならびかた②", "unit_name": "20までのかずのならびかた②"}, {"unit_id": "g01_c23_u01", "chapter_id": "g01_c23", "chapter_name": "かずしらべ", "unit_name": "かずしらべ"}, {"unit_id": "g01_c24_u01", "chapter_id": "g01_c24", "chapter_name": "ながさくらべ", "unit_name": "ながさくらべ"}, {"unit_id": "g01_c25_u01", "chapter_id": "g01_c25", "chapter_name": "かさくらべ", "unit_name": "かさくらべ"}, {"unit_id": "g01_c26_u01", "chapter_id": "g01_c26", "chapter_name": "ひろさくらべ", "unit_name": "ひろさくらべ"}, {"unit_id": "g01_c27_u01", "chapter_id": "g01_c27", "chapter_name": "3つのかずのたしざん", "unit_name": "3つのかずのたしざん"}, {"unit_id": "g01_c28_u01", "chapter_id": "g01_c28", "chapter_name": "3つのかずのひきざん", "unit_name": "3つのかずのひきざん"}, {"unit_id": "g01_c29_u01", "chapter_id": "g01_c29", "chapter_name": "3つのかずのけいさん", "unit_name": "3つのかずのけいさん"}, {"unit_id": "g01_c30_u01", "chapter_id": "g01_c30", "chapter_name": "くり上がりのあるたしざん①", "unit_name": "くり上がりのあるたしざん①"}, {"unit_id": "g01_c31_u01", "chapter_id": "g01_c31", "chapter_name": "くり上がりのあるたしざん②", "unit_name": "くり上がりのあるたしざん②"}, {"unit_id": "g01_c32_u01", "chapter_id": "g01_c32", "chapter_name": "くり下がりのあるひきざん①", "unit_name": "くり下がりのあるひきざん①"}, {"unit_id": "g01_c33_u01", "chapter_id": "g01_c33", "chapter_name": "くり下がりのあるひきざん②", "unit_name": "くり下がりのあるひきざん②"}, {"unit_id": "g01_c34_u01", "chapter_id": "g01_c34", "chapter_name": "かたちあそび", "unit_name": "かたちあそび"}, {"unit_id": "g01_c35_u01", "chapter_id": "g01_c35", "chapter_name": "かたちうつし", "unit_name": "かたちうつし"}, {"unit_id": "g01_c36_u01", "chapter_id": "g01_c36", "chapter_name": "かたちづくり", "unit_name": "かたちづくり"}, {"unit_id": "g01_c37_u01", "chapter_id": "g01_c37", "chapter_name": "100までのかずのあらわしかた", "unit_name": "100までのかずのあらわしかた"}, {"unit_id": "g01_c38_u01", "chapter_id": "g01_c38", "chapter_name": "100までのかずのしくみ", "unit_name": "100までのかずのしくみ"}, {"unit_id": "g01_c39_u01", "chapter_id": "g01_c39", "chapter_name": "100までのかずのならびかた①", "unit_name": "100までのかずのならびかた①"}, {"unit_id": "g01_c40_u01", "chapter_id": "g01_c40", "chapter_name": "100までのかずのならびかた②", "unit_name": "100までのかずのならびかた②"}, {"unit_id": "g01_c41_u01", "chapter_id": "g01_c41", "chapter_name": "100よりおおきいかずのあらわしかた", "unit_name": "100よりおおきいかずのあらわしかた"}, {"unit_id": "g01_c42_u01", "chapter_id": "g01_c42", "chapter_name": "100よりおおきいかずのならびかた", "unit_name": "100よりおおきいかずのならびかた"}, {"unit_id": "g01_c43_u01", "chapter_id": "g01_c43", "chapter_name": "なんじなんじはん", "unit_name": "なんじなんじはん"}, {"unit_id": "g01_c44_u01", "chapter_id": "g01_c44", "chapter_name": "なんじなんぷん", "unit_name": "なんじなんぷん"}, {"unit_id": "g01_c45_u01", "chapter_id": "g01_c45", "chapter_name": "ぶんしょうだい①", "unit_name": "ぶんしょうだい①"}, {"unit_id": "g01_c46_u01", "chapter_id": "g01_c46", "chapter_name": "ぶんしょうだい②", "unit_name": "ぶんしょうだい②"}, {"unit_id": "g01_c47_u01", "chapter_id": "g01_c47", "chapter_name": "ぶんしょうだい③", "unit_name": "ぶんしょうだい③"}, {"unit_id": "g01_c48_u01", "chapter_id": "g01_c48", "chapter_name": "おおきいかずのけいさん①", "unit_name": "おおきいかずのけいさん①"}, {"unit_id": "g01_c49_u01", "chapter_id": "g01_c49", "chapter_name": "おおきいかずのけいさん②", "unit_name": "おおきいかずのけいさん②"}, {"unit_id": "g01_c50_u01", "chapter_id": "g01_c50", "chapter_name": "おなじかずずつ", "unit_name": "おなじかずずつ"}], "g02": [{"unit_id": "g02_c01_u01", "chapter_id": "g02_c01", "chapter_name": "ひょうとグラフ", "unit_name": "ひょうとグラフ"}, {"unit_id": "g02_c02_u01", "chapter_id": "g02_c02", "chapter_name": "時こくと時間①", "unit_name": "時こくと時間①"}, {"unit_id": "g02_c03_u01", "chapter_id": "g02_c03", "chapter_name": "時こくと時間②", "unit_name": "時こくと時間②"}, {"unit_id": "g02_c04_u01", "chapter_id": "g02_c04", "chapter_name": "時こくと時間③", "unit_name": "時こくと時間③"}, {"unit_id": "g02_c05_u01", "chapter_id": "g02_c05", "chapter_name": "2けたの数のたし算", "unit_name": "2けたの数のたし算"}, {"unit_id": "g02_c06_u01", "chapter_id": "g02_c06", "chapter_name": "くり上がりのあるたし算", "unit_name": "くり上がりのあるたし算"}, {"unit_id": "g02_c07_u01", "chapter_id": "g02_c07", "chapter_name": "たし算のたしかめ", "unit_name": "たし算のたしかめ"}, {"unit_id": "g02_c08_u01", "chapter_id": "g02_c08", "chapter_name": "2けたの数のひき算", "unit_name": "2けたの数のひき算"}, {"unit_id": "g02_c09_u01", "chapter_id": "g02_c09", "chapter_name": "くり下がりのあるひき算", "unit_name": "くり下がりのあるひき算"}, {"unit_id": "g02_c10_u01", "chapter_id": "g02_c10", "chapter_name": "ひき算のたしかめ", "unit_name": "ひき算のたしかめ"}, {"unit_id": "g02_c11_u01", "chapter_id": "g02_c11", "chapter_name": "3つの数のたし算とひき算", "unit_name": "3つの数のたし算とひき算"}, {"unit_id": "g02_c12_u01", "chapter_id": "g02_c12", "chapter_name": "2けたの数のたし算とひき算のりよう", "unit_name": "2けたの数のたし算とひき算のりよう"}, {"unit_id": "g02_c13_u01", "chapter_id": "g02_c13", "chapter_name": "長さのはかり方とたんい", "unit_name": "長さのはかり方とたんい"}, {"unit_id": "g02_c14_u01", "chapter_id": "g02_c14", "chapter_name": "長さの計算", "unit_name": "長さの計算"}, {"unit_id": "g02_c15_u01", "chapter_id": "g02_c15", "chapter_name": "1000までの数のあらわし方", "unit_name": "1000までの数のあらわし方"}, {"unit_id": "g02_c16_u01", "chapter_id": "g02_c16", "chapter_name": "1000までの数のしくみ", "unit_name": "1000までの数のしくみ"}, {"unit_id": "g02_c17_u01", "chapter_id": "g02_c17", "chapter_name": "1000までの数の大きさ", "unit_name": "1000までの数の大きさ"}, {"unit_id": "g02_c18_u01", "chapter_id": "g02_c18", "chapter_name": "何十、何百のたし算とひき算", "unit_name": "何十、何百のたし算とひき算"}, {"unit_id": "g02_c19_u01", "chapter_id": "g02_c19", "chapter_name": "かさのはかり方とたんい", "unit_name": "かさのはかり方とたんい"}, {"unit_id": "g02_c20_u01", "chapter_id": "g02_c20", "chapter_name": "かさの計算", "unit_name": "かさの計算"}, {"unit_id": "g02_c21_u01", "chapter_id": "g02_c21", "chapter_name": "答えが3けたになるたし算", "unit_name": "答えが3けたになるたし算"}, {"unit_id": "g02_c22_u01", "chapter_id": "g02_c22", "chapter_name": "3けたの数のたし算", "unit_name": "3けたの数のたし算"}, {"unit_id": "g02_c23_u01", "chapter_id": "g02_c23", "chapter_name": "(3けた)-(2けた)のひき算①", "unit_name": "(3けた)-(2けた)のひき算①"}, {"unit_id": "g02_c24_u01", "chapter_id": "g02_c24", "chapter_name": "(3けた)-(2けた)のひき算②", "unit_name": "(3けた)-(2けた)のひき算②"}, {"unit_id": "g02_c25_u01", "chapter_id": "g02_c25", "chapter_name": "計算のけっかの見つもり", "unit_name": "計算のけっかの見つもり"}, {"unit_id": "g02_c26_u01", "chapter_id": "g02_c26", "chapter_name": "3けたの数のたし算とひき算のりよう", "unit_name": "3けたの数のたし算とひき算のりよう"}, {"unit_id": "g02_c27_u01", "chapter_id": "g02_c27", "chapter_name": "三角形と四角形①", "unit_name": "三角形と四角形①"}, {"unit_id": "g02_c28_u01", "chapter_id": "g02_c28", "chapter_name": "三角形と四角形②", "unit_name": "三角形と四角形②"}, {"unit_id": "g02_c29_u01", "chapter_id": "g02_c29", "chapter_name": "長方形と正方形", "unit_name": "長方形と正方形"}, {"unit_id": "g02_c30_u01", "chapter_id": "g02_c30", "chapter_name": "直角三角形", "unit_name": "直角三角形"}, {"unit_id": "g02_c31_u01", "chapter_id": "g02_c31", "chapter_name": "かけ算", "unit_name": "かけ算"}, {"unit_id": "g02_c32_u01", "chapter_id": "g02_c32", "chapter_name": "5のだん、2のだんの九九", "unit_name": "5のだん、2のだんの九九"}, {"unit_id": "g02_c33_u01", "chapter_id": "g02_c33", "chapter_name": "3のだん、4のだんの九九", "unit_name": "3のだん、4のだんの九九"}, {"unit_id": "g02_c34_u01", "chapter_id": "g02_c34", "chapter_name": "6のだん、7のだんの九九", "unit_name": "6のだん、7のだんの九九"}, {"unit_id": "g02_c35_u01", "chapter_id": "g02_c35", "chapter_name": "8のだん、9のだん、1のだんの九九", "unit_name": "8のだん、9のだん、1のだんの九九"}, {"unit_id": "g02_c36_u01", "chapter_id": "g02_c36", "chapter_name": "ばいとかけ算", "unit_name": "ばいとかけ算"}, {"unit_id": "g02_c37_u01", "chapter_id": "g02_c37", "chapter_name": "九九のひょうときまり", "unit_name": "九九のひょうときまり"}, {"unit_id": "g02_c38_u01", "chapter_id": "g02_c38", "chapter_name": "(2けた)×(1けた)のかけ算", "unit_name": "(2けた)×(1けた)のかけ算"}, {"unit_id": "g02_c39_u01", "chapter_id": "g02_c39", "chapter_name": "かけ算のりよう", "unit_name": "かけ算のりよう"}, {"unit_id": "g02_c40_u01", "chapter_id": "g02_c40", "chapter_name": "1万までの数のあらわし方", "unit_name": "1万までの数のあらわし方"}, {"unit_id": "g02_c41_u01", "chapter_id": "g02_c41", "chapter_name": "1万までの数のしくみ", "unit_name": "1万までの数のしくみ"}, {"unit_id": "g02_c42_u01", "chapter_id": "g02_c42", "chapter_name": "1万までの数の大きさ", "unit_name": "1万までの数の大きさ"}, {"unit_id": "g02_c43_u01", "chapter_id": "g02_c43", "chapter_name": "長い長さのあらわし方", "unit_name": "長い長さのあらわし方"}, {"unit_id": "g02_c44_u01", "chapter_id": "g02_c44", "chapter_name": "長い長さのたんい", "unit_name": "長い長さのたんい"}, {"unit_id": "g02_c45_u01", "chapter_id": "g02_c45", "chapter_name": "図をつかった考え方①", "unit_name": "図をつかった考え方①"}, {"unit_id": "g02_c46_u01", "chapter_id": "g02_c46", "chapter_name": "図をつかった考え方②", "unit_name": "図をつかった考え方②"}, {"unit_id": "g02_c47_u01", "chapter_id": "g02_c47", "chapter_name": "図をつかった考え方③", "unit_name": "図をつかった考え方③"}, {"unit_id": "g02_c48_u01", "chapter_id": "g02_c48", "chapter_name": "はこの形①", "unit_name": "はこの形①"}, {"unit_id": "g02_c49_u01", "chapter_id": "g02_c49", "chapter_name": "はこの形②", "unit_name": "はこの形②"}, {"unit_id": "g02_c50_u01", "chapter_id": "g02_c50", "chapter_name": "はこを広げた形", "unit_name": "はこを広げた形"}, {"unit_id": "g02_c51_u01", "chapter_id": "g02_c51", "chapter_name": "分数", "unit_name": "分数"}], "g03": [{"unit_id": "g03_c01_u01", "chapter_id": "g03_c01", "chapter_name": "かけ算のきまり", "unit_name": "かけ算のきまり"}, {"unit_id": "g03_c02_u01", "chapter_id": "g03_c02", "chapter_name": "かけ算のきまりとり用", "unit_name": "かけ算のきまりとり用"}, {"unit_id": "g03_c03_u01", "chapter_id": "g03_c03", "chapter_name": "時間のたし算とひき算、短い時間", "unit_name": "時間のたし算とひき算"}, {"unit_id": "g03_c03_u02", "chapter_id": "g03_c03", "chapter_name": "時間のたし算とひき算、短い時間", "unit_name": "短い時間"}, {"unit_id": "g03_c04_u01", "chapter_id": "g03_c04", "chapter_name": "(2けたの数)÷(1けたの数)のわり算の計算", "unit_name": "わり算の計算"}, {"unit_id": "g03_c05_u01", "chapter_id": "g03_c05", "chapter_name": "(2けたの数)÷(1けたの数)のわり算の問題", "unit_name": "わり算の問題"}, {"unit_id": "g03_c06_u01", "chapter_id": "g03_c06", "chapter_name": "答えが九九にないわり算とわり算のり用", "unit_name": "答えが九九にないわり算"}, {"unit_id": "g03_c07_u01", "chapter_id": "g03_c07", "chapter_name": "円", "unit_name": "円"}, {"unit_id": "g03_c08_u01", "chapter_id": "g03_c08", "chapter_name": "球", "unit_name": "球"}, {"unit_id": "g03_c09_u01", "chapter_id": "g03_c09", "chapter_name": "3けたや4けたの数のたし算", "unit_name": "3けたや4けたの数のたし算"}, {"unit_id": "g03_c10_u01", "chapter_id": "g03_c10", "chapter_name": "3けたや4けたの数のひき算", "unit_name": "3けたや4けたの数のひき算"}, {"unit_id": "g03_c11_u01", "chapter_id": "g03_c11", "chapter_name": "たし算とひき算の暗算とり用", "unit_name": "たし算とひき算の暗算とり用"}, {"unit_id": "g03_c12_u01", "chapter_id": "g03_c12", "chapter_name": "表とグラフ", "unit_name": "表とグラフ"}, {"unit_id": "g03_c13_u01", "chapter_id": "g03_c13", "chapter_name": "いろいろなぼうグラフ", "unit_name": "いろいろなぼうグラフ"}, {"unit_id": "g03_c14_u01", "chapter_id": "g03_c14", "chapter_name": "あまりのあるわり算", "unit_name": "あまりのあるわり算"}, {"unit_id": "g03_c15_u01", "chapter_id": "g03_c15", "chapter_name": "あまりの考え方", "unit_name": "あまりの考え方"}, {"unit_id": "g03_c16_u01", "chapter_id": "g03_c16", "chapter_name": "万の位の数、億の位の数", "unit_name": "万の位の数、億の位の数"}, {"unit_id": "g03_c17_u01", "chapter_id": "g03_c17", "chapter_name": "大きい数のり用", "unit_name": "大きい数のり用"}, {"unit_id": "g03_c18_u01", "chapter_id": "g03_c18", "chapter_name": "(2けたの数)×(1けたの数)のかけ算", "unit_name": "(2けたの数)×(1けたの数)のかけ算"}, {"unit_id": "g03_c19_u01", "chapter_id": "g03_c19", "chapter_name": "(3けたの数)×(1けたの数)のかけ算", "unit_name": "(3けたの数)×(1けたの数)のかけ算"}, {"unit_id": "g03_c20_u01", "chapter_id": "g03_c20", "chapter_name": "1けたの数をかけるかけ算のり用", "unit_name": "1けたの数をかけるかけ算のり用"}, {"unit_id": "g03_c21_u01", "chapter_id": "g03_c21", "chapter_name": "長い長さ", "unit_name": "長い長さ"}, {"unit_id": "g03_c22_u01", "chapter_id": "g03_c22", "chapter_name": "小数の表し方", "unit_name": "小数の表し方"}, {"unit_id": "g03_c23_u01", "chapter_id": "g03_c23", "chapter_name": "小数のしくみ", "unit_name": "小数のしくみ"}, {"unit_id": "g03_c24_u01", "chapter_id": "g03_c24", "chapter_name": "小数のたし算とひき算", "unit_name": "小数のたし算とひき算"}, {"unit_id": "g03_c25_u01", "chapter_id": "g03_c25", "chapter_name": "二等辺三角形、正三角形、角", "unit_name": "二等辺三角形、正三角形、角"}, {"unit_id": "g03_c26_u01", "chapter_id": "g03_c26", "chapter_name": "分数のしくみと大きさ", "unit_name": "分数のしくみと大きさ"}, {"unit_id": "g03_c27_u01", "chapter_id": "g03_c27", "chapter_name": "分数のたし算とひき算", "unit_name": "分数のたし算とひき算"}, {"unit_id": "g03_c28_u01", "chapter_id": "g03_c28", "chapter_name": "□を使った式", "unit_name": "□を使った式"}, {"unit_id": "g03_c29_u01", "chapter_id": "g03_c29", "chapter_name": "2けたの数をかけるかけ算", "unit_name": "2けたの数をかけるかけ算"}, {"unit_id": "g03_c30_u01", "chapter_id": "g03_c30", "chapter_name": "3けたや4けたの数をかけるかけ算", "unit_name": "3けたや4けたの数をかけるかけ算"}, {"unit_id": "g03_c31_u01", "chapter_id": "g03_c31", "chapter_name": "かけ算のり用", "unit_name": "かけ算のり用"}, {"unit_id": "g03_c32_u01", "chapter_id": "g03_c32", "chapter_name": "重さ", "unit_name": "重さ"}], "g04": [{"unit_id": "g04_c01_u01", "chapter_id": "g04_c01", "chapter_name": "大きい数", "unit_name": "大きい数の表し方"}, {"unit_id": "g04_c01_u02", "chapter_id": "g04_c01", "chapter_name": "大きい数", "unit_name": "大きい数のしくみ"}, {"unit_id": "g04_c01_u03", "chapter_id": "g04_c01", "chapter_name": "大きい数", "unit_name": "大きい数の計算"}, {"unit_id": "g04_c02_u01", "chapter_id": "g04_c02", "chapter_name": "変化とグラフ・表", "unit_name": "折れ線グラフ"}, {"unit_id": "g04_c02_u02", "chapter_id": "g04_c02", "chapter_name": "変化とグラフ・表", "unit_name": "いろいろな折れ線グラフ"}, {"unit_id": "g04_c02_u03", "chapter_id": "g04_c02", "chapter_name": "変化とグラフ・表", "unit_name": "整理のしかた"}, {"unit_id": "g04_c03_u01", "chapter_id": "g04_c03", "chapter_name": "1けたの数でわるわり算", "unit_name": "1けたの数でわるわり算"}, {"unit_id": "g04_c03_u02", "chapter_id": "g04_c03", "chapter_name": "1けたの数でわるわり算", "unit_name": "1けたの数でわるわり算の利用"}, {"unit_id": "g04_c04_u01", "chapter_id": "g04_c04", "chapter_name": "三角形と角", "unit_name": "角の大きさ"}, {"unit_id": "g04_c04_u02", "chapter_id": "g04_c04", "chapter_name": "三角形と角", "unit_name": "角度の計算"}, {"unit_id": "g04_c05_u01", "chapter_id": "g04_c05", "chapter_name": "垂直・平行と図形", "unit_name": "垂直と平行"}, {"unit_id": "g04_c05_u02", "chapter_id": "g04_c05", "chapter_name": "垂直・平行と図形", "unit_name": "台形と平行四辺形"}, {"unit_id": "g04_c05_u03", "chapter_id": "g04_c05", "chapter_name": "垂直・平行と図形", "unit_name": "いろいろな四角形と対角線"}, {"unit_id": "g04_c06_u01", "chapter_id": "g04_c06", "chapter_name": "小数のたし算とひき算", "unit_name": "小数の表し方"}, {"unit_id": "g04_c06_u02", "chapter_id": "g04_c06", "chapter_name": "小数のたし算とひき算", "unit_name": "小数のしくみ"}, {"unit_id": "g04_c06_u03", "chapter_id": "g04_c06", "chapter_name": "小数のたし算とひき算", "unit_name": "小数のたし算とひき算"}, {"unit_id": "g04_c07_u01", "chapter_id": "g04_c07", "chapter_name": "整数のわり算", "unit_name": "2けたの数でわるわり算"}, {"unit_id": "g04_c07_u02", "chapter_id": "g04_c07", "chapter_name": "整数のわり算", "unit_name": "整数のわり算"}, {"unit_id": "g04_c07_u03", "chapter_id": "g04_c07", "chapter_name": "整数のわり算", "unit_name": "整数のわり算の利用"}, {"unit_id": "g04_c08_u01", "chapter_id": "g04_c08", "chapter_name": "がい数", "unit_name": "がい数"}, {"unit_id": "g04_c08_u02", "chapter_id": "g04_c08", "chapter_name": "がい数", "unit_name": "見積もり"}, {"unit_id": "g04_c09_u01", "chapter_id": "g04_c09", "chapter_name": "式と計算", "unit_name": "計算のじゅんじょ"}, {"unit_id": "g04_c09_u02", "chapter_id": "g04_c09", "chapter_name": "式と計算", "unit_name": "計算のきまり"}, {"unit_id": "g04_c09_u03", "chapter_id": "g04_c09", "chapter_name": "式と計算", "unit_name": "かけ算とわり算のくふう"}, {"unit_id": "g04_c09_u04", "chapter_id": "g04_c09", "chapter_name": "式と計算", "unit_name": "□を使った式"}, {"unit_id": "g04_c10_u01", "chapter_id": "g04_c10", "chapter_name": "面積", "unit_name": "長方形や正方形の面積"}, {"unit_id": "g04_c10_u02", "chapter_id": "g04_c10", "chapter_name": "面積", "unit_name": "面積の求め方"}, {"unit_id": "g04_c10_u03", "chapter_id": "g04_c10", "chapter_name": "面積", "unit_name": "面積のいろいろな単位"}, {"unit_id": "g04_c10_u04", "chapter_id": "g04_c10", "chapter_name": "面積", "unit_name": "面積の問題"}, {"unit_id": "g04_c11_u01", "chapter_id": "g04_c11", "chapter_name": "小数のかけ算とわり算", "unit_name": "小数×整数"}, {"unit_id": "g04_c11_u02", "chapter_id": "g04_c11", "chapter_name": "小数のかけ算とわり算", "unit_name": "小数÷整数①"}, {"unit_id": "g04_c11_u03", "chapter_id": "g04_c11", "chapter_name": "小数のかけ算とわり算", "unit_name": "小数÷整数②"}, {"unit_id": "g04_c12_u01", "chapter_id": "g04_c12", "chapter_name": "分数", "unit_name": "いろいろな分数"}, {"unit_id": "g04_c12_u02", "chapter_id": "g04_c12", "chapter_name": "分数", "unit_name": "分数のたし算とひき算"}, {"unit_id": "g04_c13_u01", "chapter_id": "g04_c13", "chapter_name": "変わり方", "unit_name": "変わり方"}, {"unit_id": "g04_c14_u01", "chapter_id": "g04_c14", "chapter_name": "立体", "unit_name": "直方体と立方体"}, {"unit_id": "g04_c14_u02", "chapter_id": "g04_c14", "chapter_name": "立体", "unit_name": "辺や面の垂直と平行"}], "g05": [{"unit_id": "g05_c01_u01", "chapter_id": "g05_c01", "chapter_name": "小数のかけ算とわり算", "unit_name": "整数×小数"}, {"unit_id": "g05_c01_u02", "chapter_id": "g05_c01", "chapter_name": "小数のかけ算とわり算", "unit_name": "小数×小数"}, {"unit_id": "g05_c01_u03", "chapter_id": "g05_c01", "chapter_name": "小数のかけ算とわり算", "unit_name": "整数÷小数"}, {"unit_id": "g05_c01_u04", "chapter_id": "g05_c01", "chapter_name": "小数のかけ算とわり算", "unit_name": "小数÷小数"}, {"unit_id": "g05_c01_u05", "chapter_id": "g05_c01", "chapter_name": "小数のかけ算とわり算", "unit_name": "小数のかけ算とわり算の利用"}, {"unit_id": "g05_c01_u06", "chapter_id": "g05_c01", "chapter_name": "小数のかけ算とわり算", "unit_name": "小数の倍"}, {"unit_id": "g05_c02_u01", "chapter_id": "g05_c02", "chapter_name": "直方体や立方体の体積", "unit_name": "直方体や立方体の体積"}, {"unit_id": "g05_c02_u02", "chapter_id": "g05_c02", "chapter_name": "直方体や立方体の体積", "unit_name": "いろいろな体積"}, {"unit_id": "g05_c03_u01", "chapter_id": "g05_c03", "chapter_name": "2つの量の変わり方", "unit_name": "2つの量の変わり方"}, {"unit_id": "g05_c04_u01", "chapter_id": "g05_c04", "chapter_name": "図形の角と合同", "unit_name": "合同な図形"}, {"unit_id": "g05_c04_u02", "chapter_id": "g05_c04", "chapter_name": "図形の角と合同", "unit_name": "三角形の角"}, {"unit_id": "g05_c04_u03", "chapter_id": "g05_c04", "chapter_name": "図形の角と合同", "unit_name": "四角形・多角形の角"}, {"unit_id": "g05_c05_u01", "chapter_id": "g05_c05", "chapter_name": "整数の性質", "unit_name": "偶数と奇数"}, {"unit_id": "g05_c05_u02", "chapter_id": "g05_c05", "chapter_name": "整数の性質", "unit_name": "倍数と公倍数"}, {"unit_id": "g05_c05_u03", "chapter_id": "g05_c05", "chapter_name": "整数の性質", "unit_name": "倍数と公倍数の利用"}, {"unit_id": "g05_c05_u04", "chapter_id": "g05_c05", "chapter_name": "整数の性質", "unit_name": "約数と公約数"}, {"unit_id": "g05_c05_u05", "chapter_id": "g05_c05", "chapter_name": "整数の性質", "unit_name": "公約数の利用"}, {"unit_id": "g05_c06_u01", "chapter_id": "g05_c06", "chapter_name": "分数のたし算とひき算", "unit_name": "約分"}, {"unit_id": "g05_c06_u02", "chapter_id": "g05_c06", "chapter_name": "分数のたし算とひき算", "unit_name": "通分"}, {"unit_id": "g05_c06_u03", "chapter_id": "g05_c06", "chapter_name": "分数のたし算とひき算", "unit_name": "分数の性質"}, {"unit_id": "g05_c06_u04", "chapter_id": "g05_c06", "chapter_name": "分数のたし算とひき算", "unit_name": "分数のたし算とひき算"}, {"unit_id": "g05_c06_u05", "chapter_id": "g05_c06", "chapter_name": "分数のたし算とひき算", "unit_name": "いろいろな分数のたし算とひき算"}, {"unit_id": "g05_c07_u01", "chapter_id": "g05_c07", "chapter_name": "平均", "unit_name": "平均"}, {"unit_id": "g05_c08_u01", "chapter_id": "g05_c08", "chapter_name": "単位量あたりの大きさ", "unit_name": "単位量あたりの大きさ"}, {"unit_id": "g05_c09_u01", "chapter_id": "g05_c09", "chapter_name": "速さ", "unit_name": "速さ"}, {"unit_id": "g05_c09_u02", "chapter_id": "g05_c09", "chapter_name": "速さ", "unit_name": "速さの利用"}, {"unit_id": "g05_c10_u01", "chapter_id": "g05_c10", "chapter_name": "図形の面積", "unit_name": "平行四辺形の面積"}, {"unit_id": "g05_c10_u02", "chapter_id": "g05_c10", "chapter_name": "図形の面積", "unit_name": "三角形の面積"}, {"unit_id": "g05_c10_u03", "chapter_id": "g05_c10", "chapter_name": "図形の面積", "unit_name": "台形の面積"}, {"unit_id": "g05_c10_u04", "chapter_id": "g05_c10", "chapter_name": "図形の面積", "unit_name": "三角形・四角形の面積"}, {"unit_id": "g05_c11_u01", "chapter_id": "g05_c11", "chapter_name": "割合とグラフ", "unit_name": "割合"}, {"unit_id": "g05_c11_u02", "chapter_id": "g05_c11", "chapter_name": "割合とグラフ", "unit_name": "百分率と歩合"}, {"unit_id": "g05_c11_u03", "chapter_id": "g05_c11", "chapter_name": "割合とグラフ", "unit_name": "帯グラフと円グラフ"}, {"unit_id": "g05_c11_u04", "chapter_id": "g05_c11", "chapter_name": "割合とグラフ", "unit_name": "いろいろな帯グラフや円グラフ"}, {"unit_id": "g05_c11_u05", "chapter_id": "g05_c11", "chapter_name": "割合とグラフ", "unit_name": "割合についての問題"}, {"unit_id": "g05_c12_u01", "chapter_id": "g05_c12", "chapter_name": "円と正多角形", "unit_name": "正多角形"}, {"unit_id": "g05_c12_u02", "chapter_id": "g05_c12", "chapter_name": "円と正多角形", "unit_name": "円"}, {"unit_id": "g05_c13_u01", "chapter_id": "g05_c13", "chapter_name": "立体", "unit_name": "角柱と円柱"}], "g06": [{"unit_id": "g06_c01_u01", "chapter_id": "g06_c01", "chapter_name": "対称な図形", "unit_name": "①線対称"}, {"unit_id": "g06_c01_u02", "chapter_id": "g06_c01", "chapter_name": "対称な図形", "unit_name": "②点対称"}, {"unit_id": "g06_c01_u03", "chapter_id": "g06_c01", "chapter_name": "対称な図形", "unit_name": "③多角形と対称"}, {"unit_id": "g06_c02_u01", "chapter_id": "g06_c02", "chapter_name": "文字と式", "unit_name": "④文字を使った式"}, {"unit_id": "g06_c02_u02", "chapter_id": "g06_c02", "chapter_name": "文字と式", "unit_name": "⑤逆算"}, {"unit_id": "g06_c03_u01", "chapter_id": "g06_c03", "chapter_name": "分数のかけ算とわり算", "unit_name": "⑥分数×整数"}, {"unit_id": "g06_c03_u02", "chapter_id": "g06_c03", "chapter_name": "分数のかけ算とわり算", "unit_name": "⑦分数÷整数"}, {"unit_id": "g06_c03_u03", "chapter_id": "g06_c03", "chapter_name": "分数のかけ算とわり算", "unit_name": "⑧分数×分数"}, {"unit_id": "g06_c03_u04", "chapter_id": "g06_c03", "chapter_name": "分数のかけ算とわり算", "unit_name": "⑨分数÷分数"}, {"unit_id": "g06_c03_u05", "chapter_id": "g06_c03", "chapter_name": "分数のかけ算とわり算", "unit_name": "⑩いろいろな分数の計算"}, {"unit_id": "g06_c04_u01", "chapter_id": "g06_c04", "chapter_name": "速さと割合の問題", "unit_name": "⑪速さと分数"}, {"unit_id": "g06_c04_u02", "chapter_id": "g06_c04", "chapter_name": "速さと割合の問題", "unit_name": "⑫速さの問題"}, {"unit_id": "g06_c04_u03", "chapter_id": "g06_c04", "chapter_name": "速さと割合の問題", "unit_name": "⑬割合と分数①"}, {"unit_id": "g06_c04_u04", "chapter_id": "g06_c04", "chapter_name": "速さと割合の問題", "unit_name": "⑭割合と分数②"}, {"unit_id": "g06_c05_u01", "chapter_id": "g06_c05", "chapter_name": "比", "unit_name": "⑮比"}, {"unit_id": "g06_c05_u02", "chapter_id": "g06_c05", "chapter_name": "比", "unit_name": "⑯比の利用"}, {"unit_id": "g06_c05_u03", "chapter_id": "g06_c05", "chapter_name": "比", "unit_name": "⑰比の問題"}, {"unit_id": "g06_c06_u01", "chapter_id": "g06_c06", "chapter_name": "図形の拡大と縮小", "unit_name": "⑱拡大図と縮図"}, {"unit_id": "g06_c06_u02", "chapter_id": "g06_c06", "chapter_name": "図形の拡大と縮小", "unit_name": "⑲縮図の利用"}, {"unit_id": "g06_c07_u01", "chapter_id": "g06_c07", "chapter_name": "データの整理と活用", "unit_name": "⑳データの代表値とちらばり"}, {"unit_id": "g06_c07_u02", "chapter_id": "g06_c07", "chapter_name": "データの整理と活用", "unit_name": "㉑度数分布表とヒストグラム"}, {"unit_id": "g06_c07_u03", "chapter_id": "g06_c07", "chapter_name": "データの整理と活用", "unit_name": "㉒いろいろなグラフ"}, {"unit_id": "g06_c08_u01", "chapter_id": "g06_c08", "chapter_name": "円の面積", "unit_name": "㉓円の面積"}, {"unit_id": "g06_c09_u01", "chapter_id": "g06_c09", "chapter_name": "体積", "unit_name": "㉔角柱や円柱の体積"}, {"unit_id": "g06_c10_u01", "chapter_id": "g06_c10", "chapter_name": "およその大きさ", "unit_name": "㉕およその大きさ"}, {"unit_id": "g06_c11_u01", "chapter_id": "g06_c11", "chapter_name": "比例と反比例", "unit_name": "㉖比例"}, {"unit_id": "g06_c11_u02", "chapter_id": "g06_c11", "chapter_name": "比例と反比例", "unit_name": "㉗比例の式と利用"}, {"unit_id": "g06_c11_u03", "chapter_id": "g06_c11", "chapter_name": "比例と反比例", "unit_name": "㉘比例のグラフ"}, {"unit_id": "g06_c11_u04", "chapter_id": "g06_c11", "chapter_name": "比例と反比例", "unit_name": "㉙反比例"}, {"unit_id": "g06_c11_u05", "chapter_id": "g06_c11", "chapter_name": "比例と反比例", "unit_name": "㉚反比例の式と利用"}, {"unit_id": "g06_c11_u06", "chapter_id": "g06_c11", "chapter_name": "比例と反比例", "unit_name": "㉛反比例のグラフ"}, {"unit_id": "g06_c12_u01", "chapter_id": "g06_c12", "chapter_name": "場合の数", "unit_name": "㉜場合の数"}], "jhs1": [{"unit_id": "jhs_c01_u01", "chapter_id": "jhs_c01", "chapter_name": "正負の数", "unit_name": "正負の数"}, {"unit_id": "jhs_c02_u01", "chapter_id": "jhs_c02", "chapter_name": "文字と式、式の計算(1)", "unit_name": "文字と式、式の計算(1)"}, {"unit_id": "jhs_c03_u01", "chapter_id": "jhs_c03", "chapter_name": "文字と式、式の計算(2)", "unit_name": "文字と式、式の計算(2)"}, {"unit_id": "jhs_c04_u01", "chapter_id": "jhs_c04", "chapter_name": "1次方程式、連立方程式(1)", "unit_name": "1次方程式、連立方程式(1)"}, {"unit_id": "jhs_c05_u01", "chapter_id": "jhs_c05", "chapter_name": "1次方程式、連立方程式(2)", "unit_name": "1次方程式、連立方程式(2)"}, {"unit_id": "jhs_c06_u01", "chapter_id": "jhs_c06", "chapter_name": "比例・反比例", "unit_name": "比例・反比例"}], "jhs2": [{"unit_id": "jhs_c07_u01", "chapter_id": "jhs_c07", "chapter_name": "1次関数(1)", "unit_name": "1次関数(1)"}, {"unit_id": "jhs_c08_u01", "chapter_id": "jhs_c08", "chapter_name": "1次関数(2)", "unit_name": "1次関数(2)"}, {"unit_id": "jhs_c09_u01", "chapter_id": "jhs_c09", "chapter_name": "資料の活用", "unit_name": "資料の活用"}, {"unit_id": "jhs_c10_u01", "chapter_id": "jhs_c10", "chapter_name": "確率", "unit_name": "確率"}, {"unit_id": "jhs_c11_u01", "chapter_id": "jhs_c11", "chapter_name": "平面図形", "unit_name": "平面図形"}, {"unit_id": "jhs_c12_u01", "chapter_id": "jhs_c12", "chapter_name": "図形の調べ方", "unit_name": "図形の調べ方"}, {"unit_id": "jhs_c13_u01", "chapter_id": "jhs_c13", "chapter_name": "三角形・平行四辺形", "unit_name": "三角形・平行四辺形"}, {"unit_id": "jhs_c14_u01", "chapter_id": "jhs_c14", "chapter_name": "空間図形", "unit_name": "空間図形"}], "jhs3": [{"unit_id": "jhs_c15_u01", "chapter_id": "jhs_c15", "chapter_name": "多項式", "unit_name": "多項式"}, {"unit_id": "jhs_c16_u01", "chapter_id": "jhs_c16", "chapter_name": "平方根", "unit_name": "平方根"}, {"unit_id": "jhs_c17_u01", "chapter_id": "jhs_c17", "chapter_name": "2次方程式", "unit_name": "2次方程式"}, {"unit_id": "jhs_c18_u01", "chapter_id": "jhs_c18", "chapter_name": "関数y=ax²(1)", "unit_name": "関数y=ax²(1)"}, {"unit_id": "jhs_c19_u01", "chapter_id": "jhs_c19", "chapter_name": "関数y=ax²(2)", "unit_name": "関数y=ax²(2)"}, {"unit_id": "jhs_c20_u01", "chapter_id": "jhs_c20", "chapter_name": "相似な図形(1)", "unit_name": "相似な図形(1)"}, {"unit_id": "jhs_c21_u01", "chapter_id": "jhs_c21", "chapter_name": "相似な図形(2)", "unit_name": "相似な図形(2)"}, {"unit_id": "jhs_c22_u01", "chapter_id": "jhs_c22", "chapter_name": "円", "unit_name": "円"}, {"unit_id": "jhs_c23_u01", "chapter_id": "jhs_c23", "chapter_name": "三平方の定理(1)", "unit_name": "三平方の定理(1)"}, {"unit_id": "jhs_c24_u01", "chapter_id": "jhs_c24", "chapter_name": "三平方の定理(2)、標本調査", "unit_name": "三平方の定理(2)、標本調査"}]};
 var ALL_REFS = null; // GASから動的取得
@@ -923,45 +924,137 @@ function generateReviewProblems(sub, maxCount, onDone) {
     '以下のJSON形式のみで出力してください（他のテキスト不要）:\n' +
     '{"problems":[{"number":1,"question":"問題文","answer":"答え","unit_name":"単元名","diff":"難易度"},...]}';
 
-  fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST', headers: apiHeaders(),
-    body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 2000,
-      messages: [{ role: 'user', content: prompt }] })
-  }).then(function(r){ return r.json(); }).then(function(d){
-    var txt = (d.content||[]).map(function(c){ return c.text||''; }).join('');
-    var parsed = {};
-    try { parsed = JSON.parse(txt.replace(/```json|```/g,'').trim()); } catch(e) { parsed = {problems:[]}; }
-    var probs = (parsed.problems||[]).map(function(p, i){
-      return Object.assign({}, p, {
-        problem_id: 'rev_' + sub.id + '_q' + (i+1),
-        tags: wrong[i] ? (wrong[i].tags||[]) : [],
-        review_type: 'retry'
-      });
-    });
-
-    // Layer 2.5 チェック
-    if (probs.length === 0) { onDone([]); return; }
-    var checkText = probs.map(function(p,i){
-      return '【問'+(i+1)+'】\n問題文：'+(p.question||'')+'\n正解：'+(p.answer||'');
-    }).join('\n\n');
+  // 生成1回分（初回・再生成共通）。checkConsistencyForReview()から
+  // 再生成関数として渡す。
+  function generateOnce(cb) {
     fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST', headers: apiHeaders(),
-      body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 300,
-        system: 'あなたは算数・数学の問題の整合性チェッカーです。',
-        messages: [{ role: 'user', content:
-          '以下の問題に数値の矛盾・論理的不整合がないか確認してください。\n\n' + checkText +
-          '\n\n{"ok":true} または {"ok":false,"issues":[...]} のJSONのみで返してください。' }] })
-    }).then(function(r){ return r.json(); }).then(function(cd){
-      var ctxt = (cd.content||[]).map(function(c){ return c.text||''; }).join('');
-      var cres = {};
-      try { cres = JSON.parse(ctxt.replace(/```json|```/g,'').trim()); } catch(e) { cres = {ok:true}; }
-      if (!cres.ok) {
-        // NGなら再生成1回だけ試みてスキップ
-        console.warn('復習問題の整合性NG:', cres.issues);
-      }
-      onDone(probs);
-    }).catch(function(){ onDone(probs); });
-  }).catch(function(){ onDone([]); });
+      body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 2000,
+        messages: [{ role: 'user', content: prompt }] })
+    }).then(function(r){ return r.json(); }).then(function(d){
+      var txt = (d.content||[]).map(function(c){ return c.text||''; }).join('');
+      var parsed = {};
+      try { parsed = JSON.parse(txt.replace(/```json|```/g,'').trim()); } catch(e) { parsed = {problems:[]}; }
+      var probs = (parsed.problems||[]).map(function(p, i){
+        return Object.assign({}, p, {
+          problem_id: 'rev_' + sub.id + '_q' + (i+1),
+          tags: wrong[i] ? (wrong[i].tags||[]) : [],
+          review_type: 'retry'
+        });
+      });
+      cb(probs);
+    }).catch(function(){ cb([]); });
+  }
+
+  generateOnce(function(probs){
+    if (probs.length === 0) { onDone([]); return; }
+    // checkConsistency()（1494行目の通常経路）と同じ11基準・同じ再試行回数（3回）で
+    // 整合性チェックを通す。NGなら再生成→再チェックを繰り返し、3回とも
+    // 確認できなければその復習問題をスキップする（本編の課題生成は止めない）。
+    checkConsistencyForReview(probs, 3, generateOnce, function(finalProbs){
+      onDone(finalProbs);
+    }, function(){
+      console.warn('[checkConsistency][review] 3回再試行しても整合性が確認できなかったため、復習問題をスキップします。');
+      onDone([]);
+    });
+  });
+}
+
+// checkConsistency()（generateQuizViaAI()にネストされたクロージャ）と
+// checkConsistencyForReview()（下記）が共通で使う11基準のチェック文言。
+// 以前は両関数にそれぞれ複製されていたが、基準文言の更新時に片方だけ
+// 更新し忘れる事故を避けるため、ここに一本化した（生成入口の一本化の一環）。
+var CONSISTENCY_CRITERIA_PROMPT =
+  '以下の問題に次の観点で問題がないか確認してください。\n'+
+  '1. 数値の矛盾・論理的不整合・解答不能な条件がないか。\n'+
+  '2. 問題文中に(1)(2)(3)のような番号付き設問がある場合、それぞれが何を問うているのか、問題文の中で十分に説明されているか。番号だけがあって具体的な条件が書かれていない場合はNGとする。\n'+
+  '3. 問題文が具体的な数量（〜本、〜個等）を確定させている場合、(2)以降のサブ問題に含まれる数値のうち、1つでも本文中の数量から導出できない・説明されていないものがあれば、そのサブ問題全体をNGとする。'+
+  'サブ問題の数値の一部（例えば2つのうち1つ）が本文の数字と一致していても、残りの数値が本文にないなら部分一致で妥協せずNGとすること（「一部が合っているからOK」という判定はしないこと）。'+
+  '「0を足す」「0をかける」のように数学的に自明・些細に見える操作であっても、その0という数値が本文中に一度も明示されていなければ同様にNGとする（操作の自明さは判定基準にしない。本文に書かれているかどうかだけを基準にする）。'+
+  '一方、問題文が「次の□に当てはまる数をかきなさい」のような一般的な計算パターンの例示に留まり、本文が具体的な数量を確定させていない場合は、サブ問題の数値が本文と異なっていてもNGにしない。\n'+
+  '4. 文章題として問いが成立しているか確認する。本文が疑問文（「〜は何個ですか」等）または「〜をもとめなさい」のような指示で終わっておらず、生徒が何を求めればいいのか本文から分からない場合はNGとする。'+
+  'また、本文中に確定した具体的な数量がある場合、その数量が提示される式（1問構成でもサブ問題構成でも）のどれにも一切使われていない場合もNGとする（基準3の「サブ問題の数値が本文にない」を1問構成の場合にも適用する拡張）。\n'+
+  '5. 問題文自体に、生徒が求めるべき計算の答えが数値として明示されている場合はNGとする（例：九九や計算パターンを提示する際、右辺の答えまで書いてしまっている）。答えの部分は「7×2=□」のように空欄（□）にすること。\n'+
+  '6. 各問題のlevelに応じて、問題文中に計算の式・手順を示してよいかを判定する。levelが\'example_follow\'（例題）の場合のみ、問題文中に計算の式・手順・矢印図等を示すことを許可する（生徒にやり方を見せる例題としての役割があるため）。'+
+  'levelが\'confirmation\'（確認）または\'practice\'（練習・実践）の場合は、問題文中に計算式（□を使った空欄形式を除く）や、矢印を使った途中計算の手順、中間結果の数値を書いてはならず、NGとする。文章題として状況を説明し、「〜を計算しなさい」「〜は何個でしょう」のように問いで終わるだけにすること。'+
+  'ただし、OK例（りんご配りのような「次の□に当てはまる数をかきなさい」形式で、答えの部分が空欄□になっている九九・計算パターン提示）は、基準5で別途カバーされる対象であり、levelに関わらずこの基準6の対象外（NGにしない）とする。'+
+  '重要：この基準6は、矢印を使った途中式（例：35→+18→53→-12→□）のような目立つ形式に限らず、「次の計算をしなさい」に類する文言の直後に算用数字と演算子（+ - × ÷ 等、全角半角を問わない）の組み合わせが続くケース全般に適用する。「(1)85-30」のような、一見example_followで許可されている書き方と見た目がほぼ同じシンプルな数式であっても、levelがconfirmation/practiceであれば例外なく機械的にNGとすること。「exampleで許可されている書き方に似ているから大丈夫だろう」という類推や見た目の複雑さでの判断は一切行わず、levelの値だけを基準に厳密に判定すること。\n'+
+  '7. 問題のunit（またはchapter）フィールドが示す計算の種類（たし算・ひき算・かけ算等）と、実際に問題文で要求されている計算内容が一致しているか確認する。単元名が示す演算が問題文中で一切行われておらず、本文中の数字をそのまま書き写すだけの読み取り問題になっている等、単元名と問題の実際の中身がズレている場合はNGとする。\n'+
+  '8. 文章題の答えが、現実の数量として成立しているか確認する。在庫・個数・人数等が負の数になる、本来整数であるべき場面で割り切れない小数になる等、現実にありえない結果を答えとしている場合はNGとする。特に、answerフィールド自体に「不可能」「矛盾」「足りない」等、生成AI自身がその問題が破綻していることに気づいていると読み取れる記述がある場合は、その時点で確実にNGとする。\n'+
+  '【カテゴリ：数学的正確性】基準1〜8はいずれも「問題文の文面と数値・条件が整合しているか」（数値的整合性）を扱うものだが、以下の基準9・10は文面の整合性とは別次元の、「計算そのものが数学的に正しいか」を扱う。\n'+
+  '9. questionに書かれた式・条件から、answerフィールドの計算結果が実際に正しく導き出せる値になっているか、Haiku自身が実際に計算して検算すること。文面上の整合性に問題がなくても、計算結果自体が誤っていればNGとする。\n'+
+  '10. 問題文中の数式で、埋めるべき□（未知数）が2つ以上ある場合、それらを一意に決定できるだけの情報（式の本数、制約条件）が本文に揃っているかを確認する。未知数の数に対して式や制約条件が不足しており、一意に解が定まらない場合はNGとする。\n'+
+  '11. 問題文中の語彙・表現が、チェックテキスト冒頭の【対象学年】が示す学年の児童にとって自然な言葉づかいか確認する。使用漢字が学年配当漢字の範囲内かどうかはシステム側で別途機械的に照合済みのため、ここでは判断しなくてよい。実際には使われない不自然な造語表現（例：「リボン巻き」）が含まれる場合はNGとする。学年相応のやさしい言葉（例：「リボン作り」「花を並べる」等）に置き換えるべきと判断できる場合は、issuesにその具体的な置き換え案を含めて指摘すること。ただし、教科名として学年相応に定着している言葉（例：小3の「工作」＝図画工作）は対象外とし、NGにしない。\n'+
+  '  NG例1：「うさりんがにんじんを60本もっていて、くまきちがにんじんを30本もってきました。2匹があわせてもっているにんじんは何本でしょう。次の計算をしなさい。(1) 60 + 30 (2) 90 + 10」'+
+  '→ 本文は60本・30本と数量を確定させているのに、(2)の「90+10」の「10」は本文に一度も登場せず導出できないためNG。\n'+
+  '  NG例2：「うさりんはにんじんを60本もっています。くまきちがにんじんを30本くれました。うさりんがもっているにんじんは全部で何本になりますか。次の計算をしなさい。(1)60+30 (2)60+0」'+
+  '→ (1)は本文と一致するが、(2)の「60+0」は「60」こそ本文の数字と一致するものの、「0」は本文に一度も登場していない。「0を足す」のは自明な操作に見えても、本文に書かれていない数値を使っている以上NG（一部の数値が一致しているからといってOKにしないこと）。\n'+
+  '  NG例3：「うさりんとくまきちで、50個のいちごを50個のぶどうと一緒に分けました。次の計算をしなさい。(1) 80-30 (2) 90-40」'+
+  '→ 2つの理由でNG。①本文が「〜を分けました」で終わっており、疑問文も「〜をもとめなさい」等の指示もなく、生徒が何を求めればいいのか本文から分からない。②本文が確定させている数量「50個・50個」が、(1)(2)どちらの式にも一切使われておらず、式の数字が本文と完全に無関係。\n'+
+  '  NG例4：「7のだんの九九を確認しなさい。(1) 7×2=14 (2) 7×3=21 (3) 7×4=28 (4) 7×5=35」'+
+  '→ 式の右辺（14、21、28、35）が問題文自体に書かれてしまっており、生徒が計算する余地がない。「7×2=□」のように答えの部分を空欄にすべき。\n'+
+  '  NG例5（level: confirmation）：「くまきちは、どんぐりを35個持っていました。うさりんが18個くれたので、くまきちのどんぐりは53個になりました。その後、りすくんに12個あげました。くまきちの手順を矢印で表して、最後に何個になったか計算しなさい。（35→＋18→53→－12→□）」'+
+  '→ levelがconfirmation（確認レベル、生徒が自分で式を立てられるか確認する段階）なのに、計算手順「35→＋18→53→－12→□」を本文自体に書いてしまい、さらに中間結果「53個」まで明かしてしまっている。生徒がやることは最後の引き算だけになり、確認レベルとして機能していないためNG。\n'+
+  '  NG例6（level: confirmation）：「くまきちのおうちには、ニンジンが85本ありました。うさりんにニンジンを30本あげました。くまきちのおうちに残っているニンジンは何本でしょうか。次の計算をしなさい。(1)85 - 30」'+
+  '→ 矢印を使った途中式のような目立つ形ではなく、「次の計算をしなさい。(1)85-30」という一見シンプルな書き方だが、levelがconfirmationであるにもかかわらず計算式を本文自体に書いてしまっている。この形式はexample_followで許可されている書き方と見た目が似ているが、それに惑わされず、levelがconfirmation/practiceであれば同様にNGとすること（基準6参照）。\n'+
+  '  NG例7（unit: "2けたの数のひき算"）：「うさりんとくまきちは、ぼうしのお店でぼうしを買いました。うさりんは40こ、くまきちは70こ買いました。次の計算をしなさい。(1)うさりんが買ったぼうしの数 (2)くまきちが買ったぼうしの数」'+
+  '→ 単元が「ひき算」なのに、(1)(2)は本文中の数字（40こ・70こ）をそのまま書き写すだけで、引き算はおろかどんな計算も発生していない。単元名と問題の実際の中身が完全にズレているためNG。\n'+
+  '  NG例8：「朝に仕入れた綿菓子は全部で68本でした。午前中に47本売れました。午後にさらに23本売れた場合、最終的に残っている綿菓子は何本でしょうか。」（answer：「(1)21本 (2)(-2)は不可能なため、計算上は-2本ですが、実際には売る綿菓子が不足しています。…」）'+
+  '→ 68-47-23=-2となり、在庫が負の数になるという現実にありえない状況。しかもanswerフィールド自体が「不可能」「不足しています」と矛盾に気づいているにもかかわらず、そのまま出力されてしまっているためNG。\n'+
+  '  NG例9：「1分30秒＋□秒＝2分30秒」（answer：「30」）'+
+  '→ 1分30秒=90秒、2分30秒=150秒なので、90+□=150より□=60が正しい。しかしanswerには誤って「30」と記載されており、実際に検算すると値が一致しないためNG。\n'+
+  '  NG例10：「1分□秒＋35秒＝①□分②□秒」'+
+  '→ 左辺にも右辺にも未知数（□）があり、式は1本しかないのに未知数が2つ（左辺の秒・右辺の分と秒）ある。式の本数に対して未知数が多すぎ、一意に解を定めることができないためNG。\n'+
+  '  NG例11（対象学年：g03、小学3年生）：「みんなでリボン巻きのかざりを作りました。次の計算をしなさい。(1) 12+8」'+
+  '→ 「リボン巻き」（実際には使われない造語）は、小学3年生の日常語彙として不自然である。「リボン作り」のような学年相応のやさしい言葉に置き換えるべきでありNG。なお「工作」（図画工作）のように教科名として学年相応に定着している言葉は対象外（NGにしない）。\n'+
+  '  OK例：「うさりんとお友達で、りんごを配っています。次の□に当てはまる数をかきなさい。(1) 5×3=□、5×4=□ (2) 6×3=□、6×4=□」'+
+  '→ 本文は具体的な数量を確定させておらず、一般的な計算パターンの例示なので、(2)の数値が(1)と違っていてもOK。答えの部分も空欄（□）になっており、生徒が計算する余地が残っている。\n\n';
+
+// 復習コーナー（弱点克服）専用の整合性チェック。checkConsistency()（generateQuizViaAI()
+// にネストされたクロージャで直接は呼び出せない）と同じ11基準・同じ再試行回数（3回）を
+// 用いる。基準文言はCONSISTENCY_CRITERIA_PROMPTを共有しているため複製ではない。
+function checkConsistencyForReview(problemsArr, maxRetry, regenerate, onOk, onFail){
+  if(maxRetry<=0){ onFail(); return; }
+  var checkText = problemsArr.map(function(p,i){
+    return '【問'+(i+1)+'】（level: '+(p.level||'不明')+'）\n問題文：'+(p.question||p.problem||'')+'\n正解：'+(p.answer||'');
+  }).join('\n\n');
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST', headers:apiHeaders(),
+    body:JSON.stringify({
+      model:'claude-haiku-4-5-20251001', max_tokens:1000,
+      system:'あなたは算数・数学の問題の整合性チェッカーです。問題文中の数値・条件・答えに矛盾や不整合がないか確認します。',
+      messages:[{role:'user',content:
+        CONSISTENCY_CRITERIA_PROMPT+
+        checkText+
+        '\n\n結果をJSONのみで返してください（他のテキスト不要）:\n{"ok":true} または {"ok":false,"issues":["問題番号と矛盾の説明",...]}'}]
+    })
+  }).then(function(r){ return r.json(); }).then(function(d){
+    var txt = (d.content||[]).map(function(c){return c.text||'';}).join('');
+    var result = null;
+    try{ result = JSON.parse(txt.replace(/```json|```/g,'').trim()); }catch(e){ result = null; }
+    if(result===null){
+      console.warn('[checkConsistency][review] 応答をJSONとして解析できませんでした。再試行します。生の応答:', txt);
+      checkConsistencyForReview(problemsArr, maxRetry-1, regenerate, onOk, onFail);
+      return;
+    }
+    if(result.ok){
+      console.log('[checkConsistency][review] 整合性チェックOK');
+      onOk(problemsArr);
+    } else {
+      var issueText = (result.issues||['不整合あり']).join(' / ');
+      console.warn('[checkConsistency][review] 整合性NG（'+issueText+'）→ 再生成中…');
+      regenerate(function(newProbs){
+        if (newProbs.length === 0) {
+          checkConsistencyForReview(problemsArr, maxRetry-1, regenerate, onOk, onFail);
+          return;
+        }
+        checkConsistencyForReview(newProbs, maxRetry-1, regenerate, onOk, onFail);
+      });
+    }
+  }).catch(function(e){
+    console.warn('[checkConsistency][review] 整合性チェックの通信に失敗しました。再試行します:', e);
+    checkConsistencyForReview(problemsArr, maxRetry-1, regenerate, onOk, onFail);
+  });
 }
 
 // ===== 生徒選択（Lethe API） =====
@@ -1001,6 +1094,9 @@ function filterStudentsByMode(mode) {
       opt.dataset.grade = s.grade || '';
       opt.dataset.character = s.character || '';
       opt.dataset.theme = s.theme || '';
+      // theme_idはLethe側に列がまだ無いためs.theme_idは常にundefined。
+      // 追加され次第、generateQuizViaPattern()のテーマ解決が自動的に有効になる。
+      opt.dataset.themeId = s.theme_id || '';
       opt.textContent = s.name + '（' + s.grade + '）' + (s.jp_level ? ' [' + s.jp_level + ']' : '');
       sel.appendChild(opt);
     });
@@ -1009,10 +1105,358 @@ function filterStudentsByMode(mode) {
 }
 
 // ページ読み込み時に自動取得
-window.addEventListener('load', function(){ loadStudents(); loadKyoikuKanji(); });
+window.addEventListener('load', function(){ loadStudents(); loadKyoikuKanji(); loadPatternBank(); });
 
+// ======== 生成後の共通処理（経路A：パターン生成／経路B：AI生成、両方から呼ばれる）========
+// 元はgenerateQuiz()内にネストされ、closureでmeta/outputJson等を暗黙参照していたが、
+// パターン生成経路（generateQuizViaPattern）からも同じ後処理を使うため、
+// 必要な値を引数で受け取るトップレベル関数として切り出した（挙動は変更していない）。
+
+// JSON生成完了時に、assignmentsテーブルへ課題行をUPSERTしておく。
+// これをしないと、印刷用・Web提出用どちらのフローでも、後で
+// submissionsへ書き込む際にassignment_idの外部キー制約違反(HTTP 409)
+// になる（assignmentsに対応する行が存在しないため）。
+// 再生成時に重複エラーにならないよう、Prefer: resolution=merge-duplicates
+// でUPSERTする（assignment_idにUNIQUE制約がSupabase側に必要）。
+function upsertAssignment(meta){
+  // on_conflict=assignment_id を明示しないと、PostgRESTは
+  // 主キーではないUNIQUE制約に対してON CONFLICTを推論できず、
+  // Prefer: resolution=merge-duplicatesが効かずに通常のINSERTとして
+  // 実行され、重複時に409（一意制約違反）になる（実機検証済み）。
+  fetch(_SB_URL + '/rest/v1/assignments?on_conflict=assignment_id', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': _SB_KEY,
+      'Authorization': 'Bearer ' + _SB_KEY,
+      'Prefer': 'resolution=merge-duplicates,return=minimal'
+    },
+    body: JSON.stringify({
+      assignment_id: meta.assignment_id,
+      student_id: meta.student_id,
+      grade: (meta.grades||[])[0] ? parseInt((meta.grades[0]||'').replace(/[^0-9]/g,'')) || null : null,
+      subject: 'math',
+      mode: meta.mode,
+      assignment_data: { count: meta.count, theme: meta.theme || null },
+      assigned_at: meta.generated_at
+    })
+  }).catch(function(e){
+    console.error('[upsertAssignment] failed:', e);
+  });
+}
+
+function generateAllReviewProblems(onDone) {
+  var sections = [];
+  var onPrev  = document.getElementById('rev-prev-on') && document.getElementById('rev-prev-on').checked;
+  var onPrev2 = document.getElementById('rev-prev2-on') && document.getElementById('rev-prev2-on').checked;
+  var tasks = [];
+
+  if (onPrev && window._revSub1) {
+    var c1 = document.getElementById('rev-prev-count').value;
+    tasks.push({ sub: window._revSub1, count: c1, label: '前回の復習' });
+  }
+  if (onPrev2 && window._revSub2) {
+    var c2 = document.getElementById('rev-prev2-count').value;
+    tasks.push({ sub: window._revSub2, count: c2, label: '前々回の復習' });
+  }
+
+  if (tasks.length === 0) { onDone([]); return; }
+
+  var results = [];
+  var done = 0;
+  tasks.forEach(function(t){
+    generateReviewProblems(t.sub, t.count, function(probs){
+      if (probs.length > 0) results.push({ label: t.label, problems: probs });
+      done++;
+      if (done === tasks.length) onDone(results);
+    });
+  });
+}
+
+function showPreview(mode, theme, levelBreakdown, outputJson){
+  var btn = document.getElementById('q-gen-btn');
+  var status = document.getElementById('q-status');
+  // プロンプトテンプレ
+  var modeDesc=mode==='domestic'
+    ?'国内向け（算数×英語）：日本語で算数を解きながら英語表現も学ぶ'
+    :'海外向け（算数を日本語で）：外国人向けシンプル日本語＋英語ヒント付き';
+  var levelsDesc=levelBreakdown;
+  var templateUrl=mode==='overseas'
+    ?'https://raw.githubusercontent.com/marukoFantasti/pandora-project/main/templates/student_quiz_overseas_template.html'
+    :'https://raw.githubusercontent.com/marukoFantasti/pandora-project/main/templates/student_quiz_domestic_template.html';
+  var promptTemplate;
+  if(selectedOutputFormat==='print'){
+    promptTemplate=
+      '以下のJSONをもとに、①印刷用解答用紙HTML と ②Web閲覧用問題画面HTML の両方を作成してください（生徒はWeb画面で問題文を読み、式と答えは紙の解答用紙に手書きします）。\n\n'+
+      '========== ①印刷用解答用紙HTML ==========\n'+
+      'HTMLを作成する際は、必ず以下のテンプレートを先に読み込み、その骨格構造（@pageルール、QRコード表示、式を書く欄・答えを書く欄のレイアウト等）を一切変更せず、{{ASSIGNMENT_ID}}/{{STUDENT_ID}}/{{STUDENT_NAME}}/{{QUESTIONS}}のプレースホルダーに、このJSONを差し込んで解答用紙HTMLを作成してください。\n'+
+      'テンプレートURL: https://raw.githubusercontent.com/marukoFantasti/pandora-project/main/templates/answer_sheet_print_template.html\n\n'+
+      'A4サイズ、1ページ5問、10問なら2ページ構成。\n'+
+      '各問題に「式を書く欄」「答えを書く欄」を配置してください。\n'+
+      '右上にQRコード（assignment_id・student_id・page・total_pagesをJSON文字列でエンコード）を印刷してください。\n'+
+      '紙面の隅に目視用テキストで\n'+
+      '「assignment_id: '+outputJson.meta.assignment_id+' | '+(outputJson.meta.student_name||'')+'('+(outputJson.meta.student_id||'')+') | {page}/{total_pages}ページ」も併記してください。\n'+
+      '印刷を想定したCSS（@pageルール、白黒印刷でも見やすい配色）にしてください。\n'+
+      'questions配列は必ず { id, problem_id, question, answer, unit, chapter, level, tags } の形式で組み立てること。\n'+
+      '（answer/chapter/tagsは紙面には印刷しないが、QRコードと紐づけてSupabaseのanswer_sheetsテーブルに保存され、後で写真を撮って取り込む際に採点データとして使われるため省略しないこと。levelは\'example_follow\'|\'confirmation\'|\'practice\'のいずれか。）\n\n'+
+      '========== ②Web閲覧用問題画面HTML ==========\n'+
+      '生徒はこの画面で問題文を読み、式と答えは別途配布される紙の解答用紙に手書きします。この画面自体はSupabaseへの送信を一切行いません。\n\n'+
+      'HTMLを作成する際は、必ず以下のテンプレートを先に読み込み、その骨格構造（テーマの世界観、レベルバッジ、+Englishパネル、単語クイズ等）を一切変更せず、questions・illustrations・QUIZ_METAの中身だけを差し込んでください。ただし以下の点だけテンプレートから変更してください：\n'+
+      '- 各問題のDrawCanvas（式を書く欄・答えを書く欄）は削除し、代わりに「✏️ 式と答えは解答用紙に書いてね / Write your equation and answer on your answer sheet!」という案内メッセージを表示すること\n'+
+      '- なまえ欄のDrawCanvasも削除すること（名前は解答用紙に書く）\n'+
+      '- 「できた！提出する」ボタンとSupabase送信ロジック（fetch等）は完全に削除すること（この画面はデータを送信しない）\n'+
+      'テンプレートURL（'+mode+'モード）: '+templateUrl+'\n\n'+
+      '【モード】'+modeDesc+'\n'+
+      (theme?'【テーマ】'+theme+'\n':'')+
+      '【問題数】'+outputJson.meta.count+'問\n\n'+
+      '- SVGイラストはテーマに合わせたオリジナルキャラを作り、questions配列の全ての問題についてillustrationsオブジェクトに72×72pxのSVGを必ず用意すること（省略不可）。\n'+
+      '- 単元バッジ・問題レベルバッジ（例題:紫/確認:青/練習:橙）はWeb提出用と同じ仕様のまま維持する\n'+
+      (mode==='overseas'
+        ?'- 📖ことば / 🇬🇧English hint ボタンを各問題に付ける\n'
+        :'- 🌍 ＋Englishボタン（english_phrase・vocab_word表示）を各問題に付ける\n')+
+      '- 印刷された解答用紙の問題番号（Q1〜Q'+outputJson.meta.count+'）と、この画面の問題番号が一致するようにする\n\n'+
+      '【JSON】（①②共通で使い回してください）\n（ここにJSONを貼り付けてください）';
+
+    document.getElementById('q-prompt-template').value=promptTemplate;
+    document.getElementById('q-preview').style.display='block';
+    btn.textContent='✨ 問題を生成する';btn.disabled=false;
+    status.textContent=outputJson.meta.count+'問生成完了（'+levelsDesc+'）';
+    return;
+  }
+  promptTemplate=
+    '以下のJSONをもとに、student_quizのHTMLを作ってください。\n\n'+
+    'HTMLを作成する際は、必ず以下のテンプレートを先に読み込み、その骨格構造（DrawCanvas、+Englishパネル、レベルバッジ、Supabase送信ロジック等）を一切変更せず、questions・illustrations・QUIZ_METAの中身だけを差し込むこと。\n'+
+    'テンプレートURL（'+mode+'モード）: '+templateUrl+'\n'+
+    'テンプレートのDrawCanvasのcanvas width={1200}は絶対に変更しないこと（変更すると採点UI側で画像が歪んで表示される）。\n'+
+    'Supabase送信データには必ずstudent_id・student_nameの両方を含めること。\n\n'+
+    '【モード】'+modeDesc+'\n'+
+    (theme?'【テーマ】'+theme+'\n':'')+
+    (mode==='overseas'?'【日本語レベル】'+selectedJpLevel+'\n':'')+
+    '【問題レベル】'+levelsDesc+'\n'+
+    '【問題数】'+outputJson.meta.count+'問\n\n'+
+    '【フォーマット参考】'+(mode==='overseas'?'student_quiz_v11_soccer.html':'student_quiz_v13b_disney.html')+'と同じ構成で。\n'+
+    '- SVGイラストはテーマに合わせたオリジナルキャラを作る（各問題72×72px）\n'+
+    '- 手書きキャンバス（DrawCanvas）を各問題に付ける\n'+
+    '- 単元バッジの横に問題レベルバッジを表示する（例題:紫/確認:青/練習:橙）\n'+
+    (mode==='overseas'
+      ?'- 📖ことば / 🇬🇧English hint ボタンを各問題に付ける\n'+
+        '- 今日の漢字コーナー（kanji_quizデータを使用）：reading=英語の意味、選択肢は熟語・漢字ごと、手書きキャンバス付き\n'
+      :'- 🌍 ＋Englishボタン（english_phrase・vocab_word表示）を各問題に付ける\n')+
+    '- Supabase送信ボタンを付ける\n'+
+    '- 送信データにlevel（問題レベル）を含める\n'+
+    '- URLパラメータ ?sid= を受け取り、送信データの student_id にセットする。例: const sid = new URLSearchParams(location.search).get(\'sid\') || null;\n'+
+    (outputJson.meta.student_id
+      ? '- この課題の対象生徒: student_id="' + outputJson.meta.student_id + '", student_name="' + (outputJson.meta.student_name||'') + '"（URLに ?sid=' + outputJson.meta.student_id + ' を付けて配布する想定）\n'+
+        '- Supabaseへの送信データ（payload）には、トップレベルとsubmission_dataの両方にstudent_nameフィールドを必ず含めること。student_idだけでなくstudent_nameも一緒に送信しないと、採点UIのサイドバーに名前が表示されない。\n'
+      : '')+
+    '- Supabase URL: https://upmflhdbhbyzoeldrvvw.supabase.co\n'+
+    '- Supabase KEY: sb_publishable_K8Y_bNHVA4szRXFM_EcDkA_LBckunu5\n\n'+
+    '【JSON】\n（ここにJSONを貼り付けてください）';
+
+  document.getElementById('q-prompt-template').value=promptTemplate;
+  document.getElementById('q-preview').style.display='block';
+  btn.textContent='✨ 問題を生成する';btn.disabled=false;
+  status.textContent=outputJson.meta.count+'問生成完了（'+levelsDesc+'）';
+}
+
+// ======== パターンバンク（経路A：小2文章題の決定論生成）========
+// pattern_bank/patterns_g02.json・pattern_bank/themes/*.json は静的アセットとして
+// fetchで読み込む（Supabase不要）。checkConsistency_retirement_plan.mdに基づき、
+// この経路ではランタイムのAI呼び出し（checkConsistency含む）を一切行わない。
+var PATTERN_BANK = null, PATTERN_BANK_PROMISE = null;
+// unit_id -> [{pattern, unitId}, ...]（unitIdはunit_range_overridesのキー、baseならnull）。
+// 同じunit_idを複数パターンが共有するケースがある（例: g02_c12_u01は合併/求残/増加/
+// 求差/求補の5パターンが同じ単元「2けたの数のたし算とひき算のりよう」を共有）ため、
+// 単一値ではなく配列で保持する。1パターンしか無い単元でも要素数1の配列になる。
+var PATTERN_UNIT_INDEX = {};
+function loadPatternBank(){
+  if (PATTERN_BANK) return Promise.resolve(PATTERN_BANK);
+  if (PATTERN_BANK_PROMISE) return PATTERN_BANK_PROMISE;
+  PATTERN_BANK_PROMISE = fetch('pattern_bank/patterns_g02.json').then(function(r){ return r.json(); }).then(function(d){
+    PATTERN_BANK = d;
+    var idx = {};
+    function addEntry(uid, entry){
+      if (!idx[uid]) idx[uid] = [];
+      idx[uid].push(entry);
+    }
+    (d.patterns||[]).forEach(function(p){
+      addEntry(p.unit_id, { pattern: p, unitId: null });
+      Object.keys(p.unit_range_overrides||{}).forEach(function(uid){ addEntry(uid, { pattern: p, unitId: uid }); });
+    });
+    PATTERN_UNIT_INDEX = idx;
+    console.log('[patternGen] パターンバンク読み込み完了:', (d.patterns||[]).length, 'パターン,', Object.keys(idx).length, '単元カバー');
+    return d;
+  }).catch(function(e){
+    console.error('[patternGen] パターンバンク（pattern_bank/patterns_g02.json）の読み込みに失敗しました。経路Aは使用不可になります:', e);
+    PATTERN_BANK = { patterns: [], shared_lexicon: {} };
+    PATTERN_UNIT_INDEX = {};
+    return PATTERN_BANK;
+  });
+  return PATTERN_BANK_PROMISE;
+}
+
+var THEME_CACHE = {};
+function loadTheme(themeId){
+  themeId = themeId || 'default_school_v1';
+  if (THEME_CACHE[themeId]) return THEME_CACHE[themeId];
+  THEME_CACHE[themeId] = fetch('pattern_bank/themes/' + themeId + '.json').then(function(r){
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).catch(function(e){
+    console.error('[patternGen] テーマ（' + themeId + '）の読み込みに失敗しました。default_school_v1にフォールバックします:', e);
+    if (themeId !== 'default_school_v1') return loadTheme('default_school_v1');
+    return { theme_id: 'default_school_v1', themed_templates: {} };
+  });
+  return THEME_CACHE[themeId];
+}
+
+// 選択中の学年・単元が、全てpatterns_g02.jsonでカバーされているか判定する。
+// 現状は単一学年g02のみ対応（パターンバンクがg02専用のため）。単元は
+// 「全単元」（'all'）ではなく1つ以上の明示選択が必要（従来のAI生成経路との
+// 混在を避けるため、全単元指定は常に経路Bへフォールバックする）。
+function isPatternEligible(grades, units){
+  if (!grades || grades.length !== 1 || grades[0] !== 'g02') return false;
+  if (!units || units.length === 0 || units[0] === 'all') return false;
+  return units.every(function(u){ return PATTERN_UNIT_INDEX.hasOwnProperty(u) && PATTERN_UNIT_INDEX[u].length > 0; });
+}
+
+// テーマのresolution_rule: theme.themed_templates[pattern_id]があればそれを使い、
+// 無ければpattern.sentence_templatesにフォールバック（default_school_v1.json準拠）。
+function resolvePatternTemplates(pattern, themeObj){
+  var tt = themeObj && themeObj.themed_templates && themeObj.themed_templates[pattern.pattern_id];
+  if (tt && tt.length) {
+    return Object.assign({}, pattern, { sentence_templates: tt });
+  }
+  return pattern;
+}
+
+// 経路A: パターンバンクによる決定論的な問題生成。
+// 生成入口の一本化: problems配列を作った後は、経路Bと同じ
+// upsertAssignment/generateAllReviewProblems/showPreviewをそのまま使う。
+function generateQuizViaPattern(targetUnits){
+  var lex = PATTERN_BANK.shared_lexicon;
+  var count = parseInt(document.getElementById('q-count').value);
+  var themeText = document.getElementById('q-theme').value.trim();
+  var mode = document.querySelector('input[name="q-mode"]:checked').value;
+
+  var qStudentSel = document.getElementById('q-student');
+  var qStudentOpt = qStudentSel && qStudentSel.selectedOptions[0];
+  var selectedStudentId = qStudentSel && qStudentSel.value ? qStudentSel.value : null;
+  var selectedStudentName = qStudentOpt ? (qStudentOpt.dataset.name||'') : '';
+  // theme_idはLethe側に列がまだ無いため、現状は常にdataset.themeIdが空 →
+  // default_school_v1にフォールバックする（Lethe側でtheme_id列が追加されたら
+  // filterStudentsByMode()側でdataset.themeIdへ実データが入り、自動的に有効になる）。
+  var selectedThemeId = (qStudentOpt && qStudentOpt.dataset.themeId) || 'default_school_v1';
+
+  var btn = document.getElementById('q-gen-btn');
+  var status = document.getElementById('q-status');
+  btn.textContent='⟳ 生成中...'; btn.disabled=true;
+  document.getElementById('q-preview').style.display='none';
+  status.textContent = count + '問（パターン生成）を生成中…';
+  console.log('[patternGen] 経路A（パターン生成）で生成します。対象単元:', targetUnits, 'テーマ:', selectedThemeId);
+
+  loadTheme(selectedThemeId).then(function(themeObj){
+    var assignmentId = 'asgn_' + Date.now() + '_' + Math.random().toString(36).substr(2,6);
+    var problems = [];
+    var MAX_ATTEMPTS_PER_PROBLEM = 20; // 33,000問ストレステストで欠陥ゼロのため、通常は初回でPASSする想定
+
+    for (var i = 0; i < count; i++) {
+      var unitId = targetUnits[i % targetUnits.length];
+      var candidates = PATTERN_UNIT_INDEX[unitId];
+      // 同じ単元を複数パターンが共有している場合（例: 合併/求残/増加/求差/求補）は
+      // その中からランダムに1つ選ぶ。生成のたびに毎回異なる型の問題になり、
+      // 単元のねらいの多様性を保てる。
+      var entry = candidates[Math.floor(Math.random() * candidates.length)];
+      var pattern = resolvePatternTemplates(entry.pattern, themeObj);
+      var patternUnitId = entry.unitId;
+
+      var accepted = null;
+      for (var attempt = 0; attempt < MAX_ATTEMPTS_PER_PROBLEM; attempt++) {
+        var result = PatternGen.makeProblem(pattern, patternUnitId, lex);
+        var v = PatternGen.verify(pattern, result.env, result.problem);
+        if (v.checks.kanji_ok && v.checks.nums_from_slots && v.checks.answer_positive) {
+          accepted = result;
+          break;
+        }
+        // verify() FAILはバンク設計バグの信号（33,000問テストで理論上常時PASSのため）。
+        // ユーザー向けの再生成促しではなく、コンソールエラー＋その問題をスキップして
+        // 再サンプリングする（checkConsistency_retirement_plan.md §2 経路A）。
+        console.error('[patternGen] verify()失敗（バンク設計バグの可能性）。再サンプリングします。', entry.pattern.pattern_id, patternUnitId, v.checks, v.bad, result.problem);
+      }
+      if (!accepted) {
+        console.error('[patternGen] ' + MAX_ATTEMPTS_PER_PROBLEM + '回再サンプリングしてもverify()を通過しませんでした。バンク設計バグとして扱い、この問題はスキップします。', entry.pattern.pattern_id, patternUnitId);
+        continue;
+      }
+      problems.push({
+        problem_id: assignmentId + '_q' + (problems.length + 1),
+        number: problems.length + 1,
+        unit: entry.pattern.unit_name,
+        chapter: entry.pattern.unit_name,
+        level: 'confirmation', // パターン経路のテンプレートは本文に式を含めない設計のため、
+                                // confirmation/practiceの要件を構造的に満たす（基準6、§6.2参照）
+        question: accepted.problem,
+        answer: accepted.answer,
+        tags: []
+      });
+    }
+
+    if (problems.length === 0) {
+      status.textContent = 'エラー: パターン生成に失敗しました（0問）。コンソールを確認してください。';
+      btn.textContent='✨ 問題を生成する'; btn.disabled=false;
+      console.error('[patternGen] 全ての問題の生成に失敗しました。');
+      return;
+    }
+
+    var outputJson = {
+      meta: {
+        assignment_id: assignmentId,
+        mode: mode,
+        theme: themeText || null,
+        jp_level: null,
+        grades: qSelectedGrades,
+        units: qSelectedUnits,
+        levels: ['confirmation'],
+        count: problems.length,
+        student_id: selectedStudentId,
+        student_name: selectedStudentName || null,
+        generated_at: new Date().toISOString()
+      },
+      problems: problems,
+      kanji_quiz: []
+    };
+    window._quizJson = outputJson;
+    document.getElementById('q-json-output').value = JSON.stringify(outputJson, null, 2);
+
+    upsertAssignment(outputJson.meta);
+
+    status.textContent = '📚 復習問題を確認中...';
+    generateAllReviewProblems(function(reviewSections){
+      var msg = '✅ パターン生成完了（' + problems.length + '問）';
+      if (reviewSections.length > 0) {
+        msg += ' ＋ 復習' + reviewSections.reduce(function(s,r){ return s+r.problems.length; },0) + '問';
+      }
+      status.innerHTML = '<span style="color:var(--green)">' + msg + '</span>';
+      showPreview(mode, themeText, '確認' + problems.length + '問', outputJson);
+    });
+  });
+}
+
+// 生成入口。選択された学年・単元がpatterns_g02.jsonで全てカバーされていれば
+// パターン生成（経路A）、そうでなければ従来のAI生成（経路B、generateQuizViaAI、
+// 挙動は移設前と完全に同一）に振り分ける。
 function generateQuiz(){
   if(qSelectedGrades.length===0){alert('学年を選択してください');return;}
+  var targetUnitsForCheck = qSelectedUnits.length>0 ? qSelectedUnits : ['all'];
+  loadPatternBank().then(function(){
+    if (isPatternEligible(qSelectedGrades, targetUnitsForCheck)) {
+      generateQuizViaPattern(targetUnitsForCheck);
+      return;
+    }
+    generateQuizViaAI();
+  });
+}
+
+function generateQuizViaAI(){
   // 基準11の機械的漢字チェック・プロンプトへの漢字リスト埋め込みに教育漢字データが
   // 必要なため、以降の処理は読み込み完了後（loadKyoikuKanji()のPromise解決後）に実行する。
   loadKyoikuKanji().then(function(){
@@ -1353,50 +1797,7 @@ function generateQuiz(){
           model:'claude-haiku-4-5-20251001', max_tokens:1000,
           system:'あなたは算数・数学の問題の整合性チェッカーです。問題文中の数値・条件・答えに矛盾や不整合がないか確認します。',
           messages:[{role:'user',content:
-            '以下の問題に次の観点で問題がないか確認してください。\n'+
-            '1. 数値の矛盾・論理的不整合・解答不能な条件がないか。\n'+
-            '2. 問題文中に(1)(2)(3)のような番号付き設問がある場合、それぞれが何を問うているのか、問題文の中で十分に説明されているか。番号だけがあって具体的な条件が書かれていない場合はNGとする。\n'+
-            '3. 問題文が具体的な数量（〜本、〜個等）を確定させている場合、(2)以降のサブ問題に含まれる数値のうち、1つでも本文中の数量から導出できない・説明されていないものがあれば、そのサブ問題全体をNGとする。'+
-            'サブ問題の数値の一部（例えば2つのうち1つ）が本文の数字と一致していても、残りの数値が本文にないなら部分一致で妥協せずNGとすること（「一部が合っているからOK」という判定はしないこと）。'+
-            '「0を足す」「0をかける」のように数学的に自明・些細に見える操作であっても、その0という数値が本文中に一度も明示されていなければ同様にNGとする（操作の自明さは判定基準にしない。本文に書かれているかどうかだけを基準にする）。'+
-            '一方、問題文が「次の□に当てはまる数をかきなさい」のような一般的な計算パターンの例示に留まり、本文が具体的な数量を確定させていない場合は、サブ問題の数値が本文と異なっていてもNGにしない。\n'+
-            '4. 文章題として問いが成立しているか確認する。本文が疑問文（「〜は何個ですか」等）または「〜をもとめなさい」のような指示で終わっておらず、生徒が何を求めればいいのか本文から分からない場合はNGとする。'+
-            'また、本文中に確定した具体的な数量がある場合、その数量が提示される式（1問構成でもサブ問題構成でも）のどれにも一切使われていない場合もNGとする（基準3の「サブ問題の数値が本文にない」を1問構成の場合にも適用する拡張）。\n'+
-            '5. 問題文自体に、生徒が求めるべき計算の答えが数値として明示されている場合はNGとする（例：九九や計算パターンを提示する際、右辺の答えまで書いてしまっている）。答えの部分は「7×2=□」のように空欄（□）にすること。\n'+
-            '6. 各問題のlevelに応じて、問題文中に計算の式・手順を示してよいかを判定する。levelが\'example_follow\'（例題）の場合のみ、問題文中に計算の式・手順・矢印図等を示すことを許可する（生徒にやり方を見せる例題としての役割があるため）。'+
-            'levelが\'confirmation\'（確認）または\'practice\'（練習・実践）の場合は、問題文中に計算式（□を使った空欄形式を除く）や、矢印を使った途中計算の手順、中間結果の数値を書いてはならず、NGとする。文章題として状況を説明し、「〜を計算しなさい」「〜は何個でしょう」のように問いで終わるだけにすること。'+
-            'ただし、OK例（りんご配りのような「次の□に当てはまる数をかきなさい」形式で、答えの部分が空欄□になっている九九・計算パターン提示）は、基準5で別途カバーされる対象であり、levelに関わらずこの基準6の対象外（NGにしない）とする。'+
-            '重要：この基準6は、矢印を使った途中式（例：35→+18→53→-12→□）のような目立つ形式に限らず、「次の計算をしなさい」に類する文言の直後に算用数字と演算子（+ - × ÷ 等、全角半角を問わない）の組み合わせが続くケース全般に適用する。「(1)85-30」のような、一見example_followで許可されている書き方と見た目がほぼ同じシンプルな数式であっても、levelがconfirmation/practiceであれば例外なく機械的にNGとすること。「exampleで許可されている書き方に似ているから大丈夫だろう」という類推や見た目の複雑さでの判断は一切行わず、levelの値だけを基準に厳密に判定すること。\n'+
-            '7. 問題のunit（またはchapter）フィールドが示す計算の種類（たし算・ひき算・かけ算等）と、実際に問題文で要求されている計算内容が一致しているか確認する。単元名が示す演算が問題文中で一切行われておらず、本文中の数字をそのまま書き写すだけの読み取り問題になっている等、単元名と問題の実際の中身がズレている場合はNGとする。\n'+
-            '8. 文章題の答えが、現実の数量として成立しているか確認する。在庫・個数・人数等が負の数になる、本来整数であるべき場面で割り切れない小数になる等、現実にありえない結果を答えとしている場合はNGとする。特に、answerフィールド自体に「不可能」「矛盾」「足りない」等、生成AI自身がその問題が破綻していることに気づいていると読み取れる記述がある場合は、その時点で確実にNGとする。\n'+
-            '【カテゴリ：数学的正確性】基準1〜8はいずれも「問題文の文面と数値・条件が整合しているか」（数値的整合性）を扱うものだが、以下の基準9・10は文面の整合性とは別次元の、「計算そのものが数学的に正しいか」を扱う。\n'+
-            '9. questionに書かれた式・条件から、answerフィールドの計算結果が実際に正しく導き出せる値になっているか、Haiku自身が実際に計算して検算すること。文面上の整合性に問題がなくても、計算結果自体が誤っていればNGとする。\n'+
-            '10. 問題文中の数式で、埋めるべき□（未知数）が2つ以上ある場合、それらを一意に決定できるだけの情報（式の本数、制約条件）が本文に揃っているかを確認する。未知数の数に対して式や制約条件が不足しており、一意に解が定まらない場合はNGとする。\n'+
-            '11. 問題文中の語彙・表現が、チェックテキスト冒頭の【対象学年】が示す学年の児童にとって自然な言葉づかいか確認する。使用漢字が学年配当漢字の範囲内かどうかはシステム側で別途機械的に照合済みのため、ここでは判断しなくてよい。実際には使われない不自然な造語表現（例：「リボン巻き」）が含まれる場合はNGとする。学年相応のやさしい言葉（例：「リボン作り」「花を並べる」等）に置き換えるべきと判断できる場合は、issuesにその具体的な置き換え案を含めて指摘すること。ただし、教科名として学年相応に定着している言葉（例：小3の「工作」＝図画工作）は対象外とし、NGにしない。\n'+
-            '  NG例1：「うさりんがにんじんを60本もっていて、くまきちがにんじんを30本もってきました。2匹があわせてもっているにんじんは何本でしょう。次の計算をしなさい。(1) 60 + 30 (2) 90 + 10」'+
-            '→ 本文は60本・30本と数量を確定させているのに、(2)の「90+10」の「10」は本文に一度も登場せず導出できないためNG。\n'+
-            '  NG例2：「うさりんはにんじんを60本もっています。くまきちがにんじんを30本くれました。うさりんがもっているにんじんは全部で何本になりますか。次の計算をしなさい。(1)60+30 (2)60+0」'+
-            '→ (1)は本文と一致するが、(2)の「60+0」は「60」こそ本文の数字と一致するものの、「0」は本文に一度も登場していない。「0を足す」のは自明な操作に見えても、本文に書かれていない数値を使っている以上NG（一部の数値が一致しているからといってOKにしないこと）。\n'+
-            '  NG例3：「うさりんとくまきちで、50個のいちごを50個のぶどうと一緒に分けました。次の計算をしなさい。(1) 80-30 (2) 90-40」'+
-            '→ 2つの理由でNG。①本文が「〜を分けました」で終わっており、疑問文も「〜をもとめなさい」等の指示もなく、生徒が何を求めればいいのか本文から分からない。②本文が確定させている数量「50個・50個」が、(1)(2)どちらの式にも一切使われておらず、式の数字が本文と完全に無関係。\n'+
-            '  NG例4：「7のだんの九九を確認しなさい。(1) 7×2=14 (2) 7×3=21 (3) 7×4=28 (4) 7×5=35」'+
-            '→ 式の右辺（14、21、28、35）が問題文自体に書かれてしまっており、生徒が計算する余地がない。「7×2=□」のように答えの部分を空欄にすべき。\n'+
-            '  NG例5（level: confirmation）：「くまきちは、どんぐりを35個持っていました。うさりんが18個くれたので、くまきちのどんぐりは53個になりました。その後、りすくんに12個あげました。くまきちの手順を矢印で表して、最後に何個になったか計算しなさい。（35→＋18→53→－12→□）」'+
-            '→ levelがconfirmation（確認レベル、生徒が自分で式を立てられるか確認する段階）なのに、計算手順「35→＋18→53→－12→□」を本文自体に書いてしまい、さらに中間結果「53個」まで明かしてしまっている。生徒がやることは最後の引き算だけになり、確認レベルとして機能していないためNG。\n'+
-            '  NG例6（level: confirmation）：「くまきちのおうちには、ニンジンが85本ありました。うさりんにニンジンを30本あげました。くまきちのおうちに残っているニンジンは何本でしょうか。次の計算をしなさい。(1)85 - 30」'+
-            '→ 矢印を使った途中式のような目立つ形ではなく、「次の計算をしなさい。(1)85-30」という一見シンプルな書き方だが、levelがconfirmationであるにもかかわらず計算式を本文自体に書いてしまっている。この形式はexample_followで許可されている書き方と見た目が似ているが、それに惑わされず、levelがconfirmation/practiceであれば同様にNGとすること（基準6参照）。\n'+
-            '  NG例7（unit: "2けたの数のひき算"）：「うさりんとくまきちは、ぼうしのお店でぼうしを買いました。うさりんは40こ、くまきちは70こ買いました。次の計算をしなさい。(1)うさりんが買ったぼうしの数 (2)くまきちが買ったぼうしの数」'+
-            '→ 単元が「ひき算」なのに、(1)(2)は本文中の数字（40こ・70こ）をそのまま書き写すだけで、引き算はおろかどんな計算も発生していない。単元名と問題の実際の中身が完全にズレているためNG。\n'+
-            '  NG例8：「朝に仕入れた綿菓子は全部で68本でした。午前中に47本売れました。午後にさらに23本売れた場合、最終的に残っている綿菓子は何本でしょうか。」（answer：「(1)21本 (2)(-2)は不可能なため、計算上は-2本ですが、実際には売る綿菓子が不足しています。…」）'+
-            '→ 68-47-23=-2となり、在庫が負の数になるという現実にありえない状況。しかもanswerフィールド自体が「不可能」「不足しています」と矛盾に気づいているにもかかわらず、そのまま出力されてしまっているためNG。\n'+
-            '  NG例9：「1分30秒＋□秒＝2分30秒」（answer：「30」）'+
-            '→ 1分30秒=90秒、2分30秒=150秒なので、90+□=150より□=60が正しい。しかしanswerには誤って「30」と記載されており、実際に検算すると値が一致しないためNG。\n'+
-            '  NG例10：「1分□秒＋35秒＝①□分②□秒」'+
-            '→ 左辺にも右辺にも未知数（□）があり、式は1本しかないのに未知数が2つ（左辺の秒・右辺の分と秒）ある。式の本数に対して未知数が多すぎ、一意に解を定めることができないためNG。\n'+
-            '  NG例11（対象学年：g03、小学3年生）：「みんなでリボン巻きのかざりを作りました。次の計算をしなさい。(1) 12+8」'+
-            '→ 「リボン巻き」（実際には使われない造語）は、小学3年生の日常語彙として不自然である。「リボン作り」のような学年相応のやさしい言葉に置き換えるべきでありNG。なお「工作」（図画工作）のように教科名として学年相応に定着している言葉は対象外（NGにしない）。\n'+
-            '  OK例：「うさりんとお友達で、りんごを配っています。次の□に当てはまる数をかきなさい。(1) 5×3=□、5×4=□ (2) 6×3=□、6×4=□」'+
-            '→ 本文は具体的な数量を確定させておらず、一般的な計算パターンの例示なので、(2)の数値が(1)と違っていてもOK。答えの部分も空欄（□）になっており、生徒が計算する余地が残っている。\n\n'+
+            CONSISTENCY_CRITERIA_PROMPT+
             checkText+
             '\n\n結果をJSONのみで返してください（他のテキスト不要）:\n{"ok":true} または {"ok":false,"issues":["問題番号と矛盾の説明",...]}'}]
         })
@@ -1456,174 +1857,28 @@ function generateQuiz(){
       document.getElementById('q-json-output').value=JSON.stringify(outputJson,null,2);
     }
 
-    // JSON生成完了時に、assignmentsテーブルへ課題行をUPSERTしておく。
-    // これをしないと、印刷用・Web提出用どちらのフローでも、後で
-    // submissionsへ書き込む際にassignment_idの外部キー制約違反(HTTP 409)
-    // になる（assignmentsに対応する行が存在しないため）。
-    // 再生成時に重複エラーにならないよう、Prefer: resolution=merge-duplicates
-    // でUPSERTする（assignment_idにUNIQUE制約がSupabase側に必要）。
-    function upsertAssignment(){
-      var meta=outputJson.meta;
-      // on_conflict=assignment_id を明示しないと、PostgRESTは
-      // 主キーではないUNIQUE制約に対してON CONFLICTを推論できず、
-      // Prefer: resolution=merge-duplicatesが効かずに通常のINSERTとして
-      // 実行され、重複時に409（一意制約違反）になる（実機検証済み）。
-      fetch(_SB_URL + '/rest/v1/assignments?on_conflict=assignment_id', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': _SB_KEY,
-          'Authorization': 'Bearer ' + _SB_KEY,
-          'Prefer': 'resolution=merge-duplicates,return=minimal'
-        },
-        body: JSON.stringify({
-          assignment_id: meta.assignment_id,
-          student_id: meta.student_id,
-          grade: (meta.grades||[])[0] ? parseInt((meta.grades[0]||'').replace(/[^0-9]/g,'')) || null : null,
-          subject: 'math',
-          mode: meta.mode,
-          assignment_data: { count: meta.count, theme: meta.theme || null },
-          assigned_at: meta.generated_at
-        })
-      }).catch(function(e){
-        console.error('[upsertAssignment] failed:', e);
-      });
-    }
-
     document.getElementById('q-status').innerHTML='<span style="color:var(--accent)">🔍 整合性チェック中...</span>';
     checkConsistency(problems, parsed.kanji_quiz||[], 3,
       function(){ // OK → 復習問題生成へ
         document.getElementById('q-status').innerHTML='<span style="color:var(--accent)">📚 復習問題を生成中...</span>';
         generateAllReviewProblems(function(reviewSections){
           finalizeOutput(reviewSections);
-          upsertAssignment();
+          upsertAssignment(outputJson.meta);
           var msg = '✅ 整合性OK';
           if (reviewSections.length > 0) {
             msg += ' ＋ 復習' + reviewSections.reduce(function(s,r){ return s+r.problems.length; },0) + '問';
           }
           document.getElementById('q-status').innerHTML='<span style="color:var(--green)">' + msg + '</span>';
-          showPreview();
+          showPreview(mode, theme, levelBreakdown, outputJson);
         });
       },
       function(msg){ // 3回NGで諦める
         finalizeOutput([]);
-        upsertAssignment();
+        upsertAssignment(outputJson.meta);
         document.getElementById('q-status').innerHTML='<span style="color:var(--red)">⚠️ '+msg+'</span>';
-        showPreview();
+        showPreview(mode, theme, levelBreakdown, outputJson);
       }
     );
-
-    function generateAllReviewProblems(onDone) {
-      var sections = [];
-      var onPrev  = document.getElementById('rev-prev-on') && document.getElementById('rev-prev-on').checked;
-      var onPrev2 = document.getElementById('rev-prev2-on') && document.getElementById('rev-prev2-on').checked;
-      var tasks = [];
-
-      if (onPrev && window._revSub1) {
-        var c1 = document.getElementById('rev-prev-count').value;
-        tasks.push({ sub: window._revSub1, count: c1, label: '前回の復習' });
-      }
-      if (onPrev2 && window._revSub2) {
-        var c2 = document.getElementById('rev-prev2-count').value;
-        tasks.push({ sub: window._revSub2, count: c2, label: '前々回の復習' });
-      }
-
-      if (tasks.length === 0) { onDone([]); return; }
-
-      var results = [];
-      var done = 0;
-      tasks.forEach(function(t){
-        generateReviewProblems(t.sub, t.count, function(probs){
-          if (probs.length > 0) results.push({ label: t.label, problems: probs });
-          done++;
-          if (done === tasks.length) onDone(results);
-        });
-      });
-    }
-
-    function showPreview(){
-      // プロンプトテンプレ
-      var modeDesc=mode==='domestic'
-        ?'国内向け（算数×英語）：日本語で算数を解きながら英語表現も学ぶ'
-        :'海外向け（算数を日本語で）：外国人向けシンプル日本語＋英語ヒント付き';
-      var levelsDesc=levelBreakdown;
-      var templateUrl=mode==='overseas'
-        ?'https://raw.githubusercontent.com/marukoFantasti/pandora-project/main/templates/student_quiz_overseas_template.html'
-        :'https://raw.githubusercontent.com/marukoFantasti/pandora-project/main/templates/student_quiz_domestic_template.html';
-      var promptTemplate;
-      if(selectedOutputFormat==='print'){
-        promptTemplate=
-          '以下のJSONをもとに、①印刷用解答用紙HTML と ②Web閲覧用問題画面HTML の両方を作成してください（生徒はWeb画面で問題文を読み、式と答えは紙の解答用紙に手書きします）。\n\n'+
-          '========== ①印刷用解答用紙HTML ==========\n'+
-          'HTMLを作成する際は、必ず以下のテンプレートを先に読み込み、その骨格構造（@pageルール、QRコード表示、式を書く欄・答えを書く欄のレイアウト等）を一切変更せず、{{ASSIGNMENT_ID}}/{{STUDENT_ID}}/{{STUDENT_NAME}}/{{QUESTIONS}}のプレースホルダーに、このJSONを差し込んで解答用紙HTMLを作成してください。\n'+
-          'テンプレートURL: https://raw.githubusercontent.com/marukoFantasti/pandora-project/main/templates/answer_sheet_print_template.html\n\n'+
-          'A4サイズ、1ページ5問、10問なら2ページ構成。\n'+
-          '各問題に「式を書く欄」「答えを書く欄」を配置してください。\n'+
-          '右上にQRコード（assignment_id・student_id・page・total_pagesをJSON文字列でエンコード）を印刷してください。\n'+
-          '紙面の隅に目視用テキストで\n'+
-          '「assignment_id: '+outputJson.meta.assignment_id+' | '+(outputJson.meta.student_name||'')+'('+(outputJson.meta.student_id||'')+') | {page}/{total_pages}ページ」も併記してください。\n'+
-          '印刷を想定したCSS（@pageルール、白黒印刷でも見やすい配色）にしてください。\n'+
-          'questions配列は必ず { id, problem_id, question, answer, unit, chapter, level, tags } の形式で組み立てること。\n'+
-          '（answer/chapter/tagsは紙面には印刷しないが、QRコードと紐づけてSupabaseのanswer_sheetsテーブルに保存され、後で写真を撮って取り込む際に採点データとして使われるため省略しないこと。levelは\'example_follow\'|\'confirmation\'|\'practice\'のいずれか。）\n\n'+
-          '========== ②Web閲覧用問題画面HTML ==========\n'+
-          '生徒はこの画面で問題文を読み、式と答えは別途配布される紙の解答用紙に手書きします。この画面自体はSupabaseへの送信を一切行いません。\n\n'+
-          'HTMLを作成する際は、必ず以下のテンプレートを先に読み込み、その骨格構造（テーマの世界観、レベルバッジ、+Englishパネル、単語クイズ等）を一切変更せず、questions・illustrations・QUIZ_METAの中身だけを差し込んでください。ただし以下の点だけテンプレートから変更してください：\n'+
-          '- 各問題のDrawCanvas（式を書く欄・答えを書く欄）は削除し、代わりに「✏️ 式と答えは解答用紙に書いてね / Write your equation and answer on your answer sheet!」という案内メッセージを表示すること\n'+
-          '- なまえ欄のDrawCanvasも削除すること（名前は解答用紙に書く）\n'+
-          '- 「できた！提出する」ボタンとSupabase送信ロジック（fetch等）は完全に削除すること（この画面はデータを送信しない）\n'+
-          'テンプレートURL（'+mode+'モード）: '+templateUrl+'\n\n'+
-          '【モード】'+modeDesc+'\n'+
-          (theme?'【テーマ】'+theme+'\n':'')+
-          '【問題数】'+outputJson.meta.count+'問\n\n'+
-          '- SVGイラストはテーマに合わせたオリジナルキャラを作り、questions配列の全ての問題についてillustrationsオブジェクトに72×72pxのSVGを必ず用意すること（省略不可）。\n'+
-          '- 単元バッジ・問題レベルバッジ（例題:紫/確認:青/練習:橙）はWeb提出用と同じ仕様のまま維持する\n'+
-          (mode==='overseas'
-            ?'- 📖ことば / 🇬🇧English hint ボタンを各問題に付ける\n'
-            :'- 🌍 ＋Englishボタン（english_phrase・vocab_word表示）を各問題に付ける\n')+
-          '- 印刷された解答用紙の問題番号（Q1〜Q'+outputJson.meta.count+'）と、この画面の問題番号が一致するようにする\n\n'+
-          '【JSON】（①②共通で使い回してください）\n（ここにJSONを貼り付けてください）';
-
-        document.getElementById('q-prompt-template').value=promptTemplate;
-        document.getElementById('q-preview').style.display='block';
-        btn.textContent='✨ 問題を生成する';btn.disabled=false;
-        status.textContent=outputJson.meta.count+'問生成完了（'+levelsDesc+'）';
-        return;
-      }
-      promptTemplate=
-        '以下のJSONをもとに、student_quizのHTMLを作ってください。\n\n'+
-        'HTMLを作成する際は、必ず以下のテンプレートを先に読み込み、その骨格構造（DrawCanvas、+Englishパネル、レベルバッジ、Supabase送信ロジック等）を一切変更せず、questions・illustrations・QUIZ_METAの中身だけを差し込むこと。\n'+
-        'テンプレートURL（'+mode+'モード）: '+templateUrl+'\n'+
-        'テンプレートのDrawCanvasのcanvas width={1200}は絶対に変更しないこと（変更すると採点UI側で画像が歪んで表示される）。\n'+
-        'Supabase送信データには必ずstudent_id・student_nameの両方を含めること。\n\n'+
-        '【モード】'+modeDesc+'\n'+
-        (theme?'【テーマ】'+theme+'\n':'')+
-        (mode==='overseas'?'【日本語レベル】'+selectedJpLevel+'\n':'')+
-        '【問題レベル】'+levelsDesc+'\n'+
-        '【問題数】'+outputJson.meta.count+'問\n\n'+
-        '【フォーマット参考】'+(mode==='overseas'?'student_quiz_v11_soccer.html':'student_quiz_v13b_disney.html')+'と同じ構成で。\n'+
-        '- SVGイラストはテーマに合わせたオリジナルキャラを作る（各問題72×72px）\n'+
-        '- 手書きキャンバス（DrawCanvas）を各問題に付ける\n'+
-        '- 単元バッジの横に問題レベルバッジを表示する（例題:紫/確認:青/練習:橙）\n'+
-        (mode==='overseas'
-          ?'- 📖ことば / 🇬🇧English hint ボタンを各問題に付ける\n'+
-            '- 今日の漢字コーナー（kanji_quizデータを使用）：reading=英語の意味、選択肢は熟語・漢字ごと、手書きキャンバス付き\n'
-          :'- 🌍 ＋Englishボタン（english_phrase・vocab_word表示）を各問題に付ける\n')+
-        '- Supabase送信ボタンを付ける\n'+
-        '- 送信データにlevel（問題レベル）を含める\n'+
-        '- URLパラメータ ?sid= を受け取り、送信データの student_id にセットする。例: const sid = new URLSearchParams(location.search).get(\'sid\') || null;\n'+
-        (outputJson.meta.student_id
-          ? '- この課題の対象生徒: student_id="' + outputJson.meta.student_id + '", student_name="' + (outputJson.meta.student_name||'') + '"（URLに ?sid=' + outputJson.meta.student_id + ' を付けて配布する想定）\n'+
-            '- Supabaseへの送信データ（payload）には、トップレベルとsubmission_dataの両方にstudent_nameフィールドを必ず含めること。student_idだけでなくstudent_nameも一緒に送信しないと、採点UIのサイドバーに名前が表示されない。\n'
-          : '')+
-        '- Supabase URL: https://upmflhdbhbyzoeldrvvw.supabase.co\n'+
-        '- Supabase KEY: sb_publishable_K8Y_bNHVA4szRXFM_EcDkA_LBckunu5\n\n'+
-        '【JSON】\n（ここにJSONを貼り付けてください）';
-
-      document.getElementById('q-prompt-template').value=promptTemplate;
-      document.getElementById('q-preview').style.display='block';
-      btn.textContent='✨ 問題を生成する';btn.disabled=false;
-      status.textContent=outputJson.meta.count+'問生成完了（'+levelsDesc+'）';
-    }
   }).catch(function(e){
     status.textContent='エラー: '+e.message;
     btn.textContent='✨ 問題を生成する';btn.disabled=false;
