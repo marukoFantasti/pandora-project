@@ -1,0 +1,8866 @@
+{
+  "description": "制約式の等価性検証。同じ env に対しJS実装が expected と同じ真偽を返すこと(棄却前サンプルなので pass/fail 混在)",
+  "count": 660,
+  "vectors": [
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 26,
+        "n2": 15
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 47,
+        "n2": 43
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 40,
+        "n2": 29
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 25,
+        "n2": 23
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 66,
+        "n2": 16
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 15,
+        "n2": 23
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 39,
+        "n2": 41
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 76,
+        "n2": 15
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 37,
+        "n2": 65
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": false,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 40,
+        "n2": 69
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": false,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 47,
+        "n2": 12
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 32,
+        "n2": 66
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 55,
+        "n2": 47
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": false,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 31,
+        "n2": 39
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 55,
+        "n2": 25
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 23,
+        "n2": 60
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 24,
+        "n2": 57
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 56,
+        "n2": 45
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": false,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 17,
+        "n2": 70
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 27,
+        "n2": 60
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 94,
+        "n2": 215
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 149,
+        "n2": 286
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 234,
+        "n2": 232
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": false,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 166,
+        "n2": 221
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 123,
+        "n2": 254
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 91,
+        "n2": 85
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 243,
+        "n2": 132
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 271,
+        "n2": 148
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 94,
+        "n2": 133
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 99,
+        "n2": 171
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 145,
+        "n2": 190
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 236,
+        "n2": 287
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": false,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 167,
+        "n2": 115
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 168,
+        "n2": 164
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 127,
+        "n2": 245
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 142,
+        "n2": 253
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 248,
+        "n2": 239
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": false,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 92,
+        "n2": 229
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 236,
+        "n2": 117
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true,
+        "distinct_ones": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 210,
+        "n2": 260
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": false,
+        "distinct_ones": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 52,
+        "n2": 32
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": false,
+        "nonzero_remainder": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 80,
+        "n2": 60
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": false,
+        "nonzero_remainder": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 55,
+        "n2": 83
+      },
+      "expected": {
+        "no_negative": false,
+        "borrow_required": false,
+        "nonzero_remainder": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 49,
+        "n2": 53
+      },
+      "expected": {
+        "no_negative": false,
+        "borrow_required": false,
+        "nonzero_remainder": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 28,
+        "n2": 41
+      },
+      "expected": {
+        "no_negative": false,
+        "borrow_required": false,
+        "nonzero_remainder": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 25,
+        "n2": 52
+      },
+      "expected": {
+        "no_negative": false,
+        "borrow_required": false,
+        "nonzero_remainder": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 72,
+        "n2": 46
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": true,
+        "nonzero_remainder": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 29,
+        "n2": 39
+      },
+      "expected": {
+        "no_negative": false,
+        "borrow_required": false,
+        "nonzero_remainder": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 93,
+        "n2": 52
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": false,
+        "nonzero_remainder": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 48,
+        "n2": 75
+      },
+      "expected": {
+        "no_negative": false,
+        "borrow_required": false,
+        "nonzero_remainder": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 71,
+        "n2": 70
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": false,
+        "nonzero_remainder": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 39,
+        "n2": 45
+      },
+      "expected": {
+        "no_negative": false,
+        "borrow_required": false,
+        "nonzero_remainder": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 38,
+        "n2": 43
+      },
+      "expected": {
+        "no_negative": false,
+        "borrow_required": false,
+        "nonzero_remainder": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 92,
+        "n2": 80
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": false,
+        "nonzero_remainder": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 54,
+        "n2": 86
+      },
+      "expected": {
+        "no_negative": false,
+        "borrow_required": true,
+        "nonzero_remainder": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 75,
+        "n2": 86
+      },
+      "expected": {
+        "no_negative": false,
+        "borrow_required": true,
+        "nonzero_remainder": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 72,
+        "n2": 58
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": true,
+        "nonzero_remainder": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 49,
+        "n2": 29
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": false,
+        "nonzero_remainder": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 86,
+        "n2": 75
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": false,
+        "nonzero_remainder": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 32,
+        "n2": 18
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": true,
+        "nonzero_remainder": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 133,
+        "n2": 55
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": true,
+        "nonzero_remainder": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 265,
+        "n2": 56
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": true,
+        "nonzero_remainder": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 279,
+        "n2": 124
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": false,
+        "nonzero_remainder": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 257,
+        "n2": 32
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": false,
+        "nonzero_remainder": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 203,
+        "n2": 113
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": false,
+        "nonzero_remainder": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 257,
+        "n2": 135
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": false,
+        "nonzero_remainder": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 240,
+        "n2": 80
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": false,
+        "nonzero_remainder": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 246,
+        "n2": 18
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": true,
+        "nonzero_remainder": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 279,
+        "n2": 45
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": false,
+        "nonzero_remainder": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 279,
+        "n2": 153
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": false,
+        "nonzero_remainder": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 297,
+        "n2": 84
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": false,
+        "nonzero_remainder": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 269,
+        "n2": 103
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": false,
+        "nonzero_remainder": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 133,
+        "n2": 91
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": false,
+        "nonzero_remainder": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 216,
+        "n2": 56
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": false,
+        "nonzero_remainder": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 221,
+        "n2": 16
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": true,
+        "nonzero_remainder": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 289,
+        "n2": 83
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": false,
+        "nonzero_remainder": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 233,
+        "n2": 61
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": false,
+        "nonzero_remainder": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 234,
+        "n2": 43
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": false,
+        "nonzero_remainder": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 265,
+        "n2": 92
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": false,
+        "nonzero_remainder": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 268,
+        "n2": 145
+      },
+      "expected": {
+        "no_negative": true,
+        "borrow_required": false,
+        "nonzero_remainder": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 37,
+        "n2": 31
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 59,
+        "n2": 32
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 79,
+        "n2": 12
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 53,
+        "n2": 74
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 14,
+        "n2": 26
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 58,
+        "n2": 51
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 42,
+        "n2": 19
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 42,
+        "n2": 22
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 22,
+        "n2": 74
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 20,
+        "n2": 28
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 28,
+        "n2": 72
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 33,
+        "n2": 45
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 79,
+        "n2": 66
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 39,
+        "n2": 37
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 51,
+        "n2": 63
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 59,
+        "n2": 68
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 78,
+        "n2": 69
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 27,
+        "n2": 43
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 40,
+        "n2": 20
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": null,
+      "env": {
+        "n1": 55,
+        "n2": 14
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 224,
+        "n2": 215
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 132,
+        "n2": 224
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 130,
+        "n2": 75
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 92,
+        "n2": 255
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 235,
+        "n2": 89
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 132,
+        "n2": 91
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 82,
+        "n2": 158
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 92,
+        "n2": 205
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 134,
+        "n2": 145
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 245,
+        "n2": 198
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 128,
+        "n2": 212
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 107,
+        "n2": 259
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 220,
+        "n2": 221
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 195,
+        "n2": 136
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 274,
+        "n2": 195
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 280,
+        "n2": 178
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 122,
+        "n2": 98
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 98,
+        "n2": 242
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 184,
+        "n2": 164
+      },
+      "expected": {
+        "carry_required": false,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 182,
+        "n2": 179
+      },
+      "expected": {
+        "carry_required": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 80,
+        "n2": 18
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 33,
+        "n2": 19
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 72,
+        "n2": 55
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 34,
+        "n2": 43
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 45,
+        "n2": 36
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 89,
+        "n2": 69
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": false,
+        "meaningful_gap": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 38,
+        "n2": 66
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 44,
+        "n2": 47
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": false,
+        "meaningful_gap": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 80,
+        "n2": 43
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 30,
+        "n2": 68
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": false,
+        "meaningful_gap": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 91,
+        "n2": 24
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 27,
+        "n2": 81
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 22,
+        "n2": 23
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": false,
+        "meaningful_gap": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 51,
+        "n2": 33
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 73,
+        "n2": 74
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": false,
+        "meaningful_gap": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 82,
+        "n2": 39
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 72,
+        "n2": 19
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 42,
+        "n2": 60
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 21,
+        "n2": 61
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": false,
+        "meaningful_gap": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": null,
+      "env": {
+        "n1": 54,
+        "n2": 70
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 178,
+        "n2": 154
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": false,
+        "meaningful_gap": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 283,
+        "n2": 233
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": false,
+        "meaningful_gap": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 247,
+        "n2": 215
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": false,
+        "meaningful_gap": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 288,
+        "n2": 170
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": false,
+        "meaningful_gap": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 144,
+        "n2": 94
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": false,
+        "meaningful_gap": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 180,
+        "n2": 101
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 119,
+        "n2": 194
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 293,
+        "n2": 184
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 120,
+        "n2": 237
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": false,
+        "meaningful_gap": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 185,
+        "n2": 60
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": false,
+        "meaningful_gap": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 117,
+        "n2": 195
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 227,
+        "n2": 174
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": false,
+        "meaningful_gap": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 240,
+        "n2": 86
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 119,
+        "n2": 176
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 125,
+        "n2": 263
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 152,
+        "n2": 63
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 257,
+        "n2": 63
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": false,
+        "meaningful_gap": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 277,
+        "n2": 266
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": false,
+        "meaningful_gap": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 165,
+        "n2": 149
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 135,
+        "n2": 273
+      },
+      "expected": {
+        "not_equal": true,
+        "borrow_required": true,
+        "meaningful_gap": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": null,
+      "env": {
+        "n1": 93,
+        "n2": 43
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": false,
+        "both_parts_nonzero": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": null,
+      "env": {
+        "n1": 95,
+        "n2": 88
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": true,
+        "both_parts_nonzero": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": null,
+      "env": {
+        "n1": 26,
+        "n2": 22
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": false,
+        "both_parts_nonzero": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": null,
+      "env": {
+        "n1": 74,
+        "n2": 86
+      },
+      "expected": {
+        "part_lt_whole": false,
+        "borrow_required": true,
+        "both_parts_nonzero": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": null,
+      "env": {
+        "n1": 93,
+        "n2": 78
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": true,
+        "both_parts_nonzero": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": null,
+      "env": {
+        "n1": 61,
+        "n2": 45
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": true,
+        "both_parts_nonzero": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": null,
+      "env": {
+        "n1": 47,
+        "n2": 52
+      },
+      "expected": {
+        "part_lt_whole": false,
+        "borrow_required": false,
+        "both_parts_nonzero": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": null,
+      "env": {
+        "n1": 51,
+        "n2": 45
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": true,
+        "both_parts_nonzero": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": null,
+      "env": {
+        "n1": 71,
+        "n2": 28
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": true,
+        "both_parts_nonzero": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": null,
+      "env": {
+        "n1": 59,
+        "n2": 70
+      },
+      "expected": {
+        "part_lt_whole": false,
+        "borrow_required": false,
+        "both_parts_nonzero": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": null,
+      "env": {
+        "n1": 61,
+        "n2": 21
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": false,
+        "both_parts_nonzero": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": null,
+      "env": {
+        "n1": 22,
+        "n2": 70
+      },
+      "expected": {
+        "part_lt_whole": false,
+        "borrow_required": false,
+        "both_parts_nonzero": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": null,
+      "env": {
+        "n1": 93,
+        "n2": 24
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": true,
+        "both_parts_nonzero": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": null,
+      "env": {
+        "n1": 30,
+        "n2": 80
+      },
+      "expected": {
+        "part_lt_whole": false,
+        "borrow_required": false,
+        "both_parts_nonzero": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": null,
+      "env": {
+        "n1": 48,
+        "n2": 76
+      },
+      "expected": {
+        "part_lt_whole": false,
+        "borrow_required": false,
+        "both_parts_nonzero": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": null,
+      "env": {
+        "n1": 54,
+        "n2": 28
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": true,
+        "both_parts_nonzero": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": null,
+      "env": {
+        "n1": 65,
+        "n2": 20
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": false,
+        "both_parts_nonzero": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": null,
+      "env": {
+        "n1": 52,
+        "n2": 59
+      },
+      "expected": {
+        "part_lt_whole": false,
+        "borrow_required": true,
+        "both_parts_nonzero": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": null,
+      "env": {
+        "n1": 57,
+        "n2": 32
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": false,
+        "both_parts_nonzero": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": null,
+      "env": {
+        "n1": 77,
+        "n2": 81
+      },
+      "expected": {
+        "part_lt_whole": false,
+        "borrow_required": false,
+        "both_parts_nonzero": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 285,
+        "n2": 123
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": false,
+        "both_parts_nonzero": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 261,
+        "n2": 181
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": false,
+        "both_parts_nonzero": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 107,
+        "n2": 187
+      },
+      "expected": {
+        "part_lt_whole": false,
+        "borrow_required": false,
+        "both_parts_nonzero": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 181,
+        "n2": 72
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": true,
+        "both_parts_nonzero": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 139,
+        "n2": 113
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": false,
+        "both_parts_nonzero": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 134,
+        "n2": 73
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": false,
+        "both_parts_nonzero": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 295,
+        "n2": 187
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": true,
+        "both_parts_nonzero": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 144,
+        "n2": 115
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": true,
+        "both_parts_nonzero": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 177,
+        "n2": 99
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": true,
+        "both_parts_nonzero": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 288,
+        "n2": 133
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": false,
+        "both_parts_nonzero": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 157,
+        "n2": 113
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": false,
+        "both_parts_nonzero": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 234,
+        "n2": 171
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": false,
+        "both_parts_nonzero": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 169,
+        "n2": 59
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": false,
+        "both_parts_nonzero": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 128,
+        "n2": 154
+      },
+      "expected": {
+        "part_lt_whole": false,
+        "borrow_required": false,
+        "both_parts_nonzero": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 175,
+        "n2": 57
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": true,
+        "both_parts_nonzero": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 105,
+        "n2": 131
+      },
+      "expected": {
+        "part_lt_whole": false,
+        "borrow_required": false,
+        "both_parts_nonzero": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 138,
+        "n2": 113
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": false,
+        "both_parts_nonzero": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 146,
+        "n2": 159
+      },
+      "expected": {
+        "part_lt_whole": false,
+        "borrow_required": true,
+        "both_parts_nonzero": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 246,
+        "n2": 155
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": false,
+        "both_parts_nonzero": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "unit_id": "g02_c26_u01",
+      "env": {
+        "n1": 248,
+        "n2": 48
+      },
+      "expected": {
+        "part_lt_whole": true,
+        "borrow_required": false,
+        "both_parts_nonzero": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_inverse_01",
+      "unit_id": null,
+      "env": {
+        "n_after": 28,
+        "n_added": 7
+      },
+      "expected": {
+        "initial_positive": true,
+        "borrow_required": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_inverse_01",
+      "unit_id": null,
+      "env": {
+        "n_after": 30,
+        "n_added": 22
+      },
+      "expected": {
+        "initial_positive": true,
+        "borrow_required": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_inverse_01",
+      "unit_id": null,
+      "env": {
+        "n_after": 23,
+        "n_added": 16
+      },
+      "expected": {
+        "initial_positive": true,
+        "borrow_required": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_inverse_01",
+      "unit_id": null,
+      "env": {
+        "n_after": 58,
+        "n_added": 22
+      },
+      "expected": {
+        "initial_positive": true,
+        "borrow_required": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_inverse_01",
+      "unit_id": null,
+      "env": {
+        "n_after": 30,
+        "n_added": 18
+      },
+      "expected": {
+        "initial_positive": true,
+        "borrow_required": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_inverse_01",
+      "unit_id": null,
+      "env": {
+        "n_after": 29,
+        "n_added": 6
+      },
+      "expected": {
+        "initial_positive": true,
+        "borrow_required": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_inverse_01",
+      "unit_id": null,
+      "env": {
+        "n_after": 40,
+        "n_added": 16
+      },
+      "expected": {
+        "initial_positive": true,
+        "borrow_required": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_inverse_01",
+      "unit_id": null,
+      "env": {
+        "n_after": 23,
+        "n_added": 16
+      },
+      "expected": {
+        "initial_positive": true,
+        "borrow_required": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_inverse_01",
+      "unit_id": null,
+      "env": {
+        "n_after": 34,
+        "n_added": 26
+      },
+      "expected": {
+        "initial_positive": true,
+        "borrow_required": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_inverse_01",
+      "unit_id": null,
+      "env": {
+        "n_after": 36,
+        "n_added": 26
+      },
+      "expected": {
+        "initial_positive": true,
+        "borrow_required": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_inverse_01",
+      "unit_id": null,
+      "env": {
+        "n_after": 27,
+        "n_added": 16
+      },
+      "expected": {
+        "initial_positive": true,
+        "borrow_required": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_inverse_01",
+      "unit_id": null,
+      "env": {
+        "n_after": 56,
+        "n_added": 18
+      },
+      "expected": {
+        "initial_positive": true,
+        "borrow_required": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_inverse_01",
+      "unit_id": null,
+      "env": {
+        "n_after": 60,
+        "n_added": 28
+      },
+      "expected": {
+        "initial_positive": true,
+        "borrow_required": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_inverse_01",
+      "unit_id": null,
+      "env": {
+        "n_after": 30,
+        "n_added": 12
+      },
+      "expected": {
+        "initial_positive": true,
+        "borrow_required": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_inverse_01",
+      "unit_id": null,
+      "env": {
+        "n_after": 31,
+        "n_added": 30
+      },
+      "expected": {
+        "initial_positive": false,
+        "borrow_required": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_inverse_01",
+      "unit_id": null,
+      "env": {
+        "n_after": 32,
+        "n_added": 18
+      },
+      "expected": {
+        "initial_positive": true,
+        "borrow_required": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_inverse_01",
+      "unit_id": null,
+      "env": {
+        "n_after": 22,
+        "n_added": 10
+      },
+      "expected": {
+        "initial_positive": true,
+        "borrow_required": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_inverse_01",
+      "unit_id": null,
+      "env": {
+        "n_after": 42,
+        "n_added": 30
+      },
+      "expected": {
+        "initial_positive": true,
+        "borrow_required": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_inverse_01",
+      "unit_id": null,
+      "env": {
+        "n_after": 47,
+        "n_added": 30
+      },
+      "expected": {
+        "initial_positive": true,
+        "borrow_required": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_inverse_01",
+      "unit_id": null,
+      "env": {
+        "n_after": 36,
+        "n_added": 13
+      },
+      "expected": {
+        "initial_positive": true,
+        "borrow_required": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_2step_gosei_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "n1": 4,
+        "n2": 9,
+        "n_total": 43
+      },
+      "expected": {
+        "mid_two_digit": true,
+        "remainder_positive": true,
+        "distinct_uses": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_2step_gosei_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "n1": 3,
+        "n2": 6,
+        "n_total": 48
+      },
+      "expected": {
+        "mid_two_digit": false,
+        "remainder_positive": true,
+        "distinct_uses": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_2step_gosei_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "n1": 3,
+        "n2": 9,
+        "n_total": 36
+      },
+      "expected": {
+        "mid_two_digit": true,
+        "remainder_positive": true,
+        "distinct_uses": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_2step_gosei_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "n1": 4,
+        "n2": 4,
+        "n_total": 47
+      },
+      "expected": {
+        "mid_two_digit": false,
+        "remainder_positive": true,
+        "distinct_uses": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_2step_gosei_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "n1": 6,
+        "n2": 5,
+        "n_total": 30
+      },
+      "expected": {
+        "mid_two_digit": true,
+        "remainder_positive": true,
+        "distinct_uses": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_2step_gosei_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "n1": 9,
+        "n2": 9,
+        "n_total": 48
+      },
+      "expected": {
+        "mid_two_digit": true,
+        "remainder_positive": true,
+        "distinct_uses": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_2step_gosei_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "n1": 4,
+        "n2": 4,
+        "n_total": 21
+      },
+      "expected": {
+        "mid_two_digit": false,
+        "remainder_positive": true,
+        "distinct_uses": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_2step_gosei_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "n1": 8,
+        "n2": 4,
+        "n_total": 33
+      },
+      "expected": {
+        "mid_two_digit": true,
+        "remainder_positive": true,
+        "distinct_uses": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_2step_gosei_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "n1": 5,
+        "n2": 5,
+        "n_total": 48
+      },
+      "expected": {
+        "mid_two_digit": true,
+        "remainder_positive": true,
+        "distinct_uses": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_2step_gosei_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "n1": 3,
+        "n2": 9,
+        "n_total": 29
+      },
+      "expected": {
+        "mid_two_digit": true,
+        "remainder_positive": true,
+        "distinct_uses": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_2step_gosei_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "n1": 5,
+        "n2": 8,
+        "n_total": 37
+      },
+      "expected": {
+        "mid_two_digit": true,
+        "remainder_positive": true,
+        "distinct_uses": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_2step_gosei_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "n1": 6,
+        "n2": 8,
+        "n_total": 47
+      },
+      "expected": {
+        "mid_two_digit": true,
+        "remainder_positive": true,
+        "distinct_uses": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_2step_gosei_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "n1": 7,
+        "n2": 5,
+        "n_total": 21
+      },
+      "expected": {
+        "mid_two_digit": true,
+        "remainder_positive": true,
+        "distinct_uses": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_2step_gosei_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "n1": 3,
+        "n2": 5,
+        "n_total": 26
+      },
+      "expected": {
+        "mid_two_digit": false,
+        "remainder_positive": true,
+        "distinct_uses": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_2step_gosei_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "n1": 7,
+        "n2": 5,
+        "n_total": 22
+      },
+      "expected": {
+        "mid_two_digit": true,
+        "remainder_positive": true,
+        "distinct_uses": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_2step_gosei_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "n1": 3,
+        "n2": 7,
+        "n_total": 34
+      },
+      "expected": {
+        "mid_two_digit": true,
+        "remainder_positive": true,
+        "distinct_uses": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_2step_gosei_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "n1": 5,
+        "n2": 8,
+        "n_total": 46
+      },
+      "expected": {
+        "mid_two_digit": true,
+        "remainder_positive": true,
+        "distinct_uses": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_2step_gosei_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "n1": 5,
+        "n2": 6,
+        "n_total": 40
+      },
+      "expected": {
+        "mid_two_digit": true,
+        "remainder_positive": true,
+        "distinct_uses": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_2step_gosei_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "n1": 7,
+        "n2": 3,
+        "n_total": 33
+      },
+      "expected": {
+        "mid_two_digit": true,
+        "remainder_positive": true,
+        "distinct_uses": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_2step_gosei_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "n1": 7,
+        "n2": 4,
+        "n_total": 29
+      },
+      "expected": {
+        "mid_two_digit": true,
+        "remainder_positive": true,
+        "distinct_uses": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 2,
+        "n_count": 8
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 2,
+        "n_count": 5
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 7,
+        "n_count": 8
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 3,
+        "n_count": 7
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 7,
+        "n_count": 3
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 6,
+        "n_count": 6
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 8,
+        "n_count": 7
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 8,
+        "n_count": 6
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 4,
+        "n_count": 5
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 8,
+        "n_count": 8
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 4,
+        "n_count": 6
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 8,
+        "n_count": 2
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 6,
+        "n_count": 6
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 5,
+        "n_count": 8
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 7,
+        "n_count": 9
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 9,
+        "n_count": 9
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 5,
+        "n_count": 9
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 4,
+        "n_count": 3
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 6,
+        "n_count": 7
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 3,
+        "n_count": 5
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 5,
+        "n_count": 5
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 2,
+        "n_count": 4
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 2,
+        "n_count": 2
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 2,
+        "n_count": 9
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 2,
+        "n_count": 9
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 5,
+        "n_count": 5
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 5,
+        "n_count": 9
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 5,
+        "n_count": 5
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 2,
+        "n_count": 2
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 2,
+        "n_count": 8
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 2,
+        "n_count": 4
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 5,
+        "n_count": 2
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 2,
+        "n_count": 3
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 5,
+        "n_count": 4
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 5,
+        "n_count": 7
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 5,
+        "n_count": 8
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 5,
+        "n_count": 4
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 5,
+        "n_count": 9
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 5,
+        "n_count": 5
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 5,
+        "n_count": 9
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c33_u01",
+      "env": {
+        "n_per": 3,
+        "n_count": 6
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c33_u01",
+      "env": {
+        "n_per": 4,
+        "n_count": 3
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c33_u01",
+      "env": {
+        "n_per": 4,
+        "n_count": 5
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c33_u01",
+      "env": {
+        "n_per": 4,
+        "n_count": 7
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c33_u01",
+      "env": {
+        "n_per": 4,
+        "n_count": 3
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c33_u01",
+      "env": {
+        "n_per": 3,
+        "n_count": 4
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c33_u01",
+      "env": {
+        "n_per": 3,
+        "n_count": 8
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c33_u01",
+      "env": {
+        "n_per": 3,
+        "n_count": 5
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c33_u01",
+      "env": {
+        "n_per": 3,
+        "n_count": 8
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c33_u01",
+      "env": {
+        "n_per": 4,
+        "n_count": 7
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c33_u01",
+      "env": {
+        "n_per": 4,
+        "n_count": 8
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c33_u01",
+      "env": {
+        "n_per": 3,
+        "n_count": 5
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c33_u01",
+      "env": {
+        "n_per": 4,
+        "n_count": 8
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c33_u01",
+      "env": {
+        "n_per": 3,
+        "n_count": 8
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c33_u01",
+      "env": {
+        "n_per": 4,
+        "n_count": 2
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c33_u01",
+      "env": {
+        "n_per": 4,
+        "n_count": 6
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c33_u01",
+      "env": {
+        "n_per": 4,
+        "n_count": 8
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c33_u01",
+      "env": {
+        "n_per": 3,
+        "n_count": 9
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c33_u01",
+      "env": {
+        "n_per": 3,
+        "n_count": 6
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c33_u01",
+      "env": {
+        "n_per": 4,
+        "n_count": 9
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 6,
+        "n_count": 8
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 8
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 6,
+        "n_count": 9
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 6,
+        "n_count": 2
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 2
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 6,
+        "n_count": 8
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 6,
+        "n_count": 9
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 6,
+        "n_count": 2
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 8
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 5
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 7
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 8
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 8
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 3
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 2
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 6,
+        "n_count": 7
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 6,
+        "n_count": 3
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 6,
+        "n_count": 2
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 6,
+        "n_count": 5
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 6,
+        "n_count": 4
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 8,
+        "n_count": 4
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 9,
+        "n_count": 3
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 1,
+        "n_count": 5
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 9,
+        "n_count": 6
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 9,
+        "n_count": 4
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 1,
+        "n_count": 3
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 8,
+        "n_count": 6
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 8,
+        "n_count": 2
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 9,
+        "n_count": 8
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 9,
+        "n_count": 5
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 8,
+        "n_count": 5
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 8,
+        "n_count": 6
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 1,
+        "n_count": 3
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 1,
+        "n_count": 2
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 9,
+        "n_count": 8
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 1,
+        "n_count": 7
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 8,
+        "n_count": 7
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 8,
+        "n_count": 8
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 9,
+        "n_count": 3
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 9,
+        "n_count": 7
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_bai_01",
+      "unit_id": null,
+      "env": {
+        "n_base": 9,
+        "n_times": 4
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_bai_01",
+      "unit_id": null,
+      "env": {
+        "n_base": 4,
+        "n_times": 3
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_bai_01",
+      "unit_id": null,
+      "env": {
+        "n_base": 4,
+        "n_times": 4
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_bai_01",
+      "unit_id": null,
+      "env": {
+        "n_base": 6,
+        "n_times": 4
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_bai_01",
+      "unit_id": null,
+      "env": {
+        "n_base": 9,
+        "n_times": 3
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_bai_01",
+      "unit_id": null,
+      "env": {
+        "n_base": 8,
+        "n_times": 4
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_bai_01",
+      "unit_id": null,
+      "env": {
+        "n_base": 6,
+        "n_times": 3
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_bai_01",
+      "unit_id": null,
+      "env": {
+        "n_base": 5,
+        "n_times": 2
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_bai_01",
+      "unit_id": null,
+      "env": {
+        "n_base": 6,
+        "n_times": 3
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_bai_01",
+      "unit_id": null,
+      "env": {
+        "n_base": 5,
+        "n_times": 3
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_bai_01",
+      "unit_id": null,
+      "env": {
+        "n_base": 8,
+        "n_times": 3
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_bai_01",
+      "unit_id": null,
+      "env": {
+        "n_base": 2,
+        "n_times": 3
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_bai_01",
+      "unit_id": null,
+      "env": {
+        "n_base": 7,
+        "n_times": 2
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_bai_01",
+      "unit_id": null,
+      "env": {
+        "n_base": 9,
+        "n_times": 2
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_bai_01",
+      "unit_id": null,
+      "env": {
+        "n_base": 7,
+        "n_times": 3
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_bai_01",
+      "unit_id": null,
+      "env": {
+        "n_base": 7,
+        "n_times": 3
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_bai_01",
+      "unit_id": null,
+      "env": {
+        "n_base": 6,
+        "n_times": 4
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_bai_01",
+      "unit_id": null,
+      "env": {
+        "n_base": 2,
+        "n_times": 4
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_bai_01",
+      "unit_id": null,
+      "env": {
+        "n_base": 5,
+        "n_times": 2
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_bai_01",
+      "unit_id": null,
+      "env": {
+        "n_base": 5,
+        "n_times": 4
+      },
+      "expected": {
+        "kuku_range": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 4,
+        "n_count": 9,
+        "n_extra": 4
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 4,
+        "n_count": 9,
+        "n_extra": 8
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 3,
+        "n_count": 3,
+        "n_extra": 5
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 3,
+        "n_count": 8,
+        "n_extra": 4
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 4,
+        "n_count": 7,
+        "n_extra": 8
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 4,
+        "n_count": 8,
+        "n_extra": 6
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 4,
+        "n_count": 9,
+        "n_extra": 5
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 4,
+        "n_count": 6,
+        "n_extra": 4
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 3,
+        "n_count": 5,
+        "n_extra": 6
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 3,
+        "n_count": 4,
+        "n_extra": 4
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 3,
+        "n_count": 9,
+        "n_extra": 5
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 4,
+        "n_count": 3,
+        "n_extra": 4
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 4,
+        "n_count": 5,
+        "n_extra": 6
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 3,
+        "n_count": 6,
+        "n_extra": 1
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 3,
+        "n_count": 6,
+        "n_extra": 1
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 3,
+        "n_count": 6,
+        "n_extra": 3
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 4,
+        "n_count": 3,
+        "n_extra": 1
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 4,
+        "n_count": 9,
+        "n_extra": 8
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 4,
+        "n_count": 7,
+        "n_extra": 3
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 3,
+        "n_count": 6,
+        "n_extra": 8
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 2,
+        "n_count": 3,
+        "n_extra": 7
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 5,
+        "n_count": 3,
+        "n_extra": 1
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 2,
+        "n_count": 4,
+        "n_extra": 5
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 2,
+        "n_count": 5,
+        "n_extra": 2
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 5,
+        "n_count": 5,
+        "n_extra": 7
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 5,
+        "n_count": 9,
+        "n_extra": 5
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 5,
+        "n_count": 6,
+        "n_extra": 1
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 2,
+        "n_count": 5,
+        "n_extra": 4
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 5,
+        "n_count": 3,
+        "n_extra": 3
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 2,
+        "n_count": 4,
+        "n_extra": 2
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 2,
+        "n_count": 2,
+        "n_extra": 7
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 5,
+        "n_count": 9,
+        "n_extra": 5
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 2,
+        "n_count": 5,
+        "n_extra": 5
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 5,
+        "n_count": 9,
+        "n_extra": 2
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 2,
+        "n_count": 6,
+        "n_extra": 4
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 5,
+        "n_count": 3,
+        "n_extra": 4
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 2,
+        "n_count": 6,
+        "n_extra": 3
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 2,
+        "n_count": 2,
+        "n_extra": 3
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 5,
+        "n_count": 6,
+        "n_extra": 8
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c32_u01",
+      "env": {
+        "n_per": 2,
+        "n_count": 9,
+        "n_extra": 5
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 6,
+        "n_extra": 8
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 3,
+        "n_extra": 1
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 7,
+        "n_extra": 5
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 6,
+        "n_count": 3,
+        "n_extra": 4
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 6,
+        "n_count": 6,
+        "n_extra": 1
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 6,
+        "n_count": 9,
+        "n_extra": 8
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 4,
+        "n_extra": 7
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 3,
+        "n_extra": 8
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 8,
+        "n_extra": 6
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 3,
+        "n_extra": 3
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 8,
+        "n_extra": 8
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 8,
+        "n_extra": 1
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 3,
+        "n_extra": 6
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 7,
+        "n_extra": 2
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 2,
+        "n_extra": 8
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 2,
+        "n_extra": 4
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 9,
+        "n_extra": 8
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 6,
+        "n_count": 5,
+        "n_extra": 5
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 6,
+        "n_count": 6,
+        "n_extra": 8
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c34_u01",
+      "env": {
+        "n_per": 7,
+        "n_count": 3,
+        "n_extra": 1
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 8,
+        "n_count": 4,
+        "n_extra": 5
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 8,
+        "n_count": 8,
+        "n_extra": 2
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 8,
+        "n_count": 3,
+        "n_extra": 8
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 8,
+        "n_count": 4,
+        "n_extra": 8
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 9,
+        "n_count": 6,
+        "n_extra": 7
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 9,
+        "n_count": 9,
+        "n_extra": 4
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 9,
+        "n_count": 4,
+        "n_extra": 7
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 8,
+        "n_count": 4,
+        "n_extra": 2
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 9,
+        "n_count": 8,
+        "n_extra": 6
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 9,
+        "n_count": 2,
+        "n_extra": 5
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 9,
+        "n_count": 9,
+        "n_extra": 3
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 9,
+        "n_count": 9,
+        "n_extra": 6
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 9,
+        "n_count": 8,
+        "n_extra": 8
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 9,
+        "n_count": 5,
+        "n_extra": 4
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 9,
+        "n_count": 5,
+        "n_extra": 7
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 8,
+        "n_count": 7,
+        "n_extra": 8
+      },
+      "expected": {
+        "extra_lt_per": false,
+        "total_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 9,
+        "n_count": 8,
+        "n_extra": 3
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 9,
+        "n_count": 2,
+        "n_extra": 3
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 9,
+        "n_count": 3,
+        "n_extra": 8
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "unit_id": "g02_c35_u01",
+      "env": {
+        "n_per": 8,
+        "n_count": 9,
+        "n_extra": 1
+      },
+      "expected": {
+        "extra_lt_per": true,
+        "total_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_sub_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 9,
+        "n_count": 4,
+        "n_total": 46
+      },
+      "expected": {
+        "remainder_positive": true,
+        "remainder_lt_per": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_sub_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 9,
+        "n_count": 4,
+        "n_total": 24
+      },
+      "expected": {
+        "remainder_positive": false,
+        "remainder_lt_per": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_sub_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 7,
+        "n_count": 5,
+        "n_total": 41
+      },
+      "expected": {
+        "remainder_positive": true,
+        "remainder_lt_per": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_sub_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 8,
+        "n_count": 8,
+        "n_total": 45
+      },
+      "expected": {
+        "remainder_positive": false,
+        "remainder_lt_per": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_sub_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 9,
+        "n_count": 3,
+        "n_total": 74
+      },
+      "expected": {
+        "remainder_positive": true,
+        "remainder_lt_per": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_sub_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 6,
+        "n_count": 8,
+        "n_total": 74
+      },
+      "expected": {
+        "remainder_positive": true,
+        "remainder_lt_per": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_sub_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 8,
+        "n_count": 6,
+        "n_total": 40
+      },
+      "expected": {
+        "remainder_positive": false,
+        "remainder_lt_per": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_sub_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 9,
+        "n_count": 8,
+        "n_total": 76
+      },
+      "expected": {
+        "remainder_positive": true,
+        "remainder_lt_per": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_sub_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 7,
+        "n_count": 7,
+        "n_total": 22
+      },
+      "expected": {
+        "remainder_positive": false,
+        "remainder_lt_per": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_sub_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 8,
+        "n_count": 3,
+        "n_total": 35
+      },
+      "expected": {
+        "remainder_positive": true,
+        "remainder_lt_per": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_sub_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 9,
+        "n_count": 8,
+        "n_total": 78
+      },
+      "expected": {
+        "remainder_positive": true,
+        "remainder_lt_per": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_sub_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 6,
+        "n_count": 4,
+        "n_total": 67
+      },
+      "expected": {
+        "remainder_positive": true,
+        "remainder_lt_per": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_sub_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 4,
+        "n_count": 6,
+        "n_total": 26
+      },
+      "expected": {
+        "remainder_positive": true,
+        "remainder_lt_per": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_sub_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 9,
+        "n_count": 8,
+        "n_total": 75
+      },
+      "expected": {
+        "remainder_positive": true,
+        "remainder_lt_per": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_mult_2step_sub_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 4,
+        "n_count": 6,
+        "n_total": 30
+      },
+      "expected": {
+        "remainder_positive": true,
+        "remainder_lt_per": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_sub_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 9,
+        "n_count": 5,
+        "n_total": 77
+      },
+      "expected": {
+        "remainder_positive": true,
+        "remainder_lt_per": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_sub_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 4,
+        "n_count": 3,
+        "n_total": 40
+      },
+      "expected": {
+        "remainder_positive": true,
+        "remainder_lt_per": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_sub_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 4,
+        "n_count": 5,
+        "n_total": 42
+      },
+      "expected": {
+        "remainder_positive": true,
+        "remainder_lt_per": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_sub_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 6,
+        "n_count": 6,
+        "n_total": 29
+      },
+      "expected": {
+        "remainder_positive": false,
+        "remainder_lt_per": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_mult_2step_sub_01",
+      "unit_id": null,
+      "env": {
+        "n_per": 5,
+        "n_count": 7,
+        "n_total": 46
+      },
+      "expected": {
+        "remainder_positive": true,
+        "remainder_lt_per": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_len_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 46,
+        "q2": 44
+      },
+      "expected": {
+        "no_mm_carry": false,
+        "both_have_mm": true,
+        "ans_has_mm": false,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_len_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 45,
+        "q2": 33
+      },
+      "expected": {
+        "no_mm_carry": true,
+        "both_have_mm": true,
+        "ans_has_mm": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_len_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 71,
+        "q2": 53
+      },
+      "expected": {
+        "no_mm_carry": true,
+        "both_have_mm": true,
+        "ans_has_mm": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_len_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 86,
+        "q2": 41
+      },
+      "expected": {
+        "no_mm_carry": true,
+        "both_have_mm": true,
+        "ans_has_mm": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_len_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 52,
+        "q2": 82
+      },
+      "expected": {
+        "no_mm_carry": true,
+        "both_have_mm": true,
+        "ans_has_mm": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_len_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 55,
+        "q2": 81
+      },
+      "expected": {
+        "no_mm_carry": true,
+        "both_have_mm": true,
+        "ans_has_mm": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_len_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 55,
+        "q2": 24
+      },
+      "expected": {
+        "no_mm_carry": true,
+        "both_have_mm": true,
+        "ans_has_mm": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_len_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 82,
+        "q2": 59
+      },
+      "expected": {
+        "no_mm_carry": false,
+        "both_have_mm": true,
+        "ans_has_mm": true,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_len_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 43,
+        "q2": 32
+      },
+      "expected": {
+        "no_mm_carry": true,
+        "both_have_mm": true,
+        "ans_has_mm": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_len_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 79,
+        "q2": 67
+      },
+      "expected": {
+        "no_mm_carry": false,
+        "both_have_mm": true,
+        "ans_has_mm": true,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_len_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 61,
+        "q2": 77
+      },
+      "expected": {
+        "no_mm_carry": true,
+        "both_have_mm": true,
+        "ans_has_mm": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_len_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 55,
+        "q2": 81
+      },
+      "expected": {
+        "no_mm_carry": true,
+        "both_have_mm": true,
+        "ans_has_mm": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_len_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 61,
+        "q2": 48
+      },
+      "expected": {
+        "no_mm_carry": true,
+        "both_have_mm": true,
+        "ans_has_mm": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_len_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 72,
+        "q2": 84
+      },
+      "expected": {
+        "no_mm_carry": true,
+        "both_have_mm": true,
+        "ans_has_mm": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_len_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 36,
+        "q2": 53
+      },
+      "expected": {
+        "no_mm_carry": true,
+        "both_have_mm": true,
+        "ans_has_mm": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_len_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 71,
+        "q2": 68
+      },
+      "expected": {
+        "no_mm_carry": true,
+        "both_have_mm": true,
+        "ans_has_mm": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_len_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 60,
+        "q2": 60
+      },
+      "expected": {
+        "no_mm_carry": true,
+        "both_have_mm": false,
+        "ans_has_mm": false,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_len_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 25,
+        "q2": 73
+      },
+      "expected": {
+        "no_mm_carry": true,
+        "both_have_mm": true,
+        "ans_has_mm": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_len_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 58,
+        "q2": 24
+      },
+      "expected": {
+        "no_mm_carry": false,
+        "both_have_mm": true,
+        "ans_has_mm": true,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_len_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 29,
+        "q2": 86
+      },
+      "expected": {
+        "no_mm_carry": false,
+        "both_have_mm": true,
+        "ans_has_mm": true,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_len_kyusa_01",
+      "unit_id": null,
+      "env": {
+        "q1": 59,
+        "q2": 52
+      },
+      "expected": {
+        "no_mm_borrow": true,
+        "not_equal": true,
+        "meaningful_gap": false,
+        "both_have_mm": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_len_kyusa_01",
+      "unit_id": null,
+      "env": {
+        "q1": 68,
+        "q2": 51
+      },
+      "expected": {
+        "no_mm_borrow": true,
+        "not_equal": true,
+        "meaningful_gap": true,
+        "both_have_mm": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_len_kyusa_01",
+      "unit_id": null,
+      "env": {
+        "q1": 47,
+        "q2": 55
+      },
+      "expected": {
+        "no_mm_borrow": false,
+        "not_equal": true,
+        "meaningful_gap": false,
+        "both_have_mm": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_len_kyusa_01",
+      "unit_id": null,
+      "env": {
+        "q1": 40,
+        "q2": 35
+      },
+      "expected": {
+        "no_mm_borrow": false,
+        "not_equal": true,
+        "meaningful_gap": false,
+        "both_have_mm": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_len_kyusa_01",
+      "unit_id": null,
+      "env": {
+        "q1": 28,
+        "q2": 62
+      },
+      "expected": {
+        "no_mm_borrow": false,
+        "not_equal": true,
+        "meaningful_gap": true,
+        "both_have_mm": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_len_kyusa_01",
+      "unit_id": null,
+      "env": {
+        "q1": 79,
+        "q2": 27
+      },
+      "expected": {
+        "no_mm_borrow": true,
+        "not_equal": true,
+        "meaningful_gap": true,
+        "both_have_mm": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_len_kyusa_01",
+      "unit_id": null,
+      "env": {
+        "q1": 97,
+        "q2": 69
+      },
+      "expected": {
+        "no_mm_borrow": false,
+        "not_equal": true,
+        "meaningful_gap": true,
+        "both_have_mm": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_len_kyusa_01",
+      "unit_id": null,
+      "env": {
+        "q1": 39,
+        "q2": 34
+      },
+      "expected": {
+        "no_mm_borrow": true,
+        "not_equal": true,
+        "meaningful_gap": false,
+        "both_have_mm": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_len_kyusa_01",
+      "unit_id": null,
+      "env": {
+        "q1": 60,
+        "q2": 64
+      },
+      "expected": {
+        "no_mm_borrow": true,
+        "not_equal": true,
+        "meaningful_gap": false,
+        "both_have_mm": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_len_kyusa_01",
+      "unit_id": null,
+      "env": {
+        "q1": 76,
+        "q2": 45
+      },
+      "expected": {
+        "no_mm_borrow": true,
+        "not_equal": true,
+        "meaningful_gap": true,
+        "both_have_mm": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_len_kyusa_01",
+      "unit_id": null,
+      "env": {
+        "q1": 48,
+        "q2": 39
+      },
+      "expected": {
+        "no_mm_borrow": false,
+        "not_equal": true,
+        "meaningful_gap": false,
+        "both_have_mm": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_len_kyusa_01",
+      "unit_id": null,
+      "env": {
+        "q1": 92,
+        "q2": 69
+      },
+      "expected": {
+        "no_mm_borrow": false,
+        "not_equal": true,
+        "meaningful_gap": true,
+        "both_have_mm": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_len_kyusa_01",
+      "unit_id": null,
+      "env": {
+        "q1": 90,
+        "q2": 87
+      },
+      "expected": {
+        "no_mm_borrow": false,
+        "not_equal": true,
+        "meaningful_gap": false,
+        "both_have_mm": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_len_kyusa_01",
+      "unit_id": null,
+      "env": {
+        "q1": 57,
+        "q2": 44
+      },
+      "expected": {
+        "no_mm_borrow": true,
+        "not_equal": true,
+        "meaningful_gap": true,
+        "both_have_mm": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_len_kyusa_01",
+      "unit_id": null,
+      "env": {
+        "q1": 55,
+        "q2": 84
+      },
+      "expected": {
+        "no_mm_borrow": false,
+        "not_equal": true,
+        "meaningful_gap": true,
+        "both_have_mm": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_len_kyusa_01",
+      "unit_id": null,
+      "env": {
+        "q1": 60,
+        "q2": 66
+      },
+      "expected": {
+        "no_mm_borrow": true,
+        "not_equal": true,
+        "meaningful_gap": false,
+        "both_have_mm": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_len_kyusa_01",
+      "unit_id": null,
+      "env": {
+        "q1": 37,
+        "q2": 82
+      },
+      "expected": {
+        "no_mm_borrow": false,
+        "not_equal": true,
+        "meaningful_gap": true,
+        "both_have_mm": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_len_kyusa_01",
+      "unit_id": null,
+      "env": {
+        "q1": 32,
+        "q2": 41
+      },
+      "expected": {
+        "no_mm_borrow": false,
+        "not_equal": true,
+        "meaningful_gap": false,
+        "both_have_mm": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_len_kyusa_01",
+      "unit_id": null,
+      "env": {
+        "q1": 51,
+        "q2": 73
+      },
+      "expected": {
+        "no_mm_borrow": true,
+        "not_equal": true,
+        "meaningful_gap": true,
+        "both_have_mm": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_len_kyusa_01",
+      "unit_id": null,
+      "env": {
+        "q1": 94,
+        "q2": 69
+      },
+      "expected": {
+        "no_mm_borrow": false,
+        "not_equal": true,
+        "meaningful_gap": true,
+        "both_have_mm": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 17,
+        "q2": 37
+      },
+      "expected": {
+        "no_dl_carry": false,
+        "both_have_dl": true,
+        "ans_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 12,
+        "q2": 28
+      },
+      "expected": {
+        "no_dl_carry": false,
+        "both_have_dl": true,
+        "ans_has_dl": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 46,
+        "q2": 19
+      },
+      "expected": {
+        "no_dl_carry": false,
+        "both_have_dl": true,
+        "ans_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 41,
+        "q2": 35
+      },
+      "expected": {
+        "no_dl_carry": true,
+        "both_have_dl": true,
+        "ans_has_dl": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_kasa_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 28,
+        "q2": 49
+      },
+      "expected": {
+        "no_dl_carry": false,
+        "both_have_dl": true,
+        "ans_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 36,
+        "q2": 35
+      },
+      "expected": {
+        "no_dl_carry": false,
+        "both_have_dl": true,
+        "ans_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 18,
+        "q2": 26
+      },
+      "expected": {
+        "no_dl_carry": false,
+        "both_have_dl": true,
+        "ans_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 42,
+        "q2": 13
+      },
+      "expected": {
+        "no_dl_carry": true,
+        "both_have_dl": true,
+        "ans_has_dl": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_kasa_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 47,
+        "q2": 32
+      },
+      "expected": {
+        "no_dl_carry": true,
+        "both_have_dl": true,
+        "ans_has_dl": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_kasa_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 26,
+        "q2": 16
+      },
+      "expected": {
+        "no_dl_carry": false,
+        "both_have_dl": true,
+        "ans_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 41,
+        "q2": 31
+      },
+      "expected": {
+        "no_dl_carry": true,
+        "both_have_dl": true,
+        "ans_has_dl": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_kasa_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 38,
+        "q2": 19
+      },
+      "expected": {
+        "no_dl_carry": false,
+        "both_have_dl": true,
+        "ans_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 20,
+        "q2": 14
+      },
+      "expected": {
+        "no_dl_carry": true,
+        "both_have_dl": false,
+        "ans_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 14,
+        "q2": 31
+      },
+      "expected": {
+        "no_dl_carry": true,
+        "both_have_dl": true,
+        "ans_has_dl": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_kasa_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 43,
+        "q2": 19
+      },
+      "expected": {
+        "no_dl_carry": false,
+        "both_have_dl": true,
+        "ans_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 18,
+        "q2": 27
+      },
+      "expected": {
+        "no_dl_carry": false,
+        "both_have_dl": true,
+        "ans_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 46,
+        "q2": 20
+      },
+      "expected": {
+        "no_dl_carry": true,
+        "both_have_dl": false,
+        "ans_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 36,
+        "q2": 41
+      },
+      "expected": {
+        "no_dl_carry": true,
+        "both_have_dl": true,
+        "ans_has_dl": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_kasa_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 35,
+        "q2": 46
+      },
+      "expected": {
+        "no_dl_carry": false,
+        "both_have_dl": true,
+        "ans_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 38,
+        "q2": 49
+      },
+      "expected": {
+        "no_dl_carry": false,
+        "both_have_dl": true,
+        "ans_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_time_conv_min_to_hmin_01",
+      "unit_id": null,
+      "env": {
+        "q1": 156
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_min_to_hmin_01",
+      "unit_id": null,
+      "env": {
+        "q1": 154
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_min_to_hmin_01",
+      "unit_id": null,
+      "env": {
+        "q1": 80
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_min_to_hmin_01",
+      "unit_id": null,
+      "env": {
+        "q1": 174
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_min_to_hmin_01",
+      "unit_id": null,
+      "env": {
+        "q1": 114
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_min_to_hmin_01",
+      "unit_id": null,
+      "env": {
+        "q1": 144
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_min_to_hmin_01",
+      "unit_id": null,
+      "env": {
+        "q1": 73
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_min_to_hmin_01",
+      "unit_id": null,
+      "env": {
+        "q1": 167
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_min_to_hmin_01",
+      "unit_id": null,
+      "env": {
+        "q1": 123
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_min_to_hmin_01",
+      "unit_id": null,
+      "env": {
+        "q1": 139
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_min_to_hmin_01",
+      "unit_id": null,
+      "env": {
+        "q1": 113
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_min_to_hmin_01",
+      "unit_id": null,
+      "env": {
+        "q1": 96
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_min_to_hmin_01",
+      "unit_id": null,
+      "env": {
+        "q1": 65
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_min_to_hmin_01",
+      "unit_id": null,
+      "env": {
+        "q1": 149
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_min_to_hmin_01",
+      "unit_id": null,
+      "env": {
+        "q1": 108
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_min_to_hmin_01",
+      "unit_id": null,
+      "env": {
+        "q1": 88
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_min_to_hmin_01",
+      "unit_id": null,
+      "env": {
+        "q1": 117
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_min_to_hmin_01",
+      "unit_id": null,
+      "env": {
+        "q1": 117
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_min_to_hmin_01",
+      "unit_id": null,
+      "env": {
+        "q1": 91
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_min_to_hmin_01",
+      "unit_id": null,
+      "env": {
+        "q1": 170
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_after_01",
+      "unit_id": null,
+      "env": {
+        "t_start": 595,
+        "dur": 20
+      },
+      "expected": {
+        "stay_am": true,
+        "minute_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_after_01",
+      "unit_id": null,
+      "env": {
+        "t_start": 595,
+        "dur": 40
+      },
+      "expected": {
+        "stay_am": true,
+        "minute_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_after_01",
+      "unit_id": null,
+      "env": {
+        "t_start": 495,
+        "dur": 45
+      },
+      "expected": {
+        "stay_am": true,
+        "minute_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_after_01",
+      "unit_id": null,
+      "env": {
+        "t_start": 565,
+        "dur": 30
+      },
+      "expected": {
+        "stay_am": true,
+        "minute_carry": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_time_after_01",
+      "unit_id": null,
+      "env": {
+        "t_start": 515,
+        "dur": 50
+      },
+      "expected": {
+        "stay_am": true,
+        "minute_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_after_01",
+      "unit_id": null,
+      "env": {
+        "t_start": 505,
+        "dur": 30
+      },
+      "expected": {
+        "stay_am": true,
+        "minute_carry": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_time_after_01",
+      "unit_id": null,
+      "env": {
+        "t_start": 485,
+        "dur": 15
+      },
+      "expected": {
+        "stay_am": true,
+        "minute_carry": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_time_after_01",
+      "unit_id": null,
+      "env": {
+        "t_start": 585,
+        "dur": 30
+      },
+      "expected": {
+        "stay_am": true,
+        "minute_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_after_01",
+      "unit_id": null,
+      "env": {
+        "t_start": 520,
+        "dur": 30
+      },
+      "expected": {
+        "stay_am": true,
+        "minute_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_after_01",
+      "unit_id": null,
+      "env": {
+        "t_start": 500,
+        "dur": 30
+      },
+      "expected": {
+        "stay_am": true,
+        "minute_carry": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_time_after_01",
+      "unit_id": null,
+      "env": {
+        "t_start": 545,
+        "dur": 30
+      },
+      "expected": {
+        "stay_am": true,
+        "minute_carry": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_time_after_01",
+      "unit_id": null,
+      "env": {
+        "t_start": 585,
+        "dur": 25
+      },
+      "expected": {
+        "stay_am": true,
+        "minute_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_after_01",
+      "unit_id": null,
+      "env": {
+        "t_start": 480,
+        "dur": 35
+      },
+      "expected": {
+        "stay_am": true,
+        "minute_carry": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_time_after_01",
+      "unit_id": null,
+      "env": {
+        "t_start": 525,
+        "dur": 25
+      },
+      "expected": {
+        "stay_am": true,
+        "minute_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_after_01",
+      "unit_id": null,
+      "env": {
+        "t_start": 650,
+        "dur": 35
+      },
+      "expected": {
+        "stay_am": true,
+        "minute_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_after_01",
+      "unit_id": null,
+      "env": {
+        "t_start": 535,
+        "dur": 20
+      },
+      "expected": {
+        "stay_am": true,
+        "minute_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_after_01",
+      "unit_id": null,
+      "env": {
+        "t_start": 485,
+        "dur": 25
+      },
+      "expected": {
+        "stay_am": true,
+        "minute_carry": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_time_after_01",
+      "unit_id": null,
+      "env": {
+        "t_start": 480,
+        "dur": 40
+      },
+      "expected": {
+        "stay_am": true,
+        "minute_carry": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_time_after_01",
+      "unit_id": null,
+      "env": {
+        "t_start": 555,
+        "dur": 40
+      },
+      "expected": {
+        "stay_am": true,
+        "minute_carry": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_time_after_01",
+      "unit_id": null,
+      "env": {
+        "t_start": 485,
+        "dur": 25
+      },
+      "expected": {
+        "stay_am": true,
+        "minute_carry": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_3ko_gappei_01",
+      "unit_id": null,
+      "env": {
+        "n1": 16,
+        "n2": 9,
+        "n3": 9
+      },
+      "expected": {
+        "sum_max": true,
+        "some_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_3ko_gappei_01",
+      "unit_id": null,
+      "env": {
+        "n1": 21,
+        "n2": 24,
+        "n3": 8
+      },
+      "expected": {
+        "sum_max": true,
+        "some_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_3ko_gappei_01",
+      "unit_id": null,
+      "env": {
+        "n1": 10,
+        "n2": 23,
+        "n3": 19
+      },
+      "expected": {
+        "sum_max": true,
+        "some_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_3ko_gappei_01",
+      "unit_id": null,
+      "env": {
+        "n1": 19,
+        "n2": 24,
+        "n3": 8
+      },
+      "expected": {
+        "sum_max": true,
+        "some_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_3ko_gappei_01",
+      "unit_id": null,
+      "env": {
+        "n1": 22,
+        "n2": 24,
+        "n3": 12
+      },
+      "expected": {
+        "sum_max": true,
+        "some_carry": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_3ko_gappei_01",
+      "unit_id": null,
+      "env": {
+        "n1": 27,
+        "n2": 9,
+        "n3": 14
+      },
+      "expected": {
+        "sum_max": true,
+        "some_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_3ko_gappei_01",
+      "unit_id": null,
+      "env": {
+        "n1": 22,
+        "n2": 28,
+        "n3": 5
+      },
+      "expected": {
+        "sum_max": true,
+        "some_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_3ko_gappei_01",
+      "unit_id": null,
+      "env": {
+        "n1": 9,
+        "n2": 23,
+        "n3": 17
+      },
+      "expected": {
+        "sum_max": true,
+        "some_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_3ko_gappei_01",
+      "unit_id": null,
+      "env": {
+        "n1": 21,
+        "n2": 29,
+        "n3": 8
+      },
+      "expected": {
+        "sum_max": true,
+        "some_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_3ko_gappei_01",
+      "unit_id": null,
+      "env": {
+        "n1": 23,
+        "n2": 30,
+        "n3": 19
+      },
+      "expected": {
+        "sum_max": true,
+        "some_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_3ko_gappei_01",
+      "unit_id": null,
+      "env": {
+        "n1": 10,
+        "n2": 10,
+        "n3": 15
+      },
+      "expected": {
+        "sum_max": true,
+        "some_carry": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_3ko_gappei_01",
+      "unit_id": null,
+      "env": {
+        "n1": 27,
+        "n2": 12,
+        "n3": 7
+      },
+      "expected": {
+        "sum_max": true,
+        "some_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_3ko_gappei_01",
+      "unit_id": null,
+      "env": {
+        "n1": 12,
+        "n2": 16,
+        "n3": 15
+      },
+      "expected": {
+        "sum_max": true,
+        "some_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_3ko_gappei_01",
+      "unit_id": null,
+      "env": {
+        "n1": 20,
+        "n2": 27,
+        "n3": 14
+      },
+      "expected": {
+        "sum_max": true,
+        "some_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_3ko_gappei_01",
+      "unit_id": null,
+      "env": {
+        "n1": 22,
+        "n2": 24,
+        "n3": 18
+      },
+      "expected": {
+        "sum_max": true,
+        "some_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_3ko_gappei_01",
+      "unit_id": null,
+      "env": {
+        "n1": 11,
+        "n2": 30,
+        "n3": 8
+      },
+      "expected": {
+        "sum_max": true,
+        "some_carry": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_3ko_gappei_01",
+      "unit_id": null,
+      "env": {
+        "n1": 28,
+        "n2": 28,
+        "n3": 11
+      },
+      "expected": {
+        "sum_max": true,
+        "some_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_3ko_gappei_01",
+      "unit_id": null,
+      "env": {
+        "n1": 21,
+        "n2": 22,
+        "n3": 12
+      },
+      "expected": {
+        "sum_max": true,
+        "some_carry": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_3ko_gappei_01",
+      "unit_id": null,
+      "env": {
+        "n1": 21,
+        "n2": 18,
+        "n3": 19
+      },
+      "expected": {
+        "sum_max": true,
+        "some_carry": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_3ko_gappei_01",
+      "unit_id": null,
+      "env": {
+        "n1": 20,
+        "n2": 21,
+        "n3": 8
+      },
+      "expected": {
+        "sum_max": true,
+        "some_carry": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_addsub_zogen_bus_01",
+      "unit_id": null,
+      "env": {
+        "n1": 25,
+        "n_off": 7,
+        "n_on": 5
+      },
+      "expected": {
+        "mid_positive": true,
+        "off_ne_on": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zogen_bus_01",
+      "unit_id": null,
+      "env": {
+        "n1": 36,
+        "n_off": 6,
+        "n_on": 5
+      },
+      "expected": {
+        "mid_positive": true,
+        "off_ne_on": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zogen_bus_01",
+      "unit_id": null,
+      "env": {
+        "n1": 19,
+        "n_off": 9,
+        "n_on": 6
+      },
+      "expected": {
+        "mid_positive": true,
+        "off_ne_on": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zogen_bus_01",
+      "unit_id": null,
+      "env": {
+        "n1": 17,
+        "n_off": 4,
+        "n_on": 9
+      },
+      "expected": {
+        "mid_positive": true,
+        "off_ne_on": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zogen_bus_01",
+      "unit_id": null,
+      "env": {
+        "n1": 17,
+        "n_off": 4,
+        "n_on": 6
+      },
+      "expected": {
+        "mid_positive": true,
+        "off_ne_on": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zogen_bus_01",
+      "unit_id": null,
+      "env": {
+        "n1": 18,
+        "n_off": 9,
+        "n_on": 8
+      },
+      "expected": {
+        "mid_positive": true,
+        "off_ne_on": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zogen_bus_01",
+      "unit_id": null,
+      "env": {
+        "n1": 26,
+        "n_off": 5,
+        "n_on": 7
+      },
+      "expected": {
+        "mid_positive": true,
+        "off_ne_on": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zogen_bus_01",
+      "unit_id": null,
+      "env": {
+        "n1": 16,
+        "n_off": 8,
+        "n_on": 7
+      },
+      "expected": {
+        "mid_positive": true,
+        "off_ne_on": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zogen_bus_01",
+      "unit_id": null,
+      "env": {
+        "n1": 32,
+        "n_off": 6,
+        "n_on": 8
+      },
+      "expected": {
+        "mid_positive": true,
+        "off_ne_on": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zogen_bus_01",
+      "unit_id": null,
+      "env": {
+        "n1": 18,
+        "n_off": 7,
+        "n_on": 5
+      },
+      "expected": {
+        "mid_positive": true,
+        "off_ne_on": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zogen_bus_01",
+      "unit_id": null,
+      "env": {
+        "n1": 36,
+        "n_off": 7,
+        "n_on": 9
+      },
+      "expected": {
+        "mid_positive": true,
+        "off_ne_on": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zogen_bus_01",
+      "unit_id": null,
+      "env": {
+        "n1": 38,
+        "n_off": 4,
+        "n_on": 5
+      },
+      "expected": {
+        "mid_positive": true,
+        "off_ne_on": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zogen_bus_01",
+      "unit_id": null,
+      "env": {
+        "n1": 34,
+        "n_off": 6,
+        "n_on": 5
+      },
+      "expected": {
+        "mid_positive": true,
+        "off_ne_on": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zogen_bus_01",
+      "unit_id": null,
+      "env": {
+        "n1": 18,
+        "n_off": 8,
+        "n_on": 7
+      },
+      "expected": {
+        "mid_positive": true,
+        "off_ne_on": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zogen_bus_01",
+      "unit_id": null,
+      "env": {
+        "n1": 21,
+        "n_off": 5,
+        "n_on": 8
+      },
+      "expected": {
+        "mid_positive": true,
+        "off_ne_on": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zogen_bus_01",
+      "unit_id": null,
+      "env": {
+        "n1": 30,
+        "n_off": 5,
+        "n_on": 9
+      },
+      "expected": {
+        "mid_positive": true,
+        "off_ne_on": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zogen_bus_01",
+      "unit_id": null,
+      "env": {
+        "n1": 18,
+        "n_off": 6,
+        "n_on": 9
+      },
+      "expected": {
+        "mid_positive": true,
+        "off_ne_on": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zogen_bus_01",
+      "unit_id": null,
+      "env": {
+        "n1": 32,
+        "n_off": 6,
+        "n_on": 3
+      },
+      "expected": {
+        "mid_positive": true,
+        "off_ne_on": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zogen_bus_01",
+      "unit_id": null,
+      "env": {
+        "n1": 39,
+        "n_off": 6,
+        "n_on": 7
+      },
+      "expected": {
+        "mid_positive": true,
+        "off_ne_on": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_addsub_zogen_bus_01",
+      "unit_id": null,
+      "env": {
+        "n1": 22,
+        "n_off": 7,
+        "n_on": 9
+      },
+      "expected": {
+        "mid_positive": true,
+        "off_ne_on": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_longlen_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 392,
+        "q2": 390
+      },
+      "expected": {
+        "no_cm_carry": false,
+        "both_have_cm": true,
+        "ans_has_cm": true,
+        "sum_max": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_longlen_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 118,
+        "q2": 241
+      },
+      "expected": {
+        "no_cm_carry": true,
+        "both_have_cm": true,
+        "ans_has_cm": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_longlen_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 119,
+        "q2": 197
+      },
+      "expected": {
+        "no_cm_carry": false,
+        "both_have_cm": true,
+        "ans_has_cm": true,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_longlen_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 244,
+        "q2": 263
+      },
+      "expected": {
+        "no_cm_carry": false,
+        "both_have_cm": true,
+        "ans_has_cm": true,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_longlen_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 278,
+        "q2": 284
+      },
+      "expected": {
+        "no_cm_carry": false,
+        "both_have_cm": true,
+        "ans_has_cm": true,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_longlen_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 108,
+        "q2": 197
+      },
+      "expected": {
+        "no_cm_carry": false,
+        "both_have_cm": true,
+        "ans_has_cm": true,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_longlen_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 178,
+        "q2": 394
+      },
+      "expected": {
+        "no_cm_carry": false,
+        "both_have_cm": true,
+        "ans_has_cm": true,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_longlen_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 310,
+        "q2": 140
+      },
+      "expected": {
+        "no_cm_carry": true,
+        "both_have_cm": true,
+        "ans_has_cm": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_longlen_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 177,
+        "q2": 120
+      },
+      "expected": {
+        "no_cm_carry": true,
+        "both_have_cm": true,
+        "ans_has_cm": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_longlen_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 151,
+        "q2": 376
+      },
+      "expected": {
+        "no_cm_carry": false,
+        "both_have_cm": true,
+        "ans_has_cm": true,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_longlen_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 215,
+        "q2": 297
+      },
+      "expected": {
+        "no_cm_carry": false,
+        "both_have_cm": true,
+        "ans_has_cm": true,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_longlen_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 319,
+        "q2": 337
+      },
+      "expected": {
+        "no_cm_carry": true,
+        "both_have_cm": true,
+        "ans_has_cm": true,
+        "sum_max": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_longlen_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 279,
+        "q2": 185
+      },
+      "expected": {
+        "no_cm_carry": false,
+        "both_have_cm": true,
+        "ans_has_cm": true,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_longlen_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 294,
+        "q2": 264
+      },
+      "expected": {
+        "no_cm_carry": false,
+        "both_have_cm": true,
+        "ans_has_cm": true,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_longlen_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 271,
+        "q2": 395
+      },
+      "expected": {
+        "no_cm_carry": false,
+        "both_have_cm": true,
+        "ans_has_cm": true,
+        "sum_max": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_longlen_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 148,
+        "q2": 131
+      },
+      "expected": {
+        "no_cm_carry": true,
+        "both_have_cm": true,
+        "ans_has_cm": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_longlen_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 184,
+        "q2": 185
+      },
+      "expected": {
+        "no_cm_carry": false,
+        "both_have_cm": true,
+        "ans_has_cm": true,
+        "sum_max": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_longlen_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 130,
+        "q2": 146
+      },
+      "expected": {
+        "no_cm_carry": true,
+        "both_have_cm": true,
+        "ans_has_cm": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_longlen_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 244,
+        "q2": 331
+      },
+      "expected": {
+        "no_cm_carry": true,
+        "both_have_cm": true,
+        "ans_has_cm": true,
+        "sum_max": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_longlen_gappei_01",
+      "unit_id": null,
+      "env": {
+        "q1": 322,
+        "q2": 353
+      },
+      "expected": {
+        "no_cm_carry": true,
+        "both_have_cm": true,
+        "ans_has_cm": true,
+        "sum_max": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "q1": 41,
+        "q2": 8
+      },
+      "expected": {
+        "no_dl_borrow": false,
+        "q1_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "q1": 30,
+        "q2": 5
+      },
+      "expected": {
+        "no_dl_borrow": false,
+        "q1_has_dl": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "q1": 45,
+        "q2": 3
+      },
+      "expected": {
+        "no_dl_borrow": true,
+        "q1_has_dl": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_kasa_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "q1": 35,
+        "q2": 8
+      },
+      "expected": {
+        "no_dl_borrow": false,
+        "q1_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "q1": 20,
+        "q2": 6
+      },
+      "expected": {
+        "no_dl_borrow": false,
+        "q1_has_dl": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "q1": 44,
+        "q2": 6
+      },
+      "expected": {
+        "no_dl_borrow": false,
+        "q1_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "q1": 15,
+        "q2": 5
+      },
+      "expected": {
+        "no_dl_borrow": false,
+        "q1_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "q1": 38,
+        "q2": 2
+      },
+      "expected": {
+        "no_dl_borrow": true,
+        "q1_has_dl": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_kasa_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "q1": 13,
+        "q2": 5
+      },
+      "expected": {
+        "no_dl_borrow": false,
+        "q1_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "q1": 32,
+        "q2": 5
+      },
+      "expected": {
+        "no_dl_borrow": false,
+        "q1_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "q1": 21,
+        "q2": 6
+      },
+      "expected": {
+        "no_dl_borrow": false,
+        "q1_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "q1": 31,
+        "q2": 7
+      },
+      "expected": {
+        "no_dl_borrow": false,
+        "q1_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "q1": 20,
+        "q2": 2
+      },
+      "expected": {
+        "no_dl_borrow": false,
+        "q1_has_dl": false
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "q1": 44,
+        "q2": 8
+      },
+      "expected": {
+        "no_dl_borrow": false,
+        "q1_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "q1": 24,
+        "q2": 4
+      },
+      "expected": {
+        "no_dl_borrow": false,
+        "q1_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "q1": 37,
+        "q2": 5
+      },
+      "expected": {
+        "no_dl_borrow": true,
+        "q1_has_dl": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_meas_kasa_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "q1": 45,
+        "q2": 7
+      },
+      "expected": {
+        "no_dl_borrow": false,
+        "q1_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "q1": 17,
+        "q2": 8
+      },
+      "expected": {
+        "no_dl_borrow": false,
+        "q1_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "q1": 15,
+        "q2": 8
+      },
+      "expected": {
+        "no_dl_borrow": false,
+        "q1_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_meas_kasa_kyuzan_01",
+      "unit_id": null,
+      "env": {
+        "q1": 14,
+        "q2": 9
+      },
+      "expected": {
+        "no_dl_borrow": false,
+        "q1_has_dl": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern_id": "g02_time_conv_hmin_to_min_01",
+      "unit_id": null,
+      "env": {
+        "q1": 178
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_hmin_to_min_01",
+      "unit_id": null,
+      "env": {
+        "q1": 70
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_hmin_to_min_01",
+      "unit_id": null,
+      "env": {
+        "q1": 171
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_hmin_to_min_01",
+      "unit_id": null,
+      "env": {
+        "q1": 101
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_hmin_to_min_01",
+      "unit_id": null,
+      "env": {
+        "q1": 134
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_hmin_to_min_01",
+      "unit_id": null,
+      "env": {
+        "q1": 115
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_hmin_to_min_01",
+      "unit_id": null,
+      "env": {
+        "q1": 134
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_hmin_to_min_01",
+      "unit_id": null,
+      "env": {
+        "q1": 112
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_hmin_to_min_01",
+      "unit_id": null,
+      "env": {
+        "q1": 151
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_hmin_to_min_01",
+      "unit_id": null,
+      "env": {
+        "q1": 142
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_hmin_to_min_01",
+      "unit_id": null,
+      "env": {
+        "q1": 114
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_hmin_to_min_01",
+      "unit_id": null,
+      "env": {
+        "q1": 98
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_hmin_to_min_01",
+      "unit_id": null,
+      "env": {
+        "q1": 75
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_hmin_to_min_01",
+      "unit_id": null,
+      "env": {
+        "q1": 112
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_hmin_to_min_01",
+      "unit_id": null,
+      "env": {
+        "q1": 63
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_hmin_to_min_01",
+      "unit_id": null,
+      "env": {
+        "q1": 102
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_hmin_to_min_01",
+      "unit_id": null,
+      "env": {
+        "q1": 82
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_hmin_to_min_01",
+      "unit_id": null,
+      "env": {
+        "q1": 163
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_hmin_to_min_01",
+      "unit_id": null,
+      "env": {
+        "q1": 140
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern_id": "g02_time_conv_hmin_to_min_01",
+      "unit_id": null,
+      "env": {
+        "q1": 119
+      },
+      "expected": {
+        "not_exact_hour": true
+      },
+      "all_pass": true
+    }
+  ]
+}

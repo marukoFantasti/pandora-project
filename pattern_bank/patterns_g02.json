@@ -1,0 +1,1942 @@
+{
+  "schema_version": "0.6",
+  "description": "Pandora 算数文章題パターンバンク — 小2（加減・かけ算・量と測定）",
+  "source_analysis": "Pandora_g02.xlsx reference_problems (ウィンパス小2) c05/c06/c08/c09/c11/c12/c26/c45-47 の実物65問から復元",
+  "shared_lexicon": {
+    "comment": "パターン横断で使う語彙プール。すべて小1・小2配当漢字またはひらがな。counter（助数詞）と object は必ずペアで選ぶ（不整合な組み合わせを構造的に排除）。",
+    "actors": [
+      "たろうさん",
+      "はなこさん",
+      "ゆうたさん",
+      "さくらさん",
+      "けんとさん",
+      "みおさん"
+    ],
+    "actor_pairs": [
+      [
+        "たろうさん",
+        "はなこさん"
+      ],
+      [
+        "ゆうたさん",
+        "さくらさん"
+      ],
+      [
+        "けんとさん",
+        "みおさん"
+      ]
+    ],
+    "object_counter_pairs": [
+      {
+        "object": "おり紙",
+        "counter": "まい",
+        "verb_use": "つかいました",
+        "attr_types": [
+          "color"
+        ]
+      },
+      {
+        "object": "いちご",
+        "counter": "こ",
+        "verb_use": "食べました",
+        "attr_types": [
+          "size"
+        ]
+      },
+      {
+        "object": "えんぴつ",
+        "counter": "本",
+        "verb_use": "つかいました",
+        "attr_types": [
+          "size"
+        ]
+      },
+      {
+        "object": "カード",
+        "counter": "まい",
+        "verb_use": "つかいました",
+        "attr_types": [
+          "color"
+        ]
+      },
+      {
+        "object": "どんぐり",
+        "counter": "こ",
+        "verb_use": "つかいました",
+        "attr_types": [
+          "size"
+        ]
+      }
+    ],
+    "attribute_pairs": [
+      {
+        "pair": [
+          "赤い",
+          "青い"
+        ],
+        "type": "color"
+      },
+      {
+        "pair": [
+          "白い",
+          "黒い"
+        ],
+        "type": "color"
+      },
+      {
+        "pair": [
+          "大きい",
+          "小さい"
+        ],
+        "type": "size"
+      }
+    ],
+    "container_sets": [
+      {
+        "container": "さら",
+        "cont_counter": "まい",
+        "object": "いちご",
+        "counter": "こ",
+        "verb_on": "のっています",
+        "exist": "あります"
+      },
+      {
+        "container": "ふくろ",
+        "cont_counter": "つ",
+        "object": "あめ",
+        "counter": "こ",
+        "verb_on": "入っています",
+        "exist": "あります"
+      },
+      {
+        "container": "はこ",
+        "cont_counter": "つ",
+        "object": "チョコレート",
+        "counter": "こ",
+        "verb_on": "入っています",
+        "exist": "あります"
+      },
+      {
+        "container": "花びん",
+        "cont_counter": "つ",
+        "object": "花",
+        "counter": "本",
+        "verb_on": "入っています",
+        "exist": "あります"
+      },
+      {
+        "container": "車",
+        "cont_counter": "台",
+        "object": "人",
+        "counter": "人",
+        "verb_on": "のっています",
+        "exist": "います"
+      }
+    ],
+    "design_note_containers": "cont_counter=入れ物側の助数詞(車=台等), exist=中身の存在動詞(人=います)。テンプレートは {container}が{n_count}{cont_counter} / 何{counter}{exist}か の形で参照し、非文合成を構造排除する。"
+  },
+  "patterns": [
+    {
+      "pattern_id": "g02_addsub_gappei_2digit_carry_01",
+      "grade": "g02",
+      "unit_id": "g02_c12_u01",
+      "unit_name": "2けたの数のたし算とひき算のりよう",
+      "semantic_category": "合併",
+      "semantic_note": "別々に存在する2量を合わせる。『あわせて』が定番の問い。時間的順序なし（増加との区別点）。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "n1 + n2",
+      "answer_formula": "n1 + n2",
+      "answer_unit_from": "counter",
+      "slots": {
+        "actor_a": {
+          "from": "actor_pairs[i][0]"
+        },
+        "actor_b": {
+          "from": "actor_pairs[i][1]"
+        },
+        "object": {
+          "from": "object_counter_pairs[j].object"
+        },
+        "counter": {
+          "from": "object_counter_pairs[j].counter"
+        },
+        "verb": {
+          "from": "object_counter_pairs[j].verb_have"
+        },
+        "n1": {
+          "type": "int",
+          "range": [
+            12,
+            79
+          ]
+        },
+        "n2": {
+          "type": "int",
+          "range": [
+            12,
+            79
+          ]
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "carry_required",
+          "expr": "(n1 % 10) + (n2 % 10) >= 10",
+          "why": "ウィンパスのくり上がり単元は全問くり上がり発生。単元の計算要求と数値を一致させる（欠陥3対策）"
+        },
+        {
+          "rule": "sum_max",
+          "expr": "n1 + n2 <= 99",
+          "why": "2けた単元では和も2けたに収める（3けた到達は c21 以降の単元）"
+        },
+        {
+          "rule": "distinct_ones",
+          "expr": "n1 != n2",
+          "why": "同数の合併は求差型と紛らわしく実物に出現しない"
+        }
+      ],
+      "sentence_templates": [
+        "{actor_a}は{object}を{n1}{counter}、{actor_b}は{object}を{n2}{counter}もっています。あわせて何{counter}ありますか。",
+        "{object}が、赤いはこに{n1}{counter}、青いはこに{n2}{counter}入っています。ぜんぶで何{counter}ありますか。"
+      ],
+      "question_tail": "あわせて何{counter} / ぜんぶで何{counter}",
+      "answer_template": "しき {n1}+{n2}={ans} 答え {ans}{counter}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02"
+        ],
+        "check_against": "data/kyoiku_kanji.json",
+        "note": "テンプレート自体を事前照合済みにする。AIがテンプレートを言い換える場合のみ再照合が必要"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      },
+      "template_design_note": "動詞はテンプレート(文型)に直接埋め込む。『〜は〜を』文型は他動詞(もっています)固定、『〜が』文型は存在動詞(あります)固定。objectペア側のverbは求残の操作動詞(つかいました等)のみに使う。",
+      "answer_structure": "single",
+      "unit_range_overrides": {
+        "g02_c26_u01": {
+          "n1": {
+            "range": [
+              74,
+              290
+            ]
+          },
+          "n2": {
+            "range": [
+              74,
+              290
+            ]
+          },
+          "constraints_replace": {
+            "sum_max": {
+              "expr": "n1 + n2 <= 459",
+              "why": "3けた単元: 実物c26の最大和424に準拠"
+            }
+          },
+          "note": "3けたの数のたし算とひき算のりよう",
+          "lexicon_filters": {
+            "object_counter_pairs": {
+              "include_objects": [
+                "おり紙",
+                "カード"
+              ]
+            },
+            "why": "3けたで数量が自然な物体に限定。円・ページの追加は後日"
+          }
+        }
+      }
+    },
+    {
+      "pattern_id": "g02_addsub_kyuzan_2digit_borrow_01",
+      "grade": "g02",
+      "unit_id": "g02_c12_u01",
+      "unit_name": "2けたの数のたし算とひき算のりよう",
+      "semantic_category": "求残",
+      "semantic_note": "全体から一部を取り去った残り。『のこりは』が定番の問い。時間的順序あり（はじめ→操作→のこり）。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "n1 - n2",
+      "answer_formula": "n1 - n2",
+      "answer_unit_from": "counter",
+      "slots": {
+        "actor": {
+          "from": "actors"
+        },
+        "object": {
+          "from": "object_counter_pairs[j].object"
+        },
+        "counter": {
+          "from": "object_counter_pairs[j].counter"
+        },
+        "verb_have": {
+          "from": "object_counter_pairs[j].verb_have"
+        },
+        "verb_use": {
+          "from": "object_counter_pairs[j].verb_use"
+        },
+        "n1": {
+          "type": "int",
+          "range": [
+            21,
+            99
+          ]
+        },
+        "n2": {
+          "type": "int",
+          "range": [
+            12,
+            89
+          ]
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "no_negative",
+          "expr": "n1 > n2",
+          "why": "在庫が負にならない（欠陥8の構造排除）。実物バンクは全問これを満たす"
+        },
+        {
+          "rule": "borrow_required",
+          "expr": "(n1 % 10) < (n2 % 10)",
+          "why": "くり下がりを必ず発生させ、単元の計算要求と一致させる（欠陥3対策）"
+        },
+        {
+          "rule": "nonzero_remainder",
+          "expr": "n1 - n2 >= 1",
+          "why": "答え0は『のこりは』の問いとして不自然"
+        }
+      ],
+      "sentence_templates": [
+        "{actor}は{object}を{n1}{counter}もっていました。{n2}{counter}{verb_use}。のこりは何{counter}ですか。",
+        "{object}が{n1}{counter}ありました。{n2}{counter}{verb_use}。のこりは何{counter}になりましたか。"
+      ],
+      "question_tail": "のこりは何{counter}",
+      "answer_template": "しき {n1}-{n2}={ans} 答え {ans}{counter}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02"
+        ],
+        "check_against": "data/kyoiku_kanji.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      },
+      "answer_structure": "single",
+      "unit_range_overrides": {
+        "g02_c26_u01": {
+          "n1": {
+            "range": [
+              105,
+              299
+            ]
+          },
+          "n2": {
+            "range": [
+              16,
+              198
+            ]
+          },
+          "note": "3けた求残(実物108-16, 182-98と同域)",
+          "lexicon_filters": {
+            "object_counter_pairs": {
+              "include_objects": [
+                "おり紙",
+                "カード"
+              ]
+            },
+            "why": "3けたで数量が自然な物体に限定。円・ページの追加は後日"
+          }
+        }
+      }
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_2digit_carry_01",
+      "grade": "g02",
+      "unit_id": "g02_c12_u01",
+      "unit_name": "2けたの数のたし算とひき算のりよう",
+      "semantic_category": "増加",
+      "semantic_note": "ある量に後から加わる。時間的順序あり(はじめ→もらう→ぜんぶ)。合併との区別点は時間軸の有無。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "n1 + n2",
+      "answer_formula": "n1 + n2",
+      "answer_structure": "single",
+      "slots": {
+        "actor": {
+          "from": "actors"
+        },
+        "object": {
+          "from": "object_counter_pairs[j].object"
+        },
+        "counter": {
+          "from": "object_counter_pairs[j].counter"
+        },
+        "n1": {
+          "type": "int",
+          "range": [
+            12,
+            79
+          ]
+        },
+        "n2": {
+          "type": "int",
+          "range": [
+            12,
+            79
+          ]
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "carry_required",
+          "expr": "(n1 % 10) + (n2 % 10) >= 10",
+          "why": "単元の計算要求と一致(欠陥3)"
+        },
+        {
+          "rule": "sum_max",
+          "expr": "n1 + n2 <= 99",
+          "why": "2けた単元では和も2けた"
+        }
+      ],
+      "sentence_templates": [
+        "{actor}は{object}を{n1}{counter}もっていました。おかあさんから{n2}{counter}もらいました。ぜんぶで何{counter}になりましたか。",
+        "はこの中に{object}が{n1}{counter}入っていました。あとから{n2}{counter}入れました。ぜんぶで何{counter}になりましたか。"
+      ],
+      "answer_template": "しき {n1}+{n2}={ans} 答え {ans}{counter}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02"
+        ],
+        "check_against": "data/kyoiku_kanji.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      },
+      "unit_range_overrides": {
+        "g02_c26_u01": {
+          "n1": {
+            "range": [
+              74,
+              290
+            ]
+          },
+          "n2": {
+            "range": [
+              74,
+              290
+            ]
+          },
+          "constraints_replace": {
+            "sum_max": {
+              "expr": "n1 + n2 <= 459",
+              "why": "3けた単元"
+            }
+          },
+          "lexicon_filters": {
+            "object_counter_pairs": {
+              "include_objects": [
+                "おり紙",
+                "カード"
+              ]
+            },
+            "why": "3けたで数量が自然な物体に限定。円・ページの追加は後日"
+          }
+        }
+      }
+    },
+    {
+      "pattern_id": "g02_addsub_kyusa_2digit_borrow_01",
+      "grade": "g02",
+      "unit_id": "g02_c12_u01",
+      "unit_name": "2けたの数のたし算とひき算のりよう",
+      "semantic_category": "求差",
+      "semantic_note": "2量の比較。『どちらが何{counter}多いですか』の二段の問い。取り去る操作が無いのに減法になる点が児童の難所。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "max(n1,n2) - min(n1,n2)",
+      "answer_formula": "abs(n1 - n2)",
+      "answer_structure": "comparison",
+      "slots": {
+        "actor_a": {
+          "from": "actor_pairs[i][0]"
+        },
+        "actor_b": {
+          "from": "actor_pairs[i][1]"
+        },
+        "object": {
+          "from": "object_counter_pairs[j].object"
+        },
+        "counter": {
+          "from": "object_counter_pairs[j].counter"
+        },
+        "n1": {
+          "type": "int",
+          "range": [
+            21,
+            99
+          ],
+          "belongs_to": "actor_a"
+        },
+        "n2": {
+          "type": "int",
+          "range": [
+            12,
+            89
+          ],
+          "belongs_to": "actor_b"
+        }
+      },
+      "computed_slots": {
+        "winner": {
+          "formula": "actor_a if n1 > n2 else actor_b",
+          "note": "多い方の人物。コードで機械導出(AI・乱数に触らせない)"
+        },
+        "big": {
+          "formula": "max(n1, n2)"
+        },
+        "small": {
+          "formula": "min(n1, n2)"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "not_equal",
+          "expr": "n1 != n2",
+          "why": "同数だと『どちらが多い』が成立しない"
+        },
+        {
+          "rule": "borrow_required",
+          "expr": "(max(n1,n2) % 10) < (min(n1,n2) % 10)",
+          "why": "くり下がり必須(欠陥3)"
+        },
+        {
+          "rule": "meaningful_gap",
+          "expr": "abs(n1 - n2) >= 3",
+          "why": "差1-2は式を立てず暗算で見えてしまい、単元のねらいから外れる"
+        }
+      ],
+      "sentence_templates": [
+        "{actor_a}は{object}を{n1}{counter}、{actor_b}は{object}を{n2}{counter}もっています。どちらが何{counter}多いですか。"
+      ],
+      "answer_template": "しき {big}-{small}={ans} 答え {winner}が{ans}{counter}多い",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02"
+        ],
+        "check_against": "data/kyoiku_kanji.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      },
+      "unit_range_overrides": {
+        "g02_c26_u01": {
+          "n1": {
+            "range": [
+              105,
+              299
+            ]
+          },
+          "n2": {
+            "range": [
+              46,
+              280
+            ]
+          },
+          "lexicon_filters": {
+            "object_counter_pairs": {
+              "include_objects": [
+                "おり紙",
+                "カード"
+              ]
+            },
+            "why": "3けたで数量が自然な物体に限定。円・ページの追加は後日"
+          }
+        }
+      }
+    },
+    {
+      "pattern_id": "g02_addsub_kyuho_2digit_01",
+      "grade": "g02",
+      "unit_id": "g02_c12_u01",
+      "unit_name": "2けたの数のたし算とひき算のりよう",
+      "semantic_category": "求補",
+      "semantic_note": "全体と一方の部分から他方の部分を求める。取り去る時間的操作が無い(求残との区別点)。属性対(赤い/青い)で部分を表す。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "n1 - n2",
+      "answer_formula": "n1 - n2",
+      "answer_structure": "single",
+      "slots": {
+        "object": {
+          "from": "object_counter_pairs[j].object"
+        },
+        "counter": {
+          "from": "object_counter_pairs[j].counter"
+        },
+        "attr_a": {
+          "from": "attribute_pairs[k][0]"
+        },
+        "attr_b": {
+          "from": "attribute_pairs[k][1]"
+        },
+        "n1": {
+          "type": "int",
+          "range": [
+            21,
+            99
+          ],
+          "role": "whole"
+        },
+        "n2": {
+          "type": "int",
+          "range": [
+            12,
+            89
+          ],
+          "role": "part"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "part_lt_whole",
+          "expr": "n1 > n2",
+          "why": "部分<全体(欠陥8の構造排除)"
+        },
+        {
+          "rule": "borrow_required",
+          "expr": "(n1 % 10) < (n2 % 10)",
+          "why": "くり下がり必須(欠陥3)"
+        },
+        {
+          "rule": "both_parts_nonzero",
+          "expr": "n1 - n2 >= 1",
+          "why": "もう一方の部分が0だと問いが不成立"
+        }
+      ],
+      "sentence_templates": [
+        "{attr_a}{object}と{attr_b}{object}が、あわせて{n1}{counter}あります。{attr_a}{object}は{n2}{counter}です。{attr_b}{object}は何{counter}ありますか。"
+      ],
+      "answer_template": "しき {n1}-{n2}={ans} 答え {ans}{counter}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02"
+        ],
+        "check_against": "data/kyoiku_kanji.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      },
+      "unit_range_overrides": {
+        "g02_c26_u01": {
+          "n1": {
+            "range": [
+              105,
+              299
+            ]
+          },
+          "n2": {
+            "range": [
+              46,
+              198
+            ]
+          },
+          "lexicon_filters": {
+            "object_counter_pairs": {
+              "include_objects": [
+                "おり紙",
+                "カード"
+              ]
+            },
+            "why": "3けたで数量が自然な物体に限定。円・ページの追加は後日"
+          }
+        }
+      }
+    },
+    {
+      "pattern_id": "g02_addsub_zoka_inverse_01",
+      "grade": "g02",
+      "unit_id": "g02_c45_u01",
+      "unit_name": "図をつかった考え方①",
+      "semantic_category": "増加",
+      "semantic_note": "逆思考: 状況は増加(もらった)なのに、求めるのは『はじめの数』なので計算はひき算。表層の動詞と演算が逆転する型。テープ図単元に配置(実物バンクの分布と一致)。",
+      "inverse_thinking": true,
+      "step_count": 1,
+      "operation": "n_after - n_added",
+      "answer_formula": "n_after - n_added",
+      "answer_structure": "single",
+      "slots": {
+        "actor": {
+          "from": "actors"
+        },
+        "object": {
+          "from": "object_counter_pairs[j].object"
+        },
+        "counter": {
+          "from": "object_counter_pairs[j].counter"
+        },
+        "n_after": {
+          "type": "int",
+          "range": [
+            21,
+            60
+          ],
+          "role": "結果の数(本文に出る)"
+        },
+        "n_added": {
+          "type": "int",
+          "range": [
+            5,
+            30
+          ],
+          "role": "増えた数(本文に出る)"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "initial_positive",
+          "expr": "n_after - n_added >= 2",
+          "why": "はじめの数が0・1だと不自然(欠陥8系)"
+        },
+        {
+          "rule": "borrow_required",
+          "expr": "(n_after % 10) < (n_added % 10)",
+          "why": "くり下がりで単元要求と一致"
+        }
+      ],
+      "sentence_templates": [
+        "{actor}は{object}を何{counter}かもっていました。{n_added}{counter}もらったので、ぜんぶで{n_after}{counter}になりました。はじめに何{counter}もっていましたか。"
+      ],
+      "answer_template": "しき {n_after}-{n_added}={ans} 答え {ans}{counter}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02"
+        ],
+        "check_against": "data/kyoiku_kanji.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 3
+      }
+    },
+    {
+      "pattern_id": "g02_addsub_2step_gosei_kyuzan_01",
+      "grade": "g02",
+      "unit_id": "g02_c46_u01",
+      "unit_name": "図をつかった考え方②",
+      "semantic_category": "2ステップ（合併→求残）",
+      "semantic_note": "2量を合わせてから全体より引く。実物 ref_g02_c46_u01_003(4+8=12, 25-12=13)・004(6+8=14, 27-14=13) と同型。テープ図で構造化する単元。",
+      "inverse_thinking": false,
+      "step_count": 2,
+      "operation": "(n1 + n2), n_total - (n1 + n2)",
+      "answer_formula": "n_total - (n1 + n2)",
+      "intermediate_formulas": {
+        "mid": "n1 + n2"
+      },
+      "answer_structure": "single",
+      "slots": {
+        "actor_a": {
+          "from": "actor_pairs[i][0]"
+        },
+        "actor_b": {
+          "from": "actor_pairs[i][1]"
+        },
+        "object": {
+          "from": "object_counter_pairs[j].object"
+        },
+        "counter": {
+          "from": "object_counter_pairs[j].counter"
+        },
+        "verb_use": {
+          "from": "object_counter_pairs[j].verb_use"
+        },
+        "n1": {
+          "type": "int",
+          "range": [
+            3,
+            9
+          ],
+          "role": "actor_aの使用量"
+        },
+        "n2": {
+          "type": "int",
+          "range": [
+            3,
+            9
+          ],
+          "role": "actor_bの使用量"
+        },
+        "n_total": {
+          "type": "int",
+          "range": [
+            21,
+            50
+          ],
+          "role": "はじめの全体量"
+        }
+      },
+      "computed_slots": {
+        "mid": {
+          "formula": "n1 + n2",
+          "note": "中間値。途中式の右辺・2本目の式の減数。機械導出"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "mid_two_digit",
+          "expr": "n1 + n2 >= 10",
+          "why": "和が2けたになり暗算一発で消えない。実物(4+8, 6+8)と同型"
+        },
+        {
+          "rule": "remainder_positive",
+          "expr": "n_total - (n1 + n2) >= 2",
+          "why": "のこりが正で、かつ0・1の不自然さを回避(欠陥8)"
+        },
+        {
+          "rule": "distinct_uses",
+          "expr": "n1 != n2",
+          "why": "同数だと『2人あわせて』の合成の必然性が薄れる"
+        }
+      ],
+      "sentence_templates": [
+        "はこの中に{object}が{n_total}{counter}入っていました。{actor_a}が{n1}{counter}、{actor_b}が{n2}{counter}{verb_use}。のこりは何{counter}ですか。",
+        "{object}が{n_total}{counter}ありました。きのう{n1}{counter}、きょう{n2}{counter}{verb_use}。のこりは何{counter}ですか。"
+      ],
+      "answer_template": "しき {n1}+{n2}={mid} {n_total}-{mid}={ans} 答え {ans}{counter}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02"
+        ],
+        "check_against": "data/kyoiku_kanji.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 3
+      }
+    },
+    {
+      "pattern_id": "g02_mult_1atari_kuku_01",
+      "grade": "g02",
+      "unit_id": "g02_c31_u01",
+      "unit_name": "かけ算",
+      "semantic_category": "1あたり×いくつ分",
+      "semantic_note": "かけ算の意味の土台。かけられる数=1あたり量の順序規約をテンプレートで構造保証。実物 c31『5こ×3さら分』と同型。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "n_per × n_count",
+      "answer_formula": "n_per * n_count",
+      "answer_structure": "single",
+      "unit_range_overrides": {
+        "g02_c32_u01": {
+          "n_per": {
+            "choices": [
+              2,
+              5
+            ]
+          },
+          "note": "5のだん、2のだんの九九"
+        },
+        "g02_c33_u01": {
+          "n_per": {
+            "choices": [
+              3,
+              4
+            ]
+          },
+          "note": "3のだん、4のだんの九九"
+        },
+        "g02_c34_u01": {
+          "n_per": {
+            "choices": [
+              6,
+              7
+            ]
+          },
+          "note": "6のだん、7のだんの九九"
+        },
+        "g02_c35_u01": {
+          "n_per": {
+            "choices": [
+              8,
+              9,
+              1
+            ]
+          },
+          "note": "8のだん、9のだん、1のだんの九九"
+        }
+      },
+      "slots": {
+        "container": {
+          "from": "container_sets[j].container"
+        },
+        "object": {
+          "from": "container_sets[j].object"
+        },
+        "counter": {
+          "from": "container_sets[j].counter"
+        },
+        "verb_on": {
+          "from": "container_sets[j].verb_on"
+        },
+        "n_per": {
+          "type": "int",
+          "range": [
+            2,
+            9
+          ],
+          "role": "1あたり量(かけられる数)"
+        },
+        "n_count": {
+          "type": "int",
+          "range": [
+            2,
+            9
+          ],
+          "role": "いくつ分(かける数)"
+        },
+        "cont_counter": {
+          "from": "container_sets[j].cont_counter"
+        },
+        "exist": {
+          "from": "container_sets[j].exist"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "kuku_range",
+          "expr": "n_per <= 9 and n_count <= 9",
+          "why": "九九の範囲内(c38の2けた×1けたは別パターン)"
+        }
+      ],
+      "sentence_templates": [
+        "1{cont_counter}の{container}に{object}が{n_per}{counter}ずつ{verb_on}。{container}は{n_count}{cont_counter}あります。{object}はぜんぶで何{counter}{exist}か。"
+      ],
+      "answer_template": "しき {n_per}×{n_count}={ans} 答え {ans}{counter}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02"
+        ],
+        "check_against": "data/kyoiku_kanji.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      },
+      "template_number_constants": [
+        1
+      ]
+    },
+    {
+      "pattern_id": "g02_mult_bai_01",
+      "grade": "g02",
+      "unit_id": "g02_c36_u01",
+      "unit_name": "ばいとかけ算",
+      "semantic_category": "倍",
+      "semantic_note": "基準量の何倍かを求める。実物 c36『8×4=32まい』『9cm→2ばい→18cm』と同型。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "n_base × n_times",
+      "answer_formula": "n_base * n_times",
+      "answer_structure": "single",
+      "slots": {
+        "actor_a": {
+          "from": "actor_pairs[i][0]"
+        },
+        "actor_b": {
+          "from": "actor_pairs[i][1]"
+        },
+        "object": {
+          "from": "object_counter_pairs[j].object"
+        },
+        "counter": {
+          "from": "object_counter_pairs[j].counter"
+        },
+        "n_base": {
+          "type": "int",
+          "range": [
+            2,
+            9
+          ],
+          "role": "基準量(かけられる数)"
+        },
+        "n_times": {
+          "type": "int",
+          "range": [
+            2,
+            4
+          ],
+          "role": "倍(小2は2〜4倍が実物の範囲)"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "kuku_range",
+          "expr": "n_base * n_times <= 36",
+          "why": "実物c36の答えは最大32。九九前半に収める"
+        }
+      ],
+      "sentence_templates": [
+        "{actor_a}は{object}を{n_base}{counter}もっています。{actor_b}は{actor_a}の{n_times}ばいもっています。{actor_b}は{object}を何{counter}もっていますか。"
+      ],
+      "answer_template": "しき {n_base}×{n_times}={ans} 答え {ans}{counter}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02"
+        ],
+        "check_against": "data/kyoiku_kanji.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      }
+    },
+    {
+      "pattern_id": "g02_mult_2step_add_01",
+      "grade": "g02",
+      "unit_id": "g02_c33_u01",
+      "unit_name": "3のだん、4のだんの九九",
+      "semantic_category": "2ステップ（かけ算→増加）",
+      "semantic_note": "まとまり×いくつ分に、ばらを足す。実物 c33_006(4×8=32, 32+2=34)・c34_007(6×4=24, 24+3=27) と同型。各だん章のmedium定番。",
+      "inverse_thinking": false,
+      "step_count": 2,
+      "operation": "(n_per × n_count) + n_extra",
+      "answer_formula": "n_per * n_count + n_extra",
+      "intermediate_formulas": {
+        "mid": "n_per * n_count"
+      },
+      "answer_structure": "single",
+      "unit_range_overrides": {
+        "g02_c32_u01": {
+          "n_per": {
+            "choices": [
+              2,
+              5
+            ]
+          }
+        },
+        "g02_c34_u01": {
+          "n_per": {
+            "choices": [
+              6,
+              7
+            ]
+          }
+        },
+        "g02_c35_u01": {
+          "n_per": {
+            "choices": [
+              8,
+              9
+            ]
+          }
+        }
+      },
+      "slots": {
+        "container": {
+          "from": "container_sets[j].container"
+        },
+        "object": {
+          "from": "container_sets[j].object"
+        },
+        "counter": {
+          "from": "container_sets[j].counter"
+        },
+        "verb_on": {
+          "from": "container_sets[j].verb_on"
+        },
+        "n_per": {
+          "type": "int",
+          "range": [
+            3,
+            4
+          ],
+          "role": "1あたり量"
+        },
+        "n_count": {
+          "type": "int",
+          "range": [
+            2,
+            9
+          ],
+          "role": "いくつ分"
+        },
+        "n_extra": {
+          "type": "int",
+          "range": [
+            1,
+            8
+          ],
+          "role": "ばらの数"
+        },
+        "cont_counter": {
+          "from": "container_sets[j].cont_counter"
+        },
+        "exist": {
+          "from": "container_sets[j].exist"
+        }
+      },
+      "computed_slots": {
+        "mid": {
+          "formula": "n_per * n_count",
+          "note": "かけ算部分の積。機械導出"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "extra_lt_per",
+          "expr": "n_extra < n_per",
+          "why": "ばらが1あたり量以上あると『もう1つの入れ物』が成立してしまい不自然(意味的妥当性)"
+        },
+        {
+          "rule": "total_max",
+          "expr": "n_per * n_count + n_extra <= 99",
+          "why": "答えは2けた以内"
+        }
+      ],
+      "sentence_templates": [
+        "1{cont_counter}の{container}に{object}が{n_per}{counter}ずつ{verb_on}。{container}は{n_count}{cont_counter}あります。ほかに{object}が{n_extra}{counter}あります。{object}はぜんぶで何{counter}{exist}か。"
+      ],
+      "answer_template": "しき {n_per}×{n_count}={mid} {mid}+{n_extra}={ans} 答え {ans}{counter}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02"
+        ],
+        "check_against": "data/kyoiku_kanji.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 3
+      },
+      "lexicon_filters": {
+        "container_sets": {
+          "exclude_if": {
+            "exist": "います"
+          }
+        },
+        "why": "『ほかに人があります』の非文回避。有生物は専用パターンで扱う"
+      },
+      "template_number_constants": [
+        1
+      ]
+    },
+    {
+      "pattern_id": "g02_mult_2step_sub_01",
+      "grade": "g02",
+      "unit_id": "g02_c39_u01",
+      "unit_name": "かけ算のりよう",
+      "semantic_category": "2ステップ（かけ算→求残）",
+      "semantic_note": "全体から、まとまり×いくつ分を引く。実物 c39_003(8×5=40, 50-40=10人) と同型。",
+      "inverse_thinking": false,
+      "step_count": 2,
+      "operation": "n_total - (n_per × n_count)",
+      "answer_formula": "n_total - n_per * n_count",
+      "intermediate_formulas": {
+        "mid": "n_per * n_count"
+      },
+      "answer_structure": "single",
+      "slots": {
+        "n_per": {
+          "type": "int",
+          "range": [
+            4,
+            9
+          ],
+          "role": "1グループの人数"
+        },
+        "n_count": {
+          "type": "int",
+          "range": [
+            3,
+            8
+          ],
+          "role": "グループ数"
+        },
+        "n_total": {
+          "type": "int",
+          "range": [
+            20,
+            80
+          ],
+          "role": "全体の人数"
+        }
+      },
+      "computed_slots": {
+        "mid": {
+          "formula": "n_per * n_count"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "remainder_positive",
+          "expr": "n_total - n_per * n_count >= 1",
+          "why": "のこりが正(欠陥8)"
+        },
+        {
+          "rule": "remainder_lt_per",
+          "expr": "n_total - n_per * n_count < n_per",
+          "why": "のこりが1グループ分以上あると『もう1つ作れる』ので状況として不自然(意味的妥当性)。わり算あまりの素地にもなる"
+        }
+      ],
+      "sentence_templates": [
+        "子どもが{n_total}人います。{n_per}人ずつのはんを{n_count}つ作りました。はんに入っていない子どもは何人いますか。"
+      ],
+      "answer_template": "しき {n_per}×{n_count}={mid} {n_total}-{mid}={ans} 答え {ans}人",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02"
+        ],
+        "check_against": "data/kyoiku_kanji.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 3
+      }
+    },
+    {
+      "pattern_id": "g02_meas_len_gappei_01",
+      "grade": "g02",
+      "unit_id": "g02_c14_u01",
+      "unit_name": "長さの計算",
+      "semantic_category": "合併",
+      "semantic_note": "複名数(cm/mm)の合併。実物 c14_007(5cm6mm+3cm3mm=8cm9mm)と同型。easy=mmの繰り上がり無し。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "q1 + q2",
+      "answer_formula": "q1 + q2",
+      "answer_structure": "single",
+      "answer_unit_system": "cm_mm",
+      "quantity_slots": {
+        "q1": {
+          "unit_system": "cm_mm",
+          "base_range": [
+            23,
+            89
+          ],
+          "role": "テープ⑦(mm単位の内部値)"
+        },
+        "q2": {
+          "unit_system": "cm_mm",
+          "base_range": [
+            23,
+            89
+          ],
+          "role": "テープ①"
+        }
+      },
+      "slots": {
+        "attr_a": {
+          "from": "attribute_pairs[k][0]"
+        },
+        "attr_b": {
+          "from": "attribute_pairs[k][1]"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "no_mm_carry",
+          "expr": "(q1 % 10) + (q2 % 10) <= 9",
+          "why": "easy難度: mmの繰り上がり無し(実物easy問題と一致)"
+        },
+        {
+          "rule": "both_have_mm",
+          "expr": "(q1 % 10) > 0 and (q2 % 10) > 0",
+          "why": "両方に端数があり複名数計算の必然性がある"
+        },
+        {
+          "rule": "ans_has_mm",
+          "expr": "(q1 + q2) % 10 > 0",
+          "why": "『何cm何mm』の問いと答えの形式を一致させる"
+        },
+        {
+          "rule": "sum_max",
+          "expr": "q1 + q2 <= 199",
+          "why": "答えは19cm台まで(小2の物差し感覚)"
+        }
+      ],
+      "sentence_templates": [
+        "{attr_a}テープの長さは{q1_disp}、{attr_b}テープの長さは{q2_disp}です。2本のテープをあわせると、何cm何mmになりますか。"
+      ],
+      "answer_template": "しき {q1_disp}+{q2_disp}={ans_disp} 答え {ans_disp}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02"
+        ],
+        "check_against": "data/kyoiku_kanji.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      },
+      "template_number_constants": [
+        2
+      ]
+    },
+    {
+      "pattern_id": "g02_meas_len_kyusa_01",
+      "grade": "g02",
+      "unit_id": "g02_c14_u01",
+      "unit_name": "長さの計算",
+      "semantic_category": "求差",
+      "semantic_note": "複名数の求差。実物 c14_007(2)『⑦が2cm3mm長い』と同型。answer_structure=comparison を数量スロットで再利用。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "max(q1,q2) - min(q1,q2)",
+      "answer_formula": "abs(q1 - q2)",
+      "answer_structure": "comparison",
+      "answer_unit_system": "cm_mm",
+      "quantity_slots": {
+        "q1": {
+          "unit_system": "cm_mm",
+          "base_range": [
+            23,
+            99
+          ],
+          "belongs_to": "attr_a"
+        },
+        "q2": {
+          "unit_system": "cm_mm",
+          "base_range": [
+            23,
+            99
+          ],
+          "belongs_to": "attr_b"
+        }
+      },
+      "slots": {
+        "attr_a": {
+          "from": "attribute_pairs[k][0]"
+        },
+        "attr_b": {
+          "from": "attribute_pairs[k][1]"
+        }
+      },
+      "computed_slots": {
+        "winner_attr": {
+          "formula": "attr_a if q1 > q2 else attr_b",
+          "note": "長い方のテープ。機械導出"
+        },
+        "big": {
+          "formula": "max(q1, q2)"
+        },
+        "small": {
+          "formula": "min(q1, q2)"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "no_mm_borrow",
+          "expr": "(max(q1,q2) % 10) >= (min(q1,q2) % 10)",
+          "why": "easy難度: mmの繰り下がり無し"
+        },
+        {
+          "rule": "not_equal",
+          "expr": "q1 != q2",
+          "why": "同長だと比較が不成立"
+        },
+        {
+          "rule": "meaningful_gap",
+          "expr": "abs(q1 - q2) >= 11",
+          "why": "差が1cm以上あり測り比べの意味がある"
+        },
+        {
+          "rule": "both_have_mm",
+          "expr": "(q1 % 10) > 0 and (q2 % 10) > 0",
+          "why": "複名数計算の必然性"
+        }
+      ],
+      "sentence_templates": [
+        "{attr_a}テープの長さは{q1_disp}、{attr_b}テープの長さは{q2_disp}です。どちらがどれだけ長いですか。"
+      ],
+      "answer_template": "しき {big_disp}-{small_disp}={ans_disp} 答え {winner_attr}テープが{ans_disp}長い",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02"
+        ],
+        "check_against": "data/kyoiku_kanji.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      },
+      "lexicon_filters": {
+        "attribute_pairs": {
+          "include_types": [
+            "color"
+          ]
+        },
+        "why": "大小属性は実際の長短と矛盾しうるため比較問題では禁止"
+      }
+    },
+    {
+      "pattern_id": "g02_meas_kasa_gappei_01",
+      "grade": "g02",
+      "unit_id": "g02_c20_u01",
+      "unit_name": "かさの計算",
+      "semantic_category": "合併",
+      "semantic_note": "複名数(L/dL)の合併。実物 c20_001(2L4dL+1L2dL=3L6dL)と同型。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "q1 + q2",
+      "answer_formula": "q1 + q2",
+      "answer_structure": "single",
+      "answer_unit_system": "L_dL",
+      "quantity_slots": {
+        "q1": {
+          "unit_system": "L_dL",
+          "base_range": [
+            12,
+            49
+          ],
+          "role": "やかん(dL単位の内部値)"
+        },
+        "q2": {
+          "unit_system": "L_dL",
+          "base_range": [
+            12,
+            49
+          ],
+          "role": "水とう"
+        }
+      },
+      "slots": {},
+      "value_constraints": [
+        {
+          "rule": "no_dl_carry",
+          "expr": "(q1 % 10) + (q2 % 10) <= 9",
+          "why": "easy難度: dLの繰り上がり無し"
+        },
+        {
+          "rule": "both_have_dl",
+          "expr": "(q1 % 10) > 0 and (q2 % 10) > 0",
+          "why": "複名数の必然性"
+        },
+        {
+          "rule": "ans_has_dl",
+          "expr": "(q1 + q2) % 10 > 0",
+          "why": "『何L何dL』の問いと答えの形式一致"
+        }
+      ],
+      "sentence_templates": [
+        "やかんに水が{q1_disp}、水とうに水が{q2_disp}入っています。あわせて何L何dLありますか。"
+      ],
+      "answer_template": "しき {q1_disp}+{q2_disp}={ans_disp} 答え {ans_disp}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02"
+        ],
+        "check_against": "data/kyoiku_kanji.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      }
+    },
+    {
+      "pattern_id": "g02_time_conv_min_to_hmin_01",
+      "grade": "g02",
+      "unit_id": "g02_c03_u01",
+      "unit_name": "時こくと時間②",
+      "semantic_category": "単位換算",
+      "semantic_note": "60進法の換算。実物 c03_004(80分=1時間20分)と同型。図(時計)不要で文章完結する時間問題。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "q1 を 時間と分に分解",
+      "answer_formula": "q1",
+      "answer_structure": "single",
+      "answer_unit_system": "h_min",
+      "quantity_slots": {
+        "q1": {
+          "unit_system": "h_min",
+          "base_range": [
+            61,
+            179
+          ],
+          "role": "分単位の内部値"
+        }
+      },
+      "slots": {},
+      "value_constraints": [
+        {
+          "rule": "not_exact_hour",
+          "expr": "q1 % 60 != 0",
+          "why": "『何時間何分』の問いの形式と一致(ちょうど◯時間は別テンプレート)"
+        }
+      ],
+      "sentence_templates": [
+        "{q1_min}分は、何時間何分ですか。"
+      ],
+      "answer_template": "答え {ans_disp}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02"
+        ],
+        "check_against": "data/kyoiku_kanji.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 1
+      }
+    },
+    {
+      "pattern_id": "g02_time_after_01",
+      "grade": "g02",
+      "unit_id": "g02_c04_u01",
+      "unit_name": "時こくと時間③",
+      "semantic_category": "時刻の計算",
+      "semantic_note": "時刻+経過時間→時刻。60進の繰り上がり(分→時)を含む。午前/午後をまたがない(easy)。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "t_start + dur",
+      "answer_formula": "t_start + dur",
+      "answer_structure": "single",
+      "answer_unit_system": "clock",
+      "quantity_slots": {
+        "t_start": {
+          "unit_system": "clock",
+          "base_range": [
+            480,
+            660
+          ],
+          "step": 5,
+          "role": "出発時刻(0時からの分、午前8時〜11時)"
+        },
+        "dur": {
+          "unit_system": "raw_min",
+          "choices": [
+            15,
+            20,
+            25,
+            30,
+            35,
+            40,
+            45,
+            50
+          ],
+          "role": "歩く時間(5分きざみ=時計の目盛り感覚)"
+        }
+      },
+      "slots": {
+        "actor": {
+          "from": "actors"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "stay_am",
+          "expr": "t_start + dur < 720",
+          "why": "午前内で完結(午前/午後またぎはmedium別パターン)"
+        },
+        {
+          "rule": "minute_carry",
+          "expr": "(t_start % 60) + dur >= 60",
+          "why": "分の繰り上がりを必ず含める(単元c04のねらい=60進の理解)"
+        }
+      ],
+      "sentence_templates": [
+        "{actor}は{t_start_disp}に家を出て、{dur}分あるいて公園につきました。公園についた時こくは何時何分ですか。"
+      ],
+      "answer_template": "答え {ans_disp}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02"
+        ],
+        "check_against": "data/kyoiku_kanji.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      }
+    },
+    {
+      "pattern_id": "g02_addsub_3ko_gappei_01",
+      "grade": "g02",
+      "unit_id": "g02_c11_u01",
+      "unit_name": "3つの数のたし算とひき算",
+      "semantic_category": "合併（3口）",
+      "semantic_note": "3量の合併。実物 c12_008(18+25+10=53)と同型。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "n1 + n2 + n3",
+      "answer_formula": "n1 + n2 + n3",
+      "answer_structure": "single",
+      "slots": {
+        "actor_a": {
+          "from": "actors(distinct)"
+        },
+        "actor_b": {
+          "from": "actors(distinct)"
+        },
+        "actor_c": {
+          "from": "actors(distinct)"
+        },
+        "object": {
+          "from": "object_counter_pairs[j].object"
+        },
+        "counter": {
+          "from": "object_counter_pairs[j].counter"
+        },
+        "n1": {
+          "type": "int",
+          "range": [
+            8,
+            30
+          ]
+        },
+        "n2": {
+          "type": "int",
+          "range": [
+            8,
+            30
+          ]
+        },
+        "n3": {
+          "type": "int",
+          "range": [
+            5,
+            20
+          ]
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "sum_max",
+          "expr": "n1 + n2 + n3 <= 99",
+          "why": "和は2けた以内"
+        },
+        {
+          "rule": "some_carry",
+          "expr": "(n1 % 10) + (n2 % 10) + (n3 % 10) >= 10",
+          "why": "くり上がりを含め単元要求と一致"
+        }
+      ],
+      "sentence_templates": [
+        "{actor_a}は{object}を{n1}{counter}、{actor_b}は{n2}{counter}、{actor_c}は{n3}{counter}もっています。3人あわせて何{counter}ありますか。"
+      ],
+      "answer_template": "しき {n1}+{n2}+{n3}={ans} 答え {ans}{counter}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02"
+        ],
+        "check_against": "data/kyoiku_kanji.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      },
+      "template_number_constants": [
+        3
+      ]
+    },
+    {
+      "pattern_id": "g02_addsub_zogen_bus_01",
+      "grade": "g02",
+      "unit_id": "g02_c11_u01",
+      "unit_name": "3つの数のたし算とひき算",
+      "semantic_category": "増減混合（3口）",
+      "semantic_note": "減ってから増える(バスの乗り降り)。小2の3口計算の定番文脈。順に計算する型。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "n1 - n_off + n_on",
+      "answer_formula": "n1 - n_off + n_on",
+      "intermediate_formulas": {
+        "mid": "n1 - n_off"
+      },
+      "answer_structure": "single",
+      "slots": {
+        "n1": {
+          "type": "int",
+          "range": [
+            15,
+            40
+          ],
+          "role": "はじめの乗客"
+        },
+        "n_off": {
+          "type": "int",
+          "range": [
+            4,
+            9
+          ],
+          "role": "おりた人数"
+        },
+        "n_on": {
+          "type": "int",
+          "range": [
+            3,
+            9
+          ],
+          "role": "のってきた人数"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "mid_positive",
+          "expr": "n1 - n_off >= 1",
+          "why": "途中経過も正(欠陥8)"
+        },
+        {
+          "rule": "off_ne_on",
+          "expr": "n_off != n_on",
+          "why": "同数だと増減の意味が消える"
+        }
+      ],
+      "sentence_templates": [
+        "バスに{n1}人のっていました。バスていで{n_off}人おりて、{n_on}人のってきました。バスには何人のっていますか。"
+      ],
+      "answer_template": "しき {n1}-{n_off}+{n_on}={ans} 答え {ans}人",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02"
+        ],
+        "check_against": "data/kyoiku_kanji.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      }
+    },
+    {
+      "pattern_id": "g02_meas_longlen_gappei_01",
+      "grade": "g02",
+      "unit_id": "g02_c44_u01",
+      "unit_name": "長い長さのたんい",
+      "semantic_category": "合併",
+      "semantic_note": "m/cm複名数の合併。実物 c44_006(1m20cm+1m36cm=2m56cm)と同型。len_gappei の unit_system 差し替えクローン。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "q1 + q2",
+      "answer_formula": "q1 + q2",
+      "answer_structure": "single",
+      "answer_unit_system": "m_cm",
+      "template_number_constants": [
+        2
+      ],
+      "quantity_slots": {
+        "q1": {
+          "unit_system": "m_cm",
+          "base_range": [
+            105,
+            395
+          ],
+          "role": "cm単位の内部値"
+        },
+        "q2": {
+          "unit_system": "m_cm",
+          "base_range": [
+            105,
+            395
+          ]
+        }
+      },
+      "slots": {
+        "attr_a": {
+          "from": "attribute_pairs[k][0]"
+        },
+        "attr_b": {
+          "from": "attribute_pairs[k][1]"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "no_cm_carry",
+          "expr": "(q1 % 100) + (q2 % 100) <= 99",
+          "why": "easy難度: cmの繰り上がり無し"
+        },
+        {
+          "rule": "both_have_cm",
+          "expr": "(q1 % 100) > 0 and (q2 % 100) > 0",
+          "why": "複名数の必然性"
+        },
+        {
+          "rule": "ans_has_cm",
+          "expr": "(q1 + q2) % 100 > 0",
+          "why": "問いと答えの形式一致"
+        },
+        {
+          "rule": "sum_max",
+          "expr": "q1 + q2 <= 599",
+          "why": "5m台まで(教室の長さ感覚)"
+        }
+      ],
+      "sentence_templates": [
+        "{attr_a}リボンの長さは{q1_disp}、{attr_b}リボンの長さは{q2_disp}です。2本のリボンをあわせると、何m何cmになりますか。"
+      ],
+      "answer_template": "しき {q1_disp}+{q2_disp}={ans_disp} 答え {ans_disp}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02"
+        ],
+        "check_against": "data/kyoiku_kanji.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      }
+    },
+    {
+      "pattern_id": "g02_meas_kasa_kyuzan_01",
+      "grade": "g02",
+      "unit_id": "g02_c20_u01",
+      "unit_name": "かさの計算",
+      "semantic_category": "求残",
+      "semantic_note": "複名数から単名数を引く求残。実物 c20_005(2)(2L6dL-4dL=2L2dL)と同型。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "q1 - q2",
+      "answer_formula": "q1 - q2",
+      "answer_structure": "single",
+      "answer_unit_system": "L_dL",
+      "quantity_slots": {
+        "q1": {
+          "unit_system": "L_dL",
+          "base_range": [
+            13,
+            49
+          ],
+          "role": "はじめのかさ(dL内部値)"
+        },
+        "q2": {
+          "unit_system": "L_dL",
+          "base_range": [
+            2,
+            9
+          ],
+          "role": "つかった分(dLのみの単名数)"
+        }
+      },
+      "slots": {},
+      "value_constraints": [
+        {
+          "rule": "no_dl_borrow",
+          "expr": "(q1 % 10) > q2",
+          "why": "easy難度: dLの繰り下がり無し、のこりのdLも正"
+        },
+        {
+          "rule": "q1_has_dl",
+          "expr": "(q1 % 10) > 0",
+          "why": "複名数の必然性"
+        }
+      ],
+      "sentence_templates": [
+        "ポットにお茶が{q1_disp}入っています。{q2_disp}のみました。のこりは何L何dLですか。"
+      ],
+      "answer_template": "しき {q1_disp}-{q2_disp}={ans_disp} 答え {ans_disp}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02"
+        ],
+        "check_against": "data/kyoiku_kanji.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      }
+    },
+    {
+      "pattern_id": "g02_time_conv_hmin_to_min_01",
+      "grade": "g02",
+      "unit_id": "g02_c03_u01",
+      "unit_name": "時こくと時間②",
+      "semantic_category": "単位換算",
+      "semantic_note": "時間・分→分。conv_min_to_hmin の逆方向クローン。実物 c03_004(1時間30分, 80分)と同型。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "q1 を分に統一",
+      "answer_formula": "q1",
+      "answer_structure": "single",
+      "answer_unit_system": "raw_min",
+      "quantity_slots": {
+        "q1": {
+          "unit_system": "h_min",
+          "base_range": [
+            61,
+            179
+          ],
+          "role": "分単位の内部値"
+        }
+      },
+      "slots": {},
+      "value_constraints": [
+        {
+          "rule": "not_exact_hour",
+          "expr": "q1 % 60 != 0",
+          "why": "『1時間20分』の複名数表示を保証"
+        }
+      ],
+      "sentence_templates": [
+        "{q1_disp}は、何分ですか。"
+      ],
+      "answer_template": "答え {ans_disp}分",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02"
+        ],
+        "check_against": "data/kyoiku_kanji.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 1
+      }
+    }
+  ],
+  "schema_changelog": {
+    "0.2": [
+      "answer_structure を追加: 'single'(従来) | 'comparison'(求差用の二部構成)",
+      "computed_slots を追加: 数値スロットから機械導出される派生スロット(winner等)。AIにも乱数にも触らせない",
+      "attribute_pairs を shared_lexicon に追加: 求補用の部分-全体の属性対(赤い/青い等)",
+      "inverse_thinking=true のパターンを初追加(増加の逆思考)。operation が表層の動詞と逆になる型"
+    ],
+    "0.3": [
+      "step_count=2 の初実装: computed_slots で中間値(mid)を機械導出し、answer_template に2本の式を並べる",
+      "answer_formula は最終答えのみを指す(採点・result_view 連携用の単一値を保証)",
+      "intermediate_formulas を追加: 途中式の検算用に中間値の式も機械導出可能にする"
+    ],
+    "0.4": [
+      "かけ算パターン4種を追加(1あたり×いくつ分・倍・かけ算+たし算2step・全体-かけ算2step)",
+      "slot spec に 'choices' を追加(rangeの代わりに離散集合からサンプリング)",
+      "unit_range_overrides を追加: 同一パターンを単元別のかけられる数制限で再利用(だん章対応)",
+      "container_sets を shared_lexicon に追加: 入れ物+中身+助数詞+動詞の整合束",
+      "かけ算の順序規約: かけられる数=1あたり量。answer_template の {n_per}×{n_count} 固定で構造保証"
+    ],
+    "0.5": [
+      "quantity_slots を追加: 複名数(cm_mm, m_cm, L_dL, h_min)と時刻(clock)を最小単位の整数で内部表現",
+      "表示整形は unit_system 別の整形関数がジェネレータ側で担当(0の下位単位は省略: 90mm→9cm)",
+      "制約式は最小単位の整数で記述(繰り上がり有無=難易度の制御が整数演算で書ける)",
+      "answer_unit_system を追加: 答えの整形方式の指定",
+      "時計読み取り問題(図依存)と c47 アレイ図は SVG連携課題として対象外",
+      "template_number_constants を追加: テンプレート文に含めてよい定数の明示宣言(『1つの』『2本の』等)。数値照合(欠陥7)は宣言済み定数のみ許可"
+    ],
+    "0.6": [
+      "unit_range_overrides に constraints_replace を追加: 単元別に制約式をルール名単位で差し替え(c26の3けた対応)",
+      "クローン系追加: 3口合併・増減混合(バス)・m/cm合併・かさ求残・時間換算逆方向",
+      "actor_c スロット対応(3人の登場人物、重複なしサンプリング)"
+    ]
+  },
+  "file_note": "patterns_g02_add_sub.json から改名。加減以外も含むため patterns_g02.json が正式名"
+}

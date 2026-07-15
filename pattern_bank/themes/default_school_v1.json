@@ -1,0 +1,21 @@
+{
+  "theme_id": "default_school_v1",
+  "theme_name": "標準（学校生活）",
+  "schema_version": "1.0",
+  "grade_range": [
+    "g01",
+    "g02",
+    "g03",
+    "g04",
+    "g05",
+    "g06"
+  ],
+  "inherit_pattern_templates": true,
+  "description": "テーマ未割当の生徒に適用されるデフォルト。骨格パターン自身の sentence_templates と shared_lexicon をそのまま使う(=ウィンパス実物準拠のニュートラル語彙)。themed_templates は空。",
+  "resolution_rule": "テンプレート解決順: theme.themed_templates[pattern_id] があればそれを使い、無ければ pattern.sentence_templates にフォールバック。語彙も同様に theme 側定義が優先、無ければ shared_lexicon。",
+  "characters": [],
+  "character_pairs": [],
+  "object_counter_pairs": [],
+  "themed_templates": {},
+  "value_caps": {}
+}

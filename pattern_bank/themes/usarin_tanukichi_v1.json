@@ -1,0 +1,68 @@
+{
+  "theme_id": "usarin_tanukichi_v1",
+  "theme_name": "うさりんとたぬきちの冒険",
+  "schema_version": "1.0",
+  "grade_range": [
+    "g01",
+    "g02"
+  ],
+  "inherit_pattern_templates": false,
+  "description": "スキーマ検証用サンプルテーマ(本チャット2026-07-14セッションで作成・検証済み)。実在生徒への割当は未定。テーマ作成パイプラインのテストデータとして利用可。",
+  "characters": [
+    "うさりん",
+    "たぬきち",
+    "こりすのちょこ"
+  ],
+  "character_pairs": [
+    [
+      "うさりん",
+      "たぬきち"
+    ],
+    [
+      "たぬきち",
+      "こりすのちょこ"
+    ],
+    [
+      "うさりん",
+      "こりすのちょこ"
+    ]
+  ],
+  "object_counter_pairs": [
+    {
+      "object": "どんぐり",
+      "counter": "こ",
+      "verb_use": "たべました"
+    },
+    {
+      "object": "きのみ",
+      "counter": "こ",
+      "verb_use": "たべました"
+    },
+    {
+      "object": "はっぱのおかね",
+      "counter": "まい",
+      "verb_use": "つかいました"
+    },
+    {
+      "object": "たからのちず",
+      "counter": "まい",
+      "verb_use": "つかいました",
+      "value_cap": 20
+    },
+    {
+      "object": "まほうの木のえだ",
+      "counter": "本",
+      "verb_use": "つかいました"
+    }
+  ],
+  "themed_templates": {
+    "g02_addsub_gappei_2digit_carry_01": [
+      "森のたんけんで、{actor_a}は{object}を{n1}{counter}、{actor_b}は{object}を{n2}{counter}見つけました。あわせて何{counter}見つけましたか。"
+    ],
+    "g02_addsub_kyuzan_2digit_borrow_01": [
+      "{actor}は{object}を{n1}{counter}あつめていました。ぼうけんのとちゅうで{n2}{counter}{verb_use}。のこりは何{counter}ですか。"
+    ]
+  },
+  "value_caps_note": "value_cap を持つ object は、パターンのレンジと交差してから制約充足を試みる。充足不能ならその object をそのパターンでは使わない(棄却例外の流用)",
+  "coverage_note": "themed_templates は現状2パターン分のみ。全21パターン分のテンプレート起こしは、実在生徒への割当決定後にオフライン工程(AI生成→漢字機械照合→人間検品)で実施"
+}
