@@ -1,0 +1,80 @@
+{
+  "recordType": "japanese_question_set",
+  "version": 1,
+  "sourceTitle": "うさりんのひっこし",
+  "grade": "g2",
+  "gradeLabel": "小学2年生レベル",
+  "genreKey": "monogatari",
+  "genreLabel": "物語文",
+  "difficultyKey": "renshu",
+  "difficultyLabel": "練習",
+  "structureType": "single",
+  "kantenTags": [
+    "場面",
+    "あらすじ",
+    "気持ち"
+  ],
+  "fullText": "（問題の対象となる本文）",
+  "questions": [
+    {
+      "number": 1,
+      "type": "選択式",
+      "kanten": "場面",
+      "question_text": "うさりんがはじめてクラスのとびらを開けたのは、どのようなときでしたか。正しいものをえらびなさい。",
+      "choices": [
+        "ア　（選択肢1）",
+        "イ　（選択肢2）",
+        "ウ　（選択肢3）",
+        "エ　（選択肢4）"
+      ],
+      "answer": "イ",
+      "explanation": "（解説）"
+    },
+    {
+      "number": 2,
+      "type": "抜き出し",
+      "kanten": "あらすじ",
+      "question_text": "たぬきちがうさりんに声をかけようと思ったのはなぜですか。その理由がわかる文を本文から20字で書きぬきなさい。",
+      "choices": [],
+      "answer": "（本文からの抜き出し・一字一句一致）",
+      "explanation": "（解説）",
+      "_verified": true,
+      "_actualCount": 20
+    },
+    {
+      "number": 3,
+      "type": "記述式",
+      "kanten": "気持ち",
+      "question_text": "たぬきちに声をかけてもらったとき、うさりんの気持ちはどのようにかわりましたか。本文の内ようをもとに、自分のことばで書きなさい。",
+      "choices": [],
+      "answer": "（模範解答）",
+      "explanation": "（解説）"
+    }
+  ],
+  "kanjiQuiz": [
+    {
+      "number": 1,
+      "kanji": "教",
+      "word": "教室",
+      "question_text": "「教室」の読み方を選びなさい。",
+      "choices": [
+        "ア　きょうしつ",
+        "イ　きょうじつ",
+        "ウ　こうしつ",
+        "エ　きょういく"
+      ],
+      "answer": "ア",
+      "explanation": "「教室」は「きょうしつ」と読みます。",
+      "_verified": true
+    }
+  ],
+  "kanjiQuizTargets": [
+    "教",
+    "室",
+    "強",
+    "曜",
+    "算"
+  ],
+  "kanjiQuizDigitalOnly": true,
+  "generatedAt": "2026-07-16T09:05:00.000Z"
+}

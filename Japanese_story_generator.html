@@ -1,0 +1,1884 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>国語文章ジェネレーター</title>
+<style>
+:root{
+  --bg:#161616; --bg2:#1e1e1e; --card:#212121;
+  --border:#333333; --text1:#f0f0f0; --text2:#c4c4c4; --text3:#8a8a8a;
+  --accent:#cd4f7c; --accent-bg:#3a1f28; --accent-text:#f2a3bd;
+  --input-bg:#191919; --green-bg:#173425; --green-text:#5fd58d;
+  --red-bg:#3a1a1a; --red-text:#ff6b6b;
+}
+/* ライトテーマ（既存変数構造のまま欠けているライト側を追加） */
+body.theme-light{
+  --bg:#faf7f2; --bg2:#f2efe9; --card:#ffffff;
+  --border:#ddd5c8; --text1:#2b2622; --text2:#5a5248; --text3:#948a7c;
+  --accent:#b0486f; --accent-bg:#fbeef3; --accent-text:#8e3a59;
+  --input-bg:#ffffff; --green-bg:#e9f5ee; --green-text:#2e7d4f;
+  --red-bg:#fdeeec; --red-text:#c0392b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+  background:var(--bg); color:var(--text1);
+  min-height:100vh;
+}
+.topbar{
+  padding:16px 28px; border-bottom:1px solid var(--border);
+  display:flex; align-items:baseline; gap:10px; background:var(--bg2);
+}
+.topbar-title{font-size:18px; font-weight:800; letter-spacing:.5px}
+.topbar-title span{color:var(--accent)}
+.topbar-sub{font-size:12px; color:var(--text3)}
+.main{max-width:920px; margin:0 auto; padding:28px 20px 80px}
+.card{
+  background:var(--card); border:1px solid var(--border); border-radius:14px;
+  padding:20px; margin-bottom:18px;
+}
+.card-title{font-size:13px; font-weight:700; color:var(--text1); margin-bottom:14px; display:flex; align-items:center; gap:8px}
+.card-title .num{
+  width:20px; height:20px; border-radius:50%; background:var(--accent); color:#fff;
+  font-size:11px; display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.pattern-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px}
+@media(max-width:640px){.pattern-grid{grid-template-columns:1fr}}
+@media(max-width:800px){.result-grid{grid-template-columns:1fr !important}}
+.pattern-card{
+  cursor:pointer; padding:13px 15px; border-radius:10px; border:2px solid var(--border);
+  transition:border-color .15s, background .15s; background:var(--input-bg);
+}
+.pattern-card.active{border-color:var(--accent); background:var(--accent-bg)}
+.pattern-name{font-size:13px; font-weight:700; margin-bottom:4px}
+.pattern-labels{font-size:11px; color:var(--text3)}
+.pattern-card.active .pattern-labels{color:var(--accent-text)}
+
+.outline-block{margin-bottom:14px}
+.outline-label{
+  display:flex; align-items:center; gap:8px; font-size:12px; font-weight:700; color:var(--text2); margin-bottom:6px;
+}
+.outline-label .tag{
+  background:var(--accent); color:#fff; font-size:10px; font-weight:700;
+  padding:2px 8px; border-radius:20px;
+}
+.outline-label .charcount{margin-left:auto; font-size:10px; color:var(--text3); font-weight:400}
+textarea{
+  width:100%; resize:vertical; font-family:inherit; font-size:13px; line-height:1.6;
+  background:var(--input-bg); color:var(--text1); border:1px solid var(--border);
+  border-radius:8px; padding:10px 12px;
+}
+.outline-block textarea{min-height:130px}
+
+.row{display:flex; gap:12px; flex-wrap:wrap}
+.field{flex:1; min-width:160px}
+.field label{font-size:11px; color:var(--text3); display:block; margin-bottom:5px}
+select{
+  width:100%; background:var(--input-bg); color:var(--text1); border:1px solid var(--border);
+  border-radius:8px; padding:9px 10px; font-family:inherit; font-size:13px;
+}
+
+.btn{
+  border:none; border-radius:9px; padding:12px 20px; font-size:13px; font-weight:700;
+  cursor:pointer; font-family:inherit; transition:opacity .15s;
+}
+.btn:hover{opacity:.87}
+.btn:disabled{opacity:.4; cursor:not-allowed}
+.btn-primary{background:var(--accent); color:#fff; width:100%; padding:14px}
+.btn-secondary{background:var(--input-bg); color:var(--text2); border:1px solid var(--border)}
+.btn-row{display:flex; gap:8px; margin-top:14px}
+
+.notice{padding:10px 13px; border-radius:8px; font-size:12px; margin-bottom:14px}
+.notice-err{background:var(--red-bg); color:var(--red-text); border:1px solid var(--red-text)}
+.notice-info{background:var(--accent-bg); color:var(--accent-text); border:1px solid var(--border)}
+
+.loading{display:flex; align-items:center; justify-content:center; gap:10px; padding:34px; color:var(--text3); font-size:13px}
+.spinner{width:16px; height:16px; border:2px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.output-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px}
+.output-charcount{font-size:12px; color:var(--text3)}
+.output-charcount.ok{color:var(--green-text)}
+#resultArea, #rewriteArea{min-height:340px; font-size:14px; line-height:2.0}
+
+.apikey-bar{
+  display:flex; align-items:center; gap:8px; font-size:11px; color:var(--text3);
+}
+.apikey-bar input{
+  flex:1; background:var(--input-bg); border:1px solid var(--border); color:var(--text1);
+  border-radius:6px; padding:6px 8px; font-size:11px; font-family:monospace;
+}
+.apikey-btn{
+  background:transparent; border:1px solid var(--border); color:var(--text2);
+  border-radius:6px; padding:6px 10px; font-size:11px; cursor:pointer; white-space:nowrap;
+}
+
+/* Iモード（アクセシビリティ：文字拡大） */
+body.imode{ font-size:17px; }
+body.imode .main{ max-width:1100px; }
+body.imode .card-title{ font-size:17px; }
+body.imode .pattern-name{ font-size:16px; }
+body.imode .pattern-labels{ font-size:14px; }
+body.imode .outline-label{ font-size:15px; }
+body.imode textarea{ font-size:16px; line-height:1.9; }
+body.imode select, body.imode input[type="text"]{ font-size:16px; padding:12px 14px; }
+body.imode .btn{ font-size:15px; padding:14px 22px; }
+body.imode .field label{ font-size:13px; }
+body.imode .topbar-sub{ font-size:14px; }
+body.imode .notice{ font-size:14px; }
+body.imode .result-grid{ grid-template-columns:1fr; }
+body.imode #resultArea, body.imode #rewriteArea{ font-size:17px; line-height:2.0; min-height:340px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-title">国語文章<span>ジェネレーター</span></div>
+  <div class="topbar-sub">学年・ジャンル別のアウトラインから読解教材用の文章を生成</div>
+  <div style="margin-left:auto">
+    <a href="pandora_main.html" style="background:transparent; border:1px solid var(--border); color:var(--text2); border-radius:8px; padding:7px 12px; font-size:12px; cursor:pointer; font-family:inherit; margin-right:8px; text-decoration:none; display:inline-block;">← Pandoraメイン</a>
+    <span id="flowProgress" style="display:inline-flex; align-items:center; gap:4px; margin-right:8px; flex-wrap:wrap;"></span>
+    <button id="lessonsBtn" onclick="openLessonsModal()" style="background:transparent; border:1px solid var(--border); color:var(--text2); border-radius:8px; padding:7px 12px; font-size:12px; cursor:pointer; font-family:inherit; margin-right:8px;">📚 学習メモ</button>
+    <button id="themeBtn" onclick="toggleTheme()" style="background:transparent; border:1px solid var(--border); color:var(--text2); border-radius:8px; padding:7px 12px; font-size:12px; cursor:pointer; font-family:inherit; margin-right:8px;">☀️ ライト</button>
+    <button id="imodeBtn" onclick="toggleImode()" style="background:transparent; border:1px solid var(--border); color:var(--text2); border-radius:8px; padding:7px 12px; font-size:12px; cursor:pointer; font-family:inherit; margin-right:8px;">🤍 Iモード</button>
+    <button id="apiKeyBtn" onclick="openApiKeyModal()" style="background:transparent; border:1px solid var(--border); color:var(--text2); border-radius:8px; padding:7px 12px; font-size:12px; cursor:pointer; font-family:inherit;">🔑 APIキー</button>
+  </div>
+</div>
+
+<!-- APIキーモーダル -->
+<div id="apiKeyModalOverlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:100; align-items:center; justify-content:center;">
+  <div style="background:var(--card); border:1px solid var(--border); border-radius:14px; padding:22px; width:90%; max-width:420px;">
+    <div style="font-size:14px; font-weight:700; margin-bottom:10px;">🔑 Anthropic APIキー</div>
+    <div style="font-size:12px; color:var(--text3); margin-bottom:12px; line-height:1.6;">
+      console.anthropic.com で発行したAPIキー（sk-ant-で始まるもの）を入力してください。このブラウザ内にのみ保存され、生成時の課金はこのキーの利用分に対して発生します。
+    </div>
+    <input type="password" id="apiKeyInput" placeholder="sk-ant-..." style="width:100%; background:var(--input-bg); color:var(--text1); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-family:monospace; font-size:12px; margin-bottom:8px;">
+    <div id="apiKeyStatus" style="font-size:11px; margin-bottom:14px; color:var(--text3);"></div>
+    <div style="display:flex; gap:8px; justify-content:flex-end;">
+      <button onclick="closeApiKeyModal()" style="background:var(--input-bg); color:var(--text2); border:1px solid var(--border); border-radius:8px; padding:9px 16px; font-size:12px; cursor:pointer; font-family:inherit;">閉じる</button>
+      <button onclick="requestClearApiKey()" style="background:transparent; color:var(--red-text); border:1px solid var(--red-text); border-radius:8px; padding:9px 16px; font-size:12px; cursor:pointer; font-family:inherit;">削除</button>
+      <button onclick="saveApiKey()" style="background:var(--accent); color:#fff; border:none; border-radius:8px; padding:9px 16px; font-size:12px; font-weight:700; cursor:pointer; font-family:inherit;">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 学習メモモーダル -->
+<div id="lessonsModalOverlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:100; align-items:center; justify-content:center;">
+  <div style="background:var(--card); border:1px solid var(--border); border-radius:14px; padding:22px; width:90%; max-width:560px; max-height:80vh; overflow-y:auto;">
+    <div style="font-size:14px; font-weight:700; margin-bottom:10px;">📚 学習メモ（人間の指摘の蓄積）</div>
+    <div style="font-size:12px; color:var(--text3); margin-bottom:12px; line-height:1.6;">
+      ここに保存された指摘は、以降の本文生成・AIリライトのプロンプトに毎回自動で反映されます（対象学年のもの＋全学年共通のもの）。
+    </div>
+    <div id="lessonsList" style="margin-bottom:16px;"></div>
+    <div style="border-top:1px solid var(--border); padding-top:12px;">
+      <div style="font-size:11px; color:var(--text3); margin-bottom:5px;">手動でメモを追加</div>
+      <textarea id="manualLessonInput" placeholder="例：擬人化表現は小1〜2では控えめにする" style="width:100%; min-height:60px; resize:vertical; font-family:inherit; font-size:13px; background:var(--input-bg); color:var(--text1); border:1px solid var(--border); border-radius:8px; padding:10px 12px;"></textarea>
+      <div style="display:flex; gap:8px; margin-top:8px; align-items:center;">
+        <select id="manualLessonGrade" style="background:var(--input-bg); color:var(--text1); border:1px solid var(--border); border-radius:8px; padding:8px 10px; font-family:inherit; font-size:12px;">
+          <option value="">全学年共通</option>
+          <option value="g1">小1のみ</option>
+          <option value="g2">小2のみ</option>
+          <option value="g3">小3のみ</option>
+          <option value="g4">小4のみ</option>
+          <option value="g5">小5のみ</option>
+          <option value="g6">小6のみ</option>
+          <option value="jhs">中学生のみ</option>
+        </select>
+        <button onclick="addLessonManually()" style="background:var(--accent); color:#fff; border:none; border-radius:8px; padding:8px 16px; font-size:12px; font-weight:700; cursor:pointer; font-family:inherit;">追加</button>
+        <button onclick="exportLessons()" style="background:transparent; color:var(--text2); border:1px solid var(--border); border-radius:8px; padding:8px 16px; font-size:12px; cursor:pointer; font-family:inherit;">📥 書き出す</button>
+        <button onclick="closeLessonsModal()" style="margin-left:auto; background:var(--input-bg); color:var(--text2); border:1px solid var(--border); border-radius:8px; padding:8px 16px; font-size:12px; cursor:pointer; font-family:inherit;">閉じる</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- 続きから作る（シリーズ管理） -->
+  <div class="card">
+    <div class="card-title"><span class="num">0</span>続きから作る／シリーズ情報（生徒・日数）</div>
+    <div>
+      <label style="font-size:11px; color:var(--text3); display:block; margin-bottom:5px;">前日の文章レコード（JSON）を読み込んで続きを作る</label>
+      <input type="file" id="recordImportInput" accept="application/json" onchange="importTextRecord(event)" style="width:100%; background:var(--input-bg); color:var(--text1); border:1px solid var(--border); border-radius:8px; padding:9px 10px; font-family:inherit; font-size:13px;">
+      <div style="font-size:11px; color:var(--text3); margin-top:6px;">読み込むと学年・ジャンル・構成・本文が復元され、生徒・日数（+1）も自動でセットされます。そのまま「🔮 次の日の話を提案する」が使えます。新規作成のときは読み込まずに下の欄を手入力してください。</div>
+    </div>
+    <div class="row" style="margin-top:14px;">
+      <div class="field">
+        <label>生徒（Lethe名簿から選択。取得失敗時は手入力）</label>
+        <select id="studentIdInput" onchange="hoSaveStudent('studentIdInput')" style="width:100%; background:var(--input-bg); color:var(--text1); border:1px solid var(--border); border-radius:8px; padding:9px 10px; font-family:inherit; font-size:13px;"><option value="">読み込み中...</option></select>
+        <input type="text" id="studentIdInput_text" placeholder="S-0000" style="width:100%; background:var(--input-bg); color:var(--text1); border:1px solid var(--border); border-radius:8px; padding:9px 10px; font-family:inherit; font-size:13px; display:none;">
+      </div>
+      <div class="field">
+        <label>何日目</label>
+        <input type="number" id="dayNumberInput" min="1" max="99" value="1" style="width:100%; background:var(--input-bg); color:var(--text1); border:1px solid var(--border); border-radius:8px; padding:9px 10px; font-family:inherit; font-size:13px;">
+      </div>
+    </div>
+  </div>
+
+  <!-- タイトル・テーマ -->
+  <div class="card">
+    <div class="card-title"><span class="num">1</span>タイトル（テーマ）を入力</div>
+    <input type="text" id="titleInput" placeholder="例：経済大国・中国の光と陰" style="width:100%; background:var(--input-bg); color:var(--text1); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-family:inherit; font-size:14px;">
+    <div style="font-size:11px; color:var(--text3); margin-top:6px;">タイトルは仮のままでもOK。AIが構成パターン・アウトラインと合わせて内容を判断します。</div>
+  </div>
+
+  <!-- 学年・ジャンル選択 -->
+  <div class="card">
+    <div class="card-title"><span class="num">2</span>学年とジャンルを選ぶ</div>
+    <div class="row">
+      <div class="field">
+        <label>学年</label>
+        <select id="levelSelect" onchange="onGradeChange()">
+          <option value="g1">小学1年生レベル</option>
+          <option value="g2">小学2年生レベル</option>
+          <option value="g3" selected>小学3年生レベル</option>
+          <option value="g4">小学4年生レベル</option>
+          <option value="g5">小学5年生レベル</option>
+          <option value="g6">小学6年生レベル</option>
+          <option value="jhs">中学生レベル</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top:14px;">
+      <div style="font-size:11px; color:var(--text3); margin-bottom:8px;">ジャンル</div>
+      <div class="pattern-grid" id="genreGrid"></div>
+    </div>
+    <div class="row" style="margin-top:14px;">
+      <div class="field">
+        <label>難易度</label>
+        <select id="difficultySelect" onchange="onDifficultyChange()"></select>
+      </div>
+    </div>
+    <div id="levelNotice" style="font-size:11px; color:var(--text3); margin-top:12px;"></div>
+  </div>
+
+  <!-- 構成パターン選択 -->
+  <div class="card">
+    <div class="card-title"><span class="num">3</span>構成パターンを選ぶ</div>
+    <div class="pattern-grid" id="patternGrid"></div>
+    <div id="patternNote" style="font-size:11px; color:var(--text3); margin-top:8px;"></div>
+  </div>
+
+  <!-- アウトライン入力 -->
+  <div class="card">
+    <div class="card-title"><span class="num">4</span>各段落のアウトラインを入力（プレースホルダーは記入のヒントです）</div>
+    <div id="outlineBlocks"></div>
+  </div>
+
+  <!-- テーマ・設定 -->
+  <div class="card">
+    <div class="card-title"><span class="num">5</span>文体・分量の設定</div>
+    <div class="row">
+      <div class="field">
+        <label>文体</label>
+        <select id="styleSelect">
+          <option value="である調（硬めの論説文）">である調（硬めの論説文・中学国語向け）</option>
+          <option value="ですます調（やわらかい解説文）" selected>ですます調（やわらかい解説文）</option>
+          <option value="だよ・しよう調（親しみやすい語りかけ・小1〜2向け）">だよ・しよう調（親しみやすい語りかけ・小1〜2向け）</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>目標文字数（自動提案・編集可）</label>
+        <input type="number" id="lengthInput" min="100" max="2000" step="50" value="1000" style="width:100%; background:var(--input-bg); color:var(--text1); border:1px solid var(--border); border-radius:8px; padding:9px 10px; font-family:inherit; font-size:13px;">
+      </div>
+    </div>
+    <div id="lengthNote" style="font-size:11px; color:var(--text3); margin-top:8px;"></div>
+  </div>
+
+  <button class="btn btn-primary" id="genBtn" onclick="generate()">✨ 本文を生成する</button>
+
+  <div id="noticeArea"></div>
+
+  <!-- 出力 -->
+  <div id="outputCard" style="display:none">
+    <div class="card-title" style="margin-bottom:14px"><span class="num">6</span>生成結果とリライト</div>
+    <div class="result-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+
+      <!-- 生成結果（変更不可） -->
+      <div class="card" style="margin-bottom:0">
+        <div class="output-head">
+          <div class="card-title" style="margin-bottom:0; font-size:13px;">🔒 生成結果（変更不可）</div>
+          <div class="output-charcount" id="resultCharCount">0字</div>
+        </div>
+        <textarea id="resultArea" readonly style="background:var(--bg2); color:var(--text2); cursor:default;" placeholder="ここに生成された本文がそのまま表示されます。"></textarea>
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="copyArea('resultArea')">📋 コピー</button>
+          <button class="btn btn-secondary" id="checkBtnResult" onclick="checkFacts('resultArea','resultCheckArea','result')">🔍 事実・整合性を確認</button>
+        </div>
+        <div id="resultCheckArea" style="margin-top:12px;"></div>
+      </div>
+
+      <!-- リライト（編集可） -->
+      <div class="card" style="margin-bottom:0">
+        <div class="output-head">
+          <div class="card-title" style="margin-bottom:0; font-size:13px;">✏️ リライト（自由に編集）</div>
+          <div class="output-charcount" id="rewriteCharCount">0字</div>
+        </div>
+        <textarea id="rewriteArea" placeholder="ここでリライトできます。"></textarea>
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="copyArea('rewriteArea')">📋 コピー</button>
+          <button class="btn btn-secondary" onclick="downloadOutput()">⬇️ ダウンロード</button>
+          <button class="btn btn-secondary" onclick="resetRewrite()">↺ 生成結果に戻す</button>
+        </div>
+        <div class="btn-row" style="margin-top:8px;">
+          <button class="btn btn-secondary" id="checkBtnRewrite" onclick="checkFacts('rewriteArea','rewriteCheckArea','rewrite')">🔍 事実・整合性を確認</button>
+        </div>
+        <div class="btn-row" style="margin-top:8px;">
+          <button class="btn btn-secondary" style="width:100%;" onclick="exportTextRecord()">📥 文章レコードをJSONで書き出す（問題生成用）</button>
+        </div>
+        <div id="nextGuide"></div>
+        <div id="rewriteCheckArea" style="margin-top:12px;"></div>
+      </div>
+
+    </div>
+    <div class="btn-row" style="margin-top:16px;">
+      <button class="btn btn-secondary" onclick="generate()">🔄 作り直す</button>
+      <button class="btn btn-secondary" id="nextDayBtn" onclick="proposeNextDay()">🔮 次の日の話を提案する</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// 学年別漢字配当表（文部科学省2017年版・1026字）の累積リスト
+// 各学年キーの値は「その学年までに習う漢字」の累積セット（fnshr/kyo-kan, CC0を元に生成）
+const KANJI_CUMULATIVE = {"1": "一右雨円王音下火花貝学気九休玉金空月犬見五口校左三山子四糸字耳七車手十出女小上森人水正生青夕石赤千川先早草足村大男竹中虫町天田土二日入年白八百文木本名目立力林六", "2": "一右雨円王音下火花貝学気九休玉金空月犬見五口校左三山子四糸字耳七車手十出女小上森人水正生青夕石赤千川先早草足村大男竹中虫町天田土二日入年白八百文木本名目立力林六引羽雲園遠何科夏家歌画回会海絵外角楽活間丸岩顔汽記帰弓牛魚京強教近兄形計元言原戸古午後語工公広交光考行高黄合谷国黒今才細作算止市矢姉思紙寺自時室社弱首秋週春書少場色食心新親図数西声星晴切雪船線前組走多太体台地池知茶昼長鳥朝直通弟店点電刀冬当東答頭同道読内南肉馬売買麦半番父風分聞米歩母方北毎妹万明鳴毛門夜野友用曜来里理話", "3": "一右雨円王音下火花貝学気九休玉金空月犬見五口校左三山子四糸字耳七車手十出女小上森人水正生青夕石赤千川先早草足村大男竹中虫町天田土二日入年白八百文木本名目立力林六引羽雲園遠何科夏家歌画回会海絵外角楽活間丸岩顔汽記帰弓牛魚京強教近兄形計元言原戸古午後語工公広交光考行高黄合谷国黒今才細作算止市矢姉思紙寺自時室社弱首秋週春書少場色食心新親図数西声星晴切雪船線前組走多太体台地池知茶昼長鳥朝直通弟店点電刀冬当東答頭同道読内南肉馬売買麦半番父風分聞米歩母方北毎妹万明鳴毛門夜野友用曜来里理話悪安暗医委意育員院飲運泳駅央横屋温化荷界開階寒感漢館岸起期客究急級宮球去橋業曲局銀区苦具君係軽血決研県庫湖向幸港号根祭皿仕死使始指歯詩次事持式実写者主守取酒受州拾終習集住重宿所暑助昭消商章勝乗植申身神真深進世整昔全相送想息速族他打対待代第題炭短談着注柱丁帳調追定庭笛鉄転都度投豆島湯登等動童農波配倍箱畑発反坂板皮悲美鼻筆氷表秒病品負部服福物平返勉放味命面問役薬由油有遊予羊洋葉陽様落流旅両緑礼列練路和", "4": "一右雨円王音下火花貝学気九休玉金空月犬見五口校左三山子四糸字耳七車手十出女小上森人水正生青夕石赤千川先早草足村大男竹中虫町天田土二日入年白八百文木本名目立力林六引羽雲園遠何科夏家歌画回会海絵外角楽活間丸岩顔汽記帰弓牛魚京強教近兄形計元言原戸古午後語工公広交光考行高黄合谷国黒今才細作算止市矢姉思紙寺自時室社弱首秋週春書少場色食心新親図数西声星晴切雪船線前組走多太体台地池知茶昼長鳥朝直通弟店点電刀冬当東答頭同道読内南肉馬売買麦半番父風分聞米歩母方北毎妹万明鳴毛門夜野友用曜来里理話悪安暗医委意育員院飲運泳駅央横屋温化荷界開階寒感漢館岸起期客究急級宮球去橋業曲局銀区苦具君係軽血決研県庫湖向幸港号根祭皿仕死使始指歯詩次事持式実写者主守取酒受州拾終習集住重宿所暑助昭消商章勝乗植申身神真深進世整昔全相送想息速族他打対待代第題炭短談着注柱丁帳調追定庭笛鉄転都度投豆島湯登等動童農波配倍箱畑発反坂板皮悲美鼻筆氷表秒病品負部服福物平返勉放味命面問役薬由油有遊予羊洋葉陽様落流旅両緑礼列練路和愛案以衣位茨印英栄媛塩岡億加果貨課芽賀改械害街各覚潟完官管関観願岐希季旗器機議求泣給挙漁共協鏡競極熊訓軍郡群径景芸欠結建健験固功好香候康佐差菜最埼材崎昨札刷察参産散残氏司試児治滋辞鹿失借種周祝順初松笑唱焼照城縄臣信井成省清静席積折節説浅戦選然争倉巣束側続卒孫帯隊達単置仲沖兆低底的典伝徒努灯働特徳栃奈梨熱念敗梅博阪飯飛必票標不夫付府阜富副兵別辺変便包法望牧末満未民無約勇要養浴利陸良料量輪類令冷例連老労録", "5": "一右雨円王音下火花貝学気九休玉金空月犬見五口校左三山子四糸字耳七車手十出女小上森人水正生青夕石赤千川先早草足村大男竹中虫町天田土二日入年白八百文木本名目立力林六引羽雲園遠何科夏家歌画回会海絵外角楽活間丸岩顔汽記帰弓牛魚京強教近兄形計元言原戸古午後語工公広交光考行高黄合谷国黒今才細作算止市矢姉思紙寺自時室社弱首秋週春書少場色食心新親図数西声星晴切雪船線前組走多太体台地池知茶昼長鳥朝直通弟店点電刀冬当東答頭同道読内南肉馬売買麦半番父風分聞米歩母方北毎妹万明鳴毛門夜野友用曜来里理話悪安暗医委意育員院飲運泳駅央横屋温化荷界開階寒感漢館岸起期客究急級宮球去橋業曲局銀区苦具君係軽血決研県庫湖向幸港号根祭皿仕死使始指歯詩次事持式実写者主守取酒受州拾終習集住重宿所暑助昭消商章勝乗植申身神真深進世整昔全相送想息速族他打対待代第題炭短談着注柱丁帳調追定庭笛鉄転都度投豆島湯登等動童農波配倍箱畑発反坂板皮悲美鼻筆氷表秒病品負部服福物平返勉放味命面問役薬由油有遊予羊洋葉陽様落流旅両緑礼列練路和愛案以衣位茨印英栄媛塩岡億加果貨課芽賀改械害街各覚潟完官管関観願岐希季旗器機議求泣給挙漁共協鏡競極熊訓軍郡群径景芸欠結建健験固功好香候康佐差菜最埼材崎昨札刷察参産散残氏司試児治滋辞鹿失借種周祝順初松笑唱焼照城縄臣信井成省清静席積折節説浅戦選然争倉巣束側続卒孫帯隊達単置仲沖兆低底的典伝徒努灯働特徳栃奈梨熱念敗梅博阪飯飛必票標不夫付府阜富副兵別辺変便包法望牧末満未民無約勇要養浴利陸良料量輪類令冷例連老労録圧囲移因永営衛易益液演応往桜可仮価河過快解格確額刊幹慣眼紀基寄規喜技義逆久旧救居許境均禁句型経潔件険検限現減故個護効厚耕航鉱構興講告混査再災妻採際在財罪殺雑酸賛士支史志枝師資飼示似識質舎謝授修述術準序招証象賞条状常情織職制性政勢精製税責績接設絶祖素総造像増則測属率損貸態団断築貯張停提程適統堂銅導得毒独任燃能破犯判版比肥非費備評貧布婦武復複仏粉編弁保墓報豊防貿暴脈務夢迷綿輸余容略留領歴", "6": "一右雨円王音下火花貝学気九休玉金空月犬見五口校左三山子四糸字耳七車手十出女小上森人水正生青夕石赤千川先早草足村大男竹中虫町天田土二日入年白八百文木本名目立力林六引羽雲園遠何科夏家歌画回会海絵外角楽活間丸岩顔汽記帰弓牛魚京強教近兄形計元言原戸古午後語工公広交光考行高黄合谷国黒今才細作算止市矢姉思紙寺自時室社弱首秋週春書少場色食心新親図数西声星晴切雪船線前組走多太体台地池知茶昼長鳥朝直通弟店点電刀冬当東答頭同道読内南肉馬売買麦半番父風分聞米歩母方北毎妹万明鳴毛門夜野友用曜来里理話悪安暗医委意育員院飲運泳駅央横屋温化荷界開階寒感漢館岸起期客究急級宮球去橋業曲局銀区苦具君係軽血決研県庫湖向幸港号根祭皿仕死使始指歯詩次事持式実写者主守取酒受州拾終習集住重宿所暑助昭消商章勝乗植申身神真深進世整昔全相送想息速族他打対待代第題炭短談着注柱丁帳調追定庭笛鉄転都度投豆島湯登等動童農波配倍箱畑発反坂板皮悲美鼻筆氷表秒病品負部服福物平返勉放味命面問役薬由油有遊予羊洋葉陽様落流旅両緑礼列練路和愛案以衣位茨印英栄媛塩岡億加果貨課芽賀改械害街各覚潟完官管関観願岐希季旗器機議求泣給挙漁共協鏡競極熊訓軍郡群径景芸欠結建健験固功好香候康佐差菜最埼材崎昨札刷察参産散残氏司試児治滋辞鹿失借種周祝順初松笑唱焼照城縄臣信井成省清静席積折節説浅戦選然争倉巣束側続卒孫帯隊達単置仲沖兆低底的典伝徒努灯働特徳栃奈梨熱念敗梅博阪飯飛必票標不夫付府阜富副兵別辺変便包法望牧末満未民無約勇要養浴利陸良料量輪類令冷例連老労録圧囲移因永営衛易益液演応往桜可仮価河過快解格確額刊幹慣眼紀基寄規喜技義逆久旧救居許境均禁句型経潔件険検限現減故個護効厚耕航鉱構興講告混査再災妻採際在財罪殺雑酸賛士支史志枝師資飼示似識質舎謝授修述術準序招証象賞条状常情織職制性政勢精製税責績接設絶祖素総造像増則測属率損貸態団断築貯張停提程適統堂銅導得毒独任燃能破犯判版比肥非費備評貧布婦武復複仏粉編弁保墓報豊防貿暴脈務夢迷綿輸余容略留領歴胃異遺域宇映延沿恩我灰拡革閣割株干巻看簡危机揮貴疑吸供胸郷勤筋系敬警劇激穴券絹権憲源厳己呼誤后孝皇紅降鋼刻穀骨困砂座済裁策冊蚕至私姿視詞誌磁射捨尺若樹収宗就衆従縦縮熟純処署諸除承将傷障蒸針仁垂推寸盛聖誠舌宣専泉洗染銭善奏窓創装層操蔵臓存尊退宅担探誕段暖値宙忠著庁頂腸潮賃痛敵展討党糖届難乳認納脳派拝背肺俳班晩否批秘俵腹奮並陛閉片補暮宝訪亡忘棒枚幕密盟模訳郵優預幼欲翌乱卵覧裏律臨朗論"};
+
+// レベル定義：学年ごとの内容の難易度・語彙・文構造の方針
+const LEVELS = {
+  g1: {
+    label: "小学1年生レベル",
+    audience: "小学1年生",
+    guidance: "一文をとても短くする（15〜20字程度を目安に）。難しい言い回しや抽象的な説明語（「〜という現象」「〜が要因である」等）は使わず、読者に語りかけるような素朴な言葉にする。「なぜだろう？」「〜だよ」「〜してみよう」のような、子どもに話しかける調子を大事にする。抽象的な概念は身近な具体例だけで説明し、専門用語は使わない。時々「〜かな？」「見てください」「〜してみましょう」のように、読者に問いかけたり、動作をうながしたりする一文を挟むとよい。",
+    kanjiNote: "本文中で使う漢字は、次の「学年別使用可能漢字リスト」に含まれるものだけに限定し、それ以外は必ずひらがなで書くこと。",
+    formatNote: "文節（意味のまとまり）ごとに全角スペースを1つ入れる「分かち書き」で出力すること。例：「あなの　なかには、　ヤマアラシの　かぞくが　すんで　いました。」のように、ひらがなが続いて読みにくくならないよう、区切りごとに間隔をあける。句読点の直後にはスペースを入れない。"
+  },
+  g2: {
+    label: "小学2年生レベル",
+    audience: "小学2年生",
+    guidance: "一文を短くする（20〜30字程度を目安に）。「です・ます」よりも、読者に語りかけるような素朴な言い方（「〜だよ」「〜なんだ」「〜してみよう」「〜かな？」）を中心にする。硬い説明語（「じつは」を使うのは良いが「要因」「手がかり」「〜といわれています」のような大人向けの言い回しは避ける）は使わない。抽象的な話題は必ず具体例を添え、身近な体験に結びつける。",
+    kanjiNote: "本文中で使う漢字は、次の「学年別使用可能漢字リスト」に含まれるものだけに限定し、それ以外は必ずひらがなで書くこと。"
+  },
+  g3: {
+    label: "小学3年生レベル",
+    audience: "小学3年生",
+    guidance: "一文の長さは中程度まで許容し、理由や説明を含む文を書いてよい。社会・自然に関する基礎的な話題であれば扱ってよいが、専門用語には必ず易しい言い換えを添える。",
+    kanjiNote: "本文中で使う漢字は、次の「学年別使用可能漢字リスト」に含まれるものだけに限定し、それ以外は必ずひらがなで書くこと。"
+  },
+  g4: {
+    label: "小学4年生レベル",
+    audience: "小学4年生",
+    guidance: "複文（理由・条件を含む文）を使ってよい。社会・経済・環境などの時事的な話題も、身近な例えを交えながら扱ってよい。",
+    kanjiNote: "本文中で使う漢字は、次の「学年別使用可能漢字リスト」に含まれるものだけに限定し、それ以外は必ずひらがなで書くこと。"
+  },
+  g5: {
+    label: "小学5年生レベル",
+    audience: "小学5年生",
+    guidance: "やや抽象的な概念（社会問題・因果関係など）を扱ってよい。指示語や接続語を使った、論理的なつながりのある文章にする。",
+    kanjiNote: "本文中で使う漢字は、次の「学年別使用可能漢字リスト」に含まれるものだけに限定し、それ以外は必ずひらがなで書くこと。"
+  },
+  g6: {
+    label: "小学6年生レベル",
+    audience: "小学6年生",
+    guidance: "小学校段階の最高難度として、複数の視点や因果関係を含む論説文を扱ってよい。中学受験の読解問題に近い文章構造・語彙レベルを目安にする。",
+    kanjiNote: "本文中で使う漢字は、次の「学年別使用可能漢字リスト」に含まれるものだけに限定し、それ以外は必ずひらがなで書くこと。"
+  },
+  jhs: {
+    label: "中学生レベル",
+    audience: "中学生（国語・英語の読解教材用）",
+    guidance: "抽象的な社会問題・データを含む本格的な論説文でよい。中学国語の読解教材として使える語彙・文体・論理展開にする。",
+    kanjiNote: "" // 中学生向けの漢字配当リストは未整備のため、漢字使用の制限は行わない（一旦保留）
+  }
+};
+
+// ジャンル定義（学年により選べるジャンルが変わる）
+const GENRES = {
+  monogatari: { label: "物語文", desc: "登場人物の心情や場面を読み取る文章" },
+  setsumei:   { label: "説明文", desc: "段落構成や要旨をとらえる文章" },
+  ronsetsu:   { label: "論説文", desc: "事実と意見を読み分け、主張をとらえる文章" }
+};
+const GRADE_GENRES = {
+  g1: ["monogatari","setsumei"],
+  g2: ["monogatari","setsumei"],
+  g3: ["monogatari","setsumei"],
+  g4: ["monogatari","setsumei"],
+  g5: ["monogatari","setsumei","ronsetsu"],
+  g6: ["monogatari","setsumei","ronsetsu"],
+  jhs:["monogatari","setsumei","ronsetsu"]
+};
+
+// 難易度（確認/練習/完成）。小1は分析ログ上「完成」レベルが存在しないため除外
+const DIFFICULTIES = {
+  kakunin: { label: "確認" },
+  renshu:  { label: "練習" },
+  kansei:  { label: "完成" }
+};
+const DIFFICULTY_BY_GRADE = {
+  g1: ["kakunin","renshu"],
+  g2: ["kakunin","renshu","kansei"],
+  g3: ["kakunin","renshu","kansei"],
+  g4: ["kakunin","renshu","kansei"],
+  g5: ["kakunin","renshu","kansei"],
+  g6: ["kakunin","renshu","kansei"],
+  jhs:["kakunin","renshu","kansei"]
+};
+
+// 学年×難易度ごとの目標文字数の目安（1本あたり）
+// estimated:true は分析ログがページ数・行数ベースのため字数換算した推定値
+const LENGTH_DEFAULTS = {
+  g1:  { kakunin:{value:250, estimated:false}, renshu:{value:600, estimated:false} },
+  g2:  { kakunin:{value:300, estimated:true},  renshu:{value:700, estimated:true},  kansei:{value:700, estimated:true} },
+  g3:  { kakunin:{value:400, estimated:true},  renshu:{value:800, estimated:true},  kansei:{value:800, estimated:true} },
+  g4:  { kakunin:{value:400, estimated:true},  renshu:{value:800, estimated:true},  kansei:{value:800, estimated:true} },
+  g5:  { kakunin:{value:500, estimated:true},  renshu:{value:900, estimated:true},  kansei:{value:900, estimated:true} },
+  g6:  { kakunin:{value:500, estimated:true},  renshu:{value:900, estimated:true},  kansei:{value:900, estimated:true} },
+  jhs: { kakunin:{value:400, estimated:false, note:"分析ログ対象外の目安"}, renshu:{value:700, estimated:false, note:"分析ログ対象外の目安"}, kansei:{value:1000, estimated:false, note:"分析ログ対象外の目安"} }
+};
+
+let currentDifficulty = "kansei";
+
+function renderDifficultySelect(){
+  const grade = getGradeKey();
+  const avail = DIFFICULTY_BY_GRADE[grade];
+  if(!avail.includes(currentDifficulty)) currentDifficulty = avail[avail.length-1];
+  const sel = document.getElementById('difficultySelect');
+  sel.innerHTML = avail.map(k=>`<option value="${k}"${k===currentDifficulty?' selected':''}>${DIFFICULTIES[k].label}</option>`).join('');
+}
+
+function onDifficultyChange(){
+  currentDifficulty = document.getElementById('difficultySelect').value;
+  applyLengthDefault();
+}
+
+function applyLengthDefault(){
+  const grade = getGradeKey();
+  const entry = (LENGTH_DEFAULTS[grade] || {})[currentDifficulty];
+  const input = document.getElementById('lengthInput');
+  const note = document.getElementById('lengthNote');
+  if(!entry){ note.textContent = ''; return; }
+  input.value = entry.value;
+  if(entry.note){
+    note.textContent = `学年・難易度から自動提案した目安です（${entry.note}）。必要に応じて編集してください。`;
+  }else if(entry.estimated){
+    note.textContent = '学年・難易度から自動提案した目安です（🔶分析ログはページ数・行数ベースのため字数は推定値）。必要に応じて編集してください。';
+  }else{
+    note.textContent = '学年・難易度から自動提案した目安です（分析ログの実測値ベース）。必要に応じて編集してください。';
+  }
+  updateCharCount('resultArea','resultCharCount');
+}
+
+// 学年×ジャンルごとの構成パターンバンク
+// 各labelは {label, guide} — guideはアウトライン欄のプレースホルダーとして使う
+const PATTERN_BANK = {
+  g1: {
+    monogatari: [{
+      key:"dekigoto", name:"できごと型",
+      labels:[
+        {label:"場面・登場人物の紹介", guide:"いつ、どこで、だれが出てくるかを短く書いてください。\n例1：「森の中に、リスの家族がすんでいました。」\n例2：「どうぶつえんに、ぞうの親子がすんでいました。」\n例3：「ほいくえんに、いつもひとりで絵をかいている女の子がいました。」"},
+        {label:"せりふ・行動とその理由", guide:"登場人物が話したこと・したことと、「なぜそうしたか」がわかる文を書いてください。\n例1：「弟がずっとひとりでボールをけっていました。なぜならお兄ちゃんが出かけていたからです。」\n例2：「子ぞうは、お母さんのそばをはなれようとしませんでした。」\n例3：「その子は、みんなの輪に入れず、教室のすみで絵をかいていました。」"},
+        {label:"気持ち（読み取れる形で）", guide:"気持ちが、せりふや様子から読み取れるように書いてください。「うれしい」と言葉にしなくてもOK。\n例1：「弟は、少しさびしそうな顔をしていました。」\n例2：「子ぞうは、少し心ぼそそうな顔をしていました。」\n例3：「その子は、少しさみしそうでした。」"},
+        {label:"結末", guide:"できごとがどう終わったかを、短くまとめてください。\n例1：「お兄ちゃんが帰ってきて、二人でいっしょにボールをけって遊びました。」\n例2：「やがて子ぞうは、お母さんのとなりで安心してねむりました。」\n例3：「ある日、友だちが「いっしょにかこう」と声をかけ、二人でにこにこ絵をかきました。」"}
+      ]
+    }],
+    setsumei: [
+      { key:"setsumei", name:"せつめい型",
+        labels:[
+          {label:"話題提示", guide:"「〜とは、〜です。」の形で、何について説明する文章かをはっきり書いてください。\n例1：「たんぽぽとは、黄色い花をさかせる草花です。」\n例2：「ありとは、小さな体で力持ちな虫です。」\n例3：「雨とは、空から水のつぶが落ちてくる天気のことです。」"},
+          {label:"具体的な場所・程度・様子", guide:"「どこに」「どれくらい」など、具体的に答えられる情報を書いてください。\n例1：「たんぽぽは、道ばたや公園など、いろいろな場所にさいています。」\n例2：「ありは、地面の下にあなをほって、その中でくらしています。」\n例3：「雨がふると、道や葉っぱがぬれて、きらきら光ります。」"},
+          {label:"理由・原因", guide:"「〜だから。」「〜ので。」の形で、理由がはっきりわかる文を入れてください。\n例1：「わた毛は風にのって遠くまでとぶから、たんぽぽはあちこちに広がります。」\n例2：「なかまと力を合わせて運ぶから、ありは自分より大きな食べ物も運べます。」\n例3：「雲の中の水がつぶになって重くなるから、雨はふります。」"},
+          {label:"まとめ・結び", guide:"話題提示の内容を短く振り返って、まとめの一文で終えてください。\n例1：「このように、たんぽぽは身近などこにでもさいている花なのです。」\n例2：「このように、ありは小さくても力強い虫なのです。」\n例3：「このように、雨は自然のふしぎな仕組みでふっているのです。」"}
+        ]
+      },
+      { key:"tejun", name:"てじゅん型",
+        labels:[
+          {label:"準備するもの", guide:"必要な材料・道具を、具体的に書き出してください。\n例1：「色紙、はさみ、のりを用意します。」\n例2：「食パン、ハム、レタスを用意します。」\n例3：「花の色紙とのりを用意します。」"},
+          {label:"手順1", guide:"最初にすることを、順番がわかるように書いてください。\n例1：「まず、色紙を半分におります。」\n例2：「まず、食パンにバターをぬります。」\n例3：「まず、色紙を三角に半分におります。」"},
+          {label:"手順2", guide:"次にすることを書いてください。手順1とのつながりがわかるように。\n例1：「つぎに、おった線にそってはさみで切ります。」\n例2：「つぎに、ハムとレタスをのせて、もう一まいのパンではさみます。」\n例3：「つぎに、はしを少しずつおって、花びらの形を作ります。」"},
+          {label:"仕上げ・注意点", guide:"できあがりの様子と、気をつけるポイントを書いてください。\n例1：「切り終えたら、そっと開いて形をたしかめましょう。はさみの使い方に気をつけてください。」\n例2：「半分に切ったら出来上がりです。パンをつぶさないように、そっと切りましょう。」\n例3：「花びらを開いたら出来上がりです。おりすじをていねいにつけましょう。」"}
+        ]
+      }
+    ]
+  },
+  g2: {
+    monogatari: [{
+      key:"dekigoto2", name:"できごと発展型",
+      labels:[
+        {label:"場面紹介", guide:"いつ・どこで・だれが出てくるかを書いてください。\n例1：「夏休みのある日、ゆうきは川へ魚つりに出かけました。」\n例2：「学芸会の前の日、はなこはせりふをまだ覚えていませんでした。」\n例3：「たかしは、新しい町に引っ越してきたばかりでした。」"},
+        {label:"出来事の始まり（せりふ・行動）", guide:"きっかけとなる出来事や、登場人物のせりふ・行動を書いてください。\n例1：「大きな魚がかかった気がしたのに、糸が切れてにげられてしまいました。」\n例2：「本番が近づくにつれ、はなこは不安でたまらなくなりました。」\n例3：「クラスに知り合いがおらず、たかしは毎日きんちょうしていました。」"},
+        {label:"気持ちの変化・葛藤", guide:"はじめの気持ちから、どう変わっていくかがわかるように書いてください。\n例1：「くやしくてたまらなかったけれど、次はぜったいつかまえようと思いました。」\n例2：「友だちが「いっしょに練習しよう」と言ってくれ、少しずつ自信がわいてきました。」\n例3：「はじめは不安でしたが、となりの席の子が話しかけてくれて、少し心が軽くなりました。」"},
+        {label:"結末・気づき", guide:"出来事がどう終わり、登場人物が何に気づいたかを書いてください。\n例1：「次の日、ゆうきはもう一度チャレンジして、みごと魚をつり上げました。」\n例2：「本番では、はなこは大きな声でせりふを言うことができました。」\n例3：「一週間後には、たかしは休み時間にみんなと遊べるようになりました。」"}
+      ]
+    }],
+    setsumei: [
+      { key:"danraku", name:"段落構成型",
+        labels:[
+          {label:"話題提示", guide:"何について説明するかを、はじめにはっきり書いてください。\n例1：「動物には、昼に動くものと夜に動くものがいます。」\n例2：「果物には、木にできるものと、つるにできるものがあります。」\n例3：「乗り物には、地上を走るものと、空を飛ぶものがあります。」"},
+          {label:"具体例A", guide:"具体的な事実や例を1つ書いてください。\n例1：「ライオンは、おもに昼間にえものをさがして動きます。」\n例2：「りんごやみかんは、木の枝に実をつけます。」\n例3：「電車やバスは、レールや道路の上を走ります。」"},
+          {label:"具体例B（対比できる書き方）", guide:"具体例Aと比べられる、別の事実や例を書いてください。\n例1：「一方、フクロウは、夜になると音もなく飛んで狩りをします。」\n例2：「一方、すいかやメロンは、地面をはうつるに実をつけます。」\n例3：「一方、飛行機は、空を飛んで遠くまで行くことができます。」"},
+          {label:"まとめ（大きく二つに分けると）", guide:"二つの内容を整理してまとめてください。\n例1：「このように、動物は大きく二つのタイプに分けられます。」\n例2：「このように、果物のでき方には大きく二つのタイプがあります。」\n例3：「このように、乗り物は目的によって大きく二つに分けられます。」"}
+        ]
+      },
+      { key:"tejun2", name:"てじゅん型",
+        labels:[
+          {label:"準備するもの", guide:"必要な材料・道具を、具体的に書き出してください。\n例1：「小麦粉、卵、牛乳、フライパンを用意します。」\n例2：「朝顔の種、植木ばち、土を用意します。」\n例3：「厚紙、リボン、パンチを用意します。」"},
+          {label:"手順1", guide:"最初にすることを、段落番号を意識して書いてください。\n例1：「ボウルに小麦粉と卵を入れ、よくまぜます。」\n例2：「まず、植木ばちに土を入れます。」\n例3：「まず、厚紙を好きな形に切ります。」"},
+          {label:"手順2", guide:"次にすることを、手順1とのつながりがわかるように書いてください。\n例1：「牛乳を少しずつ加えながら、なめらかになるまでまぜます。」\n例2：「つぎに、指で小さな穴をあけて、種を入れます。」\n例3：「つぎに、パンチで上に穴をあけます。」"},
+          {label:"仕上げ・注意点", guide:"できあがりの様子と、気をつけるポイントを書いてください。\n例1：「フライパンを温めてから生地を流し入れましょう。やけどに注意してください。」\n例2：「水をたっぷりあげましょう。土がかわかないように毎日水やりをしてください。」\n例3：「穴にリボンを通したら出来上がりです。厚紙の角でけがをしないよう気をつけましょう。」"}
+        ]
+      },
+      { key:"taihi", name:"たいひ型",
+        labels:[
+          {label:"話題提示", guide:"何と何を比べるのかを、はじめに示してください。\n例1：「同じ「たんぽぽ」でも、日本のものと西洋のものにはちがいがあります。」\n例2：「同じペットでも、犬とねこには大きなちがいがあります。」\n例3：「同じ一日でも、昼と夜では町の様子が大きく変わります。」"},
+          {label:"対象Aの特徴", guide:"一つ目のものの特徴を具体的に書いてください。\n例1：「日本のたんぽぽは、春だけに花をさかせます。」\n例2：「犬は、人になつきやすく、さんぽが好きです。」\n例3：「昼間は、人や車が多く、にぎやかです。」"},
+          {label:"対象Bの特徴", guide:"二つ目のものの特徴を、対象Aと対応する形で書いてください。\n例1：「西洋のたんぽぽは、一年中花をさかせることができます。」\n例2：「ねこは、自由きままで、一人の時間を好みます。」\n例3：「夜になると、明かりがともり、静かな町にかわります。」"},
+          {label:"比較のまとめ", guide:"二つを比べてわかることをまとめてください。\n例1：「このように、同じたんぽぽでも、さく時期に大きなちがいがあります。」\n例2：「このように、犬とねこはせいかくに大きなちがいがあります。」\n例3：「このように、昼と夜では町の表情がまったくちがうのです。」"}
+        ]
+      }
+    ]
+  },
+  g3: {
+    monogatari: [
+      { key:"arasuji", name:"あらすじ型",
+        labels:[
+          {label:"発端", guide:"物語が始まるきっかけを書いてください。\n例1：「転校生のまなぶは、クラスになじめずにいました。」\n例2：「サッカー部のけんたは、大事な大会を前に思うようにボールがけれなくなっていました。」\n例3：「図書委員になったゆいは、本を借りる人が少ないことに気づきました。」"},
+          {label:"展開（行動・様子）", guide:"登場人物の行動や様子を、順を追って書いてください。\n例1：「休み時間、まなぶは一人で本を読んでいると、同じ本が好きなさくらに話しかけられました。」\n例2：「毎日おそくまで一人で練習を続けましたが、うまくいきませんでした。」\n例3：「ゆいは、おすすめの本を紹介するポスターを作ることにしました。」"},
+          {label:"転換点（気持ちの変化）", guide:"出来事によって気持ちがどう変わるかを書いてください。\n例1：「はじめは戸惑っていたまなぶも、少しずつ心を開いていきました。」\n例2：「コーチの「力を抜いてごらん」という言葉で、けんたの体から力がぬけました。」\n例3：「はじめは反応がなく落ちこみましたが、少しずつ本を借りる人が増えていきました。」"},
+          {label:"結末・あらすじのまとめ", guide:"物語がどう終わるか、全体の流れがわかるようにまとめてください。\n例1：「二人はすっかり仲良くなり、まなぶはクラスに笑顔で通えるようになりました。」\n例2：「大会当日、けんたはのびのびとプレーし、チームの勝利に貢献しました。」\n例3：「学期の終わりには、図書室はいつもにぎわうようになりました。」"}
+        ]
+      },
+      { key:"minwa3", name:"民話回（教訓・空想対比型）",
+        labels:[
+          {label:"発端（昔話らしい設定）", guide:"「むかしむかし」のような、昔話らしい始まり方で書いてください。\n例1：「むかしむかし、あるところに、たいそう欲張りなおじいさんがいました。」\n例2：「むかし、ある国に、とても頭のいいうさぎがいました。」\n例3：「むかしむかし、正直な木こりが山でくらしていました。」"},
+          {label:"出来事", guide:"教訓につながる出来事や、空想的な出来事を書いてください。\n例1：「おじいさんは、ふしぎな木から実をとりつくそうとしました。」\n例2：「うさぎは、力の強いおおかみに知恵くらべを持ちかけました。」\n例3：「木こりは、川でおぼれていた小さな動物を助けてあげました。」"},
+          {label:"結果", guide:"出来事の結果、何が起こったかを書いてください。\n例1：「木はすっかりかれてしまい、おじいさんは何も手に入れられませんでした。」\n例2：「おおかみはうさぎの作戦にまんまとひっかかり、負けてしまいました。」\n例3：「その動物は、実は山の神様の使いで、木こりに幸せを分けてくれました。」"},
+          {label:"教訓・結び", guide:"日本の民話なら教訓を、外国の民話なら空想的な余韻を書いてください。\n例1：「よくばりすぎると、何もかも失ってしまうのです。」\n例2：「力だけでは知恵にはかなわない、というお話です。」\n例3：「人にやさしくすると、自分にも幸せが返ってくるのです。」"}
+        ]
+      }
+    ],
+    setsumei: [{
+      key:"irekaeko", name:"入れ子構造型",
+      labels:[
+        {label:"内容提示", guide:"これから説明する内容の全体像を、はじめに示してください。\n例1：「昆虫には、卵から成虫になるまでに大きく姿を変えるものがいます。」\n例2：「川は、山から海へ流れる間に、様子を大きく変えていきます。」\n例3：「天気は、雲の動きによって少しずつ変わっていきます。」"},
+        {label:"段落のまとまり（具体例）", guide:"内容をいくつかのまとまりに分け、それぞれ具体例を書いてください。\n例1：「たとえばチョウは、卵→幼虫→さなぎ→成虫と、四つの姿に変化します。」\n例2：「山の中では、川はせまく流れが速く、大きな石がごろごろしています。」\n例3：「まず、うすい雲が空を広くおおいはじめます。」"},
+        {label:"段落と段落の関係（対比・因果）", guide:"まとまり同士がどうつながっているか（比べる・原因と結果など）を書いてください。\n例1：「これに対して、バッタは幼虫のときからすでに成虫に近い姿をしています。」\n例2：「一方、海に近づくにつれ、川はゆるやかに広がり、細かい砂がたまります。」\n例3：「つぎに、雲が厚くなり、色も灰色に変わっていきます。」"},
+        {label:"文章全体の流れ・まとめ", guide:"全体を振り返り、まとめの文で締めてください。\n例1：「このように、昆虫の育ち方には大きく二つのタイプがあるのです。」\n例2：「このように、川は流れる場所によって、まったくちがう表情を見せるのです。」\n例3：「このように、天気の変化には順序があり、雲を見れば予想することができるのです。」"}
+      ]
+    }]
+  },
+  g4: {
+    monogatari: [
+      { key:"ningenkankei", name:"人間関係発展型",
+        labels:[
+          {label:"対立・すれ違いの発端", guide:"家族やきょうだいなど身近な関係の中で起きる、小さな対立・すれ違いを書いてください。\n例1：「妹が勝手にわたしの絵の具を使ってしまい、けんかになりました。」\n例2：「弟が勝手にわたしのゲームのセーブデータを消してしまい、大げんかになりました。」\n例3：「親友のゆうたが、約束していた遊びを急にキャンセルしてきました。」"},
+          {label:"行動・様子の描写", guide:"そのときの行動や様子を具体的に書いてください。\n例1：「わたしは口をきかず、妹の方を見ようともしませんでした。」\n例2：「わたしは弟の部屋のドアを閉め、口をきこうとしませんでした。」\n例3：「わたしはがっかりして、ゆうたに冷たい態度をとってしまいました。」"},
+          {label:"相手の本当の気持ちへの気づき", guide:"相手の気持ちに気づく場面を書いてください。\n例1：「妹の机の上に、わたしのためにかいた絵が置いてあるのを見つけました。」\n例2：「弟が、こっそり泣きながら謝ろうとしていたことに気づきました。」\n例3：「ゆうたが、家族の看病で忙しかったことを後で知りました。」"},
+          {label:"仲直り・成長", guide:"仲直りや、登場人物の成長が伝わる結末を書いてください。\n例1：「わたしは妹に「ありがとう」と伝え、二人でいっしょに絵をかきました。」\n例2：「わたしは弟を許し、二人で新しくゲームをやり直すことにしました。」\n例3：「わたしはゆうたに素直に謝り、二人の友情はより深まりました。」"}
+        ]
+      },
+      { key:"minwa4", name:"民話回（因果応報・知恵比べ型）",
+        labels:[
+          {label:"発端", guide:"欲張り・ずる賢さ、または知恵比べのきっかけとなる出来事を書いてください。\n例1：「ある村に、いつも人をだましてもうけようとする商人がいました。」\n例2：「ある森で、意地悪なきつねが動物たちをだましてばかりいました。」\n例3：「ある村に、いつも他人の畑からこっそり作物を盗む男がいました。」"},
+          {label:"展開", guide:"話がどう進んでいくかを書いてください。\n例1：「商人は旅人に重さをごまかした米を売ろうとしました。」\n例2：「小さなねずみが、きつねに知恵比べを持ちかけました。」\n例3：「男は今日もとなりの畑から野菜を盗もうとしました。」"},
+          {label:"結果（因果応報 or 知恵比べの決着）", guide:"日本民話なら報いを、外国民話なら知恵比べの決着を書いてください。\n例1：「うそを見ぬかれた商人は、村中の信用を失ってしまいました。」\n例2：「きつねはねずみの作戦を見破れず、まんまと出しぬかれてしまいました。」\n例3：「その畑は仕掛けがしてあり、男はすぐに見つかってしまいました。」"},
+          {label:"結び", guide:"話全体を締めくくる一文を書いてください。\n例1：「正直に生きることの大切さを、村人たちは改めて感じました。」\n例2：「知恵は力よりも強いということを、動物たちは学びました。」\n例3：「悪いことをすれば、いつか自分に返ってくるのです。」"}
+        ]
+      }
+    ],
+    setsumei: [{
+      key:"tsumiage", name:"積み上げ型",
+      labels:[
+        {label:"指示語・接続語を含む導入", guide:"「これ」「それ」や「しかし」「だから」などを使って、自然な導入を書いてください。\n例1：「森林は地球の「肺」と呼ばれています。しかし、その面積は年々減り続けています。」\n例2：「「もったいない」という言葉を聞いたことがあるだろうか。これは物を大切にする気持ちを表す言葉である。」\n例3：「「よく眠れていますか」と聞かれて、自信を持って「はい」と言える人は少ないだろう。」"},
+        {label:"段落の要点", guide:"一つの段落で伝えたい要点を、具体例とともに書いてください。\n例1：「森林が減る主な原因は、農地への転用や木材の伐採です。」\n例2：「リサイクルとは、使い終わった物を新しい製品に作り変えるしくみのことだ。」\n例3：「睡眠には、体と脳を休ませる大切な役割がある。」"},
+        {label:"段落と段落の関係", guide:"前の段落とのつながり（対比・因果など）がわかるように書いてください。\n例1：「一方で、植林活動によって森林を取り戻そうとする動きも広がっています。」\n例2：「しかし、正しく分別しないと、リサイクルできない物も多い。」\n例3：「そのため、寝る前のスマートフォンの使用は、睡眠の質を下げる原因になる。」"},
+        {label:"事実と意見／筆者の考え", guide:"客観的な事実と、筆者の考え・意見を分けて書いてください。\n例1：「私たち一人ひとりが森林について関心を持つことが、これからますます大切になっていくだろう。」\n例2：「一人ひとりが分別を意識することが、環境を守る第一歩になると思う。」\n例3：「規則正しい睡眠を心がけることが、健康な毎日につながるはずだ。」"}
+      ]
+    }]
+  },
+  g5: {
+    monogatari: [{
+      key:"shinjohenka5", name:"心情変化・高次読解型",
+      labels:[
+        {label:"場面・情景", guide:"場所や時間、まわりの様子を描写してください。\n例1：「秋の夕暮れ、グラウンドには誰もいなくなっていた。」\n例2：「放課後の音楽室には、夕方の光がやわらかく差しこんでいた。」\n例3：「夏の日差しが照りつける、祖母の家の縁側。」"},
+        {label:"行動・様子", guide:"登場人物の行動や様子を具体的に書いてください。\n例1：「たけしは一人残り、何度も何度もシュートの練習を続けていた。」\n例2：「あかりは、発表会で失敗した曲を、何度も一人で弾き直していた。」\n例3：「ひろしは、都会に帰りたいという思いを、ずっと祖母に言い出せずにいた。」"},
+        {label:"心情の変化（きっかけ→変化）", guide:"何がきっかけで気持ちがどう変わったかを書いてください。\n例1：「監督の「無理に一人でがんばらなくていい」という言葉を思い出し、肩の力がふっと抜けた。」\n例2：「先生の「間違えてもいい、伝えたい気持ちを大切にね」という言葉が、ふいに胸の中でよみがえった。」\n例3：「祖母が黙って渡してくれた麦茶の優しさに、ひろしの心のかたくなさが、すっと溶けていった。」"},
+        {label:"表現の工夫・人物像・主題の示唆", guide:"比喩などの表現や人物像、物語が伝えたいことがにじむように書いてください。\n例1：「夕日に染まるボールを見つめながら、たけしは静かにほほえんだ。」\n例2：「鍵盤にそっと指をのせ、あかりは初めて自分らしい音を鳴らせた気がした。」\n例3：「セミの声を聞きながら、ひろしはもう少しだけこの場所にいたいと思った。」"}
+      ]
+    }],
+    setsumei: [{
+      key:"sankaisou", name:"3階層型",
+      labels:[
+        {label:"文レベル導入（指示語・接続語）", guide:"指示語・接続語を使って、自然に話題へ入ってください。\n例1：「これから紹介するのは、海の中でひときわ目立つ生き物についてである。」\n例2：「これから取り上げるのは、日本各地に伝わる伝統工芸についてである。」\n例3：「これから述べるのは、図書館が果たしている役割についてである。」"},
+        {label:"段落の要点", guide:"段落ごとの要点を、具体例とともに書いてください。\n例1：「クラゲは体の九割以上が水分でできており、非常に軽い体をしている。」\n例2：「和紙は、木の皮の繊維を丁寧にすいて作られる、日本独自の紙である。」\n例3：「図書館は、誰もが無料で本を借りたり調べ物をしたりできる場所である。」"},
+        {label:"段落どうしの関係（構成）", guide:"段落同士の関係や、文章全体の構成がわかるように書いてください。\n例1：「その一方で、透明な体は敵から身を守るのに役立っている。」\n例2：「その一方で、機械で大量生産される紙とは、質感も強さも大きく異なっている。」\n例3：「それに加えて、近年はイベントや学習支援など、地域の交流の場としての機能も広がっている。」"},
+        {label:"要旨", guide:"文章全体で最も伝えたいことをまとめてください。\n例1：「このように、クラゲの体のつくりには、生き抜くための工夫が隠されているのである。」\n例2：「このように、伝統工芸には、機械には出せない職人の技が息づいているのである。」\n例3：「このように、図書館は本を貸すだけでなく、地域を支える大切な役割を担っているのである。」"}
+      ]
+    }],
+    ronsetsu: [{
+      key:"jijitsuteiji", name:"事実提示型",
+      labels:[
+        {label:"事実の提示", guide:"客観的な事実を、「〜だ。」「〜ている。」の文末で書いてください。\n例1：「近年、日本の食料自給率は四割を下回っている。」\n例2：「世界の海には、年間八百万トンものプラスチックごみが流れこんでいるという。」\n例3：「一か月に一冊も本を読まない人の割合は、近年増加している。」"},
+        {label:"具体例・データ", guide:"事実を裏づける具体例やデータを書いてください。\n例1：「特に穀物の自給率は三割に満たず、多くを輸入に頼っている。」\n例2：「これらのごみは分解されるまでに数百年かかると言われている。」\n例3：「特に十代・二十代でその傾向が強く表れているという調査結果がある。」"},
+        {label:"意見表明（筆者の考え）", guide:"「〜だろうか。」「〜と思う。」など、筆者の考えとわかる文末で書いてください。\n例1：「食料を海外に頼りすぎることには、大きな不安があるのではないだろうか。」\n例2：「便利さを優先するあまり、私たちは大切なものを見失っているのではないだろうか。」\n例3：「スマートフォンの普及が、この状況に影響しているのではないだろうか。」"},
+        {label:"要旨のまとめ", guide:"事実と意見を踏まえて、文章全体の要旨をまとめてください。\n例1：「食料自給率を高める取り組みが、今こそ求められていると思う。」\n例2：「プラスチックとの付き合い方を見直すことが、今こそ必要だと思う。」\n例3：「読書の楽しさを伝える取り組みが、これから求められていくと思う。」"}
+      ]
+    }]
+  },
+  g6: {
+    monogatari: [{
+      key:"shinjohenka6", name:"小5継続型",
+      labels:[
+        {label:"場面・情景", guide:"場所や時間、まわりの様子を描写してください。\n例1：「教室の窓から差しこむ光が、机の上の絵の具箱を照らしていた。」\n例2：「体育館の隅で、部長のりょうは後輩の練習を静かに見つめていた。」\n例3：「夏休み、あきらはしぶしぶ祖父の畑仕事を手伝っていた。」"},
+        {label:"行動・様子", guide:"登場人物の行動や様子を具体的に書いてください。\n例1：「みゆきは、真っ白な画用紙を前に、何度も筆を止めていた。」\n例2：「後輩がミスを重ねるたび、りょうはつい厳しい言葉をかけてしまっていた。」\n例3：「祖父は毎日、暑い中でも黙々と土を耕し続けていた。」"},
+        {label:"心情の変化（きっかけ→変化）", guide:"何がきっかけで気持ちがどう変わったかを書いてください。\n例1：「友人の「下手でもいいんだよ」という一言に、こわばっていた手が少しずつほぐれていった。」\n例2：「後輩の「うまくなりたいんです」という真剣なまなざしに、りょうは自分のせっかちさに気づかされた。」\n例3：「実った野菜を食卓に並べたとき、祖父の背中に流れていた汗の意味が、あきらにもようやくわかった気がした。」"},
+        {label:"表現の工夫・人物像・主題", guide:"表現の工夫、人物像、主題までを一貫して意識して書いてください。\n例1：「筆先から広がる青い絵の具を見つめながら、みゆきの心にも色がさしこんでいくようだった。」\n例2：「その日から、りょうは一つひとつの言葉を選びながら後輩と向き合うようになった。」\n例3：「次の日から、あきらは自分から畑に出るようになった。」"}
+      ]
+    }],
+    setsumei: [{
+      key:"bunmyaku", name:"文脈追加型",
+      labels:[
+        {label:"話題提示・文脈をとらえる導入", guide:"話題提示に加えて、前後の文脈がつながるように書いてください。\n例1：「「もったいない」という言葉は、今や世界共通語として知られている。」\n例2：「人工知能（AI）という言葉を、私たちは日常的に耳にするようになった。」\n例3：「地域に伝わる祭りは、単なる年中行事ではない。」"},
+        {label:"段落の要点", guide:"段落ごとの要点を書いてください。\n例1：「この言葉には、物を大切にする日本人の考え方が表れている。」\n例2：「AIは、大量のデータをもとに、人間には難しい判断を短時間で行うことができる。」\n例3：「祭りには、地域の人々が世代を越えて協力し合う場としての役割がある。」"},
+        {label:"段落どうしの関係・構成", guide:"文章全体の構成がわかるように書いてください。\n例1：「一方で、大量消費の時代においてこの精神は見直されつつある。」\n例2：「しかし、AIがすべてを決める社会には、慎重であるべきだという意見も根強い。」\n例3：「一方で、担い手の減少により、続けることが難しくなっている祭りも増えている。」"},
+        {label:"要旨", guide:"文章全体の要旨をまとめてください。\n例1：「「もったいない」という言葉は、これからの社会に必要な価値観を示しているのである。」\n例2：「AIとどう付き合っていくかは、これからの社会全体の課題なのである。」\n例3：「祭りを未来へつなぐことは、地域の絆を未来へつなぐことでもあるのである。」"}
+      ]
+    }],
+    ronsetsu: [{
+      key:"jijitsuteiji6", name:"小5継続型",
+      labels:[
+        {label:"事実の提示", guide:"客観的な事実を、「〜だ。」「〜ている。」の文末で書いてください。\n例1：「日本の高齢化率は、世界の中でも特に高い水準にある。」\n例2：「SNSを利用する中学生・高校生の割合は、九割を超えるという調査がある。」\n例3：「地方の多くの市町村で、人口の減少が続いている。」"},
+        {label:"具体例・データ", guide:"事実を裏づける具体例やデータを書いてください。\n例1：「六十五歳以上の人口は、全体の三割近くを占めるまでになっている。」\n例2：「多くの若者が、SNSを通じて友人と日常的につながっている。」\n例3：「特に若い世代の都市部への流出が、その大きな要因となっている。」"},
+        {label:"意見表明（筆者の考え）", guide:"「〜だろうか。」「〜と思う。」など、筆者の考えとわかる文末で書いてください。\n例1：「この状況に、社会全体でどう向き合うべきなのだろうか。」\n例2：「その一方で、SNS上のトラブルに悩む若者も少なくないと言われている。」\n例3：「このままでは、地域の学校や病院を維持することすら難しくなるのではないだろうか。」"},
+        {label:"要旨のまとめ", guide:"事実と意見を踏まえて、文章全体の要旨をまとめてください。\n例1：「高齢化を前提とした社会のしくみづくりが、今後ますます重要になっていくと思う。」\n例2：「SNSとの適切な距離の取り方を学ぶことが、これから重要になっていくと思う。」\n例3：「地方に暮らす魅力を発信していくことが、今後の課題になっていくと思う。」"}
+      ]
+    }]
+  },
+  jhs: {
+    monogatari: [{
+      key:"shousetsuteki", name:"小説的構成型",
+      labels:[
+        {label:"導入（人物・状況）", guide:"登場人物と状況を簡潔に描写してください。\n例1：「高校二年の夏、僕は初めて一人暮らしを始めた。」\n例2：「三年生の夏、僕らの野球部は最後の大会を迎えようとしていた。」\n例3：「高校三年の春、私は進路の決断を迫られていた。」"},
+        {label:"展開（出来事）", guide:"物語を動かす出来事を書いてください。\n例1：「隣人との些細なトラブルをきっかけに、思いがけない交流が始まった。」\n例2：「エースだった僕は、大事な試合の直前に肩を痛めてしまった。」\n例3：「安定した道と、夢を追う道との間で、私は何日も揺れ続けていた。」"},
+        {label:"クライマックス（心情の転換）", guide:"心情が大きく動く場面を書いてください。\n例1：「彼の何気ない一言に、僕はこれまでの自分の狭さを思い知らされた。」\n例2：「マウンドを譲ったチームメイトの姿に、僕は初めて「勝つこと」の意味を問い直した。」\n例3：「恩師の「後悔しない選択なんてない、自分で選んだ道を正解にすればいい」という言葉が、私の背中を押した。」"},
+        {label:"結末・余韻", guide:"物語の結末と、読者に残る余韻を書いてください。\n例1：「秋風が吹き抜けるベランダで、僕は少しだけ大人になった自分を感じていた。」\n例2：「試合に負けた帰り道、僕はそれでも清々しい気持ちで空を見上げていた。」\n例3：「願書を出したその夜、私は少しだけ大人になった自分を感じていた。」"}
+      ]
+    }],
+    setsumei: [{
+      key:"tsumiagejhs", name:"積み上げ型（中学生向け）",
+      labels:[
+        {label:"指示語・接続語を含む導入", guide:"論理的なつながりを意識した導入を書いてください。\n例1：「情報化社会という言葉を、私たちは日常的に耳にする。しかし、その実態を正確に理解している人は少ない。」\n例2：「グローバル化という言葉が使われるようになって久しい。しかし、その恩恵を誰もが平等に受けているわけではない。」\n例3：「少子高齢化という課題は、もはや他人事ではない。しかし、その実感を持てている若者は多くないだろう。」"},
+        {label:"段落の要点", guide:"各段落の要点を、具体例とともに書いてください。\n例1：「情報化社会の特徴は、誰もが容易に情報を発信できる点にある。」\n例2：「グローバル化の特徴は、国境を越えた人・物・情報の移動が活発になる点にある。」\n例3：「少子高齢化の特徴は、支える世代と支えられる世代のバランスが崩れていく点にある。」"},
+        {label:"段落どうしの関係・構成", guide:"文章全体の構成が伝わるように書いてください。\n例1：「その一方で、誤った情報が広がりやすいという課題も抱えている。」\n例2：「その一方で、経済格差が国内外で広がるという課題も指摘されている。」\n例3：「その一方で、この変化を新しい社会の仕組みを作るきっかけと捉える見方もある。」"},
+        {label:"要旨", guide:"文章全体の要旨を簡潔にまとめてください。\n例1：「情報化社会を生きる私たちには、情報を見極める力が求められているのである。」\n例2：「グローバル化の恩恵を公平に分配するしくみづくりが、これからの社会に求められているのである。」\n例3：「少子高齢化を前提とした社会をどう築くかが、これからの世代に問われているのである。」"}
+      ]
+    }],
+    ronsetsu: [
+      { key:"kishoutenketsu", name:"起承転結型",
+        labels:[
+          {label:"起（導入・話題提示）", guide:"何について論じるか、問題の背景を含めて提示してください。\n例1：「近年、地球温暖化の影響が世界各地で深刻化している。」\n例2：「近年、日本では「働き方改革」という言葉が盛んに使われるようになった。」\n例3：「観光は、地域経済を支える重要な産業の一つとなっている。」"},
+          {label:"承（展開・具体的な事実）", guide:"話題を具体的な事実やデータで展開してください。\n例1：「北極の氷は年々縮小し、海面上昇による被害も報告されている。」\n例2：「長時間労働の是正やテレワークの導入など、さまざまな取り組みが進められている。」\n例3：「多くの外国人観光客が、日本各地の自然や文化を求めて訪れている。」"},
+          {label:"転（視点の転換・課題や矛盾）", guide:"別の視点や、そこに潜む課題・矛盾を示してください。\n例1：「しかし、温暖化対策には国家間の利害対立という大きな壁が立ちはだかっている。」\n例2：「しかし、業種によっては改革が進みにくいという現実もある。」\n例3：「しかし、観光客の増加が、地域住民の生活に負担をかける「オーバーツーリズム」という問題も生まれている。」"},
+          {label:"結（まとめ・展望）", guide:"論をまとめ、今後の展望を示してください。\n例1：「一人ひとりが当事者意識を持つことが、解決への第一歩となるだろう。」\n例2：「一人ひとりに合った柔軟な働き方を実現することが、今後の課題となるだろう。」\n例3：「観光と地域の暮らしが両立する仕組みを整えることが、今後求められるだろう。」"}
+        ]
+      },
+      { key:"ronsetsugata", name:"論説文型",
+        labels:[
+          {label:"導入（問題提起）", guide:"論じる問題を明確に提示してください。\n例1：「なぜ、若者の政治への関心は低下し続けているのだろうか。」\n例2：「なぜ、現代人の多くは慢性的な睡眠不足に悩まされているのだろうか。」\n例3：「なぜ、全国で空き家の数は増え続けているのだろうか。」"},
+          {label:"現状分析", guide:"現状がどうなっているかを、データや事実とともに分析してください。\n例1：「国政選挙における二十代の投票率は、他の世代と比べて著しく低い。」\n例2：「厚生労働省の調査によると、日本人の平均睡眠時間は世界的に見ても短い水準にある。」\n例3：「総務省の調査では、全国の空き家率は年々上昇を続けている。」"},
+          {label:"背景・原因", guide:"なぜそうなっているのか、背景や原因を掘り下げてください。\n例1：「その背景には、政治が自分の生活に直結しているという実感の薄さがあると考えられる。」\n例2：「その背景には、長時間労働や、就寝前のスマートフォン利用の習慣化があると考えられる。」\n例3：「その背景には、人口減少に加え、相続後の管理の難しさがあると考えられる。」"},
+          {label:"展望・結論", guide:"今後の展望と、筆者の結論を述べてください。\n例1：「政治教育の充実こそが、この課題を解決する鍵となるはずだ。」\n例2：「睡眠の重要性を社会全体で見直すことこそが、この課題を解決する鍵となるはずだ。」\n例3：「空き家を地域資源として活用する仕組みづくりこそが、この課題を解決する鍵となるはずだ。」"}
+        ]
+      },
+      { key:"mondai", name:"問題提起型",
+        labels:[
+          {label:"問題提起", guide:"解決すべき問題を明確に示してください。\n例1：「食品ロスの問題は、私たちの社会が抱える大きな課題の一つである。」\n例2：「高齢ドライバーによる交通事故の増加は、社会全体で向き合うべき課題である。」\n例3：「情報機器を使いこなせる人とそうでない人との「デジタル格差」は、見過ごせない問題である。」"},
+          {label:"具体例・現状", guide:"問題の具体例や現状を書いてください。\n例1：「日本では年間およそ五百万トンもの食品が、まだ食べられるのに廃棄されている。」\n例2：「近年、アクセルとブレーキの踏み間違いによる事故のニュースが後を絶たない。」\n例3：「特に高齢者の中には、行政手続きのオンライン化についていけない人が少なくない。」"},
+          {label:"原因分析", guide:"問題が起きている原因を分析してください。\n例1：「その背景には、過剰な生産や、賞味期限に対する過度な意識があると言われている。」\n例2：「その背景には、加齢による判断力・反射神経の低下があると考えられている。」\n例3：「その背景には、機器の複雑さや、学ぶ機会の不足があると考えられる。」"},
+          {label:"解決策・まとめ", guide:"解決策を提案し、まとめてください。\n例1：「一人ひとりが「もったいない」を意識することが、解決への第一歩となる。」\n例2：「運転免許の返納をしやすくする支援制度の充実が、解決への第一歩となる。」\n例3：「誰もが取り残されないデジタル社会を作ることが、解決への第一歩となる。」"}
+        ]
+      },
+      { key:"hikaku", name:"比較対照型",
+        labels:[
+          {label:"話題提示", guide:"何と何を比較するかを示してください。\n例1：「同じ「豊かさ」という言葉でも、その意味は時代によって大きく変わってきた。」\n例2：「同じ「暮らしやすさ」でも、都市と地方ではその意味が大きく異なる。」\n例3：「同じ「本を読む」という行為でも、紙の本と電子書籍では体験が異なる。」"},
+          {label:"視点A", guide:"一つ目の視点からの内容を書いてください。\n例1：「かつての豊かさとは、物を多く所有することを意味していた。」\n例2：「都市の暮らしやすさとは、交通や買い物の便利さに支えられている。」\n例3：「紙の本は、ページをめくる感触や、本棚に並ぶ達成感を味わうことができる。」"},
+          {label:"視点B", guide:"二つ目の視点からの内容を書いてください（視点Aと対応させる）。\n例1：「現代における豊かさは、時間や心のゆとりに重きを置くようになっている。」\n例2：「一方、地方の暮らしやすさは、自然や人とのつながりの豊かさに支えられている。」\n例3：「一方、電子書籍は、場所を取らず、何冊でも持ち運べる手軽さが魅力である。」"},
+          {label:"統合・結論", guide:"両方の視点を踏まえた結論を書いてください。\n例1：「これからの社会に求められる豊かさとは何かを、改めて問い直す必要があるだろう。」\n例2：「どちらの暮らしやすさを選ぶかは、その人が何を大切にするかによって変わってくるだろう。」\n例3：「これからは、目的に応じて両者を使い分ける読書スタイルが広がっていくだろう。」"}
+        ]
+      }
+    ]
+  }
+};
+
+let currentGenre = "ronsetsu";
+let currentPattern = "ronsetsugata";
+
+function getGradeKey(){
+  return document.getElementById('levelSelect').value;
+}
+
+function currentPatternList(){
+  const grade = getGradeKey();
+  return (PATTERN_BANK[grade] && PATTERN_BANK[grade][currentGenre]) || [];
+}
+
+function renderGenres(){
+  const grade = getGradeKey();
+  const available = GRADE_GENRES[grade];
+  if(!available.includes(currentGenre)) currentGenre = available[0];
+  const grid = document.getElementById('genreGrid');
+  grid.innerHTML = '';
+  available.forEach(key=>{
+    const g = GENRES[key];
+    const div = document.createElement('div');
+    div.className = 'pattern-card' + (key===currentGenre?' active':'');
+    div.onclick = ()=>{ currentGenre = key; renderGenres(); renderPatterns(); renderOutlineBlocks(); };
+    div.innerHTML = `<div class="pattern-name">${g.label}</div><div class="pattern-labels">${g.desc}</div>`;
+    grid.appendChild(div);
+  });
+}
+
+function renderPatterns(){
+  const list = currentPatternList();
+  if(!list.find(p=>p.key===currentPattern)) currentPattern = list[0].key;
+  const grid = document.getElementById('patternGrid');
+  grid.innerHTML = '';
+  list.forEach(p=>{
+    const div = document.createElement('div');
+    div.className = 'pattern-card' + (p.key===currentPattern?' active':'');
+    div.onclick = ()=>{ currentPattern = p.key; renderPatterns(); renderOutlineBlocks(); };
+    div.innerHTML = `<div class="pattern-name">${p.name}</div><div class="pattern-labels">${p.labels.map(l=>l.label).join(' ／ ')}</div>`;
+    grid.appendChild(div);
+  });
+  const note = document.getElementById('patternNote');
+  note.textContent = list.length === 1
+    ? 'この学年・ジャンルでは分析ログ上、構成パターンが1つに決まります（アウトラインは自由に編集できます）。'
+    : '';
+}
+
+function onGradeChange(){
+  renderGenres();
+  renderPatterns();
+  renderOutlineBlocks();
+  updateLevelNotice();
+  renderDifficultySelect();
+  applyLengthDefault();
+}
+
+function currentPatternObj(){
+  const list = currentPatternList();
+  return list.find(p=>p.key===currentPattern) || list[0];
+}
+
+function renderOutlineBlocks(){
+  const container = document.getElementById('outlineBlocks');
+  const prevValues = Array.from(container.querySelectorAll('textarea')).map(t=>t.value);
+  container.innerHTML = '';
+  const p = currentPatternObj();
+  p.labels.forEach((item, i)=>{
+    const block = document.createElement('div');
+    block.className = 'outline-block';
+    const ta_id = 'outline_' + i;
+    block.innerHTML = `
+      <div class="outline-label">
+        <span class="tag">${i+1}</span>${item.label}
+        <span class="charcount" id="cc_${i}">0字</span>
+      </div>
+      <textarea id="${ta_id}" placeholder="${item.guide}"></textarea>
+    `;
+    container.appendChild(block);
+    const ta = block.querySelector('textarea');
+    if(prevValues[i]) ta.value = prevValues[i];
+    ta.addEventListener('input', ()=>{
+      document.getElementById('cc_'+i).textContent = ta.value.length + '字';
+    });
+    document.getElementById('cc_'+i).textContent = ta.value.length + '字';
+  });
+}
+
+const API_KEY_STORAGE = 'japanese_generator_api_key';
+
+function getApiKey(){
+  try{ return localStorage.getItem(API_KEY_STORAGE) || ''; }catch(e){ return ''; }
+}
+
+function openApiKeyModal(){
+  const existing = getApiKey();
+  document.getElementById('apiKeyInput').value = existing;
+  document.getElementById('apiKeyStatus').innerHTML = existing
+    ? '<span style="color:var(--green-text)">✓ APIキーが設定されています</span>'
+    : '未設定です';
+  document.getElementById('apiKeyModalOverlay').style.display = 'flex';
+}
+
+function closeApiKeyModal(){
+  document.getElementById('apiKeyModalOverlay').style.display = 'none';
+}
+
+function saveApiKey(){
+  const v = document.getElementById('apiKeyInput').value.trim();
+  if(!v){
+    document.getElementById('apiKeyStatus').innerHTML = '<span style="color:var(--red-text)">キーを入力してください</span>';
+    return;
+  }
+  try{ localStorage.setItem(API_KEY_STORAGE, v); }catch(e){}
+  document.getElementById('apiKeyStatus').innerHTML = '<span style="color:var(--green-text)">✓ 保存しました</span>';
+  setTimeout(closeApiKeyModal, 600);
+}
+
+function requestClearApiKey(){
+  if(!confirm('保存済みのAPIキーを削除しますか？この操作は元に戻せません。')) return;
+  try{ localStorage.removeItem(API_KEY_STORAGE); }catch(e){}
+  document.getElementById('apiKeyInput').value = '';
+  document.getElementById('apiKeyStatus').innerHTML = '削除しました';
+}
+
+function showNotice(msg, type){
+  const area = document.getElementById('noticeArea');
+  area.innerHTML = `<div class="notice notice-${type}">${msg}</div>`;
+}
+function clearNotice(){ document.getElementById('noticeArea').innerHTML = ''; }
+
+async function generate(){
+  clearNotice();
+  const apiKey = getApiKey();
+  if(!apiKey){
+    showNotice('先に右上の「🔑 APIキー」からAnthropic APIキーを設定してください。', 'err');
+    openApiKeyModal();
+    return;
+  }
+  const title = document.getElementById('titleInput').value.trim();
+  if(!title){
+    showNotice('タイトル（テーマ）を入力してください。', 'err');
+    return;
+  }
+  const patternObj = currentPatternObj();
+  const outlines = patternObj.labels.map((item,i)=>{
+    return { label: item.label, text: document.getElementById('outline_'+i).value.trim() };
+  });
+  if(outlines.some(o=>!o.text)){
+    showNotice('すべての段落にアウトラインを入力してください。', 'err');
+    return;
+  }
+
+  const style = document.getElementById('styleSelect').value;
+  const length = document.getElementById('lengthInput').value;
+  const levelKey = document.getElementById('levelSelect').value;
+  const level = LEVELS[levelKey];
+  const genreLabel = GENRES[currentGenre].label;
+
+  // AIリライト時に再利用するため、直近の生成条件を保存しておく
+  window.__lastGenSettings = { style, length, levelKey, level, genreKey: currentGenre, genreLabel, difficultyKey: currentDifficulty, difficultyLabel: DIFFICULTIES[currentDifficulty].label };
+
+  const genBtn = document.getElementById('genBtn');
+  genBtn.disabled = true;
+  genBtn.textContent = '生成中...';
+
+  const outputCard = document.getElementById('outputCard');
+  outputCard.style.display = 'block';
+  document.getElementById('resultArea').value = '';
+  document.getElementById('rewriteArea').value = '';
+  document.getElementById('resultCharCount').textContent = '生成中...';
+  document.getElementById('rewriteCharCount').textContent = '';
+  document.getElementById('resultCheckArea').innerHTML = '';
+  document.getElementById('rewriteCheckArea').innerHTML = '';
+
+  const outlineText = outlines.map((o,i)=>`【第${i+1}段落：${o.label}】\n${o.text}`).join('\n\n');
+
+  const kanjiSection = level.kanjiNote
+    ? `\n# 学年別使用可能漢字リスト（これ以外の漢字は禁止・ひらがな表記にすること）\n${KANJI_CUMULATIVE[levelKey.replace('g','')]}\n`
+    : '';
+
+  const formatSection = level.formatNote
+    ? `\n# 表記ルール（重要）\n${level.formatNote}\n`
+    : '';
+
+  const styleDetail = style.startsWith('だよ・しよう調')
+    ? `\n# 文体の具体例（重要）\n「です・ます」調は使わない。文末は「〜だよ」「〜なんだ」「〜だね」「〜してみよう」「〜かな？」「〜だろう？」のような、子どもに直接語りかける言い方にする。「じつは」「たとえば」のような素朴な接続語はよいが、「〜ということが分かっています」「〜と考えられています」「〜が要因です」のような大人向けの説明語・伝聞表現は使わない。文章全体が、先生や親が子どもに話しかけているような調子になるようにする。\n`
+    : '';
+
+  const roleLine = currentGenre === 'monogatari'
+    ? 'あなたは国語の読解教材を作成するプロの児童文学作家・編集者です。'
+    : 'あなたは国語・英語の読解教材を作成するプロの編集者です。';
+  const genreInstruction = currentGenre === 'monogatari'
+    ? `以下の「タイトル（テーマ）」と「4つの段落アウトライン」をもとに、日本語の物語文を1本、書き上げてください。
+タイトルは単なるラベルではなく、物語全体の場面・人物・展開の方向性を決める最重要情報として扱ってください。アウトラインの内容がタイトルの示す方向性と食い違う場合は、タイトルの意図を優先しつつ、アウトラインの骨子は活かす形で自然に統合してください。`
+    : `以下の「タイトル（テーマ）」と「4つの段落アウトライン」をもとに、日本語の${genreLabel}を1本、書き上げてください。
+タイトルは単なるラベルではなく、本文全体の論旨・視点・結論の方向性を決める最重要情報として扱ってください。アウトラインの内容がタイトルの示す方向性と食い違う場合は、タイトルの意図を優先しつつ、アウトラインの骨子は活かす形で自然に統合してください。`;
+  const structureLine = currentGenre === 'monogatari'
+    ? '- 各段落の頭に見出しは付けず、地の文として自然につなげること（せりふは「」で示してよい）'
+    : '- 各段落の頭に見出しは付けず、地の文として自然につなげること';
+  const factLine = currentGenre === 'monogatari'
+    ? '- 登場人物の行動には本文中に読み取れる理由をつけ、せりふの裏にある気持ちが推測できるように書くこと'
+    : '- 具体的な数値・事実を含める場合は、実際に妥当な内容にすること（不確かな数値は断定しすぎない表現にする）';
+
+  const prompt = `${roleLine}
+${genreInstruction}
+
+# タイトル（テーマ）
+${title}
+
+# ジャンル
+${genreLabel}（構成パターン：${patternObj.name}）
+
+# 想定読者
+${level.audience}
+
+# 難易度・文体の方針（最重要）
+${level.guidance}
+${level.kanjiNote ? '\n' + level.kanjiNote : ''}
+${kanjiSection}${formatSection}
+# 条件
+- 文体：${style}
+${styleDetail}- 目標文字数：${length}字前後（±15%程度は許容）
+- 段落数：必ず4段落。各アウトラインの内容と順序をそのまま活かすこと
+${structureLine}
+${factLine}
+- 教材としてそのまま読解問題（内容一致・傍線部説明・語彙・意見記述など）が作れるよう、論点や具体例を明確に書くこと
+- 出力は本文のみ。タイトルの見出しや前置き、解説は一切つけないこと
+
+# アウトライン
+${outlineText}
+${lessonsPromptSection(levelKey)}
+上記の条件、特に「難易度・文体の方針」と（指定がある場合は）「学年別使用可能漢字リスト」を厳守して、本文を出力してください。`;
+
+  try{
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true"
+      },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: 2000,
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+
+    if(!response.ok){
+      const errText = await response.text();
+      throw new Error('API error: ' + response.status + ' ' + errText.slice(0,200));
+    }
+
+    const data = await response.json();
+    const textBlocks = data.content.filter(b=>b.type==='text').map(b=>b.text);
+    const result = textBlocks.join('\n').trim();
+
+    document.getElementById('resultArea').value = result;
+    document.getElementById('rewriteArea').value = result;
+    updateCharCount('resultArea','resultCharCount');
+    updateCharCount('rewriteArea','rewriteCharCount');
+    showNotice('生成が完了しました。左が生成結果（変更不可）、右がリライト用です。', 'info');
+    updateCheckButtonLabels();
+    hoSaveStory(); // 本文生成成功→次画面（設問生成）へ自動持ち回り
+    renderFlowProgress('story'); // 済み工程に✅を反映
+    showNextGuide('✅ 本文ができました。<br>' +
+      '続きもの（シリーズ）にする場合は、上の「📥 文章レコードをJSONで書き出す」で<b>ファイルを保存してください</b>（明日の続き作成に使います）。1回きりの単発ならファイル保存は不要です。<br>' +
+      '準備ができたら → <a href="Japanese_question_generator.html" style="color:var(--accent); font-weight:700; text-decoration:none;">📝 問題生成へ進む</a>（問題セットはこの後、自動で引き継がれます）');
+
+  }catch(err){
+    showNotice('生成に失敗しました：' + err.message, 'err');
+    document.getElementById('resultCharCount').textContent = '';
+    document.getElementById('rewriteCharCount').textContent = '';
+  }finally{
+    genBtn.disabled = false;
+    genBtn.textContent = '✨ 本文を生成する';
+  }
+}
+
+function updateCharCount(areaId, labelId){
+  const text = document.getElementById(areaId).value;
+  const len = text.replace(/\n/g,'').length;
+  const label = document.getElementById(labelId);
+  label.textContent = len + '字';
+  const target = parseInt(document.getElementById('lengthInput').value, 10);
+  const lo = target * 0.85, hi = target * 1.15;
+  label.className = 'output-charcount' + (len>=lo && len<=hi ? ' ok' : '');
+}
+
+function copyArea(areaId){
+  const ta = document.getElementById(areaId);
+  ta.select();
+  document.execCommand('copy');
+  showNotice('本文をコピーしました。', 'info');
+}
+
+function resetRewrite(){
+  document.getElementById('rewriteArea').value = document.getElementById('resultArea').value;
+  updateCharCount('rewriteArea','rewriteCharCount');
+  showNotice('リライト欄を生成結果に戻しました。', 'info');
+}
+
+function downloadOutput(){
+  const text = document.getElementById('rewriteArea').value;
+  const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'japanese_story_' + Date.now() + '.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// 現在の入力・生成状態から story_record を組み立てる（無効なら null）。
+// exportTextRecord（ファイル書き出し）と自動持ち回り保存（hoSaveStory）で共用。
+function buildStoryRecord(){
+  const settings = window.__lastGenSettings;
+  if(!settings) return null;
+  const fullText = document.getElementById('rewriteArea').value.trim();
+  if(!fullText) return null;
+  const patternObj = currentPatternObj();
+  const outlines = patternObj.labels.map((item,i)=>{
+    return { label: item.label, text: document.getElementById('outline_'+i) ? document.getElementById('outline_'+i).value.trim() : '' };
+  });
+  const studentId = studentIdValue('studentIdInput', 'studentIdInput_text');
+  const dayNumber = parseInt(document.getElementById('dayNumberInput').value, 10) || 1;
+  const title = document.getElementById('titleInput').value.trim();
+  return {
+    recordType: 'japanese_story_record',
+    version: 2,
+    studentId: studentId || null,
+    dayNumber: dayNumber,
+    title: title,
+    grade: settings.levelKey,
+    gradeLabel: settings.level.label,
+    genreKey: settings.genreKey,
+    genreLabel: settings.genreLabel,
+    difficultyKey: settings.difficultyKey,
+    difficultyLabel: settings.difficultyLabel,
+    patternKey: currentPattern,
+    patternName: patternObj.name,
+    style: settings.style,
+    targetLength: settings.length,
+    outlines: outlines,
+    fullText: fullText,
+    generatedAt: new Date().toISOString()
+  };
+}
+
+// 直近の文章レコードを自動持ち回りに保存（本文生成成功時・レコード書き出し時）。
+function hoSaveStory(){ const r = buildStoryRecord(); if(r) hoSave(HO_STORY, r); }
+
+function exportTextRecord(){
+  const record = buildStoryRecord();
+  if(!record){
+    showNotice('生成条件または本文が見つかりません。一度「本文を生成する」を実行してからエクスポートしてください。', 'err');
+    return;
+  }
+  hoSaveStory(); // 書き出し時にも自動持ち回りを更新
+  const studentId = record.studentId;
+  const dayNumber = record.dayNumber;
+  const title = record.title;
+
+  // ファイル名：story_生徒ID_タイトル_day日数.json（見ただけで誰の何日目か分かる形式）
+  const safeTitle = (title || '無題').replace(/[\\/:*?"<>|\s]/g, '').slice(0, 20);
+  const sidPart = studentId ? studentId + '_' : '';
+  const filename = 'story_' + sidPart + safeTitle + '_day' + dayNumber + '.json';
+
+  const blob = new Blob([JSON.stringify(record, null, 2)], {type:'application/json;charset=utf-8'});
+
+  // 保存先選択（Chrome/Edge）。非対応ブラウザはダウンロードにフォールバック
+  if(window.showSaveFilePicker){
+    window.showSaveFilePicker({
+      suggestedName: filename,
+      types: [{ description: 'JSON', accept: {'application/json': ['.json']} }]
+    }).then(async handle=>{
+      const writable = await handle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+      showNotice('文章レコードを保存しました：' + filename, 'info');
+    }).catch(err=>{
+      if(err && err.name === 'AbortError') return;
+      downloadRecordFallback(blob, filename);
+    });
+    return;
+  }
+  downloadRecordFallback(blob, filename);
+}
+
+function downloadRecordFallback(blob, filename){
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+  showNotice('文章レコードをJSONで書き出しました：' + filename, 'info');
+}
+
+// 前日の文章レコードを読み込み、続き作成の状態に復元する
+function importTextRecord(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (e)=>{
+    let record;
+    try{
+      record = JSON.parse(e.target.result);
+    }catch(err){
+      showNotice('JSONの読み込みに失敗しました：' + err.message, 'err');
+      return;
+    }
+    if(record.recordType !== 'japanese_story_record'){
+      showNotice('このJSONは文章レコード形式ではないようです。', 'err');
+      return;
+    }
+
+    // 学年→ジャンル→難易度→構成パターンの順に復元（依存関係があるためこの順序）
+    document.getElementById('levelSelect').value = record.grade || 'jhs';
+    renderGenres();
+    if(record.genreKey && GRADE_GENRES[getGradeKey()].includes(record.genreKey)){
+      currentGenre = record.genreKey;
+    }
+    renderGenres();
+    renderDifficultySelect();
+    if(record.difficultyKey && DIFFICULTY_BY_GRADE[getGradeKey()].includes(record.difficultyKey)){
+      currentDifficulty = record.difficultyKey;
+      document.getElementById('difficultySelect').value = record.difficultyKey;
+    }
+    applyLengthDefault();
+    if(record.targetLength) document.getElementById('lengthInput').value = record.targetLength;
+    renderPatterns();
+    const list = currentPatternList();
+    if(record.patternKey && list.find(p=>p.key===record.patternKey)){
+      currentPattern = record.patternKey;
+      renderPatterns();
+    }
+    renderOutlineBlocks();
+    updateLevelNotice();
+
+    // タイトル・アウトライン・文体を復元
+    document.getElementById('titleInput').value = record.title || '';
+    if(record.style) document.getElementById('styleSelect').value = record.style;
+    (record.outlines || []).forEach((o, i)=>{
+      const ta = document.getElementById('outline_'+i);
+      if(ta && o.text){
+        ta.value = o.text;
+        document.getElementById('cc_'+i).textContent = ta.value.length + '字';
+      }
+    });
+
+    // 生徒ID・日数を復元し、日数は+1して「今日の分」にする
+    if(record.studentId) setStudentIdValue('studentIdInput', 'studentIdInput_text', record.studentId);
+    document.getElementById('dayNumberInput').value = (record.dayNumber || 1) + 1;
+
+    // 本文を出力エリアに復元し、続き提案・レコード書き出しが使える状態にする
+    const patternObj = currentPatternObj();
+    document.getElementById('resultArea').value = record.fullText || '';
+    document.getElementById('rewriteArea').value = record.fullText || '';
+    document.getElementById('outputCard').style.display = 'block';
+    if(typeof updateCharCount === 'function'){
+      updateCharCount('resultArea','resultCharCount');
+      updateCharCount('rewriteArea','rewriteCharCount');
+    }
+
+    // __lastGenSettingsを復元（続き提案・チェック機能が参照するため）
+    window.__lastGenSettings = {
+      style: record.style || document.getElementById('styleSelect').value,
+      length: record.targetLength || document.getElementById('lengthInput').value,
+      levelKey: record.grade,
+      level: LEVELS[record.grade],
+      genreKey: currentGenre,
+      genreLabel: GENRES[currentGenre].label,
+      difficultyKey: currentDifficulty,
+      difficultyLabel: DIFFICULTIES[currentDifficulty].label
+    };
+    updateCheckButtonLabels();
+
+    showNotice((record.dayNumber || 1) + '日目のレコードを読み込みました。日数を' + ((record.dayNumber || 1) + 1) + '日目に更新済みです。「🔮 次の日の話を提案する」でアウトラインを作れます。', 'info');
+    window.scrollTo({ top: document.getElementById('outputCard').offsetTop - 20, behavior: 'smooth' });
+  };
+  reader.readAsText(file, 'utf-8');
+}
+
+// ===== 学習メモ（指摘の蓄積） =====
+// 人間の指摘を Supabase(generation_lessons) に保存し、以降の生成・リライトの
+// プロンプトに自動注入する。localStorageは「オフライン即時フォールバック＋
+// 移行シード」として併用（Supabase未到達でも従来どおり動く）。
+// 思想はPandoraのquality_criteriaと同じ（subject列で算数と共用できる形）。
+const LESSONS_STORAGE = 'japanese_generator_lessons';
+const LESSONS_SUBJECT = 'japanese';
+// pandora-project共通のSupabase接続情報（他ファイルと同一のpublishableキー）。
+const SUPABASE_URL = 'https://upmflhdbhbyzoeldrvvw.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_K8Y_bNHVA4szRXFM_EcDkA_LBckunu5';
+const SB_LESSON_HEADERS = {
+  'Content-Type': 'application/json',
+  'apikey': SUPABASE_ANON_KEY,
+  'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+};
+
+// メモリキャッシュ（同期的なプロンプト注入のため）。null=Supabase未ロード。
+let LESSONS_CACHE = null;
+
+// ===== 生徒名簿（Lethe getStudents） =====
+// photo_intake / grading と同じ getStudents 呼び出しパターン（シンプルGET）。
+const LETHE_URL = "https://script.google.com/macros/s/AKfycbxlXsrnt14jxxZrnKUSSdq4KG8LU96eDTPjrkyXdSGZ-Gmehha5HHNPMZTnQo6OrIy7oA/exec";
+function escStudentLabel(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+async function loadStudentsIntoSelect(selectId, textId){
+  const sel = document.getElementById(selectId);
+  const txt = textId ? document.getElementById(textId) : null;
+  if(!sel) return;
+  try{
+    const res = await fetch(LETHE_URL + '?action=getStudents');
+    const d = await res.json();
+    if(!d.success || !Array.isArray(d.students) || d.students.length === 0) throw new Error(d.error || 'no students');
+    sel.innerHTML = '<option value="">選択してください</option>' + d.students.map(function(s){
+      const label = escStudentLabel(s.student_id + (s.name ? ' ' + s.name : ''));
+      return '<option value="' + escStudentLabel(s.student_id) + '" data-name="' + escStudentLabel(s.name || '') + '">' + label + '</option>';
+    }).join('');
+    sel.style.display = '';
+    if(txt) txt.style.display = 'none';
+  }catch(e){
+    console.warn('[loadStudentsIntoSelect] Lethe不達、手入力にフォールバック:', e);
+    if(txt){ txt.style.display = ''; sel.style.display = 'none'; }
+    else { sel.innerHTML = '<option value="">（名簿取得失敗・再読込してください）</option>'; }
+  }
+}
+function selectedStudentName(selectId){
+  const sel = document.getElementById(selectId);
+  const opt = sel && sel.selectedOptions && sel.selectedOptions[0];
+  return (opt && opt.dataset && opt.dataset.name) ? opt.dataset.name : '';
+}
+
+// ===== 画面間データ受け渡し（localStorage自動持ち回り・案A） =====
+// 直近の連続作業を高速化するための持ち回り。シリーズ資産の正式保存は従来どおりファイル。
+var HO_STORY = 'japanese_latest_story_record', HO_QSET = 'japanese_latest_question_set', HO_STUDENT = 'japanese_latest_student';
+function hoSave(key, data){ try{ localStorage.setItem(key, JSON.stringify({ savedAt: Date.now(), data: data })); }catch(e){} }
+function hoLoad(key){ try{ var w = JSON.parse(localStorage.getItem(key) || 'null'); return (w && w.savedAt) ? w : null; }catch(e){ return null; } }
+function hoEsc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function hoSaveStudent(selectId){
+  var sel = document.getElementById(selectId); if(!sel || !sel.value) return;
+  hoSave(HO_STUDENT, { student_id: sel.value, name: selectedStudentName(selectId) });
+}
+function hoPresetStudent(selectId){
+  var w = hoLoad(HO_STUDENT); if(!w || !w.data || !w.data.student_id) return;
+  var sel = document.getElementById(selectId); if(!sel) return;
+  for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value === w.data.student_id){ sel.value = w.data.student_id; break; } }
+}
+
+// ===== 工程進行バー（①文章生成→②問題生成→③配布・印刷）＝#flowProgressへ描画 =====
+// 持ち回りキーの有無（24h以内）で済んだ工程に✅（目安表示・厳密な状態管理はしない）。
+function flowFresh(key){ try{ var w = JSON.parse(localStorage.getItem(key) || 'null'); return !!(w && w.savedAt && (Date.now() - w.savedAt) <= 86400000); }catch(e){ return false; } }
+function renderFlowProgress(current){
+  var host = document.getElementById('flowProgress'); if(!host) return;
+  var doneStory = flowFresh('japanese_latest_story_record');
+  var doneQ = flowFresh('japanese_latest_question_set');
+  var base = 'font-size:12px; padding:6px 10px; border-radius:8px; font-family:inherit; display:inline-flex; align-items:center; white-space:nowrap;';
+  function chip(label, href, active, done){
+    var check = done ? ' <span style="color:#2e9e5b">✅</span>' : '';
+    if(active) return '<span style="' + base + ' background:var(--accent); color:#fff; font-weight:700;">' + label + check + '</span>';
+    return '<a href="' + href + '" style="' + base + ' background:transparent; border:1px solid var(--border); color:var(--text2); text-decoration:none;">' + label + check + '</a>';
+  }
+  var arrow = '<span style="color:var(--text3); font-size:12px; padding:0 2px;">→</span>';
+  host.innerHTML =
+    chip('① 文章生成', 'Japanese_story_generator.html', current === 'story', doneStory) + arrow +
+    chip('② 問題生成', 'Japanese_question_generator.html', current === 'question', doneQ) + arrow +
+    '<span style="font-size:12px; color:var(--text3);">③</span>' +
+    chip('📱配布', 'Japanese_quiz_template.html', current === 'quiz', false) +
+    '<span style="color:var(--text3); font-size:11px;">/</span>' +
+    chip('🖨印刷', 'Japanese_print_template.html', current === 'print', false);
+}
+
+// ===== 完了時の「次にすること」ガイド（アクセント枠・#nextGuideへ） =====
+function showNextGuide(html){
+  var host = document.getElementById('nextGuide'); if(!host) return;
+  host.innerHTML = '<div style="border:2px solid var(--accent); background:rgba(90,140,255,.06); border-radius:10px; padding:12px 14px; margin:12px 0; font-size:13px; line-height:1.75;">' + html + '</div>';
+}
+function studentIdValue(selectId, textId){
+  const sel = document.getElementById(selectId);
+  const txt = textId ? document.getElementById(textId) : null;
+  let v = sel && sel.value ? sel.value : '';
+  if(!v && txt) v = txt.value;
+  return (v || '').trim();
+}
+// レコード読込時などに student_id を復元する。選択肢に無い/ドロップダウン非表示なら
+// 手入力欄にフォールバックして表示する。
+function setStudentIdValue(selectId, textId, val){
+  const sel = document.getElementById(selectId);
+  const txt = textId ? document.getElementById(textId) : null;
+  if(!val) return;
+  if(sel){
+    sel.value = val;
+    if(sel.value === val && sel.style.display !== 'none') return; // ドロップダウンに存在
+  }
+  if(txt){ txt.value = val; txt.style.display = ''; if(sel) sel.style.display = 'none'; }
+}
+
+function getLessonsLocal(){
+  try{ return JSON.parse(localStorage.getItem(LESSONS_STORAGE) || '[]'); }catch(e){ return []; }
+}
+function getLessons(){
+  return LESSONS_CACHE != null ? LESSONS_CACHE : getLessonsLocal();
+}
+// キャッシュを真実の値とし、localStorageは常にミラー（オフライン用）。
+function saveLessons(lessons){
+  LESSONS_CACHE = lessons;
+  try{ localStorage.setItem(LESSONS_STORAGE, JSON.stringify(lessons)); }catch(e){}
+}
+
+// 起動時：Supabaseから読み込み、失敗時はlocalStorageにフォールバック。
+async function initLessons(){
+  try{
+    const res = await fetch(SUPABASE_URL + '/rest/v1/generation_lessons?subject=eq.' + LESSONS_SUBJECT +
+      '&select=id,grade,text,created_at&order=created_at.asc', { headers: SB_LESSON_HEADERS });
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const rows = await res.json();
+    LESSONS_CACHE = (rows || []).map(function(r){
+      return { id: r.id, text: r.text, grade: r.grade || null, createdAt: r.created_at };
+    });
+    try{ localStorage.setItem(LESSONS_STORAGE, JSON.stringify(LESSONS_CACHE)); }catch(e){}
+  }catch(e){
+    console.warn('[initLessons] Supabase未到達。localStorageの学習メモで続行します:', e);
+    LESSONS_CACHE = getLessonsLocal();
+  }
+}
+
+// Supabaseへ1件追加（成功時はidを付与）。失敗してもローカルには残る。
+async function sbInsertLesson(item){
+  try{
+    const res = await fetch(SUPABASE_URL + '/rest/v1/generation_lessons', {
+      method: 'POST',
+      headers: Object.assign({}, SB_LESSON_HEADERS, { 'Prefer': 'return=representation' }),
+      body: JSON.stringify({ subject: LESSONS_SUBJECT, grade: item.grade || null, text: item.text })
+    });
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const rows = await res.json();
+    if(rows && rows[0] && rows[0].id){
+      item.id = rows[0].id;
+      saveLessons(getLessons()); // idをミラーに反映
+    }
+  }catch(e){ console.warn('[sbInsertLesson] Supabase登録に失敗（ローカルには保存済み）:', e); }
+}
+
+// Supabaseから1件削除（idを持つメモのみ。ローカルのみのメモはスキップ）。
+async function sbDeleteLesson(item){
+  if(!item || !item.id) return;
+  try{
+    await fetch(SUPABASE_URL + '/rest/v1/generation_lessons?id=eq.' + encodeURIComponent(item.id), {
+      method: 'DELETE', headers: Object.assign({}, SB_LESSON_HEADERS, { 'Prefer': 'return=minimal' })
+    });
+  }catch(e){ console.warn('[sbDeleteLesson] Supabase削除に失敗:', e); }
+}
+function getLessonsForGrade(levelKey){
+  // その学年専用のメモ＋全学年共通メモを返す
+  return getLessons().filter(l => !l.grade || l.grade === levelKey);
+}
+function lessonsPromptSection(levelKey){
+  const lessons = getLessonsForGrade(levelKey);
+  if(lessons.length === 0) return '';
+  // 全件注入する（Pandora統合時にSupabase管理へ移行予定。それまでは件数上限なし）
+  const list = lessons.map(l=>'- ' + l.text).join('\n');
+  return `\n# 過去の指摘事項（これまでの教材作成で人間の校閲者から受けた指摘。必ず守ること）\n${list}\n`;
+}
+
+// 指摘欄のテキストを編集したら保存ボタンを元に戻す（再保存を可能にする）。
+function resetSaveLessonBtn(source){
+  const btn = document.getElementById('saveLessonBtn_' + source);
+  const msgEl = document.getElementById('saveLessonMsg_' + source);
+  if(btn && btn.dataset.saved === '1'){
+    btn.disabled = false;
+    btn.textContent = '📚 この指摘を学習メモに保存';
+    btn.dataset.saved = '';
+  }
+  if(msgEl) msgEl.textContent = '';
+}
+
+async function saveLessonFromFeedback(source, btn){
+  const ta = document.getElementById('humanFeedback_' + source);
+  const text = ta ? ta.value.trim() : '';
+  const msgEl = document.getElementById('saveLessonMsg_' + source);
+  function setMsg(t, color){ if(msgEl){ msgEl.textContent = t; msgEl.style.color = color; } }
+
+  if(!text){
+    setMsg('⚠️ 指摘欄にテキストを入力してください', 'var(--red-text)');
+    if(!msgEl) showNotice('学習メモに保存する指摘を、人間の指摘欄に書いてください。', 'err');
+    return;
+  }
+
+  const settings = window.__lastGenSettings;
+  const grade = settings ? settings.levelKey : null;
+  const gradeLabel = grade && LEVELS[grade] ? LEVELS[grade].label : '全学年共通';
+
+  // ④重複ガード：同一 subject(japanese)/grade/text が既にあれば保存しない
+  const isDup = getLessons().some(function(l){
+    return (l.grade || null) === (grade || null) && l.text === text;
+  });
+  if(isDup){
+    if(btn){ btn.disabled = true; btn.textContent = '✅ 保存済み'; btn.dataset.saved = '1'; }
+    setMsg('保存済みです（同じ指摘が既に学習メモにあります）', 'var(--text3)');
+    return;
+  }
+
+  // ①即座にdisabled＋「保存中...」
+  if(btn){ btn.disabled = true; btn.textContent = '保存中...'; }
+  setMsg('保存中...', 'var(--text3)');
+
+  const item = { text: text, grade: grade, createdAt: new Date().toISOString() };
+  const lessons = getLessons();
+  lessons.push(item);
+  saveLessons(lessons);       // ローカル即時反映
+  await sbInsertLesson(item); // Supabase保存の完了を待つ（失敗時もローカルには残る）
+
+  // ①保存完了→「✅ 保存しました」でdisabledのまま維持
+  if(btn){ btn.disabled = true; btn.textContent = '✅ 保存しました'; btn.dataset.saved = '1'; }
+  setMsg('✅ 保存しました（対象：' + gradeLabel + '）。以降の生成・リライトに自動反映されます。', 'var(--accent)');
+
+  if(lessons.length > 200){
+    alert('学習メモが200件を超えました（現在' + lessons.length + '件）。「📚 学習メモ」から棚卸し（不要・重複メモの削除）をおすすめします。');
+  }
+}
+
+function openLessonsModal(){
+  const lessons = getLessons();
+  const listHtml = lessons.length === 0
+    ? '<div style="font-size:12px; color:var(--text3);">学習メモはまだありません。「筋書き／事実の確認」の後、人間の指摘欄から保存できます。</div>'
+    : lessons.map((l, i)=>{
+        const gradeLabel = l.grade && LEVELS[l.grade] ? LEVELS[l.grade].label : '全学年共通';
+        return `<div style="display:flex; gap:8px; align-items:flex-start; border-bottom:1px solid var(--border); padding:8px 0;">
+          <div style="flex:1; font-size:12px; line-height:1.6;"><span style="font-size:10px; color:var(--accent-text); border:1px solid var(--accent); border-radius:8px; padding:1px 6px; margin-right:6px;">${gradeLabel}</span>${String(l.text).replace(/</g,'&lt;')}</div>
+          <button onclick="deleteLesson(${i})" style="background:transparent; color:var(--red-text); border:1px solid var(--red-text); border-radius:6px; padding:3px 8px; font-size:11px; cursor:pointer; font-family:inherit; flex-shrink:0;">削除</button>
+        </div>`;
+      }).join('');
+  document.getElementById('lessonsList').innerHTML = listHtml;
+  document.getElementById('lessonsModalOverlay').style.display = 'flex';
+}
+function closeLessonsModal(){
+  document.getElementById('lessonsModalOverlay').style.display = 'none';
+}
+function deleteLesson(index){
+  const lessons = getLessons();
+  const removed = lessons.splice(index, 1)[0];
+  saveLessons(lessons);
+  if(removed) sbDeleteLesson(removed); // Supabaseからも削除（idがあれば）
+  openLessonsModal(); // 再描画
+}
+function addLessonManually(){
+  const ta = document.getElementById('manualLessonInput');
+  const text = ta.value.trim();
+  if(!text) return;
+  const gradeSel = document.getElementById('manualLessonGrade').value;
+  const lessons = getLessons();
+  const item = { text: text, grade: gradeSel || null, createdAt: new Date().toISOString() };
+  lessons.push(item);
+  saveLessons(lessons);
+  sbInsertLesson(item); // Supabaseへ非同期登録
+  if(lessons.length > 200){
+    alert('学習メモが200件を超えました（現在' + lessons.length + '件）。棚卸し（不要・重複メモの削除）をおすすめします。');
+  }
+  ta.value = '';
+  openLessonsModal();
+}
+
+function exportLessons(){
+  const lessons = getLessons();
+  if(lessons.length === 0){
+    alert('書き出す学習メモがありません。');
+    return;
+  }
+  const payload = {
+    recordType: 'japanese_generator_lessons',
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    lessons: lessons
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'japanese_generator_lessons.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function updateCheckButtonLabels(){
+  const isMonogatari = window.__lastGenSettings && window.__lastGenSettings.genreKey === 'monogatari';
+  const label = isMonogatari ? '🔍 筋書きに無理がないかを確認' : '🔍 事実・整合性を確認';
+  const btnResult = document.getElementById('checkBtnResult');
+  const btnRewrite = document.getElementById('checkBtnRewrite');
+  if(btnResult) btnResult.textContent = label;
+  if(btnRewrite) btnRewrite.textContent = label;
+
+  const nextDayBtn = document.getElementById('nextDayBtn');
+  if(nextDayBtn){
+    nextDayBtn.textContent = isMonogatari
+      ? '🔮 次の日の続きを提案する'
+      : '🔮 類似テーマの次の日を提案する';
+  }
+}
+
+async function proposeNextDay(){
+  const apiKey = getApiKey();
+  if(!apiKey){
+    showNotice('先に右上の「🔑 APIキー」からAnthropic APIキーを設定してください。', 'err');
+    openApiKeyModal();
+    return;
+  }
+  const settings = window.__lastGenSettings;
+  if(!settings){
+    showNotice('生成条件が見つかりません。一度「本文を生成する」を実行してから提案してください。', 'err');
+    return;
+  }
+  const fullText = document.getElementById('resultArea').value.trim();
+  if(!fullText){
+    showNotice('提案の元になる本文がありません。', 'err');
+    return;
+  }
+  const title = document.getElementById('titleInput').value.trim();
+  const patternObj = currentPatternObj();
+  const labelList = patternObj.labels.map((item,i)=>`第${i+1}段落：${item.label}`).join('\n');
+  const isMonogatari = settings.genreKey === 'monogatari';
+
+  const nextDayBtn = document.getElementById('nextDayBtn');
+  nextDayBtn.disabled = true;
+  nextDayBtn.textContent = '提案を考え中...';
+
+  const roleAndTask = isMonogatari
+    ? `あなたは児童文学作家です。以下の物語（1日目）の「次の日」として自然につながる続きの物語を考えてください。同じ登場人物・場面設定を引き継ぎつつ、新しい出来事があってもかまいません。段落構成（各段落が担う役割）は変えず、内容だけを「次の日の話」として考えてください。`
+    : `あなたは読解教材編集者です。以下の文章（1日目）と似た構造・観点で学べる、別の題材を「次の日」の教材として提案してください。例えば「チョウと花のみつ」の次の日なら「鳥と種子」のように、テーマは変えつつ同じ観点・段落構成で学べる題材にしてください。`;
+
+  const prompt = `${roleAndTask}
+
+# 1日目のタイトル
+${title}
+
+# 1日目の本文
+${fullText}
+
+# 段落構成（この役割配分は変えないこと）
+${labelList}
+
+# 出力形式（重要）
+JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。以下の形式そのままで出力すること。
+{"title": "次の日のタイトル", "outlines": ["第1段落のアウトライン（100字程度）", "第2段落のアウトライン", "第3段落のアウトライン", "第4段落のアウトライン"]}`;
+
+  try{
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true"
+      },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: 1500,
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+
+    if(!response.ok){
+      const errText = await response.text();
+      throw new Error('API error: ' + response.status + ' ' + errText.slice(0,200));
+    }
+
+    const data = await response.json();
+    const textBlocks = data.content.filter(b=>b.type==='text').map(b=>b.text);
+    let raw = textBlocks.join('\n').trim();
+    raw = raw.replace(/^```json\s*/i, '').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
+
+    let proposal;
+    try{
+      proposal = JSON.parse(raw);
+    }catch(err){
+      throw new Error('提案結果の形式を読み取れませんでした。もう一度お試しください。');
+    }
+    if(!proposal.title || !Array.isArray(proposal.outlines)){
+      throw new Error('提案結果に必要な項目（title / outlines）がありませんでした。');
+    }
+
+    document.getElementById('titleInput').value = proposal.title;
+    patternObj.labels.forEach((item,i)=>{
+      const ta = document.getElementById('outline_'+i);
+      if(ta && proposal.outlines[i] !== undefined){
+        ta.value = proposal.outlines[i];
+        document.getElementById('cc_'+i).textContent = ta.value.length + '字';
+      }
+    });
+
+    showNotice('次の日のタイトル・アウトラインを提案しました。内容を確認・編集してから「本文を生成する」を押してください。', 'info');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  }catch(err){
+    showNotice('提案の生成に失敗しました：' + err.message, 'err');
+  }finally{
+    nextDayBtn.disabled = false;
+    updateCheckButtonLabels();
+  }
+}
+
+async function checkFacts(areaId, resultAreaId, source){
+  const apiKey = getApiKey();
+  if(!apiKey){
+    showNotice('先に右上の「🔑 APIキー」からAnthropic APIキーを設定してください。', 'err');
+    openApiKeyModal();
+    return;
+  }
+  const text = document.getElementById(areaId).value.trim();
+  const resultBox = document.getElementById(resultAreaId);
+  if(!text){
+    resultBox.innerHTML = `<div class="notice notice-err">確認する本文がありません。</div>`;
+    return;
+  }
+
+  const settings = window.__lastGenSettings;
+  const isMonogatari = settings && settings.genreKey === 'monogatari';
+
+  const loadingLabel = isMonogatari ? '筋書きに無理がないかを確認中...' : '事実・整合性を確認中...';
+  resultBox.innerHTML = `<div class="loading"><div class="spinner"></div>${loadingLabel}</div>`;
+
+  const checkPrompt = isMonogatari
+    ? `あなたは児童文学・国語教材の校閲担当です。以下の日本語の物語文について、筋書きに無理がないかを次の観点で確認してください。
+
+1. 設定・場面の一貫性：場所・時間・登場人物の年齢や関係性などが、文章内で食い違っていないか
+2. 行動・心情の妥当性：登場人物の行動や気持ちの変化に、本文中で読み取れる理由づけがあるか。唐突すぎる展開になっていないか
+3. 展開の自然さ：出来事の順序やきっかけと結果のつながりが不自然でないか。矛盾する記述がないか
+
+# 確認対象の文章
+${text}
+
+# 出力形式
+- 「■設定・場面の一貫性」「■行動・心情の妥当性」「■展開の自然さ」の3つの見出しで、それぞれ箇条書きで簡潔に指摘する
+- 問題がなければ、その旨を一言で書く（無理に指摘を作らない）
+- 出力は日本語、全体で400字程度まで`
+    : `あなたは教材編集の校閲担当です。以下の日本語の文章について、Web検索を使いながら次の2点を確認してください。
+
+1. 事実確認：文章中に含まれる具体的な数値・固有名詞・年号・出来事などが、現在確認できる事実と食い違っていないか。古くなっている数値（最新の統計と乖離している等）も指摘すること。
+2. 整合性確認：文章内で前後の主張が矛盾していないか、論理の飛躍がないか、段落間のつながりが不自然でないか。
+
+# 確認対象の文章
+${text}
+
+# 出力形式
+- 「■事実確認」「■整合性確認」の2つの見出しで、それぞれ箇条書きで簡潔に指摘する
+- 問題がなければ、その旨を一言で書く（無理に指摘を作らない）
+- 出力は日本語、全体で400字程度まで`;
+
+  const requestBody = {
+    model: "claude-sonnet-4-6",
+    max_tokens: 1500,
+    messages: [{ role: "user", content: checkPrompt }]
+  };
+  if(!isMonogatari){
+    requestBody.tools = [{ type: "web_search_20250305", name: "web_search" }];
+  }
+
+  try{
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true"
+      },
+      body: JSON.stringify(requestBody)
+    });
+
+    if(!response.ok){
+      const errText = await response.text();
+      throw new Error('API error: ' + response.status + ' ' + errText.slice(0,200));
+    }
+
+    const data = await response.json();
+    const textBlocks = data.content.filter(b=>b.type==='text').map(b=>b.text);
+    const checkResult = textBlocks.join('\n').trim() || '（確認結果を取得できませんでした）';
+
+    // AIリライト用に、元テキストと指摘内容を保存しておく
+    window.__lastCheck = window.__lastCheck || {};
+    window.__lastCheck[source] = { sourceText: text, findings: checkResult };
+
+    resultBox.innerHTML = `
+      <div class="notice notice-info" style="white-space:pre-wrap; line-height:1.7;">${checkResult.replace(/</g,'&lt;')}</div>
+      <div style="font-size:11px; color:var(--text3); margin:10px 0 5px;">✍️ 人間の指摘（任意）：気になった表現・言葉づかいなどを書いてください</div>
+      <textarea id="humanFeedback_${source}" oninput="resetSaveLessonBtn('${source}')" placeholder="例：「えにし」は小2には難しい。「きっかけ」などの日常語にしてほしい。" style="min-height:70px;"></textarea>
+      <div class="btn-row" style="margin-top:8px;">
+        <button class="btn btn-secondary" style="flex:1;" onclick="aiReviseWithFeedback('${source}')">✨ AI＋人間の指摘をもとにリライトさせる</button>
+        <button class="btn btn-secondary" id="saveLessonBtn_${source}" onclick="saveLessonFromFeedback('${source}', this)">📚 この指摘を学習メモに保存</button>
+      </div>
+      <div id="saveLessonMsg_${source}" style="font-size:11px; margin-top:6px; min-height:15px;"></div>
+    `;
+
+  }catch(err){
+    resultBox.innerHTML = `<div class="notice notice-err">確認に失敗しました：${err.message}</div>`;
+  }
+}
+
+async function aiReviseWithFeedback(source){
+  const apiKey = getApiKey();
+  if(!apiKey){
+    showNotice('先に右上の「🔑 APIキー」からAnthropic APIキーを設定してください。', 'err');
+    openApiKeyModal();
+    return;
+  }
+  const saved = window.__lastCheck && window.__lastCheck[source];
+  if(!saved){
+    showNotice('先に事実・整合性の確認を実行してください。', 'err');
+    return;
+  }
+  const settings = window.__lastGenSettings;
+  if(!settings){
+    showNotice('生成条件が見つかりません。一度「本文を生成する」を実行してから確認・リライトしてください。', 'err');
+    return;
+  }
+  const { style, length, level, levelKey, genreKey, genreLabel } = settings;
+
+  const resultCheckAreaId = source === 'result' ? 'resultCheckArea' : 'rewriteCheckArea';
+  const checkBox = document.getElementById(resultCheckAreaId);
+  const reviseBtn = checkBox.querySelector('button');
+  if(reviseBtn){ reviseBtn.disabled = true; reviseBtn.textContent = 'リライト中...'; }
+
+  const kanjiSection = level.kanjiNote
+    ? `\n# 学年別使用可能漢字リスト（これ以外の漢字は禁止・ひらがな表記にすること）\n${KANJI_CUMULATIVE[levelKey.replace('g','')]}\n`
+    : '';
+  const formatSection = level.formatNote
+    ? `\n# 表記ルール（重要）\n${level.formatNote}\n`
+    : '';
+  const styleDetail = style.startsWith('だよ・しよう調')
+    ? `\n# 文体の具体例（重要）\n「です・ます」調は使わない。文末は「〜だよ」「〜なんだ」「〜だね」「〜してみよう」「〜かな？」「〜だろう？」のような、子どもに直接語りかける言い方にする。「じつは」「たとえば」のような素朴な接続語はよいが、「〜ということが分かっています」「〜と考えられています」「〜が要因です」のような大人向けの説明語・伝聞表現は使わない。\n`
+    : '';
+
+  const reviseRoleLine = genreKey === 'monogatari'
+    ? 'あなたは国語の読解教材を作成するプロの児童文学作家・編集者です。'
+    : 'あなたは国語・英語の読解教材を作成するプロの編集者です。';
+  const reviseFactLine = genreKey === 'monogatari'
+    ? '- 登場人物の行動には本文中に読み取れる理由をつけ、せりふの裏にある気持ちが推測できる書き方を保つこと'
+    : '- 具体的な数値・事実を扱う場合は、実際に妥当な内容に修正すること（不確かな数値は断定しすぎない表現にする）';
+
+  // 人間の指摘欄の内容を取得
+  const humanTa = document.getElementById('humanFeedback_' + source);
+  const humanFeedback = humanTa ? humanTa.value.trim() : '';
+  const humanSection = humanFeedback
+    ? `\n# 人間の校閲者からの指摘（最優先で反映すること）\n${humanFeedback}\n`
+    : '';
+
+  const revisePrompt = `${reviseRoleLine}
+以下の「元の文章」と、それに対する「校閲者からの指摘」をもとに、指摘された問題点を修正した文章を書き直してください。
+
+# 元の文章
+${saved.sourceText}
+
+# AI校閲者からの指摘
+${saved.findings}
+${humanSection}
+# ジャンル
+${genreLabel || '説明文・論説文'}
+
+# 修正時に守る条件（元の文章を生成した時と同じ条件）
+- 想定読者：${level.audience}
+- 難易度・文体の方針：${level.guidance}
+${level.kanjiNote ? '- ' + level.kanjiNote : ''}
+${kanjiSection}${formatSection}- 文体：${style}
+${styleDetail}- 目標文字数：${length}字前後（±15%程度は許容）
+- 段落数は4段落のまま維持すること
+${reviseFactLine}
+- 指摘のなかった部分は、元の文章の表現や論旨をできるだけ保持すること（無関係な書き換えはしない）
+- 出力は本文のみ。前置きや解説は一切つけないこと
+${lessonsPromptSection(levelKey)}
+上記を踏まえて、修正後の本文だけを出力してください。`;
+
+  try{
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true"
+      },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: 2000,
+        messages: [{ role: "user", content: revisePrompt }]
+      })
+    });
+
+    if(!response.ok){
+      const errText = await response.text();
+      throw new Error('API error: ' + response.status + ' ' + errText.slice(0,200));
+    }
+
+    const data = await response.json();
+    const textBlocks = data.content.filter(b=>b.type==='text').map(b=>b.text);
+    const revised = textBlocks.join('\n').trim();
+
+    // 事実修正を経た版を新しい「生成結果（正式版）」として上書きし、
+    // リライト欄にも同じ内容を反映して、そこから人間が手を加えられるようにする
+    document.getElementById('resultArea').value = revised;
+    document.getElementById('rewriteArea').value = revised;
+    updateCharCount('resultArea','resultCharCount');
+    updateCharCount('rewriteArea','rewriteCharCount');
+    document.getElementById('resultCheckArea').innerHTML = '';
+    document.getElementById('rewriteCheckArea').innerHTML = '';
+    showNotice('指摘を踏まえて生成結果を更新しました。リライト欄にも反映されているので、そこから手を加えられます。', 'info');
+
+  }catch(err){
+    showNotice('リライトに失敗しました：' + err.message, 'err');
+  }finally{
+    if(reviseBtn){ reviseBtn.disabled = false; reviseBtn.textContent = '✨ この指摘をもとにAIにリライトさせる'; }
+  }
+}
+
+document.getElementById('resultArea').addEventListener('input', ()=>updateCharCount('resultArea','resultCharCount'));
+document.getElementById('rewriteArea').addEventListener('input', ()=>updateCharCount('rewriteArea','rewriteCharCount'));
+
+function toggleImode(){
+  const on = !document.body.classList.contains('imode');
+  document.body.classList.toggle('imode', on);
+  document.getElementById('imodeBtn').textContent = on ? '🩷 Iモード' : '🤍 Iモード';
+  try{ localStorage.setItem('japanese_generator_imode', on ? '1' : '0'); }catch(e){}
+}
+
+function initImode(){
+  let on = false;
+  try{ on = localStorage.getItem('japanese_generator_imode') === '1'; }catch(e){}
+  document.body.classList.toggle('imode', on);
+  document.getElementById('imodeBtn').textContent = on ? '🩷 Iモード' : '🤍 Iモード';
+}
+
+// ===== テーマ（ライト/ダーク）。キーは4アプリ共通 japanese_generator_theme =====
+// このアプリのネイティブはダーク。ライト時のみ body.theme-light を付与。
+function jpThemeIsLight(){ return document.body.classList.contains('theme-light'); }
+function updateThemeBtn(){ var b = document.getElementById('themeBtn'); if(b) b.textContent = jpThemeIsLight() ? '🌙 ダーク' : '☀️ ライト'; }
+function applyTheme(theme){ document.body.classList.toggle('theme-light', theme === 'light'); updateThemeBtn(); }
+function toggleTheme(){ var next = jpThemeIsLight() ? 'dark' : 'light'; try{ localStorage.setItem('japanese_generator_theme', next); }catch(e){} applyTheme(next); }
+function initTheme(){ var t = null; try{ t = localStorage.getItem('japanese_generator_theme'); }catch(e){} applyTheme(t === 'light' ? 'light' : 'dark'); }
+
+function updateLevelNotice(){
+  const levelKey = document.getElementById('levelSelect').value;
+  const level = LEVELS[levelKey];
+  const notice = document.getElementById('levelNotice');
+  let text = level.kanjiNote
+    ? `${level.label}：${level.guidance} 使用漢字は学年別配当表（文科省2017年版）の累積漢字（${KANJI_CUMULATIVE[levelKey.replace('g','')].length}字）に自動で制限されます。`
+    : `${level.label}：${level.guidance}（漢字の学年制限は未整備のため一旦保留）`;
+  if(level.formatNote){
+    text += ` 文節ごとに分かち書き（スペース区切り）で出力されます。`;
+  }
+  notice.textContent = text;
+
+  const styleSelect = document.getElementById('styleSelect');
+  const casualValue = 'だよ・しよう調（親しみやすい語りかけ・小1〜2向け）';
+  if(levelKey === 'g1' || levelKey === 'g2'){
+    styleSelect.value = casualValue;
+  }else if(styleSelect.value === casualValue){
+    styleSelect.value = 'ですます調（やわらかい解説文）';
+  }
+}
+
+renderGenres();
+renderPatterns();
+renderOutlineBlocks();
+updateLevelNotice();
+renderDifficultySelect();
+applyLengthDefault();
+initImode();
+initTheme(); // ライト/ダーク（4アプリ共通キー）
+initLessons(); // 学習メモをSupabaseから読み込み（失敗時はlocalStorageで続行）
+loadStudentsIntoSelect('studentIdInput', 'studentIdInput_text').then(function(){ hoPresetStudent('studentIdInput'); }); // 名簿読込後、直近生徒をプリセレクト
+renderFlowProgress('story'); // 工程進行バー
+</script>
+
+</body>
+</html>

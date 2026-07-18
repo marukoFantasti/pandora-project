@@ -1,0 +1,3009 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>国語 印刷テンプレート</title>
+<style>
+:root{
+  --bg:#f2efe9; --card:#ffffff; --border:#d8d0c2;
+  --text1:#2b2622; --text2:#5a5248; --text3:#948a7c;
+  --accent:#b0486f; --accent-bg:#fbeef3; --accent-text:#8e3a59;
+  --red:#c0392b; --red-bg:#fdeeec; --green:#2e7d4f; --green-bg:#e9f5ee;
+}
+/* ダークテーマ（画面プレビュー用。印刷は@media printで常にライト強制） */
+body.theme-dark{
+  --bg:#161616; --card:#212121; --border:#333333;
+  --text1:#f0f0f0; --text2:#c4c4c4; --text3:#8a8a8a;
+  --accent:#cd4f7c; --accent-bg:#3a1f28; --accent-text:#f2a3bd;
+  --red:#ff6b6b; --red-bg:#3a1a1a; --green:#5fd58d; --green-bg:#173425;
+}
+/* Iモード（画面プレビューの操作系を大きく。印刷レイアウトには影響しない） */
+body.imode{ font-size:16px; }
+body.imode .setup-input, body.imode .tbtn, body.imode select, body.imode input, body.imode textarea{ font-size:15px; }
+body.imode .setup-label{ font-size:13px; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+  background:var(--bg); color:var(--text1); font-size:14px; line-height:1.7;
+}
+.toolbar{
+  padding:14px 20px; background:var(--card); border-bottom:2px solid var(--accent);
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+}
+.toolbar-title{font-size:15px; font-weight:800; margin-right:auto;}
+.toolbar-title span{color:var(--accent)}
+.tbtn{
+  font-family:inherit; font-size:12px; background:var(--card); color:var(--text2);
+  border:1px solid var(--border); border-radius:8px; padding:8px 14px; cursor:pointer;
+}
+.tbtn.primary{background:var(--accent); color:#fff; border-color:var(--accent); font-weight:700;}
+.setup-wrap{max-width:720px; margin:24px auto; padding:0 16px;}
+.card{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:18px; margin-bottom:16px;}
+.section-label{font-size:12px; font-weight:800; color:var(--accent-text); border-left:4px solid var(--accent); padding-left:8px; margin-bottom:12px;}
+.setup-label{font-size:12px; color:var(--text3); display:block; margin-bottom:5px; margin-top:12px;}
+.setup-input{width:100%; font-family:inherit; font-size:14px; background:#fff; color:var(--text1); border:1px solid var(--border); border-radius:8px; padding:10px 12px;}
+.notice{padding:10px 13px; border-radius:8px; font-size:13px; margin-top:12px}
+.notice-err{background:var(--red-bg); color:var(--red)}
+.notice-info{background:var(--green-bg); color:var(--green)}
+
+/* ===== 印刷ページ =====
+   教訓：@page marginと.pageのheight/paddingの二重管理はページ増殖を招く。
+   @page margin:0 とし、.page自体（210mm×297mm＋padding）で余白を一元管理する。 */
+@page{ size:A4; margin:0; }
+.pages-area{padding:20px 0 80px;}
+.page{
+  width:210mm; height:297mm; padding:15mm;
+  background:#fff; margin:0 auto 16px; position:relative;
+  box-shadow:0 2px 10px rgba(0,0,0,.12); overflow:hidden;
+}
+.page-header{
+  display:flex; align-items:center; gap:10px; border-bottom:2px solid #333;
+  padding-bottom:3mm; margin-bottom:5mm;
+}
+.page-header .ph-title{font-size:14pt; font-weight:800;}
+.page-header .ph-meta{font-size:9pt; color:#555;}
+.page-header .ph-name{margin-left:auto; display:flex; align-items:center; gap:2mm; color:#333;}
+.page-header .ph-name .ph-sid{font-size:8pt; color:#555;}
+.page-header .ph-name .name-label{font-size:10pt; font-weight:700; color:#000;}
+.page-header .ph-namebox{display:inline-block; width:60mm; height:10mm; border:1px solid #333; border-radius:1mm;}
+/* 解答用紙は右上にQR（位置・サイズ不変）があるため、名前欄と衝突しないよう
+   ヘッダー右側にQR footprint分の余白を確保する。QR自体は動かさない。 */
+.answer-page .page-header{padding-right:42mm;}
+.page-footer{
+  position:absolute; bottom:8mm; left:0; right:0; text-align:center;
+  font-size:8pt; color:#888;
+}
+
+.passage-block{font-size:10.5pt; line-height:1.9; margin-bottom:2.5mm;}
+.passage-block .para-num{
+  display:inline-block; border:1px solid #333; font-size:8pt; font-weight:700;
+  border-radius:2px; padding:0 1.5mm; margin-right:1.5mm;
+}
+.q-block{margin-bottom:4mm; page-break-inside:avoid;}
+.q-block .q-head{font-size:10.5pt; font-weight:800; margin-bottom:1mm;}
+.q-block .q-text{font-size:10.5pt; line-height:1.8;}
+.q-block .q-choices{font-size:10.5pt; line-height:1.9; margin-top:1mm; padding-left:4mm; white-space:pre-wrap;}
+
+/* 解答用紙 */
+.as-qr-wrap{
+  position:absolute; top:10mm; right:10mm; background:#fff;
+  padding:2.5mm; /* クワイエットゾーン2.5mm（実機読み取り精度のため） */
+}
+.as-qr-wrap canvas{display:block; width:25mm; height:25mm;}
+.as-field{margin-bottom:6mm;}
+.as-field .as-label{font-size:10.5pt; font-weight:800; margin-bottom:1.5mm;}
+.as-choice-box{
+  width:22mm; height:12mm; border:1.5px solid #333; border-radius:1mm;
+  display:inline-block;
+}
+.as-grid{display:flex; flex-wrap:wrap; gap:0;}
+.as-cell{
+  width:9mm; height:9mm; border:1px solid #555; margin-right:-1px; margin-bottom:-1px;
+}
+.as-lines{border:1.5px solid #333; border-radius:1mm;}
+.as-line{border-bottom:1px dashed #aaa; height:11mm;}
+.as-line:last-child{border-bottom:none;}
+.as-note{font-size:8pt; color:#777; margin-top:0.5mm;}
+
+/* 画面/印刷の出し分け */
+@media print{
+  /* 画面テーマ（ライト/ダーク）に関わらず、印刷は常にライト（白地・黒文字）に強制。
+     テーマ変数もライト固定に上書きし、ダークプレビュー中でも紙は白黒で出る。 */
+  html, body, body.theme-dark{
+    background:#fff !important; color:#000 !important;
+    --bg:#ffffff; --card:#ffffff; --border:#d8d0c2;
+    --text1:#000000; --text2:#333333; --text3:#555555;
+  }
+  .page{ background:#fff !important; }
+  .page, .page *{ color:#000 !important; }
+  .toolbar, .setup-wrap, .no-print{display:none !important;}
+  .pages-area{padding:0;}
+  .page{box-shadow:none; margin:0; page-break-after:always;}
+  .page:last-child{page-break-after:auto;}
+  body.print-question .answer-page{display:none !important;}
+  body.print-answer .question-page{display:none !important;}
+}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="toolbar-title">国語 <span>印刷テンプレート</span></div>
+  <a class="tbtn" href="pandora_main.html" style="text-decoration:none;">← Pandoraメイン</a>
+  <span id="flowProgress" style="display:inline-flex; align-items:center; gap:4px; flex-wrap:wrap;"></span>
+  <button class="tbtn" onclick="printOnly('question')">🖨 問題用紙のみ印刷</button>
+  <button class="tbtn" onclick="printOnly('answer')">🖨 解答用紙のみ印刷</button>
+  <button class="tbtn primary" onclick="printOnly('both')">🖨 両方印刷</button>
+  <button class="tbtn" onclick="exportLayoutData()">📐 layout_dataを書き出す</button>
+  <button class="tbtn" onclick="registerAnswerSheets()">☁️ answer_sheetsに登録</button>
+  <button class="tbtn" id="themeBtn" onclick="toggleTheme()" style="margin-left:8px;">🌙 ダーク</button>
+  <button class="tbtn" id="imodeBtn" onclick="toggleImode()">🤍 Iモード</button>
+</div>
+
+<div class="setup-wrap" id="setupWrap">
+  <div class="card">
+    <div class="section-label">問題セットの読み込みと印刷設定</div>
+    <div id="handoffBanner"></div>
+    <label class="setup-label">問題セット（japanese_question_set_*.json）</label>
+    <input type="file" id="setFileInput" accept="application/json" class="setup-input" onchange="loadQuestionSetFile(event)">
+    <label class="setup-label">またはコピーした問題セットを貼り付け</label>
+    <textarea id="pasteArea" class="setup-input" rows="3" placeholder="国語問題ジェネレーターの「📋 問題セットをコピー」の内容を貼り付けて、下のボタンを押してください" style="resize:vertical;"></textarea>
+    <button class="tbtn" style="margin-top:8px;" onclick="loadPastedSet()">📋 貼り付けた内容を読み込む</button>
+    <label class="setup-label">assignment_id（空欄なら自動生成）</label>
+    <input type="text" id="setupAssignmentId" class="setup-input" placeholder="空欄で自動生成">
+    <label class="setup-label">生徒（Lethe名簿から選択。取得失敗時は手入力）</label>
+    <select id="setupStudentId" class="setup-input" onchange="hoSaveStudent('setupStudentId')"><option value="">読み込み中...</option></select>
+    <input type="text" id="setupStudentId_text" class="setup-input" placeholder="S-0000" style="display:none">
+    <button class="tbtn primary" style="margin-top:16px; width:100%; padding:12px;" onclick="buildPages()">📄 問題用紙・解答用紙を組む</button>
+    <div id="setupNotice"></div>
+    <div id="nextGuide"></div>
+    <div style="font-size:11px; color:var(--text3); margin-top:12px; line-height:1.7;">
+      漢字クイズはデジタル専用のため、印刷版には含まれません。QRコードはPandora互換形式（assignment_id / student_id / page / total_pages）です。
+    </div>
+  </div>
+</div>
+
+<div class="pages-area" id="pagesArea"></div>
+
+<script>
+//---------------------------------------------------------------------
+//
+// QR Code Generator for JavaScript
+//
+// Copyright (c) 2009 Kazuhiko Arase
+//
+// URL: http://www.d-project.com/
+//
+// Licensed under the MIT license:
+//  http://www.opensource.org/licenses/mit-license.php
+//
+// The word 'QR Code' is registered trademark of
+// DENSO WAVE INCORPORATED
+//  http://www.denso-wave.com/qrcode/faqpatent-e.html
+//
+//---------------------------------------------------------------------
+
+var qrcode = function() {
+
+  //---------------------------------------------------------------------
+  // qrcode
+  //---------------------------------------------------------------------
+
+  /**
+   * qrcode
+   * @param typeNumber 1 to 40
+   * @param errorCorrectionLevel 'L','M','Q','H'
+   */
+  var qrcode = function(typeNumber, errorCorrectionLevel) {
+
+    var PAD0 = 0xEC;
+    var PAD1 = 0x11;
+
+    var _typeNumber = typeNumber;
+    var _errorCorrectionLevel = QRErrorCorrectionLevel[errorCorrectionLevel];
+    var _modules = null;
+    var _moduleCount = 0;
+    var _dataCache = null;
+    var _dataList = [];
+
+    var _this = {};
+
+    var makeImpl = function(test, maskPattern) {
+
+      _moduleCount = _typeNumber * 4 + 17;
+      _modules = function(moduleCount) {
+        var modules = new Array(moduleCount);
+        for (var row = 0; row < moduleCount; row += 1) {
+          modules[row] = new Array(moduleCount);
+          for (var col = 0; col < moduleCount; col += 1) {
+            modules[row][col] = null;
+          }
+        }
+        return modules;
+      }(_moduleCount);
+
+      setupPositionProbePattern(0, 0);
+      setupPositionProbePattern(_moduleCount - 7, 0);
+      setupPositionProbePattern(0, _moduleCount - 7);
+      setupPositionAdjustPattern();
+      setupTimingPattern();
+      setupTypeInfo(test, maskPattern);
+
+      if (_typeNumber >= 7) {
+        setupTypeNumber(test);
+      }
+
+      if (_dataCache == null) {
+        _dataCache = createData(_typeNumber, _errorCorrectionLevel, _dataList);
+      }
+
+      mapData(_dataCache, maskPattern);
+    };
+
+    var setupPositionProbePattern = function(row, col) {
+
+      for (var r = -1; r <= 7; r += 1) {
+
+        if (row + r <= -1 || _moduleCount <= row + r) continue;
+
+        for (var c = -1; c <= 7; c += 1) {
+
+          if (col + c <= -1 || _moduleCount <= col + c) continue;
+
+          if ( (0 <= r && r <= 6 && (c == 0 || c == 6) )
+              || (0 <= c && c <= 6 && (r == 0 || r == 6) )
+              || (2 <= r && r <= 4 && 2 <= c && c <= 4) ) {
+            _modules[row + r][col + c] = true;
+          } else {
+            _modules[row + r][col + c] = false;
+          }
+        }
+      }
+    };
+
+    var getBestMaskPattern = function() {
+
+      var minLostPoint = 0;
+      var pattern = 0;
+
+      for (var i = 0; i < 8; i += 1) {
+
+        makeImpl(true, i);
+
+        var lostPoint = QRUtil.getLostPoint(_this);
+
+        if (i == 0 || minLostPoint > lostPoint) {
+          minLostPoint = lostPoint;
+          pattern = i;
+        }
+      }
+
+      return pattern;
+    };
+
+    var setupTimingPattern = function() {
+
+      for (var r = 8; r < _moduleCount - 8; r += 1) {
+        if (_modules[r][6] != null) {
+          continue;
+        }
+        _modules[r][6] = (r % 2 == 0);
+      }
+
+      for (var c = 8; c < _moduleCount - 8; c += 1) {
+        if (_modules[6][c] != null) {
+          continue;
+        }
+        _modules[6][c] = (c % 2 == 0);
+      }
+    };
+
+    var setupPositionAdjustPattern = function() {
+
+      var pos = QRUtil.getPatternPosition(_typeNumber);
+
+      for (var i = 0; i < pos.length; i += 1) {
+
+        for (var j = 0; j < pos.length; j += 1) {
+
+          var row = pos[i];
+          var col = pos[j];
+
+          if (_modules[row][col] != null) {
+            continue;
+          }
+
+          for (var r = -2; r <= 2; r += 1) {
+
+            for (var c = -2; c <= 2; c += 1) {
+
+              if (r == -2 || r == 2 || c == -2 || c == 2
+                  || (r == 0 && c == 0) ) {
+                _modules[row + r][col + c] = true;
+              } else {
+                _modules[row + r][col + c] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+
+    var setupTypeNumber = function(test) {
+
+      var bits = QRUtil.getBCHTypeNumber(_typeNumber);
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[Math.floor(i / 3)][i % 3 + _moduleCount - 8 - 3] = mod;
+      }
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[i % 3 + _moduleCount - 8 - 3][Math.floor(i / 3)] = mod;
+      }
+    };
+
+    var setupTypeInfo = function(test, maskPattern) {
+
+      var data = (_errorCorrectionLevel << 3) | maskPattern;
+      var bits = QRUtil.getBCHTypeInfo(data);
+
+      // vertical
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 6) {
+          _modules[i][8] = mod;
+        } else if (i < 8) {
+          _modules[i + 1][8] = mod;
+        } else {
+          _modules[_moduleCount - 15 + i][8] = mod;
+        }
+      }
+
+      // horizontal
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 8) {
+          _modules[8][_moduleCount - i - 1] = mod;
+        } else if (i < 9) {
+          _modules[8][15 - i - 1 + 1] = mod;
+        } else {
+          _modules[8][15 - i - 1] = mod;
+        }
+      }
+
+      // fixed module
+      _modules[_moduleCount - 8][8] = (!test);
+    };
+
+    var mapData = function(data, maskPattern) {
+
+      var inc = -1;
+      var row = _moduleCount - 1;
+      var bitIndex = 7;
+      var byteIndex = 0;
+      var maskFunc = QRUtil.getMaskFunction(maskPattern);
+
+      for (var col = _moduleCount - 1; col > 0; col -= 2) {
+
+        if (col == 6) col -= 1;
+
+        while (true) {
+
+          for (var c = 0; c < 2; c += 1) {
+
+            if (_modules[row][col - c] == null) {
+
+              var dark = false;
+
+              if (byteIndex < data.length) {
+                dark = ( ( (data[byteIndex] >>> bitIndex) & 1) == 1);
+              }
+
+              var mask = maskFunc(row, col - c);
+
+              if (mask) {
+                dark = !dark;
+              }
+
+              _modules[row][col - c] = dark;
+              bitIndex -= 1;
+
+              if (bitIndex == -1) {
+                byteIndex += 1;
+                bitIndex = 7;
+              }
+            }
+          }
+
+          row += inc;
+
+          if (row < 0 || _moduleCount <= row) {
+            row -= inc;
+            inc = -inc;
+            break;
+          }
+        }
+      }
+    };
+
+    var createBytes = function(buffer, rsBlocks) {
+
+      var offset = 0;
+
+      var maxDcCount = 0;
+      var maxEcCount = 0;
+
+      var dcdata = new Array(rsBlocks.length);
+      var ecdata = new Array(rsBlocks.length);
+
+      for (var r = 0; r < rsBlocks.length; r += 1) {
+
+        var dcCount = rsBlocks[r].dataCount;
+        var ecCount = rsBlocks[r].totalCount - dcCount;
+
+        maxDcCount = Math.max(maxDcCount, dcCount);
+        maxEcCount = Math.max(maxEcCount, ecCount);
+
+        dcdata[r] = new Array(dcCount);
+
+        for (var i = 0; i < dcdata[r].length; i += 1) {
+          dcdata[r][i] = 0xff & buffer.getBuffer()[i + offset];
+        }
+        offset += dcCount;
+
+        var rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
+        var rawPoly = qrPolynomial(dcdata[r], rsPoly.getLength() - 1);
+
+        var modPoly = rawPoly.mod(rsPoly);
+        ecdata[r] = new Array(rsPoly.getLength() - 1);
+        for (var i = 0; i < ecdata[r].length; i += 1) {
+          var modIndex = i + modPoly.getLength() - ecdata[r].length;
+          ecdata[r][i] = (modIndex >= 0)? modPoly.getAt(modIndex) : 0;
+        }
+      }
+
+      var totalCodeCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalCodeCount += rsBlocks[i].totalCount;
+      }
+
+      var data = new Array(totalCodeCount);
+      var index = 0;
+
+      for (var i = 0; i < maxDcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < dcdata[r].length) {
+            data[index] = dcdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      for (var i = 0; i < maxEcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < ecdata[r].length) {
+            data[index] = ecdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      return data;
+    };
+
+    var createData = function(typeNumber, errorCorrectionLevel, dataList) {
+
+      var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, errorCorrectionLevel);
+
+      var buffer = qrBitBuffer();
+
+      for (var i = 0; i < dataList.length; i += 1) {
+        var data = dataList[i];
+        buffer.put(data.getMode(), 4);
+        buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+        data.write(buffer);
+      }
+
+      // calc num max data.
+      var totalDataCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalDataCount += rsBlocks[i].dataCount;
+      }
+
+      if (buffer.getLengthInBits() > totalDataCount * 8) {
+        throw 'code length overflow. ('
+          + buffer.getLengthInBits()
+          + '>'
+          + totalDataCount * 8
+          + ')';
+      }
+
+      // end code
+      if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
+        buffer.put(0, 4);
+      }
+
+      // padding
+      while (buffer.getLengthInBits() % 8 != 0) {
+        buffer.putBit(false);
+      }
+
+      // padding
+      while (true) {
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD0, 8);
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD1, 8);
+      }
+
+      return createBytes(buffer, rsBlocks);
+    };
+
+    _this.addData = function(data, mode) {
+
+      mode = mode || 'Byte';
+
+      var newData = null;
+
+      switch(mode) {
+      case 'Numeric' :
+        newData = qrNumber(data);
+        break;
+      case 'Alphanumeric' :
+        newData = qrAlphaNum(data);
+        break;
+      case 'Byte' :
+        newData = qr8BitByte(data);
+        break;
+      case 'Kanji' :
+        newData = qrKanji(data);
+        break;
+      default :
+        throw 'mode:' + mode;
+      }
+
+      _dataList.push(newData);
+      _dataCache = null;
+    };
+
+    _this.isDark = function(row, col) {
+      if (row < 0 || _moduleCount <= row || col < 0 || _moduleCount <= col) {
+        throw row + ',' + col;
+      }
+      return _modules[row][col];
+    };
+
+    _this.getModuleCount = function() {
+      return _moduleCount;
+    };
+
+    _this.make = function() {
+      if (_typeNumber < 1) {
+        var typeNumber = 1;
+
+        for (; typeNumber < 40; typeNumber++) {
+          var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, _errorCorrectionLevel);
+          var buffer = qrBitBuffer();
+
+          for (var i = 0; i < _dataList.length; i++) {
+            var data = _dataList[i];
+            buffer.put(data.getMode(), 4);
+            buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+            data.write(buffer);
+          }
+
+          var totalDataCount = 0;
+          for (var i = 0; i < rsBlocks.length; i++) {
+            totalDataCount += rsBlocks[i].dataCount;
+          }
+
+          if (buffer.getLengthInBits() <= totalDataCount * 8) {
+            break;
+          }
+        }
+
+        _typeNumber = typeNumber;
+      }
+
+      makeImpl(false, getBestMaskPattern() );
+    };
+
+    _this.createTableTag = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var qrHtml = '';
+
+      qrHtml += '<table style="';
+      qrHtml += ' border-width: 0px; border-style: none;';
+      qrHtml += ' border-collapse: collapse;';
+      qrHtml += ' padding: 0px; margin: ' + margin + 'px;';
+      qrHtml += '">';
+      qrHtml += '<tbody>';
+
+      for (var r = 0; r < _this.getModuleCount(); r += 1) {
+
+        qrHtml += '<tr>';
+
+        for (var c = 0; c < _this.getModuleCount(); c += 1) {
+          qrHtml += '<td style="';
+          qrHtml += ' border-width: 0px; border-style: none;';
+          qrHtml += ' border-collapse: collapse;';
+          qrHtml += ' padding: 0px; margin: 0px;';
+          qrHtml += ' width: ' + cellSize + 'px;';
+          qrHtml += ' height: ' + cellSize + 'px;';
+          qrHtml += ' background-color: ';
+          qrHtml += _this.isDark(r, c)? '#000000' : '#ffffff';
+          qrHtml += ';';
+          qrHtml += '"/>';
+        }
+
+        qrHtml += '</tr>';
+      }
+
+      qrHtml += '</tbody>';
+      qrHtml += '</table>';
+
+      return qrHtml;
+    };
+
+    _this.createSvgTag = function(cellSize, margin, alt, title) {
+
+      var opts = {};
+      if (typeof arguments[0] == 'object') {
+        // Called by options.
+        opts = arguments[0];
+        // overwrite cellSize and margin.
+        cellSize = opts.cellSize;
+        margin = opts.margin;
+        alt = opts.alt;
+        title = opts.title;
+      }
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      // Compose alt property surrogate
+      alt = (typeof alt === 'string') ? {text: alt} : alt || {};
+      alt.text = alt.text || null;
+      alt.id = (alt.text) ? alt.id || 'qrcode-description' : null;
+
+      // Compose title property surrogate
+      title = (typeof title === 'string') ? {text: title} : title || {};
+      title.text = title.text || null;
+      title.id = (title.text) ? title.id || 'qrcode-title' : null;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var c, mc, r, mr, qrSvg='', rect;
+
+      rect = 'l' + cellSize + ',0 0,' + cellSize +
+        ' -' + cellSize + ',0 0,-' + cellSize + 'z ';
+
+      qrSvg += '<svg version="1.1" xmlns="http://www.w3.org/2000/svg"';
+      qrSvg += !opts.scalable ? ' width="' + size + 'px" height="' + size + 'px"' : '';
+      qrSvg += ' viewBox="0 0 ' + size + ' ' + size + '" ';
+      qrSvg += ' preserveAspectRatio="xMinYMin meet"';
+      qrSvg += (title.text || alt.text) ? ' role="img" aria-labelledby="' +
+          escapeXml([title.id, alt.id].join(' ').trim() ) + '"' : '';
+      qrSvg += '>';
+      qrSvg += (title.text) ? '<title id="' + escapeXml(title.id) + '">' +
+          escapeXml(title.text) + '</title>' : '';
+      qrSvg += (alt.text) ? '<description id="' + escapeXml(alt.id) + '">' +
+          escapeXml(alt.text) + '</description>' : '';
+      qrSvg += '<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>';
+      qrSvg += '<path d="';
+
+      for (r = 0; r < _this.getModuleCount(); r += 1) {
+        mr = r * cellSize + margin;
+        for (c = 0; c < _this.getModuleCount(); c += 1) {
+          if (_this.isDark(r, c) ) {
+            mc = c*cellSize+margin;
+            qrSvg += 'M' + mc + ',' + mr + rect;
+          }
+        }
+      }
+
+      qrSvg += '" stroke="transparent" fill="black"/>';
+      qrSvg += '</svg>';
+
+      return qrSvg;
+    };
+
+    _this.createDataURL = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      return createDataURL(size, size, function(x, y) {
+        if (min <= x && x < max && min <= y && y < max) {
+          var c = Math.floor( (x - min) / cellSize);
+          var r = Math.floor( (y - min) / cellSize);
+          return _this.isDark(r, c)? 0 : 1;
+        } else {
+          return 1;
+        }
+      } );
+    };
+
+    _this.createImgTag = function(cellSize, margin, alt) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+
+      var img = '';
+      img += '<img';
+      img += '\u0020src="';
+      img += _this.createDataURL(cellSize, margin);
+      img += '"';
+      img += '\u0020width="';
+      img += size;
+      img += '"';
+      img += '\u0020height="';
+      img += size;
+      img += '"';
+      if (alt) {
+        img += '\u0020alt="';
+        img += escapeXml(alt);
+        img += '"';
+      }
+      img += '/>';
+
+      return img;
+    };
+
+    var escapeXml = function(s) {
+      var escaped = '';
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charAt(i);
+        switch(c) {
+        case '<': escaped += '&lt;'; break;
+        case '>': escaped += '&gt;'; break;
+        case '&': escaped += '&amp;'; break;
+        case '"': escaped += '&quot;'; break;
+        default : escaped += c; break;
+        }
+      }
+      return escaped;
+    };
+
+    var _createHalfASCII = function(margin) {
+      var cellSize = 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r1, r2, p;
+
+      var blocks = {
+        '██': '█',
+        '█ ': '▀',
+        ' █': '▄',
+        '  ': ' '
+      };
+
+      var blocksLastLineNoMargin = {
+        '██': '▀',
+        '█ ': '▀',
+        ' █': ' ',
+        '  ': ' '
+      };
+
+      var ascii = '';
+      for (y = 0; y < size; y += 2) {
+        r1 = Math.floor((y - min) / cellSize);
+        r2 = Math.floor((y + 1 - min) / cellSize);
+        for (x = 0; x < size; x += 1) {
+          p = '█';
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r1, Math.floor((x - min) / cellSize))) {
+            p = ' ';
+          }
+
+          if (min <= x && x < max && min <= y+1 && y+1 < max && _this.isDark(r2, Math.floor((x - min) / cellSize))) {
+            p += ' ';
+          }
+          else {
+            p += '█';
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          ascii += (margin < 1 && y+1 >= max) ? blocksLastLineNoMargin[p] : blocks[p];
+        }
+
+        ascii += '\n';
+      }
+
+      if (size % 2 && margin > 0) {
+        return ascii.substring(0, ascii.length - size - 1) + Array(size+1).join('▀');
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.createASCII = function(cellSize, margin) {
+      cellSize = cellSize || 1;
+
+      if (cellSize < 2) {
+        return _createHalfASCII(margin);
+      }
+
+      cellSize -= 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r, p;
+
+      var white = Array(cellSize+1).join('██');
+      var black = Array(cellSize+1).join('  ');
+
+      var ascii = '';
+      var line = '';
+      for (y = 0; y < size; y += 1) {
+        r = Math.floor( (y - min) / cellSize);
+        line = '';
+        for (x = 0; x < size; x += 1) {
+          p = 1;
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r, Math.floor((x - min) / cellSize))) {
+            p = 0;
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          line += p ? white : black;
+        }
+
+        for (r = 0; r < cellSize; r += 1) {
+          ascii += line + '\n';
+        }
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.renderTo2dContext = function(context, cellSize) {
+      cellSize = cellSize || 2;
+      var length = _this.getModuleCount();
+      for (var row = 0; row < length; row++) {
+        for (var col = 0; col < length; col++) {
+          context.fillStyle = _this.isDark(row, col) ? 'black' : 'white';
+          context.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
+        }
+      }
+    }
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrcode.stringToBytes
+  //---------------------------------------------------------------------
+
+  qrcode.stringToBytesFuncs = {
+    'default' : function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        bytes.push(c & 0xff);
+      }
+      return bytes;
+    }
+  };
+
+  qrcode.stringToBytes = qrcode.stringToBytesFuncs['default'];
+
+  //---------------------------------------------------------------------
+  // qrcode.createStringToBytes
+  //---------------------------------------------------------------------
+
+  /**
+   * @param unicodeData base64 string of byte array.
+   * [16bit Unicode],[16bit Bytes], ...
+   * @param numChars
+   */
+  qrcode.createStringToBytes = function(unicodeData, numChars) {
+
+    // create conversion map.
+
+    var unicodeMap = function() {
+
+      var bin = base64DecodeInputStream(unicodeData);
+      var read = function() {
+        var b = bin.read();
+        if (b == -1) throw 'eof';
+        return b;
+      };
+
+      var count = 0;
+      var unicodeMap = {};
+      while (true) {
+        var b0 = bin.read();
+        if (b0 == -1) break;
+        var b1 = read();
+        var b2 = read();
+        var b3 = read();
+        var k = String.fromCharCode( (b0 << 8) | b1);
+        var v = (b2 << 8) | b3;
+        unicodeMap[k] = v;
+        count += 1;
+      }
+      if (count != numChars) {
+        throw count + ' != ' + numChars;
+      }
+
+      return unicodeMap;
+    }();
+
+    var unknownChar = '?'.charCodeAt(0);
+
+    return function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        if (c < 128) {
+          bytes.push(c);
+        } else {
+          var b = unicodeMap[s.charAt(i)];
+          if (typeof b == 'number') {
+            if ( (b & 0xff) == b) {
+              // 1byte
+              bytes.push(b);
+            } else {
+              // 2bytes
+              bytes.push(b >>> 8);
+              bytes.push(b & 0xff);
+            }
+          } else {
+            bytes.push(unknownChar);
+          }
+        }
+      }
+      return bytes;
+    };
+  };
+
+  //---------------------------------------------------------------------
+  // QRMode
+  //---------------------------------------------------------------------
+
+  var QRMode = {
+    MODE_NUMBER :    1 << 0,
+    MODE_ALPHA_NUM : 1 << 1,
+    MODE_8BIT_BYTE : 1 << 2,
+    MODE_KANJI :     1 << 3
+  };
+
+  //---------------------------------------------------------------------
+  // QRErrorCorrectionLevel
+  //---------------------------------------------------------------------
+
+  var QRErrorCorrectionLevel = {
+    L : 1,
+    M : 0,
+    Q : 3,
+    H : 2
+  };
+
+  //---------------------------------------------------------------------
+  // QRMaskPattern
+  //---------------------------------------------------------------------
+
+  var QRMaskPattern = {
+    PATTERN000 : 0,
+    PATTERN001 : 1,
+    PATTERN010 : 2,
+    PATTERN011 : 3,
+    PATTERN100 : 4,
+    PATTERN101 : 5,
+    PATTERN110 : 6,
+    PATTERN111 : 7
+  };
+
+  //---------------------------------------------------------------------
+  // QRUtil
+  //---------------------------------------------------------------------
+
+  var QRUtil = function() {
+
+    var PATTERN_POSITION_TABLE = [
+      [],
+      [6, 18],
+      [6, 22],
+      [6, 26],
+      [6, 30],
+      [6, 34],
+      [6, 22, 38],
+      [6, 24, 42],
+      [6, 26, 46],
+      [6, 28, 50],
+      [6, 30, 54],
+      [6, 32, 58],
+      [6, 34, 62],
+      [6, 26, 46, 66],
+      [6, 26, 48, 70],
+      [6, 26, 50, 74],
+      [6, 30, 54, 78],
+      [6, 30, 56, 82],
+      [6, 30, 58, 86],
+      [6, 34, 62, 90],
+      [6, 28, 50, 72, 94],
+      [6, 26, 50, 74, 98],
+      [6, 30, 54, 78, 102],
+      [6, 28, 54, 80, 106],
+      [6, 32, 58, 84, 110],
+      [6, 30, 58, 86, 114],
+      [6, 34, 62, 90, 118],
+      [6, 26, 50, 74, 98, 122],
+      [6, 30, 54, 78, 102, 126],
+      [6, 26, 52, 78, 104, 130],
+      [6, 30, 56, 82, 108, 134],
+      [6, 34, 60, 86, 112, 138],
+      [6, 30, 58, 86, 114, 142],
+      [6, 34, 62, 90, 118, 146],
+      [6, 30, 54, 78, 102, 126, 150],
+      [6, 24, 50, 76, 102, 128, 154],
+      [6, 28, 54, 80, 106, 132, 158],
+      [6, 32, 58, 84, 110, 136, 162],
+      [6, 26, 54, 82, 110, 138, 166],
+      [6, 30, 58, 86, 114, 142, 170]
+    ];
+    var G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0);
+    var G18 = (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0);
+    var G15_MASK = (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1);
+
+    var _this = {};
+
+    var getBCHDigit = function(data) {
+      var digit = 0;
+      while (data != 0) {
+        digit += 1;
+        data >>>= 1;
+      }
+      return digit;
+    };
+
+    _this.getBCHTypeInfo = function(data) {
+      var d = data << 10;
+      while (getBCHDigit(d) - getBCHDigit(G15) >= 0) {
+        d ^= (G15 << (getBCHDigit(d) - getBCHDigit(G15) ) );
+      }
+      return ( (data << 10) | d) ^ G15_MASK;
+    };
+
+    _this.getBCHTypeNumber = function(data) {
+      var d = data << 12;
+      while (getBCHDigit(d) - getBCHDigit(G18) >= 0) {
+        d ^= (G18 << (getBCHDigit(d) - getBCHDigit(G18) ) );
+      }
+      return (data << 12) | d;
+    };
+
+    _this.getPatternPosition = function(typeNumber) {
+      return PATTERN_POSITION_TABLE[typeNumber - 1];
+    };
+
+    _this.getMaskFunction = function(maskPattern) {
+
+      switch (maskPattern) {
+
+      case QRMaskPattern.PATTERN000 :
+        return function(i, j) { return (i + j) % 2 == 0; };
+      case QRMaskPattern.PATTERN001 :
+        return function(i, j) { return i % 2 == 0; };
+      case QRMaskPattern.PATTERN010 :
+        return function(i, j) { return j % 3 == 0; };
+      case QRMaskPattern.PATTERN011 :
+        return function(i, j) { return (i + j) % 3 == 0; };
+      case QRMaskPattern.PATTERN100 :
+        return function(i, j) { return (Math.floor(i / 2) + Math.floor(j / 3) ) % 2 == 0; };
+      case QRMaskPattern.PATTERN101 :
+        return function(i, j) { return (i * j) % 2 + (i * j) % 3 == 0; };
+      case QRMaskPattern.PATTERN110 :
+        return function(i, j) { return ( (i * j) % 2 + (i * j) % 3) % 2 == 0; };
+      case QRMaskPattern.PATTERN111 :
+        return function(i, j) { return ( (i * j) % 3 + (i + j) % 2) % 2 == 0; };
+
+      default :
+        throw 'bad maskPattern:' + maskPattern;
+      }
+    };
+
+    _this.getErrorCorrectPolynomial = function(errorCorrectLength) {
+      var a = qrPolynomial([1], 0);
+      for (var i = 0; i < errorCorrectLength; i += 1) {
+        a = a.multiply(qrPolynomial([1, QRMath.gexp(i)], 0) );
+      }
+      return a;
+    };
+
+    _this.getLengthInBits = function(mode, type) {
+
+      if (1 <= type && type < 10) {
+
+        // 1 - 9
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 10;
+        case QRMode.MODE_ALPHA_NUM : return 9;
+        case QRMode.MODE_8BIT_BYTE : return 8;
+        case QRMode.MODE_KANJI     : return 8;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 27) {
+
+        // 10 - 26
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 12;
+        case QRMode.MODE_ALPHA_NUM : return 11;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 10;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 41) {
+
+        // 27 - 40
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 14;
+        case QRMode.MODE_ALPHA_NUM : return 13;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 12;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else {
+        throw 'type:' + type;
+      }
+    };
+
+    _this.getLostPoint = function(qrcode) {
+
+      var moduleCount = qrcode.getModuleCount();
+
+      var lostPoint = 0;
+
+      // LEVEL1
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount; col += 1) {
+
+          var sameCount = 0;
+          var dark = qrcode.isDark(row, col);
+
+          for (var r = -1; r <= 1; r += 1) {
+
+            if (row + r < 0 || moduleCount <= row + r) {
+              continue;
+            }
+
+            for (var c = -1; c <= 1; c += 1) {
+
+              if (col + c < 0 || moduleCount <= col + c) {
+                continue;
+              }
+
+              if (r == 0 && c == 0) {
+                continue;
+              }
+
+              if (dark == qrcode.isDark(row + r, col + c) ) {
+                sameCount += 1;
+              }
+            }
+          }
+
+          if (sameCount > 5) {
+            lostPoint += (3 + sameCount - 5);
+          }
+        }
+      };
+
+      // LEVEL2
+
+      for (var row = 0; row < moduleCount - 1; row += 1) {
+        for (var col = 0; col < moduleCount - 1; col += 1) {
+          var count = 0;
+          if (qrcode.isDark(row, col) ) count += 1;
+          if (qrcode.isDark(row + 1, col) ) count += 1;
+          if (qrcode.isDark(row, col + 1) ) count += 1;
+          if (qrcode.isDark(row + 1, col + 1) ) count += 1;
+          if (count == 0 || count == 4) {
+            lostPoint += 3;
+          }
+        }
+      }
+
+      // LEVEL3
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount - 6; col += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row, col + 1)
+              &&  qrcode.isDark(row, col + 2)
+              &&  qrcode.isDark(row, col + 3)
+              &&  qrcode.isDark(row, col + 4)
+              && !qrcode.isDark(row, col + 5)
+              &&  qrcode.isDark(row, col + 6) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount - 6; row += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row + 1, col)
+              &&  qrcode.isDark(row + 2, col)
+              &&  qrcode.isDark(row + 3, col)
+              &&  qrcode.isDark(row + 4, col)
+              && !qrcode.isDark(row + 5, col)
+              &&  qrcode.isDark(row + 6, col) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      // LEVEL4
+
+      var darkCount = 0;
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount; row += 1) {
+          if (qrcode.isDark(row, col) ) {
+            darkCount += 1;
+          }
+        }
+      }
+
+      var ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
+      lostPoint += ratio * 10;
+
+      return lostPoint;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // QRMath
+  //---------------------------------------------------------------------
+
+  var QRMath = function() {
+
+    var EXP_TABLE = new Array(256);
+    var LOG_TABLE = new Array(256);
+
+    // initialize tables
+    for (var i = 0; i < 8; i += 1) {
+      EXP_TABLE[i] = 1 << i;
+    }
+    for (var i = 8; i < 256; i += 1) {
+      EXP_TABLE[i] = EXP_TABLE[i - 4]
+        ^ EXP_TABLE[i - 5]
+        ^ EXP_TABLE[i - 6]
+        ^ EXP_TABLE[i - 8];
+    }
+    for (var i = 0; i < 255; i += 1) {
+      LOG_TABLE[EXP_TABLE[i] ] = i;
+    }
+
+    var _this = {};
+
+    _this.glog = function(n) {
+
+      if (n < 1) {
+        throw 'glog(' + n + ')';
+      }
+
+      return LOG_TABLE[n];
+    };
+
+    _this.gexp = function(n) {
+
+      while (n < 0) {
+        n += 255;
+      }
+
+      while (n >= 256) {
+        n -= 255;
+      }
+
+      return EXP_TABLE[n];
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrPolynomial
+  //---------------------------------------------------------------------
+
+  function qrPolynomial(num, shift) {
+
+    if (typeof num.length == 'undefined') {
+      throw num.length + '/' + shift;
+    }
+
+    var _num = function() {
+      var offset = 0;
+      while (offset < num.length && num[offset] == 0) {
+        offset += 1;
+      }
+      var _num = new Array(num.length - offset + shift);
+      for (var i = 0; i < num.length - offset; i += 1) {
+        _num[i] = num[i + offset];
+      }
+      return _num;
+    }();
+
+    var _this = {};
+
+    _this.getAt = function(index) {
+      return _num[index];
+    };
+
+    _this.getLength = function() {
+      return _num.length;
+    };
+
+    _this.multiply = function(e) {
+
+      var num = new Array(_this.getLength() + e.getLength() - 1);
+
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        for (var j = 0; j < e.getLength(); j += 1) {
+          num[i + j] ^= QRMath.gexp(QRMath.glog(_this.getAt(i) ) + QRMath.glog(e.getAt(j) ) );
+        }
+      }
+
+      return qrPolynomial(num, 0);
+    };
+
+    _this.mod = function(e) {
+
+      if (_this.getLength() - e.getLength() < 0) {
+        return _this;
+      }
+
+      var ratio = QRMath.glog(_this.getAt(0) ) - QRMath.glog(e.getAt(0) );
+
+      var num = new Array(_this.getLength() );
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        num[i] = _this.getAt(i);
+      }
+
+      for (var i = 0; i < e.getLength(); i += 1) {
+        num[i] ^= QRMath.gexp(QRMath.glog(e.getAt(i) ) + ratio);
+      }
+
+      // recursive call
+      return qrPolynomial(num, 0).mod(e);
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // QRRSBlock
+  //---------------------------------------------------------------------
+
+  var QRRSBlock = function() {
+
+    var RS_BLOCK_TABLE = [
+
+      // L
+      // M
+      // Q
+      // H
+
+      // 1
+      [1, 26, 19],
+      [1, 26, 16],
+      [1, 26, 13],
+      [1, 26, 9],
+
+      // 2
+      [1, 44, 34],
+      [1, 44, 28],
+      [1, 44, 22],
+      [1, 44, 16],
+
+      // 3
+      [1, 70, 55],
+      [1, 70, 44],
+      [2, 35, 17],
+      [2, 35, 13],
+
+      // 4
+      [1, 100, 80],
+      [2, 50, 32],
+      [2, 50, 24],
+      [4, 25, 9],
+
+      // 5
+      [1, 134, 108],
+      [2, 67, 43],
+      [2, 33, 15, 2, 34, 16],
+      [2, 33, 11, 2, 34, 12],
+
+      // 6
+      [2, 86, 68],
+      [4, 43, 27],
+      [4, 43, 19],
+      [4, 43, 15],
+
+      // 7
+      [2, 98, 78],
+      [4, 49, 31],
+      [2, 32, 14, 4, 33, 15],
+      [4, 39, 13, 1, 40, 14],
+
+      // 8
+      [2, 121, 97],
+      [2, 60, 38, 2, 61, 39],
+      [4, 40, 18, 2, 41, 19],
+      [4, 40, 14, 2, 41, 15],
+
+      // 9
+      [2, 146, 116],
+      [3, 58, 36, 2, 59, 37],
+      [4, 36, 16, 4, 37, 17],
+      [4, 36, 12, 4, 37, 13],
+
+      // 10
+      [2, 86, 68, 2, 87, 69],
+      [4, 69, 43, 1, 70, 44],
+      [6, 43, 19, 2, 44, 20],
+      [6, 43, 15, 2, 44, 16],
+
+      // 11
+      [4, 101, 81],
+      [1, 80, 50, 4, 81, 51],
+      [4, 50, 22, 4, 51, 23],
+      [3, 36, 12, 8, 37, 13],
+
+      // 12
+      [2, 116, 92, 2, 117, 93],
+      [6, 58, 36, 2, 59, 37],
+      [4, 46, 20, 6, 47, 21],
+      [7, 42, 14, 4, 43, 15],
+
+      // 13
+      [4, 133, 107],
+      [8, 59, 37, 1, 60, 38],
+      [8, 44, 20, 4, 45, 21],
+      [12, 33, 11, 4, 34, 12],
+
+      // 14
+      [3, 145, 115, 1, 146, 116],
+      [4, 64, 40, 5, 65, 41],
+      [11, 36, 16, 5, 37, 17],
+      [11, 36, 12, 5, 37, 13],
+
+      // 15
+      [5, 109, 87, 1, 110, 88],
+      [5, 65, 41, 5, 66, 42],
+      [5, 54, 24, 7, 55, 25],
+      [11, 36, 12, 7, 37, 13],
+
+      // 16
+      [5, 122, 98, 1, 123, 99],
+      [7, 73, 45, 3, 74, 46],
+      [15, 43, 19, 2, 44, 20],
+      [3, 45, 15, 13, 46, 16],
+
+      // 17
+      [1, 135, 107, 5, 136, 108],
+      [10, 74, 46, 1, 75, 47],
+      [1, 50, 22, 15, 51, 23],
+      [2, 42, 14, 17, 43, 15],
+
+      // 18
+      [5, 150, 120, 1, 151, 121],
+      [9, 69, 43, 4, 70, 44],
+      [17, 50, 22, 1, 51, 23],
+      [2, 42, 14, 19, 43, 15],
+
+      // 19
+      [3, 141, 113, 4, 142, 114],
+      [3, 70, 44, 11, 71, 45],
+      [17, 47, 21, 4, 48, 22],
+      [9, 39, 13, 16, 40, 14],
+
+      // 20
+      [3, 135, 107, 5, 136, 108],
+      [3, 67, 41, 13, 68, 42],
+      [15, 54, 24, 5, 55, 25],
+      [15, 43, 15, 10, 44, 16],
+
+      // 21
+      [4, 144, 116, 4, 145, 117],
+      [17, 68, 42],
+      [17, 50, 22, 6, 51, 23],
+      [19, 46, 16, 6, 47, 17],
+
+      // 22
+      [2, 139, 111, 7, 140, 112],
+      [17, 74, 46],
+      [7, 54, 24, 16, 55, 25],
+      [34, 37, 13],
+
+      // 23
+      [4, 151, 121, 5, 152, 122],
+      [4, 75, 47, 14, 76, 48],
+      [11, 54, 24, 14, 55, 25],
+      [16, 45, 15, 14, 46, 16],
+
+      // 24
+      [6, 147, 117, 4, 148, 118],
+      [6, 73, 45, 14, 74, 46],
+      [11, 54, 24, 16, 55, 25],
+      [30, 46, 16, 2, 47, 17],
+
+      // 25
+      [8, 132, 106, 4, 133, 107],
+      [8, 75, 47, 13, 76, 48],
+      [7, 54, 24, 22, 55, 25],
+      [22, 45, 15, 13, 46, 16],
+
+      // 26
+      [10, 142, 114, 2, 143, 115],
+      [19, 74, 46, 4, 75, 47],
+      [28, 50, 22, 6, 51, 23],
+      [33, 46, 16, 4, 47, 17],
+
+      // 27
+      [8, 152, 122, 4, 153, 123],
+      [22, 73, 45, 3, 74, 46],
+      [8, 53, 23, 26, 54, 24],
+      [12, 45, 15, 28, 46, 16],
+
+      // 28
+      [3, 147, 117, 10, 148, 118],
+      [3, 73, 45, 23, 74, 46],
+      [4, 54, 24, 31, 55, 25],
+      [11, 45, 15, 31, 46, 16],
+
+      // 29
+      [7, 146, 116, 7, 147, 117],
+      [21, 73, 45, 7, 74, 46],
+      [1, 53, 23, 37, 54, 24],
+      [19, 45, 15, 26, 46, 16],
+
+      // 30
+      [5, 145, 115, 10, 146, 116],
+      [19, 75, 47, 10, 76, 48],
+      [15, 54, 24, 25, 55, 25],
+      [23, 45, 15, 25, 46, 16],
+
+      // 31
+      [13, 145, 115, 3, 146, 116],
+      [2, 74, 46, 29, 75, 47],
+      [42, 54, 24, 1, 55, 25],
+      [23, 45, 15, 28, 46, 16],
+
+      // 32
+      [17, 145, 115],
+      [10, 74, 46, 23, 75, 47],
+      [10, 54, 24, 35, 55, 25],
+      [19, 45, 15, 35, 46, 16],
+
+      // 33
+      [17, 145, 115, 1, 146, 116],
+      [14, 74, 46, 21, 75, 47],
+      [29, 54, 24, 19, 55, 25],
+      [11, 45, 15, 46, 46, 16],
+
+      // 34
+      [13, 145, 115, 6, 146, 116],
+      [14, 74, 46, 23, 75, 47],
+      [44, 54, 24, 7, 55, 25],
+      [59, 46, 16, 1, 47, 17],
+
+      // 35
+      [12, 151, 121, 7, 152, 122],
+      [12, 75, 47, 26, 76, 48],
+      [39, 54, 24, 14, 55, 25],
+      [22, 45, 15, 41, 46, 16],
+
+      // 36
+      [6, 151, 121, 14, 152, 122],
+      [6, 75, 47, 34, 76, 48],
+      [46, 54, 24, 10, 55, 25],
+      [2, 45, 15, 64, 46, 16],
+
+      // 37
+      [17, 152, 122, 4, 153, 123],
+      [29, 74, 46, 14, 75, 47],
+      [49, 54, 24, 10, 55, 25],
+      [24, 45, 15, 46, 46, 16],
+
+      // 38
+      [4, 152, 122, 18, 153, 123],
+      [13, 74, 46, 32, 75, 47],
+      [48, 54, 24, 14, 55, 25],
+      [42, 45, 15, 32, 46, 16],
+
+      // 39
+      [20, 147, 117, 4, 148, 118],
+      [40, 75, 47, 7, 76, 48],
+      [43, 54, 24, 22, 55, 25],
+      [10, 45, 15, 67, 46, 16],
+
+      // 40
+      [19, 148, 118, 6, 149, 119],
+      [18, 75, 47, 31, 76, 48],
+      [34, 54, 24, 34, 55, 25],
+      [20, 45, 15, 61, 46, 16]
+    ];
+
+    var qrRSBlock = function(totalCount, dataCount) {
+      var _this = {};
+      _this.totalCount = totalCount;
+      _this.dataCount = dataCount;
+      return _this;
+    };
+
+    var _this = {};
+
+    var getRsBlockTable = function(typeNumber, errorCorrectionLevel) {
+
+      switch(errorCorrectionLevel) {
+      case QRErrorCorrectionLevel.L :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0];
+      case QRErrorCorrectionLevel.M :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1];
+      case QRErrorCorrectionLevel.Q :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2];
+      case QRErrorCorrectionLevel.H :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3];
+      default :
+        return undefined;
+      }
+    };
+
+    _this.getRSBlocks = function(typeNumber, errorCorrectionLevel) {
+
+      var rsBlock = getRsBlockTable(typeNumber, errorCorrectionLevel);
+
+      if (typeof rsBlock == 'undefined') {
+        throw 'bad rs block @ typeNumber:' + typeNumber +
+            '/errorCorrectionLevel:' + errorCorrectionLevel;
+      }
+
+      var length = rsBlock.length / 3;
+
+      var list = [];
+
+      for (var i = 0; i < length; i += 1) {
+
+        var count = rsBlock[i * 3 + 0];
+        var totalCount = rsBlock[i * 3 + 1];
+        var dataCount = rsBlock[i * 3 + 2];
+
+        for (var j = 0; j < count; j += 1) {
+          list.push(qrRSBlock(totalCount, dataCount) );
+        }
+      }
+
+      return list;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrBitBuffer
+  //---------------------------------------------------------------------
+
+  var qrBitBuffer = function() {
+
+    var _buffer = [];
+    var _length = 0;
+
+    var _this = {};
+
+    _this.getBuffer = function() {
+      return _buffer;
+    };
+
+    _this.getAt = function(index) {
+      var bufIndex = Math.floor(index / 8);
+      return ( (_buffer[bufIndex] >>> (7 - index % 8) ) & 1) == 1;
+    };
+
+    _this.put = function(num, length) {
+      for (var i = 0; i < length; i += 1) {
+        _this.putBit( ( (num >>> (length - i - 1) ) & 1) == 1);
+      }
+    };
+
+    _this.getLengthInBits = function() {
+      return _length;
+    };
+
+    _this.putBit = function(bit) {
+
+      var bufIndex = Math.floor(_length / 8);
+      if (_buffer.length <= bufIndex) {
+        _buffer.push(0);
+      }
+
+      if (bit) {
+        _buffer[bufIndex] |= (0x80 >>> (_length % 8) );
+      }
+
+      _length += 1;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrNumber
+  //---------------------------------------------------------------------
+
+  var qrNumber = function(data) {
+
+    var _mode = QRMode.MODE_NUMBER;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _data;
+
+      var i = 0;
+
+      while (i + 2 < data.length) {
+        buffer.put(strToNum(data.substring(i, i + 3) ), 10);
+        i += 3;
+      }
+
+      if (i < data.length) {
+        if (data.length - i == 1) {
+          buffer.put(strToNum(data.substring(i, i + 1) ), 4);
+        } else if (data.length - i == 2) {
+          buffer.put(strToNum(data.substring(i, i + 2) ), 7);
+        }
+      }
+    };
+
+    var strToNum = function(s) {
+      var num = 0;
+      for (var i = 0; i < s.length; i += 1) {
+        num = num * 10 + chatToNum(s.charAt(i) );
+      }
+      return num;
+    };
+
+    var chatToNum = function(c) {
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      }
+      throw 'illegal char :' + c;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrAlphaNum
+  //---------------------------------------------------------------------
+
+  var qrAlphaNum = function(data) {
+
+    var _mode = QRMode.MODE_ALPHA_NUM;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var s = _data;
+
+      var i = 0;
+
+      while (i + 1 < s.length) {
+        buffer.put(
+          getCode(s.charAt(i) ) * 45 +
+          getCode(s.charAt(i + 1) ), 11);
+        i += 2;
+      }
+
+      if (i < s.length) {
+        buffer.put(getCode(s.charAt(i) ), 6);
+      }
+    };
+
+    var getCode = function(c) {
+
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      } else if ('A' <= c && c <= 'Z') {
+        return c.charCodeAt(0) - 'A'.charCodeAt(0) + 10;
+      } else {
+        switch (c) {
+        case ' ' : return 36;
+        case '$' : return 37;
+        case '%' : return 38;
+        case '*' : return 39;
+        case '+' : return 40;
+        case '-' : return 41;
+        case '.' : return 42;
+        case '/' : return 43;
+        case ':' : return 44;
+        default :
+          throw 'illegal char :' + c;
+        }
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qr8BitByte
+  //---------------------------------------------------------------------
+
+  var qr8BitByte = function(data) {
+
+    var _mode = QRMode.MODE_8BIT_BYTE;
+    var _data = data;
+    var _bytes = qrcode.stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _bytes.length;
+    };
+
+    _this.write = function(buffer) {
+      for (var i = 0; i < _bytes.length; i += 1) {
+        buffer.put(_bytes[i], 8);
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrKanji
+  //---------------------------------------------------------------------
+
+  var qrKanji = function(data) {
+
+    var _mode = QRMode.MODE_KANJI;
+    var _data = data;
+
+    var stringToBytes = qrcode.stringToBytesFuncs['SJIS'];
+    if (!stringToBytes) {
+      throw 'sjis not supported.';
+    }
+    !function(c, code) {
+      // self test for sjis support.
+      var test = stringToBytes(c);
+      if (test.length != 2 || ( (test[0] << 8) | test[1]) != code) {
+        throw 'sjis not supported.';
+      }
+    }('\u53cb', 0x9746);
+
+    var _bytes = stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return ~~(_bytes.length / 2);
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _bytes;
+
+      var i = 0;
+
+      while (i + 1 < data.length) {
+
+        var c = ( (0xff & data[i]) << 8) | (0xff & data[i + 1]);
+
+        if (0x8140 <= c && c <= 0x9FFC) {
+          c -= 0x8140;
+        } else if (0xE040 <= c && c <= 0xEBBF) {
+          c -= 0xC140;
+        } else {
+          throw 'illegal char at ' + (i + 1) + '/' + c;
+        }
+
+        c = ( (c >>> 8) & 0xff) * 0xC0 + (c & 0xff);
+
+        buffer.put(c, 13);
+
+        i += 2;
+      }
+
+      if (i < data.length) {
+        throw 'illegal char at ' + (i + 1);
+      }
+    };
+
+    return _this;
+  };
+
+  //=====================================================================
+  // GIF Support etc.
+  //
+
+  //---------------------------------------------------------------------
+  // byteArrayOutputStream
+  //---------------------------------------------------------------------
+
+  var byteArrayOutputStream = function() {
+
+    var _bytes = [];
+
+    var _this = {};
+
+    _this.writeByte = function(b) {
+      _bytes.push(b & 0xff);
+    };
+
+    _this.writeShort = function(i) {
+      _this.writeByte(i);
+      _this.writeByte(i >>> 8);
+    };
+
+    _this.writeBytes = function(b, off, len) {
+      off = off || 0;
+      len = len || b.length;
+      for (var i = 0; i < len; i += 1) {
+        _this.writeByte(b[i + off]);
+      }
+    };
+
+    _this.writeString = function(s) {
+      for (var i = 0; i < s.length; i += 1) {
+        _this.writeByte(s.charCodeAt(i) );
+      }
+    };
+
+    _this.toByteArray = function() {
+      return _bytes;
+    };
+
+    _this.toString = function() {
+      var s = '';
+      s += '[';
+      for (var i = 0; i < _bytes.length; i += 1) {
+        if (i > 0) {
+          s += ',';
+        }
+        s += _bytes[i];
+      }
+      s += ']';
+      return s;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64EncodeOutputStream
+  //---------------------------------------------------------------------
+
+  var base64EncodeOutputStream = function() {
+
+    var _buffer = 0;
+    var _buflen = 0;
+    var _length = 0;
+    var _base64 = '';
+
+    var _this = {};
+
+    var writeEncoded = function(b) {
+      _base64 += String.fromCharCode(encode(b & 0x3f) );
+    };
+
+    var encode = function(n) {
+      if (n < 0) {
+        // error.
+      } else if (n < 26) {
+        return 0x41 + n;
+      } else if (n < 52) {
+        return 0x61 + (n - 26);
+      } else if (n < 62) {
+        return 0x30 + (n - 52);
+      } else if (n == 62) {
+        return 0x2b;
+      } else if (n == 63) {
+        return 0x2f;
+      }
+      throw 'n:' + n;
+    };
+
+    _this.writeByte = function(n) {
+
+      _buffer = (_buffer << 8) | (n & 0xff);
+      _buflen += 8;
+      _length += 1;
+
+      while (_buflen >= 6) {
+        writeEncoded(_buffer >>> (_buflen - 6) );
+        _buflen -= 6;
+      }
+    };
+
+    _this.flush = function() {
+
+      if (_buflen > 0) {
+        writeEncoded(_buffer << (6 - _buflen) );
+        _buffer = 0;
+        _buflen = 0;
+      }
+
+      if (_length % 3 != 0) {
+        // padding
+        var padlen = 3 - _length % 3;
+        for (var i = 0; i < padlen; i += 1) {
+          _base64 += '=';
+        }
+      }
+    };
+
+    _this.toString = function() {
+      return _base64;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64DecodeInputStream
+  //---------------------------------------------------------------------
+
+  var base64DecodeInputStream = function(str) {
+
+    var _str = str;
+    var _pos = 0;
+    var _buffer = 0;
+    var _buflen = 0;
+
+    var _this = {};
+
+    _this.read = function() {
+
+      while (_buflen < 8) {
+
+        if (_pos >= _str.length) {
+          if (_buflen == 0) {
+            return -1;
+          }
+          throw 'unexpected end of file./' + _buflen;
+        }
+
+        var c = _str.charAt(_pos);
+        _pos += 1;
+
+        if (c == '=') {
+          _buflen = 0;
+          return -1;
+        } else if (c.match(/^\s$/) ) {
+          // ignore if whitespace.
+          continue;
+        }
+
+        _buffer = (_buffer << 6) | decode(c.charCodeAt(0) );
+        _buflen += 6;
+      }
+
+      var n = (_buffer >>> (_buflen - 8) ) & 0xff;
+      _buflen -= 8;
+      return n;
+    };
+
+    var decode = function(c) {
+      if (0x41 <= c && c <= 0x5a) {
+        return c - 0x41;
+      } else if (0x61 <= c && c <= 0x7a) {
+        return c - 0x61 + 26;
+      } else if (0x30 <= c && c <= 0x39) {
+        return c - 0x30 + 52;
+      } else if (c == 0x2b) {
+        return 62;
+      } else if (c == 0x2f) {
+        return 63;
+      } else {
+        throw 'c:' + c;
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // gifImage (B/W)
+  //---------------------------------------------------------------------
+
+  var gifImage = function(width, height) {
+
+    var _width = width;
+    var _height = height;
+    var _data = new Array(width * height);
+
+    var _this = {};
+
+    _this.setPixel = function(x, y, pixel) {
+      _data[y * _width + x] = pixel;
+    };
+
+    _this.write = function(out) {
+
+      //---------------------------------
+      // GIF Signature
+
+      out.writeString('GIF87a');
+
+      //---------------------------------
+      // Screen Descriptor
+
+      out.writeShort(_width);
+      out.writeShort(_height);
+
+      out.writeByte(0x80); // 2bit
+      out.writeByte(0);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Global Color Map
+
+      // black
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+
+      // white
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+
+      //---------------------------------
+      // Image Descriptor
+
+      out.writeString(',');
+      out.writeShort(0);
+      out.writeShort(0);
+      out.writeShort(_width);
+      out.writeShort(_height);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Local Color Map
+
+      //---------------------------------
+      // Raster Data
+
+      var lzwMinCodeSize = 2;
+      var raster = getLZWRaster(lzwMinCodeSize);
+
+      out.writeByte(lzwMinCodeSize);
+
+      var offset = 0;
+
+      while (raster.length - offset > 255) {
+        out.writeByte(255);
+        out.writeBytes(raster, offset, 255);
+        offset += 255;
+      }
+
+      out.writeByte(raster.length - offset);
+      out.writeBytes(raster, offset, raster.length - offset);
+      out.writeByte(0x00);
+
+      //---------------------------------
+      // GIF Terminator
+      out.writeString(';');
+    };
+
+    var bitOutputStream = function(out) {
+
+      var _out = out;
+      var _bitLength = 0;
+      var _bitBuffer = 0;
+
+      var _this = {};
+
+      _this.write = function(data, length) {
+
+        if ( (data >>> length) != 0) {
+          throw 'length over';
+        }
+
+        while (_bitLength + length >= 8) {
+          _out.writeByte(0xff & ( (data << _bitLength) | _bitBuffer) );
+          length -= (8 - _bitLength);
+          data >>>= (8 - _bitLength);
+          _bitBuffer = 0;
+          _bitLength = 0;
+        }
+
+        _bitBuffer = (data << _bitLength) | _bitBuffer;
+        _bitLength = _bitLength + length;
+      };
+
+      _this.flush = function() {
+        if (_bitLength > 0) {
+          _out.writeByte(_bitBuffer);
+        }
+      };
+
+      return _this;
+    };
+
+    var getLZWRaster = function(lzwMinCodeSize) {
+
+      var clearCode = 1 << lzwMinCodeSize;
+      var endCode = (1 << lzwMinCodeSize) + 1;
+      var bitLength = lzwMinCodeSize + 1;
+
+      // Setup LZWTable
+      var table = lzwTable();
+
+      for (var i = 0; i < clearCode; i += 1) {
+        table.add(String.fromCharCode(i) );
+      }
+      table.add(String.fromCharCode(clearCode) );
+      table.add(String.fromCharCode(endCode) );
+
+      var byteOut = byteArrayOutputStream();
+      var bitOut = bitOutputStream(byteOut);
+
+      // clear code
+      bitOut.write(clearCode, bitLength);
+
+      var dataIndex = 0;
+
+      var s = String.fromCharCode(_data[dataIndex]);
+      dataIndex += 1;
+
+      while (dataIndex < _data.length) {
+
+        var c = String.fromCharCode(_data[dataIndex]);
+        dataIndex += 1;
+
+        if (table.contains(s + c) ) {
+
+          s = s + c;
+
+        } else {
+
+          bitOut.write(table.indexOf(s), bitLength);
+
+          if (table.size() < 0xfff) {
+
+            if (table.size() == (1 << bitLength) ) {
+              bitLength += 1;
+            }
+
+            table.add(s + c);
+          }
+
+          s = c;
+        }
+      }
+
+      bitOut.write(table.indexOf(s), bitLength);
+
+      // end code
+      bitOut.write(endCode, bitLength);
+
+      bitOut.flush();
+
+      return byteOut.toByteArray();
+    };
+
+    var lzwTable = function() {
+
+      var _map = {};
+      var _size = 0;
+
+      var _this = {};
+
+      _this.add = function(key) {
+        if (_this.contains(key) ) {
+          throw 'dup key:' + key;
+        }
+        _map[key] = _size;
+        _size += 1;
+      };
+
+      _this.size = function() {
+        return _size;
+      };
+
+      _this.indexOf = function(key) {
+        return _map[key];
+      };
+
+      _this.contains = function(key) {
+        return typeof _map[key] != 'undefined';
+      };
+
+      return _this;
+    };
+
+    return _this;
+  };
+
+  var createDataURL = function(width, height, getPixel) {
+    var gif = gifImage(width, height);
+    for (var y = 0; y < height; y += 1) {
+      for (var x = 0; x < width; x += 1) {
+        gif.setPixel(x, y, getPixel(x, y) );
+      }
+    }
+
+    var b = byteArrayOutputStream();
+    gif.write(b);
+
+    var base64 = base64EncodeOutputStream();
+    var bytes = b.toByteArray();
+    for (var i = 0; i < bytes.length; i += 1) {
+      base64.writeByte(bytes[i]);
+    }
+    base64.flush();
+
+    return 'data:image/gif;base64,' + base64;
+  };
+
+  //---------------------------------------------------------------------
+  // returns qrcode function.
+
+  return qrcode;
+}();
+
+// multibyte support
+!function() {
+
+  qrcode.stringToBytesFuncs['UTF-8'] = function(s) {
+    // http://stackoverflow.com/questions/18729405/how-to-convert-utf8-string-to-byte-array
+    function toUTF8Array(str) {
+      var utf8 = [];
+      for (var i=0; i < str.length; i++) {
+        var charcode = str.charCodeAt(i);
+        if (charcode < 0x80) utf8.push(charcode);
+        else if (charcode < 0x800) {
+          utf8.push(0xc0 | (charcode >> 6),
+              0x80 | (charcode & 0x3f));
+        }
+        else if (charcode < 0xd800 || charcode >= 0xe000) {
+          utf8.push(0xe0 | (charcode >> 12),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+        // surrogate pair
+        else {
+          i++;
+          // UTF-16 encodes 0x10000-0x10FFFF by
+          // subtracting 0x10000 and splitting the
+          // 20 bits of 0x0-0xFFFFF into two halves
+          charcode = 0x10000 + (((charcode & 0x3ff)<<10)
+            | (str.charCodeAt(i) & 0x3ff));
+          utf8.push(0xf0 | (charcode >>18),
+              0x80 | ((charcode>>12) & 0x3f),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+      }
+      return utf8;
+    }
+    return toUTF8Array(s);
+  };
+
+}();
+
+(function (factory) {
+  if (typeof define === 'function' && define.amd) {
+      define([], factory);
+  } else if (typeof exports === 'object') {
+      module.exports = factory();
+  }
+}(function () {
+    return qrcode;
+}));
+
+</script>
+
+<script>
+let QUESTION_SET = null;
+let ASSIGNMENT_ID = '';
+let STUDENT_ID = '';
+let LAYOUT_DATA = null;
+let ANSWER_SHEETS_REGISTERED = false; // 現在のLAYOUT_DATAをanswer_sheetsへ登録済みか
+
+// pandora-project共通のSupabase接続情報（他ファイルと同一のpublishableキー）。
+const SUPABASE_URL = 'https://upmflhdbhbyzoeldrvvw.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_K8Y_bNHVA4szRXFM_EcDkA_LBckunu5';
+
+const PX_PER_MM = 96 / 25.4;
+const PAGE_W = 210, PAGE_H = 297, PAGE_PAD = 15;
+const CONTENT_W = PAGE_W - PAGE_PAD*2;   // 180mm
+const CONTENT_H = PAGE_H - PAGE_PAD*2 - 8; // フッター分を差し引いた実質高さ（mm）
+
+function setupNotice(msg, type){
+  document.getElementById('setupNotice').innerHTML = '<div class="notice notice-'+type+'">'+msg+'</div>';
+}
+function genAssignmentId(){
+  return 'asgn_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
+}
+function escapeHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ================= 生徒名簿（Lethe getStudents） =================
+// photo_intake / grading と同じ getStudents 呼び出しパターン（シンプルGET）。
+const LETHE_URL = "https://script.google.com/macros/s/AKfycbxlXsrnt14jxxZrnKUSSdq4KG8LU96eDTPjrkyXdSGZ-Gmehha5HHNPMZTnQo6OrIy7oA/exec";
+async function loadStudentsIntoSelect(selectId, textId){
+  const sel = document.getElementById(selectId);
+  const txt = textId ? document.getElementById(textId) : null;
+  if(!sel) return;
+  try{
+    const res = await fetch(LETHE_URL + '?action=getStudents');
+    const d = await res.json();
+    if(!d.success || !Array.isArray(d.students) || d.students.length === 0) throw new Error(d.error || 'no students');
+    sel.innerHTML = '<option value="">選択してください</option>' + d.students.map(function(s){
+      const label = escapeHtml(s.student_id + (s.name ? ' ' + s.name : ''));
+      return '<option value="' + escapeHtml(s.student_id) + '" data-name="' + escapeHtml(s.name || '') + '">' + label + '</option>';
+    }).join('');
+    sel.style.display = '';
+    if(txt) txt.style.display = 'none';
+  }catch(e){
+    console.warn('[loadStudentsIntoSelect] Lethe不達、手入力にフォールバック:', e);
+    if(txt){ txt.style.display = ''; sel.style.display = 'none'; }
+    else { sel.innerHTML = '<option value="">（名簿取得失敗・再読込してください）</option>'; }
+  }
+}
+function studentIdValue(selectId, textId){
+  const sel = document.getElementById(selectId);
+  const txt = textId ? document.getElementById(textId) : null;
+  let v = sel && sel.value ? sel.value : '';
+  if(!v && txt) v = txt.value;
+  return (v || '').trim();
+}
+function selectedStudentName(selectId){
+  const sel = document.getElementById(selectId);
+  const opt = sel && sel.selectedOptions && sel.selectedOptions[0];
+  return (opt && opt.dataset && opt.dataset.name) ? opt.dataset.name : '';
+}
+function gradeToInt(g){ return g ? (parseInt(String(g).replace(/[^0-9]/g,''),10) || null) : null; }
+
+// 問題セットを assignment_data 用に要約する。photo_intakeの取込時、印刷提出の
+// problems[]（layout由来でproblem_id/type/answer_canvasしか無い）へ
+// question_text/answer/kanten等をマージする元データになる。
+// problem_id は印刷レイアウトの 'q'+number と一致させる（buildLayoutData準拠）。
+function summarizeQuestions(qs){
+  return ((qs && qs.questions) || []).map(function(q, idx){
+    const n = (q.number != null) ? q.number : (idx + 1);
+    return {
+      problem_id: 'q' + n,
+      number: n,
+      type: q.type || null,
+      kanten: q.kanten || null,
+      question_text: q.question_text || null,
+      choices: q.choices || [],
+      answer: q.answer || null,
+      explanation: q.explanation || null,
+      _actualCount: (q._actualCount != null ? q._actualCount : null)
+    };
+  });
+}
+
+// PostgRESTのエラー本文からcodeを読み、原因別の日本語ヒントを返す。
+// 23502=必須列不足 / 23503=FK違反 / 401,403=権限(RLS)。誤誘導を避けるため出し分ける。
+function sbErrorMessage(status, bodyText){
+  let code = '', detail = '';
+  try{ const j = JSON.parse(bodyText); code = j.code || ''; detail = j.message || j.details || ''; }catch(e){ detail = (bodyText || '').slice(0,150); }
+  if(code === '23502') return '必須列が不足しています（NOT NULL違反）。送信ペイロードに必須列が揃っているか確認してください。詳細：' + detail;
+  if(code === '23503') return '関連レコードが未登録です（外部キー違反）。students/assignmentsの登録を先に済ませてください。詳細：' + detail;
+  if(status === 401 || status === 403) return 'アクセス権限がありません（RLS）。Supabaseで該当テーブルのanon insert権限を確認してください（HTTP ' + status + '）。';
+  return 'HTTP ' + status + ' ' + (detail || (bodyText || '').slice(0,150));
+}
+
+// ===== 画面間データ受け渡し（localStorage自動持ち回り・案A） =====
+var HO_QSET = 'japanese_latest_question_set', HO_STUDENT = 'japanese_latest_student';
+function hoSave(key, data){ try{ localStorage.setItem(key, JSON.stringify({ savedAt: Date.now(), data: data })); }catch(e){} }
+function hoLoad(key){ try{ var w = JSON.parse(localStorage.getItem(key) || 'null'); return (w && w.savedAt) ? w : null; }catch(e){ return null; } }
+function hoFresh(w){ return !!(w && (Date.now() - w.savedAt) <= 86400000); }
+function hoAge(savedAt){ var m = Math.floor((Date.now() - savedAt)/60000); if(m<1) return 'たった今'; if(m<60) return m+'分前'; var h = Math.floor(m/60); if(h<24) return h+'時間前'; return Math.floor(h/24)+'日前'; }
+function hoSaveStudent(selectId){ var sel = document.getElementById(selectId); if(!sel || !sel.value) return; hoSave(HO_STUDENT, { student_id: sel.value, name: selectedStudentName(selectId) }); }
+function hoPresetStudent(selectId){ var w = hoLoad(HO_STUDENT); if(!w || !w.data || !w.data.student_id) return; var sel = document.getElementById(selectId); if(!sel) return; for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value === w.data.student_id){ sel.value = w.data.student_id; break; } } }
+function hoRenderQuestionSetBanner(){
+  var host = document.getElementById('handoffBanner'); if(!host) return;
+  var w = hoLoad(HO_QSET);
+  if(!hoFresh(w) || !w.data || w.data.recordType !== 'japanese_question_set'){ host.innerHTML = ''; return; }
+  var qs = w.data;
+  var meta = [qs.gradeLabel || qs.grade, qs.genreLabel, qs.difficultyLabel].filter(Boolean).join('・');
+  host.innerHTML =
+    '<div style="border:1px solid var(--accent); background:rgba(90,140,255,.08); border-radius:10px; padding:10px 12px; margin-bottom:12px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">' +
+    '<span style="font-size:12px; line-height:1.6;">📄 直近の問題セット「' + escapeHtml(qs.sourceTitle || '(無題)') + '」（' + escapeHtml(meta) + '／' + hoAge(w.savedAt) + '）を読み込みますか？</span>' +
+    '<button onclick="hoApplyQuestionSet()" style="margin-left:auto; background:var(--accent); color:#fff; border:none; border-radius:8px; padding:7px 14px; font-size:12px; font-weight:700; cursor:pointer; font-family:inherit;">読み込む</button>' +
+    '<button onclick="document.getElementById(\'handoffBanner\').innerHTML=\'\'" style="background:transparent; color:var(--text3); border:1px solid var(--border); border-radius:8px; padding:7px 10px; font-size:12px; cursor:pointer; font-family:inherit;">閉じる</button>' +
+    '</div>';
+}
+function hoApplyQuestionSet(){
+  var w = hoLoad(HO_QSET);
+  if(w && w.data && w.data.recordType === 'japanese_question_set'){
+    QUESTION_SET = w.data;
+    setupNotice('問題セットを読み込みました：' + (QUESTION_SET.sourceTitle || '(無題)') + '（' + (QUESTION_SET.questions||[]).length + '問）', 'info');
+  }
+  var host = document.getElementById('handoffBanner'); if(host) host.innerHTML = '';
+}
+
+// ===== 工程進行バー（①文章生成→②問題生成→③配布・印刷） =====
+function flowFresh(key){ try{ var w = JSON.parse(localStorage.getItem(key) || 'null'); return !!(w && w.savedAt && (Date.now() - w.savedAt) <= 86400000); }catch(e){ return false; } }
+function renderFlowProgress(current){
+  var host = document.getElementById('flowProgress'); if(!host) return;
+  var doneStory = flowFresh('japanese_latest_story_record');
+  var doneQ = flowFresh('japanese_latest_question_set');
+  var base = 'font-size:12px; padding:6px 10px; border-radius:8px; font-family:inherit; display:inline-flex; align-items:center; white-space:nowrap;';
+  function chip(label, href, active, done){
+    var check = done ? ' <span style="color:#2e9e5b">✅</span>' : '';
+    if(active) return '<span style="' + base + ' background:var(--accent); color:#fff; font-weight:700;">' + label + check + '</span>';
+    return '<a href="' + href + '" style="' + base + ' background:transparent; border:1px solid var(--border); color:var(--text2); text-decoration:none;">' + label + check + '</a>';
+  }
+  var arrow = '<span style="color:var(--text3); font-size:12px; padding:0 2px;">→</span>';
+  host.innerHTML =
+    chip('① 文章生成', 'Japanese_story_generator.html', current === 'story', doneStory) + arrow +
+    chip('② 問題生成', 'Japanese_question_generator.html', current === 'question', doneQ) + arrow +
+    '<span style="font-size:12px; color:var(--text3);">③</span>' +
+    chip('📱配布', 'Japanese_quiz_template.html', current === 'quiz', false) +
+    '<span style="color:var(--text3); font-size:11px;">/</span>' +
+    chip('🖨印刷', 'Japanese_print_template.html', current === 'print', false);
+}
+// 完了時の「次にすること」ガイド（アクセント枠・#nextGuideへ）
+function showNextGuide(html){
+  var host = document.getElementById('nextGuide'); if(!host) return;
+  host.innerHTML = '<div style="border:2px solid var(--accent); background:rgba(90,140,255,.06); border-radius:10px; padding:12px 14px; margin:12px 0; font-size:13px; line-height:1.75;">' + html + '</div>';
+}
+
+// ===== テーマ（ライト/ダーク）＋Iモード。4アプリ共通キー。印刷は常にライト（@media print） =====
+// このアプリのネイティブはライト。ダーク時のみ body.theme-dark を付与。
+function jpThemeIsDark(){ return document.body.classList.contains('theme-dark'); }
+function updateThemeBtn(){ var b = document.getElementById('themeBtn'); if(b) b.textContent = jpThemeIsDark() ? '☀️ ライト' : '🌙 ダーク'; }
+function applyTheme(theme){ document.body.classList.toggle('theme-dark', theme === 'dark'); updateThemeBtn(); }
+function toggleTheme(){ var next = jpThemeIsDark() ? 'light' : 'dark'; try{ localStorage.setItem('japanese_generator_theme', next); }catch(e){} applyTheme(next); }
+function initTheme(){ var t = null; try{ t = localStorage.getItem('japanese_generator_theme'); }catch(e){} applyTheme(t === 'dark' ? 'dark' : 'light'); }
+function updateImodeBtn(){ var b = document.getElementById('imodeBtn'); if(b) b.textContent = document.body.classList.contains('imode') ? '🩷 Iモード' : '🤍 Iモード'; }
+function toggleImode(){ var on = !document.body.classList.contains('imode'); document.body.classList.toggle('imode', on); try{ localStorage.setItem('japanese_generator_imode', on ? '1' : '0'); }catch(e){} updateImodeBtn(); }
+function initImode(){ var on = false; try{ on = localStorage.getItem('japanese_generator_imode') === '1'; }catch(e){} document.body.classList.toggle('imode', on); updateImodeBtn(); }
+
+// ===== マスターミラー同期：students テーブルへのUPSERT =====
+// Letheがマスター、Supabase students は従属ミラー。assignments.student_id が
+// students.id を参照するFKのため、印刷配布（answer_sheets登録）時に生徒行を用意する。
+// on_conflict=id + ignore-duplicates（無ければ挿入・あれば触らない。既存nameは保護）。
+// ⚠️ students.id は text型でS-XXXXを明示送信。
+async function upsertStudentMirror(studentId, name, gradeNum){
+  if(!studentId) return;
+  const row = { id: studentId, name: (name && name.trim()) ? name.trim() : '(未登録)' };
+  if(gradeNum != null) row.grade = gradeNum;
+  const res = await fetch(SUPABASE_URL + '/rest/v1/students?on_conflict=id', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+      'Prefer': 'resolution=ignore-duplicates,return=minimal'
+    },
+    body: JSON.stringify(row)
+  });
+  if(!res.ok){ const t = await res.text(); throw new Error('students同期: ' + sbErrorMessage(res.status, t)); }
+}
+
+// 印刷配布時に assignments 行を用意する（photo_intake が submissions を作る際の
+// FK先。on_conflict=assignment_id + merge-duplicates）。
+async function upsertJapaneseAssignment(){
+  const res = await fetch(SUPABASE_URL + '/rest/v1/assignments?on_conflict=assignment_id', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+      'Prefer': 'resolution=merge-duplicates,return=minimal'
+    },
+    body: JSON.stringify({
+      assignment_id: ASSIGNMENT_ID,
+      student_id: STUDENT_ID,
+      grade: gradeToInt(QUESTION_SET && QUESTION_SET.grade),
+      subject: 'japanese',
+      mode: null,
+      assignment_data: {
+        source_title: (QUESTION_SET && QUESTION_SET.sourceTitle) || null,
+        grade: (QUESTION_SET && QUESTION_SET.grade) || null, // "g2"（submission_data用の文字列）
+        genre: (QUESTION_SET && QUESTION_SET.genreKey) || null,
+        difficulty: (QUESTION_SET && QUESTION_SET.difficultyKey) || null,
+        structure_type: (QUESTION_SET && QUESTION_SET.structureType) || null,
+        kanten_tags: (QUESTION_SET && QUESTION_SET.kantenTags) || [],
+        questions: summarizeQuestions(QUESTION_SET) // 取込時に採点UI用メタをマージする元
+      },
+      assigned_at: new Date().toISOString()
+    })
+  });
+  if(!res.ok){ const t = await res.text(); throw new Error('課題(assignments)登録: ' + sbErrorMessage(res.status, t)); }
+}
+
+function loadQuestionSetFile(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (e)=>{ tryParseSet(e.target.result); };
+  reader.readAsText(file, 'utf-8');
+}
+function loadPastedSet(){
+  const raw = document.getElementById('pasteArea').value.trim();
+  if(!raw){ setupNotice('貼り付け欄が空です。', 'err'); return; }
+  tryParseSet(raw);
+}
+function tryParseSet(raw){
+  try{
+    const parsed = JSON.parse(raw);
+    if(parsed.recordType !== 'japanese_question_set'){
+      setupNotice('問題セット形式ではないようです。', 'err');
+      return;
+    }
+    QUESTION_SET = parsed;
+    setupNotice('問題セットを読み込みました：' + (parsed.sourceTitle || '(無題)') + '（' + (parsed.questions||[]).length + '問）', 'info');
+  }catch(err){
+    setupNotice('読み込みに失敗しました：' + err.message, 'err');
+  }
+}
+
+// ===== ブロック計測ベースのページ組版 =====
+// 各ブロック（段落・設問・解答欄）を計測用コンテナで実測し、ページ高さに収まるよう詰めていく
+function measureAndPack(blocks, makePage){
+  const measurer = document.createElement('div');
+  measurer.style.cssText = 'position:absolute; visibility:hidden; width:' + CONTENT_W + 'mm; left:-9999px; top:0;';
+  document.body.appendChild(measurer);
+  blocks.forEach(b=>measurer.appendChild(b.el));
+  const heights = blocks.map(b=>b.el.getBoundingClientRect().height / PX_PER_MM);
+  blocks.forEach(b=>measurer.removeChild(b.el));
+  document.body.removeChild(measurer);
+
+  const pages = [];
+  let current = null, used = 0;
+  blocks.forEach((b, i)=>{
+    const h = heights[i];
+    const headerH = 14; // ページヘッダー概算(mm)
+    const budget = CONTENT_H - headerH;
+    if(!current || used + h > budget){
+      current = makePage(pages.length + 1);
+      pages.push(current);
+      used = 0;
+    }
+    current.contentEl.appendChild(b.el);
+    used += h;
+  });
+  return pages;
+}
+
+function makePageShell(kind, pageNum, headerRight){
+  const page = document.createElement('div');
+  page.className = 'page ' + (kind === 'question' ? 'question-page' : 'answer-page');
+  const qs = QUESTION_SET;
+  const header = document.createElement('div');
+  header.className = 'page-header';
+  header.innerHTML =
+    '<span class="ph-title">' + escapeHtml(qs.sourceTitle || '国語') + (kind === 'answer' ? '（解答用紙）' : '') + '</span>' +
+    '<span class="ph-meta">' + escapeHtml((qs.gradeLabel||'') + '・' + (qs.genreLabel||'') + '・' + (qs.difficultyLabel||'')) + '</span>' +
+    (headerRight || '<span class="ph-name"><span class="name-label">名前</span><span class="ph-namebox"></span></span>');
+  page.appendChild(header);
+  const content = document.createElement('div');
+  page.appendChild(content);
+  const footer = document.createElement('div');
+  footer.className = 'page-footer';
+  footer.textContent = (kind === 'question' ? '問題用紙' : '解答用紙') + ' - ' + pageNum;
+  page.appendChild(footer);
+  page.contentEl = content;
+  return page;
+}
+
+function buildPages(){
+  if(!QUESTION_SET){ setupNotice('先に問題セットを読み込んでください。', 'err'); return; }
+  ASSIGNMENT_ID = document.getElementById('setupAssignmentId').value.trim() || genAssignmentId();
+  document.getElementById('setupAssignmentId').value = ASSIGNMENT_ID;
+  STUDENT_ID = studentIdValue('setupStudentId', 'setupStudentId_text');
+  if(!STUDENT_ID){ setupNotice('生徒を選択（または手入力）してください（例：S-0018）。', 'err'); return; }
+
+  const area = document.getElementById('pagesArea');
+  area.innerHTML = '';
+  const qs = QUESTION_SET;
+
+  // ---- 問題用紙のブロック ----
+  const qBlocks = [];
+  (qs.fullText || '').split(/\n+/).filter(s=>s.trim()).forEach((p, i)=>{
+    const div = document.createElement('div');
+    div.className = 'passage-block';
+    div.innerHTML = '<span class="para-num">' + (i+1) + '</span>' + escapeHtml(p);
+    qBlocks.push({ el: div });
+  });
+  const sep = document.createElement('div');
+  sep.style.cssText = 'border-top:1px solid #333; margin:4mm 0;';
+  qBlocks.push({ el: sep });
+  (qs.questions || []).forEach((q, idx)=>{
+    const n = q.number != null ? q.number : idx+1;
+    const div = document.createElement('div');
+    div.className = 'q-block';
+    let html = '<div class="q-head">問' + escapeHtml(n) + '</div>'
+      + '<div class="q-text">' + escapeHtml(q.question_text || '') + '</div>';
+    if(q.choices && q.choices.length){
+      html += '<div class="q-choices">' + q.choices.map(c=>escapeHtml(c)).join('\n') + '</div>';
+    }
+    div.innerHTML = html;
+    qBlocks.push({ el: div });
+  });
+  const qPages = measureAndPack(qBlocks, (n)=>makePageShell('question', n));
+
+  // ---- 解答用紙のブロック ----
+  const aBlocks = [];
+  (qs.questions || []).forEach((q, idx)=>{
+    const n = q.number != null ? q.number : idx+1;
+    const div = document.createElement('div');
+    div.className = 'as-field';
+    div.dataset.problemId = 'q' + n;
+    div.dataset.qtype = q.type || '';
+    let inner = '<div class="as-label">問' + escapeHtml(n) + '（' + escapeHtml(q.type || '') + '）</div>';
+    const isChoice = q.choices && q.choices.length;
+    const isExtraction = (q.type || '').includes('抜き出し');
+    if(isChoice){
+      inner += '<div class="as-choice-box as-target"></div><div class="as-note">記号で答えましょう</div>';
+    }else if(isExtraction){
+      const count = q._actualCount || 20;
+      let cells = '';
+      for(let i=0;i<count;i++) cells += '<div class="as-cell"></div>';
+      inner += '<div class="as-grid as-target">' + cells + '</div><div class="as-note">' + count + '字（句読点をふくむ）</div>';
+    }else{
+      inner += '<div class="as-lines as-target"><div class="as-line"></div><div class="as-line"></div><div class="as-line"></div></div>';
+    }
+    div.innerHTML = inner;
+    aBlocks.push({ el: div });
+  });
+  const qrHeaderRight = '<span class="ph-name"><span class="ph-sid">' + escapeHtml(STUDENT_ID) + '</span><span class="name-label">名前</span><span class="ph-namebox"></span></span>';
+  const aPages = measureAndPack(aBlocks, (n)=>makePageShell('answer', n, qrHeaderRight));
+
+  // 解答用紙にQRを載せる（各ページ・Pandora互換ペイロード）
+  aPages.forEach((page, i)=>{
+    const payload = JSON.stringify({
+      assignment_id: ASSIGNMENT_ID,
+      student_id: STUDENT_ID,
+      page: i+1,
+      total_pages: aPages.length
+    });
+    const wrap = document.createElement('div');
+    wrap.className = 'as-qr-wrap';
+    const canvas = document.createElement('canvas');
+    wrap.appendChild(canvas);
+    page.appendChild(wrap);
+    drawQr(canvas, payload);
+    // QRと重ならないよう、コンテンツ先頭に余白
+    page.contentEl.style.paddingTop = '18mm';
+  });
+
+  qPages.forEach(p=>area.appendChild(p));
+  aPages.forEach(p=>area.appendChild(p));
+
+  // layout_data（mm座標系・A4）を実測から生成
+  buildLayoutData(aPages);
+
+  setupNotice('組版しました：問題用紙' + qPages.length + 'ページ＋解答用紙' + aPages.length + 'ページ。上のボタンから印刷できます。', 'info');
+  window.scrollTo({ top: document.getElementById('pagesArea').offsetTop - 10, behavior: 'smooth' });
+}
+
+function drawQr(canvas, text){
+  const qr = qrcode(0, 'H'); // 誤り訂正レベルH（Pandora実証済み設定）
+  qr.addData(text);
+  qr.make();
+  const count = qr.getModuleCount();
+  const size = Math.round(25 * PX_PER_MM * 2); // 高解像度で描画
+  canvas.width = size; canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, size, size);
+  ctx.fillStyle = '#000';
+  const cell = size / count;
+  for(let r=0;r<count;r++){
+    for(let c=0;c<count;c++){
+      if(qr.isDark(r, c)){
+        ctx.fillRect(Math.floor(c*cell), Math.floor(r*cell), Math.ceil(cell), Math.ceil(cell));
+      }
+    }
+  }
+}
+
+// 解答欄の実測位置をmm座標系（ページ左上原点・A4=210×297mm）でlayout_dataに変換
+function buildLayoutData(aPages){
+  const fields = [];
+  aPages.forEach((page, pi)=>{
+    const pageRect = page.getBoundingClientRect();
+    page.querySelectorAll('.as-field').forEach(f=>{
+      const target = f.querySelector('.as-target');
+      const r = (target || f).getBoundingClientRect();
+      fields.push({
+        problem_id: f.dataset.problemId,
+        type: f.dataset.qtype,
+        page: pi + 1,
+        x_mm: +( (r.left - pageRect.left) / PX_PER_MM ).toFixed(1),
+        y_mm: +( (r.top - pageRect.top) / PX_PER_MM ).toFixed(1),
+        w_mm: +( r.width / PX_PER_MM ).toFixed(1),
+        h_mm: +( r.height / PX_PER_MM ).toFixed(1)
+      });
+    });
+  });
+  LAYOUT_DATA = {
+    recordType: 'japanese_answer_sheet_layout',
+    version: 1,
+    assignment_id: ASSIGNMENT_ID,
+    student_id: STUDENT_ID,
+    subject: 'japanese',
+    page_size: { w_mm: PAGE_W, h_mm: PAGE_H },
+    qr: { x_mm: PAGE_W - 10 - 25 - 2.5, y_mm: 10, size_mm: 25, quiet_zone_mm: 2.5 },
+    total_pages: aPages.length,
+    fields: fields,
+    createdAt: new Date().toISOString()
+  };
+  ANSWER_SHEETS_REGISTERED = false; // 組み直したら未登録扱いに戻す
+}
+
+function exportLayoutData(){
+  if(!LAYOUT_DATA){ setupNotice('先に「問題用紙・解答用紙を組む」を実行してください。', 'err'); return; }
+  const blob = new Blob([JSON.stringify(LAYOUT_DATA, null, 2)], {type:'application/json;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'answer_sheet_layout_' + STUDENT_ID + '_' + ASSIGNMENT_ID + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  setupNotice('layout_dataを書き出しました。photo_intake統合時にanswer_sheetsテーブルへ登録する元データです。', 'info');
+}
+
+// answer_sheetsテーブルへlayout_dataを登録する（photo_intakeがQRのpageで引く導線）。
+// photo_intakeは assignment_id + student_id + page=eq.N で1ページ1行を前提に読むため、
+// LAYOUT_DATAをページ別に分割し、1ページ=1行でPOSTする。
+// 再登録時に重複しないよう、同一 assignment_id + student_id の既存行を先に削除する。
+async function registerAnswerSheets(){
+  if(!LAYOUT_DATA){ setupNotice('先に「問題用紙・解答用紙を組む」を実行してください。', 'err'); return; }
+  // FK連鎖（submissions→assignments→students）を印刷配布の時点で満たしておく。
+  // ①students（マスターミラー）→②assignments を先に用意（photo_intake取込時の
+  // FK違反を防ぐ）。失敗したらanswer_sheets登録に進まず中断する。
+  try{
+    await upsertStudentMirror(STUDENT_ID, selectedStudentName('setupStudentId'), gradeToInt(QUESTION_SET && QUESTION_SET.grade));
+    await upsertJapaneseAssignment();
+  }catch(e){
+    setupNotice('生徒(students)または課題(assignments)の登録に失敗しました：' + e.message, 'err');
+    return;
+  }
+  const total = LAYOUT_DATA.total_pages || 1;
+  const sbHeaders = {
+    'Content-Type': 'application/json',
+    'apikey': SUPABASE_ANON_KEY,
+    'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+  };
+  try{
+    // 既存行を削除（再登録の冪等化）
+    await fetch(SUPABASE_URL + '/rest/v1/answer_sheets?assignment_id=eq.' + encodeURIComponent(ASSIGNMENT_ID) +
+      '&student_id=eq.' + encodeURIComponent(STUDENT_ID), {
+      method: 'DELETE',
+      headers: Object.assign({}, sbHeaders, { 'Prefer': 'return=minimal' })
+    });
+    // ページ別に1行ずつ登録（total_pagesはNOT NULL列なので必ず送る）
+    const rows = [];
+    for(let p = 1; p <= total; p++){
+      const pageFields = (LAYOUT_DATA.fields || []).filter(function(f){ return f.page === p; });
+      rows.push({
+        assignment_id: ASSIGNMENT_ID,
+        student_id: STUDENT_ID,
+        page: p,
+        total_pages: total,
+        layout_data: Object.assign({}, LAYOUT_DATA, { fields: pageFields })
+      });
+    }
+    const res = await fetch(SUPABASE_URL + '/rest/v1/answer_sheets', {
+      method: 'POST',
+      headers: Object.assign({}, sbHeaders, { 'Prefer': 'return=minimal' }),
+      body: JSON.stringify(rows)
+    });
+    if(!res.ok){
+      const t = await res.text();
+      throw new Error(sbErrorMessage(res.status, t));
+    }
+    ANSWER_SHEETS_REGISTERED = true;
+    setupNotice('answer_sheetsに登録しました（' + total + 'ページ分）。photo_intakeでQRを読み取ると照合されます。', 'info');
+    showNextGuide('✅ 登録が完了しました。<br>このまま印刷してください（上の「🖨 両方印刷」など）。回収した解答用紙は、<b>photo_intake</b>で写真を取り込むと採点UIに届きます。');
+  }catch(e){
+    setupNotice('answer_sheetsへの登録に失敗しました：' + e.message, 'err');
+  }
+}
+
+async function printOnly(mode){
+  if(!QUESTION_SET || !document.querySelector('.page')){
+    setupNotice('先に「問題用紙・解答用紙を組む」を実行してください。', 'err');
+    return;
+  }
+  // 解答用紙を印刷する場合（answer / both）、answer_sheets未登録のまま印刷すると
+  // photo_intakeがlayout_dataを引けず採点に取り込めない。未登録なら確認→登録→印刷。
+  const printsAnswer = (mode === 'answer' || mode === 'both');
+  if(printsAnswer && LAYOUT_DATA && !ANSWER_SHEETS_REGISTERED){
+    const ok = confirm('解答用紙がまだ answer_sheets に登録されていません。\n登録しないと、写真取り込み（photo_intake）で採点データに紐づけられません。\n\n「OK」で今すぐ登録してから印刷します。');
+    if(!ok) return;
+    await registerAnswerSheets();
+    if(!ANSWER_SHEETS_REGISTERED){
+      // 登録失敗（setupNoticeにエラー表示済み）。印刷せず中断。
+      return;
+    }
+  }
+  document.body.classList.remove('print-question', 'print-answer');
+  if(mode === 'question') document.body.classList.add('print-question');
+  if(mode === 'answer') document.body.classList.add('print-answer');
+  window.print();
+}
+
+// 起動時に生徒名簿を読み込む（Lethe不達時は手入力にフォールバック）
+loadStudentsIntoSelect('setupStudentId', 'setupStudentId_text').then(function(){ hoPresetStudent('setupStudentId'); });
+hoRenderQuestionSetBanner(); // 直近の問題セットがあれば提案バナー
+renderFlowProgress('print'); // 工程進行バー
+initTheme(); initImode(); // ライト/ダーク＋Iモード（印刷は常にライト）
+</script>
+
+</body>
+</html>

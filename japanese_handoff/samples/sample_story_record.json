@@ -1,0 +1,37 @@
+{
+  "recordType": "japanese_story_record",
+  "version": 2,
+  "studentId": "S-0018",
+  "dayNumber": 1,
+  "title": "うさりんのひっこし",
+  "grade": "g2",
+  "gradeLabel": "小学2年生レベル",
+  "genreKey": "monogatari",
+  "genreLabel": "物語文",
+  "difficultyKey": "renshu",
+  "difficultyLabel": "練習",
+  "patternKey": "dekigoto2",
+  "patternName": "できごと発展型",
+  "style": "ですます調（やわらかい解説文）",
+  "targetLength": "700",
+  "outlines": [
+    {
+      "label": "場面紹介",
+      "text": "うさりんは春に町のがっこうへ引っこしてきた。知っている子がひとりもいない。"
+    },
+    {
+      "label": "出来事の始まり（せりふ・行動）",
+      "text": "休み時間、たぬきちが「いっしょにドッジボールしない？」と声をかけてくれる。"
+    },
+    {
+      "label": "気持ちの変化・葛藤",
+      "text": "はじめは不安だったうさりんの気持ちが、少しずつ明るくなっていく。"
+    },
+    {
+      "label": "結末・気づき",
+      "text": "花だんのチューリップがきっかけで友だちが増え、うさりんは新しいがっこうが好きになる。"
+    }
+  ],
+  "fullText": "（生成された本文がここに入る。実運用のサンプルは story_S-0018_うさりんのひっこし_day1.json を参照）",
+  "generatedAt": "2026-07-16T09:00:00.000Z"
+}

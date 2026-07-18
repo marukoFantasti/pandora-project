@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>国語クイズ</title>
+<style>
+:root{
+  --bg:#faf7f2; --card:#ffffff; --border:#ddd5c8;
+  --text1:#2b2622; --text2:#5a5248; --text3:#948a7c;
+  --accent:#b0486f; --accent-bg:#fbeef3; --accent-text:#8e3a59;
+  --green:#2e7d4f; --green-bg:#e9f5ee;
+  --red:#c0392b; --red-bg:#fdeeec;
+}
+/* ダークテーマ（既存変数構造のまま欠けているダーク側を追加） */
+body.theme-dark{
+  --bg:#161616; --card:#212121; --border:#333333;
+  --text1:#f0f0f0; --text2:#c4c4c4; --text3:#8a8a8a;
+  --accent:#cd4f7c; --accent-bg:#3a1f28; --accent-text:#f2a3bd;
+  --green:#5fd58d; --green-bg:#173425;
+  --red:#ff6b6b; --red-bg:#3a1a1a;
+}
+/* Iモード（大きめ表示・アクセシビリティ）。story/questionと同等 */
+body.imode{ font-size:16px; }
+body.imode .setup-input, body.imode .tool-btn, body.imode .btn, body.imode select, body.imode input, body.imode textarea{ font-size:16px; }
+body.imode .passage{ font-size:18px; line-height:2.0; }
+body.imode .q-text, body.imode .choice, body.imode .q-title{ font-size:17px; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+  background:var(--bg); color:var(--text1); min-height:100vh;
+  font-size:15px; line-height:1.8;
+}
+.topbar{
+  padding:14px 20px; background:var(--card); border-bottom:2px solid var(--accent);
+  display:flex; align-items:baseline; gap:10px; position:sticky; top:0; z-index:10;
+}
+.topbar-title{font-size:16px; font-weight:800}
+.topbar-title span{color:var(--accent)}
+.topbar-sub{font-size:11px; color:var(--text3)}
+.main{max-width:820px; margin:0 auto; padding:20px 16px 120px}
+.card{
+  background:var(--card); border:1px solid var(--border); border-radius:12px;
+  padding:18px; margin-bottom:16px;
+}
+.section-label{
+  font-size:12px; font-weight:800; color:var(--accent-text);
+  border-left:4px solid var(--accent); padding-left:8px; margin-bottom:12px;
+}
+.passage{
+  font-size:15px; line-height:2.1; white-space:pre-wrap;
+}
+.passage .para-num{
+  display:inline-block; background:var(--accent-bg); color:var(--accent-text);
+  font-size:11px; font-weight:700; border-radius:4px; padding:0 6px; margin-right:6px;
+  vertical-align:middle;
+}
+.q-item{border-top:1px dashed var(--border); padding:16px 0;}
+.q-item:first-of-type{border-top:none; padding-top:4px;}
+.q-head{display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap;}
+.q-num{
+  background:var(--accent); color:#fff; font-size:12px; font-weight:800;
+  border-radius:6px; padding:3px 10px;
+}
+.q-type{font-size:10px; color:var(--accent-text); border:1px solid var(--accent); border-radius:10px; padding:2px 8px;}
+.q-text{font-size:15px; margin-bottom:10px; white-space:pre-wrap;}
+
+.choice-btn{
+  display:block; width:100%; text-align:left; font-family:inherit; font-size:15px;
+  background:var(--card); border:2px solid var(--border); border-radius:10px;
+  padding:12px 14px; margin-bottom:8px; cursor:pointer; transition:border-color .12s, background .12s;
+  white-space:pre-wrap; line-height:1.7; color:var(--text1);
+}
+.choice-btn.selected{border-color:var(--accent); background:var(--accent-bg); font-weight:700;}
+
+.canvas-wrap{
+  border:2px solid var(--border); border-radius:10px; background:#fff;
+  position:relative; touch-action:none; overflow:hidden;
+}
+.canvas-wrap canvas{display:block; width:100%; height:100%; touch-action:none;}
+.canvas-tools{display:flex; gap:8px; margin-top:6px; align-items:center;}
+.tool-btn{
+  font-family:inherit; font-size:12px; background:var(--card); color:var(--text2);
+  border:1px solid var(--border); border-radius:8px; padding:6px 12px; cursor:pointer;
+}
+.tool-btn.active{border-color:var(--accent); color:var(--accent-text); background:var(--accent-bg);}
+.char-hint{font-size:11px; color:var(--text3); margin-left:auto;}
+
+.kanji-section-label{
+  font-size:12px; font-weight:800; color:var(--accent-text);
+  border-left:4px solid var(--accent); padding-left:8px; margin-bottom:12px;
+}
+
+.submit-bar{
+  position:fixed; bottom:0; left:0; right:0; background:var(--card);
+  border-top:1px solid var(--border); padding:12px 16px; z-index:20;
+}
+.submit-inner{max-width:820px; margin:0 auto; display:flex; gap:10px; align-items:center;}
+.submit-btn{
+  flex:1; font-family:inherit; font-size:15px; font-weight:800; color:#fff;
+  background:var(--accent); border:none; border-radius:10px; padding:14px; cursor:pointer;
+}
+.submit-btn:disabled{opacity:.5; cursor:not-allowed;}
+.progress-note{font-size:11px; color:var(--text3); white-space:nowrap;}
+
+.notice{padding:10px 13px; border-radius:8px; font-size:13px; margin-bottom:14px}
+.notice-err{background:var(--red-bg); color:var(--red)}
+.notice-info{background:var(--green-bg); color:var(--green)}
+
+.setup-input{
+  width:100%; font-family:inherit; font-size:14px; background:#fff; color:var(--text1);
+  border:1px solid var(--border); border-radius:8px; padding:10px 12px;
+}
+.setup-label{font-size:12px; color:var(--text3); display:block; margin-bottom:5px; margin-top:12px;}
+
+.done-overlay{
+  position:fixed; inset:0; background:rgba(250,247,242,.96); z-index:50;
+  display:none; align-items:center; justify-content:center; text-align:center;
+}
+.done-box{max-width:400px; padding:30px;}
+.done-box .big{font-size:44px; margin-bottom:14px;}
+.done-box .msg{font-size:16px; font-weight:700; margin-bottom:8px;}
+.done-box .sub{font-size:12px; color:var(--text3);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-title">国語<span>クイズ</span></div>
+  <div class="topbar-sub" id="topbarSub">-</div>
+  <div id="teacherNav" style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+    <a href="pandora_main.html" style="background:transparent; border:1px solid var(--border); color:var(--text2); border-radius:8px; padding:7px 12px; font-size:12px; cursor:pointer; font-family:inherit; text-decoration:none; display:inline-block;">← Pandoraメイン</a>
+    <span id="flowProgress" style="display:inline-flex; align-items:center; gap:4px; flex-wrap:wrap;"></span>
+  </div>
+  <div style="margin-left:auto; display:flex; gap:6px; align-items:center;">
+    <button id="themeBtn" onclick="toggleTheme()" style="background:transparent; border:1px solid var(--border); color:var(--text2); border-radius:8px; padding:7px 12px; font-size:12px; cursor:pointer; font-family:inherit;">🌙 ダーク</button>
+    <button id="imodeBtn" onclick="toggleImode()" style="background:transparent; border:1px solid var(--border); color:var(--text2); border-radius:8px; padding:7px 12px; font-size:12px; cursor:pointer; font-family:inherit;">🤍 Iモード</button>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- セットアップ（テンプレートに問題データが未注入のときのみ表示） -->
+  <div class="card" id="setupCard" style="display:none">
+    <div class="section-label">先生用セットアップ</div>
+    <div id="handoffBanner"></div>
+    <div style="font-size:13px; color:var(--text2); margin-bottom:8px;">
+      このページはテンプレートです。国語問題ジェネレーターで書き出した問題セット（JSON）を読み込み、生徒情報を入れて「配布用HTMLを書き出す」と、生徒がそのまま開いて解答できる単独ファイルが作れます。
+    </div>
+    <label class="setup-label">問題セット（japanese_question_set_*.json）</label>
+    <input type="file" id="setFileInput" accept="application/json" class="setup-input" onchange="loadQuestionSetFile(event)">
+    <label class="setup-label">またはコピーした問題セットを貼り付け</label>
+    <textarea id="pasteArea" class="setup-input" rows="3" placeholder="国語問題ジェネレーターの「📋 問題セットをコピー」でコピーした内容をここに貼り付けて、下のボタンを押してください" style="resize:vertical; font-family:inherit;"></textarea>
+    <button class="tool-btn" style="margin-top:8px;" onclick="loadPastedSet()">📋 貼り付けた内容を読み込む</button>
+    <label class="setup-label">assignment_id（例：asgn_1783144210219_5q1p8x。空欄なら自動生成）</label>
+    <input type="text" id="setupAssignmentId" class="setup-input" placeholder="空欄で自動生成">
+    <label class="setup-label">生徒（Lethe名簿から選択。取得失敗時は手入力）</label>
+    <select id="setupStudentId" class="setup-input" onchange="hoSaveStudent('setupStudentId')"><option value="">読み込み中...</option></select>
+    <input type="text" id="setupStudentId_text" class="setup-input" placeholder="S-0000" style="display:none">
+    <div style="display:flex; gap:8px; margin-top:16px;">
+      <button class="tool-btn" style="flex:1; padding:12px;" onclick="previewQuiz()">👁 この画面でプレビュー</button>
+      <button class="tool-btn" style="flex:1; padding:12px; border-color:var(--accent); color:var(--accent-text);" onclick="exportDistributionHtml()">📥 配布用HTMLを書き出す</button>
+    </div>
+    <div id="setupNotice" style="margin-top:12px;"></div>
+    <div id="nextGuide"></div>
+  </div>
+
+  <!-- クイズ本体 -->
+  <div id="quizBody" style="display:none">
+    <div class="card">
+      <div class="section-label" id="passageLabel">文章を読んで、あとの問題に答えましょう</div>
+      <div class="passage" id="passageArea"></div>
+    </div>
+
+    <div class="card">
+      <div class="section-label">問題</div>
+      <div id="questionsArea"></div>
+    </div>
+
+    <div class="card" id="kanjiCard" style="display:none">
+      <div class="kanji-section-label">📖 漢字クイズ</div>
+      <div id="kanjiArea"></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="submit-bar" id="submitBar" style="display:none">
+  <div class="submit-inner">
+    <span class="progress-note" id="progressNote">0 / 0</span>
+    <button class="submit-btn" id="submitBtn" onclick="submitAnswers()">✅ 解答を送信する</button>
+  </div>
+</div>
+
+<div class="done-overlay" id="doneOverlay">
+  <div class="done-box">
+    <div class="big">🎉</div>
+    <div class="msg">解答を送信しました！おつかれさま！</div>
+    <div class="sub" id="doneSub"></div>
+  </div>
+</div>
+
+<script>
+// ================= テンプレート設定 =================
+// pandora-project共通のSupabase接続情報（他ファイルと同一のpublishableキー）。
+// 配布用HTML書き出し（exportDistributionHtml）はouterHTMLをそのまま複製するため、
+// この実値が各配布ファイルにもそのまま引き継がれる。
+// 万一空文字/プレースホルダーに戻された場合はJSONダウンロードにフォールバックする。
+const SUPABASE_URL = "https://upmflhdbhbyzoeldrvvw.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_K8Y_bNHVA4szRXFM_EcDkA_LBckunu5";
+
+let QUESTION_SET = null;
+let ASSIGNMENT_ID = "__ASSIGNMENT_ID__";
+let STUDENT_ID = "__STUDENT_ID__";
+// 生徒名は「マスターミラー同期（students）」専用の注入値。QR・提出ペイロードには
+// 一切含めない（規約どおり）。配布用HTML書き出し時に先生の選択名が注入される。
+let STUDENT_NAME = "__STUDENT_NAME__";
+
+// 注入済みデータ（配布用HTMLではこの行が実JSONに置き換わる）
+const INJECTED_SET = "__QUESTION_SET_JSON__";
+
+// ================= 状態 =================
+const answers = {};      // 読解問題の解答 {qKey: {type, choice|canvas}}
+const kanjiAnswers = {}; // 漢字クイズの解答 {kKey: choice}
+const canvases = {};     // qKey -> canvas要素
+
+function isPlaceholder(v){ return typeof v === 'string' && v.startsWith('__') && v.endsWith('__'); }
+
+// ===== テーマ（ライト/ダーク）＋Iモード。4アプリ共通キー。配布用HTMLでも利用可 =====
+// このアプリのネイティブはライト。ダーク時のみ body.theme-dark を付与。
+function jpThemeIsDark(){ return document.body.classList.contains('theme-dark'); }
+function updateThemeBtn(){ var b = document.getElementById('themeBtn'); if(b) b.textContent = jpThemeIsDark() ? '☀️ ライト' : '🌙 ダーク'; }
+function applyTheme(theme){ document.body.classList.toggle('theme-dark', theme === 'dark'); updateThemeBtn(); }
+function toggleTheme(){ var next = jpThemeIsDark() ? 'light' : 'dark'; try{ localStorage.setItem('japanese_generator_theme', next); }catch(e){} applyTheme(next); }
+function initTheme(){ var t = null; try{ t = localStorage.getItem('japanese_generator_theme'); }catch(e){} applyTheme(t === 'dark' ? 'dark' : 'light'); }
+function updateImodeBtn(){ var b = document.getElementById('imodeBtn'); if(b) b.textContent = document.body.classList.contains('imode') ? '🩷 Iモード' : '🤍 Iモード'; }
+function toggleImode(){ var on = !document.body.classList.contains('imode'); document.body.classList.toggle('imode', on); try{ localStorage.setItem('japanese_generator_imode', on ? '1' : '0'); }catch(e){} updateImodeBtn(); }
+function initImode(){ var on = false; try{ on = localStorage.getItem('japanese_generator_imode') === '1'; }catch(e){} document.body.classList.toggle('imode', on); updateImodeBtn(); }
+
+// ================= 生徒名簿（Lethe getStudents） =================
+// photo_intake / grading と同じ getStudents 呼び出しパターン（シンプルGET）。
+const LETHE_URL = "https://script.google.com/macros/s/AKfycbxlXsrnt14jxxZrnKUSSdq4KG8LU96eDTPjrkyXdSGZ-Gmehha5HHNPMZTnQo6OrIy7oA/exec";
+function escStudentLabel(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+// selectを「student_id 氏名」で埋める。値はstudent_id。取得失敗時はtextへフォールバック。
+async function loadStudentsIntoSelect(selectId, textId){
+  const sel = document.getElementById(selectId);
+  const txt = textId ? document.getElementById(textId) : null;
+  if(!sel) return;
+  try{
+    const res = await fetch(LETHE_URL + '?action=getStudents');
+    const d = await res.json();
+    if(!d.success || !Array.isArray(d.students) || d.students.length === 0) throw new Error(d.error || 'no students');
+    sel.innerHTML = '<option value="">選択してください</option>' + d.students.map(function(s){
+      const label = escStudentLabel(s.student_id + (s.name ? ' ' + s.name : ''));
+      return '<option value="' + escStudentLabel(s.student_id) + '" data-name="' + escStudentLabel(s.name || '') + '">' + label + '</option>';
+    }).join('');
+    sel.style.display = '';
+    if(txt) txt.style.display = 'none';
+  }catch(e){
+    console.warn('[loadStudentsIntoSelect] Lethe不達、手入力にフォールバック:', e);
+    if(txt){ txt.style.display = ''; sel.style.display = 'none'; }
+    else { sel.innerHTML = '<option value="">（名簿取得失敗・再読込してください）</option>'; }
+  }
+}
+// selectとtextのどちらか有効な方から student_id を取り出す。
+function studentIdValue(selectId, textId){
+  const sel = document.getElementById(selectId);
+  const txt = textId ? document.getElementById(textId) : null;
+  let v = sel && sel.value ? sel.value : '';
+  if(!v && txt) v = txt.value;
+  return (v || '').trim();
+}
+// 選択中の生徒の氏名（マスターミラー同期用）。手入力時は空。
+function selectedStudentName(selectId){
+  const sel = document.getElementById(selectId);
+  const opt = sel && sel.selectedOptions && sel.selectedOptions[0];
+  return (opt && opt.dataset && opt.dataset.name) ? opt.dataset.name : '';
+}
+
+// ===== マスターミラー同期：students テーブルへのUPSERT =====
+// Letheがマスター、Supabase students は従属ミラー。assignments.student_id が
+// students.id を参照するFKのため、課題/提出の前に生徒行を用意する。
+// on_conflict=id + ignore-duplicates で「無ければ挿入・あれば触らない」
+// （既存nameを上書きしない。先生が整えた正式名を保護）。
+// ⚠️ students.id は text型でS-XXXXを明示送信（省略するとランダムuuidが入る）。
+async function upsertStudentMirror(studentId, name, gradeNum){
+  if(!studentId) return;
+  const row = { id: studentId, name: (name && name.trim()) ? name.trim() : '(未登録)' };
+  if(gradeNum != null) row.grade = gradeNum;
+  const res = await fetch(SUPABASE_URL + '/rest/v1/students?on_conflict=id', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+      'Prefer': 'resolution=ignore-duplicates,return=minimal'
+    },
+    body: JSON.stringify(row)
+  });
+  if(!res.ok){
+    const t = await res.text();
+    throw new Error('students同期: ' + sbErrorMessage(res.status, t));
+  }
+}
+function gradeToInt(g){ return g ? (parseInt(String(g).replace(/[^0-9]/g,''),10) || null) : null; }
+
+// 問題セットを assignment_data 用に要約する（印刷経路と同一形状に統一）。
+// problem_id は 'q'+number（配布用テンプレの qKey と一致）。
+function summarizeQuestions(qs){
+  return ((qs && qs.questions) || []).map(function(q, idx){
+    const n = (q.number != null) ? q.number : (idx + 1);
+    return {
+      problem_id: 'q' + n,
+      number: n,
+      type: q.type || null,
+      kanten: q.kanten || null,
+      question_text: q.question_text || null,
+      choices: q.choices || [],
+      answer: q.answer || null,
+      explanation: q.explanation || null,
+      _actualCount: (q._actualCount != null ? q._actualCount : null)
+    };
+  });
+}
+
+// PostgRESTのエラー本文からcodeを読み、原因別の日本語ヒントを返す。
+// 23502=必須列不足 / 23503=FK違反 / 401,403=権限(RLS)。誤誘導を避けるため出し分ける。
+function sbErrorMessage(status, bodyText){
+  let code = '', detail = '';
+  try{ const j = JSON.parse(bodyText); code = j.code || ''; detail = j.message || j.details || ''; }catch(e){ detail = (bodyText || '').slice(0,150); }
+  if(code === '23502') return '必須列が不足しています（NOT NULL違反）。送信ペイロードに必須列が揃っているか確認してください。詳細：' + detail;
+  if(code === '23503') return '関連レコードが未登録です（外部キー違反）。students/assignmentsの登録を先に済ませてください。詳細：' + detail;
+  if(status === 401 || status === 403) return 'アクセス権限がありません（RLS）。Supabaseで該当テーブルのanon insert権限を確認してください（HTTP ' + status + '）。';
+  return 'HTTP ' + status + ' ' + (detail || (bodyText || '').slice(0,150));
+}
+
+// ===== 画面間データ受け渡し（localStorage自動持ち回り・案A） =====
+// 【重要】配布用モード（生徒が開く側）では一切呼ばない・発火させない。
+// 呼び出しは init() のテンプレート（セットアップ）分岐からのみ。
+var HO_QSET = 'japanese_latest_question_set', HO_STUDENT = 'japanese_latest_student';
+function hoSave(key, data){ try{ localStorage.setItem(key, JSON.stringify({ savedAt: Date.now(), data: data })); }catch(e){} }
+function hoLoad(key){ try{ var w = JSON.parse(localStorage.getItem(key) || 'null'); return (w && w.savedAt) ? w : null; }catch(e){ return null; } }
+function hoFresh(w){ return !!(w && (Date.now() - w.savedAt) <= 86400000); }
+function hoAge(savedAt){ var m = Math.floor((Date.now() - savedAt)/60000); if(m<1) return 'たった今'; if(m<60) return m+'分前'; var h = Math.floor(m/60); if(h<24) return h+'時間前'; return Math.floor(h/24)+'日前'; }
+function hoSaveStudent(selectId){ var sel = document.getElementById(selectId); if(!sel || !sel.value) return; hoSave(HO_STUDENT, { student_id: sel.value, name: selectedStudentName(selectId) }); }
+function hoPresetStudent(selectId){ var w = hoLoad(HO_STUDENT); if(!w || !w.data || !w.data.student_id) return; var sel = document.getElementById(selectId); if(!sel) return; for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value === w.data.student_id){ sel.value = w.data.student_id; break; } } }
+function hoRenderQuestionSetBanner(){
+  var host = document.getElementById('handoffBanner'); if(!host) return;
+  var w = hoLoad(HO_QSET);
+  if(!hoFresh(w) || !w.data || w.data.recordType !== 'japanese_question_set'){ host.innerHTML = ''; return; }
+  var qs = w.data;
+  var meta = [qs.gradeLabel || qs.grade, qs.genreLabel, qs.difficultyLabel].filter(Boolean).join('・');
+  host.innerHTML =
+    '<div style="border:1px solid var(--accent); background:rgba(90,140,255,.08); border-radius:10px; padding:10px 12px; margin-bottom:12px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">' +
+    '<span style="font-size:12px; line-height:1.6;">📄 直近の問題セット「' + escapeHtml(qs.sourceTitle || '(無題)') + '」（' + escapeHtml(meta) + '／' + hoAge(w.savedAt) + '）を読み込みますか？</span>' +
+    '<button onclick="hoApplyQuestionSet()" style="margin-left:auto; background:var(--accent); color:#fff; border:none; border-radius:8px; padding:7px 14px; font-size:12px; font-weight:700; cursor:pointer; font-family:inherit;">読み込む</button>' +
+    '<button onclick="document.getElementById(\'handoffBanner\').innerHTML=\'\'" style="background:transparent; color:var(--text3); border:1px solid var(--border); border-radius:8px; padding:7px 10px; font-size:12px; cursor:pointer; font-family:inherit;">閉じる</button>' +
+    '</div>';
+}
+function hoApplyQuestionSet(){
+  var w = hoLoad(HO_QSET);
+  if(w && w.data && w.data.recordType === 'japanese_question_set'){
+    QUESTION_SET = w.data;
+    setupNotice('問題セットを読み込みました：' + (QUESTION_SET.sourceTitle || '(無題)') + '（' + (QUESTION_SET.questions||[]).length + '問' + (QUESTION_SET.kanjiQuiz ? '＋漢字5問' : '') + '）', 'info');
+  }
+  var host = document.getElementById('handoffBanner'); if(host) host.innerHTML = '';
+}
+
+// ===== 工程進行バー（①文章生成→②問題生成→③配布・印刷）※配布用モードでは呼ばない =====
+function flowFresh(key){ try{ var w = JSON.parse(localStorage.getItem(key) || 'null'); return !!(w && w.savedAt && (Date.now() - w.savedAt) <= 86400000); }catch(e){ return false; } }
+function renderFlowProgress(current){
+  var host = document.getElementById('flowProgress'); if(!host) return;
+  var doneStory = flowFresh('japanese_latest_story_record');
+  var doneQ = flowFresh('japanese_latest_question_set');
+  var base = 'font-size:12px; padding:6px 10px; border-radius:8px; font-family:inherit; display:inline-flex; align-items:center; white-space:nowrap;';
+  function chip(label, href, active, done){
+    var check = done ? ' <span style="color:#2e9e5b">✅</span>' : '';
+    if(active) return '<span style="' + base + ' background:var(--accent); color:#fff; font-weight:700;">' + label + check + '</span>';
+    return '<a href="' + href + '" style="' + base + ' background:transparent; border:1px solid var(--border); color:var(--text2); text-decoration:none;">' + label + check + '</a>';
+  }
+  var arrow = '<span style="color:var(--text3); font-size:12px; padding:0 2px;">→</span>';
+  host.innerHTML =
+    chip('① 文章生成', 'Japanese_story_generator.html', current === 'story', doneStory) + arrow +
+    chip('② 問題生成', 'Japanese_question_generator.html', current === 'question', doneQ) + arrow +
+    '<span style="font-size:12px; color:var(--text3);">③</span>' +
+    chip('📱配布', 'Japanese_quiz_template.html', current === 'quiz', false) +
+    '<span style="color:var(--text3); font-size:11px;">/</span>' +
+    chip('🖨印刷', 'Japanese_print_template.html', current === 'print', false);
+}
+// 完了時の「次にすること」ガイド（アクセント枠・#nextGuideへ）
+function showNextGuide(html){
+  var host = document.getElementById('nextGuide'); if(!host) return;
+  host.innerHTML = '<div style="border:2px solid var(--accent); background:rgba(90,140,255,.06); border-radius:10px; padding:12px 14px; margin:12px 0; font-size:13px; line-height:1.75;">' + html + '</div>';
+}
+
+// ================= 初期化 =================
+function init(){
+  initTheme(); initImode(); // テーマ・Iモードは配布用/セットアップ両モードで適用
+  if(!isPlaceholder(INJECTED_SET)){
+    try{
+      QUESTION_SET = JSON.parse(INJECTED_SET);
+    }catch(e){ QUESTION_SET = null; }
+  }
+  if(QUESTION_SET){
+    // 配布用モード：そのままクイズ表示。生徒が開くため、先生用ナビ
+    // （← Pandoraメイン＋フローナビ）は隠す（テンプレート/セットアップ時のみ表示）。
+    document.getElementById('setupCard').style.display = 'none';
+    var nav = document.getElementById('teacherNav');
+    if(nav) nav.style.display = 'none';
+    renderQuiz();
+  }else{
+    // テンプレートモード（先生用）：セットアップ表示。ここでのみ自動持ち回りを使う。
+    document.getElementById('setupCard').style.display = 'block';
+    document.getElementById('topbarSub').textContent = 'テンプレート（セットアップモード）';
+    loadStudentsIntoSelect('setupStudentId', 'setupStudentId_text').then(function(){ hoPresetStudent('setupStudentId'); });
+    hoRenderQuestionSetBanner(); // 直近の問題セットがあれば提案バナー
+    renderFlowProgress('quiz'); // 工程進行バー（先生用モードのみ）
+  }
+}
+
+function loadPastedSet(){
+  const raw = document.getElementById('pasteArea').value.trim();
+  if(!raw){ setupNotice('貼り付け欄が空です。', 'err'); return; }
+  try{
+    const parsed = JSON.parse(raw);
+    if(parsed.recordType !== 'japanese_question_set'){
+      setupNotice('貼り付けた内容は問題セット形式ではないようです。', 'err');
+      return;
+    }
+    QUESTION_SET = parsed;
+    setupNotice('問題セットを読み込みました：' + (parsed.sourceTitle || '(無題)') + '（' + (parsed.questions||[]).length + '問' + (parsed.kanjiQuiz ? '＋漢字5問' : '') + '）', 'info');
+  }catch(err){
+    setupNotice('貼り付けた内容の読み込みに失敗しました：' + err.message, 'err');
+  }
+}
+
+function loadQuestionSetFile(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (e)=>{
+    try{
+      const parsed = JSON.parse(e.target.result);
+      if(parsed.recordType !== 'japanese_question_set'){
+        setupNotice('このJSONは問題セット形式ではないようです。', 'err');
+        return;
+      }
+      QUESTION_SET = parsed;
+      setupNotice('問題セットを読み込みました：' + (parsed.sourceTitle || '(無題)') + '（' + (parsed.questions||[]).length + '問' + (parsed.kanjiQuiz ? '＋漢字5問' : '') + '）', 'info');
+    }catch(err){
+      setupNotice('JSONの読み込みに失敗しました：' + err.message, 'err');
+    }
+  };
+  reader.readAsText(file, 'utf-8');
+}
+
+function setupNotice(msg, type){
+  document.getElementById('setupNotice').innerHTML = '<div class="notice notice-'+type+'">'+msg+'</div>';
+}
+
+function previewQuiz(){
+  if(!QUESTION_SET){ setupNotice('先に問題セットJSONを読み込んでください。', 'err'); return; }
+  ASSIGNMENT_ID = document.getElementById('setupAssignmentId').value.trim() || genAssignmentId();
+  STUDENT_ID = studentIdValue('setupStudentId', 'setupStudentId_text') || 'S-0000';
+  STUDENT_NAME = selectedStudentName('setupStudentId'); // ミラー同期用（手入力時は空）
+  document.getElementById('setupCard').style.display = 'none';
+  renderQuiz();
+}
+
+function genAssignmentId(){
+  return 'asgn_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
+}
+
+// ================= 配布用HTML書き出し =================
+async function exportDistributionHtml(){
+  if(!QUESTION_SET){ setupNotice('先に問題セットJSONを読み込んでください。', 'err'); return; }
+  const aid = document.getElementById('setupAssignmentId').value.trim() || genAssignmentId();
+  const sid = studentIdValue('setupStudentId', 'setupStudentId_text');
+  if(!sid){ setupNotice('生徒を選択（または手入力）してください（例：S-0018）。', 'err'); return; }
+  const sname = selectedStudentName('setupStudentId'); // ミラー同期用（手入力時は空）
+
+  // 自分自身のHTMLソースを取得し、プレースホルダーを実データに置換する
+  let html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+  // JSONを安全に文字列リテラル化（既存の置換処理に影響しないようエスケープ）
+  const jsonLiteral = JSON.stringify(JSON.stringify(QUESTION_SET));
+  html = html.replace('"__QUESTION_SET_JSON__"', jsonLiteral);
+  html = html.replace('"__ASSIGNMENT_ID__"', JSON.stringify(aid));
+  html = html.replace('"__STUDENT_ID__"', JSON.stringify(sid));
+  html = html.replace('"__STUDENT_NAME__"', JSON.stringify(sname)); // students同期専用（QR/payloadには入れない）
+
+  const blob = new Blob([html], {type:'text/html;charset=utf-8'});
+  const filename = 'japanese_quiz_' + sid + '_' + Date.now() + '.html';
+
+  // showSaveFilePicker対応ブラウザ（Chrome/Edge）では保存先を選べる。
+  // 非対応（Safari/iPad等）は従来のダウンロードにフォールバック。
+  if(window.showSaveFilePicker){
+    try{
+      const handle = await window.showSaveFilePicker({
+        suggestedName: filename,
+        types: [{ description: 'HTML', accept: {'text/html': ['.html']} }]
+      });
+      const writable = await handle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+      setupNotice('配布用HTMLを保存しました（assignment_id: ' + aid + '）。このファイルを生徒に渡してください。', 'info');
+      showNextGuide('✅ 配布用HTMLを保存しました。<br>このファイルを生徒に渡してください。生徒が解答して送信すると、<b>採点UI</b>に自動で届きます（先生側の追加操作は不要です）。');
+      return;
+    }catch(err){
+      if(err && err.name === 'AbortError'){ return; } // ユーザーがキャンセル
+      // それ以外はダウンロードにフォールバック
+    }
+  }
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+  setupNotice('配布用HTMLを書き出しました（assignment_id: ' + aid + '）。このファイルを生徒に渡してください。', 'info');
+  showNextGuide('✅ 配布用HTMLを保存しました。<br>このファイルを生徒に渡してください。生徒が解答して送信すると、<b>採点UI</b>に自動で届きます（先生側の追加操作は不要です）。');
+}
+
+// ================= クイズ描画 =================
+function renderQuiz(){
+  const qs = QUESTION_SET;
+  document.getElementById('topbarSub').textContent =
+    (qs.gradeLabel || '') + '・' + (qs.genreLabel || '') + '・' + (qs.difficultyLabel || '') + '：' + (qs.sourceTitle || '');
+  document.getElementById('quizBody').style.display = 'block';
+  document.getElementById('submitBar').style.display = 'block';
+
+  // 本文（段落番号付き）
+  const paras = (qs.fullText || '').split(/\n+/).filter(s=>s.trim());
+  const passageArea = document.getElementById('passageArea');
+  passageArea.innerHTML = '';
+  paras.forEach((p, i)=>{
+    const div = document.createElement('div');
+    div.style.marginBottom = '10px';
+    const num = document.createElement('span');
+    num.className = 'para-num';
+    num.textContent = (i+1);
+    div.appendChild(num);
+    div.appendChild(document.createTextNode(p));
+    passageArea.appendChild(div);
+  });
+
+  // 読解問題
+  const area = document.getElementById('questionsArea');
+  area.innerHTML = '';
+  (qs.questions || []).forEach((q, idx)=>{
+    const qKey = 'q' + (q.number != null ? q.number : idx+1);
+    const item = document.createElement('div');
+    item.className = 'q-item';
+    const head = document.createElement('div');
+    head.className = 'q-head';
+    head.innerHTML = '<span class="q-num">問' + escapeHtml(q.number != null ? q.number : idx+1) + '</span>'
+      + '<span class="q-type">' + escapeHtml(q.type || '') + '</span>';
+    item.appendChild(head);
+    const text = document.createElement('div');
+    text.className = 'q-text';
+    text.textContent = q.question_text || '';
+    item.appendChild(text);
+
+    if(q.choices && q.choices.length){
+      // 選択式：タップで選択
+      answers[qKey] = { type: q.type || '選択式', kanten: q.kanten || null, mode: 'choice', choice: null };
+      q.choices.forEach(c=>{
+        const btn = document.createElement('button');
+        btn.className = 'choice-btn';
+        btn.textContent = c;
+        btn.onclick = ()=>{
+          item.querySelectorAll('.choice-btn').forEach(b=>b.classList.remove('selected'));
+          btn.classList.add('selected');
+          answers[qKey].choice = c;
+          updateProgress();
+        };
+        item.appendChild(btn);
+      });
+    }else{
+      // 抜き出し・記述式：スタイラス手書きcanvas
+      answers[qKey] = { type: q.type || '記述式', kanten: q.kanten || null, mode: 'canvas', written: false };
+      const isExtraction = (q.type || '').includes('抜き出し');
+      const wrap = document.createElement('div');
+      wrap.className = 'canvas-wrap';
+      let extractionHeight = 90;
+      if(isExtraction && q._actualCount && q._actualCount >= 11){
+        extractionHeight = 135; // 11字以上は1.5倍の高さ
+      }
+      wrap.style.height = isExtraction ? extractionHeight + 'px' : '160px';
+      const canvas = document.createElement('canvas');
+      wrap.appendChild(canvas);
+      item.appendChild(wrap);
+
+      const tools = document.createElement('div');
+      tools.className = 'canvas-tools';
+      const penBtn = document.createElement('button');
+      penBtn.className = 'tool-btn active';
+      penBtn.textContent = '✏️ ペン';
+      const eraserBtn = document.createElement('button');
+      eraserBtn.className = 'tool-btn';
+      eraserBtn.textContent = '🧽 消しゴム';
+      const clearBtn = document.createElement('button');
+      clearBtn.className = 'tool-btn';
+      clearBtn.textContent = '🗑 全部消す';
+      const hint = document.createElement('span');
+      hint.className = 'char-hint';
+      hint.textContent = isExtraction && q._actualCount ? '（' + q._actualCount + '字）' : '';
+      tools.appendChild(penBtn); tools.appendChild(eraserBtn); tools.appendChild(clearBtn); tools.appendChild(hint);
+      item.appendChild(tools);
+
+      setupCanvas(canvas, wrap, qKey, penBtn, eraserBtn, clearBtn);
+      canvases[qKey] = canvas;
+    }
+    area.appendChild(item);
+  });
+
+  // 漢字クイズ（デジタル専用）
+  if(qs.kanjiQuiz && qs.kanjiQuiz.length){
+    document.getElementById('kanjiCard').style.display = 'block';
+    const kArea = document.getElementById('kanjiArea');
+    kArea.innerHTML = '';
+    qs.kanjiQuiz.forEach((q, idx)=>{
+      const kKey = 'k' + (q.number != null ? q.number : idx+1);
+      kanjiAnswers[kKey] = null;
+      const item = document.createElement('div');
+      item.className = 'q-item';
+      const head = document.createElement('div');
+      head.className = 'q-head';
+      head.innerHTML = '<span class="q-num">漢字' + escapeHtml(q.number != null ? q.number : idx+1) + '</span>';
+      item.appendChild(head);
+      const text = document.createElement('div');
+      text.className = 'q-text';
+      text.textContent = q.question_text || '';
+      item.appendChild(text);
+      (q.choices || []).forEach(c=>{
+        const btn = document.createElement('button');
+        btn.className = 'choice-btn';
+        btn.textContent = c;
+        btn.onclick = ()=>{
+          item.querySelectorAll('.choice-btn').forEach(b=>b.classList.remove('selected'));
+          btn.classList.add('selected');
+          kanjiAnswers[kKey] = c;
+          updateProgress();
+        };
+        item.appendChild(btn);
+      });
+      kArea.appendChild(item);
+    });
+  }
+
+  updateProgress();
+}
+
+// ================= 手書きcanvas =================
+function setupCanvas(canvas, wrap, qKey, penBtn, eraserBtn, clearBtn){
+  // 実ピクセルサイズを表示サイズ×devicePixelRatioで確保
+  const resize = ()=>{
+    const rect = wrap.getBoundingClientRect();
+    const ratio = window.devicePixelRatio || 1;
+    // 既存の描画を保持してリサイズ
+    const prev = document.createElement('canvas');
+    prev.width = canvas.width; prev.height = canvas.height;
+    if(canvas.width) prev.getContext('2d').drawImage(canvas, 0, 0);
+    canvas.width = rect.width * ratio;
+    canvas.height = rect.height * ratio;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    if(prev.width) ctx.drawImage(prev, 0, 0, canvas.width, canvas.height);
+  };
+  // 初回リサイズはDOM挿入・レイアウト確定後に行う（挿入前だとrectが0×0になりcanvasが描画不能になるため）
+  requestAnimationFrame(resize);
+  window.addEventListener('resize', resize);
+
+  const ctx = canvas.getContext('2d');
+  let drawing = false;
+  let erasing = false;
+  let last = null;
+
+  const getPos = (e)=>{
+    const rect = canvas.getBoundingClientRect();
+    const ratio = canvas.width / rect.width;
+    return { x: (e.clientX - rect.left) * ratio, y: (e.clientY - rect.top) * ratio };
+  };
+
+  canvas.addEventListener('pointerdown', (e)=>{
+    e.preventDefault();
+    canvas.setPointerCapture(e.pointerId);
+    drawing = true;
+    last = getPos(e);
+  });
+  canvas.addEventListener('pointermove', (e)=>{
+    if(!drawing) return;
+    e.preventDefault();
+    const pos = getPos(e);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    if(erasing){
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 24;
+    }else{
+      ctx.strokeStyle = '#1a1a1a';
+      ctx.lineWidth = (e.pointerType === 'pen' && e.pressure) ? Math.max(1.5, e.pressure * 5) : 3;
+    }
+    ctx.beginPath();
+    ctx.moveTo(last.x, last.y);
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+    last = pos;
+    if(!answers[qKey].written){
+      answers[qKey].written = true;
+      updateProgress();
+    }
+  });
+  const stop = (e)=>{ drawing = false; last = null; };
+  canvas.addEventListener('pointerup', stop);
+  canvas.addEventListener('pointercancel', stop);
+
+  penBtn.onclick = ()=>{ erasing = false; penBtn.classList.add('active'); eraserBtn.classList.remove('active'); };
+  eraserBtn.onclick = ()=>{ erasing = true; eraserBtn.classList.add('active'); penBtn.classList.remove('active'); };
+  clearBtn.onclick = ()=>{
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    answers[qKey].written = false;
+    updateProgress();
+  };
+}
+
+// ================= 進捗・送信 =================
+function totalCount(){
+  return Object.keys(answers).length + Object.keys(kanjiAnswers).length;
+}
+function answeredCount(){
+  let n = 0;
+  Object.values(answers).forEach(a=>{
+    if(a.mode === 'choice' && a.choice) n++;
+    if(a.mode === 'canvas' && a.written) n++;
+  });
+  Object.values(kanjiAnswers).forEach(v=>{ if(v) n++; });
+  return n;
+}
+function updateProgress(){
+  document.getElementById('progressNote').textContent = answeredCount() + ' / ' + totalCount();
+}
+
+// assignmentsテーブルへ国語課題行をUPSERT（submissions送信前の外部キー担保）。
+// on_conflict=assignment_id + resolution=merge-duplicatesで再送信時も409にならない。
+// submissionsのFK（assignment_id）を満たすため、assignmentsへUPSERTする。
+// 失敗は握りつぶさず throw する（呼び出し側が送信を中断してエラー表示する）。
+async function upsertJapaneseAssignment(qs){
+  const gradeNum = qs && qs.grade ? (parseInt(String(qs.grade).replace(/[^0-9]/g,''),10) || null) : null;
+  const res = await fetch(SUPABASE_URL + '/rest/v1/assignments?on_conflict=assignment_id', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+      'Prefer': 'resolution=merge-duplicates,return=minimal'
+    },
+    body: JSON.stringify({
+      assignment_id: ASSIGNMENT_ID,
+      student_id: STUDENT_ID,
+      grade: gradeNum,
+      subject: 'japanese',
+      mode: null,
+      assignment_data: {
+        source_title: (qs && qs.sourceTitle) || null,
+        grade: (qs && qs.grade) || null, // "g2"（submission_data用の文字列）
+        genre: (qs && qs.genreKey) || null,
+        difficulty: (qs && qs.difficultyKey) || null,
+        structure_type: (qs && qs.structureType) || null,
+        kanten_tags: (qs && qs.kantenTags) || [],
+        questions: summarizeQuestions(qs)
+      },
+      assigned_at: new Date().toISOString()
+    })
+  });
+  if(!res.ok){
+    const t = await res.text();
+    throw new Error('課題(assignments)登録: ' + sbErrorMessage(res.status, t));
+  }
+}
+
+async function submitAnswers(){
+  const unanswered = totalCount() - answeredCount();
+  if(unanswered > 0){
+    if(!confirm('まだ答えていない問題が' + unanswered + '問あります。このまま送信しますか？')) return;
+  }
+
+  const qs = QUESTION_SET;
+  const problems = (qs.questions || []).map((q, idx)=>{
+    const qKey = 'q' + (q.number != null ? q.number : idx+1);
+    const a = answers[qKey] || {};
+    return {
+      problem_id: qKey,
+      type: q.type || null,
+      kanten: q.kanten || null,
+      question: q.question_text || null,
+      answer: q.answer || null,          // 正答（採点用）
+      explanation: q.explanation || null,
+      student_choice: a.mode === 'choice' ? (a.choice || null) : null,
+      answer_canvas: a.mode === 'canvas' && canvases[qKey] && a.written ? canvases[qKey].toDataURL('image/png') : null
+    };
+  });
+
+  const kanji = (qs.kanjiQuiz || []).map((q, idx)=>{
+    const kKey = 'k' + (q.number != null ? q.number : idx+1);
+    return {
+      kanji_id: kKey,
+      kanji: q.kanji || null,
+      word: q.word || null,
+      question: q.question_text || null,
+      answer: q.answer || null,
+      student_choice: kanjiAnswers[kKey] || null,
+      correct: kanjiAnswers[kKey] != null && q.answer != null
+        ? String(kanjiAnswers[kKey]).charAt(0) === String(q.answer).charAt(0)
+        : null
+    };
+  });
+
+  const payload = {
+    student_id: STUDENT_ID,
+    assignment_id: ASSIGNMENT_ID,
+    mode: null,
+    subject: "japanese",
+    submission_data: {
+      student_id: STUDENT_ID,
+      student_name: null, // 規約：名前はQR/入力に持たせず、Lethe APIでstudent_idから引く
+      grade: qs.grade || null,
+      genre: qs.genreKey || null,
+      difficulty: qs.difficultyKey || null,
+      structure_type: qs.structureType || null,
+      kanten_tags: qs.kantenTags || [],
+      source_title: qs.sourceTitle || null,
+      problems: problems,
+      kanji: kanji,
+      source: "japanese_quiz_web"
+    },
+    submitted_at: new Date().toISOString()
+  };
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = '送信中...';
+
+  const configured = !isPlaceholder(SUPABASE_URL) && !isPlaceholder(SUPABASE_ANON_KEY);
+  try{
+    if(configured){
+      // FK連鎖（submissions→assignments→students）を満たすため、
+      // ①students（マスターミラー）→②assignments の順にUPSERTしてから送信する。
+      // いずれか失敗したら送信に進まず中断してエラーを表示（握りつぶさない）。
+      try{
+        const gradeNum = gradeToInt(qs && qs.grade);
+        await upsertStudentMirror(STUDENT_ID, isPlaceholder(STUDENT_NAME) ? '' : STUDENT_NAME, gradeNum);
+        await upsertJapaneseAssignment(qs);
+      }catch(ue){
+        alert('課題の登録に失敗しました：' + ue.message + '\n\n生徒名簿(students)または課題(assignments)への登録ができないため、解答を送信できませんでした。先生に連絡してください（Supabaseの権限・列設定の確認が必要です）。');
+        btn.disabled = false;
+        btn.textContent = '✅ 解答を送信する';
+        return;
+      }
+      const res = await fetch(SUPABASE_URL + '/rest/v1/submissions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(payload)
+      });
+      if(!res.ok){
+        const t = await res.text();
+        throw new Error('送信エラー：' + res.status + ' ' + t.slice(0,150));
+      }
+      document.getElementById('doneSub').textContent = '結果は先生が確認します。';
+    }else{
+      // Supabase未設定：JSONダウンロードにフォールバック
+      const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'japanese_submission_' + STUDENT_ID + '_' + Date.now() + '.json';
+      a.click();
+      URL.revokeObjectURL(url);
+      document.getElementById('doneSub').textContent = '解答ファイルがダウンロードされました。先生に送ってください。';
+    }
+    document.getElementById('doneOverlay').style.display = 'flex';
+  }catch(err){
+    alert('送信に失敗しました：' + err.message + '\nもう一度お試しください。');
+    btn.disabled = false;
+    btn.textContent = '✅ 解答を送信する';
+  }
+}
+
+function escapeHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+init();
+</script>
+
+</body>
+</html>

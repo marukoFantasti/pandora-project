@@ -1,0 +1,55 @@
+{
+  "student_id": "S-0018",
+  "assignment_id": "asgn_1783144210219_5q1p8x",
+  "mode": null,
+  "subject": "japanese",
+  "submission_data": {
+    "student_id": "S-0018",
+    "student_name": null,
+    "grade": "g2",
+    "genre": "monogatari",
+    "difficulty": "renshu",
+    "structure_type": "single",
+    "kanten_tags": [
+      "場面",
+      "あらすじ",
+      "気持ち"
+    ],
+    "source_title": "うさりんのひっこし",
+    "problems": [
+      {
+        "problem_id": "q1",
+        "type": "選択式",
+        "kanten": "場面",
+        "question": "（設問文）",
+        "answer": "イ",
+        "explanation": "（解説）",
+        "student_choice": "イ　（選択肢2）",
+        "answer_canvas": null
+      },
+      {
+        "problem_id": "q2",
+        "type": "抜き出し",
+        "kanten": "あらすじ",
+        "question": "（設問文）",
+        "answer": "（正答）",
+        "explanation": "（解説）",
+        "student_choice": null,
+        "answer_canvas": "data:image/png;base64,....（スタイラス手書き画像）"
+      }
+    ],
+    "kanji": [
+      {
+        "kanji_id": "k1",
+        "kanji": "教",
+        "word": "教室",
+        "question": "「教室」の読み方を選びなさい。",
+        "answer": "ア",
+        "student_choice": "ア　きょうしつ",
+        "correct": true
+      }
+    ],
+    "source": "japanese_quiz_web"
+  },
+  "submitted_at": "2026-07-16T10:30:00.000Z"
+}
