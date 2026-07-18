@@ -316,7 +316,8 @@ async function renderAnalytics() {
     var sd = s.submission_data || {};
     // student_id（S-0001形式）があればそれを優先、なければ名前をキーに
     var sid  = s.student_id || sd.student_id || null;
-    var name = s.student_name || sd.student_name || '不明';
+    // 氏名は名簿解決に統一（保存名のバラつきを排除）。sidが無い古いデータのみ保存名にフォールバック。
+    var name = sid ? resolveStudentName(sid) : (s.student_name || sd.student_name || '不明');
     var key  = sid || name;
 
     if (!studentMap[key]) studentMap[key] = {
@@ -618,6 +619,50 @@ const headers = {
   'Content-Type': 'application/json'
 };
 
+// ===== 生徒名の解決（規約：氏名は保存データに依存せず student_id から名簿解決） =====
+// 提出経路（デジタル/印刷）で submission.student_name がバラつく問題を避け、
+// student_id を一意キーに Lethe名簿→studentsテーブル の順で一括解決する。
+const LETHE_URL = "https://script.google.com/macros/s/AKfycbxlXsrnt14jxxZrnKUSSdq4KG8LU96eDTPjrkyXdSGZ-Gmehha5HHNPMZTnQo6OrIy7oA/exec";
+var STUDENT_NAME_MAP = {};
+var studentNameMapLoaded = false;
+async function loadStudentNameMap() {
+  if (studentNameMapLoaded) return STUDENT_NAME_MAP;
+  var map = {};
+  // ①Lethe getStudents（マスター名簿）
+  try {
+    var res = await fetch(LETHE_URL + '?action=getStudents');
+    var d = await res.json();
+    if (d && d.success && Array.isArray(d.students)) {
+      d.students.forEach(function(s) { if (s.student_id && s.name) map[String(s.student_id)] = s.name; });
+    }
+  } catch (e) { console.warn('[loadStudentNameMap] Lethe不達:', e); }
+  // ②studentsテーブル（Letheに無いidを補完）
+  try {
+    var res2 = await fetch(SUPABASE_URL + '/rest/v1/students?select=id,name', { headers });
+    if (res2.ok) {
+      var rows = await res2.json();
+      (rows || []).forEach(function(r) { if (r.id && r.name && !map[String(r.id)]) map[String(r.id)] = r.name; });
+    }
+  } catch (e) { console.warn('[loadStudentNameMap] students取得失敗:', e); }
+  STUDENT_NAME_MAP = map;
+  studentNameMapLoaded = true;
+  return map;
+}
+// 解決順：Lethe名簿 → studentsテーブル → 「(ID: S-XXXX)」（「名前未設定」より情報がある）
+function resolveStudentName(studentId) {
+  if (!studentId) return '名前未設定';
+  return STUDENT_NAME_MAP[String(studentId)] || '(ID: ' + studentId + ')';
+}
+// "g3"→"小3"、"jhs2"→"中2" 等の学年表示。未知/空は空文字。
+function jpGradeLabel(g) {
+  if (!g) return '';
+  var m = /^g0?([1-6])$/.exec(String(g));
+  if (m) return '小' + m[1];
+  var j = /^jhs([1-3])$/.exec(String(g));
+  if (j) return '中' + j[1];
+  return String(g);
+}
+
 // 採点状態
 var gradeState = {}; // { problem_id: { result: 'correct'|'partial'|'calc'|'incorrect', note: '' } }
 var currentSub = null;
@@ -631,6 +676,9 @@ async function loadSubmissions() {
   // submission_data（各問題のequation_canvas/answer_canvas等、Base64の手書き画像を
   // 含む重いJSONB列）は一覧表示には不要なため含めない。詳細を開いたとき（selectSub）
   // にその1件だけ改めてsubmission_data込みで取得する。
+  // 氏名一括解決用の名簿を先に読み込む（student_id→氏名を統一解決するため）
+  await loadStudentNameMap();
+
   const listFields = 'id,assignment_id,student_id,student_name,submitted_at,grade,subject,mode';
   const res = await fetch(SUPABASE_URL + '/rest/v1/submissions?select=' + listFields + '&order=submitted_at.desc&limit=' + SUB_LIST_LIMIT, { headers });
   allSubs = await res.json();
@@ -658,7 +706,7 @@ function renderSubList(subs) {
     var dateStr = d.getFullYear() + '/' + (d.getMonth()+1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + String(d.getMinutes()).padStart(2,'0');
     var mode = s.mode || '不明';
     var subject = s.subject || 'math';
-    var name = s.student_name || '名前未設定';
+    var name = resolveStudentName(s.student_id); // 規約：student_idから名簿解決（保存名に依存しない）
     return '<div class="sub-item" onclick="selectSub(\'' + s.id + '\')" id="si-' + s.id + '">' +
       '<div class="sub-item-name">' + name + '</div>' +
       '<div class="sub-item-id">' + s.id.substr(0,8) + '...' + (s.student_id ? ' ・ ID: ' + s.student_id : '') + '</div>' +
@@ -751,6 +799,123 @@ async function selectSub(id) {
   renderGrading(currentSub);
 }
 
+// 国語の1問カードを描画（観点タグ・形式ごとに表示を分ける）。
+// 選択式は student_choice と正答の照合で自動採点し gradeState に事前セット、
+// 抜き出し・記述は手書き（answer_canvas）＋正答/模範解答を並記して人間採点。
+function renderJapaneseProblemCard(p, i, pid) {
+  var type = p.type || '';
+  var kanten = p.kanten || '';
+  var gs = gradeState[pid] || {};
+
+  // 選択式：頭文字照合で自動採点（未採点時のみ事前セット。教師は上書き可）
+  if (!gs.result && type === '選択式' && p.student_choice != null && p.answer != null) {
+    var auto = String(p.student_choice).charAt(0) === String(p.answer).charAt(0) ? 'correct' : 'incorrect';
+    gs = { result: auto, note: gs.note || '', auto: true };
+    gradeState[pid] = gs;
+  }
+  var cardClass = gs.result ? ' ' + gs.result : '';
+  // 印刷経路の選択式：student_choiceがnullで手書き画像がある。マークは画像で
+  // 回収されるため自動採点せず、手書きを表示して人間が○×判定する（正しい仕様）。
+  var isPrintChoice = (type === '選択式' && (p.student_choice == null) && p.answer_canvas && p.answer_canvas !== 'null');
+
+  var h = '<div class="problem-card' + cardClass + '" id="pc-' + pid + '">';
+
+  // ヘッダー：Q番号・形式・観点
+  h += '<div class="problem-header">' +
+    '<span class="q-num">Q' + (i+1) + '</span>' +
+    '<span class="q-unit">' + escHtml(type) + '</span>' +
+    (kanten ? '<span class="q-unit" style="color:var(--accent)">【' + escHtml(kanten) + '】</span>' : '') +
+    '<div class="q-tags">' +
+      (kanten ? '<span class="q-tag">' + escHtml(kanten) + '</span>' : '') +
+      (type ? '<span class="q-tag">' + escHtml(type) + '</span>' : '') +
+    '</div>' +
+  '</div>';
+
+  h += '<div class="problem-body"><div class="problem-top">';
+
+  // 左：問題文・正答（記述は模範解答）・生徒の選択（選択式のみ）
+  h += '<div class="problem-col-left">' +
+    '<div><div class="col-label">問題</div>' +
+    '<div class="problem-text">' + escHtml(p.question || '-') + '</div></div>';
+  if (type === '選択式' && Array.isArray(p.choices) && p.choices.length) {
+    h += '<div><div class="col-label">選択肢</div><div class="problem-text" style="font-size:12px">' +
+      p.choices.map(function(c){ return escHtml(c); }).join('<br>') + '</div></div>';
+  }
+  h += '<div><div class="col-label">' + (type === '記述式' ? '模範解答' : '正答') + '</div>' +
+    '<div class="answer-text">' + escHtml(p.answer || '-') + '</div></div>';
+  if (type === '選択式' && p.student_choice != null) {
+    // デジタル経路：選択値を表示（自動採点済み）
+    h += '<div><div class="col-label">生徒の選択</div>' +
+      '<div style="font-size:16px;font-weight:700;color:' + (gs.result === 'correct' ? 'var(--green)' : 'var(--red)') + '">' +
+      escHtml(p.student_choice) + '</div></div>';
+  } else if (isPrintChoice) {
+    // 印刷経路：マークは下の手書き画像で確認して人間が採点
+    h += '<div><div class="col-label">生徒の選択</div>' +
+      '<div style="font-size:12px;color:var(--text3)">下の手書き画像で確認して採点してください（印刷経路のため自動採点なし）</div></div>';
+  }
+  if (p.explanation) {
+    h += '<div><div class="col-label">解説</div><div class="problem-text" style="font-size:12px;color:var(--text3)">' + escHtml(p.explanation) + '</div></div>';
+  }
+  h += '</div>';
+
+  // 右：採点コントロール（記述のみ△部分を許可）
+  h += '<div class="problem-col-right grading-ctrl"><div class="grade-row">' +
+    '<button class="grade-btn grade-btn-correct' + (gs.result === 'correct' ? ' active' : '') + '" onclick="setGrade(\'' + pid + '\', \'correct\')">✓ 正解</button>' +
+    (type === '記述式' ? '<button class="grade-btn grade-btn-partial' + (gs.result === 'partial' ? ' active' : '') + '" onclick="setGrade(\'' + pid + '\', \'partial\')">△ 部分</button>' : '') +
+    '<button class="grade-btn grade-btn-incorrect' + (gs.result === 'incorrect' ? ' active' : '') + '" onclick="setGrade(\'' + pid + '\', \'incorrect\')">✗ 不正解</button>' +
+  '</div>';
+  if (gs.auto) h += '<div style="font-size:10px;color:var(--text3);margin-top:4px">自動採点済み（必要なら上書き）</div>';
+  if (type === '記述式') {
+    h += '<button class="ai-btn" id="ai-btn-' + pid + '" onclick="aiGrade(\'' + pid + '\')">🤖 AI採点補助</button><div id="ai-result-' + pid + '"></div>';
+  }
+  h += '</div>'; // col-right
+
+  h += '</div>'; // problem-top
+
+  // 下段：手書き解答（抜き出し・記述、および印刷経路の選択式）。
+  // デジタル選択式のみ手書き無し（choicesから選択済み）。
+  if (type !== '選択式' || isPrintChoice) {
+    h += '<div class="problem-canvases"><div class="canvas-block">' +
+      '<div class="col-label">✏️ 生徒の解答 <span style="font-size:10px;color:#e74c3c;font-weight:normal">（赤ペンで添削できます）</span></div>';
+    if (p.answer_canvas && p.answer_canvas !== 'null') {
+      h += '<div class="canvas-wrap" id="aw-' + pid + '">' +
+        '<img class="canvas-img" src="' + p.answer_canvas + '" alt="解答" id="ai-' + pid + '" onload="syncOverlay(\'ans\',\'' + pid + '\')">' +
+        '<canvas class="canvas-overlay" id="ac-' + pid + '"' +
+          ' onmousedown="ovStart(event,\'ans\',\'' + pid + '\')" onmousemove="ovMove(event,\'ans\',\'' + pid + '\')" onmouseup="ovEnd()" onmouseleave="ovEnd()"' +
+          ' ontouchstart="ovStart(event,\'ans\',\'' + pid + '\')" ontouchmove="ovMove(event,\'ans\',\'' + pid + '\')" ontouchend="ovEnd()">' +
+        '</canvas></div>' +
+        '<div style="display:flex;gap:8px;margin-top:4px">' +
+          '<button id="ov-pen-ans-' + pid + '" onclick="setOvMode(\'ans\',\'' + pid + '\',\'pen\')" style="background:var(--accent);border:none;color:#fff;padding:3px 10px;border-radius:6px;font-size:11px;cursor:pointer">✏️ ペン</button>' +
+          '<button id="ov-era-ans-' + pid + '" onclick="setOvMode(\'ans\',\'' + pid + '\',\'eraser\')" style="background:var(--border);border:none;color:var(--text2);padding:3px 10px;border-radius:6px;font-size:11px;cursor:pointer">□ 消しゴム</button>' +
+          '<button onclick="ovClear(\'ans\',\'' + pid + '\')" style="background:var(--border);border:none;color:var(--text2);padding:3px 10px;border-radius:6px;font-size:11px;cursor:pointer">🗑️ 消す</button>' +
+        '</div>';
+    } else {
+      h += '<div class="no-canvas">未記入</div>';
+    }
+    h += '</div></div>'; // canvas-block / problem-canvases
+  }
+
+  h += '</div>'; // problem-body
+
+  // 先生手書きコメント
+  h += '<div class="teacher-canvas-wrap">' +
+    '<div class="teacher-canvas-label">📝 先生のコメント（手書き）</div>' +
+    '<canvas id="tc-' + pid + '" width="1200" height="150" ' +
+      'style="width:100%;height:150px;border:1px dashed var(--accent);border-radius:6px;background:#fff;display:block;touch-action:none;cursor:crosshair"' +
+      'onmousedown="tcStart(event,\'' + pid + '\')" onmousemove="tcMove(event,\'' + pid + '\')" onmouseup="tcEnd()" onmouseleave="tcEnd()"' +
+      'ontouchstart="tcStart(event,\'' + pid + '\')" ontouchmove="tcMove(event,\'' + pid + '\')" ontouchend="tcEnd()">' +
+    '</canvas>' +
+    '<button onclick="tcClear(\'' + pid + '\')" style="margin-top:4px;background:var(--border);border:none;color:var(--text2);padding:3px 10px;border-radius:6px;font-size:11px;cursor:pointer">🗑️ 消す</button>' +
+  '</div>';
+
+  h += '</div>'; // problem-card
+  return h;
+}
+
+function escHtml(s){
+  return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
 function renderGrading(sub) {
   var rawSd = sub.submission_data || {};
   var sd = typeof rawSd === 'string' ? JSON.parse(rawSd) : rawSd;
@@ -773,7 +938,8 @@ function renderGrading(sub) {
         '<span>📅 ' + dateStr + '</span>' +
         '<span>📚 ' + (sub.subject || 'math') + '</span>' +
         '<span>🌐 ' + (sub.mode || '-') + '</span>' +
-        '<span>🎓 ' + (sub.student_name || '-') + '</span>' +
+        '<span>🎓 ' + resolveStudentName(sub.student_id) + '</span>' +
+        (jpGradeLabel(sd.grade) ? '<span>📖 ' + jpGradeLabel(sd.grade) + '</span>' : '') +
         (sub.assignment_id ? '<span>🔑 ' + sub.assignment_id + '</span>' : '') +
       '</div>' +
     '</div>' +
@@ -787,9 +953,17 @@ function renderGrading(sub) {
     '<div class="progress-text" id="progress-text">0 / ' + totalCount + ' 問採点済み</div>' +
   '</div>';
 
-  // 数学問題カード
+  var isJapanese = (sub.subject === 'japanese');
+
+  // 問題カード（算数＝式/答えの2枠、国語＝観点別の解答1枠）
   problems.forEach(function(p, i) {
     var pid = p.problem_id || p.id || (i+1);
+
+    if (isJapanese) {
+      html += renderJapaneseProblemCard(p, i, String(pid));
+      return;
+    }
+
     var gs = gradeState[pid] || {};
     var cardClass = gs.result ? ' ' + gs.result : '';
 
@@ -903,10 +1077,16 @@ function renderGrading(sub) {
       '<div style="font-size:13px;font-weight:700;margin-bottom:12px">🈶 漢字テスト（' + kanji.length + '問）</div>';
 
     kanji.forEach(function(k, ki) {
-      var kid = 'k_' + (k.id || ki);
+      var kid = 'k_' + (k.id || k.kanji_id || ki);
       var gs = gradeState[kid] || {};
-      if (!gs.result && typeof k.is_correct !== 'undefined') {
-        gs.result = k.is_correct ? 'correct' : 'incorrect';
+      // 国語の漢字クイズは {answer, student_choice, correct(boolean)}、
+      // 算数側は {correct(正答文字列), selected, is_correct}。両形状を吸収する。
+      var kCorrectDisp = isJapanese ? (k.answer || '-') : (k.correct || '-');
+      var kSelectedDisp = isJapanese ? (k.student_choice || '未選択') : (k.selected || '未選択');
+      var kIsCorrect = isJapanese ? k.correct : k.is_correct;
+      var kReading = isJapanese ? (k.word || '') : (k.reading || '');
+      if (!gs.result && typeof kIsCorrect !== 'undefined') {
+        gs.result = kIsCorrect ? 'correct' : 'incorrect';
         gradeState[kid] = gs;
       }
       var cardClass = gs.result ? ' ' + gs.result : '';
@@ -915,10 +1095,10 @@ function renderGrading(sub) {
         '<div class="problem-top">' +
           '<div class="problem-col-left">' +
             '<div><div class="col-label">Q' + (ki+1) + ' 正解</div>' +
-            '<div style="font-size:20px;font-weight:700;color:var(--green)">' + (k.correct || '-') + '</div>' +
-            '<div style="font-size:12px;color:var(--text3)">(' + (k.reading || '') + ')</div></div>' +
+            '<div style="font-size:20px;font-weight:700;color:var(--green)">' + kCorrectDisp + '</div>' +
+            '<div style="font-size:12px;color:var(--text3)">(' + kReading + ')</div></div>' +
             '<div><div class="col-label">生徒の選択</div>' +
-            '<div style="font-size:18px;font-weight:700;color:' + (k.is_correct ? 'var(--green)' : 'var(--red)') + '">' + (k.selected || '未選択') + '</div></div>' +
+            '<div style="font-size:18px;font-weight:700;color:' + (kIsCorrect ? 'var(--green)' : 'var(--red)') + '">' + kSelectedDisp + '</div></div>' +
             '<div class="grading-ctrl">' +
               '<div class="grade-row">' +
                 '<button class="grade-btn grade-btn-correct' + (gs.result === 'correct' ? ' active' : '') + '" onclick="setGrade(\'' + kid + '\', \'correct\')">✓ 正解</button>' +
@@ -1053,22 +1233,30 @@ async function saveResults() {
 
   var sd = currentSub.submission_data || {};
   var problems = sd.problems || [];
+  var isJapanese = (currentSub.subject === 'japanese');
 
   var rows = problems.map(function(p, i) {
     var pid = p.problem_id || p.id || (i+1);
     var gs = gradeState[pid] || {};
     var eqOverlay = ovGetData('eq', String(pid));
     var ansOverlay = ovGetData('ans', String(pid));
-    return {
+    // 国語は新規列を足さず既存列を再利用：unit_name=観点、tags=[観点,形式]。
+    // これで既存の分析タブ（tagsでグルーピング）が観点別・形式別に機能する。
+    var unitName = isJapanese ? (p.kanten || null) : (p.unit || p.chapter || null);
+    var rowTags = isJapanese
+      ? [p.kanten, p.type].filter(function(t){ return t; })
+      : (p.tags || []);
+    var row = {
       submission_id: currentSub.id,
       assignment_id: currentSub.assignment_id || null,
       student_id: currentSub.student_id || null,
       problem_id: String(pid),
       problem_number: i + 1,
-      unit_name: p.unit || p.chapter || null,
-      chapter_name: p.chapter || null,
-      level: p.level || null,
-      tags: p.tags || [],
+      unit_name: unitName,
+      chapter_name: isJapanese ? (p.type || null) : (p.chapter || null),
+      // 国語：観点×形式×難易度の3軸集計のため level=難易度(renshu等)。算数は従来どおり。
+      level: isJapanese ? (sd.difficulty || p.level || null) : (p.level || null),
+      tags: rowTags,
       equation_correct: gs.result === 'correct' || gs.result === 'partial' || gs.result === 'calc',
       answer_correct: gs.result === 'correct',
       grade_result: gs.result,
@@ -1077,6 +1265,9 @@ async function saveResults() {
       red_pen_canvas: (eqOverlay || ansOverlay) ? { equation: eqOverlay, answer: ansOverlay } : null,
       teacher_verified: true,
     };
+    // 国語のみ diff列に学年(g3等)を記録（3軸目）。算数側は diff を送らず影響を与えない。
+    if (isJapanese) row.diff = sd.grade || null;
+    return row;
   }).filter(function(r) { return gradeState[r.problem_id] && gradeState[r.problem_id].result; });
 
   if (rows.length === 0) {
