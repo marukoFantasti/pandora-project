@@ -170,6 +170,7 @@ let corners = [];
 let currentQrData = null;
 let currentLayoutData = null;
 let currentStudentName = null;
+let currentSubject = 'math'; // layout_data.subjectから決定（無ければmath）。国語はjapanese。
 let croppedProblems = [];
 
 function esc(s) {
@@ -508,12 +509,16 @@ function fetchAnswerSheet(qr) {
       return;
     }
     if (!Array.isArray(rows) || rows.length === 0) {
-      statusEl.textContent = '該当するanswer_sheetsレコードが見つかりませんでした';
+      statusEl.innerHTML = '該当するanswer_sheetsレコードが見つかりませんでした。<br>' +
+        '<span style="font-weight:normal">対処：印刷テンプレート（Japanese_print_template.html）で該当課題を組んだあと ' +
+        '「☁️ answer_sheetsに登録」を実行済みか確認してください。また、読み取ったQRの ' +
+        'assignment_id / student_id / page が登録時と一致しているかもご確認ください（この3つで照合します）。</span>';
       statusEl.className = 'status-err';
       return;
     }
     currentLayoutData = rows[0].layout_data;
-    console.log('[fetchAnswerSheet] currentLayoutData set to:', currentLayoutData);
+    currentSubject = (currentLayoutData && currentLayoutData.subject) || 'math';
+    console.log('[fetchAnswerSheet] currentLayoutData set to:', currentLayoutData, '/ subject:', currentSubject);
     statusEl.textContent = '✓ レコードを取得しました';
     statusEl.className = 'status-ok';
     boxEl.textContent = JSON.stringify(rows[0].layout_data, null, 2);
@@ -832,7 +837,9 @@ function runCorrection() {
   } else {
     const cropCard = document.getElementById('crop-card');
     cropCard.classList.remove('hidden');
-    document.getElementById('crop-list').innerHTML = '<div class="status-muted">layout_dataが取得できていないため、自動切り出しはスキップされました。</div>';
+    document.getElementById('crop-list').innerHTML = '<div class="status-muted">layout_dataが取得できていないため、自動切り出しはスキップされました。<br>' +
+      '対処：③でanswer_sheetsの照会に成功しているか確認してください（未登録なら印刷テンプレートの「☁️ answer_sheetsに登録」を先に実行）。' +
+      'QRの assignment_id / student_id / page が登録時と一致していれば照会できます。</div>';
     document.getElementById('save-card').classList.add('hidden');
   }
 }
@@ -842,11 +849,15 @@ function getLayoutProblems(layoutData) {
   if (!layoutData) return [];
   if (Array.isArray(layoutData)) return layoutData;
   if (Array.isArray(layoutData.problems)) return layoutData.problems;
+  // 国語（japanese）のlayout_dataは problems ではなく fields（1問=1枠）を持つ。
+  if (Array.isArray(layoutData.fields)) return layoutData.fields;
   return [];
 }
 
 // layout_dataの座標(mm)の上下左右に余白を追加する（多少の補正ズレを吸収するため）
-const CROP_MARGIN_MM = 2;
+const CROP_MARGIN_MM = 2;      // 算数（式欄/答え欄）用：従来どおり2mm
+const JP_CROP_MARGIN_MM = 5;   // 国語（1問1枠）用：透視補正・mm→px誤差で輪郭が見切れるため広めに
+const PAGE_W_MM = 210, PAGE_H_MM = 297; // A4
 function expandBoxMm(box, marginMm) {
   if (!box) return null;
   return {
@@ -855,6 +866,20 @@ function expandBoxMm(box, marginMm) {
     width: box.width + marginMm * 2,
     height: box.height + marginMm * 2
   };
+}
+// 枠の外側へ marginMm を足しつつ、ページ端（A4）を越えないようクランプする。
+// 国語クロップの見切れ対策。抜き出しのマス目は横長で左右も欠けやすいため四辺すべてに適用。
+function expandBoxMmClamped(box, marginMm) {
+  if (!box) return null;
+  let x = box.x - marginMm;
+  let y = box.y - marginMm;
+  let w = box.width + marginMm * 2;
+  let h = box.height + marginMm * 2;
+  if (x < 0) { w += x; x = 0; }          // 左端クランプ（幅も詰める）
+  if (y < 0) { h += y; y = 0; }          // 上端クランプ
+  if (x + w > PAGE_W_MM) w = PAGE_W_MM - x; // 右端クランプ
+  if (y + h > PAGE_H_MM) h = PAGE_H_MM - y; // 下端クランプ
+  return { x: x, y: y, width: Math.max(0, w), height: Math.max(0, h) };
 }
 
 function cropBox(sourceCanvas, box, scale) {
@@ -888,8 +913,44 @@ function cropProblems() {
   croppedProblems = [];
   let html = '';
 
+  const isJapanese = currentSubject === 'japanese';
+
+  // ④ 見切れ対策のマージンを含む旨を明示（国語のみ）
+  if (isJapanese) {
+    html += '<div class="status-muted" style="margin-bottom:8px">切り出しは各枠の外側5mmを含めています（枠線の見切れ防止／ページ端はページ内にクランプ）。</div>';
+  }
+
   layoutProblems.forEach(function(p, i) {
     const pid = p.problem_id || p.id || String(i + 1);
+
+    if (isJapanese) {
+      // 国語：1問=1枠（x_mm/y_mm/w_mm/h_mm）を answer_canvas に切り出す。
+      // 枠ぴったりだと補正誤差で輪郭が欠けるため、外側5mm＋ページ端クランプで切る。
+      const box = expandBoxMmClamped({ x: p.x_mm, y: p.y_mm, width: p.w_mm, height: p.h_mm }, JP_CROP_MARGIN_MM);
+      const ansCanvas = cropBox(correctedCanvas, box, scale);
+      const ansUrl = ansCanvas ? ansCanvas.toDataURL() : null;
+
+      croppedProblems.push({
+        problem_id: pid,
+        type: p.type || null,
+        answer_canvas: ansUrl,
+        question: p.question || null,
+        answer: p.answer || null,
+        kanten: p.kanten || null
+      });
+
+      html += '<div class="crop-row">' +
+        '<div class="crop-qnum">Q' + (i + 1) + '<span class="crop-pid">' + esc(pid) + (p.type ? ' / ' + esc(p.type) : '') + '</span></div>' +
+        '<div class="crop-imgs">' +
+          '<div class="crop-img-block"><div class="crop-img-label">解答</div>' +
+            (ansUrl ? '<img class="crop-img" src="' + ansUrl + '">' : '<div class="status-muted">枠なし</div>') +
+          '</div>' +
+        '</div>' +
+      '</div>';
+      return;
+    }
+
+    // 算数：式欄・答え欄の2枠
     const eqBox = expandBoxMm(p.equation_box, CROP_MARGIN_MM);
     const ansBox = expandBoxMm(p.answer_box, CROP_MARGIN_MM);
     const eqCanvas = cropBox(correctedCanvas, eqBox, scale);
@@ -938,6 +999,99 @@ function mergeProblems(existingProblems, newProblems) {
   return merged;
 }
 
+// PostgRESTのエラー本文からcodeを読み、原因別の日本語ヒントを返す。
+// 23502=必須列不足 / 23503=FK違反 / 401,403=権限(RLS)。誤誘導を避けるため出し分ける。
+function sbErrorMessage(status, bodyText) {
+  let code = '', detail = '';
+  try { const j = JSON.parse(bodyText); code = j.code || ''; detail = j.message || j.details || ''; } catch (e) { detail = (bodyText || '').slice(0, 150); }
+  if (code === '23502') return '必須列が不足しています（NOT NULL違反）。送信ペイロードに必須列が揃っているか確認してください。詳細：' + detail;
+  if (code === '23503') return '関連レコードが未登録です（外部キー違反）。students/assignmentsの登録を先に済ませてください。詳細：' + detail;
+  if (status === 401 || status === 403) return 'アクセス権限がありません（RLS）。Supabaseで該当テーブルのanon insert権限を確認してください（HTTP ' + status + '）。';
+  return 'HTTP ' + status + ' ' + (detail || (bodyText || '').slice(0, 150));
+}
+
+// ===== マスターミラー同期：students / assignments を用意 =====
+// submissions→assignments→students のFK連鎖を満たすため、提出保存の前に
+// 生徒行と課題行を用意する（Letheがマスター、Supabaseは従属ミラー）。
+// どちらも ignore-duplicates：既存行（Lethe正式名・印刷配布時に作った詳細課題）を
+// 上書きしない。無ければ最小行を挿入する。失敗すればthrowして保存を中断させる。
+// ⚠️ assignmentsの必須列は id(default有) / assignment_id / assignment_data(jsonb NOT NULL)。
+//    ignore-duplicatesでもNOT NULLは衝突判定より先に検査されるため、既存行があっても
+//    assignment_dataを省くと23502になる。最小でも空でないJSONを必ず送る。
+async function ensureStudentAndAssignment() {
+  const sid = currentQrData.student_id;
+  const aid = currentQrData.assignment_id;
+  // ①students（id=S-XXXXを明示。nameはLethe解決名、無ければプレースホルダー）
+  const sres = await fetch(SUPABASE_URL + '/rest/v1/students?on_conflict=id', {
+    method: 'POST',
+    headers: Object.assign({}, SB_HEADERS, { 'Content-Type': 'application/json', 'Prefer': 'resolution=ignore-duplicates,return=minimal' }),
+    body: JSON.stringify({ id: sid, name: (currentStudentName && currentStudentName.trim()) ? currentStudentName.trim() : '(未登録)' })
+  });
+  if (!sres.ok) { const t = await sres.text(); throw new Error('students同期: ' + sbErrorMessage(sres.status, t)); }
+  // ②assignments（最小行。印刷配布時に作られた詳細行があれば温存＝ignore）。
+  //    assignment_data は NOT NULL のため、最小でも空でないJSONを必ず入れる。
+  const ares = await fetch(SUPABASE_URL + '/rest/v1/assignments?on_conflict=assignment_id', {
+    method: 'POST',
+    headers: Object.assign({}, SB_HEADERS, { 'Content-Type': 'application/json', 'Prefer': 'resolution=ignore-duplicates,return=minimal' }),
+    body: JSON.stringify({
+      assignment_id: aid,
+      student_id: sid,
+      subject: currentSubject || 'math',
+      mode: null,
+      assignment_data: { subject: currentSubject || 'math', source: 'photo_intake_auto' },
+      assigned_at: new Date().toISOString()
+    })
+  });
+  if (!ares.ok) { const t = await ares.text(); throw new Error('課題(assignments)同期: ' + sbErrorMessage(ares.status, t)); }
+}
+
+// assignments.assignment_data を取得（print/quiz が保存した questions・メタを含む）。
+// 失敗しても取込は続行できるよう {} を返す。
+async function fetchAssignmentData(aid) {
+  try {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/assignments?assignment_id=eq.' + encodeURIComponent(aid) + '&select=assignment_data&limit=1', { headers: SB_HEADERS });
+    if (!res.ok) return {};
+    const rows = await res.json();
+    let ad = rows && rows[0] && rows[0].assignment_data;
+    if (typeof ad === 'string') { try { ad = JSON.parse(ad); } catch (e) { ad = {}; } }
+    return (ad && typeof ad === 'object') ? ad : {};
+  } catch (e) {
+    console.warn('[fetchAssignmentData] failed:', e);
+    return {};
+  }
+}
+
+// 印刷経路の problems[]（problem_id/type/answer_canvas のみ）に、assignment_data.questions
+// から question/answer/kanten/type/explanation/choices をマージし、デジタル提出と同じ
+// 自己完結形状にする。突き合わせは problem_id（'q'+number）。
+function enrichJapaneseProblems(problems, adata) {
+  const questions = (adata && adata.questions) || [];
+  const byId = {};
+  questions.forEach(function(q) { byId[q.problem_id || ('q' + q.number)] = q; });
+  problems.forEach(function(p) {
+    const q = byId[p.problem_id];
+    if (!q) return;
+    p.question = p.question || q.question_text || null;
+    p.answer = p.answer || q.answer || null;
+    p.kanten = p.kanten || q.kanten || null;
+    p.type = p.type || q.type || null;
+    p.explanation = p.explanation || q.explanation || null;
+    if (q.choices) p.choices = q.choices;
+  });
+}
+
+// submission_data 直下に入れる国語メタ（デジタル提出と同キー）。
+function jpMetaFromAssignment(adata) {
+  return {
+    grade: (adata && adata.grade) || null,
+    genre: (adata && adata.genre) || null,
+    difficulty: (adata && adata.difficulty) || null,
+    structure_type: (adata && adata.structure_type) || null,
+    kanten_tags: (adata && adata.kanten_tags) || [],
+    source_title: (adata && adata.source_title) || null
+  };
+}
+
 // ===== ⑨ Supabase保存 =====
 function saveIntake() {
   const btn = document.getElementById('save-btn');
@@ -958,7 +1112,20 @@ function saveIntake() {
   statusEl.textContent = '保存中...';
   statusEl.className = 'status-muted';
 
+  const isJapanese = currentSubject === 'japanese';
   const newProblems = croppedProblems.map(function(p) {
+    if (isJapanese) {
+      // 国語：手書きは answer_canvas 1枠。type/kanten を採点UI・集計用に持たせる。
+      return {
+        problem_id: p.problem_id,
+        type: p.type || null,
+        kanten: p.kanten || null,
+        answer_canvas: p.answer_canvas,
+        question: p.question || null,
+        answer: p.answer || null,
+        student_choice: null // 印刷経由は手書きのみ（選択式もマークを画像で回収）
+      };
+    }
     return {
       problem_id: p.problem_id,
       equation_canvas: p.equation_canvas,
@@ -982,7 +1149,19 @@ function saveIntake() {
   const findUrl = SUPABASE_URL + '/rest/v1/submissions?assignment_id=eq.' + encodeURIComponent(currentQrData.assignment_id) +
     '&student_id=eq.' + encodeURIComponent(currentQrData.student_id) + '&select=*&order=submitted_at.desc&limit=1';
 
-  fetch(findUrl, { headers: SB_HEADERS }).then(function(r) { return r.json(); }).then(function(rows) {
+  // 印刷経路の欠落メタ（設問文・正答・観点）をassignment_dataから補完するため、
+  // assignments取得→problemsへマージしてから提出保存する。
+  let jpMeta = {};
+
+  ensureStudentAndAssignment().then(function() {
+    return fetchAssignmentData(currentQrData.assignment_id);
+  }).then(function(adata) {
+    if (isJapanese) {
+      enrichJapaneseProblems(newProblems, adata);
+      jpMeta = jpMetaFromAssignment(adata);
+    }
+    return fetch(findUrl, { headers: SB_HEADERS });
+  }).then(function(r) { return r.json(); }).then(function(rows) {
     const existing = (rows && rows.length > 0) ? rows[0] : null;
 
     if (existing) {
@@ -995,7 +1174,7 @@ function saveIntake() {
         headers: Object.assign({}, SB_HEADERS, { 'Content-Type': 'application/json', 'Prefer': 'return=minimal' }),
         body: JSON.stringify({
           student_name: currentStudentName || existing.student_name || null,
-          submission_data: Object.assign({}, existingSd, {
+          submission_data: Object.assign({}, existingSd, (isJapanese ? jpMeta : {}), {
             student_id: currentQrData.student_id,
             student_name: currentStudentName || existingSd.student_name || null,
             problems: mergedProblems,
@@ -1015,14 +1194,14 @@ function saveIntake() {
         student_name: currentStudentName || null,
         assignment_id: currentQrData.assignment_id,
         mode: null,
-        subject: 'math',
-        submission_data: {
+        subject: currentSubject,
+        submission_data: Object.assign({
           student_id: currentQrData.student_id,
           student_name: currentStudentName || null,
           problems: newProblems,
           kanji: [],
           source: 'photo_intake'
-        },
+        }, (isJapanese ? jpMeta : {})),
         submitted_at: new Date().toISOString()
       })
     });
