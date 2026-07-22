@@ -1,0 +1,168 @@
+{
+  "meta": {
+    "band": "jhs",
+    "band_label": "中学1〜3年共通",
+    "subject": "japanese",
+    "source_analysis": "ウイニングフィニッシュ国語 構造分析（jhs_kokugo_analysis_log.md）",
+    "note": "単元名＝観点タグ。小学版UNIT_BANKとフィールド名を揃えること（差分は README_handoff.md 参照）",
+    "version": "0.1.0"
+  },
+  "units": [
+    {
+      "unit_id": "jhs_u01",
+      "unit_name": "論理的文章の読み方",
+      "genre": "expository",
+      "observation_tags": ["話題把握", "キーワード反復", "言い換え", "たとえ表現"],
+      "skill_points": [
+        "題名・繰り返し語から話題を捉える",
+        "指示語・接続語の働きから文と文の関係を捉える",
+        "繰り返し・言い換え・たとえに注意して説明内容を捉える",
+        "事実と意見を読み分け、要点・要旨を捉える"
+      ],
+      "typical_evidence_zone": "傍線部の直後1〜2文に根拠が集中する設計を基本とする"
+    },
+    {
+      "unit_id": "jhs_u02",
+      "unit_name": "指示語・接続語・言い換えを捉える",
+      "genre": "expository",
+      "observation_tags": ["指示語", "接続語", "同義言い換え", "対比"],
+      "skill_points": [
+        "指示内容は直前の文・段落から特定する",
+        "接続語は前後の論理関係（順接・逆接・言い換え・対比）で選ぶ",
+        "抽象語とその説明部（〜とは…である）の対応を捉える"
+      ],
+      "typical_evidence_zone": "指示語は直前、概念定義は直後の段落冒頭"
+    },
+    {
+      "unit_id": "jhs_u03",
+      "unit_name": "事実と意見を読み分ける",
+      "genre": "expository",
+      "observation_tags": ["事実と意見", "具体と抽象", "文末表現"],
+      "skill_points": [
+        "文末表現（〜だ/〜ではないか/〜と思う）から意見を識別する",
+        "具体例から抽象概念への橋渡しを捉える",
+        "筆者の意見を支える事実（経験・引用）を特定する"
+      ],
+      "typical_evidence_zone": "具体例段落と主張段落の対応関係"
+    },
+    {
+      "unit_id": "jhs_u04",
+      "unit_name": "段落・構成を捉える",
+      "genre": "expository",
+      "observation_tags": ["段落機能", "三部構成", "問いと答え", "資料融合"],
+      "skill_points": [
+        "段落の機能（話題提示/具体例/反論/まとめ）を判定する",
+        "問いかけ文とその答えの段落対応を捉える",
+        "表・グラフと本文の対応を読み取る"
+      ],
+      "paragraph_function_tags": ["話題提示", "問題提起", "具体例", "根拠", "反論", "譲歩", "まとめ"],
+      "typical_evidence_zone": "段落冒頭の接続語・指示語が構成判定の手がかり"
+    },
+    {
+      "unit_id": "jhs_u05",
+      "unit_name": "筆者の考え・要旨を捉える",
+      "genre": "expository",
+      "observation_tags": ["要旨", "結論位置", "キーワード定義", "条件付き主張"],
+      "skill_points": [
+        "結論先出し型/後出し型を見極める",
+        "全体をまとめる段落と支える段落の関係を捉える",
+        "筆者独自のキーワードの定義を本文内で確定する"
+      ],
+      "typical_evidence_zone": "最終段落または「つまり/このように」以降"
+    },
+    {
+      "unit_id": "jhs_u06",
+      "unit_name": "文学的文章の読み方",
+      "genre": "narrative",
+      "observation_tags": ["季節感・情景", "間接的心情描写", "出来事と心情の因果"],
+      "skill_points": [
+        "情景・風物が心情の投影であることを捉える",
+        "しぐさ・沈黙・涙などの間接描写から心情を読む",
+        "出来事の流れに即して心情の理由を特定する"
+      ],
+      "typical_evidence_zone": "会話・行動描写の直前直後の地の文"
+    },
+    {
+      "unit_id": "jhs_u07",
+      "unit_name": "場面・情景・表現を捉える",
+      "genre": "narrative",
+      "observation_tags": ["場面転換", "視点", "対比構造", "擬態語・比喩"],
+      "skill_points": [
+        "時・場所・人物の変化から場面の切れ目を特定する",
+        "視点人物の転換と描写の変化を捉える",
+        "before/after・人物対照などの対比を捉える"
+      ],
+      "typical_evidence_zone": "場面区分は時間・場所を示す語句、表現効果は擬態語・比喩の直後"
+    },
+    {
+      "unit_id": "jhs_u08",
+      "unit_name": "心情・人物像を捉える",
+      "genre": "narrative",
+      "observation_tags": ["心情変化", "葛藤", "言えないジレンマ", "人物像"],
+      "skill_points": [
+        "セリフ・態度の変化を時系列で追う",
+        "言いたいのに言えない葛藤型心情を捉える",
+        "複数人物の心情を対比して人物像をまとめる"
+      ],
+      "typical_evidence_zone": "心情語の直前の出来事＋直後の行動"
+    },
+    {
+      "unit_id": "jhs_u09",
+      "unit_name": "小説の主題を捉える",
+      "genre": "narrative",
+      "observation_tags": ["象徴モチーフ", "内面変化", "主題"],
+      "skill_points": [
+        "象徴的な物・場所を軸に主人公の変化を捉える",
+        "冒頭と結末の対応から主題を導く",
+        "クライマックスでの気づきを言語化する"
+      ],
+      "typical_evidence_zone": "結末部の心情描写と冒頭の状況の落差"
+    },
+    {
+      "unit_id": "jhs_u10",
+      "unit_name": "筆者のものの見方と考え方を捉える",
+      "genre": "essay",
+      "observation_tags": ["経験から普遍化", "独自の美意識", "擬人法・比喩の効果"],
+      "skill_points": [
+        "日常経験→筆者独自の解釈という随筆の流れを捉える",
+        "五感描写（視覚・聴覚）による対象把握を捉える",
+        "擬人法などの表現に込めた筆者の見方を読み取る"
+      ],
+      "typical_evidence_zone": "具体的経験の描写後に置かれる評価・感想文"
+    },
+    {
+      "unit_id": "jhs_u11",
+      "unit_name": "随筆の主題を捉える",
+      "genre": "essay",
+      "observation_tags": ["視野拡大", "最終段落収束", "書き手の願い"],
+      "skill_points": [
+        "個別事象から人間・社会一般への視野拡大を捉える",
+        "最終段落に凝縮される主題を特定する",
+        "筆者の願い・提案の表現（願わくは/〜たい）に着目する"
+      ],
+      "typical_evidence_zone": "最終段落および小見出しに対応する結び"
+    }
+  ],
+  "supplementary_categories": [
+    {
+      "category_id": "jhs_kyoka",
+      "category_name": "強化学習（記述対策①〜⑦）",
+      "type": "writing_drill",
+      "drill_units": [
+        {"id": "kyoka_1", "name": "設問文の読み方", "target_skill": "設問文中の指示語・条件の分解"},
+        {"id": "kyoka_2", "name": "書き抜き問題の特訓", "target_skill": "同義言い換え箇所の特定"},
+        {"id": "kyoka_3", "name": "パターン別記述問題の特訓", "target_skill": "共通点相違点型・抽象化型の記述"},
+        {"id": "kyoka_4", "name": "要旨をまとめる", "target_skill": "指定キーワード使用の要旨記述"},
+        {"id": "kyoka_5", "name": "自分の意見をまとめる", "target_skill": "立場明示＋理由の二段落構成"},
+        {"id": "kyoka_6", "name": "心情をまとめる", "target_skill": "理由＋気持ちの二段型記述"},
+        {"id": "kyoka_7", "name": "主題をまとめる", "target_skill": "エピソードから一般化する記述"}
+      ]
+    },
+    {
+      "category_id": "jhs_nyushi",
+      "category_name": "入試対策・入試実戦テスト",
+      "type": "mixed_package",
+      "note": "単元横断の総合演習。漢字語彙＋文法/古典＋論理長文＋文学長文の4部構成テンプレート"
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "meta": {
+    "band": "jhs",
+    "subject": "japanese",
+    "purpose": "Japanese_story_generator 系の中学帯拡張用。本文生成時の段落構成テンプレート。パターンは原典の構造分析から抽象化した独自定義であり、原典本文は含まない",
+    "text_conventions": {
+      "line_numbers": "5行刻みで行数表示（生成HTMLでは疑似的に付与）",
+      "paragraph_numbers": "実戦・入試レベルでは段落番号①〜を付す",
+      "source_credit": "生成文は架空出典（架空筆者名『架空作品名』）を付し、〈◯◯ 改〉表記は実在県名を使わずダミー化または省略",
+      "annotations": "難語には＊注を付す。expository=本文欄外相当の位置、narrative=設問部冒頭",
+      "embedded_blanks": "実戦レベルでは本文中に空欄A〜C（接続語・キーワード）を埋め込む"
+    },
+    "version": "0.1.0"
+  },
+
+  "patterns": [
+    {
+      "pattern_id": "jhs_exp_01",
+      "genre": "expository",
+      "name": "話題提示→言い換え展開→まとめ",
+      "units": ["jhs_u01", "jhs_u02"],
+      "paragraph_plan": [
+        {"role": "話題提示", "content": "身近な題材の提示＋キーワード初出"},
+        {"role": "具体化", "content": "キーワードの言い換え・比喩による説明"},
+        {"role": "深化", "content": "反復表現で論点を強調しつつ新情報を追加"},
+        {"role": "まとめ", "content": "キーワードを再掲して筆者の見方を提示"}
+      ],
+      "question_hooks": ["同義言い換えペア", "指示語→直前対応", "話題語の反復"]
+    },
+    {
+      "pattern_id": "jhs_exp_02",
+      "genre": "expository",
+      "name": "概念対比型（AとBの二項）",
+      "units": ["jhs_u02", "jhs_u03"],
+      "paragraph_plan": [
+        {"role": "問題提起", "content": "二つの概念・立場の存在を示す"},
+        {"role": "A説明", "content": "概念Aの定義と具体例"},
+        {"role": "B説明", "content": "概念Bの定義と具体例（接続語＝一方/これに対して）"},
+        {"role": "統合", "content": "両者の関係づけと筆者の評価"}
+      ],
+      "question_hooks": ["定義の書き抜き（字数指定）", "対比接続語の空欄", "二項対比文型の記述（〜ではなく〜）"]
+    },
+    {
+      "pattern_id": "jhs_exp_03",
+      "genre": "expository",
+      "name": "問いと答えの段落対応型",
+      "units": ["jhs_u04"],
+      "paragraph_plan": [
+        {"role": "話題提示", "content": "現象の紹介"},
+        {"role": "問題提起", "content": "なぜ〜なのか、という問いかけ文"},
+        {"role": "答え1", "content": "理由その1（まず/第一に）"},
+        {"role": "答え2", "content": "理由その2（つまり等の言い換え含む）"},
+        {"role": "まとめ", "content": "問いへの総括的な答え"}
+      ],
+      "question_hooks": ["問いと答えの段落番号対応", "段落機能の判定4択", "理由の記述（〜から。）"]
+    },
+    {
+      "pattern_id": "jhs_exp_04",
+      "genre": "expository",
+      "name": "具体例列挙→抽象化型",
+      "units": ["jhs_u03", "jhs_u05"],
+      "paragraph_plan": [
+        {"role": "主張予告", "content": "抽象的な主張の予告"},
+        {"role": "具体例1", "content": "事例1（たとえば）"},
+        {"role": "具体例2", "content": "事例2（また/さらに）"},
+        {"role": "抽象化", "content": "共通性質の一般化（このように）"},
+        {"role": "結論", "content": "筆者の考えの明示"}
+      ],
+      "question_hooks": ["具体と抽象の対応", "共通性質の抽象化記述", "要旨のキーワード指定記述"]
+    },
+    {
+      "pattern_id": "jhs_exp_05",
+      "genre": "expository",
+      "name": "通念否定→新視点提示型（結論後出し）",
+      "units": ["jhs_u05"],
+      "paragraph_plan": [
+        {"role": "通念提示", "content": "一般に信じられている見方"},
+        {"role": "疑問", "content": "しかし本当にそうか、という転換"},
+        {"role": "根拠", "content": "新視点を支える事実・経験"},
+        {"role": "新結論", "content": "筆者独自の結論（むしろ〜である）"}
+      ],
+      "question_hooks": ["逆接接続語の空欄", "通念と筆者の考えの対比記述", "結論部の書き抜き"]
+    },
+    {
+      "pattern_id": "jhs_nar_01",
+      "genre": "narrative",
+      "name": "三場面構成・心情転換型",
+      "units": ["jhs_u07", "jhs_u08"],
+      "lead_box": true,
+      "paragraph_plan": [
+        {"role": "場面1", "content": "初期状態：主人公の停滞・葛藤（間接描写で心情提示）"},
+        {"role": "場面2", "content": "転機：他者との対話・出来事（場面転換の時間/場所語を明示）"},
+        {"role": "場面3", "content": "変化後：心情の転換を行動・情景に投影して結ぶ"}
+      ],
+      "question_hooks": ["場面の切れ目（初めの五字）", "心情変化の理由記述（〜から、〜という気持ち。）", "情景と心情の対応4択"]
+    },
+    {
+      "pattern_id": "jhs_nar_02",
+      "genre": "narrative",
+      "name": "言えないジレンマ型",
+      "units": ["jhs_u08"],
+      "lead_box": true,
+      "paragraph_plan": [
+        {"role": "きっかけ", "content": "伝えたい思いの発生"},
+        {"role": "葛藤", "content": "言おうとして言えない描写（沈黙・ためらいのしぐさ）"},
+        {"role": "決壊", "content": "感情があふれる瞬間（短いセリフ・涙・行動）"},
+        {"role": "余韻", "content": "相手の反応と関係の変化"}
+      ],
+      "question_hooks": ["間接描写から心情を選ぶ4択", "ためらいの理由記述", "セリフ前後の心情対比"]
+    },
+    {
+      "pattern_id": "jhs_nar_03",
+      "genre": "narrative",
+      "name": "象徴モチーフ・主題型",
+      "units": ["jhs_u09"],
+      "lead_box": true,
+      "paragraph_plan": [
+        {"role": "導入", "content": "象徴となる物・場所の初出（無意味な日常物として）"},
+        {"role": "展開", "content": "モチーフを介した人物の交流・出来事"},
+        {"role": "クライマックス", "content": "モチーフに新しい意味が宿る瞬間"},
+        {"role": "結び", "content": "冒頭と対応する描写で変化を示す"}
+      ],
+      "question_hooks": ["モチーフの意味変化の記述", "冒頭と結末の対応4択", "当事者視点の条件記述（w9）"]
+    },
+    {
+      "pattern_id": "jhs_ess_01",
+      "genre": "essay",
+      "name": "経験→普遍化型随筆",
+      "units": ["jhs_u10"],
+      "paragraph_plan": [
+        {"role": "経験描写", "content": "具体的な日常経験を五感描写で提示"},
+        {"role": "着目", "content": "経験の中の小さな発見・違和感"},
+        {"role": "解釈", "content": "筆者独自の見方（比喩・擬人法を活用）"},
+        {"role": "普遍化", "content": "人間・生き方一般への広がり"}
+      ],
+      "question_hooks": ["表現技法の効果記述", "筆者の見方の書き抜き", "経験と解釈の対応"]
+    },
+    {
+      "pattern_id": "jhs_ess_02",
+      "genre": "essay",
+      "name": "最終段落収束型随筆",
+      "units": ["jhs_u11"],
+      "paragraph_plan": [
+        {"role": "話題1", "content": "個別事象の紹介"},
+        {"role": "話題2", "content": "関連する別の事象（一見脱線）"},
+        {"role": "接続", "content": "二つの話題をつなぐ気づき"},
+        {"role": "主題", "content": "最終段落で主題と筆者の願いを凝縮"}
+      ],
+      "question_hooks": ["主題の指定字数記述（キーワード指定）", "話題どうしの関係4択", "願望表現の書き抜き"]
+    }
+  ],
+
+  "difficulty_scaling": {
+    "kakunin": {"paragraphs": [2, 3], "chars": [250, 400], "vocab_level": "教科書標準", "embedded_blanks": 0},
+    "renshu": {"paragraphs": [3, 5], "chars": [450, 800], "vocab_level": "教科書標準＋抽象語", "embedded_blanks": [0, 1]},
+    "jissen": {"paragraphs": [5, 8], "chars": [900, 1400], "vocab_level": "入試標準（＊注で難語補助）", "embedded_blanks": [2, 3]}
+  }
+}

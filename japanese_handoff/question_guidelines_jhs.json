@@ -1,0 +1,134 @@
+{
+  "meta": {
+    "band": "jhs",
+    "subject": "japanese",
+    "difficulty_levels": ["kakunin", "renshu", "jissen"],
+    "difficulty_labels": {"kakunin": "確認問題", "renshu": "練習問題", "jissen": "実戦問題"},
+    "note": "小学版の「完成」に相当するレベルは中学には存在しない。実戦は分割形式ではなく単一長文の入試準備レイヤー（structure_typeは3難易度とも single_long_text）",
+    "version": "0.1.0"
+  },
+
+  "character_count_rules": {
+    "punctuation_counting": "指示がない限り句読点・符号も1字として数える",
+    "kakinuki_exact": "『○字で書き抜きなさい』は指定字数と完全一致、本文表現を一切変えない",
+    "range_style": "『○字以上○字以内』は範囲厳守",
+    "inai_min_ratio": 0.8,
+    "inai_min_ratio_note": "『○字以内』は上限の8割以上を要求（採点バリデーションに使用）",
+    "question_notation": "字数条件は設問文末尾に括弧書き『（句読点も字数に含める。）』の形で明記する"
+  },
+
+  "difficulty_specs": {
+    "kakunin": {
+      "structure_type": "single_long_text",
+      "text_length_lines": [8, 12],
+      "question_count": [4, 5],
+      "format_ratio": {"multiple_choice": [1, 3], "kakinuki_or_short": [2, 4], "kijutsu": [0, 1]},
+      "hints": "全設問に『ポイント』ヒント（着眼点の指示）を付ける",
+      "typical_sequence": [
+        "話題・キーワードの書き抜き（空所補充型）",
+        "傍線部の言い換え書き抜き（字数指定つき）",
+        "内容理解の記号選択",
+        "理由・背景の短答"
+      ],
+      "kijutsu_length": null
+    },
+    "renshu": {
+      "structure_type": "single_long_text",
+      "text_length_lines": [15, 25],
+      "layout": "上段＝本文（行数表示5刻み）、下段＝設問＋マス目解答欄",
+      "question_count": [5, 8],
+      "format_ratio": {"multiple_choice": [2, 4], "kakinuki_or_short": [2, 5], "kijutsu": [1, 2]},
+      "theme_column": "入試頻出テーマ（抽象的概念・日本文化など）の解説コラムを付す",
+      "typical_sequence": [
+        "話題把握の書き抜き",
+        "傍線部言い換え・指示内容の書き抜き",
+        "内容・表現の記号選択（2〜3問）",
+        "複合空所（①②を一問に束ねる形式）",
+        "まとめ記述（文末形式指定つき）"
+      ],
+      "kijutsu_length": [12, 38]
+    },
+    "jissen": {
+      "structure_type": "single_long_text",
+      "text_source_style": "公立高校入試の改題体裁（出典表記〈都道府県名 改〉＋筆者『作品名』）",
+      "text_length_lines": [45, 55],
+      "layout": "見開き：本文1ページ（段落番号①〜、空欄A〜C埋め込み、行数表示）＋設問1ページ",
+      "question_count": [5, 6],
+      "format_ratio": {"multiple_choice": [2, 3], "kakinuki_or_short": [1, 4], "kijutsu": [1, 4]},
+      "mandatory_kijutsu": {"min_len": 40, "max_len": 70, "note": "40〜50字帯を最低1問必ず設ける（原典は50〜70字程度と規定）"},
+      "kijutsu_condition_types": [
+        "書き出し指定（『◯◯とは、』で始める等）",
+        "文型指定（『〜ものではなく、〜もの。』の二項対比形式等）",
+        "文末形式指定（〜から。/〜こと。/〜気持ち。）",
+        "指定語句使用",
+        "空所埋め込み型（前後の文につながるように書く）"
+      ],
+      "typical_sequence_expository": [
+        "空欄接続語の組み合わせ選択（A・B同時判定4択）",
+        "傍線部解釈の4択",
+        "指定字数書き抜き（15〜25字）",
+        "段落間関係の4択（段落機能の判定）",
+        "短字数書き抜き（3〜5字）",
+        "統合記述40〜50字（書き出し・文型指定つき）"
+      ],
+      "typical_sequence_narrative": [
+        "場面区分（各場面の初めの五字書き抜き）",
+        "表現効果の4択",
+        "空欄補充書き抜き",
+        "傍線部の心情4択",
+        "文章全体を貫く語の空欄4択",
+        "当事者視点の条件記述50字以内（『あなたが◯◯だとして、どのように言うか』型）"
+      ],
+      "genre_specific": {
+        "narrative": {
+          "lead_box": true,
+          "lead_box_note": "冒頭に前書き枠（場面・人物関係の前提説明）を付ける",
+          "churyaku_allowed": true,
+          "annotation_position": "設問ページ冒頭にまとめて配置"
+        },
+        "expository": {
+          "lead_box": false,
+          "annotation_position": "本文欄外"
+        }
+      }
+    }
+  },
+
+  "scoring_criteria_codes": {
+    "description": "採点基準は『必須要素の列挙＋不可条件の列挙』の2部構成。以下9コードの組み合わせで表現する。設計原則＝内容は柔軟（C）・形式は厳格（A/B/D/H）",
+    "codes": {
+      "A": {"name": "文末形式", "rule": "指定文末（〜から。/〜こと。/〜気持ち。/〜と思った。等）で結んでいなければ不可", "applies_to": ["理由記述", "内容記述", "心情記述", "主題記述"]},
+      "B": {"name": "キーワード必須", "rule": "指定語句（2〜3語）を用いていなければ不可", "applies_to": ["要旨記述", "主題記述"]},
+      "C": {"name": "内容要素の充足", "rule": "指定要素（2〜3個）がすべて押さえられていれば表現が異なっても可。部分点はこの要素単位で付与", "applies_to": ["全記述"]},
+      "D": {"name": "字数・原稿用紙", "rule": "指定字数帯を外れる／原稿用紙の使い方に従っていない場合は不可", "applies_to": ["作文", "長字数記述"]},
+      "E": {"name": "段落構成", "rule": "指定の段落構成（第一段落＝◯、第二段落＝◯）で書いていなければ不可", "applies_to": ["意見文", "作文"]},
+      "F": {"name": "立場明示", "rule": "賛成/反対など自分の立場を明確にしていなければ不可", "applies_to": ["意見文"]},
+      "G": {"name": "体験・具体例", "rule": "体験や具体例を示していなければ不可", "applies_to": ["意見文", "主題記述"]},
+      "H": {"name": "書き出し・接続指定", "rule": "指定の書き出しで始めていない／空所の前後と文がつながらない場合は不可", "applies_to": ["空所埋め込み型記述", "書き出し指定記述"]},
+      "I": {"name": "理由の明示", "rule": "結果（気持ち等）だけでなく、そこに至る理由が書けていて初めて可", "applies_to": ["心情記述"]}
+    },
+    "default_combinations": {
+      "reason_kijutsu": ["A", "C"],
+      "content_kijutsu": ["A", "C", "H"],
+      "shinjyo_kijutsu": ["A", "C", "I"],
+      "yoshi_kijutsu": ["A", "B", "C"],
+      "iken_bun": ["D", "E", "F", "G"],
+      "kuusho_umekomi": ["C", "H"]
+    }
+  },
+
+  "writing_question_archetypes": {
+    "description": "強化学習①〜⑦から抽出した記述問題の型。generator はこの型IDで設問を生成する",
+    "archetypes": [
+      {"id": "w1_kakinuki_exact", "name": "字数完全一致書き抜き", "criteria": ["D"], "note": "同義言い換え箇所の特定を要求"},
+      {"id": "w2_shitei_jisu_kijutsu", "name": "指定字数記述（本文語句利用）", "criteria": ["C", "D"]},
+      {"id": "w3_kyotsu_soui", "name": "共通点・相違点型", "criteria": ["A", "C"], "format": "共通点：〜。相違点：〜。の対句構成"},
+      {"id": "w4_chushoka", "name": "具体例からの抽象化型", "criteria": ["A", "C"]},
+      {"id": "w5_yoshi", "name": "要旨まとめ（キーワード指定）", "criteria": ["A", "B", "C"]},
+      {"id": "w6_iken", "name": "意見文（賛成反対＋理由）", "criteria": ["D", "E", "F", "G"], "length": [120, 150]},
+      {"id": "w7_shinjyo", "name": "心情まとめ（理由＋気持ち）", "criteria": ["A", "C", "I"], "format": "〜から、〜という気持ち。"},
+      {"id": "w8_shudai", "name": "主題まとめ（エピソード→一般化）", "criteria": ["A", "C", "G"]},
+      {"id": "w9_tojisha", "name": "当事者視点の条件記述", "criteria": ["C", "D"], "note": "文学実戦の締め問題。登場人物への共感的言語化", "genre": "narrative"}
+    ]
+  }
+}
