@@ -396,7 +396,8 @@ const LEVELS = {
 const GENRES = {
   monogatari: { label: "物語文", desc: "登場人物の心情や場面を読み取る文章" },
   setsumei:   { label: "説明文", desc: "段落構成や要旨をとらえる文章" },
-  ronsetsu:   { label: "論説文", desc: "事実と意見を読み分け、主張をとらえる文章" }
+  ronsetsu:   { label: "論説文", desc: "事実と意見を読み分け、主張をとらえる文章" },
+  zuihitsu:   { label: "随筆", desc: "経験から筆者独自の見方・主題へ広げる文章（中学帯のみ）" }
 };
 const GRADE_GENRES = {
   g1: ["monogatari","setsumei"],
@@ -405,14 +406,15 @@ const GRADE_GENRES = {
   g4: ["monogatari","setsumei"],
   g5: ["monogatari","setsumei","ronsetsu"],
   g6: ["monogatari","setsumei","ronsetsu"],
-  jhs:["monogatari","setsumei","ronsetsu"]
+  jhs:["monogatari","ronsetsu","zuihitsu"]
 };
 
 // 難易度（確認/練習/完成）。小1は分析ログ上「完成」レベルが存在しないため除外
 const DIFFICULTIES = {
   kakunin: { label: "確認" },
   renshu:  { label: "練習" },
-  kansei:  { label: "完成" }
+  kansei:  { label: "完成" },
+  jissen:  { label: "実戦" } // 中学帯のみ。完成の改名ではなく単一長文の入試準備レイヤー
 };
 const DIFFICULTY_BY_GRADE = {
   g1: ["kakunin","renshu"],
@@ -421,7 +423,7 @@ const DIFFICULTY_BY_GRADE = {
   g4: ["kakunin","renshu","kansei"],
   g5: ["kakunin","renshu","kansei"],
   g6: ["kakunin","renshu","kansei"],
-  jhs:["kakunin","renshu","kansei"]
+  jhs:["kakunin","renshu","jissen"]
 };
 
 // 学年×難易度ごとの目標文字数の目安（1本あたり）
@@ -433,7 +435,7 @@ const LENGTH_DEFAULTS = {
   g4:  { kakunin:{value:400, estimated:true},  renshu:{value:800, estimated:true},  kansei:{value:800, estimated:true} },
   g5:  { kakunin:{value:500, estimated:true},  renshu:{value:900, estimated:true},  kansei:{value:900, estimated:true} },
   g6:  { kakunin:{value:500, estimated:true},  renshu:{value:900, estimated:true},  kansei:{value:900, estimated:true} },
-  jhs: { kakunin:{value:400, estimated:false, note:"分析ログ対象外の目安"}, renshu:{value:700, estimated:false, note:"分析ログ対象外の目安"}, kansei:{value:1000, estimated:false, note:"分析ログ対象外の目安"} }
+  jhs: { kakunin:{value:350, estimated:false, note:"確認：250〜400字帯の中央値"}, renshu:{value:650, estimated:false, note:"練習：450〜800字帯の中央値"}, jissen:{value:1150, estimated:false, note:"実戦：900〜1400字帯の中央値"} }
 };
 
 let currentDifficulty = "kansei";
@@ -653,56 +655,105 @@ const PATTERN_BANK = {
       ]
     }]
   },
+  // 中学帯（jhs）は pattern_bank_jhs.json を出典とする。
+  // genre=narrative→monogatari / expository→ronsetsu / essay→zuihitsu にマッピング。
+  // 各パターンに units（unit_bank_jhs参照）/ genre / leadBox / hooks（question_hooks）を保持し、
+  // 本文生成プロンプト・設問生成・採点の各優先度で参照する。
   jhs: {
-    monogatari: [{
-      key:"shousetsuteki", name:"小説的構成型",
-      labels:[
-        {label:"導入（人物・状況）", guide:"登場人物と状況を簡潔に描写してください。\n例1：「高校二年の夏、僕は初めて一人暮らしを始めた。」\n例2：「三年生の夏、僕らの野球部は最後の大会を迎えようとしていた。」\n例3：「高校三年の春、私は進路の決断を迫られていた。」"},
-        {label:"展開（出来事）", guide:"物語を動かす出来事を書いてください。\n例1：「隣人との些細なトラブルをきっかけに、思いがけない交流が始まった。」\n例2：「エースだった僕は、大事な試合の直前に肩を痛めてしまった。」\n例3：「安定した道と、夢を追う道との間で、私は何日も揺れ続けていた。」"},
-        {label:"クライマックス（心情の転換）", guide:"心情が大きく動く場面を書いてください。\n例1：「彼の何気ない一言に、僕はこれまでの自分の狭さを思い知らされた。」\n例2：「マウンドを譲ったチームメイトの姿に、僕は初めて「勝つこと」の意味を問い直した。」\n例3：「恩師の「後悔しない選択なんてない、自分で選んだ道を正解にすればいい」という言葉が、私の背中を押した。」"},
-        {label:"結末・余韻", guide:"物語の結末と、読者に残る余韻を書いてください。\n例1：「秋風が吹き抜けるベランダで、僕は少しだけ大人になった自分を感じていた。」\n例2：「試合に負けた帰り道、僕はそれでも清々しい気持ちで空を見上げていた。」\n例3：「願書を出したその夜、私は少しだけ大人になった自分を感じていた。」"}
-      ]
-    }],
-    setsumei: [{
-      key:"tsumiagejhs", name:"積み上げ型（中学生向け）",
-      labels:[
-        {label:"指示語・接続語を含む導入", guide:"論理的なつながりを意識した導入を書いてください。\n例1：「情報化社会という言葉を、私たちは日常的に耳にする。しかし、その実態を正確に理解している人は少ない。」\n例2：「グローバル化という言葉が使われるようになって久しい。しかし、その恩恵を誰もが平等に受けているわけではない。」\n例3：「少子高齢化という課題は、もはや他人事ではない。しかし、その実感を持てている若者は多くないだろう。」"},
-        {label:"段落の要点", guide:"各段落の要点を、具体例とともに書いてください。\n例1：「情報化社会の特徴は、誰もが容易に情報を発信できる点にある。」\n例2：「グローバル化の特徴は、国境を越えた人・物・情報の移動が活発になる点にある。」\n例3：「少子高齢化の特徴は、支える世代と支えられる世代のバランスが崩れていく点にある。」"},
-        {label:"段落どうしの関係・構成", guide:"文章全体の構成が伝わるように書いてください。\n例1：「その一方で、誤った情報が広がりやすいという課題も抱えている。」\n例2：「その一方で、経済格差が国内外で広がるという課題も指摘されている。」\n例3：「その一方で、この変化を新しい社会の仕組みを作るきっかけと捉える見方もある。」"},
-        {label:"要旨", guide:"文章全体の要旨を簡潔にまとめてください。\n例1：「情報化社会を生きる私たちには、情報を見極める力が求められているのである。」\n例2：「グローバル化の恩恵を公平に分配するしくみづくりが、これからの社会に求められているのである。」\n例3：「少子高齢化を前提とした社会をどう築くかが、これからの世代に問われているのである。」"}
-      ]
-    }],
+    monogatari: [
+      { key:"jhs_nar_01", name:"三場面構成・心情転換型", genre:"narrative", units:["jhs_u07","jhs_u08"], leadBox:true,
+        hooks:["場面の切れ目（初めの五字）","心情変化の理由記述（〜から、〜という気持ち。）","情景と心情の対応4択"],
+        labels:[
+          {label:"場面1", guide:"初期状態：主人公の停滞・葛藤を、間接描写（しぐさ・情景）で心情を示しながら描いてください。"},
+          {label:"場面2", guide:"転機：他者との対話・出来事を書いてください。場面転換の時間／場所を示す語を明示してください。"},
+          {label:"場面3", guide:"変化後：心情の転換を、行動や情景に投影して結んでください。"}
+        ]
+      },
+      { key:"jhs_nar_02", name:"言えないジレンマ型", genre:"narrative", units:["jhs_u08"], leadBox:true,
+        hooks:["間接描写から心情を選ぶ4択","ためらいの理由記述","セリフ前後の心情対比"],
+        labels:[
+          {label:"きっかけ", guide:"伝えたい思いが生まれる場面を書いてください。"},
+          {label:"葛藤", guide:"言おうとして言えない描写（沈黙・ためらいのしぐさ）を書いてください。"},
+          {label:"決壊", guide:"感情があふれる瞬間を、短いセリフ・涙・行動で書いてください。"},
+          {label:"余韻", guide:"相手の反応と、関係の変化を書いてください。"}
+        ]
+      },
+      { key:"jhs_nar_03", name:"象徴モチーフ・主題型", genre:"narrative", units:["jhs_u09"], leadBox:true,
+        hooks:["モチーフの意味変化の記述","冒頭と結末の対応4択","当事者視点の条件記述（w9）"],
+        labels:[
+          {label:"導入", guide:"象徴となる物・場所を、無意味な日常物として初めて登場させてください。"},
+          {label:"展開", guide:"そのモチーフを介した人物の交流・出来事を書いてください。"},
+          {label:"クライマックス", guide:"モチーフに新しい意味が宿る瞬間を書いてください。"},
+          {label:"結び", guide:"冒頭と対応する描写で、変化を示して結んでください。"}
+        ]
+      }
+    ],
     ronsetsu: [
-      { key:"kishoutenketsu", name:"起承転結型",
+      { key:"jhs_exp_01", name:"話題提示→言い換え展開→まとめ", genre:"expository", units:["jhs_u01","jhs_u02"],
+        hooks:["同義言い換えペア","指示語→直前対応","話題語の反復"],
         labels:[
-          {label:"起（導入・話題提示）", guide:"何について論じるか、問題の背景を含めて提示してください。\n例1：「近年、地球温暖化の影響が世界各地で深刻化している。」\n例2：「近年、日本では「働き方改革」という言葉が盛んに使われるようになった。」\n例3：「観光は、地域経済を支える重要な産業の一つとなっている。」"},
-          {label:"承（展開・具体的な事実）", guide:"話題を具体的な事実やデータで展開してください。\n例1：「北極の氷は年々縮小し、海面上昇による被害も報告されている。」\n例2：「長時間労働の是正やテレワークの導入など、さまざまな取り組みが進められている。」\n例3：「多くの外国人観光客が、日本各地の自然や文化を求めて訪れている。」"},
-          {label:"転（視点の転換・課題や矛盾）", guide:"別の視点や、そこに潜む課題・矛盾を示してください。\n例1：「しかし、温暖化対策には国家間の利害対立という大きな壁が立ちはだかっている。」\n例2：「しかし、業種によっては改革が進みにくいという現実もある。」\n例3：「しかし、観光客の増加が、地域住民の生活に負担をかける「オーバーツーリズム」という問題も生まれている。」"},
-          {label:"結（まとめ・展望）", guide:"論をまとめ、今後の展望を示してください。\n例1：「一人ひとりが当事者意識を持つことが、解決への第一歩となるだろう。」\n例2：「一人ひとりに合った柔軟な働き方を実現することが、今後の課題となるだろう。」\n例3：「観光と地域の暮らしが両立する仕組みを整えることが、今後求められるだろう。」"}
+          {label:"話題提示", guide:"身近な題材を提示し、キーワードを初出させてください。"},
+          {label:"具体化", guide:"キーワードを言い換え・比喩で説明してください。"},
+          {label:"深化", guide:"反復表現で論点を強調しつつ、新情報を追加してください。"},
+          {label:"まとめ", guide:"キーワードを再掲し、筆者の見方を提示してください。"}
         ]
       },
-      { key:"ronsetsugata", name:"論説文型",
+      { key:"jhs_exp_02", name:"概念対比型（AとBの二項）", genre:"expository", units:["jhs_u02","jhs_u03"],
+        hooks:["定義の書き抜き（字数指定）","対比接続語の空欄","二項対比文型の記述（〜ではなく〜）"],
         labels:[
-          {label:"導入（問題提起）", guide:"論じる問題を明確に提示してください。\n例1：「なぜ、若者の政治への関心は低下し続けているのだろうか。」\n例2：「なぜ、現代人の多くは慢性的な睡眠不足に悩まされているのだろうか。」\n例3：「なぜ、全国で空き家の数は増え続けているのだろうか。」"},
-          {label:"現状分析", guide:"現状がどうなっているかを、データや事実とともに分析してください。\n例1：「国政選挙における二十代の投票率は、他の世代と比べて著しく低い。」\n例2：「厚生労働省の調査によると、日本人の平均睡眠時間は世界的に見ても短い水準にある。」\n例3：「総務省の調査では、全国の空き家率は年々上昇を続けている。」"},
-          {label:"背景・原因", guide:"なぜそうなっているのか、背景や原因を掘り下げてください。\n例1：「その背景には、政治が自分の生活に直結しているという実感の薄さがあると考えられる。」\n例2：「その背景には、長時間労働や、就寝前のスマートフォン利用の習慣化があると考えられる。」\n例3：「その背景には、人口減少に加え、相続後の管理の難しさがあると考えられる。」"},
-          {label:"展望・結論", guide:"今後の展望と、筆者の結論を述べてください。\n例1：「政治教育の充実こそが、この課題を解決する鍵となるはずだ。」\n例2：「睡眠の重要性を社会全体で見直すことこそが、この課題を解決する鍵となるはずだ。」\n例3：「空き家を地域資源として活用する仕組みづくりこそが、この課題を解決する鍵となるはずだ。」"}
+          {label:"問題提起", guide:"二つの概念・立場が存在することを示してください。"},
+          {label:"A説明", guide:"概念Aの定義と具体例を書いてください。"},
+          {label:"B説明", guide:"概念Bの定義と具体例を書いてください（接続語＝一方／これに対して）。"},
+          {label:"統合", guide:"両者を関係づけ、筆者の評価を示してください。"}
         ]
       },
-      { key:"mondai", name:"問題提起型",
+      { key:"jhs_exp_03", name:"問いと答えの段落対応型", genre:"expository", units:["jhs_u04"],
+        hooks:["問いと答えの段落番号対応","段落機能の判定4択","理由の記述（〜から。）"],
         labels:[
-          {label:"問題提起", guide:"解決すべき問題を明確に示してください。\n例1：「食品ロスの問題は、私たちの社会が抱える大きな課題の一つである。」\n例2：「高齢ドライバーによる交通事故の増加は、社会全体で向き合うべき課題である。」\n例3：「情報機器を使いこなせる人とそうでない人との「デジタル格差」は、見過ごせない問題である。」"},
-          {label:"具体例・現状", guide:"問題の具体例や現状を書いてください。\n例1：「日本では年間およそ五百万トンもの食品が、まだ食べられるのに廃棄されている。」\n例2：「近年、アクセルとブレーキの踏み間違いによる事故のニュースが後を絶たない。」\n例3：「特に高齢者の中には、行政手続きのオンライン化についていけない人が少なくない。」"},
-          {label:"原因分析", guide:"問題が起きている原因を分析してください。\n例1：「その背景には、過剰な生産や、賞味期限に対する過度な意識があると言われている。」\n例2：「その背景には、加齢による判断力・反射神経の低下があると考えられている。」\n例3：「その背景には、機器の複雑さや、学ぶ機会の不足があると考えられる。」"},
-          {label:"解決策・まとめ", guide:"解決策を提案し、まとめてください。\n例1：「一人ひとりが「もったいない」を意識することが、解決への第一歩となる。」\n例2：「運転免許の返納をしやすくする支援制度の充実が、解決への第一歩となる。」\n例3：「誰もが取り残されないデジタル社会を作ることが、解決への第一歩となる。」"}
+          {label:"話題提示", guide:"取り上げる現象を紹介してください。"},
+          {label:"問題提起", guide:"「なぜ〜なのか」という問いかけ文を書いてください。"},
+          {label:"答え1", guide:"理由その1を書いてください（まず／第一に）。"},
+          {label:"答え2", guide:"理由その2を書いてください（つまり等の言い換えを含む）。"},
+          {label:"まとめ", guide:"問いへの総括的な答えを書いてください。"}
         ]
       },
-      { key:"hikaku", name:"比較対照型",
+      { key:"jhs_exp_04", name:"具体例列挙→抽象化型", genre:"expository", units:["jhs_u03","jhs_u05"],
+        hooks:["具体と抽象の対応","共通性質の抽象化記述","要旨のキーワード指定記述"],
         labels:[
-          {label:"話題提示", guide:"何と何を比較するかを示してください。\n例1：「同じ「豊かさ」という言葉でも、その意味は時代によって大きく変わってきた。」\n例2：「同じ「暮らしやすさ」でも、都市と地方ではその意味が大きく異なる。」\n例3：「同じ「本を読む」という行為でも、紙の本と電子書籍では体験が異なる。」"},
-          {label:"視点A", guide:"一つ目の視点からの内容を書いてください。\n例1：「かつての豊かさとは、物を多く所有することを意味していた。」\n例2：「都市の暮らしやすさとは、交通や買い物の便利さに支えられている。」\n例3：「紙の本は、ページをめくる感触や、本棚に並ぶ達成感を味わうことができる。」"},
-          {label:"視点B", guide:"二つ目の視点からの内容を書いてください（視点Aと対応させる）。\n例1：「現代における豊かさは、時間や心のゆとりに重きを置くようになっている。」\n例2：「一方、地方の暮らしやすさは、自然や人とのつながりの豊かさに支えられている。」\n例3：「一方、電子書籍は、場所を取らず、何冊でも持ち運べる手軽さが魅力である。」"},
-          {label:"統合・結論", guide:"両方の視点を踏まえた結論を書いてください。\n例1：「これからの社会に求められる豊かさとは何かを、改めて問い直す必要があるだろう。」\n例2：「どちらの暮らしやすさを選ぶかは、その人が何を大切にするかによって変わってくるだろう。」\n例3：「これからは、目的に応じて両者を使い分ける読書スタイルが広がっていくだろう。」"}
+          {label:"主張予告", guide:"抽象的な主張を予告してください。"},
+          {label:"具体例1", guide:"事例1を書いてください（たとえば）。"},
+          {label:"具体例2", guide:"事例2を書いてください（また／さらに）。"},
+          {label:"抽象化", guide:"共通する性質を一般化してください（このように）。"},
+          {label:"結論", guide:"筆者の考えを明示してください。"}
+        ]
+      },
+      { key:"jhs_exp_05", name:"通念否定→新視点提示型（結論後出し）", genre:"expository", units:["jhs_u05"],
+        hooks:["逆接接続語の空欄","通念と筆者の考えの対比記述","結論部の書き抜き"],
+        labels:[
+          {label:"通念提示", guide:"一般に信じられている見方を提示してください。"},
+          {label:"疑問", guide:"「しかし本当にそうか」という転換を書いてください。"},
+          {label:"根拠", guide:"新しい視点を支える事実・経験を書いてください。"},
+          {label:"新結論", guide:"筆者独自の結論を書いてください（むしろ〜である）。"}
+        ]
+      }
+    ],
+    zuihitsu: [
+      { key:"jhs_ess_01", name:"経験→普遍化型随筆", genre:"essay", units:["jhs_u10"],
+        hooks:["表現技法の効果記述","筆者の見方の書き抜き","経験と解釈の対応"],
+        labels:[
+          {label:"経験描写", guide:"具体的な日常経験を、五感描写で提示してください。"},
+          {label:"着目", guide:"経験の中の小さな発見・違和感を書いてください。"},
+          {label:"解釈", guide:"筆者独自の見方を、比喩・擬人法を活用して書いてください。"},
+          {label:"普遍化", guide:"人間・生き方一般への広がりを書いてください。"}
+        ]
+      },
+      { key:"jhs_ess_02", name:"最終段落収束型随筆", genre:"essay", units:["jhs_u11"],
+        hooks:["主題の指定字数記述（キーワード指定）","話題どうしの関係4択","願望表現の書き抜き"],
+        labels:[
+          {label:"話題1", guide:"個別の事象を紹介してください。"},
+          {label:"話題2", guide:"関連する別の事象を書いてください（一見脱線するもの）。"},
+          {label:"接続", guide:"二つの話題をつなぐ気づきを書いてください。"},
+          {label:"主題", guide:"最終段落で、主題と筆者の願いを凝縮してください。"}
         ]
       }
     ]
@@ -838,6 +889,57 @@ function showNotice(msg, type){
 }
 function clearNotice(){ document.getElementById('noticeArea').innerHTML = ''; }
 
+// jhs 実戦の空欄穿孔（完成文→後処理の2段階方式）。
+// 本文から接続語を count 箇所選び ［　A　］〜 に置換し、元語を answer_key として返す。
+// 文章全体に分散させるため、テキストを count 区間に分け各区間の先頭の接続語を選ぶ。
+// 長い接続語を優先して部分一致の取りこぼし（「これに対して」を「一方」より優先）を防ぐ。
+function punchJhsBlanks(text, count){
+  count = Math.max(1, count || 3);
+  const CONNECTIVES = [
+    'これに対して','したがって','なぜなら','ところが','けれども','このように','すなわち',
+    'そのため','あるいは','たとえば','しかし','しかも','さらに','むしろ','ただし','つまり',
+    '一方','だが','また','そして','だから'
+  ];
+  const marks = ['A','B','C','D','E'];
+  const n = text.length;
+  if(n === 0) return { text: text, blanks: [] };
+  const seg = Math.max(1, Math.floor(n / count));
+  const chosen = []; // {start, len, word}
+  const taken = [];
+  const overlaps = (s,e)=> taken.some(r=> s < r.e && e > r.s);
+  for(let i=0; i<count; i++){
+    const from = i * seg;
+    const to = (i === count-1) ? n : (i+1) * seg;
+    let best = null;
+    for(const w of CONNECTIVES){
+      const idx = text.indexOf(w, from);
+      if(idx >= 0 && idx < to && !overlaps(idx, idx + w.length)){
+        if(best === null || idx < best.start) best = { start: idx, len: w.length, word: w };
+      }
+    }
+    if(best){ chosen.push(best); taken.push({ s: best.start, e: best.start + best.len }); }
+  }
+  chosen.sort((a,b)=> a.start - b.start);
+  chosen.forEach((c,i)=>{ c.mark = marks[i]; });
+  let out = text;
+  chosen.slice().sort((a,b)=> b.start - a.start).forEach(c=>{
+    out = out.slice(0, c.start) + '［　' + c.mark + '　］' + out.slice(c.start + c.len);
+  });
+  return { text: out, blanks: chosen.map(c=>({ mark: c.mark, answer: c.word })) };
+}
+
+// 読解問題（特に抜き出し）を作りやすくする表記ルール。本文生成・AIリライトの両方で使う共通文。
+// 語尾は指定文体（style）に合わせるよう明示（本文生成で整えた文末がリライトで中止形に戻るのを防ぐ）。
+function readabilitySectionText(style){
+  return `
+# 読解問題（特に抜き出し）を作りやすくするための表記ルール
+- 理由・原因を述べる文は、文末で理由だと分かる形（「〜からです。」「〜ので、…。」「〜ためです。」など）で結ぶこと。「〜たくて、」「〜ので、」のような中止形（読点で次に続けてしまう形）だけで理由を済ませないこと。これは「理由を◯字で抜き出しなさい」という設問の解答が、抜き出したときに自然な日本語として成立するようにするためです。
+- 登場人物の気持ちを述べる文は、心情語がはっきり含まれる形（「〜という気もちになりました。」「うれしくなりました。」など）で書くこと。これは「気持ちが分かる言葉を抜き出しなさい」という設問の解答になるためです。
+- ただし、すべての文をこの形にする必要はありません。文章が不自然にならない範囲で、自然に織り込んでください。
+- これらの文末・語尾は、上で指定した文体（${style}）に必ず合わせること（例：ですます調なら「〜からです。」「〜気もちになりました。」、だよ・しよう調なら「〜からなんだ。」「〜からだよ。」「〜うれしくなったんだ。」のように、文体に沿った言い方にする）。
+`;
+}
+
 async function generate(){
   clearNotice();
   const apiKey = getApiKey();
@@ -896,20 +998,51 @@ async function generate(){
     ? `\n# 文体の具体例（重要）\n「です・ます」調は使わない。文末は「〜だよ」「〜なんだ」「〜だね」「〜してみよう」「〜かな？」「〜だろう？」のような、子どもに直接語りかける言い方にする。「じつは」「たとえば」のような素朴な接続語はよいが、「〜ということが分かっています」「〜と考えられています」「〜が要因です」のような大人向けの説明語・伝聞表現は使わない。文章全体が、先生や親が子どもに話しかけているような調子になるようにする。\n`
     : '';
 
-  const roleLine = currentGenre === 'monogatari'
-    ? 'あなたは国語の読解教材を作成するプロの児童文学作家・編集者です。'
-    : 'あなたは国語・英語の読解教材を作成するプロの編集者です。';
-  const genreInstruction = currentGenre === 'monogatari'
-    ? `以下の「タイトル（テーマ）」と「4つの段落アウトライン」をもとに、日本語の物語文を1本、書き上げてください。
-タイトルは単なるラベルではなく、物語全体の場面・人物・展開の方向性を決める最重要情報として扱ってください。アウトラインの内容がタイトルの示す方向性と食い違う場合は、タイトルの意図を優先しつつ、アウトラインの骨子は活かす形で自然に統合してください。`
-    : `以下の「タイトル（テーマ）」と「4つの段落アウトライン」をもとに、日本語の${genreLabel}を1本、書き上げてください。
+  // 中学帯（jhs）の生成体裁（優先度2）。段落数は難易度スケーリング、出典は架空、
+  // 難語注の配置は genre 分岐で一元管理（補足2：expository/essay=本文側 / narrative=設問側）。
+  const isJhs = levelKey === 'jhs';
+  const JHS_GEN_SCALE = { kakunin:{ p:[2,3] }, renshu:{ p:[3,5] }, jissen:{ p:[5,8] } };
+  const jhsScale = isJhs ? (JHS_GEN_SCALE[currentDifficulty] || JHS_GEN_SCALE.jissen) : null;
+  const jhsAnnPos = currentGenre === 'monogatari'
+    ? '設問側（本文には難語の直後に「＊」印だけを付け、語注そのものは本文末に「＊語……説明」で列挙。印刷時は設問ページ冒頭へ回す前提）'
+    : '本文側（本文の末尾に「＊語……説明」の形で語注をまとめる）';
+
+  const roleLine = isJhs
+    ? (currentGenre === 'monogatari' ? 'あなたは中学生向けの国語読解教材を作成するプロの小説家・編集者です。'
+       : currentGenre === 'zuihitsu' ? 'あなたは中学生向けの国語読解教材を作成するプロの随筆家・編集者です。'
+       : 'あなたは中学生向けの国語読解教材を作成するプロの編集者です。')
+    : (currentGenre === 'monogatari'
+       ? 'あなたは国語の読解教材を作成するプロの児童文学作家・編集者です。'
+       : 'あなたは国語・英語の読解教材を作成するプロの編集者です。');
+  const isNarrativeLike = currentGenre === 'monogatari';
+  const genreInstruction = isNarrativeLike
+    ? `以下の「タイトル（テーマ）」と「段落アウトライン」をもとに、日本語の${genreLabel}を1本、書き上げてください。
+タイトルは単なるラベルではなく、${genreLabel}全体の場面・人物・展開の方向性を決める最重要情報として扱ってください。アウトラインの内容がタイトルの示す方向性と食い違う場合は、タイトルの意図を優先しつつ、アウトラインの骨子は活かす形で自然に統合してください。`
+    : `以下の「タイトル（テーマ）」と「段落アウトライン」をもとに、日本語の${genreLabel}を1本、書き上げてください。
 タイトルは単なるラベルではなく、本文全体の論旨・視点・結論の方向性を決める最重要情報として扱ってください。アウトラインの内容がタイトルの示す方向性と食い違う場合は、タイトルの意図を優先しつつ、アウトラインの骨子は活かす形で自然に統合してください。`;
-  const structureLine = currentGenre === 'monogatari'
+  const structureLine = isNarrativeLike
     ? '- 各段落の頭に見出しは付けず、地の文として自然につなげること（せりふは「」で示してよい）'
     : '- 各段落の頭に見出しは付けず、地の文として自然につなげること';
-  const factLine = currentGenre === 'monogatari'
+  const factLine = isNarrativeLike
     ? '- 登場人物の行動には本文中に読み取れる理由をつけ、せりふの裏にある気持ちが推測できるように書くこと'
     : '- 具体的な数値・事実を含める場合は、実際に妥当な内容にすること（不確かな数値は断定しすぎない表現にする）';
+
+  const paragraphLine = isJhs
+    ? `- 段落数：${jhsScale.p[0]}〜${jhsScale.p[1]}段落。下のアウトラインは「各段落の役割（骨子）」です。役割の順序は保ちつつ、必要に応じて一つの役割を複数段落に展開し、指定の段落数に収めること`
+    : `- 段落数：必ず${outlines.length}段落。各アウトラインの内容と順序をそのまま活かすこと`;
+
+  // jhs 専用の体裁ルール（架空出典・語注・空欄なしの完成文）。空欄化は後処理で行う。
+  const jhsSection = isJhs
+    ? `\n# 中学読解教材の体裁（重要・厳守）
+- 出典表記は必ず架空にすること。本文末に「（架空 花子『架空の作品名』による）」のように、架空の筆者名・架空の作品名で出典を付す。実在の作品名・実在の著者名・実在の都道府県名を用いた〈◯◯県 改〉表記は禁止。
+- 中学生にとって難解な語には語の直後に「＊」を付し、語注をまとめること。語注の配置方針：${jhsAnnPos}。語注は2〜4語分に留める。
+- 文章は空欄を作らず、接続語・キーワードも省略せずに完成した状態で書くこと（空欄化は後処理で行うため、ここでは絶対に［　］等の空所を残さないこと）。
+- 段落の頭に番号・記号・見出しは付けず、地の文として書くこと（段落番号は後段で付す）。
+`
+    : '';
+
+  // 読解問題（特に抜き出し）を作りやすくする表記ルール（本文生成・リライト共通）。
+  const readabilitySection = readabilitySectionText(style);
 
   const prompt = `${roleLine}
 ${genreInstruction}
@@ -926,17 +1059,17 @@ ${level.audience}
 # 難易度・文体の方針（最重要）
 ${level.guidance}
 ${level.kanjiNote ? '\n' + level.kanjiNote : ''}
-${kanjiSection}${formatSection}
+${kanjiSection}${formatSection}${jhsSection}
 # 条件
 - 文体：${style}
 ${styleDetail}- 目標文字数：${length}字前後（±15%程度は許容）
-- 段落数：必ず4段落。各アウトラインの内容と順序をそのまま活かすこと
+${paragraphLine}
 ${structureLine}
 ${factLine}
 - 教材としてそのまま読解問題（内容一致・傍線部説明・語彙・意見記述など）が作れるよう、論点や具体例を明確に書くこと
 - 出力は本文のみ。タイトルの見出しや前置き、解説は一切つけないこと
-
-# アウトライン
+${readabilitySection}
+# アウトライン（段落の役割・骨子）
 ${outlineText}
 ${lessonsPromptSection(levelKey)}
 上記の条件、特に「難易度・文体の方針」と（指定がある場合は）「学年別使用可能漢字リスト」を厳守して、本文を出力してください。`;
@@ -952,7 +1085,7 @@ ${lessonsPromptSection(levelKey)}
       },
       body: JSON.stringify({
         model: "claude-sonnet-4-6",
-        max_tokens: 2000,
+        max_tokens: isJhs ? 4000 : 2000,
         messages: [{ role: "user", content: prompt }]
       })
     });
@@ -964,12 +1097,30 @@ ${lessonsPromptSection(levelKey)}
 
     const data = await response.json();
     const textBlocks = data.content.filter(b=>b.type==='text').map(b=>b.text);
-    const result = textBlocks.join('\n').trim();
+    let result = textBlocks.join('\n').trim();
+
+    // jhs 実戦：完成文→後処理で空欄A〜Cを穿孔（接続語を2〜3箇所）。元語は answer_key に保存。
+    let jhsBlanks = null;
+    if(isJhs && currentDifficulty === 'jissen'){
+      const punched = punchJhsBlanks(result, 3);
+      result = punched.text;
+      jhsBlanks = punched.blanks;
+    }
+    window.__jhsBlanks = jhsBlanks;
 
     document.getElementById('resultArea').value = result;
     document.getElementById('rewriteArea').value = result;
     updateCharCount('resultArea','resultCharCount');
     updateCharCount('rewriteArea','rewriteCharCount');
+    if(jhsBlanks && jhsBlanks.length){
+      document.getElementById('resultCheckArea').innerHTML =
+        '<div class="notice notice-info">📝 実戦・空欄の正答（後処理で穿孔）：' +
+        jhsBlanks.map(b=>`${b.mark}＝「${b.answer}」`).join(' ／ ') +
+        '<br><span style="font-size:11px;">※本文の ［ A ］〜 に対応。文章レコードに保存され、設問生成・印刷に引き継がれます。</span></div>';
+    }else if(isJhs && currentDifficulty === 'jissen'){
+      document.getElementById('resultCheckArea').innerHTML =
+        '<div class="notice notice-warn">⚠️ 空欄化できる接続語が本文から見つかりませんでした。必要なら手動で ［ A ］ 等を挿入してください。</div>';
+    }
     showNotice('生成が完了しました。左が生成結果（変更不可）、右がリライト用です。', 'info');
     updateCheckButtonLabels();
     hoSaveStory(); // 本文生成成功→次画面（設問生成）へ自動持ち回り
@@ -1054,6 +1205,14 @@ function buildStoryRecord(){
     targetLength: settings.length,
     outlines: outlines,
     fullText: fullText,
+    // 中学帯（jhs）の付随メタ。設問生成・印刷が空欄正答・語注位置・前書き枠の要否を引き継ぐ。
+    jhsMeta: settings.levelKey === 'jhs' ? {
+      sourceCreditFictional: true,
+      paragraphNumbered: settings.difficultyKey === 'jissen',
+      annotationPosition: settings.genreKey === 'monogatari' ? '設問側' : '本文側',
+      leadBox: settings.genreKey === 'monogatari' && settings.difficultyKey === 'jissen',
+      blanks: Array.isArray(window.__jhsBlanks) ? window.__jhsBlanks : []
+    } : null,
     generatedAt: new Date().toISOString()
   };
 }
@@ -1166,6 +1325,8 @@ function importTextRecord(event){
 
     // 本文を出力エリアに復元し、続き提案・レコード書き出しが使える状態にする
     const patternObj = currentPatternObj();
+    // jhs 空欄正答を復元（書き出し→再読込でも answer_key を保持）
+    window.__jhsBlanks = (record.jhsMeta && Array.isArray(record.jhsMeta.blanks)) ? record.jhsMeta.blanks : null;
     document.getElementById('resultArea').value = record.fullText || '';
     document.getElementById('rewriteArea').value = record.fullText || '';
     document.getElementById('outputCard').style.display = 'block';
@@ -1746,6 +1907,8 @@ async function aiReviseWithFeedback(source){
   const reviseFactLine = genreKey === 'monogatari'
     ? '- 登場人物の行動には本文中に読み取れる理由をつけ、せりふの裏にある気持ちが推測できる書き方を保つこと'
     : '- 具体的な数値・事実を扱う場合は、実際に妥当な内容に修正すること（不確かな数値は断定しすぎない表現にする）';
+  // 本文生成で整えた文末表現がリライトで中止形に戻らないよう、同じ表記ルールを同一文体で差し込む
+  const readabilitySection = readabilitySectionText(style);
 
   // 人間の指摘欄の内容を取得
   const humanTa = document.getElementById('humanFeedback_' + source);
@@ -1776,6 +1939,7 @@ ${styleDetail}- 目標文字数：${length}字前後（±15%程度は許容）
 ${reviseFactLine}
 - 指摘のなかった部分は、元の文章の表現や論旨をできるだけ保持すること（無関係な書き換えはしない）
 - 出力は本文のみ。前置きや解説は一切つけないこと
+${readabilitySection}
 ${lessonsPromptSection(levelKey)}
 上記を踏まえて、修正後の本文だけを出力してください。`;
 
