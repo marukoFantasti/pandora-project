@@ -270,7 +270,7 @@ body.imode #resultArea, body.imode #rewriteArea{ font-size:17px; line-height:2.0
       <div class="field" id="furiganaField">
         <label>④ フリガナレベル</label>
         <select id="furiganaSelect" onchange="onFuriganaChange()"></select>
-        <div style="font-size:11px; color:var(--text3); margin-top:5px;">③で許可した漢字のうち、どこまでフリガナ《》を付けるか。既定は③と同じ値（＝③で新しく許可された漢字にルビ）。手動変更後は追随しません。</div>
+        <div style="font-size:11px; color:var(--text3); margin-top:5px;" id="furiganaFieldNote">③で許可した漢字のうち、どこまでフリガナ《》を付けるか。既定は③と同じ値（＝③で新しく許可された漢字にルビ）。手動変更後は追随しません。</div>
       </div>
     </div>
     <div class="row" style="margin-top:14px;">
@@ -505,7 +505,7 @@ const DIFFICULTY_BY_GRADE = {
 // 学年×難易度ごとの目標文字数の目安（1本あたり）
 // estimated:true は分析ログがページ数・行数ベースのため字数換算した推定値
 const LENGTH_DEFAULTS = {
-  pre1:{ kakunin:{value:70, estimated:false, note:"1文15字目安×3〜6文（仕様§2.1）"} },
+  pre1:{ kakunin:{value:90, estimated:false, note:"1文15字目安×4〜8文（2ブロック構成・仕様修正指示②）"} },
   g1:  { kakunin:{value:250, estimated:false}, renshu:{value:600, estimated:false} },
   g2:  { kakunin:{value:300, estimated:true},  renshu:{value:700, estimated:true},  kansei:{value:700, estimated:true} },
   g3:  { kakunin:{value:400, estimated:true},  renshu:{value:800, estimated:true},  kansei:{value:800, estimated:true} },
@@ -550,19 +550,21 @@ function applyLengthDefault(){
 // 学年×ジャンルごとの構成パターンバンク
 // 各labelは {label, guide} — guideはアウトライン欄のプレースホルダーとして使う
 const PATTERN_BANK = {
-  // プレ小1：段落構成ではなく「3〜6文の連続」（仕様§2.1・§2D承認事項）。
-  // 既存のUI（アウトライン欄＝labels配列）をそのまま流用し、1ラベルのみの最小構成にする。
+  // プレ小1：段落構成ではなく「2ブロック・4〜8文の連続」（仕様修正指示②）。
+  // 既存のUI（アウトライン欄＝labels配列）をそのまま流用し、2ラベル構成にする。
   pre1: {
     monogatari: [{
       key:"dekigoto_pre1", name:"みじかいできごと",
       labels:[
-        {label:"できごと（3〜6文）", guide:"だれが、なにをしたか、身近な出来事を3〜6文の短い文で書いてください。1文は15字程度を目安に、とても短く区切ってください。\n例1：「ねこが　います。ねこは　しろい　ねこです。ねこは　ミルクを　のみました。」\n例2：「きょうは　こうえんに　いきました。ぶらんこに　のりました。たのしかったです。」\n例3：「おかあさんが　おべんとうを　つくりました。たまごやきが　はいって　いました。おいしかったです。」"}
+        {label:"できごと", guide:"だれが、なにをしたか。みじかい　ぶんで　かきます（2〜4文）。\n例1：「ねこが　います。ねこは　しろい　ねこです。」\n例2：「きょうは　こうえんに　いきました。ぶらんこに　のりました。」\n例3：「おかあさんが　おべんとうを　つくりました。たまごやきが　はいって　いました。」"},
+        {label:"できごとの　つづき", guide:"そのあと　どうなったか（2〜4文）。\n例1：「ねこは　ミルクを　のみました。とても　うれしそうでした。」\n例2：「すべりだいにも　のりました。たのしかったです。」\n例3：「みんなで　たべました。とても　おいしかったです。」"}
       ]
     }],
     setsumei: [{
       key:"setsumei_pre1", name:"みじかいせつめい",
       labels:[
-        {label:"せつめい（3〜6文）", guide:"身近なもの（家族・食べ物・動物・学校・遊びなど）について、わかることを3〜6文の短い文で書いてください。1文は15字程度を目安に、とても短く区切ってください。\n例1：「いぬが　います。いぬは　よん本あしです。いぬは　ワンワンと　なきます。」\n例2：「りんごは　くだものです。りんごは　あかいです。りんごは　あまいです。」\n例3：「がっこうには　きょうしつが　あります。きょうしつには　つくえが　あります。」"}
+        {label:"なにについて", guide:"なにについて　はなすか。みじかい　ぶんで　かきます（2〜4文）。\n例1：「いぬが　います。いぬは　よん本あしです。」\n例2：「りんごは　くだものです。りんごは　あかいです。」\n例3：「がっこうには　きょうしつが　あります。」"},
+        {label:"もっと　くわしく", guide:"そのものについて、もっと　わかることを　かきます（2〜4文）。\n例1：「いぬは　ワンワンと　なきます。」\n例2：「りんごは　あまいです。たべると　おいしいです。」\n例3：「きょうしつには　つくえが　あります。」"}
       ]
     }]
   },
@@ -959,12 +961,26 @@ function renderFuriganaOptions(){
   if(!sel) return;
   sel.innerHTML = ['none'].concat(order).map(k => `<option value="${k}">${labels[k]}</option>`).join('');
   syncFuriganaToKanjiLevel();
+  updateFuriganaDisabledState();
 }
 // ④の既定値＝③と同じ値（＝③で新しく許可された漢字にルビ。既存の「学年に追随」を汎用化）。
 function syncFuriganaToKanjiLevel(){
   if(furiganaManual) return;
   const sel = document.getElementById('furiganaSelect');
   if(sel) sel.value = getKanjiLevelKey();
+}
+// ③漢字レベルが「プレ小1（漢字なし）」のとき、振る対象の漢字が存在しないためフリガナレベルの
+// セレクタを無効化し、その旨をUIに小さく表示する（仕様修正指示①）。
+const FURIGANA_NORMAL_NOTE = '③で許可した漢字のうち、どこまでフリガナ《》を付けるか。既定は③と同じ値（＝③で新しく許可された漢字にルビ）。手動変更後は追随しません。';
+const FURIGANA_DISABLED_NOTE = '③が「プレ小1（漢字なし）」のため、フリガナを振る対象の漢字がありません（この項目は無効です）。';
+function updateFuriganaDisabledState(){
+  const sel = document.getElementById('furiganaSelect');
+  const note = document.getElementById('furiganaFieldNote');
+  if(!sel) return;
+  const noKanji = (getKanjiLevelKey() === 'pre1'); // 学年配当pre1＝許可漢字が空集合（全文ひらがな）
+  sel.disabled = noKanji;
+  if(noKanji) sel.value = 'none'; // 対象漢字が無い以上どのレベルを選んでも結果は同じなので固定する
+  if(note) note.textContent = noKanji ? FURIGANA_DISABLED_NOTE : FURIGANA_NORMAL_NOTE;
 }
 
 // 分かち書き：①に応じた既定（仕様§4.2）。プレ小1は「必須」のためUIごと固定する（仕様§2.1）。
@@ -1370,6 +1386,10 @@ async function generate(){
   const isJhs = levelKey === 'jhs';
   const JHS_GEN_SCALE = { kakunin:{ p:[2,3] }, renshu:{ p:[3,5] }, jissen:{ p:[5,8] } };
   const jhsScale = isJhs ? (JHS_GEN_SCALE[currentDifficulty] || JHS_GEN_SCALE.jissen) : null;
+  // プレ小1：仕様§2.1どおり「段落構成のある文章」ではなく「連続した数文」として書かせる
+  // （PATTERN_BANK.pre1のアウトラインは2ブロックだが、これは内容の役割分担であり見た目の
+  // 段落分けの指示ではない。仕様修正指示②）。
+  const isPre1 = levelKey === 'pre1';
   const jhsAnnPos = currentGenre === 'monogatari'
     ? '設問側（本文には難語の直後に「＊」印だけを付け、語注そのものは本文末に「＊語……説明」で列挙。印刷時は設問ページ冒頭へ回す前提）'
     : '本文側（本文の末尾に「＊語……説明」の形で語注をまとめる）';
@@ -1387,16 +1407,20 @@ async function generate(){
 タイトルは単なるラベルではなく、${genreLabel}全体の場面・人物・展開の方向性を決める最重要情報として扱ってください。アウトラインの内容がタイトルの示す方向性と食い違う場合は、タイトルの意図を優先しつつ、アウトラインの骨子は活かす形で自然に統合してください。`
     : `以下の「タイトル（テーマ）」と「段落アウトライン」をもとに、日本語の${genreLabel}を1本、書き上げてください。
 タイトルは単なるラベルではなく、本文全体の論旨・視点・結論の方向性を決める最重要情報として扱ってください。アウトラインの内容がタイトルの示す方向性と食い違う場合は、タイトルの意図を優先しつつ、アウトラインの骨子は活かす形で自然に統合してください。`;
-  const structureLine = isNarrativeLike
-    ? '- 各段落の頭に見出しは付けず、地の文として自然につなげること（せりふは「」で示してよい）'
-    : '- 各段落の頭に見出しは付けず、地の文として自然につなげること';
+  const structureLine = isPre1
+    ? '- 段落分け・見出しは付けず、短い文をひとつづきに並べること'
+    : isNarrativeLike
+      ? '- 各段落の頭に見出しは付けず、地の文として自然につなげること（せりふは「」で示してよい）'
+      : '- 各段落の頭に見出しは付けず、地の文として自然につなげること';
   const factLine = isNarrativeLike
     ? '- 登場人物の行動には本文中に読み取れる理由をつけ、せりふの裏にある気持ちが推測できるように書くこと'
     : '- 具体的な数値・事実を含める場合は、実際に妥当な内容にすること（不確かな数値は断定しすぎない表現にする）';
 
   const paragraphLine = isJhs
     ? `- 段落数：${jhsScale.p[0]}〜${jhsScale.p[1]}段落。下のアウトラインは「各段落の役割（骨子）」です。役割の順序は保ちつつ、必要に応じて一つの役割を複数段落に展開し、指定の段落数に収めること`
-    : `- 段落数：必ず${outlines.length}段落。各アウトラインの内容と順序をそのまま活かすこと`;
+    : isPre1
+      ? `- 段落は分けないこと。下の2つのアウトライン（「できごと」「できごとの　つづき」等）は内容の役割分担であり、見た目の段落を分ける指示ではない。4〜8文の短い文を、段落分けせず連続してひとつづきに書くこと`
+      : `- 段落数：必ず${outlines.length}段落。各アウトラインの内容と順序をそのまま活かすこと`;
 
   // jhs 専用の体裁ルール（架空出典・語注・空欄なしの完成文）。空欄化は後処理で行う。
   const jhsSection = isJhs
@@ -2347,9 +2371,14 @@ async function aiReviseWithFeedback(source){
     ? `\n# 人間の校閲者からの指摘（最優先で反映すること）\n${humanFeedback}\n`
     : '';
 
-  // 段落数は現在選択中パターンのラベル数を目安にする（プレ小1=1・jhsは可変のため、旧来の「4段落固定」は使わない）
+  // 段落数は現在選択中パターンのラベル数を目安にする（プレ小1=2ブロック・jhsは可変のため、旧来の「4段落固定」は使わない）
   const revisePatternLabels = (currentPatternObj() && currentPatternObj().labels) || [];
   const paragraphCountHint = revisePatternLabels.length || 4;
+  // プレ小1は段落分けしない「連続した数文」（仕様§2.1・修正指示②）。ラベル数(2)を段落数として
+  // 指示すると矛盾するため専用の文言にする。
+  const paragraphCountLine = (levelKey === 'pre1')
+    ? '- 段落は分けないこと。4〜8文の短い文を、段落分けせず連続してひとつづきに書くこと'
+    : `- 段落数は${paragraphCountHint}段落程度のまま維持すること`;
 
   const revisePrompt = `${reviseRoleLine}
 以下の「元の文章」と、それに対する「校閲者からの指摘」をもとに、指摘された問題点を修正した文章を書き直してください。
@@ -2368,7 +2397,7 @@ ${genreLabel || '説明文・論説文'}
 - 語彙・文型の方針（語彙・文法レベル：${vocabLevel.label}）：${vocabLevel.guidance}
 ${kanjiSection}${formatSection}- 文体：${style}
 ${styleDetail}- 目標文字数：${length}字前後（±15%程度は許容）
-- 段落数は${paragraphCountHint}段落程度のまま維持すること
+${paragraphCountLine}
 ${reviseFactLine}
 - 指摘のなかった部分は、元の文章の表現や論旨をできるだけ保持すること（無関係な書き換えはしない）
 - 出力は本文のみ。前置きや解説は一切つけないこと
