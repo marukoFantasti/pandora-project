@@ -874,7 +874,8 @@ function renderQuiz(){
       tools.appendChild(penBtn); tools.appendChild(eraserBtn); tools.appendChild(clearBtn);
       item.appendChild(tools);
 
-      setupCanvas(canvas, wrap, wKey, penBtn, eraserBtn, clearBtn);
+      // なぞり書き（trace）はprompt_textをcanvas背景に薄いグレーで下敷き表示する
+      setupCanvas(canvas, wrap, wKey, penBtn, eraserBtn, clearBtn, wt.type === 'trace' ? wt.prompt_text : null);
       canvases[wKey] = canvas;
 
       wArea.appendChild(item);
@@ -885,7 +886,35 @@ function renderQuiz(){
 }
 
 // ================= 手書きcanvas =================
-function setupCanvas(canvas, wrap, qKey, penBtn, eraserBtn, clearBtn){
+// canvas背景（白地＋任意でtraceText＝なぞり書きの薄いグレー下敷き文字）を描く。
+// traceText省略時は既存どおり白地のみ（setupCanvasの全既存呼び出し元はtraceText未指定＝無変更）。
+function paintCanvasBackground(ctx, w, h, traceText){
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, w, h);
+  if(!traceText) return;
+  ctx.fillStyle = '#bbbbbb';
+  const fontPx = Math.max(20, Math.round(h * 0.16));
+  ctx.font = fontPx + 'px "Hiragino Sans","Yu Gothic",sans-serif';
+  ctx.textBaseline = 'top';
+  const padding = fontPx * 0.5;
+  const maxWidth = w - padding * 2;
+  const lineHeight = fontPx * 1.5;
+  // 簡易折り返し（1文字ずつ幅を測って収まる範囲で改行。形態素解析は使わない既存方針どおり）
+  let line = '', y = padding;
+  for(const ch of String(traceText)){
+    const test = line + ch;
+    if(ctx.measureText(test).width > maxWidth && line){
+      ctx.fillText(line, padding, y);
+      line = ch;
+      y += lineHeight;
+    }else{
+      line = test;
+    }
+  }
+  if(line) ctx.fillText(line, padding, y);
+}
+
+function setupCanvas(canvas, wrap, qKey, penBtn, eraserBtn, clearBtn, traceText){
   // 実ピクセルサイズを表示サイズ×devicePixelRatioで確保
   const resize = ()=>{
     const rect = wrap.getBoundingClientRect();
@@ -897,8 +926,7 @@ function setupCanvas(canvas, wrap, qKey, penBtn, eraserBtn, clearBtn){
     canvas.width = rect.width * ratio;
     canvas.height = rect.height * ratio;
     const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    paintCanvasBackground(ctx, canvas.width, canvas.height, traceText);
     if(prev.width) ctx.drawImage(prev, 0, 0, canvas.width, canvas.height);
   };
   // 初回リサイズはDOM挿入・レイアウト確定後に行う（挿入前だとrectが0×0になりcanvasが描画不能になるため）
@@ -952,8 +980,7 @@ function setupCanvas(canvas, wrap, qKey, penBtn, eraserBtn, clearBtn){
   penBtn.onclick = ()=>{ erasing = false; penBtn.classList.add('active'); eraserBtn.classList.remove('active'); };
   eraserBtn.onclick = ()=>{ erasing = true; eraserBtn.classList.add('active'); penBtn.classList.remove('active'); };
   clearBtn.onclick = ()=>{
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    paintCanvasBackground(ctx, canvas.width, canvas.height, traceText);
     answers[qKey].written = false;
     updateProgress();
   };
