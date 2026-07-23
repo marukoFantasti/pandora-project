@@ -2893,7 +2893,7 @@ let STUDENT_ID = '';
 let LAYOUT_DATA = null;
 // globalモード帯3（書く練習）のタイプ表示名。Japanese_question_generator.html側の
 // WRITING_TASK_TYPE_LABELSと同じ対応（このファイルはJS状態を共有しないため複製）。
-const WRITING_TASK_TYPE_LABELS_PRINT = { copy:'視写', fill:'穴埋め作文', compose:'短作文' };
+const WRITING_TASK_TYPE_LABELS_PRINT = { trace:'なぞり書き', copy:'視写', fill:'穴埋め作文', compose:'短作文' };
 let ANSWER_SHEETS_REGISTERED = false; // 現在のLAYOUT_DATAをanswer_sheetsへ登録済みか
 
 // pandora-project共通のSupabase接続情報（他ファイルと同一のpublishableキー）。
@@ -3324,13 +3324,18 @@ function buildPages(){
     (qs.writingTasks || []).forEach((wt, idx)=>{
       const div = document.createElement('div');
       div.className = 'lead-box';
-      const lineCount = wt.type === 'compose' ? 3 : 2;
+      const isTrace = wt.type === 'trace';
+      // なぞり書き：1行目に対象の文をグレー印字してなぞらせ、+1行を自由練習用に空けておく
+      const lineCount = wt.type === 'compose' ? 3 : (isTrace ? 1 : 2);
       let lines = '';
       for(let i=0;i<lineCount;i++) lines += '<div class="as-line"></div>';
+      const traceLineHtml = isTrace
+        ? '<div class="as-line" style="color:#bbbbbb; font-size:13pt; line-height:11mm; padding-left:1mm;">' + escapeHtml(wt.prompt_text || '') + '</div>'
+        : '';
       div.innerHTML = '<div class="lead-label">書く練習' + (idx+1) + '（' + escapeHtml(WRITING_TASK_TYPE_LABELS_PRINT[wt.type] || '') + '）</div>'
         + '<div class="q-text">' + escapeHtml(wt.instruction || '') + '</div>'
-        + (wt.prompt_text ? '<div class="q-text" style="font-weight:700;">' + escapeHtml(wt.prompt_text) + '</div>' : '')
-        + '<div class="as-lines" style="margin-top:2mm;">' + lines + '</div>';
+        + (wt.prompt_text && !isTrace ? '<div class="q-text" style="font-weight:700;">' + escapeHtml(wt.prompt_text) + '</div>' : '')
+        + '<div class="as-lines" style="margin-top:2mm;">' + traceLineHtml + lines + '</div>';
       wpBlocks.push({ el: div });
     });
     wordPracticePages.push(...measureAndPack(wpBlocks, (n)=>makePageShell('question', n, null, '（ことばのれんしゅう）', 'ことばのれんしゅう')));
