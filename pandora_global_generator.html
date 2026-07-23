@@ -345,6 +345,7 @@ body.imode #resultArea, body.imode #rewriteArea{ font-size:17px; line-height:2.0
         <textarea id="resultArea" readonly style="background:var(--bg2); color:var(--text2); cursor:default;" placeholder="ここに生成された本文がそのまま表示されます。"></textarea>
         <div class="btn-row">
           <button class="btn btn-secondary" onclick="copyArea('resultArea')">📋 コピー</button>
+          <button class="btn btn-secondary" id="ttsResultBtn" onclick="toggleSpeakArea('resultArea','ttsResultBtn')">🔊 読み上げ（発音確認用）</button>
           <button class="btn btn-secondary" id="checkBtnResult" onclick="checkFacts('resultArea','resultCheckArea','result')">🔍 事実・整合性を確認</button>
         </div>
         <div id="resultCheckArea" style="margin-top:12px;"></div>
@@ -361,6 +362,7 @@ body.imode #resultArea, body.imode #rewriteArea{ font-size:17px; line-height:2.0
           <button class="btn btn-secondary" onclick="copyArea('rewriteArea')">📋 コピー</button>
           <button class="btn btn-secondary" onclick="downloadOutput()">⬇️ ダウンロード</button>
           <button class="btn btn-secondary" onclick="resetRewrite()">↺ 生成結果に戻す</button>
+          <button class="btn btn-secondary" id="ttsRewriteBtn" onclick="toggleSpeakArea('rewriteArea','ttsRewriteBtn')">🔊 読み上げ（発音確認用）</button>
         </div>
         <div class="btn-row" style="margin-top:8px;">
           <button class="btn btn-secondary" id="checkBtnRewrite" onclick="checkFacts('rewriteArea','rewriteCheckArea','rewrite')">🔍 事実・整合性を確認</button>
@@ -1000,6 +1002,66 @@ const RUBY_WORD_PATTERN = '([\\u4E00-\\u9FFF\\u3005]+[\\u3040-\\u309F\\u30A0-\\u
 // ルビ記法を除去して素のテキストに戻す（《読み》を削除し、ベースは残す）。下流の字数・照合の基準。
 function stripRuby(text){
   return String(text == null ? '' : text).replace(/《[^》]*》/g, '');
+}
+
+// ===== 読み上げ（TTS・仕様§5） =====
+// Web Speech API（speechSynthesis, lang=ja-JP）を使用。API課金なし・サーバ不要。
+// 将来の差し替え（OpenAI TTS / Google Cloud TTS 等）に備え、speechSynthesis に直接触れる箇所は
+// この関数群だけに隔離する（呼び出し側は speakText/stopSpeaking/pauseSpeaking/resumeSpeaking のみ使う）。
+//
+// フリガナ記法との連携（仕様§5.2）：《》がある箇所は中身（読み）を採用して漢字部分を置換してから読む
+// （そのまま読むと「かんじかんじ」のように二重読みになるため）。フリガナが無い漢字はそのまま渡す。
+// 分かち書きの全角スペースは視覚的な区切り記号であり音ではないため、読み上げ前に取り除く。
+// 想定される例外：《》の中身が空（読みが見つからない）場合はベース（漢字側）を読む。入れ子・破損した
+// 《》は正規表現が対応する範囲でしか扱えないため、生成データが壊れている場合は不完全な読み上げになりうる
+// （現時点で確認された例はない。見つかり次第ここに追記する）。
+function furiganaToSpokenText(text){
+  const withReadings = String(text == null ? '' : text).replace(new RegExp(RUBY_WORD_PATTERN, 'g'),
+    (whole, base, reading) => (reading && reading.trim()) ? reading : base);
+  return withReadings.replace(/[\s　]/g, ''); // 分かち書きスペース等を除去（音として読ませない）
+}
+let __ttsUtterance = null;
+function speakText(text, options){
+  options = options || {};
+  if(!('speechSynthesis' in window)){
+    if(options.onError) options.onError('このブラウザは読み上げに対応していません。');
+    return;
+  }
+  window.speechSynthesis.cancel(); // 多重再生防止（前の発話を止めてから話す）
+  const spoken = furiganaToSpokenText(text);
+  if(!spoken){ if(options.onEnd) options.onEnd(); return; }
+  const u = new SpeechSynthesisUtterance(spoken);
+  u.lang = 'ja-JP';
+  u.rate = options.rate || 1.0; // 仕様§5.3：0.75x / 1.0x の2段階
+  u.onstart = ()=>{ if(options.onStart) options.onStart(); };
+  u.onend = ()=>{ __ttsUtterance = null; if(options.onEnd) options.onEnd(); };
+  u.onerror = ()=>{ __ttsUtterance = null; if(options.onError) options.onError('読み上げに失敗しました。'); };
+  __ttsUtterance = u;
+  window.speechSynthesis.speak(u);
+}
+function stopSpeaking(){
+  if('speechSynthesis' in window) window.speechSynthesis.cancel();
+  __ttsUtterance = null;
+}
+function pauseSpeaking(){ if('speechSynthesis' in window) window.speechSynthesis.pause(); }
+function resumeSpeaking(){ if('speechSynthesis' in window) window.speechSynthesis.resume(); }
+function isSpeaking(){ return !!(('speechSynthesis' in window) && window.speechSynthesis.speaking); }
+
+// テキストエリアの内容を読み上げるトグルボタン用ヘルパー（生成結果・リライトの発音確認用）。
+function toggleSpeakArea(areaId, btnId){
+  const btn = document.getElementById(btnId);
+  if(isSpeaking()){
+    stopSpeaking();
+    if(btn) btn.textContent = '🔊 読み上げ（発音確認用）';
+    return;
+  }
+  const text = (document.getElementById(areaId) || {}).value || '';
+  if(!text.trim()){ showNotice('読み上げる本文がありません。', 'err'); return; }
+  if(btn) btn.textContent = '⏹ 停止';
+  speakText(text, {
+    onEnd: ()=>{ if(btn) btn.textContent = '🔊 読み上げ（発音確認用）'; },
+    onError: (msg)=>{ if(btn) btn.textContent = '🔊 読み上げ（発音確認用）'; showNotice(msg, 'err'); }
+  });
 }
 
 // フリガナ対象の漢字セット＝③で許可された漢字のうち、④のレベル未満（易しい側）を除いたもの。
