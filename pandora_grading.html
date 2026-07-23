@@ -920,7 +920,10 @@ function renderGrading(sub) {
   var rawSd = sub.submission_data || {};
   var sd = typeof rawSd === 'string' ? JSON.parse(rawSd) : rawSd;
   var problems = sd.problems || [];
-  var kanji = sd.kanji || [];
+  // 追加修正指示④：pandora_global由来（sd.globalSource）の提出は帯2（漢字・語彙）・帯3（書く練習）を
+  // 採点待ちキュー・進捗カウントから除外する（丸付けは保護者が紙・デジタルともその場で行う）。
+  // domesticはsd.globalSourceが常にfalsyのため従来どおりsd.kanjiがそのまま使われる。
+  var kanji = sd.globalSource ? [] : (sd.kanji || []);
   var main = document.getElementById('main-area');
 
   var d = new Date(sub.submitted_at);
