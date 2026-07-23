@@ -2911,6 +2911,12 @@ function genAssignmentId(){
 function escapeHtml(s){
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+// ルビ記法「漢字《かんじ》」を <ruby>漢字<rt>かんじ</rt></ruby> に変換（必ず escapeHtml の後に呼ぶ＝XSS対策）。
+function rubyToHtml(escapedText){
+  return String(escapedText == null ? '' : escapedText)
+    .replace(/([一-鿿々]+[぀-ゟ゠-ヿー]*)《([^》]*)》/g,
+             '<ruby>$1<rt>$2</rt></ruby>');
+}
 
 // ================= 生徒名簿（Lethe getStudents） =================
 // photo_intake / grading と同じ getStudents 呼び出しパターン（シンプルGET）。
@@ -3243,7 +3249,7 @@ function buildPages(){
   const makeAnnotBox = ()=>{
     const box = document.createElement('div');
     box.className = 'annot-box';
-    box.innerHTML = '<div class="annot-label">（注）</div>' + annotParas.map(a=>escapeHtml(a)).join('<br>');
+    box.innerHTML = '<div class="annot-label">（注）</div>' + annotParas.map(a=>rubyToHtml(escapeHtml(a))).join('<br>');
     return box;
   };
 
@@ -3264,7 +3270,7 @@ function buildPages(){
     const numHtml = isJhs
       ? '<span class="para-num circled">' + circledNum(i+1) + '</span>'
       : '<span class="para-num">' + (i+1) + '</span>';
-    div.innerHTML = numHtml + escapeHtml(p);
+    div.innerHTML = numHtml + rubyToHtml(escapeHtml(p)); // 本文はルビ（《》）を<ruby>で描画
     passageBlocks.push({ el: div });
   });
   // 語注が本文側（expository/essay）なら本文ページの末尾に置く

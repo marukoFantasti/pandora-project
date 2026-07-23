@@ -249,7 +249,7 @@ body.imode .answer-body{ font-size:15px; }
       <div class="meta-item"><div class="meta-label">文字数</div><div class="meta-value" id="metaLength">-</div></div>
     </div>
     <div style="font-size:11px; color:var(--text3); margin-bottom:6px;">本文プレビュー（変更不可）</div>
-    <textarea id="fullTextPreview" readonly style="min-height:200px; background:var(--bg2); color:var(--text2);"></textarea>
+    <div id="fullTextPreview" style="min-height:200px; max-height:420px; overflow-y:auto; background:var(--bg2); color:var(--text2); border:1px solid var(--border); border-radius:8px; padding:12px; white-space:pre-wrap; line-height:2.2; font-size:14px;"></div>
   </div>
 
   <!-- Step3: structure_type 自動判定 -->
@@ -509,9 +509,11 @@ function renderSummary(){
   document.getElementById('metaDifficulty').textContent = r.difficultyLabel || r.difficultyKey || '-';
   document.getElementById('metaPattern').textContent = r.patternName || r.patternKey || '-';
   document.getElementById('metaTitle').textContent = r.title || '(無題)';
-  const len = (r.fullText || '').replace(/\n/g,'').length;
+  // 字数はルビ記法を除いた素の本文で数える
+  const len = stripRuby(r.fullText || '').replace(/\n/g,'').length;
   document.getElementById('metaLength').textContent = len + '字（目標' + (r.targetLength || '-') + '字）';
-  document.getElementById('fullTextPreview').value = r.fullText || '';
+  // プレビューは《》を<ruby>に変換して表示（escapeHtmlの後に変換＝XSS対策）
+  document.getElementById('fullTextPreview').innerHTML = rubyToHtml(escapeHtml(r.fullText || ''));
 }
 
 function renderStructureType(){
@@ -712,10 +714,24 @@ const JHS_QUESTION_SPEC = {
 let currentQuestions = null;
 
 // ===== 抜き出し問題の機械検証 =====
+// ===== フリガナ（ルビ）ヘルパー =====
+// ルビ記法「漢字《かんじ》」を素のテキストに戻す（《読み》を削除し、ベースは残す）。
+// 抜き出し照合・字数カウントは必ずこの後のテキストで行う（ここが壊れると検証が全滅する）。
+function stripRuby(text){
+  return String(text == null ? '' : text).replace(/《[^》]*》/g, '');
+}
+// 表示用：escapeHtml済みテキストの「漢字《かんじ》」を <ruby>漢字<rt>かんじ</rt></ruby> に変換。
+// ベース＝漢字始まりの漢字/かな連なり。必ず escapeHtml の後に呼ぶこと（XSS対策）。
+function rubyToHtml(escapedText){
+  return String(escapedText == null ? '' : escapedText)
+    .replace(/([一-鿿々]+[぀-ゟ゠-ヿー]*)《([^》]*)》/g,
+             '<ruby>$1<rt>$2</rt></ruby>');
+}
+
 // 字数はAIに数えさせず、JS側で機械的に数えて設問文を補正する（Pandora Layer 2.5と同じ発想）
-// 字数は「分かち書きスペースを除き、句読点を含む」で数える
+// 字数は「ルビ記法を除き、分かち書きスペースを除き、句読点を含む」で数える
 function countChars(s){
-  return String(s).replace(/[\s　]/g,'').length;
+  return stripRuby(String(s)).replace(/[\s　]/g,'').length;
 }
 
 // 抜き出し問題の解答字数の学年別上限。長すぎる書き抜きを防ぐための目安（1箇所にまとめ、調整しやすくする）。
@@ -749,7 +765,8 @@ function extractionLimitNoteText(r){
 // noFix=true のときは設問文の「〜字」表記を自動補正しない（手動編集の意図を尊重するため。
 // _actualCount/_verified/_overLimit の再計算だけ行う）。
 function verifyAndFixExtractions(questions, fullText, grade, gradeLabel, noFix){
-  const textNoSpace = fullText.replace(/[\s　]/g,'');
+  // 本文照合はルビ記法を除いた素のテキストで行う（《読み》を含めると照合が全滅するため）
+  const textNoSpace = stripRuby(fullText).replace(/[\s　]/g,'');
   const maxChars = EXTRACTION_MAX_CHARS[grade]; // undefined（jhs等）なら上限チェックをしない
   const gLabel = gradeLabel || grade || '';
   const notes = [];
@@ -758,7 +775,8 @@ function verifyAndFixExtractions(questions, fullText, grade, gradeLabel, noFix){
       /書き抜き|抜き出し/.test(q.question_text || '');
     if(!isExtraction) return;
 
-    const answer = String(q.answer || '').trim();
+    // 解答側もルビを除いてから照合・字数計算（AIは素の本文を見て抜き出すが防御的に除去）
+    const answer = stripRuby(String(q.answer || '')).trim();
     if(!answer) return;
     const answerNoSpace = answer.replace(/[\s　]/g,'');
     const actualCount = countChars(answer);
@@ -970,7 +988,7 @@ async function generateQuestions(){
   const prompt = `あなたは国語の読解問題を作成するプロの教材編集者です。以下の本文に対する読解問題を${count}問、作成してください。
 
 # 本文（${r.gradeLabel}・${r.genreLabel}・難易度：${r.difficultyLabel}）
-${r.fullText}
+${stripRuby(r.fullText)}
 
 # 出題する観点（この観点の技能を問う設問にすること）
 ${tags.map(t=>'- '+t).join('\n')}
@@ -1460,7 +1478,7 @@ async function regenerateOneExtraction(q, apiKey, r, prevCount){
   const prompt = `あなたは国語の読解問題を作成するプロの教材編集者です。以下の本文に対し、指定の観点で「抜き出し問題」を1問だけ作り直してください。
 
 # 本文（${r.gradeLabel}・${r.genreLabel}・難易度：${r.difficultyLabel}）
-${r.fullText}
+${stripRuby(r.fullText)}
 
 # 観点（必ずこの観点の技能を問う）
 - ${q.kanten || ''}
@@ -1709,7 +1727,7 @@ async function regenerateQuestion(idx, btn, opts){
     const prompt = `あなたは国語の読解問題を作成するプロの教材編集者です。以下の本文に対し、指定の観点・形式で読解問題を「1問だけ」作成してください。
 
 # 本文（${r.gradeLabel}・${r.genreLabel}・難易度：${r.difficultyLabel}）
-${r.fullText}
+${stripRuby(r.fullText)}
 
 # この問題の観点（必ずこの観点の技能を問う）
 - ${targetKanten}
@@ -1781,7 +1799,7 @@ async function rewriteQuestion(idx, btn){
     const prompt = `あなたは国語の読解問題を推敲するプロの編集者です。次の設問文（と選択肢）を、指示に従って書き直してください。正答・解説・観点・形式は一切変えず、「答えが変わらない範囲」で表現だけ調整します。
 
 # 本文（参考）
-${r.fullText}
+${stripRuby(r.fullText)}
 
 # 対象の設問
 形式：${q.type || ''}

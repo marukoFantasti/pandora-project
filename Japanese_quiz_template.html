@@ -539,7 +539,10 @@ function renderQuiz(){
     num.className = 'para-num';
     num.textContent = (i+1);
     div.appendChild(num);
-    div.appendChild(document.createTextNode(p));
+    // 本文はルビ（《》）を<ruby>で描画（escapeHtmlの後に変換＝XSS対策）
+    const body = document.createElement('span');
+    body.innerHTML = rubyToHtml(escapeHtml(p));
+    div.appendChild(body);
     passageArea.appendChild(div);
   });
 
@@ -894,6 +897,12 @@ async function submitAnswers(){
 
 function escapeHtml(s){
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+// ルビ記法「漢字《かんじ》」を <ruby>漢字<rt>かんじ</rt></ruby> に変換（必ず escapeHtml の後に呼ぶ＝XSS対策）。
+function rubyToHtml(escapedText){
+  return String(escapedText == null ? '' : escapedText)
+    .replace(/([一-鿿々]+[぀-ゟ゠-ヿー]*)《([^》]*)》/g,
+             '<ruby>$1<rt>$2</rt></ruby>');
 }
 
 init();

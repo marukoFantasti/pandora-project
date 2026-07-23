@@ -239,6 +239,19 @@ body.imode #resultArea, body.imode #rewriteArea{ font-size:17px; line-height:2.0
           <option value="jhs">中学生レベル</option>
         </select>
       </div>
+      <div class="field" id="furiganaField">
+        <label>フリガナレベル</label>
+        <select id="furiganaSelect" onchange="onFuriganaChange()">
+          <option value="none">なし</option>
+          <option value="g1">小1</option>
+          <option value="g2">小2</option>
+          <option value="g3">小3</option>
+          <option value="g4">小4</option>
+          <option value="g5">小5</option>
+          <option value="g6">小6</option>
+        </select>
+        <div style="font-size:11px; color:var(--text3); margin-top:5px;">選んだ学年<b>以降</b>に習う漢字にフリガナを付けます（例：小3→小1・2の漢字は裸、小3の漢字にルビ）。既定は学年に追随します。</div>
+      </div>
     </div>
     <div style="margin-top:14px;">
       <div style="font-size:11px; color:var(--text3); margin-bottom:8px;">ジャンル</div>
@@ -767,6 +780,83 @@ function getGradeKey(){
   return document.getElementById('levelSelect').value;
 }
 
+// ===== フリガナ（ルビ）機能 =====
+// フリガナレベル L：その学年「以降」に習う漢字（grade ≥ L）に語単位でルビを付ける。
+// 対象漢字 = KANJI_CUMULATIVE[G]（本文で使える漢字上限）− KANJI_CUMULATIVE[L-1]（L未満は裸）。
+let furiganaManual = false; // ユーザーが手動でフリガナレベルを変えたら学年追随をやめる
+
+function getFuriganaLevel(){
+  const el = document.getElementById('furiganaSelect');
+  return el ? el.value : 'none'; // 'none' | 'g1'..'g6'
+}
+function onFuriganaChange(){
+  furiganaManual = true;
+}
+function updateFuriganaVisibility(){
+  const field = document.getElementById('furiganaField');
+  if(field) field.style.display = (getGradeKey() === 'jhs') ? 'none' : '';
+}
+// 学年select変更時：jhsは非表示（値保持）、小学は手動変更前なら学年に追随
+function syncFuriganaToGrade(){
+  updateFuriganaVisibility();
+  const grade = getGradeKey();
+  const sel = document.getElementById('furiganaSelect');
+  if(grade === 'jhs' || !sel) return;
+  if(!furiganaManual) sel.value = grade;
+}
+
+// フリガナ対象の漢字セット。none / jhs / L>G は空集合。
+// grade/level 省略時は現在のUI値。リライト等では生成時の値を明示的に渡す。
+function furiganaTargetKanjiSet(grade, level){
+  grade = grade || getGradeKey();
+  level = level || getFuriganaLevel();
+  if(level === 'none' || grade === 'jhs') return new Set();
+  const G = parseInt(grade.replace('g',''), 10);
+  const L = parseInt(level.replace('g',''), 10);
+  if(!G || !L) return new Set();
+  const upper = KANJI_CUMULATIVE[String(Math.min(G, 6))] || '';
+  const lower = KANJI_CUMULATIVE[String(L - 1)] || ''; // L=1 → '' → 全漢字が対象
+  const lowerSet = new Set(lower.split(''));
+  return new Set(upper.split('').filter(c => !lowerSet.has(c)));
+}
+
+// ルビ語のマッチ用パターン。ベース＝「漢字（々含む）1字以上＋送り仮名（かな0字以上）」＋《読み》。
+// 先頭は必ず漢字連なり、その後の trailing かなだけを許す（漢字前のかなを取り込んで前語と誤結合するのを防ぐ）。
+const RUBY_WORD_PATTERN = '([\\u4E00-\\u9FFF\\u3005]+[\\u3040-\\u309F\\u30A0-\\u30FF\\u30FC]*)《([^》]*)》';
+
+// ルビ記法を除去して素のテキストに戻す（《読み》を削除し、ベースは残す）。下流の字数・照合の基準。
+function stripRuby(text){
+  return String(text == null ? '' : text).replace(/《[^》]*》/g, '');
+}
+
+// フリガナの付け忘れ/付けすぎを機械検出（読みの正誤はAI任せ、件数のみ・自動修正しない）。
+function verifyFurigana(text, grade, level){
+  const target = furiganaTargetKanjiSet(grade, level);
+  if(target.size === 0) return null; // 対象なし（none/jhs/L>G）は検証しない
+  // 付けすぎ：ルビのベースに対象漢字が1字も無い語
+  let extra = 0, m;
+  const reExtra = new RegExp(RUBY_WORD_PATTERN, 'g');
+  while((m = reExtra.exec(text)) !== null){
+    if(!m[1].split('').some(c => target.has(c))) extra++;
+  }
+  // 付け忘れ：ルビ語を除去した残りに対象漢字が残っている
+  const withoutRuby = text.replace(new RegExp(RUBY_WORD_PATTERN, 'g'), '');
+  let missing = 0;
+  for(const ch of withoutRuby){ if(target.has(ch)) missing++; }
+  return { missing, extra };
+}
+
+// フリガナ指示のプロンプト節（対象がある時だけ）。生成・リライト共通。
+function furiganaPromptSection(grade, level){
+  const target = furiganaTargetKanjiSet(grade, level);
+  if(target.size === 0) return '';
+  return `\n# フリガナ（ルビ）ルール（重要）
+- 下の「フリガナ対象漢字リスト」の漢字を1字でも含む語には、語全体に《》でルビ（読みがな）を付けること。形式は「漢字《かんじ》」（語単位。熟語は語全体に1つ：教室《きょうしつ》。送り仮名を含む語も語全体に1つ：例「調《しら》べる」ではなく「調べる《しらべる》」の要領で、漢字＋送り仮名をベースに1つ）。
+- 対象リストに無い漢字だけで構成される語、ひらがな・カタカナだけの語にはルビを付けないこと。
+- 読みは現代仮名遣いのひらがなで正確に付けること。漢字そのもの（漢字レベル）は変えないこと。
+- フリガナ対象漢字リスト：\n${[...target].join('')}\n`;
+}
+
 function currentPatternList(){
   const grade = getGradeKey();
   return (PATTERN_BANK[grade] && PATTERN_BANK[grade][currentGenre]) || [];
@@ -813,6 +903,7 @@ function onGradeChange(){
   updateLevelNotice();
   renderDifficultySelect();
   applyLengthDefault();
+  syncFuriganaToGrade(); // フリガナレベルを学年に追随（手動変更後は追随しない）＋jhs非表示
 }
 
 function currentPatternObj(){
@@ -969,7 +1060,7 @@ async function generate(){
   const genreLabel = GENRES[currentGenre].label;
 
   // AIリライト時に再利用するため、直近の生成条件を保存しておく
-  window.__lastGenSettings = { style, length, levelKey, level, genreKey: currentGenre, genreLabel, difficultyKey: currentDifficulty, difficultyLabel: DIFFICULTIES[currentDifficulty].label };
+  window.__lastGenSettings = { style, length, levelKey, level, genreKey: currentGenre, genreLabel, difficultyKey: currentDifficulty, difficultyLabel: DIFFICULTIES[currentDifficulty].label, furiganaLevel: getFuriganaLevel() };
 
   const genBtn = document.getElementById('genBtn');
   genBtn.disabled = true;
@@ -1043,6 +1134,8 @@ async function generate(){
 
   // 読解問題（特に抜き出し）を作りやすくする表記ルール（本文生成・リライト共通）。
   const readabilitySection = readabilitySectionText(style);
+  // フリガナ（ルビ）ルール（対象学年が指定されている時だけ）
+  const furiganaSection = furiganaPromptSection();
 
   const prompt = `${roleLine}
 ${genreInstruction}
@@ -1068,7 +1161,7 @@ ${structureLine}
 ${factLine}
 - 教材としてそのまま読解問題（内容一致・傍線部説明・語彙・意見記述など）が作れるよう、論点や具体例を明確に書くこと
 - 出力は本文のみ。タイトルの見出しや前置き、解説は一切つけないこと
-${readabilitySection}
+${readabilitySection}${furiganaSection}
 # アウトライン（段落の役割・骨子）
 ${outlineText}
 ${lessonsPromptSection(levelKey)}
@@ -1121,6 +1214,15 @@ ${lessonsPromptSection(levelKey)}
       document.getElementById('resultCheckArea').innerHTML =
         '<div class="notice notice-warn">⚠️ 空欄化できる接続語が本文から見つかりませんでした。必要なら手動で ［ A ］ 等を挿入してください。</div>';
     }
+    // フリガナの付け忘れ/付けすぎを機械検証（対象学年指定時のみ・自動修正なし・件数警告）
+    const furiCheck = verifyFurigana(result);
+    if(furiCheck && (furiCheck.missing || furiCheck.extra)){
+      document.getElementById('resultCheckArea').innerHTML +=
+        `<div class="notice notice-warn">🔤 フリガナ検証：付け忘れの可能性 ${furiCheck.missing} 件／付けすぎの可能性 ${furiCheck.extra} 件（自動修正はしていません。読みの正誤と合わせてご確認ください）。</div>`;
+    }else if(furiCheck){
+      document.getElementById('resultCheckArea').innerHTML +=
+        `<div class="notice notice-info">🔤 フリガナ検証：対象漢字の付け忘れ・付けすぎは検出されませんでした。</div>`;
+    }
     showNotice('生成が完了しました。左が生成結果（変更不可）、右がリライト用です。', 'info');
     updateCheckButtonLabels();
     hoSaveStory(); // 本文生成成功→次画面（設問生成）へ自動持ち回り
@@ -1141,7 +1243,8 @@ ${lessonsPromptSection(levelKey)}
 
 function updateCharCount(areaId, labelId){
   const text = document.getElementById(areaId).value;
-  const len = text.replace(/\n/g,'').length;
+  // 字数はルビ記法を除いた素のテキストで数える（《読み》は本文字数に含めない）
+  const len = stripRuby(text).replace(/\n/g,'').length;
   const label = document.getElementById(labelId);
   label.textContent = len + '字';
   const target = parseInt(document.getElementById('lengthInput').value, 10);
@@ -1203,8 +1306,9 @@ function buildStoryRecord(){
     patternName: patternObj.name,
     style: settings.style,
     targetLength: settings.length,
+    furiganaLevel: settings.furiganaLevel || 'none', // フリガナ対象学年（下流でルビ表示・字数計算に使用）
     outlines: outlines,
-    fullText: fullText,
+    fullText: fullText, // ルビ記法（漢字《かんじ》）込みで保存
     // 中学帯（jhs）の付随メタ。設問生成・印刷が空欄正答・語注位置・前書き枠の要否を引き継ぐ。
     jhsMeta: settings.levelKey === 'jhs' ? {
       sourceCreditFictional: true,
@@ -1287,6 +1391,10 @@ function importTextRecord(event){
 
     // 学年→ジャンル→難易度→構成パターンの順に復元（依存関係があるためこの順序）
     document.getElementById('levelSelect').value = record.grade || 'jhs';
+    // フリガナレベルを復元（手動扱いにして学年追随で上書きされないようにする）＋jhs非表示
+    const furiSel = document.getElementById('furiganaSelect');
+    if(furiSel){ furiSel.value = record.furiganaLevel || 'none'; furiganaManual = true; }
+    updateFuriganaVisibility();
     renderGenres();
     if(record.genreKey && GRADE_GENRES[getGradeKey()].includes(record.genreKey)){
       currentGenre = record.genreKey;
@@ -1344,7 +1452,8 @@ function importTextRecord(event){
       genreKey: currentGenre,
       genreLabel: GENRES[currentGenre].label,
       difficultyKey: currentDifficulty,
-      difficultyLabel: DIFFICULTIES[currentDifficulty].label
+      difficultyLabel: DIFFICULTIES[currentDifficulty].label,
+      furiganaLevel: record.furiganaLevel || 'none'
     };
     updateCheckButtonLabels();
 
@@ -1885,6 +1994,7 @@ async function aiReviseWithFeedback(source){
     return;
   }
   const { style, length, level, levelKey, genreKey, genreLabel } = settings;
+  const furiganaLevel = settings.furiganaLevel || 'none';
 
   const resultCheckAreaId = source === 'result' ? 'resultCheckArea' : 'rewriteCheckArea';
   const checkBox = document.getElementById(resultCheckAreaId);
@@ -1909,6 +2019,8 @@ async function aiReviseWithFeedback(source){
     : '- 具体的な数値・事実を扱う場合は、実際に妥当な内容に修正すること（不確かな数値は断定しすぎない表現にする）';
   // 本文生成で整えた文末表現がリライトで中止形に戻らないよう、同じ表記ルールを同一文体で差し込む
   const readabilitySection = readabilitySectionText(style);
+  // フリガナも生成時と同じレベルで維持（リライトでルビが消えない/増えないように、生成時のgrade/levelで構築）
+  const furiganaSection = furiganaPromptSection(levelKey, furiganaLevel);
 
   // 人間の指摘欄の内容を取得
   const humanTa = document.getElementById('humanFeedback_' + source);
@@ -1939,7 +2051,8 @@ ${styleDetail}- 目標文字数：${length}字前後（±15%程度は許容）
 ${reviseFactLine}
 - 指摘のなかった部分は、元の文章の表現や論旨をできるだけ保持すること（無関係な書き換えはしない）
 - 出力は本文のみ。前置きや解説は一切つけないこと
-${readabilitySection}
+- 元の文章に付いているルビ（《》）は、下記フリガナルールに沿って維持すること（消したり、対象外の語に増やしたりしない）
+${readabilitySection}${furiganaSection}
 ${lessonsPromptSection(levelKey)}
 上記を踏まえて、修正後の本文だけを出力してください。`;
 
@@ -2037,6 +2150,7 @@ renderOutlineBlocks();
 updateLevelNotice();
 renderDifficultySelect();
 applyLengthDefault();
+syncFuriganaToGrade(); // 初期フリガナレベル＝現在の学年（g3）に合わせる＋jhs非表示
 initImode();
 initTheme(); // ライト/ダーク（4アプリ共通キー）
 initLessons(); // 学習メモをSupabaseから読み込み（失敗時はlocalStorageで続行）
