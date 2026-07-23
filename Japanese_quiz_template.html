@@ -65,6 +65,15 @@ body{
 .q-type{font-size:10px; color:var(--accent-text); border:1px solid var(--accent); border-radius:10px; padding:2px 8px;}
 .q-text{font-size:15px; margin-bottom:10px; white-space:pre-wrap;}
 
+/* 読み上げ（TTS・仕様§5）。pandora_global由来のレコードでのみ表示（gated） */
+.tts-controls{display:flex; align-items:center; gap:8px; margin-bottom:12px; flex-wrap:wrap;}
+.tts-para-btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:22px; height:22px; font-size:12px; line-height:1;
+  background:var(--accent-bg); color:var(--accent-text); border:1px solid var(--accent);
+  border-radius:50%; cursor:pointer; vertical-align:middle; margin-right:4px; padding:0;
+}
+
 .choice-btn{
   display:block; width:100%; text-align:left; font-family:inherit; font-size:15px;
   background:var(--card); border:2px solid var(--border); border-radius:10px;
@@ -169,6 +178,11 @@ body{
   <div id="quizBody" style="display:none">
     <div class="card">
       <div class="section-label" id="passageLabel">文章を読んで、あとの問題に答えましょう</div>
+      <div class="tts-controls" id="ttsControls" style="display:none;">
+        <button class="tool-btn" id="ttsPlayAllBtn" onclick="toggleSpeakAllPassage()">🔊 文章を全部読み上げる</button>
+        <button class="tool-btn active" id="ttsRateNormalBtn" onclick="setTtsRate(1.0)">はやさ：ふつう</button>
+        <button class="tool-btn" id="ttsRateSlowBtn" onclick="setTtsRate(0.75)">🐢 はやさ：ゆっくり</button>
+      </div>
       <div class="passage" id="passageArea"></div>
     </div>
 
@@ -528,6 +542,12 @@ function renderQuiz(){
   document.getElementById('quizBody').style.display = 'block';
   document.getElementById('submitBar').style.display = 'block';
 
+  // 読み上げ（TTS）はpandora_global由来のレコード（globalSource===true）でのみ表示する。
+  // 母語話者の読解訓練では読み上げが訓練目的と競合するため、国内教材では出さない（承認済みゲート条件）。
+  const ttsEnabled = !!qs.globalSource;
+  const ttsControls = document.getElementById('ttsControls');
+  if(ttsControls) ttsControls.style.display = ttsEnabled ? 'flex' : 'none';
+
   // 本文（段落番号付き）
   const paras = (qs.fullText || '').split(/\n+/).filter(s=>s.trim());
   const passageArea = document.getElementById('passageArea');
@@ -539,6 +559,14 @@ function renderQuiz(){
     num.className = 'para-num';
     num.textContent = (i+1);
     div.appendChild(num);
+    if(ttsEnabled){
+      const playBtn = document.createElement('button');
+      playBtn.className = 'tts-para-btn';
+      playBtn.textContent = '🔊';
+      playBtn.title = 'この段落を読み上げる';
+      playBtn.onclick = ()=> toggleSpeakButton(p, playBtn);
+      div.appendChild(playBtn);
+    }
     // 本文はルビ（《》）を<ruby>で描画（escapeHtmlの後に変換＝XSS対策）
     const body = document.createElement('span');
     body.innerHTML = rubyToHtml(escapeHtml(p));
@@ -557,6 +585,14 @@ function renderQuiz(){
     head.className = 'q-head';
     head.innerHTML = '<span class="q-num">問' + escapeHtml(q.number != null ? q.number : idx+1) + '</span>'
       + '<span class="q-type">' + escapeHtml(q.type || '') + '</span>';
+    if(ttsEnabled){
+      const qPlayBtn = document.createElement('button');
+      qPlayBtn.className = 'tts-para-btn';
+      qPlayBtn.textContent = '🔊';
+      qPlayBtn.title = '設問文を読み上げる';
+      qPlayBtn.onclick = ()=> toggleSpeakButton(q.question_text || '', qPlayBtn);
+      head.appendChild(qPlayBtn);
+    }
     item.appendChild(head);
     const text = document.createElement('div');
     text.className = 'q-text';
@@ -903,6 +939,82 @@ function rubyToHtml(escapedText){
   return String(escapedText == null ? '' : escapedText)
     .replace(/([一-鿿々]+[぀-ゟ゠-ヿー]*)《([^》]*)》/g,
              '<ruby>$1<rt>$2</rt></ruby>');
+}
+
+// ===== 読み上げ（TTS・仕様§5） =====
+// Web Speech API（speechSynthesis, lang=ja-JP）。pandora_global由来のレコード（globalSource===true）
+// でのみボタンを表示する（renderQuiz内のttsEnabled判定）。母語話者向けの国内教材では読み上げが
+// 読解訓練の目的と競合するため意図的に出さない。
+// 将来の差し替え（OpenAI TTS等）に備え、speechSynthesisに直接触れる箇所はspeakText/stopSpeaking/
+// isSpeakingの3関数だけに隔離する。
+//
+// フリガナ記法との連携（仕様§5.2）：《》の中身（読み）を採用して漢字部分を置換してから読む
+// （そのまま読むと二重読みになるため）。読みが空の《》はベース（漢字側）にフォールバックする。
+// 分かち書きの全角スペースは視覚的な区切りであり音ではないため、読み上げ前に取り除く。
+const RUBY_WORD_PATTERN = '([一-鿿々]+[぀-ゟ゠-ヿー]*)《([^》]*)》';
+function furiganaToSpokenText(text){
+  const withReadings = String(text == null ? '' : text).replace(new RegExp(RUBY_WORD_PATTERN, 'g'),
+    (whole, base, reading) => (reading && reading.trim()) ? reading : base);
+  return withReadings.replace(/[\s　]/g, '');
+}
+let ttsRate = 1.0; // 仕様§5.3：0.75x / 1.0x の2段階
+function setTtsRate(rate){
+  ttsRate = rate;
+  const normalBtn = document.getElementById('ttsRateNormalBtn');
+  const slowBtn = document.getElementById('ttsRateSlowBtn');
+  if(normalBtn) normalBtn.classList.toggle('active', rate === 1.0);
+  if(slowBtn) slowBtn.classList.toggle('active', rate === 0.75);
+}
+function speakText(text, options){
+  options = options || {};
+  if(!('speechSynthesis' in window)){
+    if(options.onError) options.onError('このブラウザは読み上げに対応していません。');
+    return;
+  }
+  window.speechSynthesis.cancel(); // 多重再生防止
+  const spoken = furiganaToSpokenText(text);
+  if(!spoken){ if(options.onEnd) options.onEnd(); return; }
+  const u = new SpeechSynthesisUtterance(spoken);
+  u.lang = 'ja-JP';
+  u.rate = options.rate || ttsRate;
+  u.onend = ()=>{ if(options.onEnd) options.onEnd(); };
+  u.onerror = ()=>{ if(options.onError) options.onError('読み上げに失敗しました。'); };
+  window.speechSynthesis.speak(u);
+}
+function stopSpeaking(){
+  if('speechSynthesis' in window) window.speechSynthesis.cancel();
+}
+function isSpeaking(){ return !!(('speechSynthesis' in window) && window.speechSynthesis.speaking); }
+
+// 押した1つのボタンだけが再生中になるトグル（他のボタンを押すと前の再生は止まる）。
+// labels省略時はアイコンのみ（段落・設問用）、全文再生ボタンは文言つきlabelsを渡す。
+let __ttsActiveBtn = null;
+function toggleSpeakButton(text, btn, labels){
+  labels = labels || { play: '🔊', stop: '⏹' };
+  if(__ttsActiveBtn === btn && isSpeaking()){
+    stopSpeaking();
+    btn.textContent = labels.play;
+    __ttsActiveBtn = null;
+    return;
+  }
+  if(__ttsActiveBtn){
+    const prevLabel = __ttsActiveBtn.dataset.ttsPlayLabel || '🔊';
+    __ttsActiveBtn.textContent = prevLabel;
+  }
+  if(!text || !text.trim()) return;
+  btn.dataset.ttsPlayLabel = labels.play;
+  btn.textContent = labels.stop;
+  __ttsActiveBtn = btn;
+  speakText(text, {
+    onEnd: ()=>{ btn.textContent = labels.play; if(__ttsActiveBtn===btn) __ttsActiveBtn=null; },
+    onError: ()=>{ btn.textContent = labels.play; if(__ttsActiveBtn===btn) __ttsActiveBtn=null; }
+  });
+}
+function toggleSpeakAllPassage(){
+  const qs = QUESTION_SET;
+  const btn = document.getElementById('ttsPlayAllBtn');
+  if(!btn || !qs) return;
+  toggleSpeakButton(qs.fullText || '', btn, { play: '🔊 文章を全部読み上げる', stop: '⏹ 停止する' });
 }
 
 init();
