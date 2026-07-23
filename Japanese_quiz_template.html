@@ -653,7 +653,7 @@ function renderQuiz(){
     item.appendChild(head);
     const text = document.createElement('div');
     text.className = 'q-text';
-    text.textContent = q.question_text || '';
+    text.innerHTML = rubyToHtml(escapeHtml(q.question_text || ''));
     item.appendChild(text);
     if(ttsEnabled) appendEnHintToggle(head, item, q.en_hint);
 
@@ -663,7 +663,7 @@ function renderQuiz(){
       q.choices.forEach(c=>{
         const btn = document.createElement('button');
         btn.className = 'choice-btn';
-        btn.textContent = c;
+        btn.innerHTML = rubyToHtml(escapeHtml(c));
         btn.onclick = ()=>{
           item.querySelectorAll('.choice-btn').forEach(b=>b.classList.remove('selected'));
           btn.classList.add('selected');
@@ -727,7 +727,7 @@ function renderQuiz(){
       item.appendChild(head);
       const text = document.createElement('div');
       text.className = 'q-text';
-      text.textContent = q.question_text || '';
+      text.innerHTML = rubyToHtml(escapeHtml(q.question_text || ''));
       item.appendChild(text);
 
       if(isWriteMode){
@@ -761,7 +761,7 @@ function renderQuiz(){
         (q.choices || []).forEach(c=>{
           const btn = document.createElement('button');
           btn.className = 'choice-btn';
-          btn.textContent = c;
+          btn.innerHTML = rubyToHtml(escapeHtml(c));
           btn.onclick = ()=>{
             item.querySelectorAll('.choice-btn').forEach(b=>b.classList.remove('selected'));
             btn.classList.add('selected');
@@ -792,13 +792,13 @@ function renderQuiz(){
       item.appendChild(head);
       const text = document.createElement('div');
       text.className = 'q-text';
-      text.textContent = q.question_text || '';
+      text.innerHTML = rubyToHtml(escapeHtml(q.question_text || ''));
       item.appendChild(text);
       appendEnHintToggle(head, item, q.en_hint);
       (q.choices || []).forEach(c=>{
         const btn = document.createElement('button');
         btn.className = 'choice-btn';
-        btn.textContent = c;
+        btn.innerHTML = rubyToHtml(escapeHtml(c));
         btn.onclick = ()=>{
           item.querySelectorAll('.choice-btn').forEach(b=>b.classList.remove('selected'));
           btn.classList.add('selected');
@@ -829,14 +829,14 @@ function renderQuiz(){
       item.appendChild(head);
       const text = document.createElement('div');
       text.className = 'q-text';
-      text.textContent = wt.instruction || '';
+      text.innerHTML = rubyToHtml(escapeHtml(wt.instruction || ''));
       item.appendChild(text);
       appendEnHintToggle(head, item, wt.en_hint);
       if(wt.prompt_text){
         const promptDiv = document.createElement('div');
         promptDiv.className = 'q-text';
         promptDiv.style.fontWeight = '700';
-        promptDiv.textContent = wt.prompt_text;
+        promptDiv.innerHTML = rubyToHtml(escapeHtml(wt.prompt_text));
         item.appendChild(promptDiv);
       }
       // 短作文はお手本例文を折りたたみで添える（デフォルト閉。写して終わる子への抑止と、書けない子への足場の両立）
@@ -847,7 +847,7 @@ function renderQuiz(){
         const exBox = document.createElement('div');
         exBox.className = 'example-box';
         exBox.style.display = 'none';
-        exBox.textContent = wt.example;
+        exBox.innerHTML = rubyToHtml(escapeHtml(wt.example));
         exBtn.onclick = ()=>{ exBox.style.display = (exBox.style.display === 'none') ? 'block' : 'none'; };
         item.appendChild(exBtn);
         item.appendChild(exBox);
@@ -874,8 +874,10 @@ function renderQuiz(){
       tools.appendChild(penBtn); tools.appendChild(eraserBtn); tools.appendChild(clearBtn);
       item.appendChild(tools);
 
-      // なぞり書き（trace）はprompt_textをcanvas背景に薄いグレーで下敷き表示する
-      setupCanvas(canvas, wrap, wKey, penBtn, eraserBtn, clearBtn, wt.type === 'trace' ? wt.prompt_text : null);
+      // なぞり書き（trace）はprompt_textをcanvas背景に薄いグレーで下敷き表示する。
+      // canvasのfillTextはHTMLマークアップを解釈しないため、《》記法はstripRubyで除いてから渡す
+      // （ルビ記法がそのまま描画されるとなぞり書きの見本として不自然になるため）。
+      setupCanvas(canvas, wrap, wKey, penBtn, eraserBtn, clearBtn, wt.type === 'trace' ? stripRuby(wt.prompt_text) : null);
       canvases[wKey] = canvas;
 
       wArea.appendChild(item);
@@ -1216,6 +1218,11 @@ function rubyToHtml(escapedText){
   return String(escapedText == null ? '' : escapedText)
     .replace(/([一-鿿々]+[぀-ゟ゠-ヿー]*)《([^》]*)》/g,
              '<ruby>$1<rt>$2</rt></ruby>');
+}
+// ルビ記法「漢字《かんじ》」を素のテキストに戻す（《読み》を削除し、ベースは残す）。
+// なぞり書きcanvasの下敷き文字描画（fillTextはHTMLマークアップを解釈しない）で使う。
+function stripRuby(text){
+  return String(text == null ? '' : text).replace(/《[^》]*》/g, '');
 }
 
 // 設問文横の🌏（en_hint展開・仕様§4.4）。既存の🔊と並べ「読む→聞く(🔊)→英語(🌏)」の支援階段を構成する。
