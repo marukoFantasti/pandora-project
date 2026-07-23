@@ -1462,12 +1462,19 @@ ${paragraphLine}
 ${structureLine}
 ${factLine}
 - 教材としてそのまま読解問題（内容一致・傍線部説明・語彙・意見記述など）が作れるよう、論点や具体例を明確に書くこと
-- 出力は本文のみ。タイトルの見出しや前置き、解説は一切つけないこと
+- 本文（fullText）には見出しや前置き、解説は一切つけないこと
 ${readabilitySection}${furiganaSection}
 # アウトライン（段落の役割・骨子）
 ${outlineText}
 ${lessonsPromptSection(levelKey)}
-上記の条件、特に「語彙・文型の方針」と「使用してよい漢字」を厳守して、本文を出力してください。`;
+
+# 英語サポート（継承語学習者の保護者・学習者向け補助情報）
+本文の段落ごとに、英語の要約1文（summary）と、②語彙・文法レベル（${vocabLevel.label}）を超える語の語注（glossary。段落あたり最大3〜4語。無理に作らず0語でもよい）を付けてください。paraは本文の段落番号（1から連番）で、本文の段落数と必ず一致させてください（数え間違いのないよう、本文を書いた後に段落ごとに1件ずつ対応させること）。
+
+# 出力形式（重要）
+JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。以下の形式そのままで出力すること。
+{"fullText": "本文（ルビ記法《》込み。上記の条件をすべて満たすこと）", "enSupport": [{"para": 1, "summary": "英語1文の要約", "glossary": [{"word": "語", "reading": "よみ", "gloss": "英語での意味（1語〜数語）"}]}]}
+上記の条件、特に「語彙・文型の方針」と「使用してよい漢字」を厳守して出力してください。`;
 
   try{
     const response = await fetch("https://api.anthropic.com/v1/messages", {
@@ -1492,7 +1499,17 @@ ${lessonsPromptSection(levelKey)}
 
     const data = await response.json();
     const textBlocks = data.content.filter(b=>b.type==='text').map(b=>b.text);
-    let result = textBlocks.join('\n').trim();
+    let raw = textBlocks.join('\n').trim();
+    raw = raw.replace(/^```json\s*/i, '').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
+    let parsed;
+    try{
+      parsed = JSON.parse(raw);
+    }catch(err){
+      throw new Error('本文の生成結果（JSON形式）を読み取れませんでした。もう一度お試しください。');
+    }
+    if(!parsed.fullText) throw new Error('本文（fullText）が生成結果に含まれていませんでした。もう一度お試しください。');
+    let result = String(parsed.fullText).trim();
+    let enSupport = Array.isArray(parsed.enSupport) ? parsed.enSupport : [];
 
     // jhs 実戦：完成文→後処理で空欄A〜Cを穿孔（接続語を2〜3箇所）。元語は answer_key に保存。
     let jhsBlanks = null;
@@ -1502,6 +1519,7 @@ ${lessonsPromptSection(levelKey)}
       jhsBlanks = punched.blanks;
     }
     window.__jhsBlanks = jhsBlanks;
+    window.__lastEnSupport = enSupport;
 
     document.getElementById('resultArea').value = result;
     document.getElementById('rewriteArea').value = result;
@@ -1524,6 +1542,19 @@ ${lessonsPromptSection(levelKey)}
     }else if(furiCheck){
       document.getElementById('resultCheckArea').innerHTML +=
         `<div class="notice notice-info">🔤 フリガナ検証：対象漢字の付け忘れ・付けすぎは検出されませんでした。</div>`;
+    }
+    // 英語サポートの段落数一致を機械検証（AIに数えさせず実測。quiz_template/print_templateと同じ
+    // /\n+/ 分割規則で段落を数える。不一致は警告のみ・生成は止めない）
+    const enSupportParaCount = result.split(/\n+/).map(s=>s.trim()).filter(Boolean).length;
+    if(!enSupport.length){
+      document.getElementById('resultCheckArea').innerHTML +=
+        `<div class="notice notice-warn">🌏 英語サポートが生成されませんでした。もう一度生成するか、後で手動で補ってください。</div>`;
+    }else if(enSupport.length !== enSupportParaCount){
+      document.getElementById('resultCheckArea').innerHTML +=
+        `<div class="notice notice-warn">🌏 英語サポート検証：本文の段落数（${enSupportParaCount}）と英語サポートの件数（${enSupport.length}）が一致しません。リライトして揃えることをおすすめします。</div>`;
+    }else{
+      document.getElementById('resultCheckArea').innerHTML +=
+        `<div class="notice notice-info">🌏 英語サポート検証：段落数（${enSupportParaCount}）と一致しています。</div>`;
     }
     showNotice('生成が完了しました。左が生成結果（変更不可）、右がリライト用です。', 'info');
     updateCheckButtonLabels();
@@ -1611,6 +1642,10 @@ function buildStoryRecord(){
     furiganaLevel: settings.furiganaLevel || 'none', // フリガナ対象レベル（③のシステム・レベルに対して評価する）
     outlines: outlines,
     fullText: fullText, // ルビ記法（漢字《かんじ》）込みで保存
+    // 英語サポート（仕様§4.2）。本文生成・AIリライトと同一API呼び出しで取得したものをそのまま保持。
+    // rewriteAreaを手動編集した場合はズレる可能性があるが、既存のフリガナ検証等と同じく
+    // 「AI生成直後の版を機械検証した結果」を引き継ぐ設計のため許容する（仕様スコープ外の対応）。
+    enSupport: Array.isArray(window.__lastEnSupport) ? window.__lastEnSupport : null,
     // pandora_global由来であることを示す明示フラグ（quiz_template等のゲート判定用）＋②③軸の情報。
     // ①(grade)は既存recordTypeとの互換のため既存フィールドを流用し、②③④はここに追加する。
     globalSource: true,
@@ -1623,6 +1658,19 @@ function buildStoryRecord(){
     // Japanese_question_generator.html はこの値をそのまま使えるため、KANJI_JLPTデータを
     // 別ファイルへ複製する必要がない（単一の情報源＝pandora_global_generator.htmlに保つ）。
     allowedKanjiList: kanjiListFor(settings.kanjiSystem, settings.kanjiLevelKey),
+    // ③のレベルで新しく許可された漢字だけの差分リスト（furiganaTargetKanjiSetと同じ「上位−下位」の
+    // 計算方法）。question編の帯2・漢字クイズが「この段で新しく習う漢字」から出題するための素材。
+    // これも単一情報源化のためquestion_generator.html側にKANJI_JLPTを複製せずに済ませる。
+    kanjiDiffList: (function(){
+      const order = kanjiOrderFor(settings.kanjiSystem);
+      const idx = order.indexOf(settings.kanjiLevelKey);
+      if(idx < 0) return '';
+      const upper = kanjiListFor(settings.kanjiSystem, settings.kanjiLevelKey);
+      const lowerLevel = idx > 0 ? order[idx - 1] : null;
+      const lower = lowerLevel ? kanjiListFor(settings.kanjiSystem, lowerLevel) : '';
+      const lowerSet = new Set(lower.split(''));
+      return upper.split('').filter(c => !lowerSet.has(c)).join('');
+    })(),
     wakachi: !!settings.wakachiEnabled,
     // 中学帯（jhs）の付随メタ。設問生成・印刷が空欄正答・語注位置・前書き枠の要否を引き継ぐ。
     jhsMeta: settings.levelKey === 'jhs' ? {
@@ -2400,11 +2448,17 @@ ${styleDetail}- 目標文字数：${length}字前後（±15%程度は許容）
 ${paragraphCountLine}
 ${reviseFactLine}
 - 指摘のなかった部分は、元の文章の表現や論旨をできるだけ保持すること（無関係な書き換えはしない）
-- 出力は本文のみ。前置きや解説は一切つけないこと
 - 元の文章に付いているルビ（《》）は、下記フリガナルールに沿って維持すること（消したり、対象外の語に増やしたりしない）
 ${readabilitySection}${furiganaSection}
 ${lessonsPromptSection(levelKey)}
-上記を踏まえて、修正後の本文だけを出力してください。`;
+
+# 英語サポート（継承語学習者の保護者・学習者向け補助情報）の更新
+修正後の本文の段落ごとに、英語の要約1文（summary）と、語彙・文法レベル（${vocabLevel.label}）を超える語の語注（glossary。段落あたり最大3〜4語。無理に作らず0語でもよい）を、修正後の内容に合わせて作り直してください。paraは修正後の本文の段落番号（1から連番）で、修正後の本文の段落数と必ず一致させてください。
+
+# 出力形式（重要）
+JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。以下の形式そのままで出力すること。
+{"fullText": "修正後の本文（ルビ記法《》込み）", "enSupport": [{"para": 1, "summary": "英語1文の要約", "glossary": [{"word": "語", "reading": "よみ", "gloss": "英語での意味（1語〜数語）"}]}]}
+上記を踏まえて出力してください。`;
 
   try{
     const response = await fetch("https://api.anthropic.com/v1/messages", {
@@ -2429,7 +2483,18 @@ ${lessonsPromptSection(levelKey)}
 
     const data = await response.json();
     const textBlocks = data.content.filter(b=>b.type==='text').map(b=>b.text);
-    const revised = textBlocks.join('\n').trim();
+    let raw = textBlocks.join('\n').trim();
+    raw = raw.replace(/^```json\s*/i, '').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
+    let parsed;
+    try{
+      parsed = JSON.parse(raw);
+    }catch(err){
+      throw new Error('リライト結果（JSON形式）を読み取れませんでした。もう一度お試しください。');
+    }
+    if(!parsed.fullText) throw new Error('本文（fullText）がリライト結果に含まれていませんでした。もう一度お試しください。');
+    const revised = String(parsed.fullText).trim();
+    const revisedEnSupport = Array.isArray(parsed.enSupport) ? parsed.enSupport : [];
+    window.__lastEnSupport = revisedEnSupport;
 
     // 事実修正を経た版を新しい「生成結果（正式版）」として上書きし、
     // リライト欄にも同じ内容を反映して、そこから人間が手を加えられるようにする
@@ -2439,6 +2504,15 @@ ${lessonsPromptSection(levelKey)}
     updateCharCount('rewriteArea','rewriteCharCount');
     document.getElementById('resultCheckArea').innerHTML = '';
     document.getElementById('rewriteCheckArea').innerHTML = '';
+    // 英語サポートの段落数一致を機械検証（生成時と同じ規則。警告のみ）
+    const revisedParaCount = revised.split(/\n+/).map(s=>s.trim()).filter(Boolean).length;
+    if(!revisedEnSupport.length){
+      document.getElementById('resultCheckArea').innerHTML =
+        '<div class="notice notice-warn">🌏 英語サポートが更新されませんでした。もう一度リライトするか、後で手動で補ってください。</div>';
+    }else if(revisedEnSupport.length !== revisedParaCount){
+      document.getElementById('resultCheckArea').innerHTML =
+        `<div class="notice notice-warn">🌏 英語サポート検証：修正後の段落数（${revisedParaCount}）と英語サポートの件数（${revisedEnSupport.length}）が一致しません。もう一度リライトして揃えることをおすすめします。</div>`;
+    }
     showNotice('指摘を踏まえて生成結果を更新しました。リライト欄にも反映されているので、そこから手を加えられます。', 'info');
 
   }catch(err){
