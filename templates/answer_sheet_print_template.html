@@ -580,17 +580,18 @@ body { background: #e8e8e8; font-family: 'Hiragino Sans','Yu Gothic',sans-serif;
   padding: 0 1mm; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd; border-bottom-right-radius: 3px;
 }
 .page-number-label {
-  position: absolute; left: 165mm; top: 258mm; width: 25mm; height: 6mm;
+  /* QR拡大に伴い右下から左下（フッター側）へ移動。拡大QRのクワイエットゾーンを侵さない。 */
+  position: absolute; left: 15mm; top: 258mm; width: 25mm; height: 6mm;
   background: #000; color: #fff; font-size: 17px; font-weight: bold;
   display: flex; align-items: center; justify-content: center;
   border-radius: 3px 3px 0 0; letter-spacing: 0.5px;
 }
 .qr-canvas-wrap {
-  position: absolute; left: 165mm; top: 264mm; width: 25mm; height: 25mm;
+  position: absolute; left: 165mm; top: 260mm; width: 35mm; height: 35mm;
   box-sizing: border-box; background: #fff;
-  padding: 2.5mm; /* クワイエットゾーン（QRコード周囲の余白）。実測53モジュール
-    構成のQRで、20mm四方の実描画エリアに対し約6〜7モジュール分の余白に相当し、
-    国際規格の目安（4モジュール以上）を安全マージン込みで満たす */
+  padding: 2.5mm; /* クワイエットゾーン（QRコード周囲の余白）。外枠35mm・padding2.5mmで
+    実描画エリアは30mm四方。誤り訂正Q・約49モジュール構成でセル約0.61mm。padding2.5mmは
+    約4モジュール分の余白に相当し、国際規格の目安（4モジュール以上）を満たす */
   display: flex; align-items: center; justify-content: center;
 }
 .qr-canvas-wrap canvas, .qr-canvas-wrap img { width: 100% !important; height: 100% !important; display: block; }
@@ -719,7 +720,7 @@ function renderPages() {
       text: payload,
       width: 200,
       height: 200,
-      correctLevel: QRCode.CorrectLevel.H
+      correctLevel: QRCode.CorrectLevel.Q // 30mm化に合わせQ（セル約0.61mm。汚れ・折れ耐性を残しつつ読み取り性を確保）
     });
 
     const start = (page - 1) * PER_PAGE;
@@ -831,9 +832,10 @@ function exportPdf() {
       var pdf = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
       for (var i = 0; i < pageEls.length; i++) {
         var canvas = await renderOnePage(pageEls[i]);
-        var imgData = canvas.toDataURL('image/jpeg', 0.98);
+        // QRの白黒エッジがJPEG圧縮でにじむと読み取り精度が落ちるため、可逆のPNGで格納する
+        var imgData = canvas.toDataURL('image/png');
         if (i > 0) pdf.addPage();
-        pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297); // A4は210mm×297mm、.pageと完全に一致させる
+        pdf.addImage(imgData, 'PNG', 0, 0, 210, 297); // A4は210mm×297mm、.pageと完全に一致させる
       }
       pdf.save(filename);
       btn.disabled = false;
