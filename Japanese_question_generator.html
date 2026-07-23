@@ -1806,6 +1806,9 @@ async function generateKanjiQuizGlobal(apiKey, r){
   // 語のなじみやすさ（用いる言葉の選定基準）は②軸（語彙・文法レベル）に従う原則
   // （フォローアップ指示：レベル軸参照の監査。①軸gradeLabelは構成・漢字の対象学年表示にのみ使う）
   const wordLevelLabel = r.vocabLevelLabel || r.gradeLabel;
+  // 地の文（出題語・対象漢字以外の指示文）のkanjiLevel適用（確認指示への対応）：出題対象の
+  // 漢字自体にルビを振らないのは正しい（答えの漏洩防止）が、指示文「〜を書きなさい」等は別物であり、
+  // 級外漢字（読/方/選/漢/字/書 等）を含みうる。この関数は常にglobal専用のためひらがな中心に統一する。
 
   const prompt = writingMode
     ? `あなたは継承語学習者向けの漢字教材を作成するプロの編集者です。以下の漢字1字について、読みを提示してその漢字を書かせる書き取りクイズを1問作成してください。
@@ -1817,10 +1820,11 @@ ${targetKanji.join('')}
 - その漢字を含む短い言葉（熟語または訓読みの言葉）を1つ選び、その言葉のひらがな読みを提示して、漢字表記を書かせる形式にすること
 - 言葉は${wordLevelLabel}の子どもが日常や教科書で目にする自然なものにすること
 - reading にはひらがなの読みだけを入れ、answer には word と同じ漢字表記を入れること
+- instruction文（地の文）は対象漢字・出題語を除き、ひらがな中心のやさしい言い回しで書くこと（級外漢字を使わないこと）
 
 # 出力形式（重要）
 JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。以下の形式そのままで出力すること。
-{"kanji_quiz": [{"number": 1, "kanji": "対象の漢字", "word": "出題する言葉（漢字を含む表記）", "reading": "その言葉のひらがな読み", "question_text": "「（reading）」を漢字で書きなさい。", "choices": [], "answer": "word と同じ漢字表記", "explanation": "書き方の簡単な説明"}]}`
+{"kanji_quiz": [{"number": 1, "kanji": "対象の漢字", "word": "出題する言葉（漢字を含む表記）", "reading": "その言葉のひらがな読み", "question_text": "「（reading）」を　かんじで　かきましょう。", "choices": [], "answer": "word と同じ漢字表記", "explanation": "書き方の簡単な説明"}]}`
     : `あなたは継承語学習者向けの漢字教材を作成するプロの編集者です。以下の漢字1字について、読み方を答える選択式クイズを1問作成してください。
 
 # 対象の漢字（このレベルで新しく習う漢字）
@@ -1832,10 +1836,11 @@ ${targetKanji.join('')}
 - 誤答の選択肢は、似た音・別の読み方（音読み/訓読みの取り違え）など、もっともらしいものにすること
 - 選択肢の記号は必ず「あ・い・う・え」を使うこと（ア・イ・ウ・エは使わないこと）
 - 読み方はすべてひらがなで書くこと
+- instruction文（地の文）は出題語を除き、ひらがな中心のやさしい言い回しで書くこと（級外漢字を使わないこと）
 
 # 出力形式（重要）
 JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。以下の形式そのままで出力すること。
-{"kanji_quiz": [{"number": 1, "kanji": "対象の漢字", "word": "出題する言葉（漢字を含む表記）", "question_text": "「（言葉）」の読み方を選びなさい。", "choices": ["あ　よみかた1", "い　よみかた2", "う　よみかた3", "え　よみかた4"], "answer": "正答の記号", "explanation": "正しい読みと簡単な説明"}]}`;
+{"kanji_quiz": [{"number": 1, "kanji": "対象の漢字", "word": "出題する言葉（漢字を含む表記）", "question_text": "「（言葉）」の　よみかたを　えらびましょう。", "choices": ["あ　よみかた1", "い　よみかた2", "う　よみかた3", "え　よみかた4"], "answer": "正答の記号", "explanation": "正しい読みと簡単な説明"}]}`;
 
   const parsed = await callClaudeJSON(apiKey, prompt, 1200);
   if(!Array.isArray(parsed.kanji_quiz) || !parsed.kanji_quiz.length) throw new Error('漢字クイズの形式が不正でした。');
@@ -2931,6 +2936,20 @@ async function generateOneKanjiQuiz(apiKey, record, kanji, avoidWord){
   // 語のなじみやすさは②軸(vocabLevel)に従う。domesticは単一軸のためgradeLabelのまま。
   const kanjiLevelLabel = isGlobal ? (record.kanjiLevelLabel || record.gradeLabel) : record.gradeLabel;
   const wordLevelLabel = isGlobal ? (record.vocabLevelLabel || record.gradeLabel) : record.gradeLabel;
+  // 地の文（出題語・対象漢字以外の指示文）のkanjiLevel適用（確認指示への対応）：出題対象の
+  // 漢字自体にルビを振らないのは正しい（答えの漏洩防止）が、指示文「〜を書きなさい」等は別物であり、
+  // 級外漢字（読/方/選/漢/字/書 等）を含みうる。globalモードのみひらがな中心の指示文に置き換える
+  // （domesticは従来どおり漢字の指示文のまま＝無変更）。
+  const writeInstructionText = isGlobal ? 'を　かんじで　かきましょう。' : 'を漢字で書きなさい。';
+  const choiceInstructionText = isGlobal ? 'の　よみかたを　えらびましょう。' : 'の読み方を選びなさい。';
+  const globalInstructionNote = isGlobal
+    ? '\n- instruction文（地の文）は対象漢字・出題語を除き、ひらがな中心のやさしい言い回しで書くこと（級外漢字を使わないこと）'
+    : '';
+  // globalモードの選択肢記号あいう明示（仕様§3）。generateKanjiQuizGlobalには元々あった
+  // 明示ルールが、この共有関数（regenerateKanji等から到達）には抜けていたため追加（確認作業で発覚）。
+  const symbolNote = isGlobal
+    ? '\n- 選択肢の記号は必ず「あ・い・う・え」を使うこと（ア・イ・ウ・エは使わないこと）'
+    : '';
   const prompt = writingMode
     ? `あなたは継承語学習者向けの漢字教材を作成するプロの編集者です。次の漢字1字について、読みを提示してその漢字を書かせる書き取りクイズを1問だけ作成してください。
 
@@ -2940,12 +2959,12 @@ ${kanji}
 # 作成ルール
 - その漢字を含む短い言葉（熟語または訓読みの言葉）を1つ選び、その言葉のひらがな読みを提示して、漢字表記を書かせる形式にすること${avoid}
 - 言葉は${wordLevelLabel}の子どもが日常や教科書で目にする自然なものにする
-- reading にはひらがなの読みだけを入れ、answer には word と同じ漢字表記を入れること
+- reading にはひらがなの読みだけを入れ、answer には word と同じ漢字表記を入れること${globalInstructionNote}
 
 # 出力形式（重要）
 JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。
-{"quiz": {"kanji": "${kanji}", "word": "出題する言葉（漢字を含む表記）", "reading": "その言葉のひらがな読み", "question_text": "「（reading）」を漢字で書きなさい。", "choices": [], "answer": "word と同じ漢字表記", "explanation": "書き方の簡単な説明"}}`
-    : `あなたは小学生向けの漢字教材を作成するプロの編集者です。次の漢字1字について、読み方を答える選択式クイズを1問だけ作成してください。
+{"quiz": {"kanji": "${kanji}", "word": "出題する言葉（漢字を含む表記）", "reading": "その言葉のひらがな読み", "question_text": "「（reading）」${writeInstructionText}", "choices": [], "answer": "word と同じ漢字表記", "explanation": "書き方の簡単な説明"}}`
+    : `あなたは${isGlobal ? '継承語学習者向けの漢字教材を作成するプロの編集者です' : '小学生向けの漢字教材を作成するプロの編集者です'}。次の漢字1字について、読み方を答える選択式クイズを1問だけ作成してください。
 
 # 対象の漢字（${kanjiLevelLabel}で習う漢字）
 ${kanji}
@@ -2954,11 +2973,11 @@ ${kanji}
 - その漢字を含む短い言葉（熟語または訓読みの言葉）を1つ提示し、その言葉の読み方（ひらがな）を4択で答えさせる${avoid}
 - 言葉は${wordLevelLabel}の子どもが日常や教科書で目にする自然なものにする
 - 誤答の選択肢は、似た音・別の読み方（音読み/訓読みの取り違え）など、もっともらしいものにする
-- 読み方はすべてひらがなで書く
+- 読み方はすべてひらがなで書く${symbolNote}${globalInstructionNote}
 
 # 出力形式（重要）
 JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。
-{"quiz": {"kanji": "${kanji}", "word": "出題する言葉（漢字を含む表記）", "question_text": "「（言葉）」の読み方を選びなさい。", "choices": ["ア　よみかた1", "イ　よみかた2", "ウ　よみかた3", "エ　よみかた4"], "answer": "正答の記号", "explanation": "正しい読みと簡単な説明"}}`;
+{"quiz": {"kanji": "${kanji}", "word": "出題する言葉（漢字を含む表記）", "question_text": "「（言葉）」${choiceInstructionText}", "choices": ["${isGlobal ? 'あ' : 'ア'}　よみかた1", "${isGlobal ? 'い' : 'イ'}　よみかた2", "${isGlobal ? 'う' : 'ウ'}　よみかた3", "${isGlobal ? 'え' : 'エ'}　よみかた4"], "answer": "正答の記号", "explanation": "正しい読みと簡単な説明"}}`;
   const parsed = await callClaudeJSON(apiKey, prompt, 1200);
   const quiz = parsed.quiz || (Array.isArray(parsed.kanji_quiz) && parsed.kanji_quiz[0]);
   if(!quiz || !quiz.word) throw new Error('漢字クイズを読み取れませんでした。もう一度お試しください。');
