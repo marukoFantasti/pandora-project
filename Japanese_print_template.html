@@ -2891,6 +2891,9 @@ let QUESTION_SET = null;
 let ASSIGNMENT_ID = '';
 let STUDENT_ID = '';
 let LAYOUT_DATA = null;
+// globalモード帯3（書く練習）のタイプ表示名。Japanese_question_generator.html側の
+// WRITING_TASK_TYPE_LABELSと同じ対応（このファイルはJS状態を共有しないため複製）。
+const WRITING_TASK_TYPE_LABELS_PRINT = { copy:'視写', fill:'穴埋め作文', compose:'短作文' };
 let ANSWER_SHEETS_REGISTERED = false; // 現在のLAYOUT_DATAをanswer_sheetsへ登録済みか
 
 // pandora-project共通のSupabase接続情報（他ファイルと同一のpublishableキー）。
@@ -3295,6 +3298,44 @@ function buildPages(){
   });
   const questionPages = measureAndPack(questionBlocks, (n)=>makePageShell('question', n, null, '（問題）', '問題'));
 
+  // ---- ことばのれんしゅう（追加修正指示・帯2語彙＋帯3書く練習）----
+  // globalSourceのレコードのみ。印刷には含めるが、QR解答用紙／photo_intakeの採点対象には含めない
+  // （aBlocks/aPagesとは別のブロック配列として組み、buildLayoutData()にも渡さないことで担保する）。
+  // 漢字（帯2の漢字側）はデジタル専用のため従来どおり印刷対象外（この節にも含めない）。
+  const wordPracticePages = [];
+  if(qs.globalSource){
+    const wpBlocks = [];
+    const wpNote = document.createElement('div');
+    wpNote.className = 'annot-box';
+    wpNote.innerHTML = '<div class="annot-label">ことばのれんしゅう</div>このページは答え合わせ用の正答が印刷されていません。保護者の方がその場で丸付けしてください。';
+    wpBlocks.push({ el: wpNote });
+    (qs.vocabQuiz || []).forEach((q, idx)=>{
+      const n = q.number != null ? q.number : idx+1;
+      const div = document.createElement('div');
+      div.className = 'q-block';
+      let html = '<div class="q-head">語彙' + escapeHtml(n) + '</div>'
+        + '<div class="q-text">' + escapeHtml(q.question_text || '') + '</div>';
+      if(q.choices && q.choices.length){
+        html += '<div class="q-choices">' + q.choices.map(c=>escapeHtml(c)).join('\n') + '</div>';
+      }
+      div.innerHTML = html;
+      wpBlocks.push({ el: div });
+    });
+    (qs.writingTasks || []).forEach((wt, idx)=>{
+      const div = document.createElement('div');
+      div.className = 'lead-box';
+      const lineCount = wt.type === 'compose' ? 3 : 2;
+      let lines = '';
+      for(let i=0;i<lineCount;i++) lines += '<div class="as-line"></div>';
+      div.innerHTML = '<div class="lead-label">書く練習' + (idx+1) + '（' + escapeHtml(WRITING_TASK_TYPE_LABELS_PRINT[wt.type] || '') + '）</div>'
+        + '<div class="q-text">' + escapeHtml(wt.instruction || '') + '</div>'
+        + (wt.prompt_text ? '<div class="q-text" style="font-weight:700;">' + escapeHtml(wt.prompt_text) + '</div>' : '')
+        + '<div class="as-lines" style="margin-top:2mm;">' + lines + '</div>';
+      wpBlocks.push({ el: div });
+    });
+    wordPracticePages.push(...measureAndPack(wpBlocks, (n)=>makePageShell('question', n, null, '（ことばのれんしゅう）', 'ことばのれんしゅう')));
+  }
+
   // ---- 解答用紙のブロック ----
   const aBlocks = [];
   (qs.questions || []).forEach((q, idx)=>{
@@ -3344,9 +3385,11 @@ function buildPages(){
     page.contentEl.style.paddingTop = '28mm';
   });
 
-  // 本文ページ → 設問ページ → 解答用紙 の順に並べる（設問は必ず新ページから始まる）
+  // 本文ページ → 設問ページ → ことばのれんしゅう（globalSourceのみ）→ 解答用紙 の順に並べる
+  // （設問は必ず新ページから始まる。ことばのれんしゅうはQR解答用紙の対象外＝photo_intakeでは採点されない）
   passagePages.forEach(p=>area.appendChild(p));
   questionPages.forEach(p=>area.appendChild(p));
+  wordPracticePages.forEach(p=>area.appendChild(p));
   aPages.forEach(p=>area.appendChild(p));
 
   // jhs 実戦：本文ページに行数表示（5刻み）を組版後に付与（予約済みガターに絶対配置）
