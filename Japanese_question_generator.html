@@ -765,7 +765,13 @@ const RUBY_WORD_PATTERN = '([一-鿿々]+[぀-ゟ゠-ヿー]*)《([^》]*)》';
 function furiganaPromptSectionFor(r){
   const target = r && r.furiganaTargetKanjiList;
   if(!target) return '';
-  return `\n- 設問文・選択肢にも本文と同じフリガナルールを適用すること：次のフリガナ対象漢字リストの漢字を1字でも含む語には、語全体に《》でルビ（読みがな）を付けること（形式は「漢字《かんじ》」、語単位。熟語は語全体に1つ）。対象リストに無い漢字だけの語やひらがな・カタカナだけの語にはルビを付けないこと。フリガナ対象漢字リスト：${target}`;
+  // 3層ルールを明記して kanjiNote（「使用可能リスト外はひらがな」）との文言矛盾を解消する。
+  // フリガナ対象リストの漢字は「使用可能リスト内かつルビ必須」であり、ひらがな化の対象ではない。
+  return `\n- 設問文・選択肢の漢字は次の3層で扱うこと：` +
+    `(1)フリガナ対象漢字リストに無い使用可能漢字（フリガナレベル未満の配当）は裸で使う。` +
+    `(2)フリガナ対象漢字リストの漢字を1字でも含む語は、語全体に《》でルビ（読みがな）を付けて使う（形式「漢字《かんじ》」、語単位。熟語は語全体に1つ。ひらがな化はしない）。` +
+    `(3)使用可能リストに無い漢字（学年配当超）は使わずひらがなで書く。` +
+    `対象リストに無い漢字だけの語やひらがな・カタカナだけの語にはルビを付けないこと。フリガナ対象漢字リスト：${target}`;
 }
 
 // 設問文・選択肢のフリガナ抜け／付けすぎ・級外漢字（許可リスト外の漢字）を機械検出する
@@ -773,10 +779,20 @@ function furiganaPromptSectionFor(r){
 // 警告のみ・生成はブロックしない）。texts は question_text／choices／instruction等の配列。
 // globalモードでない、またはr.allowedKanjiListが無いレコードでは null を返し検証をスキップする。
 function verifyQuestionFurigana(texts, r){
-  if(!r || typeof r.allowedKanjiList !== 'string') return null; // globalSource以外はスキップ
-  const targetSet = new Set((r.furiganaTargetKanjiList || '').split(''));
-  const allowedSet = new Set(r.allowedKanjiList.split(''));
+  if(!r) return null;
+  // 条件1：許可漢字集合の導出は「allowedKanjiList があれば global 優先、無ければ学年累積 KANJI_CUMULATIVE[gradeNum]」の順。
+  // furiganaTargetKanjiList の有無を先に見ると global レコード（両方保持）が domestic 分岐に吸われるため不可。
+  const isGlobal = typeof r.allowedKanjiList === 'string';
+  const allowedStr = isGlobal
+    ? r.allowedKanjiList
+    : (KANJI_CUMULATIVE[String(r.grade || '').replace('g','')] || '');
+  const target = r.furiganaTargetKanjiList || '';
+  // ゲート：ルビ戦略が無いレコード（global以外でfuriganaTargetKanjiListも無い＝furiganaLevel未設定の旧domestic）は検証しない（後方互換）。
+  if(!isGlobal && !target) return null;
+  const targetSet = new Set(target.split(''));
+  const allowedSet = new Set(allowedStr.split(''));
   let missing = 0, extra = 0, outOfLevel = 0;
+  const outOfLevelChars = []; // バッジで該当漢字を明示するための実体（集計とは別に収集。globalの戻り値互換のため追加フィールド）
   (texts || []).forEach(text=>{
     if(!text) return;
     const s = String(text);
@@ -791,10 +807,10 @@ function verifyQuestionFurigana(texts, r){
     }
     const plain = stripRuby(s);
     for(const ch of plain){
-      if(/[一-鿿々]/.test(ch) && !allowedSet.has(ch)) outOfLevel++;
+      if(/[一-鿿々]/.test(ch) && !allowedSet.has(ch)){ outOfLevel++; if(!outOfLevelChars.includes(ch)) outOfLevelChars.push(ch); }
     }
   });
-  return { missing, extra, outOfLevel };
+  return { missing, extra, outOfLevel, outOfLevelChars };
 }
 
 // 字数はAIに数えさせず、JS側で機械的に数えて設問文を補正する（Pandora Layer 2.5と同じ発想）
@@ -1145,6 +1161,8 @@ async function generateQuestions(){
   const kanjiNote = kanjiList
     ? `\n- 設問文・選択肢・解答例に使ってよい漢字は次のリストの範囲のみ。リスト外の漢字はひらがなで書くこと：\n${kanjiList}`
     : (isGlobalKanji ? `\n- 設問文・選択肢・解答例に漢字は一切使わないこと。すべてひらがなで書くこと。` : '');
+  // フリガナ（ルビ）3層ルール。r.furiganaTargetKanjiList が載っていれば効く（旧レコードは '' ＝現行動作）。
+  const furiganaNote = furiganaPromptSectionFor(r);
 
   // ===== 中学帯（jhs）設問ガイドライン（優先度3）=====
   // 難易度別 typical_sequence・字数括弧記法・必須記述・締めアーキタイプ・空欄補充を注入。
@@ -1217,7 +1235,7 @@ ${jhsGuidelineSection}
 - 抜き出し問題では、解答（answer）に本文の該当箇所を一字一句そのまま（省略・言い換えなし）で入れること。設問文に書く字数指定は「〜字で書き抜きなさい」の形にする（この数値はこちらで機械的に補正するため正確でなくてよい。該当箇所の選定を最優先すること）。${extractionLimitNote}
 - 複数の設問が同じ箇所を正答とすることは避けること。特に抜き出し問題は、それぞれ本文の異なる部分を答えとすること。観点タグが異なっていても、結果として同じ語句を答えさせる設問は作らないこと
 - 傍線部を使う場合は、設問文の中に「——線『（該当箇所の文言）』について」の形で該当箇所を明記すること（本文に記号は付けられないため）
-- 学年（${r.gradeLabel}）にふさわしい語彙・言い回しで設問文を書くこと${kanjiNote}${wakachiNote}
+- 学年（${r.gradeLabel}）にふさわしい語彙・言い回しで設問文を書くこと${kanjiNote}${wakachiNote}${furiganaNote}
 ${jhsBlanksSection}
 # 出力形式（重要）
 JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。以下の形式そのままで出力すること。
@@ -1279,6 +1297,14 @@ choicesは選択式のみ。抜き出し・記述式では "choices": [] とす�
     }
     // 抜き出しどうしの正答重複を検出（_dupAnswer フラグ＋警告。自動リトライはしない）
     detectDuplicateAnswers(parsed.questions).forEach(n=>verifyNotes.push(n));
+
+    // 設問文・選択肢のフリガナ/配当外漢字を1問ずつ検証→違反は1回だけ書き直し（③④⑤）。
+    // 条件2：中止形（answer系・上の retryOverLimitExtractions）の後に、ルビ違反（表示系）を処理する。
+    verifyQuestionsFurigana(parsed.questions, r);
+    await retryFuriganaIssues(parsed.questions, apiKey, r, ()=>{ btn.textContent = '設問のフリガナ・漢字を調整中...'; });
+    // 書き直し後：重複を再判定し（照合・ルビ検証は retryFuriganaIssues 内で実施済み）、残存フリガナ警告を収集（条件2）
+    detectDuplicateAnswers(parsed.questions);
+    verifyQuestionsFurigana(parsed.questions, r).forEach(n=>verifyNotes.push(n));
 
     // 漢字クイズ（オプション・デジタル専用）
     let kanjiResult = null;
@@ -1594,6 +1620,15 @@ function renderQuestions(){
     const midStopBadge = q._midStop
       ? `<span style="font-size:10px; color:#cf9a2b; font-weight:700;">⚠ 解答が中止形</span>`
       : '';
+    // フリガナ/配当外漢字バッジ（③④⑤）。配当外は該当漢字を明示、フリガナ抜け/過多は件数を表示。
+    const furiWarnBadge = q._furiWarn
+      ? `<span style="font-size:10px; color:#cf9a2b; font-weight:700;">⚠ ${
+          [q._furiWarn.outOfLevel ? '配当外漢字：' + escapeHtml((q._furiWarn.outOfLevelChars || []).join('・'))
+            : '',
+           q._furiWarn.missing ? 'フリガナ付け忘れ' + q._furiWarn.missing : '',
+           q._furiWarn.extra ? 'フリガナ付けすぎ' + q._furiWarn.extra : ''].filter(Boolean).join('／')
+        }</span>`
+      : '';
     // 観点ピッカーの中身（観点ラジオ＋形式ラジオ）
     const curType = q.type || '';
     const kantenTagsHtml = kantenList.length
@@ -1615,6 +1650,7 @@ function renderQuestions(){
         ${verifyBadge}
         ${dupBadge}
         ${midStopBadge}
+        ${furiWarnBadge}
       </div>
       <div class="question-text">${rubyToHtml(escapeHtml(q.question_text || ''))}</div>
       ${q.en_hint ? `<div class="en-hint-note"><span class="en-hint-label">🌏 en_hint</span>${escapeHtml(q.en_hint)}</div>` : ''}
@@ -2600,6 +2636,73 @@ async function retryOverLimitExtractions(questions, apiKey, r, setStatus){
   }
 }
 
+// ===== 設問文・選択肢のフリガナ/配当外漢字の検証＋リトライ（仕様③④⑤） =====
+// verifyQuestionFurigana を1問ずつ回して q._furiWarn に格納（バッジ用）。検証対象外（旧レコード等）は null。
+function verifyQuestionsFurigana(questions, r){
+  const notes = [];
+  (questions || []).forEach(q=>{
+    const texts = [q.question_text || ''].concat(q.choices || []);
+    const res = verifyQuestionFurigana(texts, r); // ゲート・許可集合導出は verifyQuestionFurigana 側（条件1）
+    q._furiWarn = (res && (res.missing || res.extra || res.outOfLevel)) ? res : null;
+    if(q._furiWarn){
+      const parts = [];
+      if(res.outOfLevel) parts.push(`配当外漢字：${res.outOfLevelChars.join('・')}`);
+      if(res.missing) parts.push(`フリガナ付け忘れ${res.missing}件`);
+      if(res.extra) parts.push(`フリガナ付けすぎ${res.extra}件`);
+      notes.push(`問${q.number != null ? q.number : ''}：設問文・選択肢に ${parts.join('・')}（自動修正なし・要確認）。`);
+    }
+  });
+  return notes;
+}
+
+// 設問文・選択肢を「3層ルール」に沿って書き直す（answer・観点・形式は不変・条件2）。
+// 抜き出し問題の設問文のルビ違反もこの経路で扱う（regenerateOneExtraction＝answer差し替えには混ぜない）。
+async function regenerateOneForFurigana(q, apiKey, r){
+  const gc = r.globalSource ? globalQuestionConstraints(r) : gradeConstraints(r);
+  const isChoice = q.choices && q.choices.length;
+  const { symbols } = choiceSymbolsFor(r);
+  const choiceRule = isChoice
+    ? `- 選択肢の記号（${symbols.join('・')}）と個数は変えない。正答は「${q.answer}」のまま、各記号の位置に対応する中身を保つこと`
+    : '- これは選択肢のない問題。answerは絶対に変えず、設問文の漢字表記だけ規則に合わせる';
+  const choiceSchema = isChoice ? symbols.slice(0, q.choices.length).map(s=>`"${s}　..."`).join(', ') : '';
+  const prompt = `あなたは国語の読解問題を推敲するプロの編集者です。次の設問文（と選択肢）を、答え・観点・形式を一切変えずに、下記の漢字・フリガナ規則（3層）に厳密に従って書き直してください。配当外漢字はひらがな化、フリガナ対象漢字にはルビ付与を確実に反映します。
+
+# 対象の設問
+形式：${q.type || ''}
+設問文：${q.question_text || ''}
+${isChoice ? '選択肢：\n' + q.choices.join('\n') : '選択肢：なし'}
+正答：${q.answer || ''}
+
+# 厳守する規則${gc.kanjiNote}${gc.wakachiNote}${gc.furiganaNote || ''}
+${choiceRule}
+- 「——線『…』について」等の本文引用部の文言（漢字表記）は変えないこと。ルビの付与のみ規則に従う
+
+# 出力形式（重要）
+JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。
+{"question_text": "書き直した設問文", "choices": [${choiceSchema}]}`;
+  const parsed = await callClaudeJSON(apiKey, prompt, 1500);
+  if(parsed.question_text) q.question_text = parsed.question_text;
+  if(isChoice && Array.isArray(parsed.choices) && parsed.choices.length) q.choices = parsed.choices;
+  // answer/type/kanten は出力に含めないため不変
+}
+
+// フリガナ/配当外違反の問を1回だけ書き直す（中止形と同枠：1回・残存はバッジ止まり）。
+// 書き直し後は stripRuby 経由の照合・重複・フリガナ検証を再実行して新たな違反混入を防護（条件2）。
+async function retryFuriganaIssues(questions, apiKey, r, setStatus){
+  for(let i=0; i<questions.length; i++){
+    const q = questions[i];
+    if(!q || !q._furiWarn) continue;
+    if(setStatus) setStatus();
+    try{
+      await regenerateOneForFurigana(q, apiKey, r);
+      reverifyReadingQuestion(q); // verifyAndFixExtractions（stripRuby経由の照合・字数・中止形）を内包
+      const texts = [q.question_text || ''].concat(q.choices || []);
+      const res = verifyQuestionFurigana(texts, r);
+      q._furiWarn = (res && (res.missing || res.extra || res.outOfLevel)) ? res : null; // 残存ならバッジ継続
+    }catch(e){ /* 失敗時は元のまま（バッジ継続） */ }
+  }
+}
+
 function ensureAiReady(){
   const apiKey = getApiKey();
   if(!apiKey){
@@ -2745,7 +2848,8 @@ function saveManualEditKanji(idx, btn){
 // 該当設問に _dupAnswer フラグを立て、警告文の配列を返す。自動リトライはしない（人間が判断）。
 function detectDuplicateAnswers(questions){
   questions.forEach(q=>{ q._dupAnswer = false; });
-  const norm = s => String(s || '').replace(/[\s　]/g,'').trim();
+  // 《》ルビ混入で重複判定が壊れないよう stripRuby を通す（③防護。抜き出し正答は本来ルビ無しだが防御的に）。
+  const norm = s => stripRuby(String(s || '')).replace(/[\s　]/g,'').trim();
   const exts = [];
   questions.forEach((q, i)=>{
     const isExt = (q.type && String(q.type).includes('抜き出し')) || /書き抜き|抜き出し/.test(q.question_text || '');
@@ -2878,6 +2982,13 @@ choicesは選択式のみ。抜き出し・記述式では "choices": [] とす�
     const holder = [nq];
     await retryOverLimitExtractions(holder, apiKey, r, ()=>{ if(btn) btn.textContent = '抜き出しを作り直し中...'; });
 
+    // 設問文・選択肢のフリガナ/配当外を検証→1回だけ書き直し（③④⑤）。domestic のみ（global は既存の集約検証）。
+    // 条件2：中止形（answer系・上）の後にルビ違反（表示系）を処理。
+    if(!r.globalSource){
+      verifyQuestionsFurigana(holder, r);
+      await retryFuriganaIssues(holder, apiKey, r, ()=>{ if(btn) btn.textContent = 'フリガナ・漢字を調整中...'; });
+    }
+
     currentQuestions.questions[idx] = holder[0];
     renderQuestions();       // _dupAnswer を再判定してバッジ更新
     renderKanjiQuiz();
@@ -2949,6 +3060,12 @@ JSON以外の文字は一切出力しないこと。前置き・説明・コー�
     if(isChoice && Array.isArray(parsed.choices) && parsed.choices.length) q.choices = parsed.choices;
     // 正答・解説・観点・形式は不変。抜き出しの字数表記だけ新しい設問文に再反映（answerは変わらない）
     reverifyReadingQuestion(q);
+
+    // リライト結果のフリガナ/配当外を検証→1回だけ書き直し（③④⑤）。domestic のみ（global は既存の集約検証）。
+    if(!r.globalSource){
+      verifyQuestionsFurigana([q], r);
+      await retryFuriganaIssues([q], apiKey, r, ()=>{ if(btn) btn.textContent = 'フリガナ・漢字を調整中...'; });
+    }
 
     renderQuestions();
     renderKanjiQuiz();

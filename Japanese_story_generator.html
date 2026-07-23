@@ -1307,6 +1307,11 @@ function buildStoryRecord(){
     style: settings.style,
     targetLength: settings.length,
     furiganaLevel: settings.furiganaLevel || 'none', // フリガナ対象学年（下流でルビ表示・字数計算に使用）
+    // ④フリガナレベルで実際にルビを振るべき漢字の実体（＝フリガナレベル以上〜学年配当までの3層中間層）。
+    // 既存の furiganaTargetKanjiSet（本文用と同一ロジック・KANJI_CUMULATIVEベース）を流用して算出し、
+    // question_generator が設問文・選択肢に同じ3層ルビ戦略を適用できるようにする（globalの同名フィールドと同型）。
+    // furiganaLevel='none'/jhs/L>G のときは空文字列 → 下流は現行動作（ルビなし・kanjiNoteのみ）を維持。
+    furiganaTargetKanjiList: [...furiganaTargetKanjiSet(settings.levelKey, settings.furiganaLevel)].join(''),
     outlines: outlines,
     fullText: fullText, // ルビ記法（漢字《かんじ》）込みで保存
     // 中学帯（jhs）の付随メタ。設問生成・印刷が空欄正答・語注位置・前書き枠の要否を引き継ぐ。

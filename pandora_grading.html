@@ -836,18 +836,18 @@ function renderJapaneseProblemCard(p, i, pid) {
   // 左：問題文・正答（記述は模範解答）・生徒の選択（選択式のみ）
   h += '<div class="problem-col-left">' +
     '<div><div class="col-label">問題</div>' +
-    '<div class="problem-text">' + escHtml(p.question || '-') + '</div></div>';
+    '<div class="problem-text">' + rubyToHtml(escHtml(p.question || '-')) + '</div></div>';
   if (type === '選択式' && Array.isArray(p.choices) && p.choices.length) {
     h += '<div><div class="col-label">選択肢</div><div class="problem-text" style="font-size:12px">' +
-      p.choices.map(function(c){ return escHtml(c); }).join('<br>') + '</div></div>';
+      p.choices.map(function(c){ return rubyToHtml(escHtml(c)); }).join('<br>') + '</div></div>';
   }
   h += '<div><div class="col-label">' + (type === '記述式' ? '模範解答' : '正答') + '</div>' +
-    '<div class="answer-text">' + escHtml(p.answer || '-') + '</div></div>';
+    '<div class="answer-text">' + rubyToHtml(escHtml(p.answer || '-')) + '</div></div>';
   if (type === '選択式' && p.student_choice != null) {
     // デジタル経路：選択値を表示（自動採点済み）
     h += '<div><div class="col-label">生徒の選択</div>' +
       '<div style="font-size:16px;font-weight:700;color:' + (gs.result === 'correct' ? 'var(--green)' : 'var(--red)') + '">' +
-      escHtml(p.student_choice) + '</div></div>';
+      rubyToHtml(escHtml(p.student_choice)) + '</div></div>';
   } else if (isPrintChoice) {
     // 印刷経路：マークは下の手書き画像で確認して人間が採点
     h += '<div><div class="col-label">生徒の選択</div>' +
@@ -914,6 +914,13 @@ function renderJapaneseProblemCard(p, i, pid) {
 
 function escHtml(s){
   return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+// ルビ記法「漢字《かんじ》」を <ruby>漢字<rt>かんじ</rt></ruby> に変換（必ず escHtml の後に呼ぶ＝XSS対策）。
+// quiz_template / print_template と同一パターン（国語設問の《》記法を先生の採点画面でも正しく表示するため移植）。
+function rubyToHtml(escapedText){
+  return String(escapedText == null ? '' : escapedText)
+    .replace(/([一-鿿々]+[぀-ゟ゠-ヿー]*)《([^》]*)》/g,
+             '<ruby>$1<rt>$2</rt></ruby>');
 }
 
 function renderGrading(sub) {
