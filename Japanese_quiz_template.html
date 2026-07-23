@@ -710,14 +710,15 @@ function renderQuiz(){
     area.appendChild(item);
   });
 
-  // 漢字クイズ（デジタル専用）
+  // 漢字クイズ（デジタル専用）。追加修正指示③：globalモード・②軸小1以上はcanvas書き取り形式
+  // （q.mode==='write'。domestic/pre1は既存どおり選択式でkanjiAnswersに乗せる）。
   if(qs.kanjiQuiz && qs.kanjiQuiz.length){
     document.getElementById('kanjiCard').style.display = 'block';
     const kArea = document.getElementById('kanjiArea');
     kArea.innerHTML = '';
     qs.kanjiQuiz.forEach((q, idx)=>{
       const kKey = 'k' + (q.number != null ? q.number : idx+1);
-      kanjiAnswers[kKey] = null;
+      const isWriteMode = q.mode === 'write';
       const item = document.createElement('div');
       item.className = 'q-item';
       const head = document.createElement('div');
@@ -728,18 +729,48 @@ function renderQuiz(){
       text.className = 'q-text';
       text.textContent = q.question_text || '';
       item.appendChild(text);
-      (q.choices || []).forEach(c=>{
-        const btn = document.createElement('button');
-        btn.className = 'choice-btn';
-        btn.textContent = c;
-        btn.onclick = ()=>{
-          item.querySelectorAll('.choice-btn').forEach(b=>b.classList.remove('selected'));
-          btn.classList.add('selected');
-          kanjiAnswers[kKey] = c;
-          updateProgress();
-        };
-        item.appendChild(btn);
-      });
+
+      if(isWriteMode){
+        // 書き取り：既存の記述式・帯3と同じcanvas手書きUIを流用。answers/canvasesにそのまま乗せる
+        // （手書きは文字列一致による自動採点ができないため、既存のkanjiAnswersには乗せない）。
+        const wKey = 'kw' + (q.number != null ? q.number : idx+1);
+        answers[wKey] = { type: '漢字書き取り', kanten: null, mode: 'canvas', written: false };
+        const wrap = document.createElement('div');
+        wrap.className = 'canvas-wrap';
+        wrap.style.height = '90px';
+        const canvas = document.createElement('canvas');
+        wrap.appendChild(canvas);
+        item.appendChild(wrap);
+        const tools = document.createElement('div');
+        tools.className = 'canvas-tools';
+        const penBtn = document.createElement('button');
+        penBtn.className = 'tool-btn active';
+        penBtn.textContent = '✏️ ペン';
+        const eraserBtn = document.createElement('button');
+        eraserBtn.className = 'tool-btn';
+        eraserBtn.textContent = '🧽 消しゴム';
+        const clearBtn = document.createElement('button');
+        clearBtn.className = 'tool-btn';
+        clearBtn.textContent = '🗑 全部消す';
+        tools.appendChild(penBtn); tools.appendChild(eraserBtn); tools.appendChild(clearBtn);
+        item.appendChild(tools);
+        setupCanvas(canvas, wrap, wKey, penBtn, eraserBtn, clearBtn);
+        canvases[wKey] = canvas;
+      }else{
+        kanjiAnswers[kKey] = null;
+        (q.choices || []).forEach(c=>{
+          const btn = document.createElement('button');
+          btn.className = 'choice-btn';
+          btn.textContent = c;
+          btn.onclick = ()=>{
+            item.querySelectorAll('.choice-btn').forEach(b=>b.classList.remove('selected'));
+            btn.classList.add('selected');
+            kanjiAnswers[kKey] = c;
+            updateProgress();
+          };
+          item.appendChild(btn);
+        });
+      }
       kArea.appendChild(item);
     });
   }
@@ -780,72 +811,74 @@ function renderQuiz(){
     });
   }
 
-  // globalモード帯3：書く練習（仕様§1.3）。視写/穴埋め作文/短作文いずれも手書きcanvasで回答させる
+  // globalモード帯3：書く練習（追加修正指示①：2問＝現在段階＋1つ下の段階）。
+  // 視写/穴埋め作文/短作文いずれも手書きcanvasで回答させる
   // （既存の記述式・抜き出し問題と同じcanvas UIを流用。既存answers/canvasesにそのまま乗せる）。
-  if(qs.globalSource && qs.writingTask){
+  if(qs.globalSource && Array.isArray(qs.writingTasks) && qs.writingTasks.length){
     document.getElementById('writingCard').style.display = 'block';
     const wArea = document.getElementById('writingArea');
     wArea.innerHTML = '';
-    const wt = qs.writingTask;
-    const wKey = 'w0';
-    answers[wKey] = { type: wt.type || '書く練習', kanten: wt.kanten || null, mode: 'canvas', written: false };
-    const item = document.createElement('div');
-    item.className = 'q-item';
-    const head = document.createElement('div');
-    head.className = 'q-head';
-    head.innerHTML = '<span class="q-num">書く練習</span>';
-    item.appendChild(head);
-    const text = document.createElement('div');
-    text.className = 'q-text';
-    text.textContent = wt.instruction || '';
-    item.appendChild(text);
-    appendEnHintToggle(head, item, wt.en_hint);
-    if(wt.prompt_text){
-      const promptDiv = document.createElement('div');
-      promptDiv.className = 'q-text';
-      promptDiv.style.fontWeight = '700';
-      promptDiv.textContent = wt.prompt_text;
-      item.appendChild(promptDiv);
-    }
-    // 短作文はお手本例文を折りたたみで添える（デフォルト閉。写して終わる子への抑止と、書けない子への足場の両立）
-    if(wt.type === 'compose' && wt.example){
-      const exBtn = document.createElement('button');
-      exBtn.className = 'tool-btn';
-      exBtn.textContent = '💡 お手本を見る';
-      const exBox = document.createElement('div');
-      exBox.className = 'example-box';
-      exBox.style.display = 'none';
-      exBox.textContent = wt.example;
-      exBtn.onclick = ()=>{ exBox.style.display = (exBox.style.display === 'none') ? 'block' : 'none'; };
-      item.appendChild(exBtn);
-      item.appendChild(exBox);
-    }
+    qs.writingTasks.forEach((wt, idx)=>{
+      const wKey = 'w' + idx;
+      answers[wKey] = { type: wt.type || '書く練習', kanten: wt.kanten || null, mode: 'canvas', written: false };
+      const item = document.createElement('div');
+      item.className = 'q-item';
+      const head = document.createElement('div');
+      head.className = 'q-head';
+      head.innerHTML = '<span class="q-num">書く練習' + (idx+1) + '</span>';
+      item.appendChild(head);
+      const text = document.createElement('div');
+      text.className = 'q-text';
+      text.textContent = wt.instruction || '';
+      item.appendChild(text);
+      appendEnHintToggle(head, item, wt.en_hint);
+      if(wt.prompt_text){
+        const promptDiv = document.createElement('div');
+        promptDiv.className = 'q-text';
+        promptDiv.style.fontWeight = '700';
+        promptDiv.textContent = wt.prompt_text;
+        item.appendChild(promptDiv);
+      }
+      // 短作文はお手本例文を折りたたみで添える（デフォルト閉。写して終わる子への抑止と、書けない子への足場の両立）
+      if(wt.type === 'compose' && wt.example){
+        const exBtn = document.createElement('button');
+        exBtn.className = 'tool-btn';
+        exBtn.textContent = '💡 お手本を見る';
+        const exBox = document.createElement('div');
+        exBox.className = 'example-box';
+        exBox.style.display = 'none';
+        exBox.textContent = wt.example;
+        exBtn.onclick = ()=>{ exBox.style.display = (exBox.style.display === 'none') ? 'block' : 'none'; };
+        item.appendChild(exBtn);
+        item.appendChild(exBox);
+      }
 
-    const wrap = document.createElement('div');
-    wrap.className = 'canvas-wrap';
-    wrap.style.height = '160px';
-    const canvas = document.createElement('canvas');
-    wrap.appendChild(canvas);
-    item.appendChild(wrap);
+      const wrap = document.createElement('div');
+      wrap.className = 'canvas-wrap';
+      wrap.style.height = '160px';
+      const canvas = document.createElement('canvas');
+      wrap.appendChild(canvas);
+      item.appendChild(wrap);
 
-    const tools = document.createElement('div');
-    tools.className = 'canvas-tools';
-    const penBtn = document.createElement('button');
-    penBtn.className = 'tool-btn active';
-    penBtn.textContent = '✏️ ペン';
-    const eraserBtn = document.createElement('button');
-    eraserBtn.className = 'tool-btn';
-    eraserBtn.textContent = '🧽 消しゴム';
-    const clearBtn = document.createElement('button');
-    clearBtn.className = 'tool-btn';
-    clearBtn.textContent = '🗑 全部消す';
-    tools.appendChild(penBtn); tools.appendChild(eraserBtn); tools.appendChild(clearBtn);
-    item.appendChild(tools);
+      const tools = document.createElement('div');
+      tools.className = 'canvas-tools';
+      const penBtn = document.createElement('button');
+      penBtn.className = 'tool-btn active';
+      penBtn.textContent = '✏️ ペン';
+      const eraserBtn = document.createElement('button');
+      eraserBtn.className = 'tool-btn';
+      eraserBtn.textContent = '🧽 消しゴム';
+      const clearBtn = document.createElement('button');
+      clearBtn.className = 'tool-btn';
+      clearBtn.textContent = '🗑 全部消す';
+      tools.appendChild(penBtn); tools.appendChild(eraserBtn); tools.appendChild(clearBtn);
+      item.appendChild(tools);
 
-    setupCanvas(canvas, wrap, wKey, penBtn, eraserBtn, clearBtn);
-    canvases[wKey] = canvas;
+      setupCanvas(canvas, wrap, wKey, penBtn, eraserBtn, clearBtn);
+      canvases[wKey] = canvas;
 
-    wArea.appendChild(item);
+      wArea.appendChild(item);
+    });
   }
 
   updateProgress();
@@ -1003,8 +1036,24 @@ async function submitAnswers(){
     };
   });
 
+  // 追加修正指示③：書き取り形式（q.mode==='write'）はcanvas手書きのため文字列一致の自動採点をせず、
+  // answer_canvasを積む（親の丸付け前提）。domestic/pre1（選択式）は既存どおりstudent_choice/correct。
   const kanji = (qs.kanjiQuiz || []).map((q, idx)=>{
     const kKey = 'k' + (q.number != null ? q.number : idx+1);
+    if(q.mode === 'write'){
+      const wKey = 'kw' + (q.number != null ? q.number : idx+1);
+      const a = answers[wKey] || {};
+      return {
+        kanji_id: kKey,
+        kanji: q.kanji || null,
+        word: q.word || null,
+        reading: q.reading || null,
+        question: q.question_text || null,
+        answer: q.answer || null,
+        answer_canvas: a.mode === 'canvas' && canvases[wKey] && a.written ? canvases[wKey].toDataURL('image/png') : null,
+        correct: null
+      };
+    }
     return {
       kanji_id: kKey,
       kanji: q.kanji || null,
@@ -1034,22 +1083,23 @@ async function submitAnswers(){
     };
   });
 
-  // globalモード帯3：書く練習（視写/穴埋め作文/短作文いずれもcanvas手書き。人間採点前提のためcorrectは付けない）
-  let writingTask = null;
-  if(qs.globalSource && qs.writingTask){
-    const wt = qs.writingTask;
-    const wKey = 'w0';
-    const a = answers[wKey] || {};
-    writingTask = {
-      problem_id: wKey,
-      type: wt.type || null,
-      kanten: wt.kanten || null,
-      instruction: wt.instruction || null,
-      prompt_text: wt.prompt_text || null,
-      answer_word: wt.answer_word || null, // 穴埋めの正解語（将来の自動採点用データ設計。仕様§2）
-      answer_canvas: a.mode === 'canvas' && canvases[wKey] && a.written ? canvases[wKey].toDataURL('image/png') : null
-    };
-  }
+  // globalモード帯3：書く練習（追加修正指示①：2問。視写/穴埋め作文/短作文いずれもcanvas手書き。
+  // 人間採点前提のためcorrectは付けない）
+  const writingTasks = (qs.globalSource && Array.isArray(qs.writingTasks))
+    ? qs.writingTasks.map((wt, idx)=>{
+        const wKey = 'w' + idx;
+        const a = answers[wKey] || {};
+        return {
+          problem_id: wKey,
+          type: wt.type || null,
+          kanten: wt.kanten || null,
+          instruction: wt.instruction || null,
+          prompt_text: wt.prompt_text || null,
+          answer_word: wt.answer_word || null, // 穴埋めの正解語（将来の自動採点用データ設計。仕様§2）
+          answer_canvas: a.mode === 'canvas' && canvases[wKey] && a.written ? canvases[wKey].toDataURL('image/png') : null
+        };
+      })
+    : [];
 
   const payload = {
     student_id: STUDENT_ID,
@@ -1065,10 +1115,13 @@ async function submitAnswers(){
       structure_type: qs.structureType || null,
       kanten_tags: qs.kantenTags || [],
       source_title: qs.sourceTitle || null,
+      // globalSource: pandora_grading側で帯2・帯3を採点待ちキュー/弱点分析から除外するためのフラグ
+      // （追加修正指示④）。domesticのsubmissionには含まれない（qs.globalSourceがfalsyのため）。
+      globalSource: !!qs.globalSource,
       problems: problems,
       kanji: kanji,
       vocab_quiz: vocabQuiz,
-      writing_task: writingTask,
+      writing_tasks: writingTasks,
       source: "japanese_quiz_web"
     },
     submitted_at: new Date().toISOString()
