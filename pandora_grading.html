@@ -1183,8 +1183,38 @@ var tcDrawing = false;
 var tcLast = null;
 var tcCurrent = null;
 
+// 先生コメントcanvasのbackingを表示ボックス整合（rect×dpr）にする（生徒canvas quiz_template と同方式）。
+// 固定1200×150では描画ボックス（幅×150px）と縦横比が食い違い、保存PNGが横伸びしていた。
+// preserve=true のときは既存の描画をスナップショットして再描画（リサイズ・回転で消えないように）。
+function tcFit(canvas, preserve) {
+  var rect = canvas.getBoundingClientRect();
+  if (!rect.width || !rect.height) return; // 非表示/未レイアウトはスキップ
+  var ratio = window.devicePixelRatio || 1;
+  var w = Math.round(rect.width * ratio), h = Math.round(rect.height * ratio);
+  if (canvas.width === w && canvas.height === h) return; // 変化なし
+  var prev = null;
+  if (preserve && canvas.width) {
+    prev = document.createElement('canvas');
+    prev.width = canvas.width; prev.height = canvas.height;
+    prev.getContext('2d').drawImage(canvas, 0, 0);
+  }
+  canvas.width = w; canvas.height = h;
+  var ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, w, h);
+  if (prev) ctx.drawImage(prev, 0, 0, w, h); // 旧描画を新backingへ等倍で再描画
+}
+
+// 画面回転・ウィンドウリサイズで書きかけコメントが消えないよう、現在DOM上の初期化済みtc canvasを再fit。
+// リスナは1回だけ登録（カード再描画で毎回追加＝リーク、を避けるため委譲方式）。
+function tcResizeAll() {
+  var list = document.querySelectorAll('canvas[id^="tc-"]');
+  for (var i = 0; i < list.length; i++) { if (list[i]._init) tcFit(list[i], true); }
+}
+
 function tcGetPos(e, canvas) {
   var rect = canvas.getBoundingClientRect();
+  // backing = rect×dpr のため sx===sy（縦横同率＝等倍）。横伸びの原因だった非対称スケールを解消。
   var sx = canvas.width / rect.width, sy = canvas.height / rect.height;
   if (e.touches) return { x: (e.touches[0].clientX - rect.left) * sx, y: (e.touches[0].clientY - rect.top) * sy };
   return { x: (e.clientX - rect.left) * sx, y: (e.clientY - rect.top) * sy };
@@ -1195,10 +1225,10 @@ function tcStart(e, pid) {
   tcCurrent = pid;
   var canvas = document.getElementById('tc-' + pid);
   if (!canvas._init) {
-    var ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // HTML属性の1200×150ではなく、実表示ボックス×dpr でbackingを確定してから描き始める
+    tcFit(canvas, false);
     canvas._init = true;
+    if (!window._tcResizeBound) { window.addEventListener('resize', tcResizeAll); window._tcResizeBound = true; }
   }
   tcDrawing = true;
   tcLast = tcGetPos(e, canvas);
@@ -1211,7 +1241,8 @@ function tcMove(e, pid) {
   var ctx = canvas.getContext('2d');
   var pos = tcGetPos(e, canvas);
   ctx.strokeStyle = '#e74c3c';
-  ctx.lineWidth = 4;
+  // backingがdpr倍の実解像度になったので、線幅も×dprして見た目の太さ（≈4CSS px）を修正前と揃える（条件1）。
+  ctx.lineWidth = 4 * (window.devicePixelRatio || 1);
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
   ctx.beginPath();
