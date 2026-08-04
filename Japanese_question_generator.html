@@ -136,6 +136,9 @@ input[type="text"]{
 .answer-body.open{display:block;}
 .answer-label{color:var(--green-text); font-weight:700; font-size:11px;}
 .explanation-label{color:var(--text3); font-weight:700; font-size:11px; margin-top:8px; display:block;}
+/* 英語ヒント（en_hint）の校閲用常時表示。先生側のため折りたたみ不要（仕様outstanding課題#2）。 */
+.en-hint-note{font-size:11px; color:var(--text3); margin-bottom:8px; font-style:italic;}
+.en-hint-note .en-hint-label{color:var(--accent-text); font-style:normal; font-weight:700; margin-right:4px;}
 
 /* 1問単位の作り直し・リライト（既存btn-secondaryより控えめな補助ボタン） */
 .card-actions{display:flex; gap:6px; flex-wrap:wrap; margin-top:10px;}
@@ -197,6 +200,7 @@ body.imode .answer-body{ font-size:15px; }
 <div class="topbar">
   <div class="topbar-title">国語問題<span>ジェネレーター</span></div>
   <div class="topbar-sub">文章レコード（JSON）から設問生成の土台を組み立てる</div>
+  <span id="modeBadge" style="display:none; font-size:11px; font-weight:700; padding:4px 10px; border-radius:12px; margin-left:10px;"></span>
   <div style="margin-left:auto">
     <a href="pandora_main.html" style="background:transparent; border:1px solid var(--border); color:var(--text2); border-radius:8px; padding:7px 12px; font-size:12px; cursor:pointer; font-family:inherit; margin-right:8px; text-decoration:none; display:inline-block;">← Pandoraメイン</a>
     <span id="flowProgress" style="display:inline-flex; align-items:center; gap:4px; margin-right:8px; flex-wrap:wrap;"></span>
@@ -402,6 +406,28 @@ const STRUCTURE_TYPE_INFO = {
 let currentRecord = null;
 let selectedTags = [];
 
+// ===== globalモード判定（pandora_global_question_spec.md §0.1） =====
+// 手動切替UIは作らない。読み込んだレコードがpandora_global由来（globalSourceフラグ）なら
+// 自動でglobalモードになり、バッジで常時表示する（モードが見えない状態を作らない）。
+let currentGlobalMode = false;
+function updateModeBadge(){
+  const badge = document.getElementById('modeBadge');
+  if(!badge) return;
+  if(currentGlobalMode){
+    badge.textContent = '🌏 global';
+    badge.style.display = 'inline-block';
+    badge.style.background = 'var(--accent-bg, rgba(90,140,255,.12))';
+    badge.style.color = 'var(--accent-text, #5a8cff)';
+    badge.style.border = '1px solid var(--accent, #5a8cff)';
+  }else{
+    badge.textContent = '国内';
+    badge.style.display = 'inline-block';
+    badge.style.background = 'transparent';
+    badge.style.color = 'var(--text3)';
+    badge.style.border = '1px solid var(--border)';
+  }
+}
+
 // ===== 画面間データ受け渡し（localStorage自動持ち回り・案A） =====
 var HO_STORY = 'japanese_latest_story_record', HO_QSET = 'japanese_latest_question_set', HO_STUDENT = 'japanese_latest_student';
 function hoSave(key, data){ try{ localStorage.setItem(key, JSON.stringify({ savedAt: Date.now(), data: data })); }catch(e){} }
@@ -416,6 +442,8 @@ function applyStoryRecord(record){
     return;
   }
   currentRecord = record;
+  currentGlobalMode = !!record.globalSource; // レコード駆動の自動判定（手動切替UIは作らない）
+  updateModeBadge();
   selectedTags = [];
   currentQuestions = null;
   document.getElementById('questionsArea').innerHTML = '';
@@ -727,6 +755,63 @@ function rubyToHtml(escapedText){
     .replace(/([一-鿿々]+[぀-ゟ゠-ヿー]*)《([^》]*)》/g,
              '<ruby>$1<rt>$2</rt></ruby>');
 }
+// ルビ語の正規表現文字列（pandora_global_generator.htmlのRUBY_WORD_PATTERNと同一パターン）。
+const RUBY_WORD_PATTERN = '([一-鿿々]+[぀-ゟ゠-ヿー]*)《([^》]*)》';
+
+// globalモードの設問文・選択肢・帯2・帯3向けフリガナ指示（仕様question編§3の完全実装）。
+// 本文用のfuriganaPromptSection（pandora_global_generator.html）と同じ文言だが、対象漢字
+// リストはstory record生成時に埋め込まれたr.furiganaTargetKanjiListをそのまま使う
+// （KANJI_JLPT等のデータをquestion_generator側に複製しないため。単一情報源の原則を維持）。
+function furiganaPromptSectionFor(r){
+  const target = r && r.furiganaTargetKanjiList;
+  if(!target) return '';
+  // 3層ルールを明記して kanjiNote（「使用可能リスト外はひらがな」）との文言矛盾を解消する。
+  // フリガナ対象リストの漢字は「使用可能リスト内かつルビ必須」であり、ひらがな化の対象ではない。
+  return `\n- 設問文・選択肢の漢字は次の3層で扱うこと：` +
+    `(1)フリガナ対象漢字リストに無い使用可能漢字（フリガナレベル未満の配当）は裸で使う。` +
+    `(2)フリガナ対象漢字リストの漢字を1字でも含む語は、語全体に《》でルビ（読みがな）を付けて使う（形式「漢字《かんじ》」、語単位。熟語は語全体に1つ。ひらがな化はしない）。` +
+    `(3)使用可能リストに無い漢字（学年配当超）は使わずひらがなで書く。` +
+    `対象リストに無い漢字だけの語やひらがな・カタカナだけの語にはルビを付けないこと。フリガナ対象漢字リスト：${target}`;
+}
+
+// 設問文・選択肢のフリガナ抜け／付けすぎ・級外漢字（許可リスト外の漢字）を機械検出する
+// （本文側のverifyFuriganaと同じ「AIに数えさせず実測する」思想。仕様question編§3タスク1-4。
+// 警告のみ・生成はブロックしない）。texts は question_text／choices／instruction等の配列。
+// globalモードでない、またはr.allowedKanjiListが無いレコードでは null を返し検証をスキップする。
+function verifyQuestionFurigana(texts, r){
+  if(!r) return null;
+  // 条件1：許可漢字集合の導出は「allowedKanjiList があれば global 優先、無ければ学年累積 KANJI_CUMULATIVE[gradeNum]」の順。
+  // furiganaTargetKanjiList の有無を先に見ると global レコード（両方保持）が domestic 分岐に吸われるため不可。
+  const isGlobal = typeof r.allowedKanjiList === 'string';
+  const allowedStr = isGlobal
+    ? r.allowedKanjiList
+    : (KANJI_CUMULATIVE[String(r.grade || '').replace('g','')] || '');
+  const target = r.furiganaTargetKanjiList || '';
+  // ゲート：ルビ戦略が無いレコード（global以外でfuriganaTargetKanjiListも無い＝furiganaLevel未設定の旧domestic）は検証しない（後方互換）。
+  if(!isGlobal && !target) return null;
+  const targetSet = new Set(target.split(''));
+  const allowedSet = new Set(allowedStr.split(''));
+  let missing = 0, extra = 0, outOfLevel = 0;
+  const outOfLevelChars = []; // バッジで該当漢字を明示するための実体（集計とは別に収集。globalの戻り値互換のため追加フィールド）
+  (texts || []).forEach(text=>{
+    if(!text) return;
+    const s = String(text);
+    if(targetSet.size){
+      let m;
+      const reExtra = new RegExp(RUBY_WORD_PATTERN, 'g');
+      while((m = reExtra.exec(s)) !== null){
+        if(![...m[1]].some(c=>targetSet.has(c))) extra++;
+      }
+      const withoutRuby = s.replace(new RegExp(RUBY_WORD_PATTERN, 'g'), '');
+      for(const ch of withoutRuby){ if(targetSet.has(ch)) missing++; }
+    }
+    const plain = stripRuby(s);
+    for(const ch of plain){
+      if(/[一-鿿々]/.test(ch) && !allowedSet.has(ch)){ outOfLevel++; if(!outOfLevelChars.includes(ch)) outOfLevelChars.push(ch); }
+    }
+  });
+  return { missing, extra, outOfLevel, outOfLevelChars };
+}
 
 // 字数はAIに数えさせず、JS側で機械的に数えて設問文を補正する（Pandora Layer 2.5と同じ発想）
 // 字数は「ルビ記法を除き、分かち書きスペースを除き、句読点を含む」で数える
@@ -736,7 +821,8 @@ function countChars(s){
 
 // 抜き出し問題の解答字数の学年別上限。長すぎる書き抜きを防ぐための目安（1箇所にまとめ、調整しやすくする）。
 // jhs（中学）は上限なし（現状維持）＝キー未定義で判定をスキップ。
-const EXTRACTION_MAX_CHARS = { g1:10, g2:10, g3:15, g4:15, g5:20, g6:20 };
+// pre1（プレ小1・pandora_global）は既存の学年別上限テーブルに行を追加したもの（既存g1-g6キーは無変更）。
+const EXTRACTION_MAX_CHARS = { pre1:6, g1:10, g2:10, g3:15, g4:15, g5:20, g6:20 };
 
 // 抜き出しの「長さの感覚」を学年帯ごとに構造・具体例で指示する（LLMは字数を数えられないため、
 // 数値上限だけでは守られない。主たる指示は構造・例、数値は併記）。jhsは上限なし＝null。
@@ -744,7 +830,9 @@ function extractionGuidance(grade){
   const max = EXTRACTION_MAX_CHARS[grade];
   if(!max) return null;
   let structure;
-  if(grade === 'g1' || grade === 'g2'){
+  if(grade === 'pre1'){
+    structure = '文節1つ程度のごく短い語句だけを抜き出させること（例：「ねこ」「たべました」のような単語レベルの短さ）';
+  }else if(grade === 'g1' || grade === 'g2'){
     structure = '文節2つ程度の短い語句だけを抜き出させること（主語や修飾語を含めず、答えの核心部分のみ。例：「すわっているすがた」のような短さ）';
   }else if(grade === 'g3' || grade === 'g4'){
     structure = '文節3〜4つ程度の語句を抜き出させること（一文まるごとではなく、答えに必要な部分のみ）';
@@ -754,12 +842,24 @@ function extractionGuidance(grade){
   return { max, structure };
 }
 
-// 抜き出しルールの補足文（①矛盾の解消＋②構造・具体例指示）。プロンプトの抜き出しルール直後に付ける。
+// 抜き出し解答が中止形（連用中止・テ形）や文として不完全な形で終わる不自然さを防ぐガード文。
+// 字数上限の有無に関わらず付けたいので、extractionLimitNoteText とは独立の定数にしておく。
+const EXTRACTION_MIDFORM_GUARD_NOTE = `\n- 抜き出しの解答が「〜て、」「〜で、」「〜くて」などの中止形や、文として不完全な形で終わる場合は、その箇所を抜き出し問題にしないこと。理由を問いたいが本文中に「〜から」「〜ので」で終わる適切な箇所が無い場合は、抜き出しではなく記述式にして「〜から。」の形で自分の言葉で答えさせること`;
+
+// 抜き出しルールの補足文（①矛盾の解消＋②構造・具体例指示＋③中止形ガード）。プロンプトの抜き出しルール直後に付ける。
 // 「設問文に書く数値は機械補正される」ことと「抜き出す箇所の長さそのものは上限内に収める」ことを書き分ける。
 function extractionLimitNoteText(r){
   const eg = extractionGuidance(r.grade);
-  if(!eg) return ''; // jhs等：上限なし
-  return `\n- 抜き出す箇所の長さそのものは必ず${eg.max}字以内に収めること。設問文に書く字数の数値が機械補正されることと、抜き出す箇所自体の長さは別問題であり、数値が補正されるからといって長い箇所を選んではならない。\n- ${eg.structure}`;
+  if(!eg) return EXTRACTION_MIDFORM_GUARD_NOTE; // jhs等：字数上限は無いが中止形ガードは付ける
+  return `\n- 抜き出す箇所の長さそのものは必ず${eg.max}字以内に収めること。設問文に書く字数の数値が機械補正されることと、抜き出す箇所自体の長さは別問題であり、数値が補正されるからといって長い箇所を選んではならない。\n- ${eg.structure}${EXTRACTION_MIDFORM_GUARD_NOTE}`;
+}
+
+// 抜き出し解答の実質末尾（読点・記号・引用符・空白を除いた末尾）が中止形で終わるかの判定。
+// 誤検出（体言・「〜について」等）を避けるため、明確に中止形と判る語尾のみに絞る（仕様3：控えめに開始・警告止まり）。
+const EXTRACTION_MIDFORM_SUFFIX_RE = /(たくて|くて|ていて|なくて|ないで|んで|ながら)$/;
+function endsWithMidForm(answer){
+  const tail = String(answer || '').replace(/[\s　。、，．,・…‥「」『』（）()\[\]【】]+$/, '').trim();
+  return EXTRACTION_MIDFORM_SUFFIX_RE.test(tail);
 }
 
 // noFix=true のときは設問文の「〜字」表記を自動補正しない（手動編集の意図を尊重するため。
@@ -794,6 +894,14 @@ function verifyAndFixExtractions(questions, fullText, grade, gradeLabel, noFix){
 
     if(!q._verified){
       notes.push(`問${q.number}：抜き出しの解答が本文中にそのままの形で見つかりませんでした。解答を確認してください。`);
+    }
+
+    // 中止形（連用中止・テ形）で終わる不自然な解答の検出（警告のみ・人間が最終判断）。
+    // 抜き出し穴埋め（空欄1語）は単語抜き出しなので対象外。誤検出を避け明確な語尾のみ判定（仕様3）。
+    const isFillBlank = q.type === '抜き出し穴埋め';
+    q._midStop = !isFillBlank && endsWithMidForm(answer);
+    if(q._midStop){
+      notes.push(`問${q.number}：抜き出しの解答が「〜て」で終わる不自然な形です（中止形）。「🔄 作り直す」か、記述式への変更を検討してください。`);
     }
 
     // 設問文中の「〜字」表記を、実際の解答の字数に機械的に置き換える（漢数字・算用数字の両方に対応）。
@@ -899,6 +1007,118 @@ function getEffectiveTags(){
   return tags;
 }
 
+// ================================================================
+// ===== globalモード：帯構成（pandora_global_question_spec.md §1〜§3） =====
+// domesticのgenerateQuestions()には一切手を加えず、r.globalSourceのときだけ
+// この一連の関数群を通る（generateQuestions先頭の分岐から呼ばれる）。
+// ================================================================
+
+// ②語彙・文法レベルの順序（易→難）。抜き出し可否・書く帯タイプ・語彙クイズ配分などを
+// ①(grade)ではなく②(vocabLevel)で判定する場合に使う（仕様§1.1「記述式の字数上限は②軸で引く」の一般化）。
+const GLOBAL_VOCAB_ORDER = ['pre1','g1','g2','g3','g4','g5','g6','jhs'];
+
+// globalモードの選択肢記号はひらがな「あ・い・う・え」（domesticはア/イ/ウ/エのまま。仕様§3）。
+const GLOBAL_CHOICE_SYMBOLS = ['あ','い','う','え'];
+
+// 選択肢記号セット・抜き出し字数上限の参照軸を、レコードのglobalSourceで一括判定する共有ヘルパー。
+// 作り直し・リライト系の共有関数（regenerateQuestion/rewriteQuestion/reverifyReadingQuestion/
+// retryOverLimitExtractions等）がdomestic/globalの両方から呼ばれるため、ここに集約して
+// 呼び出し側での判定ミスを防ぐ（フォローアップ指示：4関数のglobalモード対応）。
+function choiceSymbolsFor(r){
+  if(!r || !r.globalSource) return { symbols: ['ア','イ','ウ','エ'], maxChoices: 4 };
+  const vocabKey = r.vocabLevel || r.grade;
+  const maxChoices = vocabKey === 'pre1' ? 3 : 4;
+  return { symbols: GLOBAL_CHOICE_SYMBOLS.slice(0, maxChoices), maxChoices };
+}
+// domesticの元の文言「ア〜エ」（範囲表記）はbyte-for-byte維持する。symbols.join('・')に
+// 置き換えると"ア・イ・ウ・エ"になりdomestic出力が変わってしまうため、この用途専用に分ける。
+function choiceSymbolPhrase(r){
+  if(!r || !r.globalSource) return 'ア〜エ';
+  return choiceSymbolsFor(r).symbols.join('・');
+}
+// 抜き出し字数上限はglobalモードでは②軸(vocabLevel)、domesticは①軸(grade)を参照する
+// （仕様§1.1「記述式の字数上限は②軸で引く」）。EXTRACTION_MAX_CHARS等の参照キーとして使う。
+function extractionGradeKeyFor(r){
+  return (r && r.globalSource) ? (r.vocabLevel || r.grade) : (r ? r.grade : undefined);
+}
+function extractionGradeLabelFor(r){
+  return (r && r.globalSource) ? (r.vocabLevelLabel || r.gradeLabel) : (r ? r.gradeLabel : undefined);
+}
+
+// 帯1：抜き出しは②軸(vocabLevel)が小4以上のときだけ少量許可する（仕様§1.1）。
+function globalExtractionEligible(r){
+  const vocabKey = r.vocabLevel || r.grade;
+  const idx = GLOBAL_VOCAB_ORDER.indexOf(vocabKey);
+  const idxG4 = GLOBAL_VOCAB_ORDER.indexOf('g4');
+  return idx >= 0 && idx >= idxG4;
+}
+
+// 帯3の「現在段階」のタイプを②軸から自動判定（仕様§1.3）。手動上書きは別途UIで対応。
+function globalWritingTaskType(vocabLevel){
+  if(vocabLevel === 'pre1' || vocabLevel === 'g1') return 'copy';    // 視写
+  if(vocabLevel === 'g2' || vocabLevel === 'g3') return 'fill';      // 穴埋め作文
+  return 'compose';                                                  // 短作文（小4〜・jhs）
+}
+const WRITING_TASK_TYPE_LABELS = { trace:'なぞり書き', copy:'視写', fill:'穴埋め作文', compose:'短作文' };
+// タイプ自体の負荷階層（なぞり書き＜視写＜穴埋め作文＜短作文）。「現在段階＋1つ下の段階」の
+// 「段階」はこの階層を指す（②軸のレベル刻みではなく、書く負荷の刻みで1つ下げる）。
+// 追加修正指示により、帯3は毎回2問（現在段階＋1つ下の段階）を出題する。
+// なぞり書き（階層0）は視写（プレ小1・小1）の1段下として最下層に位置づけ、
+// 「視写＋視写」という同一形式の重複（書く量の増強ではなく反復にすぎない）を避ける。
+const WRITING_TASK_TIER_ORDER = ['trace', 'copy', 'fill', 'compose'];
+function globalWritingTaskTypes(vocabLevel){
+  const current = globalWritingTaskType(vocabLevel);
+  const tierIdx = WRITING_TASK_TIER_ORDER.indexOf(current);
+  const belowIdx = Math.max(0, tierIdx - 1); // なぞり書き（階層0）で床止め
+  const below = WRITING_TASK_TIER_ORDER[belowIdx];
+  return [current, below];
+}
+
+// 語彙クイズの出題タイプ配分（仕様§7判断事項a・確定版）。②軸レベルごとに2問分のタイプ配列を持ち、
+// 通常時（漢字クイズと並列）は先頭1つだけ使い、pre1（漢字ゼロ）時は2つとも使う。
+const VOCAB_QUIZ_TYPE_PLAN = {
+  pre1: ['meaning','kana'], g1: ['meaning','kana'],   // プレ小1〜小1：意味選択1+かなカナ変換1固定
+  g2: ['meaning','meaning'],                           // 小2：意味選択中心
+  g3: ['meaning','antonym'],                           // 小3：反対語を解禁
+  g4: ['meaning','antonym'], g5: ['meaning','antonym'], g6: ['meaning','antonym'], jhs: ['meaning','antonym']
+};
+const VOCAB_QUIZ_TYPE_LABELS = { meaning:'意味選択', antonym:'反対のことば', kana:'ひらがな⇄カタカナ変換' };
+
+// globalモードの設問文レベル統制（kanjiLevel・wakachiは既存gradeConstraintsを流用。
+// 抜き出し上限だけ①(grade)ではなく②(vocabLevel)で引き直す）。
+function globalQuestionConstraints(r){
+  const base = gradeConstraints(r); // kanjiNote/wakachiNote/furiganaNoteは既にkanjiSystem/kanjiLevel対応済みのため流用
+  const vocabKey = r.vocabLevel || r.grade;
+  const vocabLabel = r.vocabLevelLabel || r.gradeLabel;
+  const extractionMax = EXTRACTION_MAX_CHARS[vocabKey];
+  // 字数上限が無いレベル（vocabLevel=jhs等）でも中止形ガードだけは付くよう、常に呼ぶ
+  // （extractionLimitNoteText は上限が無ければ字数文言なしでガードのみ返す）。
+  const extractionLimitNote = extractionLimitNoteText({ grade: vocabKey, gradeLabel: vocabLabel });
+  return { kanjiNote: base.kanjiNote, wakachiNote: base.wakachiNote, furiganaNote: base.furiganaNote, extractionMax, extractionLimitNote, vocabKey, vocabLabel };
+}
+
+// ===== 帯3・帯2共通：本文からの機械抽出（候補→AI選定の二段構成。仕様§7判断事項b） =====
+// 視写候補：文を句点で分割し、字数（countChars・句読点込み）が最短の上位3文を候補にする
+// （形態素解析エンジンは不採用の既存方針に沿い、複雑な言語解析はせず字数という機械的指標のみ使う）。
+function extractCopyCandidates(fullText){
+  const sentences = stripRuby(fullText).split(/(?<=。)/).map(s=>s.trim()).filter(Boolean);
+  const withLen = sentences.map(s=>({ text: s, len: countChars(s) }));
+  withLen.sort((a,b)=>a.len-b.len);
+  return withLen.slice(0,3).map(x=>x.text);
+}
+// 穴埋め語・語彙クイズの候補語：本文中でルビ《》が付いている語のベース（漢字部分）を候補にする
+// （＝②軸で新しく習う漢字を含む語＝「②軸相当〜やや上の語」の機械的な近似。仕様§1.2・§1.3）。
+// ルビが1つも無い場合（フリガナ設定なし等）は、分かち書きの文節区切り（全角スペース）で
+// 2字以上の語を代替候補にする。
+function extractLeveledWordCandidates(fullText){
+  const re = /([一-鿿々]+[぀-ゟ゠-ヿー]*)《([^》]*)》/g;
+  const words = []; let m;
+  while((m = re.exec(fullText)) !== null){ words.push(m[1]); }
+  if(words.length) return [...new Set(words)].slice(0,8);
+  const spaced = fullText.split(/[\s　]+/).map(s=>s.trim()).filter(s=>s.length>=2);
+  return [...new Set(spaced)].slice(0,8);
+}
+
 async function generateQuestions(){
   const apiKey = getApiKey();
   if(!apiKey){
@@ -917,18 +1137,32 @@ async function generateQuestions(){
   }
 
   const r = currentRecord;
+
+  // globalモード（pandora_global由来レコード）は帯構成が根本的に異なるため、
+  // ここで完全に別関数へ分岐する。以降のdomestic用ロジックには一切手を加えない
+  // （絶対条件＝domestic挙動のバイト単位無変更を構造的に保証するため）。
+  if(r.globalSource){
+    await generateQuestionsGlobal(r, apiKey, tags);
+    return;
+  }
+
   const count = document.getElementById('questionCountSelect').value;
   const st = computeStructureType(r);
   const gradeNum = (r.grade || '').replace('g','');
-  const kanjiList = KANJI_CUMULATIVE[gradeNum] || '';
+  // pandora_global由来（r.allowedKanjiListが文字列で存在）は③軸の確定リストを使う。
+  // それ以外（既存の国内g1-g6/jhs）は従来どおり学年の累積漢字リスト（挙動無変更）。
+  const isGlobalKanji = typeof r.allowedKanjiList === 'string';
+  const kanjiList = isGlobalKanji ? r.allowedKanjiList : (KANJI_CUMULATIVE[gradeNum] || '');
 
   const guideline = (QUESTION_GUIDELINES[r.grade] || {})[r.genreKey] || '';
-  const wakachiNote = r.grade === 'g1'
+  const wakachiNote = (r.grade === 'g1' || r.wakachi === true)
     ? '\n- 設問文・選択肢も、本文と同じく文節ごとに全角スペースを入れる「分かち書き」で書くこと（句読点の直後にはスペースを入れない）'
     : '';
   const kanjiNote = kanjiList
     ? `\n- 設問文・選択肢・解答例に使ってよい漢字は次のリストの範囲のみ。リスト外の漢字はひらがなで書くこと：\n${kanjiList}`
-    : '';
+    : (isGlobalKanji ? `\n- 設問文・選択肢・解答例に漢字は一切使わないこと。すべてひらがなで書くこと。` : '');
+  // フリガナ（ルビ）3層ルール。r.furiganaTargetKanjiList が載っていれば効く（旧レコードは '' ＝現行動作）。
+  const furiganaNote = furiganaPromptSectionFor(r);
 
   // ===== 中学帯（jhs）設問ガイドライン（優先度3）=====
   // 難易度別 typical_sequence・字数括弧記法・必須記述・締めアーキタイプ・空欄補充を注入。
@@ -1001,7 +1235,7 @@ ${jhsGuidelineSection}
 - 抜き出し問題では、解答（answer）に本文の該当箇所を一字一句そのまま（省略・言い換えなし）で入れること。設問文に書く字数指定は「〜字で書き抜きなさい」の形にする（この数値はこちらで機械的に補正するため正確でなくてよい。該当箇所の選定を最優先すること）。${extractionLimitNote}
 - 複数の設問が同じ箇所を正答とすることは避けること。特に抜き出し問題は、それぞれ本文の異なる部分を答えとすること。観点タグが異なっていても、結果として同じ語句を答えさせる設問は作らないこと
 - 傍線部を使う場合は、設問文の中に「——線『（該当箇所の文言）』について」の形で該当箇所を明記すること（本文に記号は付けられないため）
-- 学年（${r.gradeLabel}）にふさわしい語彙・言い回しで設問文を書くこと${kanjiNote}${wakachiNote}
+- 学年（${r.gradeLabel}）にふさわしい語彙・言い回しで設問文を書くこと${kanjiNote}${wakachiNote}${furiganaNote}
 ${jhsBlanksSection}
 # 出力形式（重要）
 JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。以下の形式そのままで出力すること。
@@ -1054,7 +1288,7 @@ choicesは選択式のみ。抜き出し・記述式では "choices": [] とす�
     }
 
     // 上限超過の抜き出しは、その問題だけ自動で1回だけ作り直す（LLMは字数を数えられないため）
-    await retryOverLimitExtractions(parsed.questions, apiKey, r, ()=>{ btn.textContent = '字数超過のため作り直し中...'; });
+    await retryOverLimitExtractions(parsed.questions, apiKey, r, ()=>{ btn.textContent = '抜き出しを作り直し中...'; });
 
     // リトライ後の最終状態でノートを収集（バッジは各設問の _overLimit/_verified に反映済み）
     const verifyNotes = verifyAndFixExtractions(parsed.questions, r.fullText, r.grade, r.gradeLabel);
@@ -1063,6 +1297,14 @@ choicesは選択式のみ。抜き出し・記述式では "choices": [] とす�
     }
     // 抜き出しどうしの正答重複を検出（_dupAnswer フラグ＋警告。自動リトライはしない）
     detectDuplicateAnswers(parsed.questions).forEach(n=>verifyNotes.push(n));
+
+    // 設問文・選択肢のフリガナ/配当外漢字を1問ずつ検証→違反は1回だけ書き直し（③④⑤）。
+    // 条件2：中止形（answer系・上の retryOverLimitExtractions）の後に、ルビ違反（表示系）を処理する。
+    verifyQuestionsFurigana(parsed.questions, r);
+    await retryFuriganaIssues(parsed.questions, apiKey, r, ()=>{ btn.textContent = '設問のフリガナ・漢字を調整中...'; });
+    // 書き直し後：重複を再判定し（照合・ルビ検証は retryFuriganaIssues 内で実施済み）、残存フリガナ警告を収集（条件2）
+    detectDuplicateAnswers(parsed.questions);
+    verifyQuestionsFurigana(parsed.questions, r).forEach(n=>verifyNotes.push(n));
 
     // 漢字クイズ（オプション・デジタル専用）
     let kanjiResult = null;
@@ -1089,6 +1331,12 @@ choicesは選択式のみ。抜き出し・記述式では "choices": [] とす�
       fullText: r.fullText,
       // jhs：本文空欄の正答・語注位置・前書き枠の要否を設問セットにも引き継ぐ（印刷/採点で参照）
       jhsMeta: (r.grade === 'jhs' && r.jhsMeta) ? r.jhsMeta : null,
+      // pandora_global由来の4軸メタをそのまま引き継ぐ（quiz_template等のTTSゲート判定用）。
+      // 既存の国内g1-g6/jhsレコードにはこれらのフィールドが無いため全てundefinedのまま渡る＝無変更。
+      globalSource: r.globalSource || undefined,
+      vocabLevel: r.vocabLevel, vocabLevelLabel: r.vocabLevelLabel,
+      kanjiSystem: r.kanjiSystem, kanjiLevel: r.kanjiLevel, kanjiLevelLabel: r.kanjiLevelLabel,
+      wakachi: r.wakachi,
       questions: parsed.questions,
       kanjiQuiz: kanjiResult ? kanjiResult.quiz : null,
       kanjiQuizTargets: kanjiResult ? kanjiResult.targetKanji : null,
@@ -1121,6 +1369,218 @@ choicesは選択式のみ。抜き出し・記述式では "choices": [] とす�
   }
 }
 
+// 帯3（書く練習）の機械検証。タイプごとに整合性をチェックし、警告文（問題なしなら空文字列）を返す。
+// 生成時・リライト時・手動編集時のすべてでこの1関数を通す（検証ロジックを1箇所に集約）。
+function verifyWritingTaskMachine(wt, fullText){
+  if(wt.type === 'copy' || wt.type === 'trace'){
+    const plain = stripRuby(fullText);
+    if(!wt.prompt_text || !plain.includes(stripRuby(String(wt.prompt_text)))){
+      return `帯3（${WRITING_TASK_TYPE_LABELS[wt.type] || wt.type}）：選ばれた文が本文中に見つかりません。手動で確認してください。`;
+    }
+  }else if(wt.type === 'fill'){
+    const pt = String(wt.prompt_text || '');
+    if(!wt.answer_word || (!pt.includes('（　　）') && !pt.includes('（　）'))){
+      return '帯3（穴埋め作文）：空欄記号「（　　）」が設問文に見当たりません。手動で確認してください。';
+    }
+  }
+  return '';
+}
+
+// 帯3の1問分のプロンプト指示ブロックを構築（機械抽出候補→AI選定の二段構成。仕様§7判断事項b）。
+// avoidSameCandidatePool=true のとき（視写＋なぞり書きのペア。両者とも
+// extractCopyCandidatesの同じ候補プールから選ぶため）は、2問が同じ文を選ばないよう
+// 明示的に指示する（候補が3文しかないため機械側でのavoid指定はしない）。
+function buildWritingTaskSection(writingType, fullText, avoidSameCandidatePool){
+  if(writingType === 'trace'){
+    const candidates = extractCopyCandidates(fullText);
+    const avoidNote = avoidSameCandidatePool ? '他の書く練習（視写）とは必ず別の文を選ぶこと。' : '';
+    return `以下の候補文の中から、なぞり書きの練習として最も適した1文を選び、そのまま prompt_text に入れてください（文言を変えないこと。候補以外の文を使わないこと）。${avoidNote}\n候補：\n${candidates.map((c,i)=>`${i+1}. ${c}`).join('\n')}\ninstruction には「うすい文字をなぞってみましょう。」のような、ひらがな中心のやさしい指示文を入れてください。answer_wordとexampleはnullにしてください。`;
+  }else if(writingType === 'copy'){
+    const candidates = extractCopyCandidates(fullText);
+    const avoidNote = avoidSameCandidatePool ? '他の書く練習（なぞり書き）とは必ず別の文を選ぶこと。' : '';
+    return `以下の候補文の中から、書き写す練習として最も適した1文を選び、そのまま prompt_text に入れてください（文言を変えないこと。候補以外の文を使わないこと）。${avoidNote}\n候補：\n${candidates.map((c,i)=>`${i+1}. ${c}`).join('\n')}\ninstruction には「かきうつしましょう。」のような、ひらがな中心のやさしい指示文を入れてください。answer_wordとexampleはnullにしてください。`;
+  }else if(writingType === 'fill'){
+    const candidates = extractLeveledWordCandidates(fullText);
+    return `以下の候補語の中から1語を選び、その語を使った自然な文（本文中の文をそのまま使ってもよい）を作り、その語の部分だけを「（　　）」に置き換えて prompt_text に入れてください。answer_word には置き換えた語（正解）を、本文の表記と完全に一致する形でそのまま入れてください（将来の自動採点に使うデータのため重要）。\n候補語：${candidates.join('、') || '（本文の語彙から自由に選んでください）'}\ninstruction には「（　）に　ことばを　いれましょう。」のような、ひらがな中心のやさしい指示文を入れてください。exampleはnullにしてください。`;
+  }else{
+    return `本文の内容に関連した、学習者自身の経験や考えを聞く「あなたなら？」型の問いを1〜2文で答えられる形で prompt_text に入れてください。example には、書き方の型を示すお手本の短い例文を1〜2文入れてください（学習者の答えを誘導しすぎないこと）。instruction には「1〜2文で　かきましょう。」のような指示文を、answer_wordはnullにしてください。`;
+  }
+}
+
+// ===== globalモード：3帯（読解＋ことば＋書く）を生成するオーケストレーター =====
+// 帯1（読解）＋帯3（書く）は本文全体を共有するため1回のAPI呼び出しで同時生成し、
+// 帯2（漢字＋語彙）は既存の漢字クイズ機構を踏襲する形で別呼び出しにする
+// （漢字クイズは既存機構の縮小適用、語彙クイズは並列の新規機構のため）。
+async function generateQuestionsGlobal(r, apiKey, tags){
+  const btn = document.getElementById('genQuestionsBtn');
+  btn.disabled = true;
+  btn.textContent = '設問を生成中...（global）';
+  document.getElementById('questionsArea').innerHTML = '<div style="font-size:12px; color:var(--text3);">生成中です。しばらくお待ちください...</div>';
+
+  const st = computeStructureType(r);
+  const gc = globalQuestionConstraints(r);
+  const vocabKey = gc.vocabKey, vocabLabel = gc.vocabLabel;
+  const maxChoices = (vocabKey === 'pre1') ? 3 : 4;
+  const symbols = GLOBAL_CHOICE_SYMBOLS.slice(0, maxChoices);
+  const extractionEligible = globalExtractionEligible(r);
+  // 帯3：追加修正指示により「現在段階＋1つ下の段階」の2問構成に変更。
+  // プレ小1・小1（視写＋なぞり書き）は同じ候補プール（extractCopyCandidates）を使うため
+  // 重複選定を避ける指示を両方に付ける。
+  const writingTypes = globalWritingTaskTypes(vocabKey);
+  const sharesCopyPool = writingTypes.includes('copy') && writingTypes.includes('trace');
+  const writingSections = writingTypes.map(t=>buildWritingTaskSection(t, r.fullText, sharesCopyPool));
+
+  const extractionNote = extractionEligible
+    ? `- 抜き出し形式も少量（最大1問）だけ含めてよい。含める場合は本文の該当箇所を一字一句そのまま answer に入れ、設問文の字数指定は「〜字で書き抜きなさい」の形にすること。${gc.extractionLimitNote}`
+    : `- 抜き出し形式（本文から書き写す形式）は使わないこと（語彙・文法レベルが対象外のため）。選択式・穴埋めのみで構成すること`;
+
+  const prompt = `あなたは継承語（heritage language）学習者向けの国語読解教材を作成するプロの教材編集者です。
+聴解・会話は年齢相応に近いが読み書きが遅れがちな学習者向けのため、選択式中心で「選ぶだけで達成感を得られる」作りにしてください。以下の本文に対して、読解設問と書く練習問題を作成してください。
+
+# 本文（文章レベル：${r.gradeLabel}・語彙文法レベル：${vocabLabel}・ジャンル：${r.genreLabel}）
+${stripRuby(r.fullText)}
+
+# 帯1：読解設問（3〜4問）
+出題する観点：
+${tags.map(t=>'- '+t).join('\n')}
+
+- 形式は「選択式」（内容理解を選択肢${maxChoices}択から選ぶ）を中心に、「穴埋め」（文中の空欄に入る語を選択肢${maxChoices}択から選ぶ）を補助的に混ぜること
+${vocabKey === 'pre1' ? '- 語彙・文法レベルがプレ小1のため、設問は「だれが？」「なにをした？」のようなシンプルな一問一答形式を中心にすること' : ''}
+${extractionNote}
+- 3〜4問のうち必ず1問は「抜き出し穴埋め」形式にすること：設問文中に本文の一節（該当箇所を含む一文またはその一部）をそのまま引用し、その中の1語だけを「（　）」で空欄にする。空欄に入る語を answer に入れる（本文の表記と完全に一致させること）。type は「抜き出し穴埋め」、choicesは[]にすること
+- 選択肢の記号は必ず「${symbols.join('・')}」を使うこと（ア・イ・ウ・エは使わないこと）
+- 誤答の選択肢は、本文をよく読んでいないと選んでしまいそうな、もっともらしいものにすること
+- 傍線部を使う場合は、設問文の中に「——線『（該当箇所の文言）』について」の形で該当箇所を明記すること${gc.kanjiNote}${gc.wakachiNote}${gc.furiganaNote || ''}
+- 各設問に、その設問文の英訳を1文 en_hint として付けること（例："Why did Ken go to the garden?"）
+
+# 帯3：書く練習（2問。${WRITING_TASK_TYPE_LABELS[writingTypes[0]]}＋${WRITING_TASK_TYPE_LABELS[writingTypes[1]]}）
+## 1問目（${WRITING_TASK_TYPE_LABELS[writingTypes[0]]}）
+${writingSections[0]}
+## 2問目（${WRITING_TASK_TYPE_LABELS[writingTypes[1]]}）
+${writingSections[1]}
+書く練習それぞれに en_hint（instructionの英訳1文）を付けてください。
+
+# 出力形式（重要）
+JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。以下の形式そのままで出力すること。
+{"questions": [{"number": 1, "type": "選択式 または 穴埋め または 抜き出し または 抜き出し穴埋め", "kanten": "対応する観点タグ", "question_text": "設問文", "choices": ["${symbols[0]}　...", "${symbols[1]}　..."], "answer": "正答の記号（抜き出し穴埋めは空欄に入る語）", "explanation": "解説", "en_hint": "設問文の英訳1文"}], "writingTasks": [{"type": "${writingTypes[0]}", "instruction": "指示文（ひらがな中心）", "prompt_text": "本文（視写対象の文／穴埋め文／お題文）", "answer_word": "穴埋めの正解語、視写・短作文はnull", "example": "短作文のお手本例文、それ以外はnull", "en_hint": "instructionの英訳1文"}, {"type": "${writingTypes[1]}", "instruction": "...", "prompt_text": "...", "answer_word": null, "example": null, "en_hint": "..."}]}
+choicesは選択式・穴埋めのみ${maxChoices}個。抜き出し・抜き出し穴埋めでは "choices": [] とすること。`;
+
+  try{
+    const parsed = await callClaudeJSON(apiKey, prompt, 3500);
+    if(!Array.isArray(parsed.questions) || parsed.questions.length === 0){
+      throw new Error('設問が生成されませんでした。もう一度お試しください。');
+    }
+    if(!Array.isArray(parsed.writingTasks) || parsed.writingTasks.length < 2){
+      throw new Error('書く練習（帯3）が生成されませんでした。もう一度お試しください。');
+    }
+
+    // ---- 機械検証（警告のみ・生成は止めない） ----
+    const verifyNotes = [];
+    // 抜き出し・抜き出し穴埋めが含まれていれば既存機構で本文照合・字数検証（②軸=vocabKeyを「grade」として渡す）
+    verifyAndFixExtractions(parsed.questions, r.fullText, vocabKey, vocabLabel);
+    detectDuplicateAnswers(parsed.questions).forEach(n=>verifyNotes.push(n));
+    // en_hint付け忘れの機械検証（AIに数えさせず存在チェックのみ）
+    parsed.questions.forEach(q=>{
+      if(!q.en_hint || !String(q.en_hint).trim()) verifyNotes.push(`問${q.number}：en_hint（設問文の英訳）が付いていません。`);
+    });
+    // 帯1に「抜き出し穴埋め」が1問含まれているかの機械確認（AIが指示を落とした場合の警告）
+    if(!parsed.questions.some(q=>q.type === '抜き出し穴埋め')){
+      verifyNotes.push('帯1：「抜き出し穴埋め」形式の問題が含まれていません。');
+    }
+
+    // 帯3の機械検証（2問とも。タイプはJSで決定したものを正とする＝AIの自己申告は使わない）
+    const wts = parsed.writingTasks.slice(0, 2).map((wt, i)=>{
+      wt.type = writingTypes[i];
+      wt._warn = verifyWritingTaskMachine(wt, r.fullText);
+      if(wt._warn) verifyNotes.push(wt._warn);
+      if(!wt.en_hint || !String(wt.en_hint).trim()) verifyNotes.push(`帯3-${i+1}：en_hintが付いていません。`);
+      wt.kanten = (wt.type === 'copy' || wt.type === 'trace') ? '書字' : '作文';
+      return wt;
+    });
+
+    // ---- 帯2：漢字クイズ（1問・既存機構の縮小適用。②軸小1以上はcanvas書き取り形式）＋語彙クイズ（1〜2問） ----
+    let kanjiResult = null, kanjiError = '';
+    const kanjiAvailable = !!(r.kanjiDiffList && r.kanjiDiffList.length);
+    if(kanjiAvailable){
+      btn.textContent = '漢字クイズを生成中...';
+      try{ kanjiResult = await generateKanjiQuizGlobal(apiKey, r); }
+      catch(err){ kanjiError = '漢字クイズの生成に失敗しました：' + err.message; }
+    }
+    const vocabCount = kanjiAvailable ? 1 : 2;
+    let vocabResult = null, vocabError = '';
+    btn.textContent = '語彙クイズを生成中...';
+    try{ vocabResult = await generateVocabQuizGlobal(apiKey, r, vocabCount); }
+    catch(err){ vocabError = '語彙クイズの生成に失敗しました：' + err.message; }
+    if(vocabError) verifyNotes.push(vocabError);
+    if(kanjiError) verifyNotes.push(kanjiError);
+
+    // ---- 観点タグの機械付与（仕様§5：語彙・書字・作文。AI選定ではなく機械的に決める） ----
+    (vocabResult || []).forEach(q=>{ q.kanten = '語彙'; });
+
+    // 設問文・選択肢・帯2（語彙）・帯3のフリガナ抜け／級外漢字を機械検出（仕様question編§3タスク1-4。
+    // 警告のみ・生成は止めない。漢字クイズ（帯2の漢字側）はwordが対象漢字そのものを含むため意図的に対象外）。
+    const furiganaCheckTexts = [];
+    parsed.questions.forEach(q=>{ furiganaCheckTexts.push(q.question_text); (q.choices||[]).forEach(c=>furiganaCheckTexts.push(c)); });
+    (vocabResult || []).forEach(q=>{ furiganaCheckTexts.push(q.question_text); (q.choices||[]).forEach(c=>furiganaCheckTexts.push(c)); });
+    wts.forEach(wt=>{ furiganaCheckTexts.push(wt.instruction); furiganaCheckTexts.push(wt.prompt_text); });
+    const furiCheck = verifyQuestionFurigana(furiganaCheckTexts, r);
+    if(furiCheck && (furiCheck.missing || furiCheck.extra || furiCheck.outOfLevel)){
+      const parts = [];
+      if(furiCheck.missing) parts.push(`フリガナ付け忘れの可能性${furiCheck.missing}件`);
+      if(furiCheck.extra) parts.push(`フリガナ付けすぎの可能性${furiCheck.extra}件`);
+      if(furiCheck.outOfLevel) parts.push(`許可漢字リスト外の漢字${furiCheck.outOfLevel}件`);
+      verifyNotes.push(`設問文・選択肢・帯2・帯3のフリガナ検証：${parts.join('・')}（自動修正はしていません。手動でご確認ください）。`);
+    }
+
+    currentQuestions = {
+      recordType: 'japanese_question_set',
+      version: 1,
+      sourceTitle: r.title,
+      grade: r.grade, gradeLabel: r.gradeLabel,
+      genreKey: r.genreKey, genreLabel: r.genreLabel,
+      difficultyKey: r.difficultyKey, difficultyLabel: r.difficultyLabel,
+      structureType: st.type,
+      kantenTags: tags,
+      fullText: r.fullText,
+      jhsMeta: null,
+      globalSource: true,
+      vocabLevel: r.vocabLevel, vocabLevelLabel: r.vocabLevelLabel,
+      kanjiSystem: r.kanjiSystem, kanjiLevel: r.kanjiLevel, kanjiLevelLabel: r.kanjiLevelLabel,
+      wakachi: r.wakachi,
+      enSupport: Array.isArray(r.enSupport) ? r.enSupport : null, // 本文生成時のものをそのまま引き継ぐ
+      questions: parsed.questions,           // 帯1
+      vocabQuiz: vocabResult || [],          // 帯2（語彙側）
+      kanjiQuiz: kanjiResult ? kanjiResult.quiz : null, // 帯2（漢字側。既存カード描画をそのまま使う）
+      kanjiQuizTargets: kanjiResult ? kanjiResult.targetKanji : null,
+      kanjiQuizDigitalOnly: true,
+      writingTasks: wts,                     // 帯3（2問：現在段階＋1つ下の段階）
+      generatedAt: new Date().toISOString()
+    };
+
+    renderQuestions();
+    renderKanjiQuiz();
+    renderVocabQuiz();
+    renderWritingTasks();
+    hoSave(HO_QSET, currentQuestions);
+    document.getElementById('questionsExportRow').style.display = 'flex';
+    renderFlowProgress('question');
+    showNextGuide('✅ 問題セット（3帯構成）ができました。<br>' +
+      '問題セットは<b>この後の画面に自動で引き継がれます（保存操作は不要）</b>です。<br>' +
+      '次へ → <a href="Japanese_quiz_template.html" style="color:var(--accent); font-weight:700; text-decoration:none;">📱 デジタル配布へ</a>');
+    if(verifyNotes.length > 0){
+      showNotice('設問を生成しました（🌏 global）。ただし以下の点を確認してください：<br>' + verifyNotes.join('<br>'), 'err');
+    }else{
+      showNotice('設問を生成しました（🌏 global：読解' + parsed.questions.length + '問＋ことば' + ((kanjiResult?1:0)+(vocabResult?vocabResult.length:0)) + '問＋書く2問）。', 'info');
+    }
+  }catch(err){
+    document.getElementById('questionsArea').innerHTML = '';
+    showNotice('設問の生成に失敗しました：' + err.message, 'err');
+  }finally{
+    btn.disabled = false;
+    btn.textContent = '📝 設問を生成する';
+  }
+}
+
 function escapeHtml(s){
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
@@ -1130,13 +1590,22 @@ function renderQuestions(){
   area.innerHTML = '';
   detectDuplicateAnswers(currentQuestions.questions); // 正答重複バッジ用の _dupAnswer を毎回更新
   const kantenList = availableKanten(); // その学年・ジャンルの全観点（Step4選択に限らない）
-  const FORMS = ['選択式', '抜き出し', '記述式', 'おまかせ'];
-  const stdTypes = ['選択式', '抜き出し', '記述式'];
+  // globalモードの帯1は「穴埋め」「抜き出し穴埋め」という追加形式を持つため、観点ピッカーの
+  // 形式一覧もglobalSourceのときだけ拡張する（domesticは既存のFORMS/stdTypesのまま無変更）。
+  // 拡張しないと、これらの形式の問題が常に「おまかせ」扱いされ、観点変更のたびに
+  // 意図しない形式へ静かに変わってしまう（追加修正指示の確認作業で発覚）。
+  const isGlobalMode = !!(currentQuestions && currentQuestions.globalSource);
+  const FORMS = isGlobalMode
+    ? ['選択式', '穴埋め', '抜き出し', '抜き出し穴埋め', '記述式', 'おまかせ']
+    : ['選択式', '抜き出し', '記述式', 'おまかせ'];
+  const stdTypes = isGlobalMode
+    ? ['選択式', '穴埋め', '抜き出し', '抜き出し穴埋め', '記述式']
+    : ['選択式', '抜き出し', '記述式'];
   currentQuestions.questions.forEach((q, idx)=>{
     const item = document.createElement('div');
     item.className = 'question-item';
     const choicesHtml = (q.choices && q.choices.length)
-      ? `<div class="question-choices">${q.choices.map(c=>escapeHtml(c)).join('\n')}</div>`
+      ? `<div class="question-choices">${q.choices.map(c=>rubyToHtml(escapeHtml(c))).join('\n')}</div>`
       : '';
     const verifyBadge = q._actualCount !== undefined
       ? (!q._verified
@@ -1147,6 +1616,18 @@ function renderQuestions(){
       : '';
     const dupBadge = q._dupAnswer
       ? `<span style="font-size:10px; color:#cf9a2b; font-weight:700;">⚠ 他の問題と正答が重複</span>`
+      : '';
+    const midStopBadge = q._midStop
+      ? `<span style="font-size:10px; color:#cf9a2b; font-weight:700;">⚠ 解答が中止形</span>`
+      : '';
+    // フリガナ/配当外漢字バッジ（③④⑤）。配当外は該当漢字を明示、フリガナ抜け/過多は件数を表示。
+    const furiWarnBadge = q._furiWarn
+      ? `<span style="font-size:10px; color:#cf9a2b; font-weight:700;">⚠ ${
+          [q._furiWarn.outOfLevel ? '配当外漢字：' + escapeHtml((q._furiWarn.outOfLevelChars || []).join('・'))
+            : '',
+           q._furiWarn.missing ? 'フリガナ付け忘れ' + q._furiWarn.missing : '',
+           q._furiWarn.extra ? 'フリガナ付けすぎ' + q._furiWarn.extra : ''].filter(Boolean).join('／')
+        }</span>`
       : '';
     // 観点ピッカーの中身（観点ラジオ＋形式ラジオ）
     const curType = q.type || '';
@@ -1168,15 +1649,18 @@ function renderQuestions(){
         <span class="question-tag">${escapeHtml(q.kanten || '')}</span>
         ${verifyBadge}
         ${dupBadge}
+        ${midStopBadge}
+        ${furiWarnBadge}
       </div>
-      <div class="question-text">${escapeHtml(q.question_text || '')}</div>
+      <div class="question-text">${rubyToHtml(escapeHtml(q.question_text || ''))}</div>
+      ${q.en_hint ? `<div class="en-hint-note"><span class="en-hint-label">🌏 en_hint</span>${escapeHtml(q.en_hint)}</div>` : ''}
       ${choicesHtml}
       <span class="answer-toggle" onclick="toggleAnswer(this)">▼ 解答・解説を表示</span>
       <div class="answer-body">
         <span class="answer-label">解答</span>
-        ${escapeHtml(q.answer || '')}
+        ${rubyToHtml(escapeHtml(q.answer || ''))}
         <span class="explanation-label">解説</span>
-        ${escapeHtml(q.explanation || '')}
+        ${rubyToHtml(escapeHtml(q.explanation || ''))}
       </div>
       <div class="card-actions" id="qactions-${idx}">
         <button class="mini-btn" onclick="regenerateQuestion(${idx}, this)">🔄 この問題だけ作り直す</button>
@@ -1190,6 +1674,7 @@ function renderQuestions(){
         ${(q.choices && q.choices.length) ? `<div class="ef-label">選択肢（1行に1つ）</div><textarea id="edch-q-${idx}" rows="4">${escapeHtml((q.choices || []).join('\n'))}</textarea>` : ''}
         <div class="ef-label">正答</div>
         <textarea id="edan-q-${idx}" rows="2">${escapeHtml(q.answer || '')}</textarea>
+        ${(q.en_hint !== undefined) ? `<div class="ef-label">en_hint（英語ヒント）</div><textarea id="eden-q-${idx}" rows="2">${escapeHtml(q.en_hint || '')}</textarea>` : ''}
         <div class="ef-label">解説</div>
         <textarea id="edex-q-${idx}" rows="2">${escapeHtml(q.explanation || '')}</textarea>
         <div class="card-actions">
@@ -1369,6 +1854,607 @@ JSON以外の文字は一切出力しないこと。前置き・説明・コー�
   return { targetKanji, quiz: parsed.kanji_quiz };
 }
 
+// globalモード帯2：漢字クイズの縮小適用（既存機構を流用し、5問ではなく1問だけ生成する。
+// 対象漢字は r.kanjiDiffList（③のレベルで新しく許可された漢字。単一情報源）から選ぶため、
+// KANJI_CUMULATIVE/KANJI_JLPTの体系を問わず動く（仕様§1.2「配当差分からの機械選定」の抽象化）。
+async function generateKanjiQuizGlobal(apiKey, r){
+  const pool = r.kanjiDiffList || '';
+  if(!pool) return null; // pre1（漢字ゼロ）等、対象漢字がない
+  const targetKanji = pickRandomKanji(pool, 1);
+  // 追加修正指示③：②軸小1以上はcanvas書き取り形式（読みを提示して漢字を書かせる）。
+  // pre1は漢字ゼロのためこの関数自体がpoolなしで早期returnするが、念のため軸で判定する。
+  const vocabKey = r.vocabLevel || r.grade;
+  const writingMode = vocabKey !== 'pre1';
+  // 語のなじみやすさ（用いる言葉の選定基準）は②軸（語彙・文法レベル）に従う原則
+  // （フォローアップ指示：レベル軸参照の監査。①軸gradeLabelは構成・漢字の対象学年表示にのみ使う）
+  const wordLevelLabel = r.vocabLevelLabel || r.gradeLabel;
+  // 地の文（出題語・対象漢字以外の指示文）のkanjiLevel適用（確認指示への対応）：出題対象の
+  // 漢字自体にルビを振らないのは正しい（答えの漏洩防止）が、指示文「〜を書きなさい」等は別物であり、
+  // 級外漢字（読/方/選/漢/字/書 等）を含みうる。この関数は常にglobal専用のためひらがな中心に統一する。
+
+  const prompt = writingMode
+    ? `あなたは継承語学習者向けの漢字教材を作成するプロの編集者です。以下の漢字1字について、読みを提示してその漢字を書かせる書き取りクイズを1問作成してください。
+
+# 対象の漢字（このレベルで新しく習う漢字）
+${targetKanji.join('')}
+
+# 作成ルール
+- その漢字を含む短い言葉（熟語または訓読みの言葉）を1つ選び、その言葉のひらがな読みを提示して、漢字表記を書かせる形式にすること
+- 言葉は${wordLevelLabel}の子どもが日常や教科書で目にする自然なものにすること
+- reading にはひらがなの読みだけを入れ、answer には word と同じ漢字表記を入れること
+- instruction文（地の文）は対象漢字・出題語を除き、ひらがな中心のやさしい言い回しで書くこと（級外漢字を使わないこと）
+
+# 出力形式（重要）
+JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。以下の形式そのままで出力すること。
+{"kanji_quiz": [{"number": 1, "kanji": "対象の漢字", "word": "出題する言葉（漢字を含む表記）", "reading": "その言葉のひらがな読み", "question_text": "「（reading）」を　かんじで　かきましょう。", "choices": [], "answer": "word と同じ漢字表記", "explanation": "書き方の簡単な説明"}]}`
+    : `あなたは継承語学習者向けの漢字教材を作成するプロの編集者です。以下の漢字1字について、読み方を答える選択式クイズを1問作成してください。
+
+# 対象の漢字（このレベルで新しく習う漢字）
+${targetKanji.join('')}
+
+# 作成ルール
+- その漢字を含む短い言葉（熟語または訓読みの言葉）を1つ提示し、その言葉の読み方（ひらがな）を4択で答えさせる形式にすること
+- 言葉は${wordLevelLabel}の子どもが日常や教科書で目にする自然なものにすること
+- 誤答の選択肢は、似た音・別の読み方（音読み/訓読みの取り違え）など、もっともらしいものにすること
+- 選択肢の記号は必ず「あ・い・う・え」を使うこと（ア・イ・ウ・エは使わないこと）
+- 読み方はすべてひらがなで書くこと
+- instruction文（地の文）は出題語を除き、ひらがな中心のやさしい言い回しで書くこと（級外漢字を使わないこと）
+
+# 出力形式（重要）
+JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。以下の形式そのままで出力すること。
+{"kanji_quiz": [{"number": 1, "kanji": "対象の漢字", "word": "出題する言葉（漢字を含む表記）", "question_text": "「（言葉）」の　よみかたを　えらびましょう。", "choices": ["あ　よみかた1", "い　よみかた2", "う　よみかた3", "え　よみかた4"], "answer": "正答の記号", "explanation": "正しい読みと簡単な説明"}]}`;
+
+  const parsed = await callClaudeJSON(apiKey, prompt, 1200);
+  if(!Array.isArray(parsed.kanji_quiz) || !parsed.kanji_quiz.length) throw new Error('漢字クイズの形式が不正でした。');
+  parsed.kanji_quiz.forEach(q=>{
+    q.mode = writingMode ? 'write' : 'choice';
+    if(writingMode) q.choices = []; // 書き取り形式はchoicesを使わない（AIの自己申告を上書き）
+    q._verified = q.word && q.kanji && String(q.word).includes(q.kanji);
+  });
+  return { targetKanji, quiz: parsed.kanji_quiz };
+}
+
+// globalモード帯2：語彙クイズ（新規機構）。出題語は本文からの機械抽出候補→AI選定の二段構成
+// （仕様§7判断事項a・確定版のタイプ配分に従う）。countは1（漢字クイズと並列時）または
+// 2（kanjiLevel=pre1で漢字クイズが無い時の代替）。
+async function generateVocabQuizGlobal(apiKey, r, count){
+  const vocabKey = r.vocabLevel || r.grade;
+  const vocabLabel = r.vocabLevelLabel || r.gradeLabel;
+  const gc = globalQuestionConstraints(r);
+  const candidates = extractLeveledWordCandidates(r.fullText);
+  const typePlan = (VOCAB_QUIZ_TYPE_PLAN[vocabKey] || ['meaning','antonym']).slice(0, count);
+  const maxChoices = (vocabKey === 'pre1') ? 3 : 4;
+  const symbols = GLOBAL_CHOICE_SYMBOLS.slice(0, maxChoices);
+
+  const typeInstructions = typePlan.map((t,i)=>{
+    if(t === 'meaning') return `${i+1}問目（意味選択）：本文中の語（候補：${candidates.join('、') || '本文の語彙から自由に選ぶ'}）を1つ選び、その語の意味を選択肢${maxChoices}択で答えさせる。`;
+    if(t === 'antonym') return `${i+1}問目（反対のことば）：本文中の語を1つ選び、その反対の意味の言葉を選択肢${maxChoices}択で答えさせる。`;
+    return `${i+1}問目（ひらがな⇄カタカナ変換）：本文中の語を1つ選び、ひらがな表記とカタカナ表記を相互に変換して答えさせる選択式問題にする（例：「ひらがな」で書かれた語をカタカナで書くとどれか、を選ばせる）。`;
+  }).join('\n');
+
+  const prompt = `あなたは継承語学習者向けの語彙教材を作成するプロの編集者です。以下の本文をもとに、語彙クイズを${typePlan.length}問作成してください。
+
+# 本文（語彙・文法レベル：${vocabLabel}）
+${stripRuby(r.fullText)}
+
+# 出題する問題
+${typeInstructions}
+
+# 作成ルール
+- 選択肢の記号は必ず「${symbols.join('・')}」を使うこと（ア・イ・ウ・エは使わないこと）
+- 誤答の選択肢はもっともらしいものにすること
+- 設問文・選択肢は${vocabLabel}にふさわしい語彙・言い回しで書くこと${gc.kanjiNote}${gc.wakachiNote}${gc.furiganaNote || ''}
+- 各設問に en_hint（設問文の英訳1文）を付けること
+
+# 出力形式（重要）
+JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。以下の形式そのままで出力すること。
+{"vocab_quiz": [{"number": 1, "vocabType": "meaning/antonym/kana のいずれか", "word": "出題対象の語", "question_text": "設問文", "choices": ["${symbols[0]}　...", "${symbols[1]}　..."], "answer": "正答の記号", "explanation": "解説", "en_hint": "設問文の英訳1文"}]}`;
+
+  const parsed = await callClaudeJSON(apiKey, prompt, 1500);
+  if(!Array.isArray(parsed.vocab_quiz) || !parsed.vocab_quiz.length) throw new Error('語彙クイズの形式が不正でした。');
+  // 出題語が本文中に存在するかの機械検証（穴埋め等と同じ「AIに数えさせず実測する」思想）
+  parsed.vocab_quiz.forEach(q=>{
+    q._verified = !!(q.word && stripRuby(r.fullText).includes(stripRuby(String(q.word))));
+  });
+  return parsed.vocab_quiz;
+}
+
+// ============================================================
+// globalモード帯2（語彙クイズ）・帯3（書く練習）の1問単位の作り直し・リライト
+// 既存の regenerateKanji/rewriteKanji パターンをそのまま流用適用（新規UI設計はしない）。
+// ============================================================
+
+// globalモード帯2：語彙クイズ1問を生成（タイプは呼び出し側で固定・AIに選ばせない）。
+// opts.forceWord があれば出題語をJS側で機械指定（regenerateVocabDifferent用）。
+// opts.avoidWord があれば直前の出題語を避けるよう指示するのみ（regenerateVocab用・強制はしない）。
+async function generateOneVocabQuiz(apiKey, record, vocabType, opts){
+  opts = opts || {};
+  const vocabKey = record.vocabLevel || record.grade;
+  const vocabLabel = record.vocabLevelLabel || record.gradeLabel;
+  const gc = globalQuestionConstraints(record);
+  const maxChoices = (vocabKey === 'pre1') ? 3 : 4;
+  const symbols = GLOBAL_CHOICE_SYMBOLS.slice(0, maxChoices);
+  let candidates = extractLeveledWordCandidates(record.fullText);
+  if(opts.avoidWord) candidates = candidates.filter(w=>w !== opts.avoidWord);
+
+  const wordInstruction = opts.forceWord
+    ? `出題語は必ず「${opts.forceWord}」にすること。`
+    : `本文中の語（候補：${candidates.join('、') || '本文の語彙から自由に選ぶ'}）を1つ選ぶこと。${opts.avoidWord ? `「${opts.avoidWord}」以外の語にすること。` : ''}`;
+  const typeLabel = VOCAB_QUIZ_TYPE_LABELS[vocabType] || '';
+  const typeRule = vocabType === 'meaning'
+    ? 'その語の意味を選択肢で答えさせる問題にすること。'
+    : vocabType === 'antonym'
+      ? 'その語の反対の意味の言葉を選択肢で答えさせる問題にすること。'
+      : 'ひらがな表記とカタカナ表記を相互に変換して答えさせる選択式問題にすること（例：「ひらがな」で書かれた語をカタカナで書くとどれか、を選ばせる）。';
+
+  const prompt = `あなたは継承語（heritage language）学習者向けの語彙教材を作成するプロの編集者です。以下の本文をもとに、語彙クイズ（${typeLabel}）を1問だけ作成してください。
+
+# 本文（語彙・文法レベル：${vocabLabel}）
+${stripRuby(record.fullText)}
+
+# 作成ルール
+- ${wordInstruction}
+- ${typeRule}
+- 選択肢の記号は必ず「${symbols.join('・')}」を使うこと（ア・イ・ウ・エは使わないこと）
+- 誤答の選択肢はもっともらしいものにすること
+- 設問文・選択肢は${vocabLabel}にふさわしい語彙・言い回しで書くこと${gc.kanjiNote}${gc.wakachiNote}${gc.furiganaNote || ''}
+- en_hint（設問文の英訳1文）を付けること
+
+# 出力形式（重要）
+JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。
+{"quiz": {"word": "出題対象の語", "question_text": "設問文", "choices": ["${symbols[0]}　...", "${symbols[1]}　..."], "answer": "正答の記号", "explanation": "解説", "en_hint": "設問文の英訳1文"}}`;
+
+  const parsed = await callClaudeJSON(apiKey, prompt, 1000);
+  const quiz = parsed.quiz;
+  if(!quiz || !quiz.word) throw new Error('語彙クイズを読み取れませんでした。もう一度お試しください。');
+  quiz.vocabType = vocabType; // タイプはJSで決定したものを正とする（AIの自己申告は使わない）
+  quiz._verified = !!(quiz.word && stripRuby(record.fullText).includes(stripRuby(String(quiz.word))));
+  return quiz;
+}
+
+// 機能3a：この語彙クイズだけ作り直す（同じタイプ・別の語に）
+async function regenerateVocab(idx, btn){
+  const apiKey = ensureAiReady();
+  if(!apiKey) return;
+  if(!currentQuestions.vocabQuiz) return;
+  const cur = currentQuestions.vocabQuiz[idx];
+  if(!cur) return;
+
+  setCardBusy('vactions-' + idx, btn, '作り直し中...');
+  try{
+    const nq = await generateOneVocabQuiz(apiKey, currentRecord, cur.vocabType, { avoidWord: cur.word });
+    nq.number = cur.number;
+    nq.kanten = '語彙';
+    currentQuestions.vocabQuiz[idx] = nq;
+    renderQuestions();
+    renderKanjiQuiz();
+    renderVocabQuiz();
+    renderWritingTasks();
+    hoSave(HO_QSET, currentQuestions);
+    showNotice(`語彙クイズ（${VOCAB_QUIZ_TYPE_LABELS[nq.vocabType] || ''}）を作り直しました。`, 'info');
+  }catch(err){
+    clearCardBusy('vactions-' + idx, btn);
+    showNotice('語彙クイズの作り直しに失敗しました：' + err.message, 'err');
+  }
+}
+
+// 機能3b：違う語で作り直す（本文からの機械抽出候補のうち未使用の語をJS側で選定してからAIに渡す。AIに選ばせない）
+async function regenerateVocabDifferent(idx, btn){
+  const apiKey = ensureAiReady();
+  if(!apiKey) return;
+  if(!currentQuestions.vocabQuiz) return;
+  const cur = currentQuestions.vocabQuiz[idx];
+  if(!cur) return;
+  const used = new Set(currentQuestions.vocabQuiz.map(x=>x.word));
+  const candidates = extractLeveledWordCandidates(currentRecord.fullText).filter(w=>!used.has(w));
+  if(!candidates.length){ showNotice('他に出題できる候補語がありません。', 'err'); return; }
+  const newWord = candidates[Math.floor(Math.random()*candidates.length)]; // AIに選ばせず機械選定
+
+  setCardBusy('vactions-' + idx, btn, '作り直し中...');
+  try{
+    const nq = await generateOneVocabQuiz(apiKey, currentRecord, cur.vocabType, { forceWord: newWord });
+    nq.number = cur.number;
+    nq.kanten = '語彙';
+    currentQuestions.vocabQuiz[idx] = nq;
+    renderQuestions();
+    renderKanjiQuiz();
+    renderVocabQuiz();
+    renderWritingTasks();
+    hoSave(HO_QSET, currentQuestions);
+    showNotice(`語彙「${cur.word}」→「${newWord}」で作り直しました。`, 'info');
+  }catch(err){
+    clearCardBusy('vactions-' + idx, btn);
+    showNotice('語彙クイズの作り直しに失敗しました：' + err.message, 'err');
+  }
+}
+
+// 機能3c：語彙クイズの問題文をリライト（出題語・タイプ・正答は変えず、設問文＋選択肢だけ調整）
+async function rewriteVocab(idx, btn){
+  const apiKey = ensureAiReady();
+  if(!apiKey) return;
+  if(!currentQuestions.vocabQuiz) return;
+  const q = currentQuestions.vocabQuiz[idx];
+  if(!q) return;
+  const instruction = (document.getElementById('rwtext-v-' + idx) || {}).value;
+  const instr = (instruction || '').trim();
+  if(!instr){ showNotice('修正指示を入力してください。', 'err'); return; }
+
+  setCardBusy('rw-v-' + idx, btn, 'リライト中...');
+  document.querySelectorAll('#vactions-' + idx + ' button').forEach(b=>{ b.disabled = true; });
+  try{
+    const vocabLabel = currentRecord.vocabLevelLabel || currentRecord.gradeLabel;
+    const gc = globalQuestionConstraints(currentRecord);
+    const prompt = `あなたは継承語学習者向けの語彙クイズを推敲するプロの編集者です。次の語彙クイズの設問文と選択肢を、指示に従って書き直してください。出題語・タイプ・正答は変えず、表現だけ調整します。
+
+# 対象のクイズ（${vocabLabel}）
+タイプ：${VOCAB_QUIZ_TYPE_LABELS[q.vocabType] || ''}
+出題語：${q.word || ''}
+設問文：${q.question_text || ''}
+選択肢：
+${(q.choices || []).join('\n')}
+正答：${q.answer || ''}
+解説：${q.explanation || ''}
+
+# 修正指示
+${instr}
+
+# ルール
+- 書き直してよいのは「設問文（question_text）」と「選択肢（choices）」だけ。出題語（word）・タイプ・正答（answer）・解説は変更しない
+- 選択肢の記号と個数は変えない。正答は「${q.answer}」のままになるよう、各記号の位置に対応する中身を調整すること
+- ${vocabLabel}にふさわしい語彙・言い回しで書くこと${gc.kanjiNote}${gc.wakachiNote}${gc.furiganaNote || ''}
+
+# 出力形式（重要）
+JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。
+{"question_text": "書き直した設問文", "choices": [${(q.choices || []).map(()=>'"..."').join(', ')}]}`;
+
+    const parsed = await callClaudeJSON(apiKey, prompt, 1000);
+    if(!parsed.question_text) throw new Error('書き直し結果を読み取れませんでした。もう一度お試しください。');
+    q.question_text = parsed.question_text;
+    if(Array.isArray(parsed.choices) && parsed.choices.length) q.choices = parsed.choices;
+    // word/vocabType/answer/explanation は不変。既存の機械検証（出題語が本文中にあるか）を再実行
+    q._verified = !!(q.word && stripRuby(currentRecord.fullText).includes(stripRuby(String(q.word))));
+
+    renderQuestions();
+    renderKanjiQuiz();
+    renderVocabQuiz();
+    renderWritingTasks();
+    hoSave(HO_QSET, currentQuestions);
+    showNotice('語彙クイズの問題文をリライトしました（出題語・正答は変えていません）。', 'info');
+  }catch(err){
+    clearCardBusy('rw-v-' + idx, btn);
+    document.querySelectorAll('#vactions-' + idx + ' button').forEach(b=>{ b.disabled = false; });
+    showNotice('リライトに失敗しました：' + err.message, 'err');
+  }
+}
+
+// 語彙クイズの手動編集を保存。出題語（word）が本文中に存在するか再照合。
+function saveManualEditVocab(idx, btn){
+  const q = (currentQuestions.vocabQuiz || [])[idx];
+  if(!q) return;
+  q.word = valOf('edwd-v-' + idx).trim();
+  q.question_text = valOf('edqt-v-' + idx).trim();
+  const chEl = document.getElementById('edch-v-' + idx);
+  if(chEl){ q.choices = chEl.value.split('\n').map(s=>s.trim()).filter(Boolean); }
+  q.answer = valOf('edan-v-' + idx).trim();
+  if(q.en_hint !== undefined) q.en_hint = valOf('eden-v-' + idx).trim();
+  q.explanation = valOf('edex-v-' + idx).trim();
+  q._verified = !!(q.word && stripRuby(currentRecord.fullText).includes(stripRuby(String(q.word))));
+
+  renderQuestions();
+  renderKanjiQuiz();
+  renderVocabQuiz();
+  renderWritingTasks();
+  hoSave(HO_QSET, currentQuestions);
+  const warn = q._verified ? '' : ' ⚠ 出題語が本文中に見つかりません。';
+  showNotice(`語彙クイズ${q.number != null ? q.number : idx+1}を編集しました。` + warn, q._verified ? 'info' : 'err');
+}
+
+function renderVocabQuiz(){
+  if(!currentQuestions || !currentQuestions.vocabQuiz) return;
+  const area = document.getElementById('questionsArea');
+  const header = document.createElement('div');
+  header.style.cssText = 'font-size:12px; font-weight:700; color:var(--accent-text); margin:18px 0 10px;';
+  header.textContent = '📝 語彙クイズ（デジタル専用・印刷版の解答用紙には載りません）';
+  area.appendChild(header);
+
+  currentQuestions.vocabQuiz.forEach((q, idx)=>{
+    const item = document.createElement('div');
+    item.className = 'question-item';
+    const verifyBadge = q._verified === false
+      ? `<span style="font-size:10px; color:var(--red-text);">⚠ 出題語が本文中に見つかりません</span>`
+      : `<span style="font-size:10px; color:var(--green-text);">✓ ${rubyToHtml(escapeHtml(q.word || ''))}</span>`;
+    const choicesHtml = (q.choices && q.choices.length)
+      ? `<div class="question-choices">${q.choices.map(c=>rubyToHtml(escapeHtml(c))).join('\n')}</div>`
+      : '';
+    item.innerHTML = `
+      <div class="question-head">
+        <span class="question-num">語彙${escapeHtml(q.number != null ? q.number : idx+1)}</span>
+        <span class="question-type">${escapeHtml(VOCAB_QUIZ_TYPE_LABELS[q.vocabType] || '')}</span>
+        ${verifyBadge}
+      </div>
+      <div class="question-text">${rubyToHtml(escapeHtml(q.question_text || ''))}</div>
+      ${q.en_hint ? `<div class="en-hint-note"><span class="en-hint-label">🌏 en_hint</span>${escapeHtml(q.en_hint)}</div>` : ''}
+      ${choicesHtml}
+      <span class="answer-toggle" onclick="toggleAnswer(this)">▼ 解答・解説を表示</span>
+      <div class="answer-body">
+        <span class="answer-label">解答</span>
+        ${rubyToHtml(escapeHtml(q.answer || ''))}
+        <span class="explanation-label">解説</span>
+        ${rubyToHtml(escapeHtml(q.explanation || ''))}
+      </div>
+      <div class="card-actions" id="vactions-${idx}">
+        <button class="mini-btn" onclick="regenerateVocab(${idx}, this)">🔄 この問題だけ作り直す</button>
+        <button class="mini-btn" onclick="regenerateVocabDifferent(${idx}, this)">🎲 違う語で作り直す</button>
+        <button class="mini-btn" onclick="toggleRewrite('v', ${idx})">✏️ 問題文をリライト</button>
+        <button class="mini-btn" onclick="toggleEdit('v', ${idx})">📝 手動で編集</button>
+      </div>
+      <div class="edit-box" id="ed-v-${idx}">
+        <div class="ef-label">出題語</div>
+        <input type="text" id="edwd-v-${idx}" value="${escapeHtml(q.word || '')}">
+        <div class="ef-label">設問文</div>
+        <textarea id="edqt-v-${idx}" rows="2">${escapeHtml(q.question_text || '')}</textarea>
+        <div class="ef-label">選択肢（1行に1つ）</div>
+        <textarea id="edch-v-${idx}" rows="4">${escapeHtml((q.choices || []).join('\n'))}</textarea>
+        <div class="ef-label">正答</div>
+        <input type="text" id="edan-v-${idx}" value="${escapeHtml(q.answer || '')}">
+        ${(q.en_hint !== undefined) ? `<div class="ef-label">en_hint（英語ヒント）</div><textarea id="eden-v-${idx}" rows="2">${escapeHtml(q.en_hint || '')}</textarea>` : ''}
+        <div class="ef-label">解説</div>
+        <textarea id="edex-v-${idx}" rows="2">${escapeHtml(q.explanation || '')}</textarea>
+        <div class="card-actions">
+          <button class="mini-btn" onclick="saveManualEditVocab(${idx}, this)">保存</button>
+          <button class="mini-btn" onclick="toggleEdit('v', ${idx})">キャンセル</button>
+        </div>
+      </div>
+      <div class="rewrite-box" id="rw-v-${idx}">
+        <textarea id="rwtext-v-${idx}" placeholder="修正指示（例：もっとやさしい言い方に／選択肢を紛らわしく）"></textarea>
+        <div class="card-actions">
+          <button class="mini-btn" onclick="rewriteVocab(${idx}, this)">実行</button>
+          <button class="mini-btn" onclick="toggleRewrite('v', ${idx})">閉じる</button>
+        </div>
+      </div>
+    `;
+    area.appendChild(item);
+  });
+}
+
+// globalモード帯3：書く練習1問を生成（タイプは呼び出し側で固定・AIに選ばせない）。
+async function generateOneWritingTask(apiKey, record, writingType){
+  const gc = globalQuestionConstraints(record);
+  let section;
+  if(writingType === 'trace'){
+    const candidates = extractCopyCandidates(record.fullText);
+    section = `以下の候補文の中から、なぞり書きの練習として最も適した1文を選び、そのまま prompt_text に入れてください（文言を変えないこと。候補以外の文を使わないこと）。\n候補：\n${candidates.map((c,i)=>`${i+1}. ${c}`).join('\n')}\ninstruction には「うすい文字をなぞってみましょう。」のような、ひらがな中心のやさしい指示文を入れてください。answer_wordとexampleはnullにしてください。`;
+  }else if(writingType === 'copy'){
+    const candidates = extractCopyCandidates(record.fullText);
+    section = `以下の候補文の中から、書き写す練習として最も適した1文を選び、そのまま prompt_text に入れてください（文言を変えないこと。候補以外の文を使わないこと）。\n候補：\n${candidates.map((c,i)=>`${i+1}. ${c}`).join('\n')}\ninstruction には「かきうつしましょう。」のような、ひらがな中心のやさしい指示文を入れてください。answer_wordとexampleはnullにしてください。`;
+  }else if(writingType === 'fill'){
+    const candidates = extractLeveledWordCandidates(record.fullText);
+    section = `以下の候補語の中から1語を選び、その語を使った自然な文（本文中の文をそのまま使ってもよい）を作り、その語の部分だけを「（　　）」に置き換えて prompt_text に入れてください。answer_word には置き換えた語（正解）を、本文の表記と完全に一致する形でそのまま入れてください（将来の自動採点に使うデータのため重要）。\n候補語：${candidates.join('、') || '（本文の語彙から自由に選んでください）'}\ninstruction には「（　）に　ことばを　いれましょう。」のような、ひらがな中心のやさしい指示文を入れてください。exampleはnullにしてください。`;
+  }else{
+    section = `本文の内容に関連した、学習者自身の経験や考えを聞く「あなたなら？」型の問いを1〜2文で答えられる形で prompt_text に入れてください。example には、書き方の型を示すお手本の短い例文を1〜2文入れてください（学習者の答えを誘導しすぎないこと）。instruction には「1〜2文で　かきましょう。」のような指示文を、answer_wordはnullにしてください。`;
+  }
+
+  const isVerbatimQuote = (writingType === 'copy' || writingType === 'trace');
+  const prompt = `あなたは継承語（heritage language）学習者向けの国語教材を作成するプロの編集者です。以下の本文に対して、書く練習問題を1問だけ作成してください。
+
+# 本文
+${stripRuby(record.fullText)}
+
+# 書く練習（${WRITING_TASK_TYPE_LABELS[writingType] || ''}）
+${section}
+instruction${isVerbatimQuote ? '' : '・prompt_text・example'}は${record.vocabLevelLabel || record.gradeLabel}にふさわしい語彙・言い回しで書くこと${gc.kanjiNote}${gc.wakachiNote}${gc.furiganaNote || ''}${isVerbatimQuote ? '（prompt_textは本文からの引用のため対象外。文言を変えないこと）' : ''}
+en_hint（instructionの英訳1文）も付けてください。
+
+# 出力形式（重要）
+JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。
+{"writingTask": {"instruction": "指示文（ひらがな中心）", "prompt_text": "本文（視写対象の文／穴埋め文／お題文）", "answer_word": "穴埋めの正解語、視写・短作文はnull", "example": "短作文のお手本例文、それ以外はnull", "en_hint": "instructionの英訳1文"}}`;
+
+  const parsed = await callClaudeJSON(apiKey, prompt, 1200);
+  const wt = parsed.writingTask;
+  if(!wt || !wt.instruction) throw new Error('書く練習を読み取れませんでした。もう一度お試しください。');
+  wt.type = writingType; // タイプはJSで決定したものを正とする（AIの自己申告は使わない）
+  wt._warn = verifyWritingTaskMachine(wt, record.fullText);
+  wt.kanten = (writingType === 'copy' || writingType === 'trace') ? '書字' : '作文';
+  return wt;
+}
+
+// 機能3a：書く練習を同じタイプで作り直す（idx: 0=現在段階／1=1つ下の段階）
+async function regenerateWritingTask(idx, btn){
+  const apiKey = ensureAiReady();
+  if(!apiKey) return;
+  const cur = (currentQuestions.writingTasks || [])[idx];
+  if(!cur) return;
+  const curType = cur.type;
+
+  setCardBusy('wactions-' + idx, btn, '作り直し中...');
+  try{
+    const wt = await generateOneWritingTask(apiKey, currentRecord, curType);
+    currentQuestions.writingTasks[idx] = wt;
+    renderQuestions();
+    renderKanjiQuiz();
+    renderVocabQuiz();
+    renderWritingTasks();
+    hoSave(HO_QSET, currentQuestions);
+    showNotice(`書く練習（${WRITING_TASK_TYPE_LABELS[curType] || ''}）を作り直しました。`, 'info');
+  }catch(err){
+    clearCardBusy('wactions-' + idx, btn);
+    showNotice('書く練習の作り直しに失敗しました：' + err.message, 'err');
+  }
+}
+
+// 機能3b：書く練習のタイプを手動で上書きして作り直す（仕様§1.3「手動でタイプを上書き変更できること」）
+async function regenerateWritingTaskAsType(idx, newType, btn){
+  const apiKey = ensureAiReady();
+  if(!apiKey) return;
+  if(!(currentQuestions.writingTasks || [])[idx]) return;
+
+  setCardBusy('wactions-' + idx, btn, '作り直し中...');
+  try{
+    const wt = await generateOneWritingTask(apiKey, currentRecord, newType);
+    currentQuestions.writingTasks[idx] = wt;
+    renderQuestions();
+    renderKanjiQuiz();
+    renderVocabQuiz();
+    renderWritingTasks();
+    hoSave(HO_QSET, currentQuestions);
+    showNotice(`書く練習を「${WRITING_TASK_TYPE_LABELS[newType] || ''}」タイプで作り直しました。`, 'info');
+  }catch(err){
+    clearCardBusy('wactions-' + idx, btn);
+    showNotice('書く練習の作り直しに失敗しました：' + err.message, 'err');
+  }
+}
+
+// 機能3c：書く練習の指示文・お題文をリライト（正解語・タイプ・お手本は変えない）
+async function rewriteWritingTask(idx, btn){
+  const apiKey = ensureAiReady();
+  if(!apiKey) return;
+  const wt = (currentQuestions.writingTasks || [])[idx];
+  if(!wt) return;
+  const instruction = (document.getElementById('rwtext-w-' + idx) || {}).value;
+  const instr = (instruction || '').trim();
+  if(!instr){ showNotice('修正指示を入力してください。', 'err'); return; }
+
+  setCardBusy('rw-w-' + idx, btn, 'リライト中...');
+  document.querySelectorAll('#wactions-' + idx + ' button').forEach(b=>{ b.disabled = true; });
+  try{
+    const gc = globalQuestionConstraints(currentRecord);
+    const typeLabel = WRITING_TASK_TYPE_LABELS[wt.type] || '';
+    const fixedRule = wt.type === 'fill'
+      ? `- 正解語（answer_word）「${wt.answer_word}」は変えない。空欄記号「（　　）」の位置と文全体の整合を保つこと`
+      : ((wt.type === 'copy' || wt.type === 'trace') ? '- prompt_text（対象の文）は本文そのままの文言を変えない' : '- example（お手本例文）は変えない');
+
+    const prompt = `あなたは継承語学習者向けの国語教材を推敲するプロの編集者です。次の「書く練習（${typeLabel}）」の指示文とお題文を、指示に従って書き直してください。正解語・タイプ・お手本は変えません。
+
+# 対象の書く練習
+指示文：${wt.instruction || ''}
+お題文：${wt.prompt_text || ''}
+${wt.answer_word ? '正解語：' + wt.answer_word : ''}
+${wt.example ? 'お手本：' + wt.example : ''}
+
+# 修正指示
+${instr}
+
+# ルール
+- 書き直してよいのは「指示文（instruction）」と「お題文（prompt_text）」だけ
+${fixedRule}
+- ひらがな中心のやさしい表現で書くこと${gc.kanjiNote}${gc.wakachiNote}${gc.furiganaNote || ''}${(wt.type === 'copy' || wt.type === 'trace') ? '（prompt_textは本文からの引用のため対象外）' : ''}
+
+# 出力形式（重要）
+JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。
+{"instruction": "書き直した指示文", "prompt_text": "書き直したお題文"}`;
+
+    const parsed = await callClaudeJSON(apiKey, prompt, 800);
+    if(!parsed.instruction) throw new Error('書き直し結果を読み取れませんでした。もう一度お試しください。');
+    wt.instruction = parsed.instruction;
+    if(parsed.prompt_text) wt.prompt_text = parsed.prompt_text;
+    wt._warn = verifyWritingTaskMachine(wt, currentRecord.fullText);
+
+    renderQuestions();
+    renderKanjiQuiz();
+    renderVocabQuiz();
+    renderWritingTasks();
+    hoSave(HO_QSET, currentQuestions);
+    showNotice('書く練習をリライトしました（正解語・タイプは変えていません）。', 'info');
+  }catch(err){
+    clearCardBusy('rw-w-' + idx, btn);
+    document.querySelectorAll('#wactions-' + idx + ' button').forEach(b=>{ b.disabled = false; });
+    showNotice('リライトに失敗しました：' + err.message, 'err');
+  }
+}
+
+// 書く練習の手動編集を保存
+function saveManualEditWritingTask(idx, btn){
+  const wt = (currentQuestions.writingTasks || [])[idx];
+  if(!wt) return;
+  wt.instruction = valOf('edin-w-' + idx).trim();
+  wt.prompt_text = valOf('edpt-w-' + idx).trim();
+  const awEl = document.getElementById('edaw-w-' + idx);
+  if(awEl) wt.answer_word = awEl.value.trim() || null;
+  const exEl = document.getElementById('edex-w-' + idx);
+  if(exEl) wt.example = exEl.value.trim() || null;
+  if(wt.en_hint !== undefined) wt.en_hint = valOf('eden-w-' + idx).trim();
+  wt._warn = verifyWritingTaskMachine(wt, currentRecord.fullText);
+
+  renderQuestions();
+  renderKanjiQuiz();
+  renderVocabQuiz();
+  renderWritingTasks();
+  hoSave(HO_QSET, currentQuestions);
+  showNotice('書く練習を編集しました。' + (wt._warn ? ' ⚠ ' + wt._warn : ''), wt._warn ? 'err' : 'info');
+}
+
+// 帯3：書く練習カードを2枚（現在段階＋1つ下の段階）描画する。idx=0/1をDOM ID・関数呼び出しに使う。
+function renderWritingTasks(){
+  if(!currentQuestions || !Array.isArray(currentQuestions.writingTasks) || !currentQuestions.writingTasks.length) return;
+  const area = document.getElementById('questionsArea');
+  const header = document.createElement('div');
+  header.style.cssText = 'font-size:12px; font-weight:700; color:var(--accent-text); margin:18px 0 10px;';
+  header.textContent = '✏️ 書く練習（2問：現在段階＋1つ下の段階）';
+  area.appendChild(header);
+
+  currentQuestions.writingTasks.forEach((wt, idx)=>{
+    const item = document.createElement('div');
+    item.className = 'question-item';
+    const typeLabel = WRITING_TASK_TYPE_LABELS[wt.type] || '';
+    const verifyBadge = wt._warn
+      ? `<span style="font-size:10px; color:var(--red-text);">⚠ ${escapeHtml(wt._warn)}</span>`
+      : `<span style="font-size:10px; color:var(--green-text);">✓ 機械検証済</span>`;
+    const exampleHtml = (wt.type === 'compose' && wt.example)
+      ? `<span class="answer-toggle" onclick="toggleAnswer(this)">▼ お手本例文を表示</span>
+         <div class="answer-body">${rubyToHtml(escapeHtml(wt.example))}</div>`
+      : '';
+    const answerWordHtml = (wt.type === 'fill' && wt.answer_word)
+      ? `<span class="answer-toggle" onclick="toggleAnswer(this)">▼ 正解語を表示</span>
+         <div class="answer-body">${rubyToHtml(escapeHtml(wt.answer_word))}</div>`
+      : '';
+    const typeButtons = ['trace','copy','fill','compose']
+      .filter(t=>t !== wt.type)
+      .map(t=>`<button class="mini-btn" onclick="regenerateWritingTaskAsType(${idx}, '${t}', this)">🔁 ${WRITING_TASK_TYPE_LABELS[t]}に変更</button>`)
+      .join('');
+    item.innerHTML = `
+      <div class="question-head">
+        <span class="question-num">書く練習${idx+1}</span>
+        <span class="question-type">${escapeHtml(typeLabel)}</span>
+        ${verifyBadge}
+      </div>
+      <div class="question-text">${rubyToHtml(escapeHtml(wt.instruction || ''))}</div>
+      ${wt.en_hint ? `<div class="en-hint-note"><span class="en-hint-label">🌏 en_hint</span>${escapeHtml(wt.en_hint)}</div>` : ''}
+      <div class="question-choices">${rubyToHtml(escapeHtml(wt.prompt_text || ''))}</div>
+      ${answerWordHtml}
+      ${exampleHtml}
+      <div class="card-actions" id="wactions-${idx}">
+        <button class="mini-btn" onclick="regenerateWritingTask(${idx}, this)">🔄 この問題だけ作り直す</button>
+        ${typeButtons}
+        <button class="mini-btn" onclick="toggleRewrite('w', ${idx})">✏️ 問題文をリライト</button>
+        <button class="mini-btn" onclick="toggleEdit('w', ${idx})">📝 手動で編集</button>
+      </div>
+      <div class="edit-box" id="ed-w-${idx}">
+        <div class="ef-label">指示文</div>
+        <textarea id="edin-w-${idx}" rows="2">${escapeHtml(wt.instruction || '')}</textarea>
+        <div class="ef-label">お題文（視写対象の文／穴埋め文／お題）</div>
+        <textarea id="edpt-w-${idx}" rows="3">${escapeHtml(wt.prompt_text || '')}</textarea>
+        <div class="ef-label">正解語（穴埋めのみ）</div>
+        <input type="text" id="edaw-w-${idx}" value="${escapeHtml(wt.answer_word || '')}">
+        ${(wt.en_hint !== undefined) ? `<div class="ef-label">en_hint（英語ヒント）</div><textarea id="eden-w-${idx}" rows="2">${escapeHtml(wt.en_hint || '')}</textarea>` : ''}
+        <div class="ef-label">お手本例文（短作文のみ）</div>
+        <textarea id="edex-w-${idx}" rows="2">${escapeHtml(wt.example || '')}</textarea>
+        <div class="card-actions">
+          <button class="mini-btn" onclick="saveManualEditWritingTask(${idx}, this)">保存</button>
+          <button class="mini-btn" onclick="toggleEdit('w', ${idx})">キャンセル</button>
+        </div>
+      </div>
+      <div class="rewrite-box" id="rw-w-${idx}">
+        <textarea id="rwtext-w-${idx}" placeholder="修正指示（例：もっとやさしい言い方に）"></textarea>
+        <div class="card-actions">
+          <button class="mini-btn" onclick="rewriteWritingTask(${idx}, this)">実行</button>
+          <button class="mini-btn" onclick="toggleRewrite('w', ${idx})">閉じる</button>
+        </div>
+      </div>
+    `;
+    area.appendChild(item);
+  });
+}
+
 // 読解問題はそのままに、漢字クイズだけを追加・再生成する
 async function generateKanjiQuizOnly(){
   const apiKey = getApiKey();
@@ -1441,18 +2527,26 @@ async function callClaudeJSON(apiKey, prompt, maxTokens){
 }
 
 // 学年別の制約テキスト（漢字制限・小1分かち書き・抜き出し字数上限）を1箇所で組み立てる。
+// pandora_global由来のレコード（r.allowedKanjiListが文字列として存在＝グローバル版で生成）は
+// ③軸（学年配当/JLPT配当）で確定した許可漢字リストをそのまま使い、分かち書きもr.wakachiフラグを見る。
+// それ以外（既存の国内g1-g6/jhsレコード）は従来どおりの学年ベースのロジックのみを使う（挙動無変更）。
 function gradeConstraints(r){
   const gradeNum = (r.grade || '').replace('g','');
-  const kanjiList = KANJI_CUMULATIVE[gradeNum] || '';
+  const isGlobalKanji = typeof r.allowedKanjiList === 'string';
+  const kanjiList = isGlobalKanji ? r.allowedKanjiList : (KANJI_CUMULATIVE[gradeNum] || '');
   const kanjiNote = kanjiList
     ? `\n- 設問文・選択肢・解答例に使ってよい漢字は次のリストの範囲のみ。リスト外の漢字はひらがなで書くこと：\n${kanjiList}`
-    : '';
-  const wakachiNote = r.grade === 'g1'
+    : (isGlobalKanji ? `\n- 設問文・選択肢・解答例に漢字は一切使わないこと。すべてひらがなで書くこと。` : '');
+  const wakachiNote = (r.grade === 'g1' || r.wakachi === true)
     ? '\n- 設問文・選択肢も、本文と同じく文節ごとに全角スペースを入れる「分かち書き」で書くこと（句読点の直後にはスペースを入れない）'
     : '';
   const extractionMax = EXTRACTION_MAX_CHARS[r.grade];
   const extractionLimitNote = extractionLimitNoteText(r);
-  return { kanjiNote, wakachiNote, extractionMax, extractionLimitNote };
+  // フリガナ指示（仕様question編§3）。r.furiganaTargetKanjiListはglobalモードのレコードにのみ
+  // 存在するため、domesticでは常に空文字列（furiganaPromptSectionFor内でr.furiganaTargetKanjiList
+  // 未定義を判定）＝domestic出力は無変更。
+  const furiganaNote = furiganaPromptSectionFor(r);
+  return { kanjiNote, wakachiNote, extractionMax, extractionLimitNote, furiganaNote };
 }
 
 // jhs 単問生成時の出力フィールド定義（generateQuestions の jhsOutputFields と同内容）。
@@ -1463,19 +2557,39 @@ function jhsQuestionOutputFields(){
 // 読解問題1問に既存の機械検証（字数補正・本文照合・上限チェック＋jhs採点コード/字数）を適用。
 function reverifyReadingQuestion(q){
   const r = currentRecord;
-  verifyAndFixExtractions([q], r.fullText, r.grade, r.gradeLabel);
-  if(r.grade === 'jhs'){
+  verifyAndFixExtractions([q], r.fullText, extractionGradeKeyFor(r), extractionGradeLabelFor(r));
+  // jhsの採点コード・字数バリデーションはdomestic専用機構（jhsMeta前提）。
+  // globalモードのjhs（jhsMeta: nullで生成）には適用しない。
+  if(r.grade === 'jhs' && !r.globalSource){
     attachJhsScoring([q]);
     verifyJhsCharLimits([q]);
   }
 }
 
-// 上限超過だった抜き出し1問を、前回の失敗（字数）を明示して短い箇所で作り直す。
-// 呼び出し側で上限あり学年（extractionGuidance != null）を保証する。
+// 字数超過・中止形など「不適切な抜き出し（または抜き出し穴埋め）」1問を、前回の失敗を明示して
+// 作り直す。呼び出し側で上限あり学年（extractionGuidance != null）を保証する。
+// globalモードは②軸(vocabLevel)、domesticは①軸(grade)で字数上限を引く（フォローアップ指示）。
 async function regenerateOneExtraction(q, apiKey, r, prevCount){
   const gc = gradeConstraints(r);
-  const eg = extractionGuidance(r.grade);
-  const prompt = `あなたは国語の読解問題を作成するプロの教材編集者です。以下の本文に対し、指定の観点で「抜き出し問題」を1問だけ作り直してください。
+  const extractGradeKey = extractionGradeKeyFor(r);
+  const extractGradeLabel = extractionGradeLabelFor(r);
+  const eg = extractionGuidance(extractGradeKey);
+  const isFillType = q.type === '抜き出し穴埋め';
+  const formRule = isFillType
+    ? `- 形式は「抜き出し穴埋め」。設問文中に本文の一節をそのまま引用し、その中の1語だけを「（　）」で空欄にする。空欄に入る語をanswerに入れる（本文の表記と完全に一致させること）。choicesは[]にすること`
+    : `- 形式は「抜き出し」。解答（answer）には本文の該当箇所を一字一句そのまま（省略・言い換えなし）で入れる`;
+  // 前回の失敗理由を、判定フラグに応じて組み立てる（字数超過・中止形は同時に立つこともある）。
+  const failReasons = [];
+  if(q._overLimit){
+    failReasons.push(`前回の解答は「${q.answer || ''}」で${prevCount}字あり、${extractGradeLabel}の上限${eg.max}字を超えて長すぎました。より短い${eg.max}字以内${isFillType ? 'の語' : 'の箇所'}を選び直してください。`);
+  }
+  if(q._midStop){
+    failReasons.push(`前回の解答「${q.answer || ''}」は「〜て」「〜くて」などの中止形（文として完結しない形）で終わっており不自然でした。文として自然に完結する箇所を選ぶか、適切な箇所が無ければ理由は抜き出しではなく記述式で問うようにしてください。`);
+  }
+  if(!failReasons.length){
+    failReasons.push(`前回の解答は「${q.answer || ''}」でした。より適切な箇所を選び直してください。`);
+  }
+  const prompt = `あなたは国語の読解問題を作成するプロの教材編集者です。以下の本文に対し、指定の観点で「${isFillType ? '抜き出し穴埋め問題' : '抜き出し問題'}」を1問だけ作り直してください。
 
 # 本文（${r.gradeLabel}・${r.genreLabel}・難易度：${r.difficultyLabel}）
 ${stripRuby(r.fullText)}
@@ -1484,17 +2598,16 @@ ${stripRuby(r.fullText)}
 - ${q.kanten || ''}
 
 # 前回の失敗（重要）
-前回の抜き出しの解答は「${q.answer || ''}」で${prevCount}字あり、${r.gradeLabel}の上限${eg.max}字を超えて長すぎました。今回は、より短い${eg.max}字以内の箇所を選び直してください。
+${failReasons.join('\n')}
 
 # 作成ルール
-- 形式は「抜き出し」。解答（answer）には本文の該当箇所を一字一句そのまま（省略・言い換えなし）で入れる
-- 抜き出す箇所の長さそのものを必ず${eg.max}字以内に収めること。${eg.structure}
-- 設問文に書く字数指定は「〜字で書き抜きなさい」の形にする（この数値は機械補正するため正確でなくてよいが、抜き出す箇所自体は必ず短くすること）
-- 学年（${r.gradeLabel}）にふさわしい語彙・言い回しで書くこと${gc.kanjiNote}${gc.wakachiNote}
+${formRule}
+- ${isFillType ? '空欄に入る語' : '抜き出す箇所'}の長さそのものを必ず${eg.max}字以内に収めること。${eg.structure}
+${isFillType ? '' : '- 解答が「〜て」「〜で」「〜くて」などの中止形や、文として不完全な形で終わらないようにすること。自然に完結する箇所を選ぶこと\n- 設問文に書く字数指定は「〜字で書き抜きなさい」の形にする（この数値は機械補正するため正確でなくてよいが、抜き出す箇所自体は必ず短くすること）\n'}- 学年（${r.gradeLabel}）にふさわしい語彙・言い回しで書くこと${gc.kanjiNote}${gc.wakachiNote}${gc.furiganaNote || ''}
 
 # 出力形式（重要）
 JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。
-{"question": {"type": "抜き出し", "kanten": "${q.kanten || ''}", "question_text": "設問文", "choices": [], "answer": "本文からの抜き出し", "explanation": "解説"}}`;
+{"question": {"type": "${isFillType ? '抜き出し穴埋め' : '抜き出し'}", "kanten": "${q.kanten || ''}", "question_text": "設問文", "choices": [], "answer": "${isFillType ? '空欄に入る語' : '本文からの抜き出し'}", "explanation": "解説"}}`;
   const parsed = await callClaudeJSON(apiKey, prompt, 1000);
   const nq = parsed.question || (Array.isArray(parsed.questions) && parsed.questions[0]);
   if(!nq || !nq.question_text) throw new Error('作り直し結果を読み取れませんでした。');
@@ -1504,14 +2617,14 @@ JSON以外の文字は一切出力しないこと。前置き・説明・コー�
   return nq;
 }
 
-// 上限超過の抜き出し問題を、その問題だけ自動で1回だけ作り直す（LLMは字数を数えられないための担保）。
-// 差し替えは本文照合できた場合のみ（元を壊さない）。再生成後も超過なら警告バッジのまま残る。
-// 新規生成時・機能1の作り直し時の両方から呼ぶ。setStatus はリトライ発生時のUI表示用コールバック。
+// 不適切な抜き出し（字数超過・中止形）を、その問題だけ自動で1回だけ作り直す（LLMは字数を数えられず、
+// 中止形も自発的には避けにくいための機械側の担保）。差し替えは本文照合できた場合のみ（元を壊さない）。
+// 再生成後も不適切なら警告バッジのまま残る。新規生成時・機能1の作り直し時の両方から呼ぶ。
 async function retryOverLimitExtractions(questions, apiKey, r, setStatus){
-  if(!EXTRACTION_MAX_CHARS[r.grade]) return; // jhs等：上限なしはリトライしない
+  if(!EXTRACTION_MAX_CHARS[extractionGradeKeyFor(r)]) return; // jhs等：上限なしはリトライしない
   for(let i=0; i<questions.length; i++){
     const q = questions[i];
-    if(!q || !q._overLimit) continue;
+    if(!q || (!q._overLimit && !q._midStop)) continue;
     if(setStatus) setStatus();
     try{
       const nq = await regenerateOneExtraction(q, apiKey, r, q._actualCount);
@@ -1520,6 +2633,73 @@ async function retryOverLimitExtractions(questions, apiKey, r, setStatus){
         questions[i] = nq;
       }
     }catch(e){ /* 失敗時は元の問題を保持（警告バッジのまま） */ }
+  }
+}
+
+// ===== 設問文・選択肢のフリガナ/配当外漢字の検証＋リトライ（仕様③④⑤） =====
+// verifyQuestionFurigana を1問ずつ回して q._furiWarn に格納（バッジ用）。検証対象外（旧レコード等）は null。
+function verifyQuestionsFurigana(questions, r){
+  const notes = [];
+  (questions || []).forEach(q=>{
+    const texts = [q.question_text || ''].concat(q.choices || []);
+    const res = verifyQuestionFurigana(texts, r); // ゲート・許可集合導出は verifyQuestionFurigana 側（条件1）
+    q._furiWarn = (res && (res.missing || res.extra || res.outOfLevel)) ? res : null;
+    if(q._furiWarn){
+      const parts = [];
+      if(res.outOfLevel) parts.push(`配当外漢字：${res.outOfLevelChars.join('・')}`);
+      if(res.missing) parts.push(`フリガナ付け忘れ${res.missing}件`);
+      if(res.extra) parts.push(`フリガナ付けすぎ${res.extra}件`);
+      notes.push(`問${q.number != null ? q.number : ''}：設問文・選択肢に ${parts.join('・')}（自動修正なし・要確認）。`);
+    }
+  });
+  return notes;
+}
+
+// 設問文・選択肢を「3層ルール」に沿って書き直す（answer・観点・形式は不変・条件2）。
+// 抜き出し問題の設問文のルビ違反もこの経路で扱う（regenerateOneExtraction＝answer差し替えには混ぜない）。
+async function regenerateOneForFurigana(q, apiKey, r){
+  const gc = r.globalSource ? globalQuestionConstraints(r) : gradeConstraints(r);
+  const isChoice = q.choices && q.choices.length;
+  const { symbols } = choiceSymbolsFor(r);
+  const choiceRule = isChoice
+    ? `- 選択肢の記号（${symbols.join('・')}）と個数は変えない。正答は「${q.answer}」のまま、各記号の位置に対応する中身を保つこと`
+    : '- これは選択肢のない問題。answerは絶対に変えず、設問文の漢字表記だけ規則に合わせる';
+  const choiceSchema = isChoice ? symbols.slice(0, q.choices.length).map(s=>`"${s}　..."`).join(', ') : '';
+  const prompt = `あなたは国語の読解問題を推敲するプロの編集者です。次の設問文（と選択肢）を、答え・観点・形式を一切変えずに、下記の漢字・フリガナ規則（3層）に厳密に従って書き直してください。配当外漢字はひらがな化、フリガナ対象漢字にはルビ付与を確実に反映します。
+
+# 対象の設問
+形式：${q.type || ''}
+設問文：${q.question_text || ''}
+${isChoice ? '選択肢：\n' + q.choices.join('\n') : '選択肢：なし'}
+正答：${q.answer || ''}
+
+# 厳守する規則${gc.kanjiNote}${gc.wakachiNote}${gc.furiganaNote || ''}
+${choiceRule}
+- 「——線『…』について」等の本文引用部の文言（漢字表記）は変えないこと。ルビの付与のみ規則に従う
+
+# 出力形式（重要）
+JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。
+{"question_text": "書き直した設問文", "choices": [${choiceSchema}]}`;
+  const parsed = await callClaudeJSON(apiKey, prompt, 1500);
+  if(parsed.question_text) q.question_text = parsed.question_text;
+  if(isChoice && Array.isArray(parsed.choices) && parsed.choices.length) q.choices = parsed.choices;
+  // answer/type/kanten は出力に含めないため不変
+}
+
+// フリガナ/配当外違反の問を1回だけ書き直す（中止形と同枠：1回・残存はバッジ止まり）。
+// 書き直し後は stripRuby 経由の照合・重複・フリガナ検証を再実行して新たな違反混入を防護（条件2）。
+async function retryFuriganaIssues(questions, apiKey, r, setStatus){
+  for(let i=0; i<questions.length; i++){
+    const q = questions[i];
+    if(!q || !q._furiWarn) continue;
+    if(setStatus) setStatus();
+    try{
+      await regenerateOneForFurigana(q, apiKey, r);
+      reverifyReadingQuestion(q); // verifyAndFixExtractions（stripRuby経由の照合・字数・中止形）を内包
+      const texts = [q.question_text || ''].concat(q.choices || []);
+      const res = verifyQuestionFurigana(texts, r);
+      q._furiWarn = (res && (res.missing || res.extra || res.outOfLevel)) ? res : null; // 残存ならバッジ継続
+    }catch(e){ /* 失敗時は元のまま（バッジ継続） */ }
   }
 }
 
@@ -1575,14 +2755,32 @@ function populateEditFields(kind, idx){
     const ch = document.getElementById('edch-q-' + idx);
     if(ch) ch.value = (q.choices || []).join('\n');
     setVal('edan-q-' + idx, q.answer || '');
+    if(q.en_hint !== undefined) setVal('eden-q-' + idx, q.en_hint || '');
     setVal('edex-q-' + idx, q.explanation || '');
-  }else{
+  }else if(kind === 'k'){
     const q = (currentQuestions.kanjiQuiz || [])[idx]; if(!q) return;
     setVal('edwd-k-' + idx, q.word || '');
     setVal('edqt-k-' + idx, q.question_text || '');
     setVal('edch-k-' + idx, (q.choices || []).join('\n'));
     setVal('edan-k-' + idx, q.answer || '');
     setVal('edex-k-' + idx, q.explanation || '');
+  }else if(kind === 'v'){
+    // globalモード帯2：語彙クイズの手動編集欄（kanjiQuizと同じ操作系を流用）
+    const q = (currentQuestions.vocabQuiz || [])[idx]; if(!q) return;
+    setVal('edwd-v-' + idx, q.word || '');
+    setVal('edqt-v-' + idx, q.question_text || '');
+    setVal('edch-v-' + idx, (q.choices || []).join('\n'));
+    setVal('edan-v-' + idx, q.answer || '');
+    if(q.en_hint !== undefined) setVal('eden-v-' + idx, q.en_hint || '');
+    setVal('edex-v-' + idx, q.explanation || '');
+  }else if(kind === 'w'){
+    // globalモード帯3：書く練習の手動編集欄（2件・idx=0/1）
+    const wt = (currentQuestions.writingTasks || [])[idx]; if(!wt) return;
+    setVal('edin-w-' + idx, wt.instruction || '');
+    setVal('edpt-w-' + idx, wt.prompt_text || '');
+    setVal('edaw-w-' + idx, wt.answer_word || '');
+    if(wt.en_hint !== undefined) setVal('eden-w-' + idx, wt.en_hint || '');
+    setVal('edex-w-' + idx, wt.example || '');
   }
 }
 
@@ -1596,12 +2794,15 @@ function saveManualEdit(idx, btn){
   const chEl = document.getElementById('edch-q-' + idx);
   if(chEl){ q.choices = chEl.value.split('\n').map(s=>s.trim()).filter(Boolean); }
   q.answer = valOf('edan-q-' + idx).trim();
+  if(q.en_hint !== undefined) q.en_hint = valOf('eden-q-' + idx).trim();
   q.explanation = valOf('edex-q-' + idx).trim();
 
   const isExt = (q.type && String(q.type).includes('抜き出し')) || /書き抜き|抜き出し/.test(q.question_text || '');
   const answerChanged = q.answer !== oldAnswer;
-  // 字数・本文照合・上限を再計算（noFix=trueで設問文の字数表記は自動補正しない）
-  verifyAndFixExtractions([q], r.fullText, r.grade, r.gradeLabel, true);
+  // 字数・本文照合・上限を再計算（noFix=trueで設問文の字数表記は自動補正しない）。
+  // globalモードは②軸(vocabLevel)、domesticは①軸(grade)を参照する（フォローアップ監査で発見・是正。
+  // reverifyReadingQuestion等は既に対応済みだったが、この手動編集の再検証は未対応のまま残っていた）。
+  verifyAndFixExtractions([q], r.fullText, extractionGradeKeyFor(r), extractionGradeLabelFor(r), true);
 
   const notes = [];
   if(isExt && answerChanged){
@@ -1612,6 +2813,8 @@ function saveManualEdit(idx, btn){
 
   renderQuestions(); // 重複(_dupAnswer)を再判定してバッジ更新＋編集欄を閉じる
   renderKanjiQuiz();
+  renderVocabQuiz(); // globalモードのみ意味を持つ（domesticはvocabQuiz未設定のため即return）
+  renderWritingTasks(); // 同上
   hoSave(HO_QSET, currentQuestions);
   const label = `問${q.number != null ? q.number : idx+1}を編集しました。`;
   showNotice(label + (notes.length ? ' ' + notes.join(' ') : ''), notes.length ? 'err' : 'info');
@@ -1625,6 +2828,8 @@ function saveManualEditKanji(idx, btn){
   q.question_text = valOf('edqt-k-' + idx).trim();
   const chEl = document.getElementById('edch-k-' + idx);
   if(chEl){ q.choices = chEl.value.split('\n').map(s=>s.trim()).filter(Boolean); }
+  const rdEl = document.getElementById('edrd-k-' + idx);
+  if(rdEl){ q.reading = rdEl.value.trim(); }
   q.answer = valOf('edan-k-' + idx).trim();
   q.explanation = valOf('edex-k-' + idx).trim();
   // 対象漢字が出題語に含まれるか再照合（既存の機械検証）
@@ -1632,6 +2837,8 @@ function saveManualEditKanji(idx, btn){
 
   renderQuestions();
   renderKanjiQuiz();
+  renderVocabQuiz(); // globalモードのみ意味を持つ（domesticはvocabQuiz未設定のため即return）
+  renderWritingTasks(); // 同上
   hoSave(HO_QSET, currentQuestions);
   const warn = q._verified ? '' : ' ⚠ 出題語に対象漢字が含まれていません。';
   showNotice(`漢字${q.number != null ? q.number : idx+1}を編集しました。` + warn, q._verified ? 'info' : 'err');
@@ -1641,7 +2848,8 @@ function saveManualEditKanji(idx, btn){
 // 該当設問に _dupAnswer フラグを立て、警告文の配列を返す。自動リトライはしない（人間が判断）。
 function detectDuplicateAnswers(questions){
   questions.forEach(q=>{ q._dupAnswer = false; });
-  const norm = s => String(s || '').replace(/[\s　]/g,'').trim();
+  // 《》ルビ混入で重複判定が壊れないよう stripRuby を通す（③防護。抜き出し正答は本来ルビ無しだが防御的に）。
+  const norm = s => stripRuby(String(s || '')).replace(/[\s　]/g,'').trim();
   const exts = [];
   questions.forEach((q, i)=>{
     const isExt = (q.type && String(q.type).includes('抜き出し')) || /書き抜き|抜き出し/.test(q.question_text || '');
@@ -1711,18 +2919,31 @@ async function regenerateQuestion(idx, btn, opts){
   setCardBusy(busyRow, btn, '作り直し中...');
   document.querySelectorAll('#qactions-' + idx + ' button').forEach(b=>{ b.disabled = true; });
   try{
-    const gc = gradeConstraints(r);
-    const isJhs = r.grade === 'jhs';
+    // globalモードは②軸参照のgc・あいう記号を使う（フォローアップ指示：作り直し系関数の
+    // globalモード対応）。domesticはgradeConstraints/ア〜エのまま無変更。
+    const gc = r.globalSource ? globalQuestionConstraints(r) : gradeConstraints(r);
+    const { symbols, maxChoices } = choiceSymbolsFor(r);
+    const isJhs = r.grade === 'jhs' && !r.globalSource; // jhs体裁はdomestic専用機構
     // 既存の全設問（正答も含めて重複を避けるため answer も渡す）
     const others = currentQuestions.questions
       .filter((_, i)=>i !== idx)
       .map((o, i)=>`${i+1}. [${o.type || ''}] ${o.question_text || ''} → 正答：${o.answer || ''}`).join('\n') || '（他になし）';
     const jhsNotation = isJhs ? '\n- 字数条件を課す場合は、設問文の末尾に「（句読点も字数に含める。）」を付けること' : '';
     const jhsFields = isJhs ? jhsQuestionOutputFields() : '';
+    const formsFree = r.globalSource ? '選択式／穴埋め／抜き出し／抜き出し穴埋め／記述式' : '選択式／抜き出し／記述式';
     const formInstruction = typeFixed
       ? `# この問題の形式（必ずこの形式にする）\n${targetType}`
-      : `# この問題の形式\n本文に適した形式（選択式／抜き出し／記述式）を1つ選んでよい`;
-    const typeOut = typeFixed ? targetType : '選択式／抜き出し／記述式のいずれか';
+      : `# この問題の形式\n本文に適した形式（${formsFree}）を1つ選んでよい`;
+    const typeOut = typeFixed ? targetType : formsFree.split('／').join('/') + 'のいずれか';
+    // globalモード帯1の追加形式（穴埋め・抜き出し穴埋め）の構築ルール。この2形式は既存の
+    // 「選択式／抜き出し／記述式」の作成ルールだけでは組み立て方が伝わらないため個別に補う
+    // （追加修正指示の確認作業で発覚した抜け穴。この関数は元々domestic専用の想定だったが
+    // globalモードの帯1カードからも「この問題だけ作り直す」経由で到達しうる共有関数のため）。
+    const extraFormRule = targetType === '抜き出し穴埋め'
+      ? '\n- 「抜き出し穴埋め」形式：設問文中に本文の一節（該当箇所を含む一文またはその一部）をそのまま引用し、その中の1語だけを「（　）」で空欄にする。空欄に入る語をanswerに入れる（本文の表記と完全に一致させること）。choicesは[]にすること'
+      : (targetType === '穴埋め'
+        ? '\n- 「穴埋め」形式：文中の空欄に入る語を選択肢から選ばせる形式。choicesに正しい選択肢を含めること'
+        : '');
 
     const prompt = `あなたは国語の読解問題を作成するプロの教材編集者です。以下の本文に対し、指定の観点・形式で読解問題を「1問だけ」作成してください。
 
@@ -1738,15 +2959,15 @@ ${formInstruction}
 ${others}
 
 # 作成ルール
-- 選択式は「ア〜エ」の4択。抜き出しは本文の該当箇所を一字一句そのまま（省略・言い換えなし）answer に入れる。記述式は模範解答を入れる
+- 選択式は「${choiceSymbolPhrase(r)}」の${maxChoices}択。抜き出しは本文の該当箇所を一字一句そのまま（省略・言い換えなし）answer に入れる。記述式は模範解答を入れる
 - 他の設問と内容・問い方が重複しないだけでなく、正答（answer）も他の設問と重複しないこと。特に抜き出しは、上記の既存の正答とは本文の異なる箇所を答えにすること
-- 抜き出しでは設問文の字数指定は「〜字で書き抜きなさい」の形で書く（字数の数値はこちらで機械補正するため正確でなくてよい。該当箇所の選定を最優先）${gc.extractionLimitNote}
+- 抜き出しでは設問文の字数指定は「〜字で書き抜きなさい」の形で書く（字数の数値はこちらで機械補正するため正確でなくてよい。該当箇所の選定を最優先）${gc.extractionLimitNote}${extraFormRule}
 - 選択式の誤答（ダミー）は、本文をよく読んでいないと選んでしまいそうな、もっともらしいものにする
-- 学年（${r.gradeLabel}）にふさわしい語彙・言い回しで書くこと${gc.kanjiNote}${gc.wakachiNote}${jhsNotation}
+- 学年（${r.gradeLabel}）にふさわしい語彙・言い回しで書くこと${gc.kanjiNote}${gc.wakachiNote}${gc.furiganaNote || ''}${jhsNotation}
 
 # 出力形式（重要）
 JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。以下の形式そのままで出力すること。
-{"question": {"type": "${typeOut}", "kanten": "${targetKanten}", "question_text": "設問文", "choices": ["ア　...", "イ　...", "ウ　...", "エ　..."], "answer": "正答（選択式なら記号、抜き出しなら該当文言、記述式なら模範解答）", "explanation": "解説"${jhsFields}}}
+{"question": {"type": "${typeOut}", "kanten": "${targetKanten}", "question_text": "設問文", "choices": ["${symbols[0]}　...", "${symbols[1]}　..."], "answer": "正答（選択式なら記号、抜き出しなら該当文言、記述式なら模範解答）", "explanation": "解説"${jhsFields}}}
 choicesは選択式のみ。抜き出し・記述式では "choices": [] とすること。`;
 
     const parsed = await callClaudeJSON(apiKey, prompt, 1500);
@@ -1759,11 +2980,20 @@ choicesは選択式のみ。抜き出し・記述式では "choices": [] とす�
 
     // 上限超過なら、その問題だけ自動で1回だけ短く作り直す
     const holder = [nq];
-    await retryOverLimitExtractions(holder, apiKey, r, ()=>{ if(btn) btn.textContent = '字数超過のため作り直し中...'; });
+    await retryOverLimitExtractions(holder, apiKey, r, ()=>{ if(btn) btn.textContent = '抜き出しを作り直し中...'; });
+
+    // 設問文・選択肢のフリガナ/配当外を検証→1回だけ書き直し（③④⑤）。domestic のみ（global は既存の集約検証）。
+    // 条件2：中止形（answer系・上）の後にルビ違反（表示系）を処理。
+    if(!r.globalSource){
+      verifyQuestionsFurigana(holder, r);
+      await retryFuriganaIssues(holder, apiKey, r, ()=>{ if(btn) btn.textContent = 'フリガナ・漢字を調整中...'; });
+    }
 
     currentQuestions.questions[idx] = holder[0];
     renderQuestions();       // _dupAnswer を再判定してバッジ更新
     renderKanjiQuiz();
+    renderVocabQuiz(); // globalモードのみ意味を持つ（domesticはvocabQuiz未設定のため即return）
+    renderWritingTasks(); // 同上
     hoSave(HO_QSET, currentQuestions);
     const changed = holder[0];
     let msg = `問${changed.number != null ? changed.number : idx+1}を${kantenMode ? '「' + targetKanten + '」の観点で' : ''}作り直しました（他の問題・漢字クイズはそのままです）。`;
@@ -1790,10 +3020,12 @@ async function rewriteQuestion(idx, btn){
   setCardBusy('rw-q-' + idx, btn, 'リライト中...');
   document.querySelectorAll('#qactions-' + idx + ' button').forEach(b=>{ b.disabled = true; });
   try{
-    const gc = gradeConstraints(r);
+    // globalモードは②軸参照のgc・あいう記号を使う（フォローアップ指示）。domesticは無変更。
+    const gc = r.globalSource ? globalQuestionConstraints(r) : gradeConstraints(r);
+    const { symbols } = choiceSymbolsFor(r);
     const isChoice = q.choices && q.choices.length;
     const choiceRule = isChoice
-      ? `- 選択肢の記号（ア〜エ）と個数は変えない。正答は「${q.answer}」のままになるよう、各記号の位置に対応する選択肢の中身を調整すること（選択肢の順序と正答記号の対応を維持する）`
+      ? `- 選択肢の記号（${choiceSymbolPhrase(r)}）と個数は変えない。正答は「${q.answer}」のままになるよう、各記号の位置に対応する選択肢の中身を調整すること（選択肢の順序と正答記号の対応を維持する）`
       : '- これは選択肢のない問題。answerは絶対に変えず、設問文の言い回しだけ調整する';
 
     const prompt = `あなたは国語の読解問題を推敲するプロの編集者です。次の設問文（と選択肢）を、指示に従って書き直してください。正答・解説・観点・形式は一切変えず、「答えが変わらない範囲」で表現だけ調整します。
@@ -1815,11 +3047,11 @@ ${instr}
 # ルール
 - 書き直してよいのは「設問文（question_text）」と「選択肢（choices）」だけ。正答（answer）・解説・観点・形式は変更しない
 ${choiceRule}
-- 学年（${r.gradeLabel}）にふさわしい語彙・言い回しで書くこと${gc.kanjiNote}${gc.wakachiNote}
+- 学年（${r.gradeLabel}）にふさわしい語彙・言い回しで書くこと${gc.kanjiNote}${gc.wakachiNote}${gc.furiganaNote || ''}
 
 # 出力形式（重要）
 JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。
-{"question_text": "書き直した設問文", "choices": [${isChoice ? '"ア　...", "イ　...", "ウ　...", "エ　..."' : ''}]}
+{"question_text": "書き直した設問文", "choices": [${isChoice ? `"${symbols[0]}　...", "${symbols[1]}　..."` : ''}]}
 選択肢がない問題では "choices": [] とすること。`;
 
     const parsed = await callClaudeJSON(apiKey, prompt, 1500);
@@ -1829,8 +3061,16 @@ JSON以外の文字は一切出力しないこと。前置き・説明・コー�
     // 正答・解説・観点・形式は不変。抜き出しの字数表記だけ新しい設問文に再反映（answerは変わらない）
     reverifyReadingQuestion(q);
 
+    // リライト結果のフリガナ/配当外を検証→1回だけ書き直し（③④⑤）。domestic のみ（global は既存の集約検証）。
+    if(!r.globalSource){
+      verifyQuestionsFurigana([q], r);
+      await retryFuriganaIssues([q], apiKey, r, ()=>{ if(btn) btn.textContent = 'フリガナ・漢字を調整中...'; });
+    }
+
     renderQuestions();
     renderKanjiQuiz();
+    renderVocabQuiz(); // globalモードのみ意味を持つ（domesticはvocabQuiz未設定のため即return）
+    renderWritingTasks(); // 同上
     hoSave(HO_QSET, currentQuestions);
     showNotice(`問${q.number != null ? q.number : idx+1}の問題文をリライトしました（答えは変えていません）。`, 'info');
   }catch(err){
@@ -1843,24 +3083,61 @@ JSON以外の文字は一切出力しないこと。前置き・説明・コー�
 // 漢字クイズ1問を生成（対象漢字は固定・機械側で決定済み。AIに漢字を選ばせない）。
 async function generateOneKanjiQuiz(apiKey, record, kanji, avoidWord){
   const avoid = avoidWord ? `\n- 出題語は「${avoidWord}」以外の、別の言葉にすること` : '';
-  const prompt = `あなたは小学生向けの漢字教材を作成するプロの編集者です。次の漢字1字について、読み方を答える選択式クイズを1問だけ作成してください。
+  // 追加修正指示③：globalモード・②軸小1以上はcanvas書き取り形式（domesticは常にfalse＝既存動作のまま）
+  const isGlobal = !!record.globalSource;
+  const writingMode = isGlobal && (record.vocabLevel || record.grade) !== 'pre1';
+  // レベル軸参照の監査（フォローアップ指示）：漢字の対象レベル表示は③軸(kanjiLevel)、
+  // 語のなじみやすさは②軸(vocabLevel)に従う。domesticは単一軸のためgradeLabelのまま。
+  const kanjiLevelLabel = isGlobal ? (record.kanjiLevelLabel || record.gradeLabel) : record.gradeLabel;
+  const wordLevelLabel = isGlobal ? (record.vocabLevelLabel || record.gradeLabel) : record.gradeLabel;
+  // 地の文（出題語・対象漢字以外の指示文）のkanjiLevel適用（確認指示への対応）：出題対象の
+  // 漢字自体にルビを振らないのは正しい（答えの漏洩防止）が、指示文「〜を書きなさい」等は別物であり、
+  // 級外漢字（読/方/選/漢/字/書 等）を含みうる。globalモードのみひらがな中心の指示文に置き換える
+  // （domesticは従来どおり漢字の指示文のまま＝無変更）。
+  const writeInstructionText = isGlobal ? 'を　かんじで　かきましょう。' : 'を漢字で書きなさい。';
+  const choiceInstructionText = isGlobal ? 'の　よみかたを　えらびましょう。' : 'の読み方を選びなさい。';
+  const globalInstructionNote = isGlobal
+    ? '\n- instruction文（地の文）は対象漢字・出題語を除き、ひらがな中心のやさしい言い回しで書くこと（級外漢字を使わないこと）'
+    : '';
+  // globalモードの選択肢記号あいう明示（仕様§3）。generateKanjiQuizGlobalには元々あった
+  // 明示ルールが、この共有関数（regenerateKanji等から到達）には抜けていたため追加（確認作業で発覚）。
+  const symbolNote = isGlobal
+    ? '\n- 選択肢の記号は必ず「あ・い・う・え」を使うこと（ア・イ・ウ・エは使わないこと）'
+    : '';
+  const prompt = writingMode
+    ? `あなたは継承語学習者向けの漢字教材を作成するプロの編集者です。次の漢字1字について、読みを提示してその漢字を書かせる書き取りクイズを1問だけ作成してください。
 
-# 対象の漢字（${record.gradeLabel}で習う漢字）
+# 対象の漢字（${kanjiLevelLabel}で習う漢字）
+${kanji}
+
+# 作成ルール
+- その漢字を含む短い言葉（熟語または訓読みの言葉）を1つ選び、その言葉のひらがな読みを提示して、漢字表記を書かせる形式にすること${avoid}
+- 言葉は${wordLevelLabel}の子どもが日常や教科書で目にする自然なものにする
+- reading にはひらがなの読みだけを入れ、answer には word と同じ漢字表記を入れること${globalInstructionNote}
+
+# 出力形式（重要）
+JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。
+{"quiz": {"kanji": "${kanji}", "word": "出題する言葉（漢字を含む表記）", "reading": "その言葉のひらがな読み", "question_text": "「（reading）」${writeInstructionText}", "choices": [], "answer": "word と同じ漢字表記", "explanation": "書き方の簡単な説明"}}`
+    : `あなたは${isGlobal ? '継承語学習者向けの漢字教材を作成するプロの編集者です' : '小学生向けの漢字教材を作成するプロの編集者です'}。次の漢字1字について、読み方を答える選択式クイズを1問だけ作成してください。
+
+# 対象の漢字（${kanjiLevelLabel}で習う漢字）
 ${kanji}
 
 # 作成ルール
 - その漢字を含む短い言葉（熟語または訓読みの言葉）を1つ提示し、その言葉の読み方（ひらがな）を4択で答えさせる${avoid}
-- 言葉は${record.gradeLabel}の子どもが日常や教科書で目にする自然なものにする
+- 言葉は${wordLevelLabel}の子どもが日常や教科書で目にする自然なものにする
 - 誤答の選択肢は、似た音・別の読み方（音読み/訓読みの取り違え）など、もっともらしいものにする
-- 読み方はすべてひらがなで書く
+- 読み方はすべてひらがなで書く${symbolNote}${globalInstructionNote}
 
 # 出力形式（重要）
 JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。
-{"quiz": {"kanji": "${kanji}", "word": "出題する言葉（漢字を含む表記）", "question_text": "「（言葉）」の読み方を選びなさい。", "choices": ["ア　よみかた1", "イ　よみかた2", "ウ　よみかた3", "エ　よみかた4"], "answer": "正答の記号", "explanation": "正しい読みと簡単な説明"}}`;
+{"quiz": {"kanji": "${kanji}", "word": "出題する言葉（漢字を含む表記）", "question_text": "「（言葉）」${choiceInstructionText}", "choices": ["${isGlobal ? 'あ' : 'ア'}　よみかた1", "${isGlobal ? 'い' : 'イ'}　よみかた2", "${isGlobal ? 'う' : 'ウ'}　よみかた3", "${isGlobal ? 'え' : 'エ'}　よみかた4"], "answer": "正答の記号", "explanation": "正しい読みと簡単な説明"}}`;
   const parsed = await callClaudeJSON(apiKey, prompt, 1200);
   const quiz = parsed.quiz || (Array.isArray(parsed.kanji_quiz) && parsed.kanji_quiz[0]);
   if(!quiz || !quiz.word) throw new Error('漢字クイズを読み取れませんでした。もう一度お試しください。');
   quiz.kanji = kanji; // 対象漢字は固定
+  quiz.mode = writingMode ? 'write' : 'choice';
+  if(writingMode) quiz.choices = []; // 書き取り形式はchoicesを使わない（AIの自己申告を上書き）
   quiz._verified = quiz.word && quiz.kanji && String(quiz.word).includes(quiz.kanji);
   return quiz;
 }
@@ -1880,6 +3157,8 @@ async function regenerateKanji(idx, btn){
     currentQuestions.kanjiQuiz[idx] = nq;
     renderQuestions();
     renderKanjiQuiz();
+    renderVocabQuiz(); // globalモードのみ意味を持つ（domesticはvocabQuiz未設定のため即return）
+    renderWritingTasks(); // 同上
     hoSave(HO_QSET, currentQuestions);
     showNotice(`漢字「${nq.kanji}」の問題を作り直しました。`, 'info');
   }catch(err){
@@ -1889,15 +3168,24 @@ async function regenerateKanji(idx, btn){
 }
 
 // 機能3b：違う漢字で作り直す（現在の5字と重複しない新出漢字をJS側で機械選定してからAIに渡す）
+// globalモードは③軸(kanjiLevel)の新出漢字（kanjiDiffList。record生成時に学年配当/JLPT配当の
+// どちらでも単一情報源として計算済み）を候補にする。従来のgetGradeNewKanjiは①軸(grade)と
+// 学年配当固定のためglobalモードでは誤り（フォローアップ指示：レベル軸参照の監査）。
 async function regenerateKanjiDifferent(idx, btn){
   const apiKey = ensureAiReady();
   if(!apiKey) return;
   if(!currentQuestions.kanjiQuiz) return;
   const cur = currentQuestions.kanjiQuiz[idx];
   if(!cur) return;
-  const gradeNum = (currentRecord.grade || '').replace('g','');
-  const pool = getGradeNewKanji(gradeNum);
-  if(!pool){ showNotice('この学年は漢字配当リストの対象外のため、漢字を差し替えられません。', 'err'); return; }
+  let pool;
+  if(currentRecord.globalSource){
+    pool = currentRecord.kanjiDiffList || '';
+    if(!pool){ showNotice('このレベルには新出漢字がないため、漢字を差し替えられません。', 'err'); return; }
+  }else{
+    const gradeNum = (currentRecord.grade || '').replace('g','');
+    pool = getGradeNewKanji(gradeNum);
+    if(!pool){ showNotice('この学年は漢字配当リストの対象外のため、漢字を差し替えられません。', 'err'); return; }
+  }
   const used = new Set(currentQuestions.kanjiQuiz.map(x=>x.kanji));
   const candidates = pool.split('').filter(c=>!used.has(c));
   if(!candidates.length){ showNotice('他に出題できる新出漢字がありません（この学年の新出漢字を出し切っています）。', 'err'); return; }
@@ -1911,6 +3199,8 @@ async function regenerateKanjiDifferent(idx, btn){
     if(Array.isArray(currentQuestions.kanjiQuizTargets)) currentQuestions.kanjiQuizTargets[idx] = newKanji;
     renderQuestions();
     renderKanjiQuiz();
+    renderVocabQuiz(); // globalモードのみ意味を持つ（domesticはvocabQuiz未設定のため即return）
+    renderWritingTasks(); // 同上
     hoSave(HO_QSET, currentQuestions);
     showNotice(`漢字「${cur.kanji}」→「${newKanji}」で作り直しました。`, 'info');
   }catch(err){
@@ -1934,9 +3224,37 @@ async function rewriteKanji(idx, btn){
   document.querySelectorAll('#kactions-' + idx + ' button').forEach(b=>{ b.disabled = true; });
   try{
     const gc = gradeConstraints(currentRecord);
-    const prompt = `あなたは小学生向けの漢字クイズを推敲するプロの編集者です。次の漢字クイズの設問文と選択肢を、指示に従って書き直してください。出題語・正答は変えず、表現だけ調整します。
+    const isWriteMode = q.mode === 'write';
+    // レベル軸参照・選択肢記号の監査（フォローアップ指示）：③軸(kanjiLevel)・②軸(vocabLevel)を
+    // 参照する。domesticはisGlobal=falseのため常にgradeLabel・ア〜エのまま無変更。
+    const isGlobal = !!currentRecord.globalSource;
+    const kanjiLevelLabel = isGlobal ? (currentRecord.kanjiLevelLabel || currentRecord.gradeLabel) : currentRecord.gradeLabel;
+    const wordLevelLabel = isGlobal ? (currentRecord.vocabLevelLabel || currentRecord.gradeLabel) : currentRecord.gradeLabel;
+    const { symbols } = choiceSymbolsFor(currentRecord);
+    const prompt = isWriteMode
+      ? `あなたは継承語学習者向けの漢字クイズを推敲するプロの編集者です。次の漢字書き取りクイズの設問文を、指示に従って書き直してください。出題語・読み・正答は変えず、表現だけ調整します。
 
-# 対象のクイズ（${currentRecord.gradeLabel}）
+# 対象のクイズ（${kanjiLevelLabel}）
+対象漢字：${q.kanji || ''}
+出題語：${q.word || ''}
+読み：${q.reading || ''}
+設問文：${q.question_text || ''}
+正答：${q.answer || ''}
+解説：${q.explanation || ''}
+
+# 修正指示
+${instr}
+
+# ルール
+- 書き直してよいのは「設問文（question_text）」だけ。出題語（word）・読み（reading）・対象漢字（kanji）・正答（answer）・解説は変更しない
+- 読み方はすべてひらがな。${wordLevelLabel}にふさわしい言い回しで書くこと${gc.kanjiNote}${gc.wakachiNote}
+
+# 出力形式（重要）
+JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。
+{"question_text": "書き直した設問文"}`
+      : `あなたは小学生向けの漢字クイズを推敲するプロの編集者です。次の漢字クイズの設問文と選択肢を、指示に従って書き直してください。出題語・正答は変えず、表現だけ調整します。
+
+# 対象のクイズ（${kanjiLevelLabel}）
 対象漢字：${q.kanji || ''}
 出題語：${q.word || ''}
 設問文：${q.question_text || ''}
@@ -1949,22 +3267,24 @@ ${instr}
 
 # ルール
 - 書き直してよいのは「設問文（question_text）」と「選択肢（choices）」だけ。出題語（word）・対象漢字（kanji）・正答（answer）・解説は変更しない
-- 選択肢の記号（ア〜エ）と個数は変えない。正答は「${q.answer}」のままになるよう、各記号の位置に対応する読み方を調整すること（選択肢の順序と正答記号の対応を維持する）
-- 読み方はすべてひらがな。${currentRecord.gradeLabel}にふさわしい言い回しで書くこと${gc.kanjiNote}${gc.wakachiNote}
+- 選択肢の記号（${choiceSymbolPhrase(currentRecord)}）と個数は変えない。正答は「${q.answer}」のままになるよう、各記号の位置に対応する読み方を調整すること（選択肢の順序と正答記号の対応を維持する）
+- 読み方はすべてひらがな。${wordLevelLabel}にふさわしい言い回しで書くこと${gc.kanjiNote}${gc.wakachiNote}
 
 # 出力形式（重要）
 JSON以外の文字は一切出力しないこと。前置き・説明・コードフェンスも禁止。
-{"question_text": "書き直した設問文", "choices": ["ア　...", "イ　...", "ウ　...", "エ　..."]}`;
+{"question_text": "書き直した設問文", "choices": [${symbols.slice(0, (q.choices || []).length || symbols.length).map(s=>`"${s}　..."`).join(', ')}]}`;
 
     const parsed = await callClaudeJSON(apiKey, prompt, 1000);
     if(!parsed.question_text) throw new Error('書き直し結果を読み取れませんでした。もう一度お試しください。');
     q.question_text = parsed.question_text;
-    if(Array.isArray(parsed.choices) && parsed.choices.length) q.choices = parsed.choices;
+    if(!isWriteMode && Array.isArray(parsed.choices) && parsed.choices.length) q.choices = parsed.choices;
     // word/kanji/answer/explanation は不変。既存の機械検証（出題語に対象漢字が含まれるか）を再実行
     q._verified = q.word && q.kanji && String(q.word).includes(q.kanji);
 
     renderQuestions();
     renderKanjiQuiz();
+    renderVocabQuiz(); // globalモードのみ意味を持つ（domesticはvocabQuiz未設定のため即return）
+    renderWritingTasks(); // 同上
     hoSave(HO_QSET, currentQuestions);
     showNotice('漢字クイズの問題文をリライトしました（出題語・正答は変えていません）。', 'info');
   }catch(err){
@@ -1985,26 +3305,33 @@ function renderKanjiQuiz(){
   currentQuestions.kanjiQuiz.forEach((q, idx)=>{
     const item = document.createElement('div');
     item.className = 'question-item';
+    const isWriteMode = q.mode === 'write';
     const verifyBadge = q._verified === false
       ? `<span style="font-size:10px; color:var(--red-text);">⚠ 出題語に対象漢字が含まれていません</span>`
       : `<span style="font-size:10px; color:var(--green-text);">✓ ${escapeHtml(q.kanji || '')}</span>`;
-    const choicesHtml = (q.choices && q.choices.length)
-      ? `<div class="question-choices">${q.choices.map(c=>escapeHtml(c)).join('\n')}</div>`
+    const choicesHtml = (!isWriteMode && q.choices && q.choices.length)
+      ? `<div class="question-choices">${q.choices.map(c=>rubyToHtml(escapeHtml(c))).join('\n')}</div>`
       : '';
+    // 書き取り形式の編集欄：選択肢の代わりに「読み」を編集させる
+    const editMidHtml = isWriteMode
+      ? `<div class="ef-label">読み（ひらがな）</div>
+        <input type="text" id="edrd-k-${idx}" value="${escapeHtml(q.reading || '')}">`
+      : `<div class="ef-label">選択肢（1行に1つ）</div>
+        <textarea id="edch-k-${idx}" rows="4">${escapeHtml((q.choices || []).join('\n'))}</textarea>`;
     item.innerHTML = `
       <div class="question-head">
         <span class="question-num">漢字${escapeHtml(q.number != null ? q.number : idx+1)}</span>
-        <span class="question-type">読み・選択式</span>
+        <span class="question-type">${isWriteMode ? '書き取り' : '読み・選択式'}</span>
         ${verifyBadge}
       </div>
-      <div class="question-text">${escapeHtml(q.question_text || '')}</div>
+      <div class="question-text">${rubyToHtml(escapeHtml(q.question_text || ''))}</div>
       ${choicesHtml}
       <span class="answer-toggle" onclick="toggleAnswer(this)">▼ 解答・解説を表示</span>
       <div class="answer-body">
         <span class="answer-label">解答</span>
         ${escapeHtml(q.answer || '')}
         <span class="explanation-label">解説</span>
-        ${escapeHtml(q.explanation || '')}
+        ${rubyToHtml(escapeHtml(q.explanation || ''))}
       </div>
       <div class="card-actions" id="kactions-${idx}">
         <button class="mini-btn" onclick="regenerateKanji(${idx}, this)">🔄 この漢字だけ作り直す</button>
@@ -2017,8 +3344,7 @@ function renderKanjiQuiz(){
         <input type="text" id="edwd-k-${idx}" value="${escapeHtml(q.word || '')}">
         <div class="ef-label">設問文</div>
         <textarea id="edqt-k-${idx}" rows="2">${escapeHtml(q.question_text || '')}</textarea>
-        <div class="ef-label">選択肢（1行に1つ）</div>
-        <textarea id="edch-k-${idx}" rows="4">${escapeHtml((q.choices || []).join('\n'))}</textarea>
+        ${editMidHtml}
         <div class="ef-label">正答</div>
         <input type="text" id="edan-k-${idx}" value="${escapeHtml(q.answer || '')}">
         <div class="ef-label">解説</div>
@@ -2101,6 +3427,7 @@ initImode();
 initTheme();
 hoRenderStoryBanner(); // 直近の文章レコードがあれば提案バナーを表示
 renderFlowProgress('question'); // 工程進行バー
+updateModeBadge(); // レコード読込前は「国内」（既定）表示。動作モードが見えない状態を作らない
 </script>
 
 </body>

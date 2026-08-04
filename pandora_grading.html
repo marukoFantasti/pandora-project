@@ -836,18 +836,18 @@ function renderJapaneseProblemCard(p, i, pid) {
   // 左：問題文・正答（記述は模範解答）・生徒の選択（選択式のみ）
   h += '<div class="problem-col-left">' +
     '<div><div class="col-label">問題</div>' +
-    '<div class="problem-text">' + escHtml(p.question || '-') + '</div></div>';
+    '<div class="problem-text">' + rubyToHtml(escHtml(p.question || '-')) + '</div></div>';
   if (type === '選択式' && Array.isArray(p.choices) && p.choices.length) {
     h += '<div><div class="col-label">選択肢</div><div class="problem-text" style="font-size:12px">' +
-      p.choices.map(function(c){ return escHtml(c); }).join('<br>') + '</div></div>';
+      p.choices.map(function(c){ return rubyToHtml(escHtml(c)); }).join('<br>') + '</div></div>';
   }
   h += '<div><div class="col-label">' + (type === '記述式' ? '模範解答' : '正答') + '</div>' +
-    '<div class="answer-text">' + escHtml(p.answer || '-') + '</div></div>';
+    '<div class="answer-text">' + rubyToHtml(escHtml(p.answer || '-')) + '</div></div>';
   if (type === '選択式' && p.student_choice != null) {
     // デジタル経路：選択値を表示（自動採点済み）
     h += '<div><div class="col-label">生徒の選択</div>' +
       '<div style="font-size:16px;font-weight:700;color:' + (gs.result === 'correct' ? 'var(--green)' : 'var(--red)') + '">' +
-      escHtml(p.student_choice) + '</div></div>';
+      rubyToHtml(escHtml(p.student_choice)) + '</div></div>';
   } else if (isPrintChoice) {
     // 印刷経路：マークは下の手書き画像で確認して人間が採点
     h += '<div><div class="col-label">生徒の選択</div>' +
@@ -915,12 +915,22 @@ function renderJapaneseProblemCard(p, i, pid) {
 function escHtml(s){
   return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+// ルビ記法「漢字《かんじ》」を <ruby>漢字<rt>かんじ</rt></ruby> に変換（必ず escHtml の後に呼ぶ＝XSS対策）。
+// quiz_template / print_template と同一パターン（国語設問の《》記法を先生の採点画面でも正しく表示するため移植）。
+function rubyToHtml(escapedText){
+  return String(escapedText == null ? '' : escapedText)
+    .replace(/([一-鿿々]+[぀-ゟ゠-ヿー]*)《([^》]*)》/g,
+             '<ruby>$1<rt>$2</rt></ruby>');
+}
 
 function renderGrading(sub) {
   var rawSd = sub.submission_data || {};
   var sd = typeof rawSd === 'string' ? JSON.parse(rawSd) : rawSd;
   var problems = sd.problems || [];
-  var kanji = sd.kanji || [];
+  // 追加修正指示④：pandora_global由来（sd.globalSource）の提出は帯2（漢字・語彙）・帯3（書く練習）を
+  // 採点待ちキュー・進捗カウントから除外する（丸付けは保護者が紙・デジタルともその場で行う）。
+  // domesticはsd.globalSourceが常にfalsyのため従来どおりsd.kanjiがそのまま使われる。
+  var kanji = sd.globalSource ? [] : (sd.kanji || []);
   var main = document.getElementById('main-area');
 
   var d = new Date(sub.submitted_at);
@@ -1173,8 +1183,38 @@ var tcDrawing = false;
 var tcLast = null;
 var tcCurrent = null;
 
+// 先生コメントcanvasのbackingを表示ボックス整合（rect×dpr）にする（生徒canvas quiz_template と同方式）。
+// 固定1200×150では描画ボックス（幅×150px）と縦横比が食い違い、保存PNGが横伸びしていた。
+// preserve=true のときは既存の描画をスナップショットして再描画（リサイズ・回転で消えないように）。
+function tcFit(canvas, preserve) {
+  var rect = canvas.getBoundingClientRect();
+  if (!rect.width || !rect.height) return; // 非表示/未レイアウトはスキップ
+  var ratio = window.devicePixelRatio || 1;
+  var w = Math.round(rect.width * ratio), h = Math.round(rect.height * ratio);
+  if (canvas.width === w && canvas.height === h) return; // 変化なし
+  var prev = null;
+  if (preserve && canvas.width) {
+    prev = document.createElement('canvas');
+    prev.width = canvas.width; prev.height = canvas.height;
+    prev.getContext('2d').drawImage(canvas, 0, 0);
+  }
+  canvas.width = w; canvas.height = h;
+  var ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, w, h);
+  if (prev) ctx.drawImage(prev, 0, 0, w, h); // 旧描画を新backingへ等倍で再描画
+}
+
+// 画面回転・ウィンドウリサイズで書きかけコメントが消えないよう、現在DOM上の初期化済みtc canvasを再fit。
+// リスナは1回だけ登録（カード再描画で毎回追加＝リーク、を避けるため委譲方式）。
+function tcResizeAll() {
+  var list = document.querySelectorAll('canvas[id^="tc-"]');
+  for (var i = 0; i < list.length; i++) { if (list[i]._init) tcFit(list[i], true); }
+}
+
 function tcGetPos(e, canvas) {
   var rect = canvas.getBoundingClientRect();
+  // backing = rect×dpr のため sx===sy（縦横同率＝等倍）。横伸びの原因だった非対称スケールを解消。
   var sx = canvas.width / rect.width, sy = canvas.height / rect.height;
   if (e.touches) return { x: (e.touches[0].clientX - rect.left) * sx, y: (e.touches[0].clientY - rect.top) * sy };
   return { x: (e.clientX - rect.left) * sx, y: (e.clientY - rect.top) * sy };
@@ -1185,10 +1225,10 @@ function tcStart(e, pid) {
   tcCurrent = pid;
   var canvas = document.getElementById('tc-' + pid);
   if (!canvas._init) {
-    var ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // HTML属性の1200×150ではなく、実表示ボックス×dpr でbackingを確定してから描き始める
+    tcFit(canvas, false);
     canvas._init = true;
+    if (!window._tcResizeBound) { window.addEventListener('resize', tcResizeAll); window._tcResizeBound = true; }
   }
   tcDrawing = true;
   tcLast = tcGetPos(e, canvas);
@@ -1201,7 +1241,8 @@ function tcMove(e, pid) {
   var ctx = canvas.getContext('2d');
   var pos = tcGetPos(e, canvas);
   ctx.strokeStyle = '#e74c3c';
-  ctx.lineWidth = 4;
+  // backingがdpr倍の実解像度になったので、線幅も×dprして見た目の太さ（≈4CSS px）を修正前と揃える（条件1）。
+  ctx.lineWidth = 4 * (window.devicePixelRatio || 1);
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
   ctx.beginPath();
