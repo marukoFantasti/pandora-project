@@ -723,7 +723,10 @@ function renderQUnits(){
     units.forEach(function(u){
       var btn=document.createElement('button');
       btn.className='tag';btn.dataset.unitId=u.unit_id;btn.dataset.grade=g;
-      btn.textContent=u.chapter_name+'：'+u.unit_name;
+      // 章:単元が1:1の学年（小2/小3）は chapter_name===unit_name のため片方だけ表示。
+      // 1:多の学年（小4以降）は「章：単元」で表示（重複しないので従来どおり）。
+      btn.dataset.baseLabel=(u.chapter_name===u.unit_name)?u.unit_name:(u.chapter_name+'：'+u.unit_name);
+      btn.textContent=btn.dataset.baseLabel;
       btn.style.fontSize='10px';
       btn.addEventListener('click',function(){
         if(this.classList.contains('on')){
@@ -749,14 +752,18 @@ function markPatternUnits(){
     MARKED_UNITS = {};
     var area=document.getElementById('q-unit-area');
     if(!area) return;
-    [].forEach.call(area.querySelectorAll('button.tag'), function(btn){
+    var btns=area.querySelectorAll('button.tag');
+    var shown=0;
+    [].forEach.call(btns, function(btn){
       var uid=btn.dataset.unitId;
-      if(PATTERN_UNIT_INDEX.hasOwnProperty(uid) && PATTERN_UNIT_INDEX[uid].length>0){
-        MARKED_UNITS[uid]=true;
-        if(btn.textContent.indexOf('⚡')!==0) btn.textContent='⚡'+btn.textContent;
-        btn.title='パターンバンク対応（⚡ 経路A：検品不要で決定論生成）';
-      }
+      var covered=PATTERN_UNIT_INDEX.hasOwnProperty(uid) && PATTERN_UNIT_INDEX[uid].length>0;
+      // baseLabel を基準に⚡を付け直す（textContentの現状に依存せず冪等。再描画・二重付与に強い）。
+      var base=(btn.dataset.baseLabel!==undefined)?btn.dataset.baseLabel:btn.textContent;
+      btn.textContent=covered?('⚡'+base):base;
+      if(covered){ MARKED_UNITS[uid]=true; btn.title='パターンバンク対応（⚡ 経路A：検品不要で決定論生成）'; shown++; }
     });
+    // observation(c)用: 実行有無・付与件数・indexキー数をコンソールに残す。
+    console.log('[patternGen] markPatternUnits: '+shown+'/'+btns.length+' 単元に⚡付与（PATTERN_UNIT_INDEXキー数='+Object.keys(PATTERN_UNIT_INDEX).length+'）');
   });
 }
 
@@ -1342,7 +1349,16 @@ function loadPatternBank(){
       });
     });
     PATTERN_UNIT_INDEX = idx;
-    PATTERN_BANK = { patterns: allPatterns };
+    var pb = { patterns: allPatterns };
+    if (allPatterns.length === 0) {
+      // 全バンク読み込み失敗（transient含む）。恒久キャッシュせず、PATTERN_BANK_PROMISEをリセットして
+      // 次回呼び出しで再取得できるようにする。eager preload が一時的に失敗しても、単元描画時の
+      // markPatternUnits→loadPatternBank 再取得で⚡・経路Aが復活する（旧実装は空を恒久キャッシュしていた）。
+      console.warn('[patternGen] パターンバンク読み込み結果が空。次回リトライします（PATTERN_BANK未確定）。');
+      PATTERN_BANK_PROMISE = null;
+      return pb;
+    }
+    PATTERN_BANK = pb;
     console.log('[patternGen] パターンバンク読み込み完了:', allPatterns.length, 'パターン(g02+g03),', Object.keys(idx).length, '単元カバー');
     return PATTERN_BANK;
   });
