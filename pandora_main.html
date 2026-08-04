@@ -507,10 +507,12 @@ body.imode .ref-answer-area{padding:14px 18px}
   <div style="display:flex;gap:10px;margin-bottom:16px;align-items:center">
     <button id="q-gen-btn" onclick="generateQuiz()" style="padding:12px 28px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">✨ 問題を生成する</button>
     <div id="q-status" style="font-size:12px;color:var(--text3)"></div>
+    <div id="q-path-warn" style="display:none;font-size:12px;color:var(--red);margin-top:4px"></div>
   </div>
 
   <!-- JSON出力 -->
   <div id="q-preview" style="display:none">
+    <div id="q-path-badge" style="display:none;margin-bottom:10px;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:700"></div>
     <div class="card">
       <div class="card-title">生成された問題 JSON</div>
       <div style="font-size:11px;color:var(--text3);margin-bottom:10px">このJSONをコピーして、Claude.aiに「student_quizのHTMLを作って」と一緒に貼り付けてください。</div>
@@ -559,7 +561,7 @@ body.imode .ref-answer-area{padding:14px 18px}
     <div id="unit-list"></div>
   </div>
   <div class="ref-panel">
-    <div class="panel-hdr">参考問題 <span style="font-size:10px;color:var(--text3);font-weight:400;margin-left:4px">ウィンパス小4</span></div>
+    <div class="panel-hdr">参考問題 <span style="font-size:10px;color:var(--text3);font-weight:400;margin-left:4px">(小4)</span></div>
     <div class="ref-list" id="ref-list"><div style="padding:16px 14px;font-size:12px;color:var(--text3)">← 単元を選択してください</div></div>
     <div class="ref-problem-area" id="ref-problem-area" style="display:none"></div>
     <div class="ref-answer-area" id="ref-answer-area" style="display:none"></div>
@@ -734,6 +736,26 @@ function renderQUnits(){
         }
       });
       area.appendChild(btn);
+    });
+  });
+  markPatternUnits();
+}
+
+// パターンバンク（g02+g03）でカバー済みの単元ボタンに⚡マークを付ける。
+// 判定は PATTERN_UNIT_INDEX のキー存在チェック。バンクは非同期読み込みのため、
+// loadPatternBank解決後にDOMを走査してマークする（renderのたびに再適用）。
+function markPatternUnits(){
+  loadPatternBank().then(function(){
+    MARKED_UNITS = {};
+    var area=document.getElementById('q-unit-area');
+    if(!area) return;
+    [].forEach.call(area.querySelectorAll('button.tag'), function(btn){
+      var uid=btn.dataset.unitId;
+      if(PATTERN_UNIT_INDEX.hasOwnProperty(uid) && PATTERN_UNIT_INDEX[uid].length>0){
+        MARKED_UNITS[uid]=true;
+        if(btn.textContent.indexOf('⚡')!==0) btn.textContent='⚡'+btn.textContent;
+        btn.title='パターンバンク対応（⚡ 経路A：検品不要で決定論生成）';
+      }
     });
   });
 }
@@ -1177,6 +1199,22 @@ function generateAllReviewProblems(onDone) {
 function showPreview(mode, theme, levelBreakdown, outputJson){
   var btn = document.getElementById('q-gen-btn');
   var status = document.getElementById('q-status');
+  // 生成経路バッジ（meta.generation_path をそのまま表示。判定は既存の分岐結果）。
+  var pathBadge = document.getElementById('q-path-badge');
+  if (pathBadge) {
+    var gp = outputJson && outputJson.meta && outputJson.meta.generation_path;
+    if (gp === 'pattern') {
+      pathBadge.textContent = '⚡ パターン生成（検品不要）';
+      pathBadge.style.background = 'rgba(39,174,96,0.15)'; pathBadge.style.color = '#1e8449';
+      pathBadge.style.display = 'block';
+    } else if (gp === 'ai') {
+      pathBadge.textContent = '🤖 AI生成（要検品）';
+      pathBadge.style.background = 'rgba(243,156,18,0.15)'; pathBadge.style.color = '#b9770e';
+      pathBadge.style.display = 'block';
+    } else {
+      pathBadge.style.display = 'none';
+    }
+  }
   // プロンプトテンプレ
   var modeDesc=mode==='domestic'
     ?'国内向け（算数×英語）：日本語で算数を解きながら英語表現も学ぶ'
@@ -1260,37 +1298,52 @@ function showPreview(mode, theme, levelBreakdown, outputJson){
   status.textContent=outputJson.meta.count+'問生成完了（'+levelsDesc+'）';
 }
 
-// ======== パターンバンク（経路A：小2文章題の決定論生成）========
-// pattern_bank/patterns_g02.json・pattern_bank/themes/*.json は静的アセットとして
+// ======== パターンバンク（経路A：小2・小3文章題の決定論生成）========
+// pattern_bank/patterns_g02.json・patterns_g03.json・themes/*.json は静的アセットとして
 // fetchで読み込む（Supabase不要）。checkConsistency_retirement_plan.mdに基づき、
 // この経路ではランタイムのAI呼び出し（checkConsistency含む）を一切行わない。
+// g02とg03はshared_lexiconが別（g03はdiv_object_pairs/ceil_contexts等を持つ）ため、
+// 各パターンには由来バンクのlexiconをエントリ単位で束ねて保持する（makeProblemにそのlexを渡す）。
 var PATTERN_BANK = null, PATTERN_BANK_PROMISE = null;
-// unit_id -> [{pattern, unitId}, ...]（unitIdはunit_range_overridesのキー、baseならnull）。
-// 同じunit_idを複数パターンが共有するケースがある（例: g02_c12_u01は合併/求残/増加/
-// 求差/求補の5パターンが同じ単元「2けたの数のたし算とひき算のりよう」を共有）ため、
-// 単一値ではなく配列で保持する。1パターンしか無い単元でも要素数1の配列になる。
+// unit_id -> [{pattern, unitId, lex}, ...]（unitIdはunit_range_overridesのキー、baseならnull。
+// lexは由来バンクのshared_lexicon）。同じunit_idを複数パターンが共有するケースがある（例:
+// g02_c12_u01は合併/求残/増加/求差/求補の5パターンが共有）ため、単一値ではなく配列で保持する。
+// g02とg03のunit_idはprefixで名前空間が分離しており衝突しない（確認済み）。
 var PATTERN_UNIT_INDEX = {};
+// バンク読み込みで1つでも失敗したらtrue（経路A意図なのにBへ落ちた警告の判定に使う）。
+var PATTERN_BANK_LOAD_FAILED = false;
+// 単元選択UIで⚡マークを付けた（＝パターンバンク対応）unit_idの集合。requirement4の判定に使う。
+var MARKED_UNITS = {};
 function loadPatternBank(){
   if (PATTERN_BANK) return Promise.resolve(PATTERN_BANK);
   if (PATTERN_BANK_PROMISE) return PATTERN_BANK_PROMISE;
-  PATTERN_BANK_PROMISE = fetch('pattern_bank/patterns_g02.json').then(function(r){ return r.json(); }).then(function(d){
-    PATTERN_BANK = d;
+  var BANK_FILES = ['pattern_bank/patterns_g02.json', 'pattern_bank/patterns_g03.json'];
+  PATTERN_BANK_PROMISE = Promise.all(BANK_FILES.map(function(f){
+    // 1つのバンク読み込み失敗が他方を巻き込まないよう、個別にcatchしてnull化する
+    // （例: g03未デプロイでもg02経路Aは生きる）。
+    return fetch(f).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+      .then(function(d){ return { file: f, bank: d }; })
+      .catch(function(e){ console.error('[patternGen] ' + f + ' の読み込みに失敗（このバンクをスキップ）:', e); return { file: f, bank: null }; });
+  })).then(function(loaded){
     var idx = {};
+    var allPatterns = [];
     function addEntry(uid, entry){
       if (!idx[uid]) idx[uid] = [];
       idx[uid].push(entry);
     }
-    (d.patterns||[]).forEach(function(p){
-      addEntry(p.unit_id, { pattern: p, unitId: null });
-      Object.keys(p.unit_range_overrides||{}).forEach(function(uid){ addEntry(uid, { pattern: p, unitId: uid }); });
+    PATTERN_BANK_LOAD_FAILED = loaded.some(function(item){ return !item.bank; });
+    loaded.forEach(function(item){
+      if (!item.bank) return;
+      var lex = item.bank.shared_lexicon;
+      (item.bank.patterns||[]).forEach(function(p){
+        allPatterns.push(p);
+        addEntry(p.unit_id, { pattern: p, unitId: null, lex: lex });
+        Object.keys(p.unit_range_overrides||{}).forEach(function(uid){ addEntry(uid, { pattern: p, unitId: uid, lex: lex }); });
+      });
     });
     PATTERN_UNIT_INDEX = idx;
-    console.log('[patternGen] パターンバンク読み込み完了:', (d.patterns||[]).length, 'パターン,', Object.keys(idx).length, '単元カバー');
-    return d;
-  }).catch(function(e){
-    console.error('[patternGen] パターンバンク（pattern_bank/patterns_g02.json）の読み込みに失敗しました。経路Aは使用不可になります:', e);
-    PATTERN_BANK = { patterns: [], shared_lexicon: {} };
-    PATTERN_UNIT_INDEX = {};
+    PATTERN_BANK = { patterns: allPatterns };
+    console.log('[patternGen] パターンバンク読み込み完了:', allPatterns.length, 'パターン(g02+g03),', Object.keys(idx).length, '単元カバー');
     return PATTERN_BANK;
   });
   return PATTERN_BANK_PROMISE;
@@ -1311,12 +1364,13 @@ function loadTheme(themeId){
   return THEME_CACHE[themeId];
 }
 
-// 選択中の学年・単元が、全てpatterns_g02.jsonでカバーされているか判定する。
-// 現状は単一学年g02のみ対応（パターンバンクがg02専用のため）。単元は
-// 「全単元」（'all'）ではなく1つ以上の明示選択が必要（従来のAI生成経路との
-// 混在を避けるため、全単元指定は常に経路Bへフォールバックする）。
+// 選択中の学年・単元が、全てパターンバンク（g02+g03）でカバーされているか判定する。
+// 学年は g02 / g03（および両者の混在）に対応。単元は「全単元」（'all'）ではなく1つ以上の
+// 明示選択が必要（従来のAI生成経路との混在を避けるため、全単元指定は常に経路Bへフォールバック）。
+// 混在選択でも、選択単元が全てバンクでカバーされていれば経路A。1つでも外れたら経路B。
 function isPatternEligible(grades, units){
-  if (!grades || grades.length !== 1 || grades[0] !== 'g02') return false;
+  if (!grades || grades.length === 0) return false;
+  if (!grades.every(function(g){ return g === 'g02' || g === 'g03'; })) return false;
   if (!units || units.length === 0 || units[0] === 'all') return false;
   return units.every(function(u){ return PATTERN_UNIT_INDEX.hasOwnProperty(u) && PATTERN_UNIT_INDEX[u].length > 0; });
 }
@@ -1335,7 +1389,8 @@ function resolvePatternTemplates(pattern, themeObj){
 // 生成入口の一本化: problems配列を作った後は、経路Bと同じ
 // upsertAssignment/generateAllReviewProblems/showPreviewをそのまま使う。
 function generateQuizViaPattern(targetUnits){
-  var lex = PATTERN_BANK.shared_lexicon;
+  // lexはパターンの由来バンク（g02/g03）ごとに異なるため、バッチ共通ではなく
+  // ループ内で entry.lex を使う（下記参照）。
   var count = parseInt(document.getElementById('q-count').value);
   var themeText = document.getElementById('q-theme').value.trim();
   var mode = document.querySelector('input[name="q-mode"]:checked').value;
@@ -1370,6 +1425,7 @@ function generateQuizViaPattern(targetUnits){
       var entry = candidates[Math.floor(Math.random() * candidates.length)];
       var pattern = resolvePatternTemplates(entry.pattern, themeObj);
       var patternUnitId = entry.unitId;
+      var lex = entry.lex; // 由来バンク（g02/g03）のshared_lexicon
 
       var accepted = null;
       for (var attempt = 0; attempt < MAX_ATTEMPTS_PER_PROBLEM; attempt++) {
@@ -1420,7 +1476,8 @@ function generateQuizViaPattern(targetUnits){
         count: problems.length,
         student_id: selectedStudentId,
         student_name: selectedStudentName || null,
-        generated_at: new Date().toISOString()
+        generated_at: new Date().toISOString(),
+        generation_path: 'pattern'
       },
       problems: problems,
       kanji_quiz: []
@@ -1442,16 +1499,28 @@ function generateQuizViaPattern(targetUnits){
   });
 }
 
-// 生成入口。選択された学年・単元がpatterns_g02.jsonで全てカバーされていれば
+// 生成入口。選択された学年・単元がパターンバンク（g02+g03）で全てカバーされていれば
 // パターン生成（経路A）、そうでなければ従来のAI生成（経路B、generateQuizViaAI、
 // 挙動は移設前と完全に同一）に振り分ける。
 function generateQuiz(){
   if(qSelectedGrades.length===0){alert('学年を選択してください');return;}
   var targetUnitsForCheck = qSelectedUnits.length>0 ? qSelectedUnits : ['all'];
+  var warnEl = document.getElementById('q-path-warn');
+  if(warnEl){ warnEl.style.display='none'; warnEl.textContent=''; }
   loadPatternBank().then(function(){
     if (isPatternEligible(qSelectedGrades, targetUnitsForCheck)) {
       generateQuizViaPattern(targetUnitsForCheck);
       return;
+    }
+    // 経路Bへフォールバック。経路Aを意図した選択（全単元が⚡マーク付き）だったのに落ちた
+    // 場合（fetch失敗等）は、コンソールだけでなく画面にも一行警告を出す。
+    var gradesInBankRange = qSelectedGrades.every(function(g){ return g==='g02'||g==='g03'; });
+    var explicitUnits = targetUnitsForCheck[0] !== 'all';
+    var allMarked = explicitUnits && targetUnitsForCheck.every(function(u){ return MARKED_UNITS[u]; });
+    if ((allMarked || (PATTERN_BANK_LOAD_FAILED && gradesInBankRange && explicitUnits)) && warnEl) {
+      warnEl.textContent = '⚠️ パターン生成（経路A）を予定していましたが、パターンバンクを利用できずAI生成（経路B）に切り替えました。ネットワーク／バンク読み込みをご確認ください。';
+      warnEl.style.display = 'block';
+      console.warn('[patternGen] 経路A意図だが経路Bへフォールバック（loadFailed=' + PATTERN_BANK_LOAD_FAILED + ', allMarked=' + allMarked + '）。units=', targetUnitsForCheck);
     }
     generateQuizViaAI();
   });
@@ -1849,7 +1918,8 @@ function generateQuizViaAI(){
           count:totalCount,
           student_id:selectedStudentId,
           student_name:selectedStudentName||null,
-          generated_at:new Date().toISOString()
+          generated_at:new Date().toISOString(),
+          generation_path:'ai'
         },
         problems:problems,
         kanji_quiz:mode==='overseas'?(parsed.kanji_quiz||[]):[]
@@ -1974,7 +2044,7 @@ function setGrade(g){
   for(var i=0;i<btns.length;i++) btns[i].classList.remove('gy-on');
   var active=document.getElementById('gy-'+g);
   if(active) active.classList.add('gy-on');
-  var labels={"g01":"ウィンパス小1","g02":"ウィンパス小2","g03":"ウィンパス小3","g04":"ウィンパス小4","g05":"ウィンパス小5","g06":"ウィンパス小6","jhs1":"ウィンニングフィニッシュ中1","jhs2":"ウィンニングフィニッシュ中2","jhs3":"ウィンニングフィニッシュ中3"};
+  var labels={"g01":"(小1)","g02":"(小2)","g03":"(小3)","g04":"(小4)","g05":"(小5)","g06":"(小6)","jhs1":"(中1)","jhs2":"(中2)","jhs3":"(中3)"};
   var hdr=document.querySelector('.panel-hdr span');
   if(hdr) hdr.textContent=labels[g]||g;
   document.getElementById('edit-inner').innerHTML='<div class="empty"><div class="empty-icon">✏️</div><div>参考問題を選択してください</div></div>';
