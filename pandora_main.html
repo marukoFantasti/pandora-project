@@ -1260,37 +1260,47 @@ function showPreview(mode, theme, levelBreakdown, outputJson){
   status.textContent=outputJson.meta.count+'問生成完了（'+levelsDesc+'）';
 }
 
-// ======== パターンバンク（経路A：小2文章題の決定論生成）========
-// pattern_bank/patterns_g02.json・pattern_bank/themes/*.json は静的アセットとして
+// ======== パターンバンク（経路A：小2・小3文章題の決定論生成）========
+// pattern_bank/patterns_g02.json・patterns_g03.json・themes/*.json は静的アセットとして
 // fetchで読み込む（Supabase不要）。checkConsistency_retirement_plan.mdに基づき、
 // この経路ではランタイムのAI呼び出し（checkConsistency含む）を一切行わない。
+// g02とg03はshared_lexiconが別（g03はdiv_object_pairs/ceil_contexts等を持つ）ため、
+// 各パターンには由来バンクのlexiconをエントリ単位で束ねて保持する（makeProblemにそのlexを渡す）。
 var PATTERN_BANK = null, PATTERN_BANK_PROMISE = null;
-// unit_id -> [{pattern, unitId}, ...]（unitIdはunit_range_overridesのキー、baseならnull）。
-// 同じunit_idを複数パターンが共有するケースがある（例: g02_c12_u01は合併/求残/増加/
-// 求差/求補の5パターンが同じ単元「2けたの数のたし算とひき算のりよう」を共有）ため、
-// 単一値ではなく配列で保持する。1パターンしか無い単元でも要素数1の配列になる。
+// unit_id -> [{pattern, unitId, lex}, ...]（unitIdはunit_range_overridesのキー、baseならnull。
+// lexは由来バンクのshared_lexicon）。同じunit_idを複数パターンが共有するケースがある（例:
+// g02_c12_u01は合併/求残/増加/求差/求補の5パターンが共有）ため、単一値ではなく配列で保持する。
+// g02とg03のunit_idはprefixで名前空間が分離しており衝突しない（確認済み）。
 var PATTERN_UNIT_INDEX = {};
 function loadPatternBank(){
   if (PATTERN_BANK) return Promise.resolve(PATTERN_BANK);
   if (PATTERN_BANK_PROMISE) return PATTERN_BANK_PROMISE;
-  PATTERN_BANK_PROMISE = fetch('pattern_bank/patterns_g02.json').then(function(r){ return r.json(); }).then(function(d){
-    PATTERN_BANK = d;
+  var BANK_FILES = ['pattern_bank/patterns_g02.json', 'pattern_bank/patterns_g03.json'];
+  PATTERN_BANK_PROMISE = Promise.all(BANK_FILES.map(function(f){
+    // 1つのバンク読み込み失敗が他方を巻き込まないよう、個別にcatchしてnull化する
+    // （例: g03未デプロイでもg02経路Aは生きる）。
+    return fetch(f).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+      .then(function(d){ return { file: f, bank: d }; })
+      .catch(function(e){ console.error('[patternGen] ' + f + ' の読み込みに失敗（このバンクをスキップ）:', e); return { file: f, bank: null }; });
+  })).then(function(loaded){
     var idx = {};
+    var allPatterns = [];
     function addEntry(uid, entry){
       if (!idx[uid]) idx[uid] = [];
       idx[uid].push(entry);
     }
-    (d.patterns||[]).forEach(function(p){
-      addEntry(p.unit_id, { pattern: p, unitId: null });
-      Object.keys(p.unit_range_overrides||{}).forEach(function(uid){ addEntry(uid, { pattern: p, unitId: uid }); });
+    loaded.forEach(function(item){
+      if (!item.bank) return;
+      var lex = item.bank.shared_lexicon;
+      (item.bank.patterns||[]).forEach(function(p){
+        allPatterns.push(p);
+        addEntry(p.unit_id, { pattern: p, unitId: null, lex: lex });
+        Object.keys(p.unit_range_overrides||{}).forEach(function(uid){ addEntry(uid, { pattern: p, unitId: uid, lex: lex }); });
+      });
     });
     PATTERN_UNIT_INDEX = idx;
-    console.log('[patternGen] パターンバンク読み込み完了:', (d.patterns||[]).length, 'パターン,', Object.keys(idx).length, '単元カバー');
-    return d;
-  }).catch(function(e){
-    console.error('[patternGen] パターンバンク（pattern_bank/patterns_g02.json）の読み込みに失敗しました。経路Aは使用不可になります:', e);
-    PATTERN_BANK = { patterns: [], shared_lexicon: {} };
-    PATTERN_UNIT_INDEX = {};
+    PATTERN_BANK = { patterns: allPatterns };
+    console.log('[patternGen] パターンバンク読み込み完了:', allPatterns.length, 'パターン(g02+g03),', Object.keys(idx).length, '単元カバー');
     return PATTERN_BANK;
   });
   return PATTERN_BANK_PROMISE;
@@ -1311,12 +1321,13 @@ function loadTheme(themeId){
   return THEME_CACHE[themeId];
 }
 
-// 選択中の学年・単元が、全てpatterns_g02.jsonでカバーされているか判定する。
-// 現状は単一学年g02のみ対応（パターンバンクがg02専用のため）。単元は
-// 「全単元」（'all'）ではなく1つ以上の明示選択が必要（従来のAI生成経路との
-// 混在を避けるため、全単元指定は常に経路Bへフォールバックする）。
+// 選択中の学年・単元が、全てパターンバンク（g02+g03）でカバーされているか判定する。
+// 学年は g02 / g03（および両者の混在）に対応。単元は「全単元」（'all'）ではなく1つ以上の
+// 明示選択が必要（従来のAI生成経路との混在を避けるため、全単元指定は常に経路Bへフォールバック）。
+// 混在選択でも、選択単元が全てバンクでカバーされていれば経路A。1つでも外れたら経路B。
 function isPatternEligible(grades, units){
-  if (!grades || grades.length !== 1 || grades[0] !== 'g02') return false;
+  if (!grades || grades.length === 0) return false;
+  if (!grades.every(function(g){ return g === 'g02' || g === 'g03'; })) return false;
   if (!units || units.length === 0 || units[0] === 'all') return false;
   return units.every(function(u){ return PATTERN_UNIT_INDEX.hasOwnProperty(u) && PATTERN_UNIT_INDEX[u].length > 0; });
 }
@@ -1335,7 +1346,8 @@ function resolvePatternTemplates(pattern, themeObj){
 // 生成入口の一本化: problems配列を作った後は、経路Bと同じ
 // upsertAssignment/generateAllReviewProblems/showPreviewをそのまま使う。
 function generateQuizViaPattern(targetUnits){
-  var lex = PATTERN_BANK.shared_lexicon;
+  // lexはパターンの由来バンク（g02/g03）ごとに異なるため、バッチ共通ではなく
+  // ループ内で entry.lex を使う（下記参照）。
   var count = parseInt(document.getElementById('q-count').value);
   var themeText = document.getElementById('q-theme').value.trim();
   var mode = document.querySelector('input[name="q-mode"]:checked').value;
@@ -1370,6 +1382,7 @@ function generateQuizViaPattern(targetUnits){
       var entry = candidates[Math.floor(Math.random() * candidates.length)];
       var pattern = resolvePatternTemplates(entry.pattern, themeObj);
       var patternUnitId = entry.unitId;
+      var lex = entry.lex; // 由来バンク（g02/g03）のshared_lexicon
 
       var accepted = null;
       for (var attempt = 0; attempt < MAX_ATTEMPTS_PER_PROBLEM; attempt++) {
@@ -1442,7 +1455,7 @@ function generateQuizViaPattern(targetUnits){
   });
 }
 
-// 生成入口。選択された学年・単元がpatterns_g02.jsonで全てカバーされていれば
+// 生成入口。選択された学年・単元がパターンバンク（g02+g03）で全てカバーされていれば
 // パターン生成（経路A）、そうでなければ従来のAI生成（経路B、generateQuizViaAI、
 // 挙動は移設前と完全に同一）に振り分ける。
 function generateQuiz(){
