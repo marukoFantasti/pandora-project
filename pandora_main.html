@@ -561,7 +561,7 @@ body.imode .ref-answer-area{padding:14px 18px}
     <div id="unit-list"></div>
   </div>
   <div class="ref-panel">
-    <div class="panel-hdr">参考問題 <span style="font-size:10px;color:var(--text3);font-weight:400;margin-left:4px">ウィンパス小4</span></div>
+    <div class="panel-hdr">参考問題 <span style="font-size:10px;color:var(--text3);font-weight:400;margin-left:4px">(小4)</span></div>
     <div class="ref-list" id="ref-list"><div style="padding:16px 14px;font-size:12px;color:var(--text3)">← 単元を選択してください</div></div>
     <div class="ref-problem-area" id="ref-problem-area" style="display:none"></div>
     <div class="ref-answer-area" id="ref-answer-area" style="display:none"></div>
@@ -2044,7 +2044,7 @@ function setGrade(g){
   for(var i=0;i<btns.length;i++) btns[i].classList.remove('gy-on');
   var active=document.getElementById('gy-'+g);
   if(active) active.classList.add('gy-on');
-  var labels={"g01":"ウィンパス小1","g02":"ウィンパス小2","g03":"ウィンパス小3","g04":"ウィンパス小4","g05":"ウィンパス小5","g06":"ウィンパス小6","jhs1":"ウィンニングフィニッシュ中1","jhs2":"ウィンニングフィニッシュ中2","jhs3":"ウィンニングフィニッシュ中3"};
+  var labels={"g01":"(小1)","g02":"(小2)","g03":"(小3)","g04":"(小4)","g05":"(小5)","g06":"(小6)","jhs1":"(中1)","jhs2":"(中2)","jhs3":"(中3)"};
   var hdr=document.querySelector('.panel-hdr span');
   if(hdr) hdr.textContent=labels[g]||g;
   document.getElementById('edit-inner').innerHTML='<div class="empty"><div class="empty-icon">✏️</div><div>参考問題を選択してください</div></div>';
