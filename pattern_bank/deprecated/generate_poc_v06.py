@@ -1,4 +1,14 @@
 # -*- coding: utf-8 -*-
+# ============================================================================
+# 【引退・使用禁止】2026-08-04 に deprecated。参照ジェネレータは v0.7 に一本化。
+#   理由: shared_lexicon.attribute_pairs が本番JS向けに list-of-dict
+#   {"pair":[a,b],"type":...} へ移行したのに、本ファイルの
+#   `attr_a,attr_b = random.choice(attribute_pairs)` は list-of-pair 前提のまま
+#   取り残され、dictのキーを展開して「pairテープ/typeテープ」を出力する
+#   （Python参照系限定のバグ・本番JS経路Aには非影響）。修理せず引退。
+#   後継: ../handoff_g03/generate_poc_v07.py（attr解決を dict-aware に修正済み）。
+#   詳細は ../handoff_g03/README_handoff.md「v0.6引退の記録」参照。
+# ============================================================================
 """
 パターンバンク PoC ジェネレータ v0.5
 v0.4 + quantity_slots(複名数・時刻)対応

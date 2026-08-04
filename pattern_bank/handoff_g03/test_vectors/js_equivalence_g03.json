@@ -1,0 +1,6597 @@
+{
+ "description": "JS移植の等価性検証用・シード非依存ベクター(g02のformatter_tests/constraint_tests方式)。ゴールデンベクター(test_vectors_g03.json)はPython乱数依存のためPython側リファクタ回帰専用であり、JS検証にはこちらを使うこと。",
+ "formatter_cases": {
+  "km_m": {
+   "1700": "1km700m",
+   "1000": "1km",
+   "900": "900m",
+   "1100": "1km100m",
+   "2050": "2km50m",
+   "3005": "3km5m"
+  },
+  "kg_g": {
+   "2800": "2kg800g",
+   "2000": "2kg",
+   "850": "850g",
+   "1450": "1kg450g",
+   "3050": "3kg50g",
+   "1005": "1kg5g"
+  },
+  "L_mL": {
+   "1500": "1L500mL",
+   "2000": "2L",
+   "750": "750mL"
+  },
+  "dec1": {
+   "62": "6.2",
+   "60": "6",
+   "9": "0.9",
+   "136": "13.6",
+   "10": "1",
+   "5": "0.5"
+  },
+  "cm_mm": {
+   "95": "9cm5mm",
+   "90": "9cm",
+   "5": "5mm"
+  },
+  "h_min": {
+   "106": "1時間46分",
+   "120": "2時間",
+   "45": "45分"
+  }
+ },
+ "fraction_cases": [
+  {
+   "num": 2,
+   "den": 6,
+   "expected": "2/6"
+  },
+  {
+   "num": 9,
+   "den": 9,
+   "expected": "1"
+  },
+  {
+   "num": 0,
+   "den": 5,
+   "expected": "0"
+  },
+  {
+   "num": 7,
+   "den": 10,
+   "expected": "7/10"
+  },
+  {
+   "num": 1,
+   "den": 8,
+   "expected": "1/8"
+  }
+ ],
+ "constraint_vectors": {
+  "count": 520,
+  "note": "同じenvに対しJS実装がruleごとに同じ真偽を返すこと(完全一致必須)。制約式のPython構文(and/or/not・//)翻訳の合格証。",
+  "vectors": [
+   {
+    "pattern_id": "g03_div_tobun_01",
+    "env": {
+     "n1": 18,
+     "n2": 2
+    },
+    "expected": {
+     "divisible": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_tobun_01",
+    "env": {
+     "n1": 39,
+     "n2": 5
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_tobun_01",
+    "env": {
+     "n1": 32,
+     "n2": 4
+    },
+    "expected": {
+     "divisible": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_tobun_01",
+    "env": {
+     "n1": 17,
+     "n2": 3
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_tobun_01",
+    "env": {
+     "n1": 79,
+     "n2": 8
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_tobun_01",
+    "env": {
+     "n1": 8,
+     "n2": 2
+    },
+    "expected": {
+     "divisible": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_tobun_01",
+    "env": {
+     "n1": 15,
+     "n2": 5
+    },
+    "expected": {
+     "divisible": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_tobun_01",
+    "env": {
+     "n1": 33,
+     "n2": 2
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_tobun_01",
+    "env": {
+     "n1": 75,
+     "n2": 5
+    },
+    "expected": {
+     "divisible": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_tobun_01",
+    "env": {
+     "n1": 73,
+     "n2": 8
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_tobun_01",
+    "env": {
+     "n1": 32,
+     "n2": 9
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_tobun_01",
+    "env": {
+     "n1": 79,
+     "n2": 6
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_tobun_01",
+    "env": {
+     "n1": 4,
+     "n2": 4
+    },
+    "expected": {
+     "divisible": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_tobun_01",
+    "env": {
+     "n1": 58,
+     "n2": 7
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_tobun_01",
+    "env": {
+     "n1": 39,
+     "n2": 4
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_tobun_01",
+    "env": {
+     "n1": 31,
+     "n2": 7
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_tobun_01",
+    "env": {
+     "n1": 17,
+     "n2": 3
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_tobun_01",
+    "env": {
+     "n1": 52,
+     "n2": 3
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_tobun_01",
+    "env": {
+     "n1": 49,
+     "n2": 7
+    },
+    "expected": {
+     "divisible": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_tobun_01",
+    "env": {
+     "n1": 81,
+     "n2": 6
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_hogan_01",
+    "env": {
+     "n1": 9,
+     "n2": 9
+    },
+    "expected": {
+     "divisible": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_hogan_01",
+    "env": {
+     "n1": 72,
+     "n2": 3
+    },
+    "expected": {
+     "divisible": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_hogan_01",
+    "env": {
+     "n1": 52,
+     "n2": 3
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_hogan_01",
+    "env": {
+     "n1": 74,
+     "n2": 6
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_hogan_01",
+    "env": {
+     "n1": 50,
+     "n2": 5
+    },
+    "expected": {
+     "divisible": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_hogan_01",
+    "env": {
+     "n1": 12,
+     "n2": 2
+    },
+    "expected": {
+     "divisible": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_hogan_01",
+    "env": {
+     "n1": 33,
+     "n2": 6
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_hogan_01",
+    "env": {
+     "n1": 14,
+     "n2": 5
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_hogan_01",
+    "env": {
+     "n1": 16,
+     "n2": 8
+    },
+    "expected": {
+     "divisible": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_hogan_01",
+    "env": {
+     "n1": 39,
+     "n2": 9
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_hogan_01",
+    "env": {
+     "n1": 50,
+     "n2": 4
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_hogan_01",
+    "env": {
+     "n1": 51,
+     "n2": 7
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_hogan_01",
+    "env": {
+     "n1": 30,
+     "n2": 6
+    },
+    "expected": {
+     "divisible": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_hogan_01",
+    "env": {
+     "n1": 13,
+     "n2": 4
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_hogan_01",
+    "env": {
+     "n1": 72,
+     "n2": 5
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_hogan_01",
+    "env": {
+     "n1": 24,
+     "n2": 9
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_hogan_01",
+    "env": {
+     "n1": 52,
+     "n2": 6
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_hogan_01",
+    "env": {
+     "n1": 75,
+     "n2": 5
+    },
+    "expected": {
+     "divisible": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_hogan_01",
+    "env": {
+     "n1": 45,
+     "n2": 2
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_hogan_01",
+    "env": {
+     "n1": 33,
+     "n2": 2
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_bai_01",
+    "env": {
+     "n1": 44,
+     "n2": 8
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_bai_01",
+    "env": {
+     "n1": 38,
+     "n2": 3
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_bai_01",
+    "env": {
+     "n1": 31,
+     "n2": 7
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_bai_01",
+    "env": {
+     "n1": 31,
+     "n2": 9
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_bai_01",
+    "env": {
+     "n1": 54,
+     "n2": 9
+    },
+    "expected": {
+     "divisible": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_bai_01",
+    "env": {
+     "n1": 22,
+     "n2": 6
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_bai_01",
+    "env": {
+     "n1": 21,
+     "n2": 5
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_bai_01",
+    "env": {
+     "n1": 75,
+     "n2": 6
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_bai_01",
+    "env": {
+     "n1": 78,
+     "n2": 8
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_bai_01",
+    "env": {
+     "n1": 78,
+     "n2": 8
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_bai_01",
+    "env": {
+     "n1": 50,
+     "n2": 5
+    },
+    "expected": {
+     "divisible": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_bai_01",
+    "env": {
+     "n1": 21,
+     "n2": 9
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_bai_01",
+    "env": {
+     "n1": 15,
+     "n2": 2
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_bai_01",
+    "env": {
+     "n1": 18,
+     "n2": 4
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_bai_01",
+    "env": {
+     "n1": 24,
+     "n2": 8
+    },
+    "expected": {
+     "divisible": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_bai_01",
+    "env": {
+     "n1": 80,
+     "n2": 3
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_bai_01",
+    "env": {
+     "n1": 53,
+     "n2": 8
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_bai_01",
+    "env": {
+     "n1": 80,
+     "n2": 9
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_bai_01",
+    "env": {
+     "n1": 71,
+     "n2": 6
+    },
+    "expected": {
+     "divisible": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_bai_01",
+    "env": {
+     "n1": 74,
+     "n2": 2
+    },
+    "expected": {
+     "divisible": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_fukubun_01",
+    "env": {
+     "n1": 21,
+     "n2": 6
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_fukubun_01",
+    "env": {
+     "n1": 89,
+     "n2": 7
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_fukubun_01",
+    "env": {
+     "n1": 21,
+     "n2": 6
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_fukubun_01",
+    "env": {
+     "n1": 62,
+     "n2": 4
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_fukubun_01",
+    "env": {
+     "n1": 65,
+     "n2": 2
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_fukubun_01",
+    "env": {
+     "n1": 40,
+     "n2": 4
+    },
+    "expected": {
+     "has_remainder": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_fukubun_01",
+    "env": {
+     "n1": 71,
+     "n2": 3
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_fukubun_01",
+    "env": {
+     "n1": 87,
+     "n2": 6
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_fukubun_01",
+    "env": {
+     "n1": 88,
+     "n2": 5
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_fukubun_01",
+    "env": {
+     "n1": 26,
+     "n2": 7
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_fukubun_01",
+    "env": {
+     "n1": 27,
+     "n2": 2
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_fukubun_01",
+    "env": {
+     "n1": 83,
+     "n2": 7
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_fukubun_01",
+    "env": {
+     "n1": 69,
+     "n2": 2
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_fukubun_01",
+    "env": {
+     "n1": 21,
+     "n2": 7
+    },
+    "expected": {
+     "has_remainder": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_fukubun_01",
+    "env": {
+     "n1": 46,
+     "n2": 5
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_fukubun_01",
+    "env": {
+     "n1": 14,
+     "n2": 5
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_fukubun_01",
+    "env": {
+     "n1": 79,
+     "n2": 3
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_fukubun_01",
+    "env": {
+     "n1": 17,
+     "n2": 9
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_fukubun_01",
+    "env": {
+     "n1": 15,
+     "n2": 4
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_fukubun_01",
+    "env": {
+     "n1": 23,
+     "n2": 9
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_01",
+    "env": {
+     "n1": 77,
+     "n2": 4
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_01",
+    "env": {
+     "n1": 40,
+     "n2": 8
+    },
+    "expected": {
+     "has_remainder": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_01",
+    "env": {
+     "n1": 34,
+     "n2": 5
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_01",
+    "env": {
+     "n1": 46,
+     "n2": 8
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_01",
+    "env": {
+     "n1": 54,
+     "n2": 9
+    },
+    "expected": {
+     "has_remainder": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_01",
+    "env": {
+     "n1": 73,
+     "n2": 9
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_01",
+    "env": {
+     "n1": 22,
+     "n2": 5
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_01",
+    "env": {
+     "n1": 35,
+     "n2": 3
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_01",
+    "env": {
+     "n1": 50,
+     "n2": 2
+    },
+    "expected": {
+     "has_remainder": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_01",
+    "env": {
+     "n1": 82,
+     "n2": 5
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_01",
+    "env": {
+     "n1": 82,
+     "n2": 5
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_01",
+    "env": {
+     "n1": 7,
+     "n2": 3
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_01",
+    "env": {
+     "n1": 87,
+     "n2": 2
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_01",
+    "env": {
+     "n1": 36,
+     "n2": 3
+    },
+    "expected": {
+     "has_remainder": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_01",
+    "env": {
+     "n1": 11,
+     "n2": 7
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_01",
+    "env": {
+     "n1": 16,
+     "n2": 5
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_01",
+    "env": {
+     "n1": 42,
+     "n2": 9
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_01",
+    "env": {
+     "n1": 34,
+     "n2": 4
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_01",
+    "env": {
+     "n1": 80,
+     "n2": 9
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_01",
+    "env": {
+     "n1": 38,
+     "n2": 9
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_floor_01",
+    "env": {
+     "n1": 59,
+     "n2": 5
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_floor_01",
+    "env": {
+     "n1": 19,
+     "n2": 3
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_floor_01",
+    "env": {
+     "n1": 62,
+     "n2": 7
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_floor_01",
+    "env": {
+     "n1": 61,
+     "n2": 8
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_floor_01",
+    "env": {
+     "n1": 66,
+     "n2": 2
+    },
+    "expected": {
+     "has_remainder": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_floor_01",
+    "env": {
+     "n1": 89,
+     "n2": 3
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_floor_01",
+    "env": {
+     "n1": 14,
+     "n2": 8
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_floor_01",
+    "env": {
+     "n1": 50,
+     "n2": 3
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_floor_01",
+    "env": {
+     "n1": 38,
+     "n2": 5
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_floor_01",
+    "env": {
+     "n1": 31,
+     "n2": 9
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_floor_01",
+    "env": {
+     "n1": 24,
+     "n2": 8
+    },
+    "expected": {
+     "has_remainder": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_floor_01",
+    "env": {
+     "n1": 30,
+     "n2": 6
+    },
+    "expected": {
+     "has_remainder": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_floor_01",
+    "env": {
+     "n1": 66,
+     "n2": 5
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_floor_01",
+    "env": {
+     "n1": 16,
+     "n2": 9
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_floor_01",
+    "env": {
+     "n1": 77,
+     "n2": 3
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_floor_01",
+    "env": {
+     "n1": 13,
+     "n2": 2
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_floor_01",
+    "env": {
+     "n1": 18,
+     "n2": 5
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_floor_01",
+    "env": {
+     "n1": 28,
+     "n2": 8
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_floor_01",
+    "env": {
+     "n1": 69,
+     "n2": 9
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_floor_01",
+    "env": {
+     "n1": 34,
+     "n2": 8
+    },
+    "expected": {
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_2step_gappei_01",
+    "env": {
+     "a1": 2,
+     "a2": 3,
+     "n1": 56
+    },
+    "expected": {
+     "sum_in_kuku": true,
+     "divisible": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_2step_gappei_01",
+    "env": {
+     "a1": 2,
+     "a2": 5,
+     "n1": 41
+    },
+    "expected": {
+     "sum_in_kuku": true,
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_2step_gappei_01",
+    "env": {
+     "a1": 5,
+     "a2": 4,
+     "n1": 62
+    },
+    "expected": {
+     "sum_in_kuku": true,
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_2step_gappei_01",
+    "env": {
+     "a1": 6,
+     "a2": 5,
+     "n1": 27
+    },
+    "expected": {
+     "sum_in_kuku": false,
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_2step_gappei_01",
+    "env": {
+     "a1": 3,
+     "a2": 4,
+     "n1": 35
+    },
+    "expected": {
+     "sum_in_kuku": true,
+     "divisible": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_2step_gappei_01",
+    "env": {
+     "a1": 2,
+     "a2": 6,
+     "n1": 77
+    },
+    "expected": {
+     "sum_in_kuku": true,
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_2step_gappei_01",
+    "env": {
+     "a1": 2,
+     "a2": 4,
+     "n1": 15
+    },
+    "expected": {
+     "sum_in_kuku": true,
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_2step_gappei_01",
+    "env": {
+     "a1": 2,
+     "a2": 6,
+     "n1": 69
+    },
+    "expected": {
+     "sum_in_kuku": true,
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_2step_gappei_01",
+    "env": {
+     "a1": 6,
+     "a2": 6,
+     "n1": 28
+    },
+    "expected": {
+     "sum_in_kuku": false,
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_2step_gappei_01",
+    "env": {
+     "a1": 2,
+     "a2": 6,
+     "n1": 18
+    },
+    "expected": {
+     "sum_in_kuku": true,
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_2step_gappei_01",
+    "env": {
+     "a1": 3,
+     "a2": 2,
+     "n1": 16
+    },
+    "expected": {
+     "sum_in_kuku": true,
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_2step_gappei_01",
+    "env": {
+     "a1": 3,
+     "a2": 5,
+     "n1": 23
+    },
+    "expected": {
+     "sum_in_kuku": true,
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_2step_gappei_01",
+    "env": {
+     "a1": 6,
+     "a2": 3,
+     "n1": 13
+    },
+    "expected": {
+     "sum_in_kuku": true,
+     "divisible": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_2step_gappei_01",
+    "env": {
+     "a1": 6,
+     "a2": 2,
+     "n1": 61
+    },
+    "expected": {
+     "sum_in_kuku": true,
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_2step_gappei_01",
+    "env": {
+     "a1": 6,
+     "a2": 6,
+     "n1": 74
+    },
+    "expected": {
+     "sum_in_kuku": false,
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_2step_gappei_01",
+    "env": {
+     "a1": 4,
+     "a2": 4,
+     "n1": 34
+    },
+    "expected": {
+     "sum_in_kuku": true,
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_2step_gappei_01",
+    "env": {
+     "a1": 4,
+     "a2": 3,
+     "n1": 41
+    },
+    "expected": {
+     "sum_in_kuku": true,
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_2step_gappei_01",
+    "env": {
+     "a1": 5,
+     "a2": 3,
+     "n1": 46
+    },
+    "expected": {
+     "sum_in_kuku": true,
+     "divisible": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_2step_gappei_01",
+    "env": {
+     "a1": 5,
+     "a2": 4,
+     "n1": 17
+    },
+    "expected": {
+     "sum_in_kuku": true,
+     "divisible": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_2step_gappei_01",
+    "env": {
+     "a1": 2,
+     "a2": 5,
+     "n1": 80
+    },
+    "expected": {
+     "sum_in_kuku": true,
+     "divisible": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_add_01",
+    "env": {
+     "n1": 24,
+     "n3": 34
+    },
+    "expected": {
+     "increase_positive": false,
+     "no_overflow": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_add_01",
+    "env": {
+     "n1": 39,
+     "n3": 89
+    },
+    "expected": {
+     "increase_positive": true,
+     "no_overflow": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_add_01",
+    "env": {
+     "n1": 45,
+     "n3": 41
+    },
+    "expected": {
+     "increase_positive": false,
+     "no_overflow": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_add_01",
+    "env": {
+     "n1": 56,
+     "n3": 33
+    },
+    "expected": {
+     "increase_positive": false,
+     "no_overflow": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_add_01",
+    "env": {
+     "n1": 43,
+     "n3": 72
+    },
+    "expected": {
+     "increase_positive": true,
+     "no_overflow": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_add_01",
+    "env": {
+     "n1": 48,
+     "n3": 45
+    },
+    "expected": {
+     "increase_positive": false,
+     "no_overflow": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_add_01",
+    "env": {
+     "n1": 68,
+     "n3": 94
+    },
+    "expected": {
+     "increase_positive": true,
+     "no_overflow": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_add_01",
+    "env": {
+     "n1": 50,
+     "n3": 92
+    },
+    "expected": {
+     "increase_positive": true,
+     "no_overflow": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_add_01",
+    "env": {
+     "n1": 13,
+     "n3": 95
+    },
+    "expected": {
+     "increase_positive": true,
+     "no_overflow": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_add_01",
+    "env": {
+     "n1": 50,
+     "n3": 38
+    },
+    "expected": {
+     "increase_positive": false,
+     "no_overflow": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_add_01",
+    "env": {
+     "n1": 29,
+     "n3": 58
+    },
+    "expected": {
+     "increase_positive": true,
+     "no_overflow": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_add_01",
+    "env": {
+     "n1": 26,
+     "n3": 38
+    },
+    "expected": {
+     "increase_positive": true,
+     "no_overflow": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_add_01",
+    "env": {
+     "n1": 31,
+     "n3": 59
+    },
+    "expected": {
+     "increase_positive": true,
+     "no_overflow": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_add_01",
+    "env": {
+     "n1": 48,
+     "n3": 51
+    },
+    "expected": {
+     "increase_positive": false,
+     "no_overflow": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_add_01",
+    "env": {
+     "n1": 55,
+     "n3": 51
+    },
+    "expected": {
+     "increase_positive": false,
+     "no_overflow": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_add_01",
+    "env": {
+     "n1": 45,
+     "n3": 89
+    },
+    "expected": {
+     "increase_positive": true,
+     "no_overflow": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_add_01",
+    "env": {
+     "n1": 74,
+     "n3": 57
+    },
+    "expected": {
+     "increase_positive": false,
+     "no_overflow": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_add_01",
+    "env": {
+     "n1": 18,
+     "n3": 36
+    },
+    "expected": {
+     "increase_positive": true,
+     "no_overflow": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_add_01",
+    "env": {
+     "n1": 66,
+     "n3": 60
+    },
+    "expected": {
+     "increase_positive": false,
+     "no_overflow": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_add_01",
+    "env": {
+     "n1": 17,
+     "n3": 25
+    },
+    "expected": {
+     "increase_positive": false,
+     "no_overflow": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_sub_01",
+    "env": {
+     "n1": 67,
+     "n3": 19
+    },
+    "expected": {
+     "decrease_positive": true,
+     "remain_positive": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_sub_01",
+    "env": {
+     "n1": 58,
+     "n3": 23
+    },
+    "expected": {
+     "decrease_positive": true,
+     "remain_positive": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_sub_01",
+    "env": {
+     "n1": 81,
+     "n3": 73
+    },
+    "expected": {
+     "decrease_positive": false,
+     "remain_positive": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_sub_01",
+    "env": {
+     "n1": 79,
+     "n3": 74
+    },
+    "expected": {
+     "decrease_positive": false,
+     "remain_positive": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_sub_01",
+    "env": {
+     "n1": 26,
+     "n3": 17
+    },
+    "expected": {
+     "decrease_positive": false,
+     "remain_positive": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_sub_01",
+    "env": {
+     "n1": 34,
+     "n3": 22
+    },
+    "expected": {
+     "decrease_positive": true,
+     "remain_positive": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_sub_01",
+    "env": {
+     "n1": 94,
+     "n3": 7
+    },
+    "expected": {
+     "decrease_positive": true,
+     "remain_positive": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_sub_01",
+    "env": {
+     "n1": 72,
+     "n3": 77
+    },
+    "expected": {
+     "decrease_positive": false,
+     "remain_positive": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_sub_01",
+    "env": {
+     "n1": 95,
+     "n3": 21
+    },
+    "expected": {
+     "decrease_positive": true,
+     "remain_positive": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_sub_01",
+    "env": {
+     "n1": 80,
+     "n3": 19
+    },
+    "expected": {
+     "decrease_positive": true,
+     "remain_positive": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_sub_01",
+    "env": {
+     "n1": 30,
+     "n3": 42
+    },
+    "expected": {
+     "decrease_positive": false,
+     "remain_positive": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_sub_01",
+    "env": {
+     "n1": 71,
+     "n3": 8
+    },
+    "expected": {
+     "decrease_positive": true,
+     "remain_positive": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_sub_01",
+    "env": {
+     "n1": 70,
+     "n3": 29
+    },
+    "expected": {
+     "decrease_positive": true,
+     "remain_positive": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_sub_01",
+    "env": {
+     "n1": 56,
+     "n3": 16
+    },
+    "expected": {
+     "decrease_positive": true,
+     "remain_positive": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_sub_01",
+    "env": {
+     "n1": 70,
+     "n3": 74
+    },
+    "expected": {
+     "decrease_positive": false,
+     "remain_positive": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_sub_01",
+    "env": {
+     "n1": 77,
+     "n3": 22
+    },
+    "expected": {
+     "decrease_positive": true,
+     "remain_positive": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_sub_01",
+    "env": {
+     "n1": 55,
+     "n3": 23
+    },
+    "expected": {
+     "decrease_positive": true,
+     "remain_positive": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_sub_01",
+    "env": {
+     "n1": 47,
+     "n3": 55
+    },
+    "expected": {
+     "decrease_positive": false,
+     "remain_positive": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_sub_01",
+    "env": {
+     "n1": 28,
+     "n3": 25
+    },
+    "expected": {
+     "decrease_positive": false,
+     "remain_positive": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_sub_01",
+    "env": {
+     "n1": 67,
+     "n3": 55
+    },
+    "expected": {
+     "decrease_positive": true,
+     "remain_positive": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_mult_01",
+    "env": {
+     "n2": 5,
+     "n3": 38
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_mult_01",
+    "env": {
+     "n2": 4,
+     "n3": 17
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_mult_01",
+    "env": {
+     "n2": 8,
+     "n3": 8
+    },
+    "expected": {
+     "divisible": true,
+     "box_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_mult_01",
+    "env": {
+     "n2": 9,
+     "n3": 32
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_mult_01",
+    "env": {
+     "n2": 5,
+     "n3": 62
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_mult_01",
+    "env": {
+     "n2": 7,
+     "n3": 43
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_mult_01",
+    "env": {
+     "n2": 5,
+     "n3": 32
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_mult_01",
+    "env": {
+     "n2": 2,
+     "n3": 28
+    },
+    "expected": {
+     "divisible": true,
+     "box_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_mult_01",
+    "env": {
+     "n2": 8,
+     "n3": 46
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_mult_01",
+    "env": {
+     "n2": 6,
+     "n3": 12
+    },
+    "expected": {
+     "divisible": true,
+     "box_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_mult_01",
+    "env": {
+     "n2": 6,
+     "n3": 48
+    },
+    "expected": {
+     "divisible": true,
+     "box_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_mult_01",
+    "env": {
+     "n2": 8,
+     "n3": 72
+    },
+    "expected": {
+     "divisible": true,
+     "box_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_mult_01",
+    "env": {
+     "n2": 7,
+     "n3": 7
+    },
+    "expected": {
+     "divisible": true,
+     "box_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_mult_01",
+    "env": {
+     "n2": 3,
+     "n3": 37
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_mult_01",
+    "env": {
+     "n2": 4,
+     "n3": 78
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_mult_01",
+    "env": {
+     "n2": 6,
+     "n3": 8
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_mult_01",
+    "env": {
+     "n2": 3,
+     "n3": 80
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_mult_01",
+    "env": {
+     "n2": 8,
+     "n3": 48
+    },
+    "expected": {
+     "divisible": true,
+     "box_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_mult_01",
+    "env": {
+     "n2": 7,
+     "n3": 59
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_mult_01",
+    "env": {
+     "n2": 3,
+     "n3": 53
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_div_01",
+    "env": {
+     "n1": 77,
+     "q": 5
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": false,
+     "box_ne_quotient": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_div_01",
+    "env": {
+     "n1": 36,
+     "q": 2
+    },
+    "expected": {
+     "divisible": true,
+     "box_in_kuku": false,
+     "box_ne_quotient": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_div_01",
+    "env": {
+     "n1": 59,
+     "q": 2
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": false,
+     "box_ne_quotient": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_div_01",
+    "env": {
+     "n1": 70,
+     "q": 5
+    },
+    "expected": {
+     "divisible": true,
+     "box_in_kuku": false,
+     "box_ne_quotient": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_div_01",
+    "env": {
+     "n1": 50,
+     "q": 8
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": true,
+     "box_ne_quotient": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_div_01",
+    "env": {
+     "n1": 12,
+     "q": 7
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": false,
+     "box_ne_quotient": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_div_01",
+    "env": {
+     "n1": 44,
+     "q": 3
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": false,
+     "box_ne_quotient": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_div_01",
+    "env": {
+     "n1": 42,
+     "q": 6
+    },
+    "expected": {
+     "divisible": true,
+     "box_in_kuku": true,
+     "box_ne_quotient": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_div_01",
+    "env": {
+     "n1": 56,
+     "q": 7
+    },
+    "expected": {
+     "divisible": true,
+     "box_in_kuku": true,
+     "box_ne_quotient": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_div_01",
+    "env": {
+     "n1": 55,
+     "q": 6
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": true,
+     "box_ne_quotient": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_div_01",
+    "env": {
+     "n1": 74,
+     "q": 4
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": false,
+     "box_ne_quotient": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_div_01",
+    "env": {
+     "n1": 28,
+     "q": 8
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": true,
+     "box_ne_quotient": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_div_01",
+    "env": {
+     "n1": 52,
+     "q": 4
+    },
+    "expected": {
+     "divisible": true,
+     "box_in_kuku": false,
+     "box_ne_quotient": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_div_01",
+    "env": {
+     "n1": 76,
+     "q": 6
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": false,
+     "box_ne_quotient": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_div_01",
+    "env": {
+     "n1": 55,
+     "q": 2
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": false,
+     "box_ne_quotient": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_div_01",
+    "env": {
+     "n1": 42,
+     "q": 6
+    },
+    "expected": {
+     "divisible": true,
+     "box_in_kuku": true,
+     "box_ne_quotient": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_div_01",
+    "env": {
+     "n1": 30,
+     "q": 8
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": true,
+     "box_ne_quotient": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_div_01",
+    "env": {
+     "n1": 78,
+     "q": 7
+    },
+    "expected": {
+     "divisible": false,
+     "box_in_kuku": false,
+     "box_ne_quotient": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_box_div_01",
+    "env": {
+     "n1": 63,
+     "q": 9
+    },
+    "expected": {
+     "divisible": true,
+     "box_in_kuku": true,
+     "box_ne_quotient": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_box_div_01",
+    "env": {
+     "n1": 60,
+     "q": 5
+    },
+    "expected": {
+     "divisible": true,
+     "box_in_kuku": false,
+     "box_ne_quotient": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_gappei_3digit_01",
+    "env": {
+     "n1": 627,
+     "n2": 588
+    },
+    "expected": {
+     "carry_required": true,
+     "sum_max": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_gappei_3digit_01",
+    "env": {
+     "n1": 857,
+     "n2": 277
+    },
+    "expected": {
+     "carry_required": true,
+     "sum_max": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_gappei_3digit_01",
+    "env": {
+     "n1": 778,
+     "n2": 190
+    },
+    "expected": {
+     "carry_required": true,
+     "sum_max": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_addsub_gappei_3digit_01",
+    "env": {
+     "n1": 394,
+     "n2": 631
+    },
+    "expected": {
+     "carry_required": true,
+     "sum_max": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_gappei_3digit_01",
+    "env": {
+     "n1": 783,
+     "n2": 752
+    },
+    "expected": {
+     "carry_required": true,
+     "sum_max": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_gappei_3digit_01",
+    "env": {
+     "n1": 738,
+     "n2": 447
+    },
+    "expected": {
+     "carry_required": true,
+     "sum_max": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_gappei_3digit_01",
+    "env": {
+     "n1": 199,
+     "n2": 873
+    },
+    "expected": {
+     "carry_required": true,
+     "sum_max": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_gappei_3digit_01",
+    "env": {
+     "n1": 344,
+     "n2": 792
+    },
+    "expected": {
+     "carry_required": true,
+     "sum_max": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_gappei_3digit_01",
+    "env": {
+     "n1": 421,
+     "n2": 334
+    },
+    "expected": {
+     "carry_required": false,
+     "sum_max": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_gappei_3digit_01",
+    "env": {
+     "n1": 307,
+     "n2": 254
+    },
+    "expected": {
+     "carry_required": true,
+     "sum_max": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_addsub_gappei_3digit_01",
+    "env": {
+     "n1": 129,
+     "n2": 151
+    },
+    "expected": {
+     "carry_required": true,
+     "sum_max": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_addsub_gappei_3digit_01",
+    "env": {
+     "n1": 354,
+     "n2": 590
+    },
+    "expected": {
+     "carry_required": true,
+     "sum_max": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_addsub_gappei_3digit_01",
+    "env": {
+     "n1": 729,
+     "n2": 178
+    },
+    "expected": {
+     "carry_required": true,
+     "sum_max": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_addsub_gappei_3digit_01",
+    "env": {
+     "n1": 570,
+     "n2": 528
+    },
+    "expected": {
+     "carry_required": false,
+     "sum_max": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_gappei_3digit_01",
+    "env": {
+     "n1": 748,
+     "n2": 693
+    },
+    "expected": {
+     "carry_required": true,
+     "sum_max": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_gappei_3digit_01",
+    "env": {
+     "n1": 303,
+     "n2": 839
+    },
+    "expected": {
+     "carry_required": true,
+     "sum_max": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_gappei_3digit_01",
+    "env": {
+     "n1": 817,
+     "n2": 497
+    },
+    "expected": {
+     "carry_required": true,
+     "sum_max": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_gappei_3digit_01",
+    "env": {
+     "n1": 610,
+     "n2": 513
+    },
+    "expected": {
+     "carry_required": false,
+     "sum_max": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_gappei_3digit_01",
+    "env": {
+     "n1": 353,
+     "n2": 255
+    },
+    "expected": {
+     "carry_required": true,
+     "sum_max": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_addsub_gappei_3digit_01",
+    "env": {
+     "n1": 775,
+     "n2": 808
+    },
+    "expected": {
+     "carry_required": true,
+     "sum_max": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_kyuzan_3digit_01",
+    "env": {
+     "n1": 110,
+     "n2": 864
+    },
+    "expected": {
+     "no_negative": false,
+     "borrow_required": true,
+     "nonzero_remainder": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_kyuzan_3digit_01",
+    "env": {
+     "n1": 893,
+     "n2": 205
+    },
+    "expected": {
+     "no_negative": true,
+     "borrow_required": true,
+     "nonzero_remainder": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_addsub_kyuzan_3digit_01",
+    "env": {
+     "n1": 902,
+     "n2": 531
+    },
+    "expected": {
+     "no_negative": true,
+     "borrow_required": true,
+     "nonzero_remainder": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_addsub_kyuzan_3digit_01",
+    "env": {
+     "n1": 329,
+     "n2": 276
+    },
+    "expected": {
+     "no_negative": true,
+     "borrow_required": true,
+     "nonzero_remainder": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_addsub_kyuzan_3digit_01",
+    "env": {
+     "n1": 928,
+     "n2": 808
+    },
+    "expected": {
+     "no_negative": true,
+     "borrow_required": false,
+     "nonzero_remainder": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_kyuzan_3digit_01",
+    "env": {
+     "n1": 635,
+     "n2": 571
+    },
+    "expected": {
+     "no_negative": true,
+     "borrow_required": true,
+     "nonzero_remainder": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_addsub_kyuzan_3digit_01",
+    "env": {
+     "n1": 156,
+     "n2": 666
+    },
+    "expected": {
+     "no_negative": false,
+     "borrow_required": true,
+     "nonzero_remainder": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_kyuzan_3digit_01",
+    "env": {
+     "n1": 360,
+     "n2": 220
+    },
+    "expected": {
+     "no_negative": true,
+     "borrow_required": false,
+     "nonzero_remainder": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_kyuzan_3digit_01",
+    "env": {
+     "n1": 572,
+     "n2": 232
+    },
+    "expected": {
+     "no_negative": true,
+     "borrow_required": false,
+     "nonzero_remainder": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_kyuzan_3digit_01",
+    "env": {
+     "n1": 925,
+     "n2": 571
+    },
+    "expected": {
+     "no_negative": true,
+     "borrow_required": true,
+     "nonzero_remainder": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_addsub_kyuzan_3digit_01",
+    "env": {
+     "n1": 788,
+     "n2": 639
+    },
+    "expected": {
+     "no_negative": true,
+     "borrow_required": true,
+     "nonzero_remainder": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_addsub_kyuzan_3digit_01",
+    "env": {
+     "n1": 677,
+     "n2": 705
+    },
+    "expected": {
+     "no_negative": false,
+     "borrow_required": false,
+     "nonzero_remainder": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_kyuzan_3digit_01",
+    "env": {
+     "n1": 429,
+     "n2": 869
+    },
+    "expected": {
+     "no_negative": false,
+     "borrow_required": true,
+     "nonzero_remainder": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_kyuzan_3digit_01",
+    "env": {
+     "n1": 558,
+     "n2": 723
+    },
+    "expected": {
+     "no_negative": false,
+     "borrow_required": false,
+     "nonzero_remainder": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_kyuzan_3digit_01",
+    "env": {
+     "n1": 939,
+     "n2": 832
+    },
+    "expected": {
+     "no_negative": true,
+     "borrow_required": false,
+     "nonzero_remainder": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_kyuzan_3digit_01",
+    "env": {
+     "n1": 621,
+     "n2": 532
+    },
+    "expected": {
+     "no_negative": true,
+     "borrow_required": true,
+     "nonzero_remainder": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_addsub_kyuzan_3digit_01",
+    "env": {
+     "n1": 955,
+     "n2": 657
+    },
+    "expected": {
+     "no_negative": true,
+     "borrow_required": true,
+     "nonzero_remainder": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_addsub_kyuzan_3digit_01",
+    "env": {
+     "n1": 561,
+     "n2": 258
+    },
+    "expected": {
+     "no_negative": true,
+     "borrow_required": true,
+     "nonzero_remainder": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_addsub_kyuzan_3digit_01",
+    "env": {
+     "n1": 866,
+     "n2": 582
+    },
+    "expected": {
+     "no_negative": true,
+     "borrow_required": true,
+     "nonzero_remainder": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_addsub_kyuzan_3digit_01",
+    "env": {
+     "n1": 565,
+     "n2": 361
+    },
+    "expected": {
+     "no_negative": true,
+     "borrow_required": false,
+     "nonzero_remainder": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_kyusa_3digit_01",
+    "env": {
+     "n1": 489,
+     "n2": 222
+    },
+    "expected": {
+     "a_wins": true,
+     "borrow_required": false,
+     "diff_meaningful": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_kyusa_3digit_01",
+    "env": {
+     "n1": 431,
+     "n2": 237
+    },
+    "expected": {
+     "a_wins": true,
+     "borrow_required": true,
+     "diff_meaningful": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_addsub_kyusa_3digit_01",
+    "env": {
+     "n1": 371,
+     "n2": 344
+    },
+    "expected": {
+     "a_wins": true,
+     "borrow_required": true,
+     "diff_meaningful": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_addsub_kyusa_3digit_01",
+    "env": {
+     "n1": 425,
+     "n2": 218
+    },
+    "expected": {
+     "a_wins": true,
+     "borrow_required": true,
+     "diff_meaningful": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_addsub_kyusa_3digit_01",
+    "env": {
+     "n1": 245,
+     "n2": 321
+    },
+    "expected": {
+     "a_wins": false,
+     "borrow_required": false,
+     "diff_meaningful": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_kyusa_3digit_01",
+    "env": {
+     "n1": 144,
+     "n2": 461
+    },
+    "expected": {
+     "a_wins": false,
+     "borrow_required": true,
+     "diff_meaningful": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_kyusa_3digit_01",
+    "env": {
+     "n1": 251,
+     "n2": 216
+    },
+    "expected": {
+     "a_wins": true,
+     "borrow_required": true,
+     "diff_meaningful": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_addsub_kyusa_3digit_01",
+    "env": {
+     "n1": 244,
+     "n2": 267
+    },
+    "expected": {
+     "a_wins": false,
+     "borrow_required": true,
+     "diff_meaningful": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_kyusa_3digit_01",
+    "env": {
+     "n1": 268,
+     "n2": 372
+    },
+    "expected": {
+     "a_wins": false,
+     "borrow_required": true,
+     "diff_meaningful": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_kyusa_3digit_01",
+    "env": {
+     "n1": 146,
+     "n2": 166
+    },
+    "expected": {
+     "a_wins": false,
+     "borrow_required": true,
+     "diff_meaningful": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_kyusa_3digit_01",
+    "env": {
+     "n1": 182,
+     "n2": 214
+    },
+    "expected": {
+     "a_wins": false,
+     "borrow_required": true,
+     "diff_meaningful": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_kyusa_3digit_01",
+    "env": {
+     "n1": 301,
+     "n2": 451
+    },
+    "expected": {
+     "a_wins": false,
+     "borrow_required": true,
+     "diff_meaningful": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_kyusa_3digit_01",
+    "env": {
+     "n1": 183,
+     "n2": 457
+    },
+    "expected": {
+     "a_wins": false,
+     "borrow_required": true,
+     "diff_meaningful": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_kyusa_3digit_01",
+    "env": {
+     "n1": 214,
+     "n2": 128
+    },
+    "expected": {
+     "a_wins": true,
+     "borrow_required": true,
+     "diff_meaningful": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_addsub_kyusa_3digit_01",
+    "env": {
+     "n1": 317,
+     "n2": 304
+    },
+    "expected": {
+     "a_wins": true,
+     "borrow_required": false,
+     "diff_meaningful": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_kyusa_3digit_01",
+    "env": {
+     "n1": 274,
+     "n2": 373
+    },
+    "expected": {
+     "a_wins": false,
+     "borrow_required": false,
+     "diff_meaningful": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_kyusa_3digit_01",
+    "env": {
+     "n1": 343,
+     "n2": 308
+    },
+    "expected": {
+     "a_wins": true,
+     "borrow_required": true,
+     "diff_meaningful": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_addsub_kyusa_3digit_01",
+    "env": {
+     "n1": 136,
+     "n2": 201
+    },
+    "expected": {
+     "a_wins": false,
+     "borrow_required": false,
+     "diff_meaningful": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_addsub_kyusa_3digit_01",
+    "env": {
+     "n1": 320,
+     "n2": 295
+    },
+    "expected": {
+     "a_wins": true,
+     "borrow_required": true,
+     "diff_meaningful": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_addsub_kyusa_3digit_01",
+    "env": {
+     "n1": 404,
+     "n2": 452
+    },
+    "expected": {
+     "a_wins": false,
+     "borrow_required": true,
+     "diff_meaningful": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_2step_add_01",
+    "env": {
+     "n2": 12,
+     "n3": 9,
+     "n4": 8
+    },
+    "expected": {
+     "total_range": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_add_01",
+    "env": {
+     "n2": 27,
+     "n3": 3,
+     "n4": 7
+    },
+    "expected": {
+     "total_range": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_add_01",
+    "env": {
+     "n2": 21,
+     "n3": 9,
+     "n4": 8
+    },
+    "expected": {
+     "total_range": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_add_01",
+    "env": {
+     "n2": 25,
+     "n3": 7,
+     "n4": 5
+    },
+    "expected": {
+     "total_range": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_add_01",
+    "env": {
+     "n2": 27,
+     "n3": 4,
+     "n4": 6
+    },
+    "expected": {
+     "total_range": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_add_01",
+    "env": {
+     "n2": 25,
+     "n3": 6,
+     "n4": 2
+    },
+    "expected": {
+     "total_range": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_add_01",
+    "env": {
+     "n2": 24,
+     "n3": 5,
+     "n4": 8
+    },
+    "expected": {
+     "total_range": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_add_01",
+    "env": {
+     "n2": 17,
+     "n3": 9,
+     "n4": 9
+    },
+    "expected": {
+     "total_range": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_add_01",
+    "env": {
+     "n2": 16,
+     "n3": 7,
+     "n4": 2
+    },
+    "expected": {
+     "total_range": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_add_01",
+    "env": {
+     "n2": 24,
+     "n3": 7,
+     "n4": 2
+    },
+    "expected": {
+     "total_range": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_add_01",
+    "env": {
+     "n2": 14,
+     "n3": 8,
+     "n4": 8
+    },
+    "expected": {
+     "total_range": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_add_01",
+    "env": {
+     "n2": 16,
+     "n3": 9,
+     "n4": 9
+    },
+    "expected": {
+     "total_range": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_add_01",
+    "env": {
+     "n2": 17,
+     "n3": 3,
+     "n4": 6
+    },
+    "expected": {
+     "total_range": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_add_01",
+    "env": {
+     "n2": 24,
+     "n3": 5,
+     "n4": 5
+    },
+    "expected": {
+     "total_range": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_add_01",
+    "env": {
+     "n2": 26,
+     "n3": 5,
+     "n4": 7
+    },
+    "expected": {
+     "total_range": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_add_01",
+    "env": {
+     "n2": 24,
+     "n3": 5,
+     "n4": 8
+    },
+    "expected": {
+     "total_range": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_add_01",
+    "env": {
+     "n2": 20,
+     "n3": 9,
+     "n4": 3
+    },
+    "expected": {
+     "total_range": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_add_01",
+    "env": {
+     "n2": 27,
+     "n3": 3,
+     "n4": 2
+    },
+    "expected": {
+     "total_range": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_add_01",
+    "env": {
+     "n2": 23,
+     "n3": 4,
+     "n4": 3
+    },
+    "expected": {
+     "total_range": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_add_01",
+    "env": {
+     "n2": 13,
+     "n3": 9,
+     "n4": 2
+    },
+    "expected": {
+     "total_range": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_change_01",
+    "env": {
+     "n2": 78,
+     "n3": 5,
+     "n5": 500
+    },
+    "expected": {
+     "change_positive": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_change_01",
+    "env": {
+     "n2": 54,
+     "n3": 5,
+     "n5": 500
+    },
+    "expected": {
+     "change_positive": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_change_01",
+    "env": {
+     "n2": 136,
+     "n3": 3,
+     "n5": 500
+    },
+    "expected": {
+     "change_positive": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_change_01",
+    "env": {
+     "n2": 134,
+     "n3": 6,
+     "n5": 1000
+    },
+    "expected": {
+     "change_positive": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_change_01",
+    "env": {
+     "n2": 57,
+     "n3": 3,
+     "n5": 500
+    },
+    "expected": {
+     "change_positive": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_2step_change_01",
+    "env": {
+     "n2": 94,
+     "n3": 3,
+     "n5": 500
+    },
+    "expected": {
+     "change_positive": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_change_01",
+    "env": {
+     "n2": 94,
+     "n3": 8,
+     "n5": 1000
+    },
+    "expected": {
+     "change_positive": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_change_01",
+    "env": {
+     "n2": 65,
+     "n3": 3,
+     "n5": 500
+    },
+    "expected": {
+     "change_positive": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_2step_change_01",
+    "env": {
+     "n2": 41,
+     "n3": 6,
+     "n5": 500
+    },
+    "expected": {
+     "change_positive": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_change_01",
+    "env": {
+     "n2": 25,
+     "n3": 7,
+     "n5": 1000
+    },
+    "expected": {
+     "change_positive": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_2step_change_01",
+    "env": {
+     "n2": 109,
+     "n3": 3,
+     "n5": 1000
+    },
+    "expected": {
+     "change_positive": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_2step_change_01",
+    "env": {
+     "n2": 18,
+     "n3": 8,
+     "n5": 1000
+    },
+    "expected": {
+     "change_positive": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_2step_change_01",
+    "env": {
+     "n2": 42,
+     "n3": 8,
+     "n5": 1000
+    },
+    "expected": {
+     "change_positive": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_2step_change_01",
+    "env": {
+     "n2": 132,
+     "n3": 4,
+     "n5": 1000
+    },
+    "expected": {
+     "change_positive": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_2step_change_01",
+    "env": {
+     "n2": 60,
+     "n3": 6,
+     "n5": 1000
+    },
+    "expected": {
+     "change_positive": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_2step_change_01",
+    "env": {
+     "n2": 134,
+     "n3": 8,
+     "n5": 1000
+    },
+    "expected": {
+     "change_positive": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_2step_change_01",
+    "env": {
+     "n2": 97,
+     "n3": 5,
+     "n5": 500
+    },
+    "expected": {
+     "change_positive": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_2step_change_01",
+    "env": {
+     "n2": 86,
+     "n3": 9,
+     "n5": 500
+    },
+    "expected": {
+     "change_positive": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_2step_change_01",
+    "env": {
+     "n2": 133,
+     "n3": 8,
+     "n5": 1000
+    },
+    "expected": {
+     "change_positive": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_2step_change_01",
+    "env": {
+     "n2": 22,
+     "n3": 9,
+     "n5": 1000
+    },
+    "expected": {
+     "change_positive": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_sum_01",
+    "env": {
+     "a": 148,
+     "b": 304,
+     "n": 5
+    },
+    "expected": {
+     "round_sum": false,
+     "sum_range": true,
+     "distinct": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_sum_01",
+    "env": {
+     "a": 236,
+     "b": 187,
+     "n": 7
+    },
+    "expected": {
+     "round_sum": false,
+     "sum_range": true,
+     "distinct": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_sum_01",
+    "env": {
+     "a": 198,
+     "b": 360,
+     "n": 6
+    },
+    "expected": {
+     "round_sum": false,
+     "sum_range": true,
+     "distinct": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_sum_01",
+    "env": {
+     "a": 339,
+     "b": 60,
+     "n": 5
+    },
+    "expected": {
+     "round_sum": false,
+     "sum_range": true,
+     "distinct": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_sum_01",
+    "env": {
+     "a": 98,
+     "b": 178,
+     "n": 8
+    },
+    "expected": {
+     "round_sum": false,
+     "sum_range": true,
+     "distinct": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_sum_01",
+    "env": {
+     "a": 305,
+     "b": 339,
+     "n": 5
+    },
+    "expected": {
+     "round_sum": false,
+     "sum_range": false,
+     "distinct": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_sum_01",
+    "env": {
+     "a": 408,
+     "b": 298,
+     "n": 9
+    },
+    "expected": {
+     "round_sum": false,
+     "sum_range": false,
+     "distinct": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_sum_01",
+    "env": {
+     "a": 284,
+     "b": 63,
+     "n": 3
+    },
+    "expected": {
+     "round_sum": false,
+     "sum_range": true,
+     "distinct": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_sum_01",
+    "env": {
+     "a": 205,
+     "b": 168,
+     "n": 8
+    },
+    "expected": {
+     "round_sum": false,
+     "sum_range": true,
+     "distinct": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_sum_01",
+    "env": {
+     "a": 409,
+     "b": 179,
+     "n": 6
+    },
+    "expected": {
+     "round_sum": false,
+     "sum_range": true,
+     "distinct": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_sum_01",
+    "env": {
+     "a": 394,
+     "b": 352,
+     "n": 7
+    },
+    "expected": {
+     "round_sum": false,
+     "sum_range": false,
+     "distinct": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_sum_01",
+    "env": {
+     "a": 297,
+     "b": 338,
+     "n": 7
+    },
+    "expected": {
+     "round_sum": false,
+     "sum_range": false,
+     "distinct": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_sum_01",
+    "env": {
+     "a": 272,
+     "b": 436,
+     "n": 7
+    },
+    "expected": {
+     "round_sum": false,
+     "sum_range": false,
+     "distinct": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_sum_01",
+    "env": {
+     "a": 235,
+     "b": 414,
+     "n": 9
+    },
+    "expected": {
+     "round_sum": false,
+     "sum_range": false,
+     "distinct": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_sum_01",
+    "env": {
+     "a": 193,
+     "b": 211,
+     "n": 6
+    },
+    "expected": {
+     "round_sum": false,
+     "sum_range": true,
+     "distinct": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_sum_01",
+    "env": {
+     "a": 173,
+     "b": 116,
+     "n": 5
+    },
+    "expected": {
+     "round_sum": false,
+     "sum_range": true,
+     "distinct": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_sum_01",
+    "env": {
+     "a": 216,
+     "b": 116,
+     "n": 4
+    },
+    "expected": {
+     "round_sum": false,
+     "sum_range": true,
+     "distinct": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_sum_01",
+    "env": {
+     "a": 153,
+     "b": 165,
+     "n": 9
+    },
+    "expected": {
+     "round_sum": false,
+     "sum_range": true,
+     "distinct": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_sum_01",
+    "env": {
+     "a": 196,
+     "b": 425,
+     "n": 6
+    },
+    "expected": {
+     "round_sum": false,
+     "sum_range": false,
+     "distinct": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_sum_01",
+    "env": {
+     "a": 106,
+     "b": 154,
+     "n": 6
+    },
+    "expected": {
+     "round_sum": false,
+     "sum_range": true,
+     "distinct": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_diff_01",
+    "env": {
+     "a": 181,
+     "b": 239,
+     "n": 4
+    },
+    "expected": {
+     "a_wins": false,
+     "round_diff": false,
+     "diff_range": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_diff_01",
+    "env": {
+     "a": 219,
+     "b": 62,
+     "n": 4
+    },
+    "expected": {
+     "a_wins": true,
+     "round_diff": false,
+     "diff_range": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_diff_01",
+    "env": {
+     "a": 205,
+     "b": 78,
+     "n": 2
+    },
+    "expected": {
+     "a_wins": true,
+     "round_diff": false,
+     "diff_range": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_diff_01",
+    "env": {
+     "a": 348,
+     "b": 204,
+     "n": 4
+    },
+    "expected": {
+     "a_wins": true,
+     "round_diff": false,
+     "diff_range": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_diff_01",
+    "env": {
+     "a": 391,
+     "b": 306,
+     "n": 3
+    },
+    "expected": {
+     "a_wins": true,
+     "round_diff": false,
+     "diff_range": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_diff_01",
+    "env": {
+     "a": 71,
+     "b": 348,
+     "n": 6
+    },
+    "expected": {
+     "a_wins": false,
+     "round_diff": false,
+     "diff_range": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_diff_01",
+    "env": {
+     "a": 305,
+     "b": 300,
+     "n": 9
+    },
+    "expected": {
+     "a_wins": true,
+     "round_diff": false,
+     "diff_range": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_diff_01",
+    "env": {
+     "a": 239,
+     "b": 149,
+     "n": 2
+    },
+    "expected": {
+     "a_wins": true,
+     "round_diff": true,
+     "diff_range": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_mult_distrib_diff_01",
+    "env": {
+     "a": 194,
+     "b": 299,
+     "n": 3
+    },
+    "expected": {
+     "a_wins": false,
+     "round_diff": false,
+     "diff_range": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_diff_01",
+    "env": {
+     "a": 98,
+     "b": 260,
+     "n": 9
+    },
+    "expected": {
+     "a_wins": false,
+     "round_diff": false,
+     "diff_range": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_diff_01",
+    "env": {
+     "a": 102,
+     "b": 350,
+     "n": 2
+    },
+    "expected": {
+     "a_wins": false,
+     "round_diff": false,
+     "diff_range": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_diff_01",
+    "env": {
+     "a": 142,
+     "b": 131,
+     "n": 6
+    },
+    "expected": {
+     "a_wins": true,
+     "round_diff": false,
+     "diff_range": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_diff_01",
+    "env": {
+     "a": 108,
+     "b": 182,
+     "n": 3
+    },
+    "expected": {
+     "a_wins": false,
+     "round_diff": false,
+     "diff_range": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_diff_01",
+    "env": {
+     "a": 350,
+     "b": 268,
+     "n": 5
+    },
+    "expected": {
+     "a_wins": true,
+     "round_diff": false,
+     "diff_range": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_diff_01",
+    "env": {
+     "a": 332,
+     "b": 249,
+     "n": 9
+    },
+    "expected": {
+     "a_wins": true,
+     "round_diff": false,
+     "diff_range": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_diff_01",
+    "env": {
+     "a": 291,
+     "b": 207,
+     "n": 8
+    },
+    "expected": {
+     "a_wins": true,
+     "round_diff": false,
+     "diff_range": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_diff_01",
+    "env": {
+     "a": 221,
+     "b": 346,
+     "n": 2
+    },
+    "expected": {
+     "a_wins": false,
+     "round_diff": false,
+     "diff_range": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_diff_01",
+    "env": {
+     "a": 377,
+     "b": 433,
+     "n": 3
+    },
+    "expected": {
+     "a_wins": false,
+     "round_diff": false,
+     "diff_range": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_diff_01",
+    "env": {
+     "a": 171,
+     "b": 375,
+     "n": 5
+    },
+    "expected": {
+     "a_wins": false,
+     "round_diff": false,
+     "diff_range": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_mult_distrib_diff_01",
+    "env": {
+     "a": 200,
+     "b": 393,
+     "n": 3
+    },
+    "expected": {
+     "a_wins": false,
+     "round_diff": false,
+     "diff_range": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_meas_dist_gappei_01",
+    "env": {
+     "q1": 400,
+     "q2": 400
+    },
+    "expected": {
+     "sum_over_1km": false,
+     "ans_has_m": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_meas_dist_gappei_01",
+    "env": {
+     "q1": 400,
+     "q2": 700
+    },
+    "expected": {
+     "sum_over_1km": true,
+     "ans_has_m": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_dist_gappei_01",
+    "env": {
+     "q1": 300,
+     "q2": 400
+    },
+    "expected": {
+     "sum_over_1km": false,
+     "ans_has_m": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_meas_dist_gappei_01",
+    "env": {
+     "q1": 300,
+     "q2": 600
+    },
+    "expected": {
+     "sum_over_1km": false,
+     "ans_has_m": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_meas_dist_gappei_01",
+    "env": {
+     "q1": 600,
+     "q2": 800
+    },
+    "expected": {
+     "sum_over_1km": true,
+     "ans_has_m": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_dist_gappei_01",
+    "env": {
+     "q1": 700,
+     "q2": 600
+    },
+    "expected": {
+     "sum_over_1km": true,
+     "ans_has_m": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_dist_gappei_01",
+    "env": {
+     "q1": 500,
+     "q2": 300
+    },
+    "expected": {
+     "sum_over_1km": false,
+     "ans_has_m": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_meas_dist_gappei_01",
+    "env": {
+     "q1": 400,
+     "q2": 500
+    },
+    "expected": {
+     "sum_over_1km": false,
+     "ans_has_m": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_meas_dist_gappei_01",
+    "env": {
+     "q1": 800,
+     "q2": 500
+    },
+    "expected": {
+     "sum_over_1km": true,
+     "ans_has_m": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_dist_gappei_01",
+    "env": {
+     "q1": 800,
+     "q2": 900
+    },
+    "expected": {
+     "sum_over_1km": true,
+     "ans_has_m": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_dist_gappei_01",
+    "env": {
+     "q1": 600,
+     "q2": 300
+    },
+    "expected": {
+     "sum_over_1km": false,
+     "ans_has_m": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_meas_dist_gappei_01",
+    "env": {
+     "q1": 800,
+     "q2": 400
+    },
+    "expected": {
+     "sum_over_1km": true,
+     "ans_has_m": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_dist_gappei_01",
+    "env": {
+     "q1": 500,
+     "q2": 900
+    },
+    "expected": {
+     "sum_over_1km": true,
+     "ans_has_m": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_dist_gappei_01",
+    "env": {
+     "q1": 900,
+     "q2": 800
+    },
+    "expected": {
+     "sum_over_1km": true,
+     "ans_has_m": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_dist_gappei_01",
+    "env": {
+     "q1": 700,
+     "q2": 800
+    },
+    "expected": {
+     "sum_over_1km": true,
+     "ans_has_m": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_dist_gappei_01",
+    "env": {
+     "q1": 900,
+     "q2": 400
+    },
+    "expected": {
+     "sum_over_1km": true,
+     "ans_has_m": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_dist_gappei_01",
+    "env": {
+     "q1": 600,
+     "q2": 300
+    },
+    "expected": {
+     "sum_over_1km": false,
+     "ans_has_m": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_meas_dist_gappei_01",
+    "env": {
+     "q1": 700,
+     "q2": 400
+    },
+    "expected": {
+     "sum_over_1km": true,
+     "ans_has_m": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_dist_gappei_01",
+    "env": {
+     "q1": 800,
+     "q2": 400
+    },
+    "expected": {
+     "sum_over_1km": true,
+     "ans_has_m": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_dist_gappei_01",
+    "env": {
+     "q1": 500,
+     "q2": 900
+    },
+    "expected": {
+     "sum_over_1km": true,
+     "ans_has_m": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_weight_gappei_01",
+    "env": {
+     "q1": 300,
+     "q2": 1400
+    },
+    "expected": {
+     "no_g_carry": true,
+     "ans_has_g": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_weight_gappei_01",
+    "env": {
+     "q1": 200,
+     "q2": 1700
+    },
+    "expected": {
+     "no_g_carry": true,
+     "ans_has_g": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_weight_gappei_01",
+    "env": {
+     "q1": 800,
+     "q2": 2100
+    },
+    "expected": {
+     "no_g_carry": true,
+     "ans_has_g": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_weight_gappei_01",
+    "env": {
+     "q1": 650,
+     "q2": 2100
+    },
+    "expected": {
+     "no_g_carry": true,
+     "ans_has_g": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_weight_gappei_01",
+    "env": {
+     "q1": 550,
+     "q2": 1500
+    },
+    "expected": {
+     "no_g_carry": false,
+     "ans_has_g": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_meas_weight_gappei_01",
+    "env": {
+     "q1": 550,
+     "q2": 2100
+    },
+    "expected": {
+     "no_g_carry": true,
+     "ans_has_g": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_weight_gappei_01",
+    "env": {
+     "q1": 750,
+     "q2": 2400
+    },
+    "expected": {
+     "no_g_carry": false,
+     "ans_has_g": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_meas_weight_gappei_01",
+    "env": {
+     "q1": 400,
+     "q2": 2800
+    },
+    "expected": {
+     "no_g_carry": false,
+     "ans_has_g": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_meas_weight_gappei_01",
+    "env": {
+     "q1": 600,
+     "q2": 2700
+    },
+    "expected": {
+     "no_g_carry": false,
+     "ans_has_g": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_meas_weight_gappei_01",
+    "env": {
+     "q1": 550,
+     "q2": 1400
+    },
+    "expected": {
+     "no_g_carry": true,
+     "ans_has_g": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_weight_gappei_01",
+    "env": {
+     "q1": 650,
+     "q2": 1300
+    },
+    "expected": {
+     "no_g_carry": true,
+     "ans_has_g": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_weight_gappei_01",
+    "env": {
+     "q1": 900,
+     "q2": 2500
+    },
+    "expected": {
+     "no_g_carry": false,
+     "ans_has_g": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_meas_weight_gappei_01",
+    "env": {
+     "q1": 750,
+     "q2": 2200
+    },
+    "expected": {
+     "no_g_carry": true,
+     "ans_has_g": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_weight_gappei_01",
+    "env": {
+     "q1": 650,
+     "q2": 2000
+    },
+    "expected": {
+     "no_g_carry": true,
+     "ans_has_g": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_weight_gappei_01",
+    "env": {
+     "q1": 200,
+     "q2": 1400
+    },
+    "expected": {
+     "no_g_carry": true,
+     "ans_has_g": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_weight_gappei_01",
+    "env": {
+     "q1": 350,
+     "q2": 1200
+    },
+    "expected": {
+     "no_g_carry": true,
+     "ans_has_g": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_weight_gappei_01",
+    "env": {
+     "q1": 800,
+     "q2": 2000
+    },
+    "expected": {
+     "no_g_carry": true,
+     "ans_has_g": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_weight_gappei_01",
+    "env": {
+     "q1": 650,
+     "q2": 1300
+    },
+    "expected": {
+     "no_g_carry": true,
+     "ans_has_g": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_meas_weight_gappei_01",
+    "env": {
+     "q1": 800,
+     "q2": 1700
+    },
+    "expected": {
+     "no_g_carry": false,
+     "ans_has_g": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_meas_weight_gappei_01",
+    "env": {
+     "q1": 550,
+     "q2": 2800
+    },
+    "expected": {
+     "no_g_carry": false,
+     "ans_has_g": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_dec_add_01",
+    "env": {
+     "q1": 44,
+     "q2": 31
+    },
+    "expected": {
+     "both_decimal": true,
+     "ans_decimal": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_add_01",
+    "env": {
+     "q1": 20,
+     "q2": 14
+    },
+    "expected": {
+     "both_decimal": false,
+     "ans_decimal": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_dec_add_01",
+    "env": {
+     "q1": 40,
+     "q2": 30
+    },
+    "expected": {
+     "both_decimal": false,
+     "ans_decimal": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_dec_add_01",
+    "env": {
+     "q1": 43,
+     "q2": 34
+    },
+    "expected": {
+     "both_decimal": true,
+     "ans_decimal": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_add_01",
+    "env": {
+     "q1": 8,
+     "q2": 33
+    },
+    "expected": {
+     "both_decimal": true,
+     "ans_decimal": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_add_01",
+    "env": {
+     "q1": 25,
+     "q2": 29
+    },
+    "expected": {
+     "both_decimal": true,
+     "ans_decimal": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_add_01",
+    "env": {
+     "q1": 24,
+     "q2": 23
+    },
+    "expected": {
+     "both_decimal": true,
+     "ans_decimal": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_add_01",
+    "env": {
+     "q1": 45,
+     "q2": 9
+    },
+    "expected": {
+     "both_decimal": true,
+     "ans_decimal": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_add_01",
+    "env": {
+     "q1": 13,
+     "q2": 24
+    },
+    "expected": {
+     "both_decimal": true,
+     "ans_decimal": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_add_01",
+    "env": {
+     "q1": 29,
+     "q2": 47
+    },
+    "expected": {
+     "both_decimal": true,
+     "ans_decimal": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_add_01",
+    "env": {
+     "q1": 34,
+     "q2": 21
+    },
+    "expected": {
+     "both_decimal": true,
+     "ans_decimal": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_add_01",
+    "env": {
+     "q1": 45,
+     "q2": 28
+    },
+    "expected": {
+     "both_decimal": true,
+     "ans_decimal": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_add_01",
+    "env": {
+     "q1": 38,
+     "q2": 5
+    },
+    "expected": {
+     "both_decimal": true,
+     "ans_decimal": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_add_01",
+    "env": {
+     "q1": 32,
+     "q2": 8
+    },
+    "expected": {
+     "both_decimal": true,
+     "ans_decimal": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_dec_add_01",
+    "env": {
+     "q1": 23,
+     "q2": 19
+    },
+    "expected": {
+     "both_decimal": true,
+     "ans_decimal": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_add_01",
+    "env": {
+     "q1": 23,
+     "q2": 10
+    },
+    "expected": {
+     "both_decimal": false,
+     "ans_decimal": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_dec_add_01",
+    "env": {
+     "q1": 28,
+     "q2": 35
+    },
+    "expected": {
+     "both_decimal": true,
+     "ans_decimal": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_add_01",
+    "env": {
+     "q1": 3,
+     "q2": 45
+    },
+    "expected": {
+     "both_decimal": true,
+     "ans_decimal": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_add_01",
+    "env": {
+     "q1": 37,
+     "q2": 32
+    },
+    "expected": {
+     "both_decimal": true,
+     "ans_decimal": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_add_01",
+    "env": {
+     "q1": 29,
+     "q2": 6
+    },
+    "expected": {
+     "both_decimal": true,
+     "ans_decimal": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_kyusa_01",
+    "env": {
+     "q1": 59,
+     "q2": 87
+    },
+    "expected": {
+     "a_longer": false,
+     "both_decimal": true,
+     "ans_decimal": true,
+     "diff_meaningful": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_dec_kyusa_01",
+    "env": {
+     "q1": 81,
+     "q2": 100
+    },
+    "expected": {
+     "a_longer": false,
+     "both_decimal": false,
+     "ans_decimal": true,
+     "diff_meaningful": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_dec_kyusa_01",
+    "env": {
+     "q1": 131,
+     "q2": 84
+    },
+    "expected": {
+     "a_longer": true,
+     "both_decimal": true,
+     "ans_decimal": true,
+     "diff_meaningful": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_kyusa_01",
+    "env": {
+     "q1": 115,
+     "q2": 77
+    },
+    "expected": {
+     "a_longer": true,
+     "both_decimal": true,
+     "ans_decimal": true,
+     "diff_meaningful": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_kyusa_01",
+    "env": {
+     "q1": 132,
+     "q2": 27
+    },
+    "expected": {
+     "a_longer": true,
+     "both_decimal": true,
+     "ans_decimal": true,
+     "diff_meaningful": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_kyusa_01",
+    "env": {
+     "q1": 61,
+     "q2": 55
+    },
+    "expected": {
+     "a_longer": true,
+     "both_decimal": true,
+     "ans_decimal": true,
+     "diff_meaningful": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_kyusa_01",
+    "env": {
+     "q1": 105,
+     "q2": 37
+    },
+    "expected": {
+     "a_longer": true,
+     "both_decimal": true,
+     "ans_decimal": true,
+     "diff_meaningful": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_kyusa_01",
+    "env": {
+     "q1": 71,
+     "q2": 77
+    },
+    "expected": {
+     "a_longer": false,
+     "both_decimal": true,
+     "ans_decimal": true,
+     "diff_meaningful": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_dec_kyusa_01",
+    "env": {
+     "q1": 147,
+     "q2": 110
+    },
+    "expected": {
+     "a_longer": true,
+     "both_decimal": false,
+     "ans_decimal": true,
+     "diff_meaningful": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_dec_kyusa_01",
+    "env": {
+     "q1": 97,
+     "q2": 36
+    },
+    "expected": {
+     "a_longer": true,
+     "both_decimal": true,
+     "ans_decimal": true,
+     "diff_meaningful": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_kyusa_01",
+    "env": {
+     "q1": 38,
+     "q2": 101
+    },
+    "expected": {
+     "a_longer": false,
+     "both_decimal": true,
+     "ans_decimal": true,
+     "diff_meaningful": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_dec_kyusa_01",
+    "env": {
+     "q1": 112,
+     "q2": 123
+    },
+    "expected": {
+     "a_longer": false,
+     "both_decimal": true,
+     "ans_decimal": true,
+     "diff_meaningful": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_dec_kyusa_01",
+    "env": {
+     "q1": 65,
+     "q2": 111
+    },
+    "expected": {
+     "a_longer": false,
+     "both_decimal": true,
+     "ans_decimal": true,
+     "diff_meaningful": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_dec_kyusa_01",
+    "env": {
+     "q1": 55,
+     "q2": 60
+    },
+    "expected": {
+     "a_longer": false,
+     "both_decimal": false,
+     "ans_decimal": true,
+     "diff_meaningful": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_dec_kyusa_01",
+    "env": {
+     "q1": 105,
+     "q2": 22
+    },
+    "expected": {
+     "a_longer": true,
+     "both_decimal": true,
+     "ans_decimal": true,
+     "diff_meaningful": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_kyusa_01",
+    "env": {
+     "q1": 105,
+     "q2": 73
+    },
+    "expected": {
+     "a_longer": true,
+     "both_decimal": true,
+     "ans_decimal": true,
+     "diff_meaningful": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_kyusa_01",
+    "env": {
+     "q1": 46,
+     "q2": 49
+    },
+    "expected": {
+     "a_longer": false,
+     "both_decimal": true,
+     "ans_decimal": true,
+     "diff_meaningful": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_dec_kyusa_01",
+    "env": {
+     "q1": 142,
+     "q2": 137
+    },
+    "expected": {
+     "a_longer": true,
+     "both_decimal": true,
+     "ans_decimal": true,
+     "diff_meaningful": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_dec_kyusa_01",
+    "env": {
+     "q1": 49,
+     "q2": 80
+    },
+    "expected": {
+     "a_longer": false,
+     "both_decimal": false,
+     "ans_decimal": true,
+     "diff_meaningful": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_dec_kyusa_01",
+    "env": {
+     "q1": 50,
+     "q2": 103
+    },
+    "expected": {
+     "a_longer": false,
+     "both_decimal": false,
+     "ans_decimal": true,
+     "diff_meaningful": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_represent_01",
+    "env": {
+     "den": 9,
+     "num": 3
+    },
+    "expected": {
+     "proper": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_represent_01",
+    "env": {
+     "den": 6,
+     "num": 5
+    },
+    "expected": {
+     "proper": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_represent_01",
+    "env": {
+     "den": 7,
+     "num": 5
+    },
+    "expected": {
+     "proper": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_represent_01",
+    "env": {
+     "den": 6,
+     "num": 8
+    },
+    "expected": {
+     "proper": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_represent_01",
+    "env": {
+     "den": 6,
+     "num": 4
+    },
+    "expected": {
+     "proper": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_represent_01",
+    "env": {
+     "den": 6,
+     "num": 3
+    },
+    "expected": {
+     "proper": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_represent_01",
+    "env": {
+     "den": 6,
+     "num": 4
+    },
+    "expected": {
+     "proper": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_represent_01",
+    "env": {
+     "den": 7,
+     "num": 3
+    },
+    "expected": {
+     "proper": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_represent_01",
+    "env": {
+     "den": 9,
+     "num": 2
+    },
+    "expected": {
+     "proper": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_represent_01",
+    "env": {
+     "den": 5,
+     "num": 7
+    },
+    "expected": {
+     "proper": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_represent_01",
+    "env": {
+     "den": 5,
+     "num": 5
+    },
+    "expected": {
+     "proper": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_represent_01",
+    "env": {
+     "den": 9,
+     "num": 1
+    },
+    "expected": {
+     "proper": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_represent_01",
+    "env": {
+     "den": 5,
+     "num": 5
+    },
+    "expected": {
+     "proper": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_represent_01",
+    "env": {
+     "den": 9,
+     "num": 8
+    },
+    "expected": {
+     "proper": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_represent_01",
+    "env": {
+     "den": 9,
+     "num": 3
+    },
+    "expected": {
+     "proper": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_represent_01",
+    "env": {
+     "den": 6,
+     "num": 8
+    },
+    "expected": {
+     "proper": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_represent_01",
+    "env": {
+     "den": 5,
+     "num": 6
+    },
+    "expected": {
+     "proper": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_represent_01",
+    "env": {
+     "den": 7,
+     "num": 7
+    },
+    "expected": {
+     "proper": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_represent_01",
+    "env": {
+     "den": 6,
+     "num": 6
+    },
+    "expected": {
+     "proper": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_represent_01",
+    "env": {
+     "den": 9,
+     "num": 4
+    },
+    "expected": {
+     "proper": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_add_01",
+    "env": {
+     "den": 9,
+     "num1": 4,
+     "num2": 7
+    },
+    "expected": {
+     "operands_proper": true,
+     "sum_le_1": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_add_01",
+    "env": {
+     "den": 5,
+     "num1": 7,
+     "num2": 1
+    },
+    "expected": {
+     "operands_proper": false,
+     "sum_le_1": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_add_01",
+    "env": {
+     "den": 6,
+     "num1": 8,
+     "num2": 7
+    },
+    "expected": {
+     "operands_proper": false,
+     "sum_le_1": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_add_01",
+    "env": {
+     "den": 7,
+     "num1": 3,
+     "num2": 8
+    },
+    "expected": {
+     "operands_proper": false,
+     "sum_le_1": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_add_01",
+    "env": {
+     "den": 4,
+     "num1": 3,
+     "num2": 9
+    },
+    "expected": {
+     "operands_proper": false,
+     "sum_le_1": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_add_01",
+    "env": {
+     "den": 8,
+     "num1": 6,
+     "num2": 2
+    },
+    "expected": {
+     "operands_proper": true,
+     "sum_le_1": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_add_01",
+    "env": {
+     "den": 10,
+     "num1": 8,
+     "num2": 2
+    },
+    "expected": {
+     "operands_proper": true,
+     "sum_le_1": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_add_01",
+    "env": {
+     "den": 8,
+     "num1": 8,
+     "num2": 1
+    },
+    "expected": {
+     "operands_proper": false,
+     "sum_le_1": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_add_01",
+    "env": {
+     "den": 9,
+     "num1": 3,
+     "num2": 7
+    },
+    "expected": {
+     "operands_proper": true,
+     "sum_le_1": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_add_01",
+    "env": {
+     "den": 10,
+     "num1": 3,
+     "num2": 2
+    },
+    "expected": {
+     "operands_proper": true,
+     "sum_le_1": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_add_01",
+    "env": {
+     "den": 7,
+     "num1": 5,
+     "num2": 6
+    },
+    "expected": {
+     "operands_proper": true,
+     "sum_le_1": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_add_01",
+    "env": {
+     "den": 8,
+     "num1": 7,
+     "num2": 2
+    },
+    "expected": {
+     "operands_proper": true,
+     "sum_le_1": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_add_01",
+    "env": {
+     "den": 10,
+     "num1": 6,
+     "num2": 9
+    },
+    "expected": {
+     "operands_proper": true,
+     "sum_le_1": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_add_01",
+    "env": {
+     "den": 7,
+     "num1": 6,
+     "num2": 8
+    },
+    "expected": {
+     "operands_proper": false,
+     "sum_le_1": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_add_01",
+    "env": {
+     "den": 10,
+     "num1": 9,
+     "num2": 1
+    },
+    "expected": {
+     "operands_proper": true,
+     "sum_le_1": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_add_01",
+    "env": {
+     "den": 8,
+     "num1": 2,
+     "num2": 4
+    },
+    "expected": {
+     "operands_proper": true,
+     "sum_le_1": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_add_01",
+    "env": {
+     "den": 9,
+     "num1": 5,
+     "num2": 4
+    },
+    "expected": {
+     "operands_proper": true,
+     "sum_le_1": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_add_01",
+    "env": {
+     "den": 9,
+     "num1": 2,
+     "num2": 7
+    },
+    "expected": {
+     "operands_proper": true,
+     "sum_le_1": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_add_01",
+    "env": {
+     "den": 4,
+     "num1": 2,
+     "num2": 8
+    },
+    "expected": {
+     "operands_proper": false,
+     "sum_le_1": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_add_01",
+    "env": {
+     "den": 5,
+     "num1": 5,
+     "num2": 1
+    },
+    "expected": {
+     "operands_proper": false,
+     "sum_le_1": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_sub_01",
+    "env": {
+     "den": 4,
+     "num1": 7,
+     "num2": 1
+    },
+    "expected": {
+     "operands_proper": false,
+     "positive_remainder": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_sub_01",
+    "env": {
+     "den": 6,
+     "num1": 7,
+     "num2": 6
+    },
+    "expected": {
+     "operands_proper": false,
+     "positive_remainder": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_sub_01",
+    "env": {
+     "den": 7,
+     "num1": 4,
+     "num2": 4
+    },
+    "expected": {
+     "operands_proper": true,
+     "positive_remainder": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_sub_01",
+    "env": {
+     "den": 8,
+     "num1": 8,
+     "num2": 3
+    },
+    "expected": {
+     "operands_proper": false,
+     "positive_remainder": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_sub_01",
+    "env": {
+     "den": 5,
+     "num1": 4,
+     "num2": 2
+    },
+    "expected": {
+     "operands_proper": true,
+     "positive_remainder": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_sub_01",
+    "env": {
+     "den": 8,
+     "num1": 8,
+     "num2": 4
+    },
+    "expected": {
+     "operands_proper": false,
+     "positive_remainder": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_sub_01",
+    "env": {
+     "den": 7,
+     "num1": 4,
+     "num2": 4
+    },
+    "expected": {
+     "operands_proper": true,
+     "positive_remainder": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_sub_01",
+    "env": {
+     "den": 7,
+     "num1": 6,
+     "num2": 8
+    },
+    "expected": {
+     "operands_proper": false,
+     "positive_remainder": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_sub_01",
+    "env": {
+     "den": 6,
+     "num1": 2,
+     "num2": 8
+    },
+    "expected": {
+     "operands_proper": false,
+     "positive_remainder": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_sub_01",
+    "env": {
+     "den": 6,
+     "num1": 4,
+     "num2": 2
+    },
+    "expected": {
+     "operands_proper": true,
+     "positive_remainder": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_sub_01",
+    "env": {
+     "den": 7,
+     "num1": 7,
+     "num2": 5
+    },
+    "expected": {
+     "operands_proper": false,
+     "positive_remainder": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_sub_01",
+    "env": {
+     "den": 9,
+     "num1": 8,
+     "num2": 5
+    },
+    "expected": {
+     "operands_proper": true,
+     "positive_remainder": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_sub_01",
+    "env": {
+     "den": 7,
+     "num1": 6,
+     "num2": 4
+    },
+    "expected": {
+     "operands_proper": true,
+     "positive_remainder": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_sub_01",
+    "env": {
+     "den": 7,
+     "num1": 9,
+     "num2": 2
+    },
+    "expected": {
+     "operands_proper": false,
+     "positive_remainder": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_sub_01",
+    "env": {
+     "den": 5,
+     "num1": 8,
+     "num2": 6
+    },
+    "expected": {
+     "operands_proper": false,
+     "positive_remainder": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_sub_01",
+    "env": {
+     "den": 8,
+     "num1": 6,
+     "num2": 5
+    },
+    "expected": {
+     "operands_proper": true,
+     "positive_remainder": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_sub_01",
+    "env": {
+     "den": 4,
+     "num1": 8,
+     "num2": 5
+    },
+    "expected": {
+     "operands_proper": false,
+     "positive_remainder": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_sub_01",
+    "env": {
+     "den": 4,
+     "num1": 2,
+     "num2": 8
+    },
+    "expected": {
+     "operands_proper": false,
+     "positive_remainder": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_frac_sub_01",
+    "env": {
+     "den": 10,
+     "num1": 6,
+     "num2": 4
+    },
+    "expected": {
+     "operands_proper": true,
+     "positive_remainder": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_frac_sub_01",
+    "env": {
+     "den": 8,
+     "num1": 7,
+     "num2": 4
+    },
+    "expected": {
+     "operands_proper": true,
+     "positive_remainder": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_2step_01",
+    "env": {
+     "n_a": 8,
+     "n_b": 4,
+     "n2": 6
+    },
+    "expected": {
+     "total_range": true,
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_2step_01",
+    "env": {
+     "n_a": 8,
+     "n_b": 9,
+     "n2": 4
+    },
+    "expected": {
+     "total_range": true,
+     "has_remainder": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_2step_01",
+    "env": {
+     "n_a": 8,
+     "n_b": 3,
+     "n2": 2
+    },
+    "expected": {
+     "total_range": true,
+     "has_remainder": false,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_2step_01",
+    "env": {
+     "n_a": 5,
+     "n_b": 9,
+     "n2": 9
+    },
+    "expected": {
+     "total_range": true,
+     "has_remainder": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_2step_01",
+    "env": {
+     "n_a": 3,
+     "n_b": 7,
+     "n2": 7
+    },
+    "expected": {
+     "total_range": true,
+     "has_remainder": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_2step_01",
+    "env": {
+     "n_a": 8,
+     "n_b": 4,
+     "n2": 3
+    },
+    "expected": {
+     "total_range": true,
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_2step_01",
+    "env": {
+     "n_a": 5,
+     "n_b": 5,
+     "n2": 8
+    },
+    "expected": {
+     "total_range": true,
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_2step_01",
+    "env": {
+     "n_a": 4,
+     "n_b": 4,
+     "n2": 4
+    },
+    "expected": {
+     "total_range": true,
+     "has_remainder": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_2step_01",
+    "env": {
+     "n_a": 9,
+     "n_b": 7,
+     "n2": 7
+    },
+    "expected": {
+     "total_range": true,
+     "has_remainder": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_2step_01",
+    "env": {
+     "n_a": 7,
+     "n_b": 7,
+     "n2": 6
+    },
+    "expected": {
+     "total_range": true,
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_2step_01",
+    "env": {
+     "n_a": 9,
+     "n_b": 4,
+     "n2": 6
+    },
+    "expected": {
+     "total_range": true,
+     "has_remainder": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_2step_01",
+    "env": {
+     "n_a": 9,
+     "n_b": 6,
+     "n2": 6
+    },
+    "expected": {
+     "total_range": true,
+     "has_remainder": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_2step_01",
+    "env": {
+     "n_a": 8,
+     "n_b": 9,
+     "n2": 7
+    },
+    "expected": {
+     "total_range": true,
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_2step_01",
+    "env": {
+     "n_a": 9,
+     "n_b": 3,
+     "n2": 9
+    },
+    "expected": {
+     "total_range": true,
+     "has_remainder": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_2step_01",
+    "env": {
+     "n_a": 3,
+     "n_b": 4,
+     "n2": 5
+    },
+    "expected": {
+     "total_range": true,
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_2step_01",
+    "env": {
+     "n_a": 9,
+     "n_b": 8,
+     "n2": 8
+    },
+    "expected": {
+     "total_range": true,
+     "has_remainder": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_2step_01",
+    "env": {
+     "n_a": 9,
+     "n_b": 9,
+     "n2": 7
+    },
+    "expected": {
+     "total_range": true,
+     "has_remainder": true,
+     "quotient_in_kuku": false
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_2step_01",
+    "env": {
+     "n_a": 3,
+     "n_b": 9,
+     "n2": 8
+    },
+    "expected": {
+     "total_range": true,
+     "has_remainder": true,
+     "quotient_in_kuku": true
+    },
+    "all_pass": true
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_2step_01",
+    "env": {
+     "n_a": 3,
+     "n_b": 5,
+     "n2": 3
+    },
+    "expected": {
+     "total_range": true,
+     "has_remainder": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   },
+   {
+    "pattern_id": "g03_div_amari_ceil_2step_01",
+    "env": {
+     "n_a": 6,
+     "n_b": 5,
+     "n2": 6
+    },
+    "expected": {
+     "total_range": true,
+     "has_remainder": false,
+     "quotient_in_kuku": true
+    },
+    "all_pass": false
+   }
+  ]
+ }
+}
