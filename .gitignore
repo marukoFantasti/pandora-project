@@ -1,0 +1,12 @@
+# OS
+.DS_Store
+
+# 著作権ハイジーン: 出典情報を含む設計ログ（公開しない）
+pattern_bank/private_design_log/
+
+# handoff の配布zip（抽出済みディレクトリで足りるため追跡しない）
+pattern_bank/handoff/*.zip
+pattern_bank/handoff_g03/*.zip
+
+# python cache
+__pycache__/

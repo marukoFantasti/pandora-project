@@ -1,0 +1,13 @@
+# Vercelデプロイから除外（設計・ハンドオフ資料。ランタイムでは一切fetchしない）。
+# 著作権ハイジーン: 設計根拠・出典トレースを公開デプロイに含めない。
+# ランタイムが読むのは pattern_bank/patterns_g0*.json / pattern_bank/pattern_generator.js /
+# pattern_bank/themes/ / data/ のみ（handoff配下は参照専用）。
+
+pattern_bank/handoff/
+pattern_bank/handoff_g03/
+pattern_bank/private_design_log/
+japanese_handoff/
+
+# 設計メモ・分析ログ類
+**/*_handoff.md
+pattern_bank/**/checkConsistency_retirement_plan.md

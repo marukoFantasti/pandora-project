@@ -3,7 +3,7 @@
     "band": "jhs",
     "band_label": "中学1〜3年共通",
     "subject": "japanese",
-    "source_analysis": "ウイニングフィニッシュ国語 構造分析（jhs_kokugo_analysis_log.md）",
+    "source_analysis": "標準的な中学国語教材の構造分析（jhs_kokugo_analysis_log.md）",
     "note": "単元名＝観点タグ。小学版UNIT_BANKとフィールド名を揃えること（差分は README_handoff.md 参照）",
     "version": "0.1.0"
   },

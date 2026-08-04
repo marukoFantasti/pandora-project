@@ -1,7 +1,7 @@
 {
   "schema_version": "0.7.1",
-  "description": "小3パターンバンク セッション1: わり算族(等分除/包含除/倍/あまり3層/2ステップ)+□を使った式。ウィンパス小3 c05/c06/c14/c15/c28 実物78問から復元。",
-  "source_analysis": "Pandora_g03.xlsx reference_problems c05(15問)/c06(19問)/c14(11問)/c15(18問)/c28(13問)を精読。あまりは①素の複文型(c14: 7人に配れて1まいあまる) ②切り上げ型(c15: いす・箱・回 → q+1) ③切り捨て型(c15: リボン・ケーキ → q) の3層。わり算の意味は等分除・包含除が明示的にペア出題(c05れい)。□式は4演算(□+a, a-□, a×□, a÷□)。",
+  "description": "小3パターンバンク セッション1: わり算族(等分除/包含除/倍/あまり3層/2ステップ)+□を使った式。",
+  "source_analysis": "標準的な小3算数カリキュラム（わり算の3つの意味・あまりの3類型・□を使った式・3けた加減・分配法則・小数/分数・複名数）の単元構成に基づく設計。実データは含めない。",
   "shared_lexicon": {
     "comment": "g02から actors を継承。わり算用に『割り切れる文脈』の object ペアを新設。ceil/floor は文脈が答えの単位を決めるため context_sets 方式。",
     "actors": [
@@ -183,7 +183,7 @@
         {
           "rule": "divisible",
           "expr": "n1 % n2 == 0",
-          "why": "c05は割り切れる範囲のみ(あまりはc14で導入)"
+          "why": "割り切れる範囲のみ"
         },
         {
           "rule": "quotient_in_kuku",
@@ -220,7 +220,7 @@
       "unit_id": "g03_c05_u01",
       "unit_name": "(2けたの数)÷(1けたの数)のわり算の問題",
       "semantic_category": "包含除",
-      "semantic_note": "全体からn個ずつ取っていき、何回(何人)取れるかを求める。『何人に分けられますか』が定番。式は等分除と同じでも意味が異なる、というのがc05れいの核心。",
+      "semantic_note": "全体からn個ずつ取っていき、何回(何人)取れるかを求める。『何人に分けられますか』が定番。式は等分除と同じでも意味が異なる、というのがれいの核心。",
       "inverse_thinking": false,
       "step_count": 1,
       "operation": "n1 ÷ n2",
@@ -252,7 +252,7 @@
         {
           "rule": "divisible",
           "expr": "n1 % n2 == 0",
-          "why": "c05は割り切れる範囲のみ"
+          "why": "割り切れる範囲のみ"
         },
         {
           "rule": "quotient_in_kuku",
@@ -289,7 +289,7 @@
       "unit_id": "g03_c05_u01",
       "unit_name": "(2けたの数)÷(1けたの数)のわり算の問題",
       "semantic_category": "倍(何倍)",
-      "semantic_note": "AはBの何倍か。わり算の第3の意味。c05実物では長さ・重さ・かさの単位で頻出(14cmは2cmの何倍/35gは7gの何倍)。",
+      "semantic_note": "AはBの何倍か。わり算の第3の意味。",
       "inverse_thinking": false,
       "step_count": 1,
       "operation": "n1 ÷ n2",
@@ -356,7 +356,7 @@
       "unit_id": "g03_c14_u01",
       "unit_name": "あまりのあるわり算",
       "semantic_category": "あまり(素・複文)",
-      "semantic_note": "あまり3層の第1層。包含除+あまりで、答えが『q人に配れて、rまいあまる。』の複文になる(c14実物: 22÷3=7あまり1 → 7人に配れて、1まいあまる)。answer_structure=compound_remainder。",
+      "semantic_note": "あまり3層の第1層。包含除+あまりで、答えが『q人に配れて、rまいあまる。』の複文になる。answer_structure=compound_remainder。",
       "inverse_thinking": false,
       "step_count": 1,
       "operation": "n1 ÷ n2 (あまりあり)",
@@ -398,7 +398,7 @@
         {
           "rule": "has_remainder",
           "expr": "n1 % n2 >= 1",
-          "why": "あまりが必ず出る(c14の単元要求)"
+          "why": "あまりが必ず出る"
         },
         {
           "rule": "quotient_in_kuku",
@@ -435,7 +435,7 @@
       "unit_id": "g03_c15_u01",
       "unit_name": "あまりの考え方",
       "semantic_category": "あまり(切り上げ)",
-      "semantic_note": "あまり3層の第2層。あまりの分を収容するために+1が必要(いす・箱・回)。c15実物: 45÷6=7あまり3 (7+1=8) 答え 8つ。文脈が+1の必然性を決めるため ceil_contexts 方式。",
+      "semantic_note": "あまり3層の第2層。あまりの分を収容するために+1が必要(いす・箱・回)。文脈が+1の必然性を決めるため ceil_contexts 方式。",
       "inverse_thinking": false,
       "step_count": 1,
       "operation": "n1 ÷ n2 → 商+1",
@@ -519,7 +519,7 @@
       "unit_id": "g03_c15_u01",
       "unit_name": "あまりの考え方",
       "semantic_category": "あまり(切り捨て)",
-      "semantic_note": "あまり3層の第3層。あまりでは1単位分に満たないため商のまま(リボン・ケーキ)。c15実物: 30÷4=7あまり2 答え 7つ。",
+      "semantic_note": "あまり3層の第3層。あまりでは1単位分に満たないため商のまま(リボン・ケーキ)。",
       "inverse_thinking": false,
       "step_count": 1,
       "operation": "n1 ÷ n2 → 商そのまま",
@@ -603,7 +603,7 @@
       "unit_id": "g03_c06_u01",
       "unit_name": "答えが九九にないわり算とわり算のり用",
       "semantic_category": "2ステップ(合併→等分除)",
-      "semantic_note": "c06実物: おとな3人と子ども4人のあわせた人数であきかん63こを分ける → (3+4)=7, 63÷7=9。人数の合併が先、等分除が後。",
+      "semantic_note": "人数の合併が先、等分除が後。",
       "inverse_thinking": false,
       "step_count": 2,
       "operation": "(a1 + a2) → n1 ÷ (a1+a2)",
@@ -656,7 +656,7 @@
         {
           "rule": "divisible",
           "expr": "n1 % (a1 + a2) == 0",
-          "why": "c06はあまりなし"
+          "why": "あまりなし"
         },
         {
           "rule": "quotient_in_kuku",
@@ -692,7 +692,7 @@
       "unit_id": "g03_c28_u01",
       "unit_name": "□を使った式",
       "semantic_category": "□の式(たし算)",
-      "semantic_note": "n1+□=n3 型。増加量が未知。解法式は □=n3-n1 で、表示演算と解法演算が逆になる(inverse_thinking=true)。c28実物: 35+□=94 → □=94-35=59。",
+      "semantic_note": "n1+□=n3 型。増加量が未知。解法式は □=n3-n1 で、表示演算と解法演算が逆になる(inverse_thinking=true)。",
       "inverse_thinking": true,
       "step_count": 1,
       "operation": "n1 + □ = n3 → □ = n3 - n1",
@@ -757,7 +757,7 @@
       "unit_id": "g03_c28_u01",
       "unit_name": "□を使った式",
       "semantic_category": "□の式(ひき算)",
-      "semantic_note": "n1-□=n3 型。減少量が未知。解法式は □=n1-n3。c28実物: 45-□=11 → □=45-11=34。",
+      "semantic_note": "n1-□=n3 型。減少量が未知。解法式は □=n1-n3。",
       "inverse_thinking": true,
       "step_count": 1,
       "operation": "n1 - □ = n3 → □ = n1 - n3",
@@ -825,7 +825,7 @@
       "unit_id": "g03_c28_u01",
       "unit_name": "□を使った式",
       "semantic_category": "□の式(かけ算)",
-      "semantic_note": "n2×□=n3 型。いくつ分が未知。解法式は □=n3÷n2。c28実物: 9×□=54 → □=54÷9=6 (グループ)。",
+      "semantic_note": "n2×□=n3 型。いくつ分が未知。解法式は □=n3÷n2。",
       "inverse_thinking": true,
       "step_count": 1,
       "operation": "n2 × □ = n3 → □ = n3 ÷ n2",
@@ -887,7 +887,7 @@
       "unit_id": "g03_c28_u01",
       "unit_name": "□を使った式",
       "semantic_category": "□の式(わり算)",
-      "semantic_note": "n1÷□=q 型(数値問題)。c28実物: 28÷□=7 → □=28÷7=4。わる数が未知のとき □=わられる数÷商。文章題化は不自然になりやすいため数値形式で出題(実物も数値のみ)。",
+      "semantic_note": "n1÷□=q 型(数値問題)。わる数が未知のとき □=わられる数÷商。文章題化は不自然になりやすいため数値形式で出題。",
       "inverse_thinking": true,
       "step_count": 1,
       "operation": "n1 ÷ □ = q → □ = n1 ÷ q",
@@ -951,7 +951,7 @@
       "unit_id": "g03_c11_u01",
       "unit_name": "たし算とひき算の暗算とり用",
       "semantic_category": "合併(3けた)",
-      "semantic_note": "c11実物: 239+228=467人, 543+457=1000。3けた同士の合併、くり上がりあり。1000ちょうども実物にある。",
+      "semantic_note": "3けた同士の合併、くり上がりあり。1000ちょうど。",
       "inverse_thinking": false,
       "step_count": 1,
       "operation": "n1 + n2",
@@ -982,7 +982,7 @@
         {
           "rule": "sum_max",
           "expr": "n1 + n2 <= 1000",
-          "why": "実物の答え上限は1000"
+          "why": ""
         }
       ],
       "sentence_templates": [
@@ -1011,7 +1011,7 @@
       "unit_id": "g03_c11_u01",
       "unit_name": "たし算とひき算の暗算とり用",
       "semantic_category": "求残(3けた)",
-      "semantic_note": "c11実物: 204-95=109まい。3けた−2〜3けたの求残、くり下がりあり。 検品修正(8/4): 動詞を語彙束縛(あめ・りんご=配りました)。",
+      "semantic_note": "3けた−2〜3けたの求残、くり下がりあり。 検品修正(8/4): 動詞を語彙束縛(あめ・りんご=配りました)。",
       "inverse_thinking": false,
       "step_count": 1,
       "operation": "n1 - n2",
@@ -1084,7 +1084,7 @@
       "unit_id": "g03_c11_u01",
       "unit_name": "たし算とひき算の暗算とり用",
       "semantic_category": "求差(3けた・複文)",
-      "semantic_note": "c11実物: 182-145=37 → 答え『お姉さんが37こ多くひろった。』答えが複文(誰が+差)になる点が特徴。",
+      "semantic_note": "答えが複文(誰が+差)になる点が特徴。",
       "inverse_thinking": false,
       "step_count": 1,
       "operation": "n1 - n2",
@@ -1154,7 +1154,7 @@
       "unit_id": "g03_c20_u01",
       "unit_name": "1けたの数をかけるかけ算のり用",
       "semantic_category": "2ステップ(かけ算→増加)",
-      "semantic_note": "c20実物: 12×8=96, 96+6=102まい。たば×まい数+ばら。",
+      "semantic_note": "たば×まい数+ばら。",
       "inverse_thinking": false,
       "step_count": 2,
       "operation": "n2 × n3 → +n4",
@@ -1227,7 +1227,7 @@
       "unit_id": "g03_c20_u01",
       "unit_name": "1けたの数をかけるかけ算のり用",
       "semantic_category": "2ステップ(かけ算→おつり)",
-      "semantic_note": "c20実物: 120×8=960, 1000-960=40円。代金を計算し、出した金額からひく。",
+      "semantic_note": "代金を計算し、出した金額からひく。",
       "inverse_thinking": false,
       "step_count": 2,
       "operation": "n2 × n3 → n5 - t",
@@ -1271,7 +1271,7 @@
         {
           "rule": "change_positive",
           "expr": "1 <= n5 - n2 * n3 <= 300",
-          "why": "おつりが正で、出した金額に近い(実物: 40円, 32まい相当)"
+          "why": "おつりが正で、出した金額に近い"
         }
       ],
       "sentence_templates": [
@@ -1302,7 +1302,7 @@
       "unit_id": "g03_c31_u01",
       "unit_name": "かけ算のり用",
       "semantic_category": "分配法則(和×n)",
-      "semantic_note": "c31実物: 220+280=500, 500×4=2000円。セット単価を先に作ると計算が楽になる、が単元の狙い。和がキリの良い数になるよう制約。",
+      "semantic_note": "セット単価を先に作ると計算が楽になる、が単元の狙い。和がキリの良い数になるよう制約。",
       "inverse_thinking": false,
       "step_count": 2,
       "operation": "(a + b) × n",
@@ -1346,12 +1346,12 @@
         {
           "rule": "round_sum",
           "expr": "(a + b) % 100 == 0",
-          "why": "和がキリの良い数(実物: 500, 200)で分配法則の旨みが出る"
+          "why": "和がキリの良い数で分配法則の旨みが出る"
         },
         {
           "rule": "sum_range",
           "expr": "200 <= a + b <= 600",
-          "why": "実物レンジ"
+          "why": ""
         },
         {
           "rule": "distinct",
@@ -1387,7 +1387,7 @@
       "unit_id": "g03_c31_u01",
       "unit_name": "かけ算のり用",
       "semantic_category": "分配法則(差×n)",
-      "semantic_note": "c31実物: 180-130=50, 50×8=400円 / 95-65=30, 30×9=270円。差を先に作る型。",
+      "semantic_note": "差を先に作る型。",
       "inverse_thinking": false,
       "step_count": 2,
       "operation": "(a - b) × n",
@@ -1436,7 +1436,7 @@
         {
           "rule": "round_diff",
           "expr": "(a - b) % 10 == 0",
-          "why": "差がキリの良い数(実物: 50, 30)"
+          "why": "差がキリの良い数"
         },
         {
           "rule": "diff_range",
@@ -1472,7 +1472,7 @@
       "unit_id": "g03_c21_u01",
       "unit_name": "長い長さ",
       "semantic_category": "合併(道のり km/m)",
-      "semantic_note": "c21の道のり文脈(家→学校800m等)。m単位の内部値を合算し1km超で複名数化。100m単位でmの繰り上がり計算は不要。 オペランドは1km未満(m単位表示)に制限し、m単位で合算→複名数へ換算の2段書き(教科書流)。",
+      "semantic_note": "道のり文脈(家→学校800m等)。m単位の内部値を合算し1km超で複名数化。100m単位でmの繰り上がり計算は不要。 オペランドは1km未満(m単位表示)に制限し、m単位で合算→複名数へ換算の2段書き(教科書流)。",
       "inverse_thinking": false,
       "step_count": 1,
       "operation": "q1 + q2",
@@ -1600,7 +1600,7 @@
       "unit_id": "g03_c24_u01",
       "unit_name": "小数のたし算とひき算",
       "semantic_category": "合併(小数)",
-      "semantic_note": "c24実物: 1.8+0.4=2.2L。内部表現は1/10単位の整数(=0.1のいくつ分。小数のしくみc23と同じ考え方)。",
+      "semantic_note": "内部表現は1/10単位の整数。",
       "inverse_thinking": false,
       "step_count": 1,
       "operation": "q1 + q2",
@@ -1662,7 +1662,7 @@
       "unit_id": "g03_c24_u01",
       "unit_name": "小数のたし算とひき算",
       "semantic_category": "求差(小数・複文)",
-      "semantic_note": "c24実物: 13-9.3=3.7 → 答え『青いテープが3.7m長い。』長い方をattr_aに固定し複文で答える。",
+      "semantic_note": "長い方をattr_aに固定し複文で答える。",
       "inverse_thinking": false,
       "step_count": 1,
       "operation": "q1 - q2",
@@ -1741,7 +1741,7 @@
       "unit_id": "g03_c26_u01",
       "unit_name": "分数のしくみと大きさ",
       "semantic_category": "分数の表現",
-      "semantic_note": "c26実物: 1Lを等分したいくつ分 → m/n L。単位分数のいくつ分という分数の定義そのもの。",
+      "semantic_note": "単位分数のいくつ分という分数の定義そのもの。",
       "inverse_thinking": false,
       "step_count": 1,
       "operation": "num/den",
@@ -1779,7 +1779,7 @@
         {
           "rule": "proper",
           "expr": "num < den",
-          "why": "c26は真分数の表現"
+          "why": "真分数の表現"
         }
       ],
       "sentence_templates": [
@@ -1809,7 +1809,7 @@
       "unit_id": "g03_c27_u01",
       "unit_name": "分数のたし算とひき算",
       "semantic_category": "合併(同分母分数)",
-      "semantic_note": "同分母の加法。分子の整数演算に還元。和が分母と等しいときは1(c27実物: 5/5→1, 11/11→1)。",
+      "semantic_note": "同分母の加法。分子の整数演算に還元。和が分母と等しいときは1。",
       "inverse_thinking": false,
       "step_count": 1,
       "operation": "num1/den + num2/den",
@@ -1967,7 +1967,7 @@
       "unit_id": "g03_c15_u01",
       "unit_name": "あまりの考え方",
       "semantic_category": "2ステップ(かけ算→あまり切り上げ)",
-      "semantic_note": "c15実物medium: 7×4=28人, 28÷5=5あまり3, 5+1=6。総数をかけ算で求めてから切り上げわり算。",
+      "semantic_note": "総数をかけ算で求めてから切り上げわり算。",
       "inverse_thinking": false,
       "step_count": 2,
       "operation": "n_a × n_b → ÷n2 切り上げ",
@@ -2070,7 +2070,7 @@
       "kanji_policy.check_against を kyoiku_kanji_g1to3.json (fnshr/kyo-kan MEXT2017, CC0) に変更。g03配当200字を追加。",
       "answer_formula で // と % を解禁(あまり計算)。条件式は不使用(切り上げは常に+1が成立するよう has_remainder 制約で保証)。",
       "セッション2追加: fraction_display 機構(分子/分母スロット→整形文字列。fmt_fraction: 分子=分母で1、0で0)。",
-      "FORMATTERS に dec1 追加(1/10単位整数→小数表示。小数部0なら整数表示)。",
+      "FORMATTERS に de追加(1/10単位整数→小数表示。小数部0なら整数表示)。",
       "answer_structure に compound_compare / two_step_remainder_ceil を追加。",
       "choices+choice_int スロット(整数の選択肢: おつり問題の500/1000円)対応。"
     ],
@@ -2083,5 +2083,5 @@
       "判定: 分配法則(和)の『それぞれ{n}つずつ』は混在助数詞(こ+本)への中立助数詞として正当、変更なし"
     ]
   },
-  "file_note": "残タスク(セッション3候補): c17大きな数(数直線・図依存のためSVG連携で扱う)、c22-23小数のしくみ(数直線依存)、c12-13グラフ(図依存)、c07-08円と球/c25三角形(作図・図依存)、分数の1-m/n型、時間の計算(c03)、□の式の文章題化(わり算型)。図依存系はPandora本体のSVG生成パターン(確立済み)との連携設計が必要。"
+  "file_note": "残タスク(セッション3候補): 大きな数(数直線・図依存のためSVG連携で扱う)、小数のしくみ(数直線依存)、グラフ(図依存)、円と球/三角形(作図・図依存)、分数の1-m/n型、時間の計算、□の式の文章題化(わり算型)。図依存系はPandora本体のSVG生成パターン(確立済み)との連携設計が必要。"
 }
