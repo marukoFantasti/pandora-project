@@ -6,11 +6,20 @@
 (function (root) {
   'use strict';
 
-  // ---- 学年配当漢字（小1・小2）。generate_poc_v06.pyのG01/G02と同一 ----
+  // ---- 学年配当漢字。generate_poc_v07.py + kyoiku_kanji_g1to3.json(MEXT2017)と同一 ----
+  // G01/G02 は generate_poc_v06/07 と同一。G03 は kyoiku_kanji_g1to3.json の g03(200字)。
   var G01 = '一右雨円王音下火花貝学気九休玉金空月犬見五口校左三山子四糸字耳七車手十出女小上森人水正生青夕石赤千川先早草足村大男竹中虫町天田土二日入年白八百文木本名目立力林六';
   var G02 = '引羽雲園遠何科夏家歌画回会海絵外角楽活間丸岩顔汽記帰弓牛魚京強教近兄形計元言原戸古午後語工公広交光考行高黄合谷国黒今才細作算止市矢姉思紙寺自時室社弱首秋週春書少場色食心新親図数西声星晴切雪船線前組走多太体台地池知茶昼長鳥朝直通弟店点電刀冬当東答頭同道読内南肉馬売買麦半番父風分聞米歩母方北毎妹万明鳴毛門夜野友用曜来里理話';
-  var ALLOWED = {};
-  (G01 + G02).split('').forEach(function (c) { ALLOWED[c] = true; });
+  var G03 = '丁世両主乗予事仕他代住使係倍全具写列助勉動勝化区医去反取受号向君味命和品員商問坂央始委守安定実客宮宿寒対局屋岸島州帳平幸度庫庭式役待急息悪悲想意感所打投拾持指放整旅族昔昭暑暗曲有服期板柱根植業様横橋次歯死氷決油波注泳洋流消深温港湖湯漢炭物球由申界畑病発登皮皿相県真着短研礼神祭福秒究章童笛第筆等箱級終緑練羊美習者育苦荷落葉薬血表詩調談豆負起路身転軽農返追送速進遊運部都配酒重鉄銀開院陽階集面題飲館駅鼻';
+  var KANJI_BY_GRADE = { g01: G01, g02: G02, g03: G03 };
+  function buildKanjiSet(str) { var s = {}; str.split('').forEach(function (c) { s[c] = true; }); return s; }
+  // kanji_policy.allowed_grades が無いパターンの既定は g01|g02（v0.7 DEFAULT_ALLOWED と同一）。
+  var DEFAULT_ALLOWED = buildKanjiSet(G01 + G02);
+  function allowedKanji(pattern) {
+    var grades = (pattern.kanji_policy || {}).allowed_grades;
+    if (!grades || !grades.length) return DEFAULT_ALLOWED;
+    return buildKanjiSet(grades.map(function (g) { return KANJI_BY_GRADE[g] || ''; }).join(''));
+  }
 
   // ---- 単位系と整形（0の下位単位は省略） ----
   function fmtCompound(base, factor, bigU, smallU) {
@@ -32,15 +41,31 @@
     L_dL: function (b) { return fmtCompound(b, 10, 'L', 'dL'); },
     h_min: function (b) { return fmtCompound(b, 60, '時間', '分'); },
     clock: fmtClock,
-    raw_min: function (b) { return String(b); }
+    raw_min: function (b) { return String(b); },
+    // v0.7 追加（generate_poc_v07.py と同一）
+    km_m: function (b) { return fmtCompound(b, 1000, 'km', 'm'); },
+    kg_g: function (b) { return fmtCompound(b, 1000, 'kg', 'g'); },
+    L_mL: function (b) { return fmtCompound(b, 1000, 'L', 'mL'); },
+    m_cm100: function (b) { return fmtCompound(b, 100, 'm', 'cm'); },
+    dec1: function (b) {
+      var i = Math.floor(b / 10), f = b % 10;
+      return f ? ('' + i + '.' + f) : ('' + i);
+    }
   };
 
-  function kanjiCheck(text) {
+  // 同分母分数の整形（generate_poc_v07.py fmt_fraction と同一）。num==den→"1"、num==0→"0"。
+  function fmtFraction(num, den) {
+    if (num === 0) return '0';
+    if (num === den) return '1';
+    return '' + num + '/' + den;
+  }
+
+  function kanjiCheck(text, allowed) {
     var bad = [];
     for (var i = 0; i < text.length; i++) {
       var ch = text[i];
       var code = ch.codePointAt(0);
-      if (code >= 0x4e00 && code <= 0x9fff && !ALLOWED[ch]) bad.push(ch);
+      if (code >= 0x4e00 && code <= 0x9fff && !allowed[ch]) bad.push(ch);
     }
     return bad;
   }
@@ -73,21 +98,99 @@
   // これ以外のPython構文（**, //, リスト内包表記等）をバンクJSONに書いてはならない。
   // 未対応構文が混入した場合、JSの構文エラーとして即座に失敗する（サイレントな
   // 誤動作にはならない）。
+  // Python の整数除算 // を Math.floor((a)/(b)) に変換。オペランドは atom（識別子・数値・
+  // 1段の括弧グループ）のみ（バンクの // 使用箇所はすべてこの形: n1//n2 / (n_a*n_b)//n2 /
+  // n1//(a1+a2)）。JSでは // は行コメントになるため、new Function 前に必ず潰す。
+  function translateFloorDiv(expr) {
+    // atom = 関数呼び出し max(a,b) / 括弧グループ (a+b) / 識別子・数値。1段の入れ子まで対応。
+    var atom = '(?:\\w+\\([^()]*\\)|\\([^()]*\\)|\\w+)';
+    var re = new RegExp('(' + atom + ')\\s*//\\s*(' + atom + ')');
+    var prev = null;
+    while (prev !== expr) {  // 複数箇所・入れ子（左辺が既に括弧化）に備え収束まで反復
+      prev = expr;
+      expr = expr.replace(re, 'Math.floor(($1)/($2))');
+    }
+    return expr;
+  }
+
+  // Python の剰余 % を pymod(a,b) に変換。JS の % は被除数の符号を返す（-28%10=-8）が
+  // Python は除数の符号（-28%10=2）。求差系 (q1-q2)%10 等で負の被除数が出るため必須。
+  // 除数は常に正（10/100/1000/60/n2>0）を前提とする。オペランドは atom（// と同じ）。
+  function translateMod(expr) {
+    var atom = '(?:\\w+\\([^()]*\\)|\\([^()]*\\)|\\w+)';
+    var re = new RegExp('(' + atom + ')\\s*%\\s*(' + atom + ')');
+    var prev = null;
+    while (prev !== expr) {
+      prev = expr;
+      expr = expr.replace(re, 'pymod(($1),($2))');
+    }
+    return expr;
+  }
+
+  // Python の連鎖比較 a <= b <= c を (a <= b) && (b <= c) に展開（トップレベルの比較演算子が
+  // 2個以上のときのみ）。括弧内（深さ>0）の比較は対象外。and/or/not 変換前に実行する。
+  function expandChainedComparison(expr) {
+    // トップレベル（深さ0）に and/or があれば、比較演算子が複数あっても連鎖比較ではなく
+    // 論理結合（例: "(q1%10)>0 and (q2%10)>0"）。この場合は展開しない（各比較はJSでそのまま可）。
+    // Python の連鎖比較 "a<=b<=c" は比較演算子の間に論理演算子を挟まない、という性質を使う。
+    var d = 0;
+    for (var p = 0; p < expr.length; p++) {
+      var c0 = expr[p];
+      if (c0 === '(') d++;
+      else if (c0 === ')') d--;
+      else if (d === 0 && /[a-zA-Z_]/.test(c0)) {
+        var word = expr.slice(p).match(/^[a-zA-Z_]\w*/)[0];
+        if (word === 'and' || word === 'or') return expr;
+        p += word.length - 1;
+      }
+    }
+    var ops = [];  // {pos, len, op}
+    var depth = 0;
+    for (var i = 0; i < expr.length; i++) {
+      var ch = expr[i];
+      if (ch === '(') depth++;
+      else if (ch === ')') depth--;
+      else if (depth === 0) {
+        var two = expr.substr(i, 2);
+        if (two === '<=' || two === '>=' || two === '==' || two === '!=') { ops.push({ pos: i, len: 2, op: two }); i++; }
+        else if (ch === '<' || ch === '>') { ops.push({ pos: i, len: 1, op: ch }); }
+      }
+    }
+    if (ops.length < 2) return expr;
+    var operands = [];
+    var start = 0;
+    for (var j = 0; j < ops.length; j++) {
+      operands.push(expr.slice(start, ops[j].pos).trim());
+      start = ops[j].pos + ops[j].len;
+    }
+    operands.push(expr.slice(start).trim());
+    var parts = [];
+    for (var k = 0; k < ops.length; k++) {
+      parts.push('(' + operands[k] + ' ' + ops[k].op + ' ' + operands[k + 1] + ')');
+    }
+    return parts.join(' && ');
+  }
+
   function pyExprToJs(expr) {
     var out = expr.match(/^(.+?)\s+if\s+(.+?)\s+else\s+(.+)$/);
     if (out) expr = '(' + out[2] + ') ? (' + out[1] + ') : (' + out[3] + ')';
+    expr = translateFloorDiv(expr);
+    expr = translateMod(expr);
+    expr = expandChainedComparison(expr);
     return expr
       .replace(/\band\b/g, '&&')
       .replace(/\bor\b/g, '||')
       .replace(/\bnot\b/g, '!');
   }
+  // Python互換の剰余（除数>0で常に非負）。translateMod が生成する pymod の実体。
+  function pymod(a, b) { return ((a % b) + b) % b; }
   function evalExpr(expr, env) {
     var keys = Object.keys(env);
     var vals = keys.map(function (k) { return env[k]; });
     var jsExpr = pyExprToJs(expr);
     // eslint-disable-next-line no-new-func
-    var fn = new Function('abs', 'max', 'min', keys.join(','), 'return (' + jsExpr + ');');
-    return fn.apply(null, [Math.abs, Math.max, Math.min].concat(vals));
+    var fn = new Function('abs', 'max', 'min', 'pymod', keys.join(','), 'return (' + jsExpr + ');');
+    return fn.apply(null, [Math.abs, Math.max, Math.min, pymod].concat(vals));
   }
 
   // ---- スロット解決 ----
@@ -157,7 +260,7 @@
     var slots = effectiveSlots(pattern, unitId);
     var numeric = {};
     Object.keys(slots).forEach(function (k) {
-      if (slots[k].type === 'int') numeric[k] = slots[k];
+      if (slots[k].type === 'int' || slots[k].choice_int) numeric[k] = slots[k];
     });
     var quants = pattern.quantity_slots || {};
     var constraints = effectiveConstraints(pattern, unitId);
@@ -176,59 +279,112 @@
     var env = Object.assign({}, sampleNumeric(pattern, unitId));
     var names = Object.keys(pattern.slots || {});
 
-    if (names.indexOf('actor') !== -1) {
+    // --- 汎用レキシコン束縛（generate_poc_v07.py build_env と同一）---
+    // from形式: "set[j].field"(辞書) / "set[i][0]"(リストペア) / "set" / "set(distinct)"
+    // 同一インデックス変数を共有するスロットは同じアイテムから取る。
+    // attribute_pairs は dict形状のため list_groups では解決せず、下の attr_a/b 専用処理に迂回。
+    var dictGroups = {}, listGroups = {}, simple = {}, distinct = [];
+    Object.keys(pattern.slots || {}).forEach(function (name) {
+      var f = (pattern.slots[name] || {}).from;
+      if (!f) return;
+      var m = f.match(/^(\w+)\[(\w)\]\.(\w+)$/);
+      if (m) { (dictGroups[m[1] + ' ' + m[2]] = dictGroups[m[1] + ' ' + m[2]] || { set: m[1], fields: {} }).fields[name] = m[3]; return; }
+      m = f.match(/^(\w+)\[(\w)\]\[(\d+)\]$/);
+      if (m) {
+        if (m[1] !== 'attribute_pairs') {
+          (listGroups[m[1] + ' ' + m[2]] = listGroups[m[1] + ' ' + m[2]] || { set: m[1], fields: {} }).fields[name] = parseInt(m[3], 10);
+        }
+        return;
+      }
+      m = f.match(/^(\w+)\(distinct\)$/);
+      if (m) { distinct.push([name, m[1]]); return; }
+      simple[name] = f;
+    });
+
+    var objectBinding = null;  // attr整合で object を棄却・再抽選する場合に使う
+    Object.keys(dictGroups).forEach(function (key) {
+      var g = dictGroups[key];
+      var item = (g.set === 'container_sets')
+        ? randChoice(filteredContainerSets(pattern, lex, unitId))
+        : randChoice(lex[g.set]);
+      Object.keys(g.fields).forEach(function (slotName) {
+        env[slotName] = item.hasOwnProperty(g.fields[slotName]) ? item[g.fields[slotName]] : '';
+      });
+      if (g.set === 'object_counter_pairs') objectBinding = g;
+    });
+    Object.keys(listGroups).forEach(function (key) {
+      var g = listGroups[key];
+      var item = randChoice(lex[g.set]);
+      Object.keys(g.fields).forEach(function (slotName) { env[slotName] = item[g.fields[slotName]]; });
+    });
+    Object.keys(simple).forEach(function (slotName) { env[slotName] = randChoice(lex[simple[slotName]]); });
+    distinct.forEach(function (pairSN) {
+      var slotName = pairSN[0], setName = pairSN[1];
+      var used = {};
+      Object.keys(env).forEach(function (k) { if (typeof env[k] === 'string') used[env[k]] = true; });
+      var pool = lex[setName].filter(function (x) { return !used[x]; });
+      if (!pool.length) pool = lex[setName];
+      env[slotName] = randChoice(pool);
+    });
+    // 文字列choicesスロット（型指定なし・from指定なし）
+    Object.keys(pattern.slots || {}).forEach(function (name) {
+      var spec = pattern.slots[name] || {};
+      if (!env.hasOwnProperty(name) && spec.choices && spec.type !== 'int') env[name] = randChoice(spec.choices);
+    });
+
+    // --- g02互換の特殊ケース（fromで解決済みならスキップ）---
+    if (names.indexOf('actor') !== -1 && !env.hasOwnProperty('actor')) {
       env.actor = randChoice(lex.actors);
     }
-    if (names.indexOf('actor_c') !== -1) {
+    if (names.indexOf('actor_c') !== -1 && !env.hasOwnProperty('actor_c')) {
       var three = randSample(lex.actors, 3);
       env.actor_a = three[0]; env.actor_b = three[1]; env.actor_c = three[2];
-    } else if (names.indexOf('actor_a') !== -1) {
-      var pair = randChoice(lex.actor_pairs);
-      env.actor_a = pair[0]; env.actor_b = pair[1];
+    } else if (names.indexOf('actor_a') !== -1 && !env.hasOwnProperty('actor_a')) {
+      var pr = randChoice(lex.actor_pairs);
+      env.actor_a = pr[0]; env.actor_b = pr[1];
     }
-
-    if (names.indexOf('container') !== -1) {
-      var cs = randChoice(filteredContainerSets(pattern, lex, unitId));
-      ['container', 'cont_counter', 'object', 'counter', 'verb_on', 'exist'].forEach(function (k) {
-        if (cs.hasOwnProperty(k)) env[k] = cs[k];
-      });
-    } else if (names.indexOf('object') !== -1) {
-      var objPool = filteredObjectCounterPairs(pattern, lex, unitId);
-      if (names.indexOf('attr_a') !== -1) {
-        // このパターンはattr_a/bも使う（例: 求補）。属性の型
-        // （color/size）に一切合致しないobjectは、大きい/小さい・赤い/青い
-        // 等の組み合わせが不自然になるため候補から棄却する。
-        objPool = objPool.filter(function (o) {
-          var types = o.attr_types || [];
-          return lex.attribute_pairs.some(function (ap) { return types.indexOf(ap.type) !== -1; });
-        });
-      }
-      var p = randChoice(objPool);
-      env.object = p.object;
-      env.counter = p.counter;
-      env.verb_use = p.verb_use || 'つかいました';
-    }
-
-    if (names.indexOf('attr_a') !== -1) {
-      // 属性ペアの型フィルタ: (1) lexicon_filters.attribute_pairs.include_types
-      // があれば最優先（例: 求差は色属性のみ）。(2) 無ければ、直前に選んだ
-      // objectのattr_typesに合致する型のみ使う（例: おり紙→color限定で
-      // 「大きいおり紙」のような不自然な組み合わせを避ける）。
-      // (3) objectを使わないパターン（テープ等テンプレート内固定語）で
-      // フィルタも無ければ、attribute_pairs全体から選ぶ（従来通り）。
-      var allowedTypes = null;
+    if (names.indexOf('attr_a') !== -1 && !env.hasOwnProperty('attr_a')) {
+      // attribute_pairs は dict形状 {"pair":[a,b],"type":...}。属性ペアの型フィルタ:
+      //  (1) lexicon_filters.attribute_pairs.include_types があれば最優先（例:求差は色のみ）。
+      //  (2) 無ければ選択済み object の attr_types に合致する型のみ（「大きいおり紙」回避）。
+      //      合致ゼロなら object を棄却して再抽選。(3) どちらも無ければ全体から選ぶ。
       var lf = effectiveLexiconFilters(pattern, unitId);
-      if ((lf.attribute_pairs || {}).include_types) {
-        allowedTypes = lf.attribute_pairs.include_types;
-      } else if (env.object) {
-        var ocp = lex.object_counter_pairs.filter(function (o) { return o.object === env.object; })[0];
-        if (ocp && ocp.attr_types) allowedTypes = ocp.attr_types;
+      var inc = (lf.attribute_pairs || {}).include_types || null;
+      var allowedTypesOf = function () {
+        if (inc) return inc;
+        if (env.object) {
+          var ocp = lex.object_counter_pairs.filter(function (o) { return o.object === env.object; })[0];
+          if (ocp && ocp.attr_types) return ocp.attr_types;
+        }
+        return null;
+      };
+      var poolOf = function (types) {
+        return types ? lex.attribute_pairs.filter(function (ap) { return types.indexOf(ap.type) !== -1; }) : lex.attribute_pairs;
+      };
+      var types = allowedTypesOf();
+      var apPool = poolOf(types);
+      var tries = 0;
+      while (!apPool.length && !inc && objectBinding && env.object && tries < 3000) {
+        var it = randChoice(lex[objectBinding.set]);
+        Object.keys(objectBinding.fields).forEach(function (slotName) {
+          env[slotName] = it.hasOwnProperty(objectBinding.fields[slotName]) ? it[objectBinding.fields[slotName]] : '';
+        });
+        types = allowedTypesOf(); apPool = poolOf(types); tries++;
       }
-      var apPool = allowedTypes
-        ? lex.attribute_pairs.filter(function (ap) { return allowedTypes.indexOf(ap.type) !== -1; })
-        : lex.attribute_pairs;
       var ap = randChoice(apPool);
       env.attr_a = ap.pair[0]; env.attr_b = ap.pair[1];
+    }
+    if (names.indexOf('verb_use') !== -1 && !env.verb_use) env.verb_use = 'つかいました';
+
+    // context_set: 文脈セットを1つ選び、format_fields をスロット値で整形して ctx_* に注入
+    var cs = pattern.context_set;
+    if (cs) {
+      var ctx = randChoice(lex[cs.from]);
+      var fmtFields = cs.format_fields || [];
+      cs.fields.forEach(function (fname) {
+        var v = ctx[fname];
+        env['ctx_' + fname] = (fmtFields.indexOf(fname) !== -1) ? formatTemplate(v, env) : v;
+      });
     }
 
     // 派生スロット（数値・文字列とも参照可）
@@ -242,6 +398,12 @@
       if (typeof env[k] === 'number' && Number.isInteger(env[k])) intEnv[k] = env[k];
     });
     env.ans = evalExpr(pattern.answer_formula, intEnv);
+
+    // fraction_display: {表示名: [分子スロット名, 分母スロット名]} → 整形文字列を注入
+    var fd = pattern.fraction_display || {};
+    Object.keys(fd).forEach(function (dispName) {
+      env[dispName] = fmtFraction(env[fd[dispName][0]], env[fd[dispName][1]]);
+    });
 
     // 数量スロットの表示文字列を自動生成
     var quants = pattern.quantity_slots || {};
@@ -285,8 +447,9 @@
 
   // ---- 検証（漢字/本文数値の由来/答えの正値性） ----
   function verify(pattern, env, problem) {
-    var bad = kanjiCheck(problem);
+    var bad = kanjiCheck(problem, allowedKanji(pattern));
 
+    var fdKeys = pattern.fraction_display || {};
     var allowedNums = {};
     (pattern.template_number_constants || []).forEach(function (n) { allowedNums[n] = true; });
     Object.keys(env).forEach(function (k) {
@@ -298,7 +461,8 @@
       }
     });
     Object.keys(env).forEach(function (k) {
-      if (k.slice(-5) === '_disp' || k.slice(-4) === '_min') {
+      if (k.slice(-5) === '_disp' || k.slice(-4) === '_min' ||
+        Object.prototype.hasOwnProperty.call(fdKeys, k)) {
         var matches = String(env[k]).match(/\d+/g) || [];
         matches.forEach(function (m) { allowedNums[parseInt(m, 10)] = true; });
       }
@@ -372,6 +536,8 @@
 
   var PatternGen = {
     FORMATTERS: FORMATTERS,
+    fmtFraction: fmtFraction,
+    allowedKanji: allowedKanji,
     kanjiCheck: kanjiCheck,
     effectiveSlots: effectiveSlots,
     effectiveConstraints: effectiveConstraints,
