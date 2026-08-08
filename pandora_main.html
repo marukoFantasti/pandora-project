@@ -1369,11 +1369,12 @@ function showPreview(mode, theme, levelBreakdown, outputJson){
   status.textContent=outputJson.meta.count+'問生成完了（'+levelsDesc+'）';
 }
 
-// ======== パターンバンク（経路A：小2・小3・小4の決定論生成）========
-// pattern_bank/patterns_g02.json・patterns_g03.json・patterns_g04.json・themes/*.json は
-// 静的アセットとして fetch で読み込む（Supabase不要）。checkConsistency_retirement_plan.mdに
-// 基づき、この経路ではランタイムのAI呼び出し（checkConsistency含む）を一切行わない。
-// 各学年は shared_lexicon が別（g03=div_object_pairs等、g04=dec_containers等）＋g04は
+// ======== パターンバンク（経路A：小2・小3・小4・小5の決定論生成）========
+// pattern_bank/patterns_g02.json・patterns_g03.json・patterns_g04.json・patterns_g05.json・
+// themes/*.json は静的アセットとして fetch で読み込む（Supabase不要）。
+// checkConsistency_retirement_plan.mdに基づき、この経路ではランタイムのAI呼び出し
+// （checkConsistency含む）を一切行わない。
+// 各学年は shared_lexicon が別（g03=div_object_pairs等、g04=dec_containers等）＋g04/g05は
 // figure_params を持つため、各パターンには由来バンクのlexiconをエントリ単位で束ねて保持する。
 var PATTERN_BANK = null, PATTERN_BANK_PROMISE = null;
 // unit_id -> [{pattern, unitId, lex}, ...]（unitIdはunit_range_overridesのキー、baseならnull。
@@ -1388,7 +1389,7 @@ var MARKED_UNITS = {};
 function loadPatternBank(){
   if (PATTERN_BANK) return Promise.resolve(PATTERN_BANK);
   if (PATTERN_BANK_PROMISE) return PATTERN_BANK_PROMISE;
-  var BANK_FILES = ['pattern_bank/patterns_g02.json', 'pattern_bank/patterns_g03.json', 'pattern_bank/patterns_g04.json'];
+  var BANK_FILES = ['pattern_bank/patterns_g02.json', 'pattern_bank/patterns_g03.json', 'pattern_bank/patterns_g04.json', 'pattern_bank/patterns_g05.json'];
   PATTERN_BANK_PROMISE = Promise.all(BANK_FILES.map(function(f){
     // 1つのバンク読み込み失敗が他方を巻き込まないよう、個別にcatchしてnull化する
     // （例: g03未デプロイでもg02経路Aは生きる）。
@@ -1450,7 +1451,7 @@ function loadTheme(themeId){
 // 混在選択でも、選択単元が全てバンクでカバーされていれば経路A。1つでも外れたら経路B。
 function isPatternEligible(grades, units){
   if (!grades || grades.length === 0) return false;
-  if (!grades.every(function(g){ return g === 'g02' || g === 'g03' || g === 'g04'; })) return false;
+  if (!grades.every(function(g){ return g === 'g02' || g === 'g03' || g === 'g04' || g === 'g05'; })) return false;
   if (!units || units.length === 0 || units[0] === 'all') return false;
   return units.every(function(u){ return PATTERN_UNIT_INDEX.hasOwnProperty(u) && PATTERN_UNIT_INDEX[u].length > 0; });
 }
@@ -1533,8 +1534,8 @@ function generateQuizViaPattern(targetUnits){
                                 // confirmation/practiceの要件を構造的に満たす（基準6、§6.2参照）
         question: accepted.problem,
         answer: accepted.answer,
-        // figure_params(v0.8): 本文と同一envで解決済みの図パラメータ。図付きパターン(g04面積/角度等)
-        // のみ非null。生成された student_quiz / 印刷解答用紙で figure_builder.js が描画する。
+        // figure_params(v0.8): 本文と同一envで解決済みの図パラメータ。図付きパターン(g04面積/角度、
+        // g05角/面積/体積/円等)のみ非null。生成された student_quiz / 印刷解答用紙で figure_builder.js が描画する。
         figure_params: accepted.figure || null,
         tags: []
       });
@@ -1597,7 +1598,9 @@ function generateQuiz(){
     }
     // 経路Bへフォールバック。経路Aを意図した選択（全単元が⚡マーク付き）だったのに落ちた
     // 場合（fetch失敗等）は、コンソールだけでなく画面にも一行警告を出す。
-    var gradesInBankRange = qSelectedGrades.every(function(g){ return g==='g02'||g==='g03'; });
+    // バンクを持つ学年の静的リスト（BANK_FILESと一致）。読込失敗時はMARKED_UNITSが空で
+    // allMarkedが使えないため、この判定で「経路A意図」を推定して警告を出す。
+    var gradesInBankRange = qSelectedGrades.every(function(g){ return g==='g02'||g==='g03'||g==='g04'||g==='g05'; });
     var explicitUnits = targetUnitsForCheck[0] !== 'all';
     var allMarked = explicitUnits && targetUnitsForCheck.every(function(u){ return MARKED_UNITS[u]; });
     if ((allMarked || (PATTERN_BANK_LOAD_FAILED && gradesInBankRange && explicitUnits)) && warnEl) {
