@@ -695,6 +695,29 @@ function findOutOfGradeKanji(problemsArr, grades){
   return {ok:issues.length===0, issues:issues};
 }
 
+// kanji_quiz[].choices に同一の選択肢が重複していないかを機械的に検証する。
+// checkConsistency のLLMチェック（checkText）は problems の question/answer のみを対象とし、
+// kanji_quiz は一切見ないため、選択肢の重複（例：「宇宙・宇宙・字宙」で宇宙が2つ）はLLMでは
+// 検出できない。ここで前処理として確実に検出し、見つかった場合はNG確定させて再生成に回す。
+// 全角/半角スペースを除去して比較する（見た目が同一なら重複とみなす）。
+function findDuplicateKanjiChoices(kanjiArr){
+  var issues=[];
+  (kanjiArr||[]).forEach(function(k,i){
+    var choices=(k&&k.choices)||[];
+    var seen={}, dups=[];
+    choices.forEach(function(c){
+      var key=String(c==null?'':c).replace(/[\s　]/g,'').trim();
+      if(!key) return;
+      if(seen[key]){ if(dups.indexOf(key)<0) dups.push(key); }
+      else seen[key]=true;
+    });
+    if(dups.length>0){
+      issues.push('漢字クイズ'+(i+1)+'（'+(k.correct||k.reading||'')+'）の選択肢に重複があります：「'+dups.join('、')+'」');
+    }
+  });
+  return {ok:issues.length===0, issues:issues};
+}
+
 function toggleQGrade(btn){
   var g=btn.dataset.grade;
   var idx=qSelectedGrades.indexOf(g);
@@ -1015,6 +1038,8 @@ var CONSISTENCY_CRITERIA_PROMPT =
   '9. questionに書かれた式・条件から、answerフィールドの計算結果が実際に正しく導き出せる値になっているか、Haiku自身が実際に計算して検算すること。文面上の整合性に問題がなくても、計算結果自体が誤っていればNGとする。\n'+
   '10. 問題文中の数式で、埋めるべき□（未知数）が2つ以上ある場合、それらを一意に決定できるだけの情報（式の本数、制約条件）が本文に揃っているかを確認する。未知数の数に対して式や制約条件が不足しており、一意に解が定まらない場合はNGとする。\n'+
   '11. 問題文中の語彙・表現が、チェックテキスト冒頭の【対象学年】が示す学年の児童にとって自然な言葉づかいか確認する。使用漢字が学年配当漢字の範囲内かどうかはシステム側で別途機械的に照合済みのため、ここでは判断しなくてよい。実際には使われない不自然な造語表現（例：「リボン巻き」）が含まれる場合はNGとする。学年相応のやさしい言葉（例：「リボン作り」「花を並べる」等）に置き換えるべきと判断できる場合は、issuesにその具体的な置き換え案を含めて指摘すること。ただし、教科名として学年相応に定着している言葉（例：小3の「工作」＝図画工作）は対象外とし、NGにしない。\n'+
+  '12. answerフィールドは、問題文の条件に対して計算・単位変換などを行った「結果」でなければならない。問題文中に登場する数値をそのまま書き写しただけ（計算・変換を伴わない転記）のanswerはNGとする。\n'+
+  '13. 問題文は、生徒に計算・変換の対象を明示的に要求していなければならない。疑問文（「〜は何本ですか」等）でも指示形（「〜をもとめなさい」「計算しなさい」「式をかいて答えなさい」等）でもよいが、暗記を指示するだけの問題（「〜をおぼえなさい」等）にanswerが付いているもの、および計算・変換を一切要さず本文の数値を書き写すだけで答えが出てしまう「答えなさい」問題はNGとする。さらに、問いが尋ねている単位（本・個・分・cm等）と、answerに書かれた単位表記が一致していない場合もNGとする。\n'+
   '  NG例1：「うさりんがにんじんを60本もっていて、くまきちがにんじんを30本もってきました。2匹があわせてもっているにんじんは何本でしょう。次の計算をしなさい。(1) 60 + 30 (2) 90 + 10」'+
   '→ 本文は60本・30本と数量を確定させているのに、(2)の「90+10」の「10」は本文に一度も登場せず導出できないためNG。\n'+
   '  NG例2：「うさりんはにんじんを60本もっています。くまきちがにんじんを30本くれました。うさりんがもっているにんじんは全部で何本になりますか。次の計算をしなさい。(1)60+30 (2)60+0」'+
@@ -1869,6 +1894,14 @@ function generateQuizViaAI(){
       var kanjiCheck = findOutOfGradeKanji(problemsArr, qSelectedGrades);
       if(!kanjiCheck.ok){
         regenerateAndRetry(kanjiCheck.issues.join(' / '));
+        return;
+      }
+
+      // kanji_quiz の選択肢重複はLLMチェック（problemsのみ対象）では拾えないため、
+      // findOutOfGradeKanji と同様にHaikuへの問い合わせ前に機械的に検証してNG確定させる。
+      var dupCheck = findDuplicateKanjiChoices(kanjiArr);
+      if(!dupCheck.ok){
+        regenerateAndRetry(dupCheck.issues.join(' / '));
         return;
       }
 
