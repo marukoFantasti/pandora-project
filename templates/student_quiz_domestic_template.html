@@ -40,6 +40,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <!-- 図形SVGビルダー（自リポジトリ内の共有モジュール。figure_params付き問題=経路A g04 面積/角度等を描画） -->
+  <script src="/pattern_bank/figure_builder.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: #f0f4ff; font-family: 'Hiragino Sans','Yu Gothic',sans-serif; }
@@ -295,6 +297,11 @@ function App() {
                   <div style={{flexShrink:0}}>{illustrations[q.id]}</div>
                   <p style={{fontSize:15,lineHeight:2.1,color:"#1a1a1a",fontWeight:"500",margin:0,wordBreak:"break-word"}}>{q.jp}</p>
                 </div>
+
+                {/* figure_params(経路A g04 面積/角度等): figure_builder.js が本文と同一envで解決済みの図をSVG描画 */}
+                {q.figure_params && typeof FigureBuilder!=="undefined" && (
+                  <div style={{textAlign:"center",margin:"2px 0 12px"}} dangerouslySetInnerHTML={{__html:FigureBuilder.build(q.figure_params)}}/>
+                )}
 
                 <DrawCanvas id={`eq_${q.id}`} height={225} internalHeight={225} label="📐 式を書こう / Write your equation" canvasRef={eqRefs.current[q.id]}/>
                 <DrawCanvas id={`ans_${q.id}`} height={110} label="✍️ 答えを書こう / Write your answer" canvasRef={ansRefs.current[q.id]}/>

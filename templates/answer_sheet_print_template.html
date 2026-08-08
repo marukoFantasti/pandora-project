@@ -605,8 +605,12 @@ body { background: #e8e8e8; font-family: 'Hiragino Sans','Yu Gothic',sans-serif;
   .no-print { display: none !important; }
   .page { margin: 0; box-shadow: none; page-break-after: always; }
   .page:last-child { page-break-after: auto; }
+  .box-figure { margin: 4px 0; }
+  .box-figure svg { max-width: 100%; height: auto; }
 }
 </style>
+<!-- 図形SVGビルダー（自リポジトリ内の共有モジュール。figure_params付き問題=経路A g04 面積/角度等を印刷描画） -->
+<script src="/pattern_bank/figure_builder.js"></script>
 </head>
 <body>
 <div class="btn-bar no-print">
@@ -667,6 +671,8 @@ function buildProblemBoxHtml(q, globalIndex, boxes) {
         (q.unit ? '<span class="badge">' + esc(q.unit) + '</span>' : '') +
         (lb ? '<span class="badge">' + esc(lb) + '</span>' : '') +
         (q.question ? '<span class="box-qtext">' + esc(q.question) + '</span>' : '') +
+        // figure_params(経路A g04 面積/角度等): 本文と同一envで解決済みの図を figure_builder.js で描画。
+        (q.figure_params && typeof FigureBuilder !== 'undefined' ? '<div class="box-figure">' + FigureBuilder.build(q.figure_params) + '</div>' : '') +
       '</div>' +
       '<div class="box-lines"></div>' +
     '</div>' +

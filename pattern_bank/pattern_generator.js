@@ -11,14 +11,19 @@
   var G01 = '一右雨円王音下火花貝学気九休玉金空月犬見五口校左三山子四糸字耳七車手十出女小上森人水正生青夕石赤千川先早草足村大男竹中虫町天田土二日入年白八百文木本名目立力林六';
   var G02 = '引羽雲園遠何科夏家歌画回会海絵外角楽活間丸岩顔汽記帰弓牛魚京強教近兄形計元言原戸古午後語工公広交光考行高黄合谷国黒今才細作算止市矢姉思紙寺自時室社弱首秋週春書少場色食心新親図数西声星晴切雪船線前組走多太体台地池知茶昼長鳥朝直通弟店点電刀冬当東答頭同道読内南肉馬売買麦半番父風分聞米歩母方北毎妹万明鳴毛門夜野友用曜来里理話';
   var G03 = '丁世両主乗予事仕他代住使係倍全具写列助勉動勝化区医去反取受号向君味命和品員商問坂央始委守安定実客宮宿寒対局屋岸島州帳平幸度庫庭式役待急息悪悲想意感所打投拾持指放整旅族昔昭暑暗曲有服期板柱根植業様横橋次歯死氷決油波注泳洋流消深温港湖湯漢炭物球由申界畑病発登皮皿相県真着短研礼神祭福秒究章童笛第筆等箱級終緑練羊美習者育苦荷落葉薬血表詩調談豆負起路身転軽農返追送速進遊運部都配酒重鉄銀開院陽階集面題飲館駅鼻';
-  var KANJI_BY_GRADE = { g01: G01, g02: G02, g03: G03 };
+  var G04 = '愛案以衣位茨印英栄媛塩岡億加果貨課芽賀改械害街各覚潟完官管関観願岐希季旗器機議求泣給挙漁共協鏡競極熊訓軍郡群径景芸欠結建健験固功好香候康佐差菜最埼材崎昨札刷察参産散残氏司試児治滋辞鹿失借種周祝順初松笑唱焼照城縄臣信井成省清静席積折節説浅戦選然争倉巣束側続卒孫帯隊達単置仲沖兆低底的典伝徒努灯働特徳栃奈梨熱念敗梅博阪飯飛必票標不夫付府阜富副兵別辺変便包法望牧末満未民無約勇要養浴利陸良料量輪類令冷例連老労録';
+  var KANJI_BY_GRADE = { g01: G01, g02: G02, g03: G03, g04: G04 };
   function buildKanjiSet(str) { var s = {}; str.split('').forEach(function (c) { s[c] = true; }); return s; }
   // kanji_policy.allowed_grades が無いパターンの既定は g01|g02（v0.7 DEFAULT_ALLOWED と同一）。
   var DEFAULT_ALLOWED = buildKanjiSet(G01 + G02);
   function allowedKanji(pattern) {
-    var grades = (pattern.kanji_policy || {}).allowed_grades;
-    if (!grades || !grades.length) return DEFAULT_ALLOWED;
-    return buildKanjiSet(grades.map(function (g) { return KANJI_BY_GRADE[g] || ''; }).join(''));
+    var kp = pattern.kanji_policy || {};
+    var grades = kp.allowed_grades;
+    var s = (!grades || !grades.length) ? Object.assign({}, DEFAULT_ALLOWED)
+      : buildKanjiSet(grades.map(function (g) { return KANJI_BY_GRADE[g] || ''; }).join(''));
+    // allowed_extra(v0.8): 配当外だが当該学年の教科書で用いる専門用語の字を個別許可（例:捨/仮）。
+    (kp.allowed_extra || '').split('').forEach(function (c) { s[c] = true; });
+    return s;
   }
 
   // ---- 単位系と整形（0の下位単位は省略） ----
@@ -59,6 +64,27 @@
     if (num === den) return '1';
     return '' + num + '/' + den;
   }
+
+  // 帯分数表記（generate_poc_v08.py fmt_mixed と同一）。num==0→"0"、割り切れ→整数、
+  // whole==0→真分数、他→"aとb/c"（g03分数表記と一貫）。
+  function fmtMixed(num, den) {
+    num = Math.trunc(num); den = Math.trunc(den);
+    if (num === 0) return '0';
+    var whole = Math.trunc(num / den), rem = num % den;
+    if (rem === 0) return '' + whole;
+    if (whole === 0) return '' + rem + '/' + den;
+    return '' + whole + 'と' + rem + '/' + den;
+  }
+
+  // がい数（v0.8）: 整数演算のみ（浮動小数点round禁止・言語間挙動差なし）。
+  function roundHalfUp(n, place) {
+    n = Math.trunc(n); place = Math.trunc(place);
+    var q = Math.floor(n / place), r = n - q * place;
+    if (r * 2 >= place) q += 1;
+    return q * place;
+  }
+  function roundRangeLower(x, place) { return Math.trunc(x) - Math.trunc(Math.trunc(place) / 2); }
+  function roundRangeUpperExcl(x, place) { return Math.trunc(x) + Math.trunc(Math.trunc(place) / 2); }
 
   function kanjiCheck(text, allowed) {
     var bad = [];
@@ -189,8 +215,9 @@
     var vals = keys.map(function (k) { return env[k]; });
     var jsExpr = pyExprToJs(expr);
     // eslint-disable-next-line no-new-func
-    var fn = new Function('abs', 'max', 'min', 'pymod', keys.join(','), 'return (' + jsExpr + ');');
-    return fn.apply(null, [Math.abs, Math.max, Math.min, pymod].concat(vals));
+    var fn = new Function('abs', 'max', 'min', 'pymod', 'round_half_up', 'round_range_lower', 'round_range_upper_excl',
+      keys.join(','), 'return (' + jsExpr + ');');
+    return fn.apply(null, [Math.abs, Math.max, Math.min, pymod, roundHalfUp, roundRangeLower, roundRangeUpperExcl].concat(vals));
   }
 
   // ---- スロット解決 ----
@@ -404,6 +431,11 @@
     Object.keys(fd).forEach(function (dispName) {
       env[dispName] = fmtFraction(env[fd[dispName][0]], env[fd[dispName][1]]);
     });
+    // mixed_display(v0.8): 帯分数表記を注入
+    var md = pattern.mixed_display || {};
+    Object.keys(md).forEach(function (dispName) {
+      env[dispName] = fmtMixed(env[md[dispName][0]], env[md[dispName][1]]);
+    });
 
     // 数量スロットの表示文字列を自動生成
     var quants = pattern.quantity_slots || {};
@@ -437,12 +469,28 @@
     });
   }
 
+  // figure_params(v0.8): "{slot}" を env で解決（本文と同一env→図中数値と問題文が食い違わない）。
+  function resolveFigureParams(fp, env) {
+    if (Array.isArray(fp)) return fp.map(function (v) { return resolveFigureParams(v, env); });
+    if (fp && typeof fp === 'object') {
+      var o = {};
+      Object.keys(fp).forEach(function (k) { o[k] = resolveFigureParams(fp[k], env); });
+      return o;
+    }
+    if (typeof fp === 'string') {
+      var m = fp.match(/^\{(\w+)\}$/);
+      if (m && Object.prototype.hasOwnProperty.call(env, m[1])) return env[m[1]];
+    }
+    return fp;
+  }
+
   function makeProblem(pattern, unitId, lex) {
     var env = buildEnv(pattern, unitId, lex);
     var tmpl = randChoice(pattern.sentence_templates);
     var problem = formatTemplate(tmpl, env);
     var answer = formatTemplate(pattern.answer_template, env);
-    return { env: env, problem: problem, answer: answer };
+    var figure = pattern.figure_params ? resolveFigureParams(pattern.figure_params, env) : null;
+    return { env: env, problem: problem, answer: answer, figure: figure };
   }
 
   // ---- 検証（漢字/本文数値の由来/答えの正値性） ----
@@ -450,6 +498,7 @@
     var bad = kanjiCheck(problem, allowedKanji(pattern));
 
     var fdKeys = pattern.fraction_display || {};
+    var mdKeys = pattern.mixed_display || {};
     var allowedNums = {};
     (pattern.template_number_constants || []).forEach(function (n) { allowedNums[n] = true; });
     Object.keys(env).forEach(function (k) {
@@ -462,7 +511,8 @@
     });
     Object.keys(env).forEach(function (k) {
       if (k.slice(-5) === '_disp' || k.slice(-4) === '_min' ||
-        Object.prototype.hasOwnProperty.call(fdKeys, k)) {
+        Object.prototype.hasOwnProperty.call(fdKeys, k) ||
+        Object.prototype.hasOwnProperty.call(mdKeys, k)) {
         var matches = String(env[k]).match(/\d+/g) || [];
         matches.forEach(function (m) { allowedNums[parseInt(m, 10)] = true; });
       }
@@ -537,6 +587,11 @@
   var PatternGen = {
     FORMATTERS: FORMATTERS,
     fmtFraction: fmtFraction,
+    fmtMixed: fmtMixed,
+    roundHalfUp: roundHalfUp,
+    roundRangeLower: roundRangeLower,
+    roundRangeUpperExcl: roundRangeUpperExcl,
+    resolveFigureParams: resolveFigureParams,
     allowedKanji: allowedKanji,
     kanjiCheck: kanjiCheck,
     effectiveSlots: effectiveSlots,
