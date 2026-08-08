@@ -1126,11 +1126,22 @@ function loadStudents() {
     if (!d.success) { statusEl.textContent = '読み込みエラー: ' + (d.error||'不明'); return; }
     _allStudents = d.students || [];
     var mode = document.querySelector('input[name="q-mode"]:checked').value;
+    // 件数表示は filterStudentsByMode 側で「対象N名（全M名中）」に統一（フィルタ後件数を出す）。
     filterStudentsByMode(mode);
-    statusEl.textContent = '生徒データ読み込み完了（' + _allStudents.length + '名）';
   }).catch(function(e){
     statusEl.textContent = '通信エラー: ' + e.message;
   });
+}
+
+// overseas（グローバル）モードで生徒を残すか判定（A案）。Lethe側が付与するグローバル対象
+// フラグで判定する。フラグ名を1つに固定せず、boolean `overseas` / 配列 `modes` / 旧 `mode` の
+// いずれでも拾える寛容な形にしておく（Letheの列追加が s.overseas でも s.modes でも動くように）。
+// ※Lethe getStudents 未更新の間は overseas 対象フラグを持つ生徒が0名のため、overseasモードは
+//   0名表示になる（フィルタ後件数を statusに出すので「全6名中0名」と正しく見える）。
+function isOverseasEligible(s) {
+  return s.overseas === true
+    || (Array.isArray(s.modes) && s.modes.indexOf('overseas') >= 0)
+    || s.mode === 'overseas';
 }
 
 function filterStudentsByMode(mode) {
@@ -1138,8 +1149,13 @@ function filterStudentsByMode(mode) {
   if (!sel) return;
   var current = sel.value;
   sel.innerHTML = '<option value="">-- 生徒を選択（選択しない場合は汎用課題）--</option>';
+  var shown = 0;
   _allStudents
-    .filter(function(s){ return s.mode === mode || !s.mode; })
+    .filter(function(s){
+      // A案：overseas は「グローバル対象フラグ」で判定（旧: s.mode==='overseas' も後方互換で許容）。
+      // 国内(domestic)は現行どおり（該当モード or モード未設定）＝挙動無変更。
+      return mode === 'overseas' ? isOverseasEligible(s) : (s.mode === mode || !s.mode);
+    })
     .forEach(function(s){
       var opt = document.createElement('option');
       opt.value = s.student_id;
@@ -1154,9 +1170,14 @@ function filterStudentsByMode(mode) {
       opt.dataset.themeId = s.theme_id || '';
       opt.textContent = s.name + '（' + s.grade + '）' + (s.jp_level ? ' [' + s.jp_level + ']' : '');
       sel.appendChild(opt);
+      shown++;
     });
   // 以前の選択を復元
   if (current) sel.value = current;
+  // 件数はフィルタ後（対象）件数を明示。モード切替時も呼ばれるため、ここで更新すると
+  // 「全6名なのにドロップダウンが空」の誤認が解消される（診断②の是正）。
+  var statusEl = document.getElementById('student-load-status');
+  if (statusEl) statusEl.textContent = '対象生徒 ' + shown + '名（全 ' + _allStudents.length + '名中）';
 }
 
 // ページ読み込み時に自動取得
