@@ -1065,6 +1065,21 @@ var CONSISTENCY_CRITERIA_PROMPT =
   '  OK例：「うさりんとお友達で、りんごを配っています。次の□に当てはまる数をかきなさい。(1) 5×3=□、5×4=□ (2) 6×3=□、6×4=□」'+
   '→ 本文は具体的な数量を確定させておらず、一般的な計算パターンの例示なので、(2)の数値が(1)と違っていてもOK。答えの部分も空欄（□）になっており、生徒が計算する余地が残っている。\n\n';
 
+// 【テーマと語彙の必須ルール】生成される student_quiz 本文へのルール。印刷経路・Web経路の
+// 両プロンプトで共有する（片方だけ更新し忘れる事故を避けるため、CONSISTENCY_CRITERIA_PROMPT
+// と同じく一本化）。テーマ合成禁止は全モード共通、漢字/ひらがなの統制は overseas のみ。
+function themeVocabRulesText(mode){
+  var s =
+    '【テーマと語彙の必須ルール】\n'+
+    '- 希望テーマが複数ある場合は、1問につき1テーマだけを使うこと。複数のテーマを1つの場面に合成してはならない（例：「宇宙」と「チェス大会」を混ぜた『宇宙のチェス大会』のような設定は不可）。\n';
+  if(mode==='overseas'){
+    s +=
+    '- 日本語で問題文を書く際、指定された【日本語レベル】(jp_level)を超える漢字を使ってよいのは、words[]（今日教える学習語）に含まれる語だけとする。それ以外の語はすべてひらがなで書くこと。\n'+
+    '- 常用漢字外の漢字は、words[]に含まれるかどうかに関わらず、常にひらがなで書くこと。\n';
+  }
+  return s+'\n';
+}
+
 // 復習コーナー（弱点克服）専用の整合性チェック。checkConsistency()（generateQuizViaAI()
 // にネストされたクロージャで直接は呼び出せない）と同じ11基準・同じ再試行回数（3回）を
 // 用いる。基準文言はCONSISTENCY_CRITERIA_PROMPTを共有しているため複製ではない。
@@ -1299,8 +1314,10 @@ function showPreview(mode, theme, levelBreakdown, outputJson){
       '- 「できた！提出する」ボタンとSupabase送信ロジック（fetch等）は完全に削除すること（この画面はデータを送信しない）\n'+
       'テンプレートURL（'+mode+'モード）: '+templateUrl+'\n\n'+
       '【モード】'+modeDesc+'\n'+
+      (mode==='overseas'?'【日本語レベル】'+selectedJpLevel+'\n':'')+
       (theme?'【テーマ】'+theme+'\n':'')+
       '【問題数】'+outputJson.meta.count+'問\n\n'+
+      themeVocabRulesText(mode)+
       '- SVGイラストはテーマに合わせたオリジナルキャラを作り、questions配列の全ての問題についてillustrationsオブジェクトに72×72pxのSVGを必ず用意すること（省略不可）。\n'+
       '- 単元バッジ・問題レベルバッジ（例題:紫/確認:青/練習:橙）はWeb提出用と同じ仕様のまま維持する\n'+
       (mode==='overseas'
@@ -1326,6 +1343,7 @@ function showPreview(mode, theme, levelBreakdown, outputJson){
     (mode==='overseas'?'【日本語レベル】'+selectedJpLevel+'\n':'')+
     '【問題レベル】'+levelsDesc+'\n'+
     '【問題数】'+outputJson.meta.count+'問\n\n'+
+    themeVocabRulesText(mode)+
     '【フォーマット参考】'+(mode==='overseas'?'student_quiz_v11_soccer.html':'student_quiz_v13b_disney.html')+'と同じ構成で。\n'+
     '- SVGイラストはテーマに合わせたオリジナルキャラを作る（各問題72×72px）\n'+
     '- 手書きキャンバス（DrawCanvas）を各問題に付ける\n'+
