@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "mode": "overseas",
+    "theme": "ドラえもん",
+    "grades": ["g03"],
+    "note": "実際に発生した不良の再現（ドラえもん案件・修正前）。Q1=暗記指示+answer(基準13) / Q2=時刻の転記(基準12) / Q9・Q10=問いは何mmなのにanswerがcm表記(基準13 単位不一致) / kanji_quiz choices重複(宇宙・宇宙・字宙)=JS前処理。"
+  },
+  "problems": [
+    { "number": 1, "level": "example_follow", "unit": "時間と時こく", "question": "1時間は60分です。このことを おぼえなさい。1時間は何分ですか。", "answer": "60分" },
+    { "number": 2, "level": "confirmation", "unit": "時間と時こく", "question": "ドラえもんは9時に家を出て、11時に帰りました。次の時こくを答えなさい。（1）出発した時こく （2）帰った時こく", "answer": "(1)9時 (2)11時" },
+    { "number": 3, "level": "practice", "unit": "たし算", "question": "のび太は消しゴムを5こ持っています。ドラえもんが3こくれました。あわせて何こですか。", "answer": "8こ" },
+    { "number": 4, "level": "practice", "unit": "わり算", "question": "どら焼きが12こあります。4人で同じ数ずつ分けると、1人分は何こですか。", "answer": "3こ" },
+    { "number": 5, "level": "practice", "unit": "ひき算", "question": "15cmのえんぴつを、スモールライトで3cmちぢめました。今のえんぴつの長さは何cmですか。", "answer": "12cm" },
+    { "number": 6, "level": "practice", "unit": "時間と時こく", "question": "9時から10時30分まで勉強しました。勉強していた時間は何分間ですか。", "answer": "90分間" },
+    { "number": 7, "level": "practice", "unit": "ひき算", "question": "リボンが40cmあります。18cm使うと、残りは何cmですか。", "answer": "22cm" },
+    { "number": 8, "level": "practice", "unit": "かけ算", "question": "本を1日20ページずつ4日間読みました。全部で何ページ読みましたか。", "answer": "80ページ" },
+    { "number": 9, "level": "practice", "unit": "長さ", "question": "赤いテープ2cmと青いテープ3cmをつなげると、長さは何mmですか。", "answer": "5cm" },
+    { "number": 10, "level": "practice", "unit": "長さ", "question": "1cmのねじと4cmのねじをならべると、全部の長さは何mmですか。", "answer": "5cm" }
+  ],
+  "kanji_quiz": [
+    { "reading": "うちゅう", "en": "space / universe", "correct": "宇宙", "choices": ["宇宙", "宇宙", "字宙"], "hint": "The place where stars and planets are." }
+  ]
+}
