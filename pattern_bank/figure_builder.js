@@ -155,7 +155,99 @@
     return { minLbl: minLbl, minOther: minOther, minOwn: minOwn, cut: cut, semBad: semBad, colBad: colBad, viewBox: lay.viewBox, labels: L };
   }
 
-  var BUILDERS = { rect_area: rectArea, angle_sum: angleSum };
+  // ============================================================
+  // kind: "table" 対応表（B層・v0.9）。仕様: v09_js_port_draft.js / figure_kinds_design_g05.md。
+  // 配置原則（angle_sum で確立した原則の表への写像）:
+  //  1. ラベル束縛 — 見出し・値は自セルに束縛（セル外に出さない）。
+  //  2. 可動自由度 — フォントサイズと列幅のみ（行高・罫線・セル対応は固定）。
+  //  3. 全域スキャン — (a)セル境界はみ出し0px (b)隣接テキスト距離≥10px (c)行列対応の意味判定。
+  //     列幅=最長セル文字列の実測幅+パディングで確保するため (a)(b) は構造的に保証。
+  //     幅がMAXWを超える場合のみフォント縮小で吸収（可動自由度の範囲）。
+  //  値セルには数値のみ、単位は行ラベル側に含める（バンク側の責務）。数値直書きはしない（スロット参照）。
+  // ============================================================
+  function tblTextW(text, fs) {   // 概算幅（半角=0.58em / 全角=1.0em。angle_sum の textBox と同一係数）
+    var s = String(text), w = 0;
+    for (var i = 0; i < s.length; i++) w += /[0-9.\-a-zA-Z%]/.test(s[i]) ? fs * 0.58 : fs;
+    return w;
+  }
+  // レイアウト（テスト可能・描画から分離）。cell[row][col]: row0=ヘッダ, col0=行ラベル, 左上=空。
+  function tableLayout(fp) {
+    var colHeader = fp.col_header || [], rows = fp.rows || [];
+    var nCol = 1 + colHeader.length, nRow = 1 + rows.length;
+    var cell = [];
+    for (var r = 0; r < nRow; r++) {
+      cell[r] = [];
+      for (var c = 0; c < nCol; c++) {
+        if (r === 0 && c === 0) cell[r][c] = '';
+        else if (r === 0) cell[r][c] = String(colHeader[c - 1]);
+        else if (c === 0) cell[r][c] = String(rows[r - 1].label);
+        else { var vals = rows[r - 1].values || []; cell[r][c] = String(vals[c - 1] !== undefined ? vals[c - 1] : ''); }
+      }
+    }
+    var HPAD = 10, VPAD = 7, MAXW = 460, fs = 13, colW, rowH, tableW;
+    while (true) {   // 可動自由度: 幅超過時のみフォント縮小（最小9）。列幅は各列の実測最長に合わせる。
+      colW = [];
+      for (var c2 = 0; c2 < nCol; c2++) {
+        var mx = 0;
+        for (var r2 = 0; r2 < nRow; r2++) mx = Math.max(mx, tblTextW(cell[r2][c2], fs));
+        colW[c2] = mx + 2 * HPAD;
+      }
+      rowH = fs + 2 * VPAD;
+      tableW = colW.reduce(function (a, b) { return a + b; }, 0);
+      if (tableW <= MAXW || fs <= 9) break;
+      fs -= 1;
+    }
+    var capFs = 13, capH = fp.caption ? capFs + 8 : 0;
+    var colX = [0]; for (var c3 = 0; c3 < nCol; c3++) colX[c3 + 1] = colX[c3] + colW[c3];
+    var y0 = capH, cells = [];
+    for (var r3 = 0; r3 < nRow; r3++) {
+      for (var c4 = 0; c4 < nCol; c4++) {
+        var x = colX[c4], y = y0 + r3 * rowH, tw = tblTextW(cell[r3][c4], fs);
+        var cx = x + colW[c4] / 2, cy = y + rowH / 2;
+        cells.push({ r: r3, c: c4, text: cell[r3][c4], x: x, y: y, w: colW[c4], h: rowH,
+          tx0: cx - tw / 2, tx1: cx + tw / 2, ty0: cy - fs / 2, ty1: cy + fs / 2, cx: cx, cy: cy });
+      }
+    }
+    return { nCol: nCol, nRow: nRow, colW: colW, colX: colX, rowH: rowH, fs: fs, capFs: capFs, capH: capH,
+      cells: cells, W: tableW, H: capH + nRow * rowH };
+  }
+  function drawTable(fp) {
+    var L = tableLayout(fp), parts = [], x0 = 0, y0 = L.capH, x1 = L.W, y1 = L.H;
+    if (fp.caption) parts.push('<text x="' + (L.W / 2) + '" y="' + L.capFs + '" text-anchor="middle" font-size="' + L.capFs + '" font-weight="bold" fill="#222">' + esc(fp.caption) + '</text>');
+    parts.push('<rect x="0" y="' + y0 + '" width="' + L.W + '" height="' + L.rowH + '" fill="#eef4ff"/>');            // ヘッダ行
+    parts.push('<rect x="0" y="' + y0 + '" width="' + L.colW[0] + '" height="' + (L.H - y0) + '" fill="#f4f7fd"/>');   // 行ラベル列
+    for (var r = 0; r <= L.nRow; r++) { var yy = y0 + r * L.rowH; parts.push('<line x1="' + x0 + '" y1="' + yy + '" x2="' + x1 + '" y2="' + yy + '" stroke="#1a56c4" stroke-width="1"/>'); }
+    for (var c = 0; c <= L.nCol; c++) { var xx = L.colX[c]; parts.push('<line x1="' + xx + '" y1="' + y0 + '" x2="' + xx + '" y2="' + y1 + '" stroke="#1a56c4" stroke-width="1"/>'); }
+    L.cells.forEach(function (cl) {
+      if (cl.text === '') return;
+      parts.push('<text x="' + cl.cx + '" y="' + (cl.cy + L.fs * 0.34) + '" text-anchor="middle" font-size="' + L.fs + '" fill="#222">' + esc(cl.text) + '</text>');
+    });
+    // 罫線(width1)が viewBox 端で欠けないよう 1px 内側に置く。
+    return svg(L.W + 2, L.H + 2, '<g transform="translate(1,1)">' + parts.join('') + '</g>');
+  }
+  // 機械検査（build と同一 tableLayout を共有）。(a)はみ出し (b)テキスト間距離 (c)行列対応の意味判定。
+  function tableMinClearance(fp) {
+    var L = tableLayout(fp), overflow = 0, minGap = 1e9;
+    var nonEmpty = L.cells.filter(function (c) { return c.text !== ''; });
+    nonEmpty.forEach(function (cl) {
+      var ox = Math.max(0, cl.x - cl.tx0, cl.tx1 - (cl.x + cl.w));
+      var oy = Math.max(0, cl.y - cl.ty0, cl.ty1 - (cl.y + cl.h));
+      overflow = Math.max(overflow, ox, oy);
+    });
+    function gapBox(a, b) { var dx = Math.max(0, a.tx0 - b.tx1, b.tx0 - a.tx1), dy = Math.max(0, a.ty0 - b.ty1, b.ty0 - a.ty1); return Math.hypot(dx, dy); }
+    for (var i = 0; i < nonEmpty.length; i++) for (var j = i + 1; j < nonEmpty.length; j++) {
+      var a = nonEmpty[i], b = nonEmpty[j];
+      if ((a.r === b.r && Math.abs(a.c - b.c) === 1) || (a.c === b.c && Math.abs(a.r - b.r) === 1)) minGap = Math.min(minGap, gapBox(a, b));
+    }
+    if (minGap === 1e9) minGap = 999;
+    var semOk = true;   // (c) 各ボディ行の値数がヘッダ列数と一致（行列対応の構造検証）
+    (fp.rows || []).forEach(function (row) { if ((row.values || []).length !== (fp.col_header || []).length) semOk = false; });
+    var contained = true;   // 全テキストが表領域内
+    nonEmpty.forEach(function (cl) { if (cl.tx0 < -0.01 || cl.tx1 > L.W + 0.01 || cl.ty0 < L.capH - 0.01 || cl.ty1 > L.H + 0.01) contained = false; });
+    return { overflow: overflow, minGap: minGap, semOk: semOk, contained: contained, W: L.W, H: L.H, fs: L.fs };
+  }
+
+  var BUILDERS = { rect_area: rectArea, angle_sum: angleSum, table: drawTable };
 
   function svg(w, h, inner) {
     return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + Math.ceil(w) + ' ' + Math.ceil(h) +
@@ -170,7 +262,7 @@
     return b ? b(fp) : '';
   }
 
-  var FigureBuilder = { build: build, BUILDERS: BUILDERS, _angleSumMinClearance: angleSumMinClearance };
+  var FigureBuilder = { build: build, BUILDERS: BUILDERS, _angleSumMinClearance: angleSumMinClearance, _tableMinClearance: tableMinClearance };
   if (typeof module !== 'undefined' && module.exports) module.exports = FigureBuilder;
   else root.FigureBuilder = FigureBuilder;
 })(typeof window !== 'undefined' ? window : globalThis);

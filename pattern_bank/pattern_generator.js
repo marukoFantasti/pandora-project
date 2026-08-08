@@ -12,7 +12,9 @@
   var G02 = '引羽雲園遠何科夏家歌画回会海絵外角楽活間丸岩顔汽記帰弓牛魚京強教近兄形計元言原戸古午後語工公広交光考行高黄合谷国黒今才細作算止市矢姉思紙寺自時室社弱首秋週春書少場色食心新親図数西声星晴切雪船線前組走多太体台地池知茶昼長鳥朝直通弟店点電刀冬当東答頭同道読内南肉馬売買麦半番父風分聞米歩母方北毎妹万明鳴毛門夜野友用曜来里理話';
   var G03 = '丁世両主乗予事仕他代住使係倍全具写列助勉動勝化区医去反取受号向君味命和品員商問坂央始委守安定実客宮宿寒対局屋岸島州帳平幸度庫庭式役待急息悪悲想意感所打投拾持指放整旅族昔昭暑暗曲有服期板柱根植業様横橋次歯死氷決油波注泳洋流消深温港湖湯漢炭物球由申界畑病発登皮皿相県真着短研礼神祭福秒究章童笛第筆等箱級終緑練羊美習者育苦荷落葉薬血表詩調談豆負起路身転軽農返追送速進遊運部都配酒重鉄銀開院陽階集面題飲館駅鼻';
   var G04 = '愛案以衣位茨印英栄媛塩岡億加果貨課芽賀改械害街各覚潟完官管関観願岐希季旗器機議求泣給挙漁共協鏡競極熊訓軍郡群径景芸欠結建健験固功好香候康佐差菜最埼材崎昨札刷察参産散残氏司試児治滋辞鹿失借種周祝順初松笑唱焼照城縄臣信井成省清静席積折節説浅戦選然争倉巣束側続卒孫帯隊達単置仲沖兆低底的典伝徒努灯働特徳栃奈梨熱念敗梅博阪飯飛必票標不夫付府阜富副兵別辺変便包法望牧末満未民無約勇要養浴利陸良料量輪類令冷例連老労録';
-  var KANJI_BY_GRADE = { g01: G01, g02: G02, g03: G03, g04: G04 };
+  // G05: kyoiku_kanji_g1to5.json の g05(193字, MEXT2017)。data/kyoiku_kanji.json['5']と一致。
+  var G05 = '圧囲移因永営衛易益液演応往桜可仮価河過快解格確額刊幹慣眼紀基寄規喜技義逆久旧救居許境均禁句型経潔件険検限現減故個護効厚耕航鉱構興講告混査再災妻採際在財罪殺雑酸賛士支史志枝師資飼示似識質舎謝授修述術準序招証象賞条状常情織職制性政勢精製税責績接設絶祖素総造像増則測属率損貸態団断築貯張停提程適統堂銅導得毒独任燃能破犯判版比肥非費備評貧布婦武復複仏粉編弁保墓報豊防貿暴脈務夢迷綿輸余容略留領歴';
+  var KANJI_BY_GRADE = { g01: G01, g02: G02, g03: G03, g04: G04, g05: G05 };
   function buildKanjiSet(str) { var s = {}; str.split('').forEach(function (c) { s[c] = true; }); return s; }
   // kanji_policy.allowed_grades が無いパターンの既定は g01|g02（v0.7 DEFAULT_ALLOWED と同一）。
   var DEFAULT_ALLOWED = buildKanjiSet(G01 + G02);
@@ -40,6 +42,46 @@
     var m = base % 60;
     return m ? (ampm + h + '時' + m + '分') : (ampm + h + '時');
   }
+  // ---- v0.9 追加ヘルパ（整数演算・Euclid反復。generate_poc_v09.py と1:1移植。
+  //      math.gcd不使用＝JS実装と同一手順で言語間挙動差なし。等価性は
+  //      helpers_test_vectors.json のシード非依存ベクターで両実装照合。
+  //      既存3学年バンクは未参照＝非干渉）。 ----
+  function gcdInt(a, b) {
+    a = Math.trunc(a); b = Math.trunc(b);
+    while (b !== 0) { var t = a % b; a = b; b = t; }
+    return a;
+  }
+  function lcmInt(a, b) {
+    a = Math.trunc(a); b = Math.trunc(b);
+    return Math.trunc(a / gcdInt(a, b)) * b;   // 先に割る（Python実装と同一順序）
+  }
+  function reduceNum(num, den) { return Math.trunc(num / gcdInt(num, den)); }
+  function reduceDen(num, den) { return Math.trunc(den / gcdInt(num, den)); }
+  // 固定小数点整形。末尾ゼロ省略: (1200,100)→"12", (1230,100)→"12.3"。b>=0前提（千分率・小数）。
+  function fmtDec(b, scale) {
+    b = Math.trunc(b); scale = Math.trunc(scale);
+    var whole = Math.trunc(b / scale), frac = b % scale;
+    var width = String(scale).length - 1;
+    var s = String(frac).padStart(width, '0').replace(/0+$/, '');
+    return s ? (whole + '.' + s) : String(whole);
+  }
+  // 千分率整数→百分率表記。1150→"115%", 25→"2.5%", 5→"0.5%"。
+  function fmtPercentPm(p) {
+    p = Math.trunc(p);
+    return p % 10 === 0 ? (Math.trunc(p / 10) + '%') : (Math.trunc(p / 10) + '.' + (p % 10) + '%');
+  }
+  // 千分率整数→歩合表記。356→"3割5分6厘"。0の位は省略: 350→"3割5分", 300→"3割"。
+  function fmtBuaiPm(p) {
+    p = Math.trunc(p);
+    var wari = Math.trunc(p / 100), rest = p % 100;
+    var bu = Math.trunc(rest / 10), rin = rest % 10;
+    var out = '';
+    if (wari) out += wari + '割';
+    if (bu) out += bu + '分';
+    if (rin) out += rin + '厘';
+    return out || '0';
+  }
+
   var FORMATTERS = {
     cm_mm: function (b) { return fmtCompound(b, 10, 'cm', 'mm'); },
     m_cm: function (b) { return fmtCompound(b, 100, 'm', 'cm'); },
@@ -55,7 +97,12 @@
     dec1: function (b) {
       var i = Math.floor(b / 10), f = b % 10;
       return f ? ('' + i + '.' + f) : ('' + i);
-    }
+    },
+    // v0.9 追加（既存3学年は未参照＝非干渉）
+    dec2: function (b) { return fmtDec(b, 100); },
+    dec3: function (b) { return fmtDec(b, 1000); },
+    percent_pm: function (p) { return fmtPercentPm(p); },
+    buai_pm: function (p) { return fmtBuaiPm(p); }
   };
 
   // 同分母分数の整形（generate_poc_v07.py fmt_fraction と同一）。num==den→"1"、num==0→"0"。
@@ -215,9 +262,13 @@
     var vals = keys.map(function (k) { return env[k]; });
     var jsExpr = pyExprToJs(expr);
     // eslint-disable-next-line no-new-func
+    // v0.9: SAFE に追加された gcd/lcm/reduce_num/reduce_den をホワイトリストに追加。
+    // pyExprToJs（構文翻訳器）は変更しない＝許可関数を増やすだけ（abs/max/min と同格）。
     var fn = new Function('abs', 'max', 'min', 'pymod', 'round_half_up', 'round_range_lower', 'round_range_upper_excl',
+      'gcd', 'lcm', 'reduce_num', 'reduce_den',
       keys.join(','), 'return (' + jsExpr + ');');
-    return fn.apply(null, [Math.abs, Math.max, Math.min, pymod, roundHalfUp, roundRangeLower, roundRangeUpperExcl].concat(vals));
+    return fn.apply(null, [Math.abs, Math.max, Math.min, pymod, roundHalfUp, roundRangeLower, roundRangeUpperExcl,
+      gcdInt, lcmInt, reduceNum, reduceDen].concat(vals));
   }
 
   // ---- スロット解決 ----
@@ -416,7 +467,16 @@
 
     // 派生スロット（数値・文字列とも参照可）
     Object.keys(pattern.computed_slots || {}).forEach(function (name) {
-      env[name] = evalExpr(pattern.computed_slots[name].formula, env);
+      var cs = pattern.computed_slots[name];
+      // js_formatter(v0.9): [フォーマッタ名, 参照スロット]。Python は formula を eval するが、
+      // JS の式エバリュエータ（pyExprToJs）は str()/zfill/rstrip 相当を持たず、かつ凍結方針。
+      // そこで同値の表示フォーマッタ（例 dec3）へルーティングする。Python formula と
+      // FORMATTERS[fmt] の等価性は tests のドリフト防止テストが参照元 choices 全値で悉皆照合。
+      if (cs.js_formatter) {
+        env[name] = FORMATTERS[cs.js_formatter[0]](env[cs.js_formatter[1]]);
+      } else {
+        env[name] = evalExpr(cs.formula, env);
+      }
     });
 
     // 答え（整数値のみをformulaに渡す＝Pythonのisinstance(v,int)フィルタと同義）
@@ -435,6 +495,18 @@
     var md = pattern.mixed_display || {};
     Object.keys(md).forEach(function (dispName) {
       env[dispName] = fmtMixed(env[md[dispName][0]], env[md[dispName][1]]);
+    });
+    // reduced_fraction_display(v0.9): gcdで約分してから分数整形（真分数・仮分数そのまま）
+    var rfd = pattern.reduced_fraction_display || {};
+    Object.keys(rfd).forEach(function (dispName) {
+      var rn = env[rfd[dispName][0]], rdd = env[rfd[dispName][1]];
+      env[dispName] = fmtFraction(reduceNum(rn, rdd), reduceDen(rn, rdd));
+    });
+    // reduced_mixed_display(v0.9): gcdで約分してから帯分数整形
+    var rmd = pattern.reduced_mixed_display || {};
+    Object.keys(rmd).forEach(function (dispName) {
+      var mn = env[rmd[dispName][0]], mdn = env[rmd[dispName][1]];
+      env[dispName] = fmtMixed(reduceNum(mn, mdn), reduceDen(mn, mdn));
     });
 
     // 数量スロットの表示文字列を自動生成
@@ -499,6 +571,8 @@
 
     var fdKeys = pattern.fraction_display || {};
     var mdKeys = pattern.mixed_display || {};
+    var rfdKeys = pattern.reduced_fraction_display || {};
+    var rmdKeys = pattern.reduced_mixed_display || {};
     var allowedNums = {};
     (pattern.template_number_constants || []).forEach(function (n) { allowedNums[n] = true; });
     Object.keys(env).forEach(function (k) {
@@ -512,7 +586,9 @@
     Object.keys(env).forEach(function (k) {
       if (k.slice(-5) === '_disp' || k.slice(-4) === '_min' ||
         Object.prototype.hasOwnProperty.call(fdKeys, k) ||
-        Object.prototype.hasOwnProperty.call(mdKeys, k)) {
+        Object.prototype.hasOwnProperty.call(mdKeys, k) ||
+        Object.prototype.hasOwnProperty.call(rfdKeys, k) ||
+        Object.prototype.hasOwnProperty.call(rmdKeys, k)) {
         var matches = String(env[k]).match(/\d+/g) || [];
         matches.forEach(function (m) { allowedNums[parseInt(m, 10)] = true; });
       }
@@ -588,6 +664,14 @@
     FORMATTERS: FORMATTERS,
     fmtFraction: fmtFraction,
     fmtMixed: fmtMixed,
+    // v0.9 ヘルパ（helpers_test_vectors.json ランナー・ドリフト防止テスト用に公開）
+    gcdInt: gcdInt,
+    lcmInt: lcmInt,
+    reduceNum: reduceNum,
+    reduceDen: reduceDen,
+    fmtDec: fmtDec,
+    fmtPercentPm: fmtPercentPm,
+    fmtBuaiPm: fmtBuaiPm,
     roundHalfUp: roundHalfUp,
     roundRangeLower: roundRangeLower,
     roundRangeUpperExcl: roundRangeUpperExcl,
