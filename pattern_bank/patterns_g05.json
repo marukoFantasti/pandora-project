@@ -1,6 +1,6 @@
 {
  "schema_version": 0.9,
- "description": "小5パターンバンク セッション1: 純計算・文章題(経路A・23単元)+ 割合3用法体系(千分率整数) + gcd/lcm/約分機構 + dec2/dec3固定小数点 + table kind(B層)。",
+ "description": "小5パターンバンク セッション1: 純計算・文章題(経路A・23単元)+ 割合3用法体系(千分率整数) + gcd/lcm/約分機構 + dec2/dec3固定小数点 + table kind(B層)。 / セッション2追補: C層(角・面積・円周・体積)17パターン(kind: tri_angle/tri_angle_iso/quad_angle/para_area/tri_area/trap_area/rhombus_area/circle/cuboid)。",
  "source_analysis": "標準的な小5算数カリキュラム(小数の乗除・整数の性質・異分母分数の加減・平均・単位量あたり・速さ・割合と百分率/歩合・2量の変わり方)の単元構成に基づく設計。実データは含めない。",
  "answer_structures": {
   "single": "単一の数値・式",
@@ -13,7 +13,7 @@
   "compare_find": "第2用法: くらべる量 = もとにする量 × 割合",
   "base_find": "第3用法: もとにする量 = くらべる量 ÷ 割合(逆算。100%超・引き後逆算の発展形を含む)"
  },
- "figure_note": "figure_params は kind + スロット参照。make_problem が本文と同一の env で解決するため、図中数値と問題文の食い違いが構造的に起きない。描画は pattern_bank/figure_builder.js(両テンプレ共有・二重実装しない)。v0.9で kind:table を追加(B層)。fig_version はkind追加時の後方互換用。",
+ "figure_note": "figure_params は kind + スロット参照。make_problem が本文と同一の env で解決するため、図中数値と問題文の食い違いが構造的に起きない。描画は pattern_bank/figure_builder.js(両テンプレ共有・二重実装しない)。v0.9で kind:table を追加(B層)。fig_version はkind追加時の後方互換用。 セッション2で幾何系9kindを追加(描画可能性はパターン側制約で全域保証・スキャンは検収ネット)。",
  "shared_lexicon": {
   "comment": "g04からactorsの語感を継承した新レキシコン。すべてg01〜g05配当漢字またはひらがな。実データ・固有教材由来の語は含めない。",
   "actors": [
@@ -3232,7 +3232,10 @@
    "computed_slots": {
     "p_dec": {
      "formula": "(str(p1 // 1000) + '.' + str(p1 % 1000).zfill(3).rstrip('0')) if p1 % 1000 != 0 else str(p1 // 1000)",
-     "js_formatter": ["dec3", "p1"]
+     "js_formatter": [
+      "dec3",
+      "p1"
+     ]
     }
    },
    "quantity_slots": {
@@ -3303,7 +3306,10 @@
    "computed_slots": {
     "p_dec": {
      "formula": "(str(p1 // 1000) + '.' + str(p1 % 1000).zfill(3).rstrip('0')) if p1 % 1000 != 0 else str(p1 // 1000)",
-     "js_formatter": ["dec3", "p1"]
+     "js_formatter": [
+      "dec3",
+      "p1"
+     ]
     }
    },
    "quantity_slots": {
@@ -3547,7 +3553,10 @@
    "computed_slots": {
     "p_dec": {
      "formula": "(str(p1 // 1000) + '.' + str(p1 % 1000).zfill(3).rstrip('0')) if p1 % 1000 != 0 else str(p1 // 1000)",
-     "js_formatter": ["dec3", "p1"]
+     "js_formatter": [
+      "dec3",
+      "p1"
+     ]
     }
    },
    "quantity_slots": {
@@ -3618,11 +3627,17 @@
    "computed_slots": {
     "pa_dec": {
      "formula": "(str(pa // 1000) + '.' + str(pa % 1000).zfill(3).rstrip('0')) if pa % 1000 != 0 else str(pa // 1000)",
-     "js_formatter": ["dec3", "pa"]
+     "js_formatter": [
+      "dec3",
+      "pa"
+     ]
     },
     "pb_dec": {
      "formula": "(str(pb // 1000) + '.' + str(pb % 1000).zfill(3).rstrip('0')) if pb % 1000 != 0 else str(pb // 1000)",
-     "js_formatter": ["dec3", "pb"]
+     "js_formatter": [
+      "dec3",
+      "pb"
+     ]
     }
    },
    "quantity_slots": {
@@ -4171,9 +4186,1080 @@
     "unit": "cm",
     "show_dims": true
    }
+  },
+  {
+   "pattern_id": "g05_tri_angle_01",
+   "grade": "g05",
+   "unit_id": "g05_c04_u02",
+   "unit_name": "三角形の角",
+   "semantic_category": "三角形の内角(2known→1unknown)",
+   "semantic_note": "内角和180°。既知2角は図中のセクターに束縛表示、本文は問いのみ。angle_sum配置原則を継承。",
+   "step_count": 1,
+   "operation": "180 − a1 − a2",
+   "answer_formula": "180 - a1 - a2",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      25,
+      115
+     ]
+    },
+    "a2": {
+     "type": "int",
+     "range": [
+      25,
+      115
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "third_range",
+     "expr": "30 <= 180 - a1 - a2 <= 115",
+     "why": "求める角を鋭角〜鈍角手前に保つ"
+    },
+    {
+     "rule": "drawable",
+     "expr": "65 <= a1 + a2 <= 150",
+     "why": "頂点が描画域に収まる形に限定"
+    }
+   ],
+   "sentence_templates": [
+    "次の図の三角形で、あの角度は何度ですか。"
+   ],
+   "answer_template": "しき 180−{a1}−{a2}={ans} 答え {ans}°",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "tri_angle",
+    "a1": "{a1}",
+    "a2": "{a2}",
+    "label": "あ"
+   }
+  },
+  {
+   "pattern_id": "g05_tri_iso_angle_01",
+   "grade": "g05",
+   "unit_id": "g05_c04_u02",
+   "unit_name": "三角形の角",
+   "semantic_category": "二等辺三角形(頂角→底角)",
+   "semantic_note": "底角=(180−頂角)÷2。頂角を偶数に限定して整数保証。等辺はティックマークで明示。",
+   "step_count": 1,
+   "operation": "(180 − t) ÷ 2",
+   "answer_formula": "(180 - t1) // 2",
+   "answer_unit_from": "unit",
+   "slots": {
+    "t1": {
+     "type": "int",
+     "range": [
+      30,
+      120
+     ],
+     "step": 2
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の図の二等辺三角形は、頂角の大きさが{t1}°です。あの角度は何度ですか。"
+   ],
+   "answer_template": "しき (180−{t1})÷2={ans} 答え {ans}°",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ],
+    "allowed_extra": "頂"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "tri_angle_iso",
+    "apex": "{t1}",
+    "label": "あ"
+   }
+  },
+  {
+   "pattern_id": "g05_quad_angle_01",
+   "grade": "g05",
+   "unit_id": "g05_c04_u03",
+   "unit_name": "四角形と多角形の角",
+   "semantic_category": "四角形の内角(3known→1unknown)",
+   "semantic_note": "内角和360°。凸性・描画可能性は角レンジ制約で全域保証(65〜125°)。",
+   "step_count": 1,
+   "operation": "360 − a1 − a2 − a3",
+   "answer_formula": "360 - a1 - a2 - a3",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      65,
+      100
+     ]
+    },
+    "a2": {
+     "type": "int",
+     "range": [
+      65,
+      100
+     ]
+    },
+    "a3": {
+     "type": "int",
+     "range": [
+      65,
+      100
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "fourth_range",
+     "expr": "65 <= 360 - a1 - a2 - a3 <= 100",
+     "why": "求める角も同レンジ。最大角100°上限はラベル分離可能性の全域保証(隣接する鈍角既知ラベルと未知ラベルの衝突を配置シミュレーションで悉皆検証)"
+    }
+   ],
+   "sentence_templates": [
+    "次の図の四角形で、あの角度は何度ですか。"
+   ],
+   "answer_template": "しき 360−{a1}−{a2}−{a3}={ans} 答え {ans}°",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "quad_angle",
+    "a1": "{a1}",
+    "a2": "{a2}",
+    "a3": "{a3}",
+    "label": "あ"
+   }
+  },
+  {
+   "pattern_id": "g05_para_area_01",
+   "grade": "g05",
+   "unit_id": "g05_c10_u01",
+   "unit_name": "平行四辺形の面積",
+   "semantic_category": "平行四辺形の面積",
+   "semantic_note": "底辺×高さ。高さは内部点線+直角記号。傾きは図専用スロット(本文に出ない)。",
+   "step_count": 1,
+   "operation": "b × h",
+   "answer_formula": "b1 * h1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "b1": {
+     "type": "int",
+     "range": [
+      6,
+      16
+     ]
+    },
+    "h1": {
+     "type": "int",
+     "range": [
+      4,
+      12
+     ]
+    },
+    "s1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      60,
+      65,
+      70,
+      75
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "visible",
+     "expr": "h1 < b1",
+     "why": "横長に保ち高さ点線の視認性を確保"
+    },
+    {
+     "rule": "ratio",
+     "expr": "b1 <= 3 * h1",
+     "why": "比3:1以内(図の暴走防止)"
+    }
+   ],
+   "sentence_templates": [
+    "次の平行四辺形の面積を求めなさい。"
+   ],
+   "answer_template": "しき {b1}×{h1}={ans} 答え {ans}cm²",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "para_area",
+    "base": "{b1}",
+    "height": "{h1}",
+    "unit": "cm",
+    "slant": "{s1}",
+    "show_height": true
+   }
+  },
+  {
+   "pattern_id": "g05_para_height_01",
+   "grade": "g05",
+   "unit_id": "g05_c10_u01",
+   "unit_name": "平行四辺形の面積",
+   "semantic_category": "面積と底辺→高さ(逆算)",
+   "semantic_note": "h=S÷b。割り切れ制約。",
+   "step_count": 1,
+   "operation": "S ÷ b",
+   "answer_formula": "S1 // b1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "b1": {
+     "type": "int",
+     "range": [
+      8,
+      16
+     ]
+    },
+    "S1": {
+     "type": "int",
+     "range": [
+      40,
+      280
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "S1 % b1 == 0",
+     "why": "高さが整数"
+    },
+    {
+     "rule": "h_range",
+     "expr": "4 <= S1 // b1 <= 18",
+     "why": "高さを現実的に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "底辺の長さが{b1}cm、面積が{S1}cm²の平行四辺形の高さは何cmですか。"
+   ],
+   "answer_template": "しき {S1}÷{b1}={ans} 答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g05_tri_area_fig_01",
+   "grade": "g05",
+   "unit_id": "g05_c10_u02",
+   "unit_name": "三角形の面積",
+   "semantic_category": "三角形の面積",
+   "semantic_note": "底辺×高さ÷2。頂点位置は図専用スロット(鋭角域300〜700千分率)。v1は高さの足が底辺内。",
+   "step_count": 1,
+   "operation": "b × h ÷ 2",
+   "answer_formula": "b1 * h1 // 2",
+   "answer_unit_from": "unit",
+   "slots": {
+    "b1": {
+     "type": "int",
+     "range": [
+      6,
+      16
+     ]
+    },
+    "h1": {
+     "type": "int",
+     "range": [
+      4,
+      13
+     ]
+    },
+    "ar": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      300,
+      400,
+      500,
+      600,
+      700
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "even",
+     "expr": "(b1 * h1) % 2 == 0",
+     "why": "面積が整数"
+    },
+    {
+     "rule": "ratio1",
+     "expr": "5 * h1 <= 9 * b1",
+     "why": "高さ:底辺 1.8:1以内(高さラベルの水平余地をスキャン実測に基づき保証)"
+    },
+    {
+     "rule": "ratio2",
+     "expr": "2 * b1 <= 5 * h1",
+     "why": "底辺:高さ 2.5:1以内"
+    }
+   ],
+   "sentence_templates": [
+    "次の三角形の面積を求めなさい。"
+   ],
+   "answer_template": "しき {b1}×{h1}÷2={ans} 答え {ans}cm²",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "tri_area",
+    "base": "{b1}",
+    "height": "{h1}",
+    "unit": "cm",
+    "apex_ratio": "{ar}",
+    "show_height": true
+   }
+  },
+  {
+   "pattern_id": "g05_tri_height_01",
+   "grade": "g05",
+   "unit_id": "g05_c10_u02",
+   "unit_name": "三角形の面積",
+   "semantic_category": "面積と底辺→高さ(逆算)",
+   "semantic_note": "h=2S÷b。",
+   "step_count": 1,
+   "operation": "2S ÷ b",
+   "answer_formula": "2 * S1 // b1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "b1": {
+     "type": "int",
+     "range": [
+      6,
+      18
+     ]
+    },
+    "S1": {
+     "type": "int",
+     "range": [
+      12,
+      120
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(2 * S1) % b1 == 0",
+     "why": "高さが整数"
+    },
+    {
+     "rule": "h_range",
+     "expr": "3 <= 2 * S1 // b1 <= 18",
+     "why": "高さを現実的に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "底辺の長さが{b1}cm、面積が{S1}cm²の三角形の高さは何cmですか。"
+   ],
+   "answer_template": "しき {S1}×2÷{b1}={ans} 答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2
+   ]
+  },
+  {
+   "pattern_id": "g05_trap_area_fig_01",
+   "grade": "g05",
+   "unit_id": "g05_c10_u03",
+   "unit_name": "台形の面積",
+   "semantic_category": "台形の面積",
+   "semantic_note": "(上底+下底)×高さ÷2。上底<下底、オフセットは図専用スロット。",
+   "step_count": 1,
+   "operation": "(a+b) × h ÷ 2",
+   "answer_formula": "(a1 + b1) * h1 // 2",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      4,
+      14
+     ]
+    },
+    "h1": {
+     "type": "int",
+     "range": [
+      3,
+      10
+     ]
+    },
+    "or1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      200,
+      350,
+      500
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "order",
+     "expr": "a1 < b1",
+     "why": "上底<下底"
+    },
+    {
+     "rule": "ratio",
+     "expr": "b1 <= 3 * a1",
+     "why": "上底:下底 3:1以内"
+    },
+    {
+     "rule": "h_ratio",
+     "expr": "h1 <= 2 * b1",
+     "why": "高さ:下底 2:1以内"
+    },
+    {
+     "rule": "even",
+     "expr": "((a1 + b1) * h1) % 2 == 0",
+     "why": "面積が整数"
+    }
+   ],
+   "sentence_templates": [
+    "次の台形の面積を求めなさい。"
+   ],
+   "answer_template": "しき ({a1}+{b1})×{h1}÷2={ans} 答え {ans}cm²",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "trap_area",
+    "top": "{a1}",
+    "bottom": "{b1}",
+    "height": "{h1}",
+    "unit": "cm",
+    "offset_ratio": "{or1}"
+   }
+  },
+  {
+   "pattern_id": "g05_rhombus_area_01",
+   "grade": "g05",
+   "unit_id": "g05_c10_u04",
+   "unit_name": "ひし形の面積",
+   "semantic_category": "ひし形の面積(対角線)",
+   "semantic_note": "対角線×対角線÷2。対角線は点線。正方形ケース(d1==d2)は除外。",
+   "step_count": 1,
+   "operation": "d1 × d2 ÷ 2",
+   "answer_formula": "d1 * d2 // 2",
+   "answer_unit_from": "unit",
+   "slots": {
+    "d1": {
+     "type": "int",
+     "range": [
+      4,
+      16
+     ]
+    },
+    "d2": {
+     "type": "int",
+     "range": [
+      4,
+      16
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "distinct",
+     "expr": "d1 != d2",
+     "why": "正方形を除外"
+    },
+    {
+     "rule": "even",
+     "expr": "(d1 * d2) % 2 == 0",
+     "why": "面積が整数"
+    },
+    {
+     "rule": "ratio1",
+     "expr": "d2 <= 3 * d1",
+     "why": "比3:1以内"
+    },
+    {
+     "rule": "ratio2",
+     "expr": "d1 <= 3 * d2",
+     "why": "比3:1以内"
+    }
+   ],
+   "sentence_templates": [
+    "次のひし形の面積を求めなさい。"
+   ],
+   "answer_template": "しき {d1}×{d2}÷2={ans} 答え {ans}cm²",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "rhombus_area",
+    "diag_h": "{d1}",
+    "diag_v": "{d2}",
+    "unit": "cm"
+   }
+  },
+  {
+   "pattern_id": "g05_circle_circum_diam_01",
+   "grade": "g05",
+   "unit_id": "g05_c12_u02",
+   "unit_name": "円周",
+   "semantic_category": "円周(直径から)",
+   "semantic_note": "円周=直径×3.14。内部は d×314(スケール100)→dec2。",
+   "step_count": 1,
+   "operation": "d × 314(スケール100)",
+   "answer_formula": "d1 * 314",
+   "answer_unit_from": "unit",
+   "slots": {
+    "d1": {
+     "type": "int",
+     "range": [
+      3,
+      25
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の円の円周の長さを求めなさい。ただし、円周率は3.14とします。"
+   ],
+   "answer_template": "しき {d1}×3.14={ans_disp} 答え {ans_disp}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    3,
+    14
+   ],
+   "answer_unit_system": "dec2",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "circle",
+    "given": "diameter",
+    "value": "{d1}",
+    "unit": "cm"
+   }
+  },
+  {
+   "pattern_id": "g05_circle_circum_rad_01",
+   "grade": "g05",
+   "unit_id": "g05_c12_u02",
+   "unit_name": "円周",
+   "semantic_category": "円周(半径から)",
+   "semantic_note": "円周=半径×2×3.14。",
+   "step_count": 1,
+   "operation": "r × 2 × 314(スケール100)",
+   "answer_formula": "r1 * 2 * 314",
+   "answer_unit_from": "unit",
+   "slots": {
+    "r1": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の円の円周の長さを求めなさい。ただし、円周率は3.14とします。"
+   ],
+   "answer_template": "しき {r1}×2×3.14={ans_disp} 答え {ans_disp}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    3,
+    14
+   ],
+   "answer_unit_system": "dec2",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "circle",
+    "given": "radius",
+    "value": "{r1}",
+    "unit": "cm"
+   }
+  },
+  {
+   "pattern_id": "g05_circle_diam_from_circum_01",
+   "grade": "g05",
+   "unit_id": "g05_c12_u02",
+   "unit_name": "円周",
+   "semantic_category": "円周→直径(逆算)",
+   "semantic_note": "d=円周÷3.14。円周は直径から構成(computed・dec2表示)し割り切れを構造保証。",
+   "step_count": 1,
+   "operation": "C ÷ 3.14(構成的逆算)",
+   "answer_formula": "d1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "d1": {
+     "type": "int",
+     "range": [
+      4,
+      25
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "円周の長さが{c_len_disp}cmの円があります。この円の直径の長さは何cmですか。ただし、円周率は3.14とします。"
+   ],
+   "answer_template": "しき {c_len_disp}÷3.14={ans} 答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    3,
+    14
+   ],
+   "computed_slots": {
+    "c_len": {
+     "formula": "d1 * 314"
+    }
+   },
+   "answer_unit_system": "dec2"
+  },
+  {
+   "pattern_id": "g05_cuboid_vol_01",
+   "grade": "g05",
+   "unit_id": "g05_c02_u01",
+   "unit_name": "直方体と立方体の体積",
+   "semantic_category": "直方体の体積",
+   "semantic_note": "たて×横×高さ。辺比4:1以内を制約で保証(キャビネット投影の視認性)。",
+   "step_count": 1,
+   "operation": "d × w × h",
+   "answer_formula": "d1 * w1 * h1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "w1": {
+     "type": "int",
+     "range": [
+      3,
+      12
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      3,
+      12
+     ]
+    },
+    "h1": {
+     "type": "int",
+     "range": [
+      3,
+      12
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "ratio",
+     "expr": "max(w1, d1, h1) <= 4 * min(w1, d1, h1)",
+     "why": "辺比4:1以内"
+    }
+   ],
+   "sentence_templates": [
+    "次の直方体の体積は何cm³ですか。"
+   ],
+   "answer_template": "しき {d1}×{w1}×{h1}={ans} 答え {ans}cm³",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "cuboid",
+    "w": "{w1}",
+    "d": "{d1}",
+    "h": "{h1}",
+    "unit": "cm",
+    "cube": false
+   }
+  },
+  {
+   "pattern_id": "g05_cube_vol_01",
+   "grade": "g05",
+   "unit_id": "g05_c02_u01",
+   "unit_name": "直方体と立方体の体積",
+   "semantic_category": "立方体の体積",
+   "semantic_note": "1辺×1辺×1辺。",
+   "step_count": 1,
+   "operation": "a³",
+   "answer_formula": "a1 * a1 * a1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の立方体の体積は何cm³ですか。"
+   ],
+   "answer_template": "しき {a1}×{a1}×{a1}={ans} 答え {ans}cm³",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "cuboid",
+    "w": "{a1}",
+    "d": "{a1}",
+    "h": "{a1}",
+    "unit": "cm",
+    "cube": true
+   }
+  },
+  {
+   "pattern_id": "g05_cuboid_capacity_01",
+   "grade": "g05",
+   "unit_id": "g05_c02_u02",
+   "unit_name": "体積の単位と容積",
+   "semantic_category": "水そうの容積(cm³→L・2段)",
+   "semantic_note": "内のり体積→1000cm³=1L換算。choicesで(V%1000==0)を高確率化し制約で保証。",
+   "step_count": 2,
+   "operation": "d×w×h ÷ 1000",
+   "answer_formula": "w1 * d1 * h1 // 1000",
+   "answer_unit_from": "unit",
+   "slots": {
+    "w1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      20,
+      25,
+      30,
+      40,
+      50
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      20,
+      25,
+      40,
+      50
+     ]
+    },
+    "h1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      20,
+      25,
+      30
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "liter",
+     "expr": "(w1 * d1 * h1) % 1000 == 0",
+     "why": "Lで割り切れる"
+    },
+    {
+     "rule": "v_range",
+     "expr": "8000 <= w1 * d1 * h1 <= 60000",
+     "why": "容積8〜60Lの現実的な水そう"
+    }
+   ],
+   "sentence_templates": [
+    "右の図のような直方体の形をした水そうがあります。内のりは、たて{d1}cm、横{w1}cm、深さ{h1}cmです。この水そうの容積は何Lですか。"
+   ],
+   "answer_template": "しき {d1}×{w1}×{h1}÷1000={ans} 答え {ans}L",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1000
+   ],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "cuboid",
+    "w": "{w1}",
+    "d": "{d1}",
+    "h": "{h1}",
+    "unit": "cm",
+    "cube": false
+   }
+  },
+  {
+   "pattern_id": "g05_cuboid_depth_01",
+   "grade": "g05",
+   "unit_id": "g05_c02_u02",
+   "unit_name": "体積の単位と容積",
+   "semantic_category": "水量→水深(逆算・2段)",
+   "semantic_note": "深さ=V(L)×1000÷底面積。深さ<水そうの深さを制約で保証。",
+   "step_count": 2,
+   "operation": "VL×1000 ÷ (d×w)",
+   "answer_formula": "VL * 1000 // (w1 * d1)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "w1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      20,
+      25,
+      30,
+      40,
+      50
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      20,
+      25,
+      40,
+      50
+     ]
+    },
+    "h1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      20,
+      25,
+      30
+     ]
+    },
+    "VL": {
+     "type": "int",
+     "range": [
+      8,
+      40
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(VL * 1000) % (w1 * d1) == 0",
+     "why": "深さが整数"
+    },
+    {
+     "rule": "depth_lt",
+     "expr": "VL * 1000 // (w1 * d1) < h1",
+     "why": "水面が水そうの深さ未満"
+    },
+    {
+     "rule": "depth_ge",
+     "expr": "VL * 1000 // (w1 * d1) >= 4",
+     "why": "深さを現実的に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "右の図のような直方体の形をした水そうがあります。内のりは、たて{d1}cm、横{w1}cm、深さ{h1}cmです。この水そうに{VL}Lの水を入れると、水の深さは何cmになりますか。"
+   ],
+   "answer_template": "しき {VL}×1000÷({d1}×{w1})={ans} 答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1000
+   ],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "cuboid",
+    "w": "{w1}",
+    "d": "{d1}",
+    "h": "{h1}",
+    "unit": "cm",
+    "cube": false
+   }
+  },
+  {
+   "pattern_id": "g05_vol_unit_convert_01",
+   "grade": "g05",
+   "unit_id": "g05_c02_u02",
+   "unit_name": "体積の単位と容積",
+   "semantic_category": "体積の単位換算(m³→L)",
+   "semantic_note": "1m³=1000L。小数m³をスケール整数で処理。",
+   "step_count": 1,
+   "operation": "v(スケール10)×100 = v×1000 L",
+   "answer_formula": "v1 * 100",
+   "answer_unit_from": "unit",
+   "slots": {},
+   "value_constraints": [],
+   "sentence_templates": [
+    "{v1_disp}m³は何Lですか。"
+   ],
+   "answer_template": "しき {v1_disp}×1000={ans} 答え {ans}L",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1000
+   ],
+   "quantity_slots": {
+    "v1": {
+     "unit_system": "dec1",
+     "range": [
+      3,
+      95
+     ]
+    }
+   }
   }
  ],
  "schema_changelog": {
-  "0.9": "gcd/lcm/reduce_num/reduce_den(整数Euclid・JS等価)、reduced_fraction_display/reduced_mixed_display、dec2/dec3/percent_pm/buai_pm、千分率整数による割合3用法体系、kind:table。既存3学年バンクへは非干渉(ゴールデン差分ゼロ確認済み)。computed_slots.js_formatter: JS側表示フォーマッタヒント([フォーマッタ名,参照スロット]。Pythonはformulaのみ読むため出力不変・加法的メタデータ)。"
+  "0.9": "gcd/lcm/reduce_num/reduce_den(整数Euclid・JS等価)、reduced_fraction_display/reduced_mixed_display、dec2/dec3/percent_pm/buai_pm、千分率整数による割合3用法体系、kind:table。既存3学年バンクへは非干渉(ゴールデン差分ゼロ確認済み)。computed_slots.js_formatter: JS側表示フォーマッタヒント([フォーマッタ名,参照スロット]。Pythonはformulaのみ読むため出力不変・加法的メタデータ)。",
+  "0.9+c_layer": "C層追補(生成器v0.9のまま・スキーマ機構変更なし): c04角3(内角和・二等辺)、c10面積6(平行四辺形・三角形・台形・ひし形+逆算2)、c12円周3(3.14=スケール整数314→dec2)、c02体積5(直方体・立方体・容積・水深逆算・単位換算)。図専用スロット(slant/apex_ratio/offset_ratio)は本文に出さず図の決定的構成にのみ使用(シード再現性維持)。制約強化(スキャン検収に基づく): quad_angleは全4内角≤100°(ラベル分離可能性を配置シミュレーションで全域保証)、tri_areaは高さ:底辺≤1.8(高さラベル余地の実測不合格域を排除)。"
  }
 }
