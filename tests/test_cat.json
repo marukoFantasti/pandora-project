@@ -1,0 +1,15 @@
+{
+  "meta": {
+    "mode": "overseas",
+    "theme": "白ねこ",
+    "grades": ["g03"],
+    "note": "値転記型の不良の再現（白ねこ案件）。メーターの値を計算せずそのまま書き写しているためanswerが結果になっていない → 基準12違反。"
+  },
+  "problems": [
+    { "number": 1, "level": "confirmation", "unit": "長さ", "question": "白ねこのカードにステータスがかかれています。（1）つよさメーターは15cm、（2）はやさメーターは8cmです。それぞれのメーターの長さを答えなさい。（1）つよさメーター （2）はやさメーター", "answer": "(1)つよさメーター：15cm (2)はやさメーター：8cm" },
+    { "number": 2, "level": "practice", "unit": "たし算", "question": "白ねこはえさを3つぶ、黒ねこはえさを4つぶ食べました。2匹あわせて何つぶ食べましたか。", "answer": "7つぶ" }
+  ],
+  "kanji_quiz": [
+    { "reading": "しろ", "en": "white", "correct": "白", "choices": ["白", "百", "自"], "hint": "The color of snow." }
+  ]
+}

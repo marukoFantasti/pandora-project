@@ -695,6 +695,29 @@ function findOutOfGradeKanji(problemsArr, grades){
   return {ok:issues.length===0, issues:issues};
 }
 
+// kanji_quiz[].choices に同一の選択肢が重複していないかを機械的に検証する。
+// checkConsistency のLLMチェック（checkText）は problems の question/answer のみを対象とし、
+// kanji_quiz は一切見ないため、選択肢の重複（例：「宇宙・宇宙・字宙」で宇宙が2つ）はLLMでは
+// 検出できない。ここで前処理として確実に検出し、見つかった場合はNG確定させて再生成に回す。
+// 全角/半角スペースを除去して比較する（見た目が同一なら重複とみなす）。
+function findDuplicateKanjiChoices(kanjiArr){
+  var issues=[];
+  (kanjiArr||[]).forEach(function(k,i){
+    var choices=(k&&k.choices)||[];
+    var seen={}, dups=[];
+    choices.forEach(function(c){
+      var key=String(c==null?'':c).replace(/[\s　]/g,'').trim();
+      if(!key) return;
+      if(seen[key]){ if(dups.indexOf(key)<0) dups.push(key); }
+      else seen[key]=true;
+    });
+    if(dups.length>0){
+      issues.push('漢字クイズ'+(i+1)+'（'+(k.correct||k.reading||'')+'）の選択肢に重複があります：「'+dups.join('、')+'」');
+    }
+  });
+  return {ok:issues.length===0, issues:issues};
+}
+
 function toggleQGrade(btn){
   var g=btn.dataset.grade;
   var idx=qSelectedGrades.indexOf(g);
@@ -1015,6 +1038,8 @@ var CONSISTENCY_CRITERIA_PROMPT =
   '9. questionに書かれた式・条件から、answerフィールドの計算結果が実際に正しく導き出せる値になっているか、Haiku自身が実際に計算して検算すること。文面上の整合性に問題がなくても、計算結果自体が誤っていればNGとする。\n'+
   '10. 問題文中の数式で、埋めるべき□（未知数）が2つ以上ある場合、それらを一意に決定できるだけの情報（式の本数、制約条件）が本文に揃っているかを確認する。未知数の数に対して式や制約条件が不足しており、一意に解が定まらない場合はNGとする。\n'+
   '11. 問題文中の語彙・表現が、チェックテキスト冒頭の【対象学年】が示す学年の児童にとって自然な言葉づかいか確認する。使用漢字が学年配当漢字の範囲内かどうかはシステム側で別途機械的に照合済みのため、ここでは判断しなくてよい。実際には使われない不自然な造語表現（例：「リボン巻き」）が含まれる場合はNGとする。学年相応のやさしい言葉（例：「リボン作り」「花を並べる」等）に置き換えるべきと判断できる場合は、issuesにその具体的な置き換え案を含めて指摘すること。ただし、教科名として学年相応に定着している言葉（例：小3の「工作」＝図画工作）は対象外とし、NGにしない。\n'+
+  '12. answerフィールドは、問題文の条件に対して計算・単位変換などを行った「結果」でなければならない。問題文中に登場する数値をそのまま書き写しただけ（計算・変換を伴わない転記）のanswerはNGとする。\n'+
+  '13. 問題文は、生徒に計算・変換の対象を明示的に要求していなければならない。疑問文（「〜は何本ですか」等）でも指示形（「〜をもとめなさい」「計算しなさい」「式をかいて答えなさい」等）でもよいが、暗記を指示するだけの問題（「〜をおぼえなさい」等）にanswerが付いているもの、および計算・変換を一切要さず本文の数値を書き写すだけで答えが出てしまう「答えなさい」問題はNGとする。さらに、問いが尋ねている単位（本・個・分・cm等）と、answerに書かれた単位表記が一致していない場合もNGとする。\n'+
   '  NG例1：「うさりんがにんじんを60本もっていて、くまきちがにんじんを30本もってきました。2匹があわせてもっているにんじんは何本でしょう。次の計算をしなさい。(1) 60 + 30 (2) 90 + 10」'+
   '→ 本文は60本・30本と数量を確定させているのに、(2)の「90+10」の「10」は本文に一度も登場せず導出できないためNG。\n'+
   '  NG例2：「うさりんはにんじんを60本もっています。くまきちがにんじんを30本くれました。うさりんがもっているにんじんは全部で何本になりますか。次の計算をしなさい。(1)60+30 (2)60+0」'+
@@ -1039,6 +1064,21 @@ var CONSISTENCY_CRITERIA_PROMPT =
   '→ 「リボン巻き」（実際には使われない造語）は、小学3年生の日常語彙として不自然である。「リボン作り」のような学年相応のやさしい言葉に置き換えるべきでありNG。なお「工作」（図画工作）のように教科名として学年相応に定着している言葉は対象外（NGにしない）。\n'+
   '  OK例：「うさりんとお友達で、りんごを配っています。次の□に当てはまる数をかきなさい。(1) 5×3=□、5×4=□ (2) 6×3=□、6×4=□」'+
   '→ 本文は具体的な数量を確定させておらず、一般的な計算パターンの例示なので、(2)の数値が(1)と違っていてもOK。答えの部分も空欄（□）になっており、生徒が計算する余地が残っている。\n\n';
+
+// 【テーマと語彙の必須ルール】生成される student_quiz 本文へのルール。印刷経路・Web経路の
+// 両プロンプトで共有する（片方だけ更新し忘れる事故を避けるため、CONSISTENCY_CRITERIA_PROMPT
+// と同じく一本化）。テーマ合成禁止は全モード共通、漢字/ひらがなの統制は overseas のみ。
+function themeVocabRulesText(mode){
+  var s =
+    '【テーマと語彙の必須ルール】\n'+
+    '- 希望テーマが複数ある場合は、1問につき1テーマだけを使うこと。複数のテーマを1つの場面に合成してはならない（例：「宇宙」と「チェス大会」を混ぜた『宇宙のチェス大会』のような設定は不可）。\n';
+  if(mode==='overseas'){
+    s +=
+    '- 日本語で問題文を書く際、指定された【日本語レベル】(jp_level)を超える漢字を使ってよいのは、words[]（今日教える学習語）に含まれる語だけとする。それ以外の語はすべてひらがなで書くこと。\n'+
+    '- 常用漢字外の漢字は、words[]に含まれるかどうかに関わらず、常にひらがなで書くこと。\n';
+  }
+  return s+'\n';
+}
 
 // 復習コーナー（弱点克服）専用の整合性チェック。checkConsistency()（generateQuizViaAI()
 // にネストされたクロージャで直接は呼び出せない）と同じ11基準・同じ再試行回数（3回）を
@@ -1101,11 +1141,22 @@ function loadStudents() {
     if (!d.success) { statusEl.textContent = '読み込みエラー: ' + (d.error||'不明'); return; }
     _allStudents = d.students || [];
     var mode = document.querySelector('input[name="q-mode"]:checked').value;
+    // 件数表示は filterStudentsByMode 側で「対象N名（全M名中）」に統一（フィルタ後件数を出す）。
     filterStudentsByMode(mode);
-    statusEl.textContent = '生徒データ読み込み完了（' + _allStudents.length + '名）';
   }).catch(function(e){
     statusEl.textContent = '通信エラー: ' + e.message;
   });
+}
+
+// overseas（グローバル）モードで生徒を残すか判定（A案）。Lethe側が付与するグローバル対象
+// フラグで判定する。フラグ名を1つに固定せず、boolean `overseas` / 配列 `modes` / 旧 `mode` の
+// いずれでも拾える寛容な形にしておく（Letheの列追加が s.overseas でも s.modes でも動くように）。
+// ※Lethe getStudents 未更新の間は overseas 対象フラグを持つ生徒が0名のため、overseasモードは
+//   0名表示になる（フィルタ後件数を statusに出すので「全6名中0名」と正しく見える）。
+function isOverseasEligible(s) {
+  return s.overseas === true
+    || (Array.isArray(s.modes) && s.modes.indexOf('overseas') >= 0)
+    || s.mode === 'overseas';
 }
 
 function filterStudentsByMode(mode) {
@@ -1113,8 +1164,13 @@ function filterStudentsByMode(mode) {
   if (!sel) return;
   var current = sel.value;
   sel.innerHTML = '<option value="">-- 生徒を選択（選択しない場合は汎用課題）--</option>';
+  var shown = 0;
   _allStudents
-    .filter(function(s){ return s.mode === mode || !s.mode; })
+    .filter(function(s){
+      // A案：overseas は「グローバル対象フラグ」で判定（旧: s.mode==='overseas' も後方互換で許容）。
+      // 国内(domestic)は現行どおり（該当モード or モード未設定）＝挙動無変更。
+      return mode === 'overseas' ? isOverseasEligible(s) : (s.mode === mode || !s.mode);
+    })
     .forEach(function(s){
       var opt = document.createElement('option');
       opt.value = s.student_id;
@@ -1129,9 +1185,14 @@ function filterStudentsByMode(mode) {
       opt.dataset.themeId = s.theme_id || '';
       opt.textContent = s.name + '（' + s.grade + '）' + (s.jp_level ? ' [' + s.jp_level + ']' : '');
       sel.appendChild(opt);
+      shown++;
     });
   // 以前の選択を復元
   if (current) sel.value = current;
+  // 件数はフィルタ後（対象）件数を明示。モード切替時も呼ばれるため、ここで更新すると
+  // 「全6名なのにドロップダウンが空」の誤認が解消される（診断②の是正）。
+  var statusEl = document.getElementById('student-load-status');
+  if (statusEl) statusEl.textContent = '対象生徒 ' + shown + '名（全 ' + _allStudents.length + '名中）';
 }
 
 // ページ読み込み時に自動取得
@@ -1253,8 +1314,10 @@ function showPreview(mode, theme, levelBreakdown, outputJson){
       '- 「できた！提出する」ボタンとSupabase送信ロジック（fetch等）は完全に削除すること（この画面はデータを送信しない）\n'+
       'テンプレートURL（'+mode+'モード）: '+templateUrl+'\n\n'+
       '【モード】'+modeDesc+'\n'+
+      (mode==='overseas'?'【日本語レベル】'+selectedJpLevel+'\n':'')+
       (theme?'【テーマ】'+theme+'\n':'')+
       '【問題数】'+outputJson.meta.count+'問\n\n'+
+      themeVocabRulesText(mode)+
       '- SVGイラストはテーマに合わせたオリジナルキャラを作り、questions配列の全ての問題についてillustrationsオブジェクトに72×72pxのSVGを必ず用意すること（省略不可）。\n'+
       '- 単元バッジ・問題レベルバッジ（例題:紫/確認:青/練習:橙）はWeb提出用と同じ仕様のまま維持する\n'+
       (mode==='overseas'
@@ -1280,6 +1343,7 @@ function showPreview(mode, theme, levelBreakdown, outputJson){
     (mode==='overseas'?'【日本語レベル】'+selectedJpLevel+'\n':'')+
     '【問題レベル】'+levelsDesc+'\n'+
     '【問題数】'+outputJson.meta.count+'問\n\n'+
+    themeVocabRulesText(mode)+
     '【フォーマット参考】'+(mode==='overseas'?'student_quiz_v11_soccer.html':'student_quiz_v13b_disney.html')+'と同じ構成で。\n'+
     '- SVGイラストはテーマに合わせたオリジナルキャラを作る（各問題72×72px）\n'+
     '- 手書きキャンバス（DrawCanvas）を各問題に付ける\n'+
@@ -1869,6 +1933,14 @@ function generateQuizViaAI(){
       var kanjiCheck = findOutOfGradeKanji(problemsArr, qSelectedGrades);
       if(!kanjiCheck.ok){
         regenerateAndRetry(kanjiCheck.issues.join(' / '));
+        return;
+      }
+
+      // kanji_quiz の選択肢重複はLLMチェック（problemsのみ対象）では拾えないため、
+      // findOutOfGradeKanji と同様にHaikuへの問い合わせ前に機械的に検証してNG確定させる。
+      var dupCheck = findDuplicateKanjiChoices(kanjiArr);
+      if(!dupCheck.ok){
+        regenerateAndRetry(dupCheck.issues.join(' / '));
         return;
       }
 

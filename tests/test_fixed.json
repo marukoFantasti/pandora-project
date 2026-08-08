@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "mode": "overseas",
+    "theme": "ドラえもん",
+    "grades": ["g03"],
+    "note": "修正後のクリーンなデータ。全問通過すること。特にQ4「計算して答えなさい」・Q5「もとめなさい」型が基準13で誤リジェクトされないこと。answerはすべて計算結果、問いの単位とanswerの単位が一致、kanji_quiz choicesは重複なし。"
+  },
+  "problems": [
+    { "number": 1, "level": "practice", "unit": "たし算", "question": "みかんが6こ、りんごが5こあります。くだものはあわせて何こですか。", "answer": "11こ" },
+    { "number": 2, "level": "practice", "unit": "わり算", "question": "24このあめを6人で同じ数ずつ分けます。1人分は何こですか。", "answer": "4こ" },
+    { "number": 3, "level": "practice", "unit": "ひき算", "question": "テープが50cmあります。18cm使いました。残りは何cmですか。", "answer": "32cm" },
+    { "number": 4, "level": "confirmation", "unit": "かけ算", "question": "1つの箱に8このケーキが入っています。3箱分では何こになるか、計算して答えなさい。", "answer": "24こ" },
+    { "number": 5, "level": "practice", "unit": "長さ", "question": "たての長さが7cm、横の長さが3cmの長方形があります。まわりの長さを もとめなさい。", "answer": "20cm" },
+    { "number": 6, "level": "practice", "unit": "時間と時こく", "question": "9時20分から40分間あそびました。あそび終わった時こくは何時何分ですか。", "answer": "10時ちょうど" }
+  ],
+  "kanji_quiz": [
+    { "reading": "けいさん", "en": "calculation", "correct": "計算", "choices": ["計算", "計画", "訓練"], "hint": "You do this with numbers." }
+  ]
+}
