@@ -312,7 +312,9 @@
   // 内側ラベル: 隣接ラベルと分離できるよう距離を広く（短⇔深）・フォントを段階的に試行。
   var KN_IN = [[36, 15], [34, 15], [42, 15], [48, 15], [36, 13], [34, 13], [42, 13], [30, 13], [52, 13], [58, 13],
     [36, 11], [34, 11], [42, 11], [30, 11], [52, 11], [60, 11], [34, 10], [44, 10], [58, 10]];
-  var UN_OUT = [[48, 15], [54, 15], [48, 13], [60, 13], [48, 11], [54, 11]];
+  // 未知角ラベル(内側・二等分方向)。初期半径=未知弧半径(34)+14=48、可動域 r∈[弧+10,弧+34]=[44,68]、
+  // font 15→13→11。r≥44>弧34 なので必ず弧の外側(頂点から遠い側)＝弧とラベルが重ならない。
+  var UN_IN = [[48, 15], [44, 15], [54, 15], [48, 13], [44, 13], [60, 13], [48, 11], [44, 11], [68, 11]];
 
   // ---- 幾何（リファレンスと1:1） ----
   function triAngleGeom(a1, a2) {
@@ -418,9 +420,9 @@
   }
 
   // ---- 角度系（多角形の内角ラベル）共通描画 ----
-  function polyAngleLayout(worldPts, knownLabels, unknownIdx, unknownText, unknownOutward) {
+  function polyAngleLayout(worldPts, knownLabels, unknownIdx, unknownText) {
     // worldPts: 多角形(world). knownLabels: {idx:text}. unknownIdx: 未知角の頂点idx。
-    // unknownOutward: 未知ラベルを外側に置くか（tri_angle=true、quad/iso=false=内側）。
+    // 既知角も未知角も内側・二等分方向に配置（未知は UN_IN の大きめ半径で弧の外側に置く）。
     var lay = newLayout(), n = worldPts.length;
     var cen = [0, 0]; worldPts.forEach(function (p) { cen[0] += p[0] / n; cen[1] += p[1] / n; });
     lay.parts.push(polygonEl(worldPts));
@@ -438,12 +440,13 @@
       var va = vertexArc(V, P, Q, cen, arcR, col, isUnknown ? 2 : 1.6);
       lay.parts.push(va.el);
       lay.pts.push([V[0] + va.bisIn[0] * arcR, V[1] + va.bisIn[1] * arcR]);
-      var outward = isUnknown && unknownOutward;
-      var dir = outward ? [-va.bisIn[0], -va.bisIn[1]] : va.bisIn;  // 外側指定時のみ反転、既定は内側
+      // 既知・未知とも内側（二等分方向）に配置。未知はより大きい弧の外側(頂点から遠い側)に
+      // 置くため専用の候補列 UN_IN（r∈[44,68]）を使う。angle_sum の外側慣行は三角形頂点には持ち込まない。
+      var dir = va.bisIn;
       var txt = isUnknown ? unknownText : knownLabels[i];
       // 自要素=接する2辺
       var own = 'e' + i;
-      specs.push({ anchor: V, dir: dir, text: txt, cands: outward ? UN_OUT : KN_IN, color: col, _edges: ['e' + i, 'e' + ((i + n - 1) % n)] });
+      specs.push({ anchor: V, dir: dir, text: txt, cands: isUnknown ? UN_IN : KN_IN, color: col, _edges: ['e' + i, 'e' + ((i + n - 1) % n)] });
     }
     // finishLabels だが own を2辺対応にするため個別実装
     specs.forEach(function (sp) {
@@ -477,8 +480,8 @@
   function triAngleLayout(fp) {
     var g = triAngleGeom(Number(fp.a1), Number(fp.a2));
     var B = worldFlip(g.B), C = worldFlip(g.C), A = worldFlip(g.A);
-    // 多角形順 B→C→A。未知角(頂点A)は外側（spec §1）
-    return polyAngleLayout([B, C, A], { 0: fp.a1 + '°', 1: fp.a2 + '°' }, 2, fp.label || 'あ', true);
+    // 多角形順 B→C→A。未知角(頂点A)も内側・二等分方向（UN_IN）
+    return polyAngleLayout([B, C, A], { 0: fp.a1 + '°', 1: fp.a2 + '°' }, 2, fp.label || 'あ');
   }
   function triAngleIsoLayout(fp) {
     var t = Number(fp.apex), g = triAngleIsoGeom(t);
