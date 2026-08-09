@@ -35,6 +35,26 @@ KINDS.forEach(function (kind) {
   );
 });
 
+// 実証カット: 高さ点線ラベルの ≥12px クリアランスを見るため、高さ11〜13(2桁)を含むサンプルを
+// para/tri_area/trap で各1枚（同一パイプラインで height が2桁になるまで再抽選）。
+const proof = [];
+['para_area', 'tri_area', 'trap_area'].forEach(function (kind) {
+  const p = bank.patterns.find(function (x) { return x.figure_params && x.figure_params.kind === kind; });
+  if (!p) return;
+  let r = null;
+  for (let t = 0; t < 4000 && !r; t++) { try { const rr = P.makeProblem(p, null, lex); if (rr.figure && Number(rr.figure.height) >= 11) r = rr; } catch (e) { } }
+  if (!r) { try { r = P.makeProblem(p, null, lex); } catch (e) { r = null; } }
+  if (!r) return;
+  proof.push(
+    '<div class="card" style="border-color:#C0392B">' +
+    '<h3>' + esc(kind) + '（高さ' + esc(r.figure.height) + '・実証）　<span class="meta">' + esc(p.unit_id) + '</span></h3>' +
+    '<div class="q">' + esc(r.problem) + '</div>' +
+    '<div class="box-figure">' + FB.build(r.figure) + '</div>' +
+    '<div class="a">答え: ' + esc(r.answer) + '</div>' +
+    '</div>'
+  );
+});
+
 const html =
   '<!doctype html><meta charset="utf-8"><title>g05 経路A配線 図形プレビュー</title>' +
   '<style>body{font-family:sans-serif;background:#f7f7f9;margin:16px;color:#222}' +
@@ -45,7 +65,8 @@ const html =
   '.box-figure{margin:4px 0;text-align:center}.box-figure svg{max-width:100%;height:auto}</style>' +
   '<h1>g05 経路A配線 図形プレビュー（C層9kind + table + rect_area）</h1>' +
   '<h2>generateQuizViaPattern と同一ロジックで生成した figure_params を、印刷解答用紙相当の描画で表示。目視レビュー用。</h2>' +
-  cards.join('');
+  cards.join('') +
+  (proof.length ? '<h1 style="margin-top:16px">高さ11〜13の実証カット（高さラベルの点線からの≥12pxクリアランス）</h1>' + proof.join('') : '');
 
 const out = path.join(__dirname, 'g05_route_a_preview.html');
 fs.writeFileSync(out, html);

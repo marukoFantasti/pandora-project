@@ -42,7 +42,7 @@ figured.forEach(function (job) {
     try { r = P.makeProblem(job.p, null, job.lex); } catch (e) { fails.push([kind, 'GEN:' + e.message]); break; }
     const fig = r.figure; totalV++; perKind[kind].n++;
     const sc = cl(fig);
-    if (!(sc.minText >= 10 && sc.minSeg >= 4 && sc.semBad === 0)) {
+    if (!(sc.minText >= 10 && sc.minSeg >= 4 && sc.semBad === 0 && (sc.strongBad || 0) === 0)) {
       perKind[kind].f++;
       if (fails.length < 25) fails.push([kind, JSON.stringify(sc), JSON.stringify(fig).replace(/"/g, '')]);
     }

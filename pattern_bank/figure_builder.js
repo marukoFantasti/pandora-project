@@ -279,8 +279,12 @@
   // 各方向×距離候補を試し、(a)他ラベル≥10px (b)非自線分≥4px (c)意味判定=自要素が最近傍
   // (nearestOwn≤nearestOther) を満たす最初の候補を採る。全滅なら意味判定を優先した最良候補。
   function segMin(b, segs) { var m = 1e9; segs.forEach(function (s) { m = Math.min(m, boxSeg(b, s.p1, s.p2)); }); return m; }
-  function placeLbl(anchor, dirs, text, others, ownSegs, otherSegs, cands) {
-    var best = null, bestScore = -1e9;
+  // ownMin>0: 自要素(点線)からの水平クリアランス≥ownMin を強条件として課す（高さ点線/たて対角線の
+  // 先頭数字が線と平行に紛れるのを字形レベルの前段で防ぐ）。この場合は意味判定(自要素が最近傍)は
+  // 課さない（ラベルは点線と側辺の間に置かれ、識別は位置＋赤色＋白フチで担保）。ownMin=0 は従来どおり。
+  function placeLbl(anchor, dirs, text, others, ownSegs, otherSegs, cands, ownMin) {
+    ownMin = ownMin || 0;
+    var strong = ownMin > 0, best = null, bestScore = -1e9;
     for (var di = 0; di < dirs.length; di++) {
       var dir = dirs[di];
       for (var i = 0; i < cands.length; i++) {
@@ -288,9 +292,9 @@
         var cx = anchor[0] + dir[0] * dist, cy = anchor[1] + dir[1] * dist, b = textBox([cx, cy], text, fs);
         var gL = 1e9; others.forEach(function (o) { gL = Math.min(gL, rectRect(b, o)); });
         var nOwn = ownSegs.length ? segMin(b, ownSegs) : 0, nOther = segMin(b, otherSegs);
-        var semOk = nOwn <= nOther;
-        if (gL >= 10 && nOther >= 4 && semOk) return { box: b, cx: cx, cy: cy, fs: fs, text: text };
-        var score = Math.min(gL, nOther * 2.5) + (semOk ? 1000 : 0) + (gL >= 10 && nOther >= 4 ? 500 : 0);
+        var ok = strong ? (nOwn >= ownMin) : (nOwn <= nOther);
+        if (gL >= 10 && nOther >= 4 && ok) return { box: b, cx: cx, cy: cy, fs: fs, text: text };
+        var score = Math.min(gL, nOther * 2.5) + (ok ? 1000 : 0) + (gL >= 10 && nOther >= 4 ? 500 : 0);
         if (score > bestScore) { bestScore = score; best = { box: b, cx: cx, cy: cy, fs: fs, text: text }; }
       }
     }
@@ -303,10 +307,18 @@
     layout.parts.push('<path d="M ' + fx.toFixed(2) + ' ' + (fy - 8).toFixed(2) + ' h 8 v 8" fill="none" stroke="' + C_TARGET + '" stroke-width="1.4"/>');
     layout.segs.push({ id: 'hline', p1: apexW, p2: footW });
     layout.pts.push(apexW, footW, [fx + 8, fy - 8]);
-    // 高さラベルは点線の左右どちらか空いている側（「辺からのオフセット」自由度）。
-    // アンカーはやや下寄り(底辺側=図が広い)。狭い頂点位置でも自点線が最近傍になるよう小オフセットから試行。
-    var ay = 0.30 * apexW[1] + 0.70 * footW[1];
-    return { anchor: [fx, ay], dirs: [[1, 0], [-1, 0]], text: valueText, cands: [[12, 14], [16, 14], [12, 12], [18, 12], [10, 11], [14, 11], [22, 11]], own: 'hline' };
+    // 高さラベルは点線の左右どちらか空いている側（「辺からのオフセット」自由度）。アンカーは
+    // 下寄り(底辺側=くさびが広い)にして、点線からの水平クリアランス≥12px(ownMin)を満たせる余地を確保。
+    // 候補は「点線から12px以上離れる距離」から開始し、狭ければフォントを段階縮小(14→10)する。
+    // 足元からの上向きオフセット。背の高い図(tri)はくさびを広く取るため低め、背の低い図(trap短)は
+    // 底辺に近づきすぎないよう最低16px確保。上限は中央付近(0.45H)。適応的にクランプ。
+    var H = Math.abs(apexW[1] - footW[1]);
+    var off = Math.min(0.45 * H, Math.max(0.15 * H, 16));
+    var ay = footW[1] + (apexW[1] - footW[1]) / H * off;
+    return {
+      anchor: [fx, ay], dirs: [[1, 0], [-1, 0]], text: valueText, own: 'hline', ownMin: 12,
+      cands: [[28, 14], [32, 14], [28, 13], [33, 13], [27, 12], [33, 12], [26, 11], [31, 11], [26, 10], [30, 10], [24, 10], [36, 10]]
+    };
   }
   var KNOWN_R = 26, UNKNOWN_R = 34;
   // 内側ラベル: 隣接ラベルと分離できるよう距離を広く（短⇔深）・フォントを段階的に試行。
@@ -390,9 +402,9 @@
       var others = layout.labels.map(function (l) { return l.box; });
       var ownSegs = layout.segs.filter(function (s) { return s.id === sp.own; });
       var otherSegs = layout.segs.filter(function (s) { return s.id !== sp.own; });
-      var pl = placeLbl(sp.anchor, sp.dirs || [sp.dir], sp.text, others, ownSegs, otherSegs, sp.cands);
+      var pl = placeLbl(sp.anchor, sp.dirs || [sp.dir], sp.text, others, ownSegs, otherSegs, sp.cands, sp.ownMin || 0);
       layout.parts.push(textEl(pl.cx, pl.cy, sp.text, pl.fs, sp.color));
-      layout.labels.push({ box: pl.box, own: sp.own, text: sp.text });
+      layout.labels.push({ box: pl.box, own: sp.own, ownMin: sp.ownMin || 0, text: sp.text });
       layout.pts.push([pl.box.x0, pl.box.y0], [pl.box.x1, pl.box.y1]);
     });
   }
@@ -405,18 +417,23 @@
       '" width="' + Math.ceil(vw) + '" height="' + Math.ceil(vh) + '" role="img">' + layout.parts.join('') + '</svg>';
   }
   function scanLayout(layout) {
-    var L = layout.labels, minText = 1e9, minSeg = 1e9, semBad = 0;
+    var L = layout.labels, minText = 1e9, minSeg = 1e9, semBad = 0, strongBad = 0, minStrongOwn = 1e9;
     for (var i = 0; i < L.length; i++) {
       for (var j = i + 1; j < L.length; j++) minText = Math.min(minText, rectRect(L[i].box, L[j].box));
-      var own = L[i].own, nOwn = 1e9, nOther = 1e9;
+      var own = L[i].own, ownMin = L[i].ownMin || 0, nOwn = 1e9, nOther = 1e9;
       layout.segs.forEach(function (s) {
         var dd = boxSeg(L[i].box, s.p1, s.p2);
         if (s.id === own) nOwn = Math.min(nOwn, dd);
         else { nOther = Math.min(nOther, dd); minSeg = Math.min(minSeg, dd); }
       });
-      if (own && nOwn > nOther + 0.01) semBad++;
+      if (ownMin > 0) {
+        // 部品固有の強不変条件: 自点線からの水平クリアランス≥ownMin。意味判定は課さない。
+        if (nOwn !== 1e9) minStrongOwn = Math.min(minStrongOwn, nOwn);
+        if (nOwn < ownMin) strongBad++;
+      } else if (own && nOwn > nOther + 0.01) semBad++;
     }
-    return { minText: minText === 1e9 ? 999 : minText, minSeg: minSeg === 1e9 ? 999 : minSeg, semBad: semBad };
+    return { minText: minText === 1e9 ? 999 : minText, minSeg: minSeg === 1e9 ? 999 : minSeg, semBad: semBad,
+      strongBad: strongBad, minStrongOwn: minStrongOwn === 1e9 ? 999 : minStrongOwn };
   }
 
   // ---- 角度系（多角形の内角ラベル）共通描画 ----
@@ -509,7 +526,7 @@
     for (var e = 0; e < worldPoly.length; e++) lay.segs.push({ id: 'e' + e, p1: worldPoly[e], p2: worldPoly[(e + 1) % worldPoly.length] });
     var specs = [];
     var hc = heightComponent(heightApexW, heightFootW, heightVal, lay);
-    specs.push({ anchor: hc.anchor, dirs: hc.dirs, text: hc.text, cands: hc.cands, color: C_TARGET, own: hc.own });
+    specs.push({ anchor: hc.anchor, dirs: hc.dirs, text: hc.text, cands: hc.cands, color: C_TARGET, own: hc.own, ownMin: hc.ownMin });
     specs.push({ anchor: baseMid, dir: [0, 1], text: baseVal, cands: [[22, 15], [28, 15], [22, 13], [30, 13], [22, 11]], color: '#333', own: 'e0' });
     (extraLabels || []).forEach(function (x) { specs.push(x); });
     finishLabels(lay, specs);
@@ -544,7 +561,8 @@
     // たて対角線値: たて点線の右側・上半分。
     finishLabels(lay, [
       { anchor: [Rp[0] * 0.5, 0], dir: [0, 1], text: fp.diag_h + u, cands: [[12, 15], [15, 15], [12, 13], [18, 13], [12, 11], [16, 11]], color: '#333', own: 'dh' },
-      { anchor: [0, Tp[1] * 0.5], dir: [1, 0], text: fp.diag_v + u, cands: [[13, 15], [16, 15], [13, 13], [19, 13], [13, 11], [17, 11]], color: '#333', own: 'dv' }
+      // たて対角線ラベル: たて点線からの水平クリアランス≥12px(ownMin)。先頭数字が縦線と平行に紛れるのを防ぐ。
+      { anchor: [0, Tp[1] * 0.5], dir: [1, 0], text: fp.diag_v + u, cands: [[26, 13], [30, 13], [26, 12], [32, 12], [26, 11], [32, 11], [26, 10], [34, 10]], color: '#333', own: 'dv', ownMin: 12 }
     ]);
     return lay;
   }
