@@ -116,8 +116,42 @@ def cuboid_geom(w, d, h):
     return {"F": [[0, 0], [R(W), 0], [R(W), R(H)], [0, R(H)]],
             "off": [R(ox), R(oy)], "scale": R(sc)}
 
+# ---------- circle fig_version 2: sector(full/half/quarter)+radius_label。半径px=90固定 ----------
+def circle_v2_geom(sector):
+    r = 90.0
+    spans = {"full": (0, 360), "half": (0, 180), "quarter": (0, 90)}
+    rang = {"full": 30, "half": 90, "quarter": 45}
+    sp = spans.get(sector, spans["full"])
+    cuts = []
+    if sector == "half": cuts = [[[r, 0], [-r, 0]]]
+    elif sector == "quarter": cuts = [[[0, 0], [r, 0]], [[0, 0], [0, r]]]
+    ra = math.radians(rang.get(sector, 30))
+    return {"c": [0, 0], "r_px": r, "arc": [sp[0], sp[1]], "cuts": cuts,
+            "rlabel_end": [R(r * math.cos(ra)), R(r * math.sin(ra))]}
+
+# ---------- prism: cuboidの平行投影(奥行1/2・45°)を流用し底面を差替。rect(w,d)/tri(base,base_height)を高さhで上方押出 ----------
+def prism_geom(base_kind, a, b, h):
+    c45, s45 = math.cos(math.radians(45)), math.sin(math.radians(45))
+    if base_kind == "rect":
+        w, d = a, b
+        sc = min(180.0 / w, 150.0 / h, 110.0 / d, 20.0)
+        W, H, D = w * sc, h * sc, d * sc * 0.5
+        ox, oy = D * c45, D * s45
+        base = [[0, 0], [W, 0], [W + ox, oy], [ox, oy]]
+    else:
+        bb, th = a, b
+        sc = min(180.0 / bb, 150.0 / h, 110.0 / max(th, 1), 20.0)
+        B, H, TH = bb * sc, h * sc, th * sc * 0.5
+        ox, oy = TH * c45, TH * s45
+        base = [[0, 0], [B, 0], [B / 2 + ox, oy]]
+    top = [[p[0], p[1] + H] for p in base]
+    return {"base": [[R(x), R(y)] for x, y in base], "top": [[R(x), R(y)] for x, y in top],
+            "off": [R(ox), R(oy)], "scale": R(sc)}
+
 GEOMS = {
     "tri_angle": (tri_angle_geom, [(25, 40), (60, 60), (75, 75), (100, 45), (30, 115), (115, 30), (50, 90), (65, 35)]),
+    "circle_v2": (circle_v2_geom, [("full",), ("half",), ("quarter",)]),
+    "prism": (prism_geom, [("rect", 6, 4, 8), ("rect", 10, 3, 5), ("tri", 8, 5, 7), ("tri", 6, 4, 6)]),
     "tri_angle_iso": (tri_angle_iso_geom, [(30,), (60,), (90,), (120,), (44,), (100,)]),
     "quad_angle": (quad_angle_geom, [(90, 90, 90), (65, 97, 73), (125, 65, 65), (80, 110, 95), (65, 125, 65), (100, 100, 95), (65, 65, 105), (120, 70, 90)]),
     "para_area": (para_area_geom, [(12, 7, 65), (6, 4, 75), (16, 12, 60), (9, 6, 70)]),
