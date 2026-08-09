@@ -30,11 +30,13 @@ function card(title, fp){
 // prism × 2
 card("prism / rect底面 (w6 d4 h8)", {fig_version:1,kind:"prism",base_kind:"rect",w:6,d:4,height:8,unit:"cm"});
 card("prism / tri底面 (base8 baseH5 h7)", {fig_version:1,kind:"prism",base_kind:"tri",base:8,base_height:5,height:7,unit:"cm"});
-// cuboid 現行（横長寄せ前）: 横長・縦長・立方体
-card("cuboid 現行 (w8 d10 h6 / 横長寄せ未実装)", {fig_version:1,kind:"cuboid",w:8,d:10,h:6,unit:"cm"});
-card("cuboid 現行 (w4 d6 h10 縦長 / 横長寄せ検討対象)", {fig_version:1,kind:"cuboid",w:4,d:6,h:10,unit:"cm"});
-// table 流用
+// cuboid: レンダラ無変更で確定。横長寄せは今後のB層バンクパターン側の制約(w1>=h1型)で対応する。
+card("cuboid 現行維持 (w8 d10 h6)", {fig_version:1,kind:"cuboid",w:8,d:10,h:6,unit:"cm"});
+cards.push('<div class="card" style="border-color:#1a56c4"><h3>cuboid 横長寄せ方針</h3><div style="font-size:11px;color:#333;line-height:1.5">figure_builder.js の cuboid は<b>無変更で確定</b>（本文と図の対応保全を優先）。縦長化の抑制は<b>B層バンクパターン側の制約 (w1 &gt;= h1 型)</b> で対応する。レンダラには手を入れない。</div></div>');
+// table 流用（highlight付き比例表を追加）
 card("table流用 / 比例表(空欄□)", prop);
+const propHi = JSON.parse(JSON.stringify(prop)); propHi.caption = "比例表 + highlight(空欄強調)"; propHi.highlight = [[2,3]];
+card("table流用 / 比例表 + highlight[[2,3]]", propHi);
 card("table流用 / 度数分布表", freq);
 
 const html = '<!doctype html><meta charset="utf-8"><title>B層図形 サンプルシート</title>'+
@@ -42,7 +44,7 @@ const html = '<!doctype html><meta charset="utf-8"><title>B層図形 サンプ�
  '.card{display:inline-block;vertical-align:top;width:250px;min-height:220px;background:#fff;border:1px solid #ddd;border-radius:8px;margin:6px;padding:10px}'+
  '.card h3{font-size:12px;margin:0 0 6px}.fig{text-align:center}.fig svg{max-width:100%;height:auto}</style>'+
  '<h1>B層図形基盤 サンプルシート（目視レビュー用）</h1>'+
- '<h2>circle fig_version 2 (sector×radius_label 6形) / prism (rect・tri) / cuboid現行(横長寄せ未実装) / table流用(比例・度数分布)</h2>'+
+ '<h2>circle fig_version 2 (sector×radius_label 6形) / prism (rect・tri) / cuboid現行維持(横長寄せはバンク制約対応) / table流用+highlight(比例・度数分布)</h2>'+
  cards.join("");
 const out = "/Users/ishimaru_atsushi/pandora-project/pattern_bank/handoff_g06/b_layer_preview.html";
 fs.writeFileSync(out, html);

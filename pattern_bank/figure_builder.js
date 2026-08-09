@@ -216,6 +216,12 @@
     if (fp.caption) parts.push('<text x="' + (L.W / 2) + '" y="' + L.capFs + '" text-anchor="middle" font-size="' + L.capFs + '" font-weight="bold" fill="#222">' + esc(fp.caption) + '</text>');
     parts.push('<rect x="0" y="' + y0 + '" width="' + L.W + '" height="' + L.rowH + '" fill="#eef4ff"/>');            // ヘッダ行
     parts.push('<rect x="0" y="' + y0 + '" width="' + L.colW[0] + '" height="' + (L.H - y0) + '" fill="#f4f7fd"/>');   // 行ラベル列
+    // highlight(v0.9追加): [[row,col],...] のセルに強調背景。未指定=無挙動（既存出力バイト不変）。
+    (Array.isArray(fp.highlight) ? fp.highlight : []).forEach(function (rc) {
+      L.cells.forEach(function (cl) {
+        if (cl.r === rc[0] && cl.c === rc[1]) parts.push('<rect x="' + cl.x + '" y="' + cl.y + '" width="' + cl.w + '" height="' + cl.h + '" fill="#fff2b8"/>');
+      });
+    });
     for (var r = 0; r <= L.nRow; r++) { var yy = y0 + r * L.rowH; parts.push('<line x1="' + x0 + '" y1="' + yy + '" x2="' + x1 + '" y2="' + yy + '" stroke="#1a56c4" stroke-width="1"/>'); }
     for (var c = 0; c <= L.nCol; c++) { var xx = L.colX[c]; parts.push('<line x1="' + xx + '" y1="' + y0 + '" x2="' + xx + '" y2="' + y1 + '" stroke="#1a56c4" stroke-width="1"/>'); }
     L.cells.forEach(function (cl) {

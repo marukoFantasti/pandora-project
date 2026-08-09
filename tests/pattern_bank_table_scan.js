@@ -62,8 +62,19 @@ for (const t of tables) {
     if (!ok) { fail++; console.log(`FAIL ${t.file} ${t.id}`, JSON.stringify(sc), 'env=', JSON.stringify(env)); }
   }
 }
+// highlight(強調セル)ケース: バンク未量産のため合成figure_paramsで1件検証（強調背景がスキャンに無影響）。
+{
+  const hi = { fig_version: 1, kind: 'table', caption: 'ともなって変わる量',
+    col_header: ['1', '2', '3', '4', '5'],
+    rows: [{ label: 'x（個）', values: ['1', '2', '3', '4', '5'] }, { label: 'y（円）', values: ['80', '160', '□', '320', '400'] }],
+    highlight: [[2, 3]] };
+  variants++;
+  const svg = FB.build(hi), sc = FB._tableMinClearance(hi);
+  const okHi = sc.overflow <= 0.01 && sc.minGap >= 10 && sc.semOk && sc.contained && /^<svg/.test(svg) && svg.indexOf('#fff2b8') >= 0;
+  if (!okHi) { fail++; console.log('FAIL highlight-table', JSON.stringify(sc), 'bg=' + (svg.indexOf('#fff2b8') >= 0)); }
+}
 const pass = variants - fail;
-console.log(`table パターン ${tables.length} 件 × 幅ストレス${STRESS.length + 1}通り = ${variants} バリアント`);
+console.log(`table パターン ${tables.length} 件 × 幅ストレス${STRESS.length + 1}通り + highlight合成1 = ${variants} バリアント`);
 tables.forEach(t => console.log(`  - ${t.file} ${t.id}`));
 console.log(`全域スキャン合格率: ${pass}/${variants} = ${(100 * pass / variants).toFixed(1)}%  ${fail === 0 ? '✅' : '❌'}`);
 process.exit(fail === 0 ? 0 : 1);
