@@ -216,6 +216,12 @@
     if (fp.caption) parts.push('<text x="' + (L.W / 2) + '" y="' + L.capFs + '" text-anchor="middle" font-size="' + L.capFs + '" font-weight="bold" fill="#222">' + esc(fp.caption) + '</text>');
     parts.push('<rect x="0" y="' + y0 + '" width="' + L.W + '" height="' + L.rowH + '" fill="#eef4ff"/>');            // ヘッダ行
     parts.push('<rect x="0" y="' + y0 + '" width="' + L.colW[0] + '" height="' + (L.H - y0) + '" fill="#f4f7fd"/>');   // 行ラベル列
+    // highlight(v0.9追加): [[row,col],...] のセルに強調背景。未指定=無挙動（既存出力バイト不変）。
+    (Array.isArray(fp.highlight) ? fp.highlight : []).forEach(function (rc) {
+      L.cells.forEach(function (cl) {
+        if (cl.r === rc[0] && cl.c === rc[1]) parts.push('<rect x="' + cl.x + '" y="' + cl.y + '" width="' + cl.w + '" height="' + cl.h + '" fill="#fff2b8"/>');
+      });
+    });
     for (var r = 0; r <= L.nRow; r++) { var yy = y0 + r * L.rowH; parts.push('<line x1="' + x0 + '" y1="' + yy + '" x2="' + x1 + '" y2="' + yy + '" stroke="#1a56c4" stroke-width="1"/>'); }
     for (var c = 0; c <= L.nCol; c++) { var xx = L.colX[c]; parts.push('<line x1="' + xx + '" y1="' + y0 + '" x2="' + xx + '" y2="' + y1 + '" stroke="#1a56c4" stroke-width="1"/>'); }
     L.cells.forEach(function (cl) {
@@ -566,7 +572,96 @@
     ]);
     return lay;
   }
+  // circle fig_version 2: sector(full/half/quarter)+radius_label。v1(未指定/1)は下の既存 circleLayout。
+  var CIRCLE_R = 90, CV2_ARC = { full: [0, 360], half: [0, 180], quarter: [0, 90] }, CV2_RANG = { full: 30, half: 90, quarter: 45 };
+  function circleV2Geom(sector) {
+    var r = CIRCLE_R, sp = CV2_ARC[sector] || CV2_ARC.full, cuts = [];
+    if (sector === 'half') cuts = [[[r, 0], [-r, 0]]];
+    else if (sector === 'quarter') cuts = [[[0, 0], [r, 0]], [[0, 0], [0, r]]];
+    var ra = d2r(CV2_RANG[sector] || 30);
+    return { c: [0, 0], r_px: r, arc: sp, cuts: cuts, corner: sector === 'quarter', rlabel_end: [r * Math.cos(ra), r * Math.sin(ra)] };
+  }
+  function circleV2Layout(fp) {
+    var sector = fp.sector || 'full', g = circleV2Geom(sector), r = g.r_px, u = fp.unit || 'cm', sp = g.arc, lay = newLayout();
+    if (sector === 'full') {
+      lay.parts.push('<circle cx="0" cy="0" r="' + r + '" fill="' + C_FILL + '" stroke="' + C_STROKE + '" stroke-width="2"/>');
+    } else {
+      var pts = [];
+      if (sector === 'quarter') pts.push([0, 0]);      // 四分円は中心を含む扇形
+      var steps = Math.max(12, Math.round((sp[1] - sp[0]) / 5));
+      for (var i = 0; i <= steps; i++) { var a = d2r(sp[0] + (sp[1] - sp[0]) * i / steps); pts.push([r * Math.cos(a), r * Math.sin(a)]); }
+      lay.parts.push(polygonEl(pts.map(worldFlip), C_FILL));   // 弧+切り口(閉包の実線)を一体で塗り
+    }
+    lay.parts.push('<circle cx="0" cy="0" r="2.4" fill="' + C_STROKE + '"/>');
+    if (sector === 'quarter') {   // 中心の直角記号（+x と world上方向の間）
+      var m = 11;
+      lay.parts.push('<path d="M ' + m + ' 0 L ' + m + ' ' + (-m) + ' L 0 ' + (-m) + '" fill="none" stroke="' + C_TARGET + '" stroke-width="1.4"/>');
+    }
+    if (fp.radius_label) {   // 半径線+長さラベル（外向き法線側に配置）
+      var re = worldFlip(g.rlabel_end);
+      lay.parts.push(lineEl([0, 0], re, C_STROKE, 1.6));
+      lay.segs.push({ id: 'rline', p1: [0, 0], p2: re });
+      var mid = [re[0] / 2, re[1] / 2], nx = -re[1], ny = re[0], L = Math.hypot(nx, ny) || 1;
+      finishLabels(lay, [{ anchor: mid, dirs: [[nx / L, ny / L], [-nx / L, -ny / L]], text: fp.value + u,
+        cands: [[12, 15], [16, 15], [12, 13], [18, 13], [12, 11]], color: '#333', own: 'rline' }]);
+    }
+    lay.pts.push([-r - 2, -r - 2], [r + 2, r + 2]);
+    return lay;
+  }
+  // ---- prism（角柱・cuboidの平行投影を流用し底面を差し替え）fig_version 1相当(新kind) ----
+  var PRISM_D45 = 0.5;
+  function prismGeom(fp) {
+    var bk = fp.base_kind || 'rect', h = Number(fp.height), c45 = Math.cos(d2r(45)), s45 = Math.sin(d2r(45));
+    if (bk === 'rect') {
+      var w = Number(fp.w), d = Number(fp.d), sc = Math.min(180 / w, 150 / h, 110 / d, 20);
+      var W = w * sc, H = h * sc, D = d * sc * PRISM_D45, ox = D * c45, oy = D * s45;
+      var base = [[0, 0], [W, 0], [W + ox, oy], [ox, oy]];
+      return { base_kind: 'rect', base: base, top: base.map(function (p) { return [p[0], p[1] + H]; }), off: [ox, oy], H: H, scale: sc };
+    }
+    var b = Number(fp.base), th = Number(fp.base_height), pH = h;   // base_height=底面三角形の高さ、height=角柱の高さ
+    var sc2 = Math.min(180 / b, 150 / pH, 110 / Math.max(th, 1), 20);
+    var B = b * sc2, TH = th * sc2 * PRISM_D45, H2 = pH * sc2, ox2 = TH * c45, oy2 = TH * s45;
+    var base2 = [[0, 0], [B, 0], [B / 2 + ox2, oy2]];   // 底面三角形: 前辺(0,0)-(B,0)+奥に頂点
+    return { base_kind: 'tri', base: base2, top: base2.map(function (p) { return [p[0], p[1] + H2]; }), off: [ox2, oy2], H: H2, scale: sc2 };
+  }
+  function prismLayout(fp) {
+    var g = prismGeom(fp), u = fp.unit || 'cm', lay = newLayout();
+    var base = g.base.map(worldFlip), top = g.top.map(worldFlip), n = base.length;
+    // 面: 上面(塗り)、前面(前辺×高さ)。前辺は base[0]-base[1]。
+    lay.parts.push(polygonEl(top, '#dce8fb'));                                   // 上面
+    lay.parts.push(polygonEl([base[0], base[1], top[1], top[0]], C_FILL));       // 前面
+    if (bk_is_rect(g)) lay.parts.push(polygonEl([base[1], base[2], top[2], top[1]], '#e6effd')); // 右側面(rect)
+    // 底面の可視前辺 + 縦辺(前)実線。奥の底辺・奥の縦辺は破線(隠れ線)。
+    lay.parts.push(lineEl(base[0], base[1], C_STROKE, 2));                        // 前底辺
+    for (var v = 0; v < n; v++) {                                                // 縦辺
+      var solid = (v === 0 || v === 1);                                          // 前2縦辺は実線、他は破線
+      lay.parts.push(lineEl(base[v], top[v], C_STROKE, solid ? 2 : 1.4, solid ? null : '4,4'));
+    }
+    for (var e = 1; e < n; e++) {                                                // 底面の残り辺(奥)=破線
+      lay.parts.push(lineEl(base[e], base[(e + 1) % n], C_STROKE, 1.4, '4,4'));
+    }
+    lay.parts.push(lineEl(base[n - 1], base[0], C_STROKE, 1.4, '4,4'));
+    base.concat(top).forEach(function (p) { lay.pts.push(p); });
+    // セグメント（ラベル束縛用）
+    lay.segs.push({ id: 'wedge', p1: base[0], p2: base[1] }, { id: 'hedge', p1: base[0], p2: top[0] }, { id: 'dedge', p1: base[1], p2: base[2] });
+    var specs = [];
+    // 底面寸法ラベル（cuboid規約準拠）
+    if (g.base_kind === 'rect') {
+      specs.push({ anchor: [(base[0][0] + base[1][0]) / 2, base[0][1]], dir: [0, 1], text: fp.w + u, cands: dimCands(), color: '#333', own: 'wedge' });
+      specs.push({ anchor: [(base[1][0] + base[2][0]) / 2, (base[1][1] + base[2][1]) / 2], dir: [0.7, 0.7], text: fp.d + u, cands: dimCands(), color: '#333', own: 'dedge' });
+    } else {
+      specs.push({ anchor: [(base[0][0] + base[1][0]) / 2, base[0][1]], dir: [0, 1], text: fp.base + u, cands: dimCands(), color: '#333', own: 'wedge' });
+    }
+    // 高さラベル: 前面左縦辺の左
+    specs.push({ anchor: [(base[0][0] + top[0][0]) / 2, (base[0][1] + top[0][1]) / 2], dir: [-1, 0], text: fp.height + u, cands: dimCands(), color: '#333', own: 'hedge' });
+    finishLabels(lay, specs);
+    return lay;
+  }
+  function bk_is_rect(g) { return g.base_kind === 'rect'; }
+  function dimCands() { return [[20, 15], [26, 15], [20, 13], [28, 13], [20, 11]]; }
+
   function circleLayout(fp) {
+    if (Number(fp.fig_version) === 2) return circleV2Layout(fp);   // v2へ分岐（v1は以下で完全維持）
     var g = circleGeom(fp.given), u = fp.unit || 'cm', r = g.r_px, lay = newLayout();
     lay.parts.push('<circle cx="0" cy="0" r="' + r + '" fill="' + C_FILL + '" stroke="' + C_STROKE + '" stroke-width="2"/>');
     lay.parts.push('<circle cx="0" cy="0" r="2.4" fill="' + C_STROKE + '"/>');
@@ -604,7 +699,7 @@
   var C_LAYOUTS = {
     tri_angle: triAngleLayout, tri_angle_iso: triAngleIsoLayout, quad_angle: quadAngleLayout,
     para_area: paraAreaLayout, tri_area: triAreaLayout, trap_area: trapAreaLayout,
-    rhombus_area: rhombusAreaLayout, circle: circleLayout, cuboid: cuboidLayout
+    rhombus_area: rhombusAreaLayout, circle: circleLayout, cuboid: cuboidLayout, prism: prismLayout
   };
   var C_ANGLE = { tri_angle: 1, tri_angle_iso: 1, quad_angle: 1 };
   function makeCBuilder(kind) { return function (fp) { return layoutToSvg(C_LAYOUTS[kind](fp)); }; }
@@ -623,7 +718,8 @@
   // figure_params → SVG文字列。未知 kind / 未対応 fig_version は空文字（描画スキップ・非破壊）。
   function build(fp) {
     if (!fp || typeof fp !== 'object') return '';
-    if (fp.fig_version !== undefined && fp.fig_version !== 1) return '';
+    // fig_version 1(または未指定)=既存挙動。2=拡張(circle扇形/半径ラベル等)。3以上は未対応で空文字。
+    if (fp.fig_version !== undefined && fp.fig_version !== 1 && fp.fig_version !== 2) return '';
     var b = BUILDERS[fp.kind];
     return b ? b(fp) : '';
   }
@@ -634,7 +730,16 @@
     FigureBuilder['_' + k.replace(/_([a-z])/g, function (m, c) { return c.toUpperCase(); }) + 'MinClearance'] = makeCClearance(k);
   });
   // 幾何関数も検収（geometry_test_vectors.json 照合）用に公開
-  FigureBuilder._geom = { tri_angle: triAngleGeom, tri_angle_iso: triAngleIsoGeom, quad_angle: quadAngleGeom, para_area: paraAreaGeom, tri_area: triAreaGeom, trap_area: trapAreaGeom, rhombus_area: rhombusAreaGeom, circle: circleGeom, cuboid: cuboidGeom };
+  FigureBuilder._geom = {
+    tri_angle: triAngleGeom, tri_angle_iso: triAngleIsoGeom, quad_angle: quadAngleGeom,
+    para_area: paraAreaGeom, tri_area: triAreaGeom, trap_area: trapAreaGeom,
+    rhombus_area: rhombusAreaGeom, circle: circleGeom, cuboid: cuboidGeom, circle_v2: circleV2Geom,
+    // ベクター用の位置引数ラッパ（Python prism_geom(base_kind,a,b,h) と同型）
+    prism: function (base_kind, a, b, h) {
+      return prismGeom(base_kind === 'rect' ? { base_kind: 'rect', w: a, d: b, height: h }
+        : { base_kind: 'tri', base: a, base_height: b, height: h });
+    }
+  };
   if (typeof module !== 'undefined' && module.exports) module.exports = FigureBuilder;
   else root.FigureBuilder = FigureBuilder;
 })(typeof window !== 'undefined' ? window : globalThis);
