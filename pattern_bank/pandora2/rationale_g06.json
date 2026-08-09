@@ -1,0 +1,1100 @@
+{
+ "schema": "rationale v1.0 (pattern_bank/pandora2/rationale_schema_spec.md準拠)",
+ "grade": "g06",
+ "session_date": "2026-08-09",
+ "notes": "directivesはbank_directives表+id参照の圧縮表現(仕様拡張)。出所(by/date)は表側に保持。図形なしA層のためfigure_notesは共通文。訓練ペア抽出時はid参照を全文展開すること。",
+ "bank_directives": [
+  {
+   "id": "D1",
+   "text": "分数乗除は既存のgcd/lcm/約分機構(v0.9)の上に構築する。生成器拡張が必要になる場合はv1.0とし、着手前にg02〜g05ゴールデン差分ゼロ関門を通す。",
+   "by": "marko",
+   "date": "2026-08-09"
+  },
+  {
+   "id": "D2",
+   "text": "比・比例/反比例・文字と式は新しい意味カテゴリ体系の候補として設計する。g05割合3用法体系(千分率整数)との接続を設計に反映する。",
+   "by": "marko",
+   "date": "2026-08-09"
+  },
+  {
+   "id": "D3",
+   "text": "円の面積はcircle kind拡張(fig_version 2)か新kindかを判断する。拡大縮小・対称は図形kind候補。",
+   "by": "marko",
+   "date": "2026-08-09"
+  },
+  {
+   "id": "D4",
+   "text": "公開バンクに教材名・実物ID・実データを書かない(予防ハイジーン)。",
+   "by": "marko",
+   "date": "2026-08-09"
+  },
+  {
+   "id": "D5",
+   "text": "rationale層ネイティブ運用: briefにdirectives、量産時にrationale同時記述、人間訂正はcorrections_log.jsonに必ず記録する。",
+   "by": "marko",
+   "date": "2026-08-09"
+  }
+ ],
+ "entries": {
+  "g06_moji_shiki_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "moji_semantics/represent",
+    "number_domain": "整数(単価×個数)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2",
+     "D4"
+    ]
+   },
+   "rationale": {
+    "source_features": "文字と式導入部の定番: 1個x円をk個買う代金の立式(確認問題型の最多形)。",
+    "representation": "答えは式文字列x×k。正準形を出現順(単価×個数)に固定。",
+    "constructive_guarantees": "kは正整数のみ→式は常に成立。数値検証対象なし(ダミー式k)。",
+    "semantic_position": "moji_semantics新設の起点。jhsの文字式・方程式への最初の接続点(D2)。",
+    "exclusions": "可換表記(k×x)は指導上正答だが経路A採点は完全一致→正準形以外は不正判定される。検収UIでの許容登録を想定し第1波では単一正準形。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「ことばの式→文字の式」の置き換えを1文構造で最短提示。"
+   }
+  },
+  "g06_moji_subst_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "moji_semantics/evaluate",
+    "number_domain": "整数(2〜8 × 60〜150)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "代入して式の値を求める確認問題型。",
+    "representation": "x×kにx=vを代入。しき+答えの2行構成。",
+    "constructive_guarantees": "積は常に正整数。金額らしいv(60〜150)で実感を保持。",
+    "semantic_position": "立式(represent)の直後に置く評価カテゴリ。答えが数値で閉じ経路A採点と最も相性がよい。",
+    "exclusions": "小数・分数の代入は範囲外(第2波候補)。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "文字が数の入れ物であることを代入操作で体感させる。"
+   }
+  },
+  "g06_moji_gyaku_add_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "moji_semantics/solve",
+    "number_domain": "整数(x=b-a>2)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "x+a=bの逆算。逆算単元の最多形。",
+    "representation": "a,bともスロット提示、x=b-aは解答側でのみ計算。",
+    "constructive_guarantees": "b>a+2制約で正かつ非自明な解を保証。提示値は全てスロット(computed非露出)。",
+    "semantic_position": "g05逆算文化とjhs一次方程式の中間駅。c11 find_xと同型構造(D2)。",
+    "exclusions": "負の数解は範囲外(小6)。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「たし算の逆はひき算」の関係把握。"
+   }
+  },
+  "g06_moji_gyaku_sub_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "moji_semantics/solve",
+    "number_domain": "整数(x=b+a)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "x-a=bの逆算。",
+    "representation": "x=b+a。減法の逆算が加法になる転換を単独パターン化。",
+    "constructive_guarantees": "和は常に正整数で無制約成立。",
+    "semantic_position": "加法逆算との対比ペア。",
+    "exclusions": "a>xとなる誤読(b-aを答える誤答)が主要誤答仮説→誤答分析はPandora2で活用。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "逆算の演算転換(−↔+)の意識化。"
+   }
+  },
+  "g06_moji_gyaku_mul_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "moji_semantics/solve",
+    "number_domain": "整数(b=ax, x>3)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "x×a=bの逆算。",
+    "representation": "x=b÷a。bはaの倍数制約。",
+    "constructive_guarantees": "b%a==0で割り切れを構成的に保証(v0.9設計文化)。x>3で自明解除外。",
+    "semantic_position": "c11 find_x・c05等式逆算と同一の除法逆算構造(D2の三点接続)。",
+    "exclusions": "余りのある除法は範囲外。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「かけ算の逆はわり算」+倍数関係の目測。"
+   }
+  },
+  "g06_moji_gyaku_div_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "moji_semantics/solve",
+    "number_domain": "整数(x=ab)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "x÷a=bの逆算。",
+    "representation": "x=a×b。除法の逆算が乗法になる転換。",
+    "constructive_guarantees": "積は常に正整数で無制約成立。",
+    "semantic_position": "乗法逆算との対比ペア。",
+    "exclusions": "a÷x=b型(除数が未知)は構造が異なるため別パターン候補(第2波)。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "逆算の演算転換(÷↔×)の意識化。"
+   }
+  },
+  "g06_moji_gyaku_2step_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "moji_semantics/solve",
+    "number_domain": "整数(x=(b-c)/a>2)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "x×a+c=bの2段逆算。逆算単元の到達点。",
+    "representation": "後ろから戻す2手順(−c→÷a)。",
+    "constructive_guarantees": "(b-c)%a==0と大小制約で全手順の整数性・正値性を保証。",
+    "semantic_position": "jhs一次方程式ax+b=cの直接の前身(D2)。",
+    "exclusions": "かっこ付き((x+c)×a=b型)は第2波。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「積の部分をひとまとまりと見る」構造把握が主眼。"
+   }
+  },
+  "g06_moji_gyaku_word_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "moji_semantics/solve",
+    "number_domain": "整数(金額)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2",
+     "D4"
+    ]
+   },
+   "rationale": {
+    "source_features": "未知数を含む買い物文脈の逆算文章題。",
+    "representation": "x円+c円=b円→x=b-c。しき明示。",
+    "constructive_guarantees": "b>c+50で実売価らしい正解を保証。品物はレキシコン2セットから独立に束縛。",
+    "semantic_position": "立式(represent)と逆算(solve)を1題で往復する統合形。",
+    "exclusions": "3品以上・つり銭文脈は第2波。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "場面→式→逆算の全経路を最小構成で通す。"
+   }
+  },
+  "g06_frac_x_int_calc_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "frac計算/×整数",
+    "number_domain": "既約真分数×整数",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D1"
+    ]
+   },
+   "rationale": {
+    "source_features": "分数×整数の計算確認問題型(単元最多形)。",
+    "representation": "a/b×k=(a×k)/b。答えはreduced_mixed(帯分数・g05正準継承)。",
+    "constructive_guarantees": "既約・真分数制約。約分と整数落ちはreduced_mixedが吸収し表示退化なし(D1: 全機構v0.9既存)。",
+    "semantic_position": "分数乗除5単元の入口。g05異分母加減(gcd/lcm文化)の直接後継。",
+    "exclusions": "帯分数被乗数は別パターン。分子に乗じる意味の説明列(a/b×k=a×k/b)は解答様式外。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「分子だけにかける」手続きの定着。約分先行(途中約分)は指導で扱い解答様式は結果約分。"
+   }
+  },
+  "g06_frac_x_int_word_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "frac_word_semantics/per_unit_times",
+    "number_domain": "既約真分数×整数(m²/dL)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D1",
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "ペンキ塗り文脈の1あたり×いくつ分(単元定番文章題)。",
+    "representation": "しき+答え(単位付き帯分数)。",
+    "constructive_guarantees": "既約・真分数制約+乗算の閉性。1dLはテンプレ定数として許可集合に登録。",
+    "semantic_position": "g05第2用法(もとにする量×割合)の量バージョン(D2)。乗数>1で積が増える正常系。",
+    "exclusions": "乗数が分数(積が減る転換)はx_frac_wordが担当。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "単位量あたりの考えを分数量へ拡張する最初の文章題。"
+   }
+  },
+  "g06_frac_div_int_calc_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "frac計算/÷整数",
+    "number_domain": "既約真分数÷整数",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D1"
+    ]
+   },
+   "rationale": {
+    "source_features": "分数÷整数の計算確認問題型。",
+    "representation": "a/b÷k=a/(b×k)。分母への乗算に帰着。",
+    "constructive_guarantees": "既約・真分数制約。結果約分はreducedが吸収。",
+    "semantic_position": "×整数との対比ペア。逆数概念の前段(kで割る=1/kを掛ける)。",
+    "exclusions": "分子が割り切れる場合の別解(a÷k)/bは解答様式外(結果は同値)。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「分母にかける」手続き+なぜそうなるかの図的理解は授業側。"
+   }
+  },
+  "g06_frac_div_int_word_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "frac_word_semantics/equal_share",
+    "number_domain": "既約真分数÷人数(L)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D1"
+    ]
+   },
+   "rationale": {
+    "source_features": "分数量の等分文脈(ジュースをk人で分ける)。",
+    "representation": "しき+答え(単位付き)。液体はレキシコン束縛。",
+    "constructive_guarantees": "既約・真分数制約+除算の閉性。",
+    "semantic_position": "等分除の意味を分数量に拡張。包含除(何人に分けられるか)は逆構造で範囲外。",
+    "exclusions": "余り概念は分数域では消滅する点が指導上の注意(exclusionsとして明記)。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "1人分=全体÷人数の関係保存を確認。"
+   }
+  },
+  "g06_frac_x_frac_calc_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "frac計算/×分数",
+    "number_domain": "既約分数×真分数(被乗数は仮分数許容)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D1"
+    ]
+   },
+   "rationale": {
+    "source_features": "分数×分数の計算確認問題型(章の中核)。",
+    "representation": "(a×c)/(b×d)。被乗数はa<2bまで許容し仮分数×真分数も出題。",
+    "constructive_guarantees": "両分数既約制約。積の約分はreduced_mixedが吸収(D1検証点: 新ヘルパ不要)。",
+    "semantic_position": "分数乗除の中心。×整数・÷整数を特殊例として包含する一般形。",
+    "exclusions": "帯分数×は別パターン。3口はthree_opsが担当。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「分子どうし・分母どうし」の手続き+積<被乗数となる場合の意味の揺らぎに注意。"
+   }
+  },
+  "g06_frac_mixed_x_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "frac計算/帯分数×",
+    "number_domain": "帯分数(1〜2)×真分数",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D1"
+    ]
+   },
+   "rationale": {
+    "source_features": "帯分数を含む乗算(仮分数化の手続き追加)。",
+    "representation": "w a/b→(wb+a)/bの仮分数化はanswer_formula内の整数演算(D1検証点)。",
+    "constructive_guarantees": "分数部既約・真分数制約。仮分数化の正当性は恒等式で自明。",
+    "semantic_position": "×分数の拡張。仮分数化はmixed_divと共有の前処理。",
+    "exclusions": "帯分数×帯分数は計算量過大のため除外(第2波判断)。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「帯分数はまず仮分数に」の手続き定着。"
+   }
+  },
+  "g06_frac_x_frac_word_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "frac_word_semantics/per_unit_times",
+    "number_domain": "真分数×真分数(m²/dL)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D1",
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "ペンキ文脈で乗数も分数化(積が被乗数より小さくなる)。",
+    "representation": "しき+答え。x_int_wordと同一文脈で数域だけ拡張。",
+    "constructive_guarantees": "両分数既約・真分数制約。",
+    "semantic_position": "乗数<1で「かけると減る」意味転換の主戦場(D2: 割合的な見方への橋)。",
+    "exclusions": "乗数>1の分数(仮分数)は転換点をぼかすため除外。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "同一文脈の数域拡張により、演算選択が数の種類に依存しないことを示す。"
+   }
+  },
+  "g06_frac_div_frac_calc_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "frac計算/÷分数",
+    "number_domain": "既約分数÷真分数(被除数は仮分数許容)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D1"
+    ]
+   },
+   "rationale": {
+    "source_features": "分数÷分数の計算確認問題型(章の最重要形)。",
+    "representation": "逆数乗(a×d)/(b×c)=スロット入替の整数演算(D1検証点: 新ヘルパ不要)。",
+    "constructive_guarantees": "両分数既約制約+商<5の上界(ストレステストで過大帯分数を検出し追加)。",
+    "semantic_position": "分数乗除の到達点。逆数概念の主戦場。",
+    "exclusions": "帯分数÷は別パターン。「なぜひっくり返すか」の説明列は解答様式外(授業側)。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "逆数乗への書き換え1手順の定着。"
+   }
+  },
+  "g06_frac_mixed_div_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "frac計算/帯分数÷",
+    "number_domain": "帯分数(1〜2)÷真分数",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D1"
+    ]
+   },
+   "rationale": {
+    "source_features": "帯分数を含む除算(仮分数化+逆数の2前処理)。",
+    "representation": "(wb+a)×d/(b×c)。2つの新手続きの合成でも内部は整数演算のまま。",
+    "constructive_guarantees": "分数部既約・真分数制約+商<5上界(テスト起因の追加)。",
+    "semantic_position": "mixed_x・div_frac_calcの合流点。",
+    "exclusions": "帯分数÷帯分数は除外(第2波判断)。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "前処理の順序(仮分数化→逆数乗)の型化。"
+   }
+  },
+  "g06_frac_div_frac_word_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "frac_word_semantics/per_unit_find",
+    "number_domain": "真分数÷真分数(m²/dL)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D1",
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "c/d dLでa/b m²→1dLでは何m²の1あたり逆算文章題。",
+    "representation": "しき+答え。ペンキ文脈3部作の完結形。",
+    "constructive_guarantees": "両分数既約・真分数制約(除数<1で商>被除数の意味が立つ)。",
+    "semantic_position": "g05第3用法(base_find=くらべる量÷割合)の量バージョン(D2)。逆算重視方針の分数域継承。",
+    "exclusions": "何dL使えるか(包含除逆)は構造が異なり第2波。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「1あたりを求めるには割る」の関係保存が最難関。しきの立式方向が主要誤答点。"
+   }
+  },
+  "g06_frac_dec_x_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "frac計算/小数×分数",
+    "number_domain": "dec1小数(0.2〜2.4)×真分数",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D1"
+    ]
+   },
+   "rationale": {
+    "source_features": "小数と分数の混合乗算。",
+    "representation": "小数をp/10と読み替え(pはdec1スケール整数=v0.9既存)、分数乗算に帰着。",
+    "constructive_guarantees": "p%10≠0で真に小数を保証。分数側既約制約。",
+    "semantic_position": "分数統一方針(小数→分数に直して計算)の運用形。",
+    "exclusions": "分数→小数に直す逆方針は割り切れない場合に破綻するため解答様式は分数統一固定。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "0.3=3/10の位取り読み替えが前提技能。"
+   }
+  },
+  "g06_frac_dec_div_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "frac計算/分数÷小数",
+    "number_domain": "既約分数÷dec1小数",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D1"
+    ]
+   },
+   "rationale": {
+    "source_features": "分数÷小数の混合除算。",
+    "representation": "除数p/10の逆数10/pを乗じる。",
+    "constructive_guarantees": "p%10≠0制約+商<5上界(テスト起因)。",
+    "semantic_position": "dec_xとの対比ペア。小数の逆数という2段の抽象。",
+    "exclusions": "小数÷分数(被除数が小数)は対称形として第2波。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「小数も分数に直せば同じ手続き」の一般化体験。"
+   }
+  },
+  "g06_frac_three_ops_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "frac計算/3口乗除",
+    "number_domain": "真分数3口",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D1"
+    ]
+   },
+   "rationale": {
+    "source_features": "乗除混合3口計算(章末統合形)。",
+    "representation": "÷は逆数乗に統一後、一括で分子分母の積へ。",
+    "constructive_guarantees": "3分数既約・真分数制約で計算量を管理。",
+    "semantic_position": "乗除手続きの統合到達点。途中約分の価値が最大化する形。",
+    "exclusions": "4口以上・加減混合は範囲外。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "一括処理(個別に計算しない)の手続き価値を体感させる。"
+   }
+  },
+  "g06_time_h_to_min_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "速さと分数/時間換算",
+    "number_domain": "真分数時間(分母は60の約数)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D1"
+    ]
+   },
+   "rationale": {
+    "source_features": "分数時間→分の換算(速さと分数の入口)。",
+    "representation": "60×a/b。しきで60を明示。",
+    "constructive_guarantees": "分母を60の約数に限定し割り切れを構成的に保証。",
+    "semantic_position": "g05速さ体系を分数時間へ拡張する前提技能。",
+    "exclusions": "帯分数時間・分→時間の逆方向は第2波。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「時間の1/bは60÷b分」の量感形成。"
+   }
+  },
+  "g06_time_sec_to_min_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "速さと分数/時間換算",
+    "number_domain": "秒(<60)→真分数分",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": []
+   },
+   "rationale": {
+    "source_features": "秒→分数分の換算。",
+    "representation": "s/60を約分。定番12値の選択肢型。",
+    "constructive_guarantees": "s<60で答えは常に真分数=表示退化(整数落ち)が構造的に起きない。",
+    "semantic_position": "h_to_minの逆方向ペア(分数で表す側)。",
+    "exclusions": "異なり数は選択肢数上限(12)で頭打ち=設計上の許容(多様性検査は下限6で判定)。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "分数が除法の結果を表す記法であることの直接体験。"
+   }
+  },
+  "g06_time_frac_dist_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "速さと分数/道のり",
+    "number_domain": "整数時速×真分数時間",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D1",
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "速さ×分数時間=道のり(単元の主文章題)。",
+    "representation": "g05のみはじ体系の式形そのまま、時間だけ分数化。",
+    "constructive_guarantees": "(v×a)%b==0制約で道のり整数を保証。速さは6・4の倍数中心の選択肢。",
+    "semantic_position": "g05 distance(道のり=速さ×時間)の直接後継(D2: 体系接続)。",
+    "exclusions": "答えが分数kmになる形は量感が立たないため除外。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "公式の数域拡張=「式は数の種類に依存しない」の再確認。"
+   }
+  },
+  "g06_speed_meet_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "速さの問題/出会い",
+    "number_domain": "整数(分速和の倍数距離)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": []
+   },
+   "rationale": {
+    "source_features": "向かい合って進む2人の出会い(応用の定番)。",
+    "representation": "t=d÷(v和)。しきでかっこ付き和を明示。歩行者ペアはレキシコン束縛。",
+    "constructive_guarantees": "d%(vs+vf)==0で整数分、t≥3で自明解除外。",
+    "semantic_position": "速さの和という新しい合成量の導入。",
+    "exclusions": "出会い場所(距離)を問う形は第2波。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「2人合わせて1分にvs+vf縮まる」の見方の転換が主眼。"
+   }
+  },
+  "g06_speed_chase_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "速さの問題/追いつき",
+    "number_domain": "整数(先行距離が速度差の倍数)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": []
+   },
+   "rationale": {
+    "source_features": "先行者への追いつき(応用の到達点)。",
+    "representation": "t=(vs×m)÷(vf-vs)。先行距離→追いつき時間の2段をしきで明示。",
+    "constructive_guarantees": "vf>2vsで数分内追いつきを保証、(vs×m)%(vf-vs)==0で整数分。",
+    "semantic_position": "速さの差という合成量。出会いとの対比(和↔差)。",
+    "exclusions": "3人・折り返しは範囲外。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「1分に(vf-vs)ずつ差が縮まる」の見方。出会いとの構造対比で理解を固定。"
+   }
+  },
+  "g06_frac_bai_int_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "frac_word_semantics/times_as_much",
+    "number_domain": "整数金額比(10の倍数)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "整数量どうしの何倍か(答えが分数倍)。",
+    "representation": "a÷b→reduced_fraction(仮分数正準=g05_frac_bai_01継承)。",
+    "constructive_guarantees": "a%b≠0で整数倍除外(n/1表示退化も同時に防止)、gcd≥10で約分が意味を持つ組に限定。",
+    "semantic_position": "g05第1用法(ratio_find)の答えを分数に拡張(D2)。倍=仮分数正準の運用実例。",
+    "exclusions": "1未満の倍(a<b)も含む=「倍は1より大きい」の思い込み矯正がねらい。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「〜は〜の」の基準特定が主要誤答点。"
+   }
+  },
+  "g06_frac_bai_frac_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "frac_word_semantics/times_as_much",
+    "number_domain": "真分数÷真分数(m)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "分数量どうしの何倍か。",
+    "representation": "しき+仮分数倍。長さ物品レキシコン+色で2量を区別。",
+    "constructive_guarantees": "両分数既約・真分数・等値除外・整数倍除外の4制約。",
+    "semantic_position": "bai_intの数域拡張。第1用法構造の分数域完成形。",
+    "exclusions": "基準取り違え(f2÷f1)が最頻誤答仮説→Pandora2誤答分析の重点パターン。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "割合の3用法が分数の世界でも保存されることの確認。"
+   }
+  },
+  "g06_frac_word_more_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "割合と分数/基準+増分",
+    "number_domain": "整数g(基準は分母の倍数)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "「その◯/◯だけ重い」の基準+増分2段文章題。",
+    "representation": "n+n×a/b。しきで2段を1式に。",
+    "constructive_guarantees": "n%b==0で増分整数を保証。増分割合<1に限定。",
+    "semantic_position": "g05第2用法(compare_find)の加算合成版(D2)。「その」の指示対象把握が核。",
+    "exclusions": "「〜倍」との混同(n×a/bのみ答える)が主要誤答仮説。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "1+a/b倍と見る別解は指導側で扱い、解答様式は2段式。"
+   }
+  },
+  "g06_frac_word_left_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "割合と分数/残り",
+    "number_domain": "整数円(分母の倍数)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "「◯/◯を使った残り」文章題。",
+    "representation": "n-n×a/b(しきは減算形)。",
+    "constructive_guarantees": "n%b==0+使用割合<1で残りの正値を構成的に保証。",
+    "semantic_position": "moreとの対比ペア(加算↔減算)。(1-a/b)倍の乗法一発は別解。",
+    "exclusions": "2回使う(残りのさらに◯/◯)は第2波。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "残り=全体×(1-割合)への抽象化はjhsへの伏線として指導側で扱う。"
+   }
+  },
+  "g06_hi_arawasu_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "hi_semantics/express",
+    "number_domain": "整数2量(2〜15)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "2量をそのまま比で表す(章の入口)。",
+    "representation": "a:b転記。文脈2種(液量・長方形の縦横)。",
+    "constructive_guarantees": "a≠bのみ。簡単化はしない(別カテゴリ)ことを様式で区別。",
+    "semantic_position": "hi_semantics新設の起点(D2)。「割合を:記号で書く」記法導入。",
+    "exclusions": "簡単化してしまう先走り解答は本カテゴリでは不正(様式の区別が学習点)。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "比が2量の組であって1つの数でないことの体感。"
+   }
+  },
+  "g06_hi_atai_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "hi_semantics/value",
+    "number_domain": "整数比(非整数商)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "比の値を求める。",
+    "representation": "a÷b→仮分数正準。しき明示。",
+    "constructive_guarantees": "a%b≠0で整数値除外(n/1退化防止)、a≠bで1除外。",
+    "semantic_position": "比の値=g05第1用法(割合=くらべる量÷もとにする量)と同型(D2の明示的接続点)。",
+    "exclusions": "小数で答える様式は不採用(分数統一)。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「比の値が等しい⇔等しい比」の判定道具としての位置づけを予告。"
+   }
+  },
+  "g06_hi_kantan_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "hi_semantics/simplify",
+    "number_domain": "整数比(公約数2〜12)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "整数比の簡単化(単元最多形)。",
+    "representation": "g×p:g×qを構成的に生成し提示、p:qを答える。",
+    "constructive_guarantees": "gcd(p,q)==1で既約結果を保証=必ず約分が発生する組のみ出題。",
+    "semantic_position": "分数の約分文化(gcd)の比への転用。",
+    "exclusions": "既に既約な比の出題(答え=そのまま)は無意味なため構成から排除。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「両項を同じ数で割る」操作と最大公約数の目測。"
+   }
+  },
+  "g06_hi_kantan_dec_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "hi_semantics/simplify",
+    "number_domain": "dec1小数比(0.2〜0.9)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "小数比の簡単化。",
+    "representation": "10倍して整数比→約分。dec1数量スロットで小数表示。",
+    "constructive_guarantees": "両項小数固定(スケール10整数)、等値除外。",
+    "semantic_position": "整数化の前処理が加わるsimplifyの変種。",
+    "exclusions": "1.2:1.8級(帯小数)は第2波。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「まず整数の比に」の前処理定型化。"
+   }
+  },
+  "g06_hi_kantan_frac_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "hi_semantics/simplify",
+    "number_domain": "真分数比",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D1",
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "分数比の簡単化(simplifyの最難形)。",
+    "representation": "lcm(通分倍)を掛けて整数比→約分。lcm→gcd→reduceの連鎖。",
+    "constructive_guarantees": "両分数既約・真分数・等値除外。連鎖は全てv0.9既存ヘルパの合成(D1)。",
+    "semantic_position": "分数加減の通分文化と比の約分文化の合流点。",
+    "exclusions": "帯分数比・小数分数混合比は第2波。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「そろえてから簡単に」の2段構造。途中の整数比を書かせる指導は授業側。"
+   }
+  },
+  "g06_hi_eq_koukou_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "hi_semantics/eq_solve",
+    "number_domain": "既約比×倍率(x後項)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "等しい比の逆算(xが後項)。",
+    "representation": "p:q=pk:x→x=qk。倍率kを構成側に置く。",
+    "constructive_guarantees": "既約比制約で倍率がgcd(pk,p)として一意に見える。成立は構成的に保証。",
+    "semantic_position": "g05第3用法(base_find)の後継カテゴリ(D2の中核指示)。c02逆算・c11 find_xと三点接続。",
+    "exclusions": "内項の積=外項の積(比例式の一般解法)はjhs領域のため、小6様式は倍率発見法のみ。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「何倍になったか」を片側から読み取り他方に適用する関係推理。"
+   }
+  },
+  "g06_hi_eq_zenkou_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "hi_semantics/eq_solve",
+    "number_domain": "既約比×倍率(x前項)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "等しい比の逆算(xが前項)。",
+    "representation": "p:q=x:qk→x=pk。未知数位置の変種。",
+    "constructive_guarantees": "koukouと同一の構成的保証。",
+    "semantic_position": "未知数位置への非依存性を確認する対パターン。",
+    "exclusions": "縮小方向(pk:qk=p:x型=割る向き)は第2波。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "倍率の読み取り位置(後項どうし)が変わるだけで手続き不変なことの確認。"
+   }
+  },
+  "g06_hi_bunpai_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "hi_semantics/distribute",
+    "number_domain": "整数量(比の和の倍数)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "比例配分(章の主文章題)。",
+    "representation": "T×p÷(p+q)。しきでかっこ付き和を明示。物品・人物レキシコン束縛。",
+    "constructive_guarantees": "T%(p+q)==0で整数配分を保証、既約比・非等分制約。",
+    "semantic_position": "g05第2用法(compare_find=全体×割合)の後継(D2)。部分/全体=p/(p+q)の読み替えが核。",
+    "exclusions": "両者の量を問う形・差を問う形は第2波。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「全体を(p+q)等分してp個分」の操作イメージ。"
+   }
+  },
+  "g06_hi_whole_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "hi_semantics/distribute",
+    "number_domain": "整数円(比の和の倍数)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "部分と全体の比+配分額の二部構成問題。",
+    "representation": "p:(p+q)と金額を併答(comparison構造)。",
+    "constructive_guarantees": "gcd(p,q)=1⇒gcd(p,p+q)=1が数論的に自動成立=答えの既約性が構成から従う。",
+    "semantic_position": "distributeの構造理解を比表現側から確認する対パターン。",
+    "exclusions": "3者配分は第2波。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "部分:全体という新しい比の読み(部分:部分との区別)。"
+   }
+  },
+  "g06_prop_shiki_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "proportion_semantics/find_k",
+    "number_domain": "整数比例定数(2〜15)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "比例の式を求める(文章から)。",
+    "representation": "y=k×x正準形固定。1あたり量文脈(針金の重さ)。",
+    "constructive_guarantees": "kは正整数のみ。式文字列解答(ダミー式k)。",
+    "semantic_position": "比例定数=1あたり量のg05接続(D2)。proportion_semantics新設の起点。",
+    "exclusions": "表からkを読む形はB層(table kind)。x×k表記は採点上不正(正準形固定)。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「xが1のときのy」がkであることの意味づけ。"
+   }
+  },
+  "g06_prop_findy_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "proportion_semantics/find_y",
+    "number_domain": "整数(k×v)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "比例の式にxを代入してy。",
+    "representation": "しき+答え。",
+    "constructive_guarantees": "積は常に正整数。",
+    "semantic_position": "第2用法対応の順方向計算(D2)。c02代入と同型操作。",
+    "exclusions": "文脈付き(具体量)版は第2波、第1波は式操作に集中。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "式が予測装置であることの最小体験。"
+   }
+  },
+  "g06_prop_findx_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "proportion_semantics/find_x",
+    "number_domain": "整数(y÷k>2)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "比例の式からxを逆算。",
+    "representation": "x=y÷k。しき明示。",
+    "constructive_guarantees": "y%k==0で整数解、x>2で自明解除外。",
+    "semantic_position": "第3用法対応の逆算(D2)。c02 gyaku_mul・c05 eq_solveと同一構造の三点目。",
+    "exclusions": "小数解・分数解は第2波。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "逆算構造が単元をまたいで同型であることの暗黙提示(明示は指導側)。"
+   }
+  },
+  "g06_inv_shiki_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "proportion_semantics/find_k(反比例)",
+    "number_domain": "整数積一定(12〜90)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "反比例の式を求める。",
+    "representation": "y=S÷x正準形固定。面積一定の長方形文脈。",
+    "constructive_guarantees": "Sは定番12値の選択肢型(異なり数は選択肢上限=設計許容)。",
+    "semantic_position": "積一定=決まった数の意味が面積として可視化される文脈選択。",
+    "exclusions": "表からの読み取りはB層。双曲線グラフはC層(xy_graph)。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "比例(商一定)との対比で「何が一定か」を意識化。"
+   }
+  },
+  "g06_inv_findy_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "proportion_semantics/find_y(反比例)",
+    "number_domain": "整数(S÷v>2)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "反比例の式にxを代入。",
+    "representation": "y=S÷v。しき明示。",
+    "constructive_guarantees": "S%v==0(vをSの約数に制約)で整数解を保証。",
+    "semantic_position": "反比例では代入も除法になる点が比例との差分。",
+    "exclusions": "非約数xでの分数解は第2波。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "xが増えるとyが減る共変の数値実感。"
+   }
+  },
+  "g06_inv_findx_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "proportion_semantics/find_x(反比例)",
+    "number_domain": "整数(S÷w>2)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "反比例の式からxを逆算。",
+    "representation": "x=S÷y。反比例では逆算も除法。",
+    "constructive_guarantees": "S%w==0で整数解を保証。",
+    "semantic_position": "順方向と逆算が同じ演算になる対称性が学習点(比例との構造対比)。",
+    "exclusions": "同上。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「決まった数を相手で割る」の双方向性。"
+   }
+  },
+  "g06_shukuzu_arawasu_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "縮図/縮尺を表す",
+    "number_domain": "整数(縮尺分母500の倍数)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": []
+   },
+   "rationale": {
+    "source_features": "実長と図上長から縮尺を表す(計算系の入口)。",
+    "representation": "1/nと1:nの併答(comparison構造)。",
+    "constructive_guarantees": "可除性+分母500の倍数+下限500の3制約で定番縮尺のみ出題。",
+    "semantic_position": "比(c05)の応用としての縮尺。m→cmの単位換算が埋め込まれる。",
+    "exclusions": "非定番縮尺(1/1250等)は構成から排除。作図系はC層(similar_pair)。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「同じ単位にそろえてから比をとる」が核。"
+   }
+  },
+  "g06_shukuzu_to_map_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "縮図/実長→図上",
+    "number_domain": "整数cm(2〜20)",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": []
+   },
+   "rationale": {
+    "source_features": "実際の長さを縮図上の長さに変換。",
+    "representation": "L×100÷n。しきで単位換算(×100)を明示。",
+    "constructive_guarantees": "可除性+図上2〜20cmの範囲制約(図としてあり得る長さ=描画可能性の水準を本文でも維持)。",
+    "semantic_position": "縮小方向の除法。縮尺分母は定番4値。",
+    "exclusions": "図上長が小数になる組は排除。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "換算(m→cm)と縮小(÷n)の2段を1式で。"
+   }
+  },
+  "g06_shukuzu_to_real_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "縮図/図上→実長(km)",
+    "number_domain": "整数m内部・km小数1位表示",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": []
+   },
+   "rationale": {
+    "source_features": "縮図上の長さから実際の距離(km)を求める。",
+    "representation": "内部はm整数、表示はdec3(スケール1000=v0.9既存)でkm。しきはcm段まで明示。",
+    "constructive_guarantees": "m%100==0制約で小数第1位以内に表示が閉じる+1km以上の下限。",
+    "semantic_position": "拡大方向の乗法+3段の単位換算(cm→m→km)。地図縮尺の定番3値。",
+    "exclusions": "m単位で答える形は第2波(km表示の意味が立つ距離のみ本波)。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "答えの桁感覚(万cm→km)が主眼。dec3流用は生成器無変更方針の実例。"
+   }
+  },
+  "g06_baai_narabe_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "場合の数/順列",
+    "number_domain": "n∈{3,4}",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": []
+   },
+   "rationale": {
+    "source_features": "n人の1列並べ(単元の入口)。",
+    "representation": "n!をn(n-1)(n-2)の閉形式で表現(n=3で末項1になり両対応)。文脈2種(整列・リレー)。",
+    "constructive_guarantees": "整数演算のみ・階乗関数不使用=JS移植パリティ確保。",
+    "semantic_position": "樹形図の数え上げから式化への橋。",
+    "exclusions": "数値多様性は本質的にn2値×文脈2の4通りが上限(設計許容・多様性検査対象外)。n≥5は数え上げ指導の範囲外。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "樹形図を書いて確かめる指導が前提。式は検算の位置づけ。"
+   }
+  },
+  "g06_baai_joken_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "場合の数/条件付き順列",
+    "number_domain": "n∈{3,4}・1人固定",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": []
+   },
+   "rationale": {
+    "source_features": "端の1人を固定した並べ方。",
+    "representation": "(n-1)!をmax(1,n-3)で表現(maxはv0.8以前からSAFE=JS移植済)。人物レキシコン束縛。",
+    "constructive_guarantees": "固定により残りの順列に帰着する構造が式形に直接現れる。",
+    "semantic_position": "narabeへの条件追加として最小の変形。",
+    "exclusions": "2人固定・隣接条件は第2波。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "「固定すると1つ減る」の対応づけ。"
+   }
+  },
+  "g06_baai_kumi_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "場合の数/組み合わせ",
+    "number_domain": "n∈4〜7",
+    "answer_structure_note": "パターン本体のanswer_structure/answer_templateを正とする",
+    "figure": "なし",
+    "directives": []
+   },
+   "rationale": {
+    "source_features": "総当たり・2つ選ぶ組み合わせ。文脈2種(試合・くだもの)。",
+    "representation": "nC2=n(n-1)/2。",
+    "constructive_guarantees": "n(n-1)は常に偶数=整数保証が数論的に自動成立。",
+    "semantic_position": "順列との差(順序を区別しない=2で割る)が単元の山。",
+    "exclusions": "3つ選ぶ組み合わせは範囲外。",
+    "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+    "pedagogy": "対戦表の対角線で見せる指導が前提。式の「÷2」の意味説明は授業側。"
+   }
+  }
+ }
+}

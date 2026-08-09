@@ -1,0 +1,3901 @@
+{
+ "schema_version": "0.9",
+ "grade": "g06",
+ "description": "小6算数パターンバンク第1波(A層)。文字と式・分数乗除・速さと割合・比・比例反比例(式と利用)・縮尺計算・場合の数。生成器v0.9無変更(分数乗除は既存gcd/約分機構、小数はdec1、kmはdec3で閉じる)。図形系(対称・拡大縮小・円の面積・体積・グラフ・度数分布)はB/C層として新kind設計書へ分離。",
+ "source_analysis": "実物1,102問・12章・32単元の分布分析に基づく。中核は分数乗除(275問)と比(126問)。確認問題型を主対象とし、判定問題(比例する/しない)・実データ読み取り系は本波から除外。教材名・実物ID・実データは本ファイルに含めない(公開ハイジーン)。",
+ "answer_structures": {
+  "single": "単一の数値・式・比で閉じる解答",
+  "comparison": "二部構成の解答(比と金額、分数と比など)"
+ },
+ "ratio_semantics": {
+  "note": "g05割合3用法体系(ratio_find/compare_find/base_find)のg06後継。各体系のg05対応をカテゴリ名に併記。",
+  "hi_semantics": {
+   "express": "2量を比で表す(新規)",
+   "value": "比の値=前項÷後項(g05 ratio_find[第1用法]と同型)",
+   "simplify": "比を簡単にする(整数比・小数比・分数比)",
+   "eq_solve": "等しい比の逆算 p:q=pk:x(g05 base_find[第3用法]の後継)",
+   "distribute": "比例配分 T×p/(p+q)(g05 compare_find[第2用法]の後継)"
+  },
+  "proportion_semantics": {
+   "find_k": "比例定数=1あたり量(g05単位量あたりと接続)",
+   "find_y": "y=k×x順方向(第2用法対応)",
+   "find_x": "x=y÷k逆算(第3用法対応・c02逆算とも接続)"
+  },
+  "moji_semantics": {
+   "represent": "場面→文字式(立式)",
+   "evaluate": "代入して式の値",
+   "solve": "xにあてはまる数(逆算・jhs方程式への接続点)"
+  },
+  "frac_word_semantics": {
+   "per_unit_times": "1あたり量×量(ペンキ型・第2用法対応)",
+   "equal_share": "分数量の等分",
+   "per_unit_find": "量÷量=1あたり(第3用法対応)",
+   "times_as_much": "何倍か(第1用法対応・仮分数正準)"
+  }
+ },
+ "display_canon": "量の答え=reduced_mixed(帯分数・g05一貫)。倍・比の値=reduced_fraction(仮分数)+整数落ち除外制約(g05_frac_bai_01正準の継承)。比の解答はp:q形式の完全一致。",
+ "figure_note": "A層は全パターン図形なし(figure_params未使用)。円の面積(circle拡張fig_version2)・対称・拡大縮小・グラフ・度数分布はB/C層設計書を参照。",
+ "shared_lexicon": {
+  "comment": "g05レキシコンの語感を継承。すべてg01〜g06配当漢字またはかな。実データ・固有教材由来の語は含めない。",
+  "actors": [
+   "ゆうたさん",
+   "さくらさん",
+   "はるとさん",
+   "みおさん",
+   "そうたさん",
+   "ひなさん"
+  ],
+  "walker_pairs": [
+   {
+    "a": "兄",
+    "b": "弟"
+   },
+   {
+    "a": "姉",
+    "b": "妹"
+   }
+  ],
+  "price_items": [
+   {
+    "noun": "えん筆",
+    "counter": "本"
+   },
+   {
+    "noun": "ボールペン",
+    "counter": "本"
+   },
+   {
+    "noun": "ノート",
+    "counter": "さつ"
+   },
+   {
+    "noun": "消しゴム",
+    "counter": "こ"
+   }
+  ],
+  "price_items2": [
+   {
+    "noun": "画用紙",
+    "counter": "まい"
+   },
+   {
+    "noun": "色紙",
+    "counter": "まい"
+   },
+   {
+    "noun": "ふせん",
+    "counter": "こ"
+   }
+  ],
+  "liquids": [
+   "オレンジジュース",
+   "りんごジュース",
+   "ぶどうジュース",
+   "麦茶",
+   "牛乳"
+  ],
+  "heavy_objects": [
+   "はり金",
+   "パイプ",
+   "鉄のぼう"
+  ],
+  "length_goods": [
+   {
+    "noun": "リボン",
+    "unit": "m"
+   },
+   {
+    "noun": "テープ",
+    "unit": "m"
+   },
+   {
+    "noun": "ロープ",
+    "unit": "m"
+   }
+  ]
+ },
+ "patterns": [
+  {
+   "pattern_id": "g06_moji_shiki_01",
+   "grade": "g06",
+   "unit_id": "g06_c02_u01",
+   "unit_name": "文字を使った式",
+   "semantic_category": "文字式・立式(×)",
+   "semantic_note": "単価×個数の立式。可換表記(4×x)は指導上許容だが経路A採点は出現順x×kを正準とする(rationale exclusions参照)。",
+   "step_count": 1,
+   "operation": "x × k (立式)",
+   "answer_formula": "k1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "k1": {
+     "type": "int",
+     "range": [
+      3,
+      9
+     ]
+    },
+    "it1": {
+     "from": "price_items[j].noun"
+    },
+    "ct1": {
+     "from": "price_items[j].counter"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "1{ct1}x円の{it1}を{k1}{ct1}買います。代金を求める式を、xを使って書きなさい。"
+   ],
+   "answer_template": "答え x×{k1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "g06_moji_subst_01",
+   "grade": "g06",
+   "unit_id": "g06_c02_u01",
+   "unit_name": "文字を使った式",
+   "semantic_category": "文字式・代入",
+   "semantic_note": "x×kにx=vを代入。答えは数値で閉じるため経路A採点と相性がよい(立式の可換問題を回避)。",
+   "step_count": 1,
+   "operation": "k × v (代入)",
+   "answer_formula": "k1 * v1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "k1": {
+     "type": "int",
+     "range": [
+      3,
+      8
+     ]
+    },
+    "v1": {
+     "type": "int",
+     "choices": [
+      60,
+      70,
+      80,
+      90,
+      110,
+      120,
+      150
+     ],
+     "choice_int": true
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "x×{k1}の式で、xの値が{v1}のときの式の値を求めなさい。"
+   ],
+   "answer_template": "しき {v1}×{k1}={ans} 答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_moji_gyaku_add_01",
+   "grade": "g06",
+   "unit_id": "g06_c02_u02",
+   "unit_name": "逆算",
+   "semantic_category": "逆算(加法)",
+   "semantic_note": "x+a=b。提示値a,bは共にスロット、x=b-aは正で保証(b>a制約)。jhs方程式への接続点。",
+   "step_count": 1,
+   "operation": "x + a = b → x = b - a",
+   "answer_formula": "b1 - a1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      4,
+      39
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      12,
+      80
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "b_gt_a",
+     "expr": "b1 > a1 + 2",
+     "why": "x=b-aを正かつ非自明(x>2)に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "次の式で、xにあてはまる数を求めなさい。x+{a1}={b1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_moji_gyaku_sub_01",
+   "grade": "g06",
+   "unit_id": "g06_c02_u02",
+   "unit_name": "逆算",
+   "semantic_category": "逆算(減法)",
+   "semantic_note": "x-a=b → x=b+a。減法の逆算は加法になる意味理解が主眼。構成的に常に成立。",
+   "step_count": 1,
+   "operation": "x - a = b → x = b + a",
+   "answer_formula": "b1 + a1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      4,
+      29
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      5,
+      49
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の式で、xにあてはまる数を求めなさい。x-{a1}={b1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_moji_gyaku_mul_01",
+   "grade": "g06",
+   "unit_id": "g06_c02_u02",
+   "unit_name": "逆算",
+   "semantic_category": "逆算(乗法)",
+   "semantic_note": "x×a=b → x=b÷a。bはaの倍数制約で割り切れを構成的に保証(v0.9設計文化)。",
+   "step_count": 1,
+   "operation": "x × a = b → x = b ÷ a",
+   "answer_formula": "b1 // a1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      3,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      24,
+      96
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "b1 % a1 == 0",
+     "why": "x=b÷aを整数に保つ(割り切れの構成的保証)"
+    },
+    {
+     "rule": "x_nontrivial",
+     "expr": "b1 // a1 > 3",
+     "why": "x=1〜3の自明解を除外"
+    }
+   ],
+   "sentence_templates": [
+    "次の式で、xにあてはまる数を求めなさい。x×{a1}={b1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_moji_gyaku_div_01",
+   "grade": "g06",
+   "unit_id": "g06_c02_u02",
+   "unit_name": "逆算",
+   "semantic_category": "逆算(除法)",
+   "semantic_note": "x÷a=b → x=a×b。除法の逆算は乗法。積は常に整数で退化なし。",
+   "step_count": 1,
+   "operation": "x ÷ a = b → x = a × b",
+   "answer_formula": "a1 * b1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      3,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      4,
+      12
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の式で、xにあてはまる数を求めなさい。x÷{a1}={b1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_moji_gyaku_2step_01",
+   "grade": "g06",
+   "unit_id": "g06_c02_u02",
+   "unit_name": "逆算",
+   "semantic_category": "逆算(2段・×→+)",
+   "semantic_note": "x×a+c=b → x=(b-c)÷a。2段逆算。差の可除性を制約で構成的に保証。",
+   "step_count": 2,
+   "operation": "x × a + c = b → x = (b - c) ÷ a",
+   "answer_formula": "(b1 - c1) // a1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      3,
+      8
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      5,
+      30
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      30,
+      110
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "b_gt_c",
+     "expr": "b1 > c1 + 8",
+     "why": "b-cを正かつ非自明に保つ"
+    },
+    {
+     "rule": "divisible",
+     "expr": "(b1 - c1) % a1 == 0",
+     "why": "x=(b-c)÷aを整数に保つ"
+    },
+    {
+     "rule": "x_nontrivial",
+     "expr": "(b1 - c1) // a1 > 2",
+     "why": "自明解を除外"
+    }
+   ],
+   "sentence_templates": [
+    "次の式で、xにあてはまる数を求めなさい。x×{a1}+{c1}={b1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_moji_gyaku_word_01",
+   "grade": "g06",
+   "unit_id": "g06_c02_u02",
+   "unit_name": "逆算",
+   "semantic_category": "逆算(文章・加法)",
+   "semantic_note": "x円+c円=b円の文脈化。未知数を文字で置く経験と逆算を接続。",
+   "step_count": 1,
+   "operation": "x + c = b → x = b - c",
+   "answer_formula": "b1 - c1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "c1": {
+     "type": "int",
+     "range": [
+      40,
+      180
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      150,
+      500
+     ]
+    },
+    "it1": {
+     "from": "price_items[j].noun"
+    },
+    "ct1": {
+     "from": "price_items[j].counter"
+    },
+    "it2": {
+     "from": "price_items2[m].noun"
+    },
+    "ct2": {
+     "from": "price_items2[m].counter"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "b_gt_c",
+     "expr": "b1 > c1 + 50",
+     "why": "x=b-cを正かつ実売価らしく保つ"
+    }
+   ],
+   "sentence_templates": [
+    "1{ct1}x円の{it1}と、1{ct2}{c1}円の{it2}を買うと、代金は{b1}円でした。xにあてはまる数を求めなさい。"
+   ],
+   "answer_template": "しき {b1}-{c1}={ans} 答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "g06_frac_x_int_calc_01",
+   "grade": "g06",
+   "unit_id": "g06_c03_u01",
+   "unit_name": "分数×整数",
+   "semantic_category": "分数×整数(計算)",
+   "semantic_note": "a/b×k=(a×k)/b。内部は分子分母の整数演算のみ。約分と整数落ちはreduced_mixedが吸収(g05一貫)。",
+   "step_count": 1,
+   "operation": "a/b × k",
+   "answer_formula": "a1 * k1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      10
+     ]
+    },
+    "k1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "proper",
+     "expr": "a1 < b1",
+     "why": "被乗数を真分数に保つ(帯分数は別パターン)"
+    },
+    {
+     "rule": "irreducible",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "出題分数を既約に保つ"
+    }
+   ],
+   "computed_slots": {
+    "n1": {
+     "formula": "a1 * k1"
+    },
+    "L1": {
+     "formula": "b1"
+    }
+   },
+   "fraction_display": {
+    "f1": [
+     "a1",
+     "b1"
+    ]
+   },
+   "reduced_mixed_display": {
+    "res1": [
+     "n1",
+     "L1"
+    ]
+   },
+   "sentence_templates": [
+    "{f1}×{k1}を計算しなさい。"
+   ],
+   "answer_template": "答え {res1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_frac_x_int_word_01",
+   "grade": "g06",
+   "unit_id": "g06_c03_u01",
+   "unit_name": "分数×整数",
+   "semantic_category": "分数×整数(文章・単位量×量)",
+   "semantic_note": "ペンキ型: 1あたり量(分数)×いくつ分(整数)。frac_word_semanticsのper_unit_times(第2用法対応)。",
+   "step_count": 1,
+   "operation": "(1あたり a/b) × k",
+   "answer_formula": "a1 * k1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      10
+     ]
+    },
+    "k1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "proper",
+     "expr": "a1 < b1",
+     "why": "1あたり量を真分数に保つ"
+    },
+    {
+     "rule": "irreducible",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "出題分数を既約に保つ"
+    }
+   ],
+   "computed_slots": {
+    "n1": {
+     "formula": "a1 * k1"
+    },
+    "L1": {
+     "formula": "b1"
+    }
+   },
+   "fraction_display": {
+    "f1": [
+     "a1",
+     "b1"
+    ]
+   },
+   "reduced_mixed_display": {
+    "res1": [
+     "n1",
+     "L1"
+    ]
+   },
+   "sentence_templates": [
+    "1dLでかべを{f1}m²ぬれるペンキがあります。このペンキ{k1}dLでは、かべを何m²ぬれますか。"
+   ],
+   "answer_template": "しき {f1}×{k1}={res1} 答え {res1}m²",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "g06_frac_div_int_calc_01",
+   "grade": "g06",
+   "unit_id": "g06_c03_u02",
+   "unit_name": "分数÷整数",
+   "semantic_category": "分数÷整数(計算)",
+   "semantic_note": "a/b÷k=a/(b×k)。分母への乗算に帰着。約分はreducedが吸収。",
+   "step_count": 1,
+   "operation": "a/b ÷ k",
+   "answer_formula": "a1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      10
+     ]
+    },
+    "k1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "proper",
+     "expr": "a1 < b1",
+     "why": "被除数を真分数に保つ"
+    },
+    {
+     "rule": "irreducible",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "出題分数を既約に保つ"
+    }
+   ],
+   "computed_slots": {
+    "n1": {
+     "formula": "a1"
+    },
+    "L1": {
+     "formula": "b1 * k1"
+    }
+   },
+   "fraction_display": {
+    "f1": [
+     "a1",
+     "b1"
+    ]
+   },
+   "reduced_mixed_display": {
+    "res1": [
+     "n1",
+     "L1"
+    ]
+   },
+   "sentence_templates": [
+    "{f1}÷{k1}を計算しなさい。"
+   ],
+   "answer_template": "答え {res1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_frac_div_int_word_01",
+   "grade": "g06",
+   "unit_id": "g06_c03_u02",
+   "unit_name": "分数÷整数",
+   "semantic_category": "分数÷整数(文章・等分)",
+   "semantic_note": "frac_word_semanticsのequal_share。分数量÷人数。答えは量なので帯分数正準。",
+   "step_count": 1,
+   "operation": "a/b ÷ k (等分)",
+   "answer_formula": "a1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      10
+     ]
+    },
+    "k1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    },
+    "liq": {
+     "from": "liquids"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "proper",
+     "expr": "a1 < b1",
+     "why": "分けられる量を真分数に保つ"
+    },
+    {
+     "rule": "irreducible",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "出題分数を既約に保つ"
+    }
+   ],
+   "computed_slots": {
+    "n1": {
+     "formula": "a1"
+    },
+    "L1": {
+     "formula": "b1 * k1"
+    }
+   },
+   "fraction_display": {
+    "f1": [
+     "a1",
+     "b1"
+    ]
+   },
+   "reduced_mixed_display": {
+    "res1": [
+     "n1",
+     "L1"
+    ]
+   },
+   "sentence_templates": [
+    "{f1}Lの{liq}を{k1}人で等分すると、1人分は何Lになりますか。"
+   ],
+   "answer_template": "しき {f1}÷{k1}={res1} 答え {res1}L",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "g06_frac_x_frac_calc_01",
+   "grade": "g06",
+   "unit_id": "g06_c03_u03",
+   "unit_name": "分数×分数",
+   "semantic_category": "分数×分数(計算)",
+   "semantic_note": "a/b×c/d=(a×c)/(b×d)。仮分数被乗数も許容(a<2b)。全機構v0.9既存(①指示準拠・生成器無変更)。",
+   "step_count": 1,
+   "operation": "a/b × c/d",
+   "answer_formula": "a1 * c1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "f1_irreducible",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "出題分数を既約に保つ"
+    },
+    {
+     "rule": "f2_irreducible",
+     "expr": "gcd(c1, d1) == 1",
+     "why": "出題分数を既約に保つ"
+    },
+    {
+     "rule": "f1_not_int",
+     "expr": "a1 != b1",
+     "why": "1(整数)を除外"
+    },
+    {
+     "rule": "f2_proper",
+     "expr": "c1 < d1",
+     "why": "乗数は真分数に保つ(帯分数乗は別パターン)"
+    },
+    {
+     "rule": "f1_bounded",
+     "expr": "a1 < b1 * 2",
+     "why": "被乗数は真分数〜小さい仮分数まで"
+    }
+   ],
+   "computed_slots": {
+    "n1": {
+     "formula": "a1 * c1"
+    },
+    "L1": {
+     "formula": "b1 * d1"
+    }
+   },
+   "fraction_display": {
+    "f1": [
+     "a1",
+     "b1"
+    ],
+    "f2": [
+     "c1",
+     "d1"
+    ]
+   },
+   "reduced_mixed_display": {
+    "res1": [
+     "n1",
+     "L1"
+    ]
+   },
+   "sentence_templates": [
+    "{f1}×{f2}を計算しなさい。"
+   ],
+   "answer_template": "答え {res1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_frac_mixed_x_01",
+   "grade": "g06",
+   "unit_id": "g06_c03_u03",
+   "unit_name": "分数×分数",
+   "semantic_category": "帯分数×分数(計算)",
+   "semantic_note": "帯分数を仮分数化(w×b+a)して乗算。仮分数化はanswer_formula内整数演算=v0.9既存機構で閉じる(①指示の検証点)。",
+   "step_count": 1,
+   "operation": "(w a/b) × c/d",
+   "answer_formula": "(w1 * b1 + a1) * c1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "w1": {
+     "type": "int",
+     "range": [
+      1,
+      2
+     ]
+    },
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      7
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      1,
+      8
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "f1_proper_part",
+     "expr": "a1 < b1",
+     "why": "帯分数の分数部を真分数に保つ"
+    },
+    {
+     "rule": "f1_irreducible",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "分数部を既約に保つ"
+    },
+    {
+     "rule": "f2_proper",
+     "expr": "c1 < d1",
+     "why": "乗数は真分数に保つ"
+    },
+    {
+     "rule": "f2_irreducible",
+     "expr": "gcd(c1, d1) == 1",
+     "why": "乗数を既約に保つ"
+    }
+   ],
+   "computed_slots": {
+    "wn1": {
+     "formula": "w1 * b1 + a1"
+    },
+    "n1": {
+     "formula": "(w1 * b1 + a1) * c1"
+    },
+    "L1": {
+     "formula": "b1 * d1"
+    }
+   },
+   "mixed_display": {
+    "mx1": [
+     "wn1",
+     "b1"
+    ]
+   },
+   "fraction_display": {
+    "f2": [
+     "c1",
+     "d1"
+    ]
+   },
+   "reduced_mixed_display": {
+    "res1": [
+     "n1",
+     "L1"
+    ]
+   },
+   "sentence_templates": [
+    "{mx1}×{f2}を計算しなさい。"
+   ],
+   "answer_template": "答え {res1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_frac_x_frac_word_01",
+   "grade": "g06",
+   "unit_id": "g06_c03_u03",
+   "unit_name": "分数×分数",
+   "semantic_category": "分数×分数(文章・単位量×量)",
+   "semantic_note": "ペンキ型の分数拡張: 1あたり量(分数)×量(分数)。乗数が1未満で積が被乗数より小さくなる意味の転換点。",
+   "step_count": 1,
+   "operation": "(1あたり a/b) × c/d",
+   "answer_formula": "a1 * c1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      1,
+      8
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "f1_irreducible",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "出題分数を既約に保つ"
+    },
+    {
+     "rule": "f1_proper",
+     "expr": "a1 < b1",
+     "why": "1あたり量を真分数に保つ"
+    },
+    {
+     "rule": "f2_irreducible",
+     "expr": "gcd(c1, d1) == 1",
+     "why": "出題分数を既約に保つ"
+    },
+    {
+     "rule": "f2_proper",
+     "expr": "c1 < d1",
+     "why": "量を真分数に保つ"
+    }
+   ],
+   "computed_slots": {
+    "n1": {
+     "formula": "a1 * c1"
+    },
+    "L1": {
+     "formula": "b1 * d1"
+    }
+   },
+   "fraction_display": {
+    "f1": [
+     "a1",
+     "b1"
+    ],
+    "f2": [
+     "c1",
+     "d1"
+    ]
+   },
+   "reduced_mixed_display": {
+    "res1": [
+     "n1",
+     "L1"
+    ]
+   },
+   "sentence_templates": [
+    "1dLでかべを{f1}m²ぬれるペンキがあります。このペンキ{f2}dLでは、かべを何m²ぬれますか。"
+   ],
+   "answer_template": "しき {f1}×{f2}={res1} 答え {res1}m²",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "g06_frac_div_frac_calc_01",
+   "grade": "g06",
+   "unit_id": "g06_c03_u04",
+   "unit_name": "分数÷分数",
+   "semantic_category": "分数÷分数(計算)",
+   "semantic_note": "a/b÷c/d=(a×d)/(b×c)。逆数乗はスロット入れ替えの整数演算=v0.9既存機構で閉じる(①指示の検証点)。",
+   "step_count": 1,
+   "operation": "a/b ÷ c/d",
+   "answer_formula": "a1 * d1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      1,
+      8
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "f1_irreducible",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "出題分数を既約に保つ"
+    },
+    {
+     "rule": "f2_irreducible",
+     "expr": "gcd(c1, d1) == 1",
+     "why": "出題分数を既約に保つ"
+    },
+    {
+     "rule": "f1_not_int",
+     "expr": "a1 != b1",
+     "why": "1(整数)を除外"
+    },
+    {
+     "rule": "f2_proper",
+     "expr": "c1 < d1",
+     "why": "除数は真分数に保つ(帯分数除は別パターン)"
+    },
+    {
+     "rule": "f1_bounded",
+     "expr": "a1 < b1 * 2",
+     "why": "被除数は真分数〜小さい仮分数まで"
+    },
+    {
+     "rule": "result_bound",
+     "expr": "a1 * d1 < 5 * b1 * c1",
+     "why": "商を5未満に保つ(小6の計算量として過大な帯分数を除外)"
+    }
+   ],
+   "computed_slots": {
+    "n1": {
+     "formula": "a1 * d1"
+    },
+    "L1": {
+     "formula": "b1 * c1"
+    }
+   },
+   "fraction_display": {
+    "f1": [
+     "a1",
+     "b1"
+    ],
+    "f2": [
+     "c1",
+     "d1"
+    ]
+   },
+   "reduced_mixed_display": {
+    "res1": [
+     "n1",
+     "L1"
+    ]
+   },
+   "sentence_templates": [
+    "{f1}÷{f2}を計算しなさい。"
+   ],
+   "answer_template": "答え {res1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_frac_mixed_div_01",
+   "grade": "g06",
+   "unit_id": "g06_c03_u04",
+   "unit_name": "分数÷分数",
+   "semantic_category": "帯分数÷分数(計算)",
+   "semantic_note": "帯分数を仮分数化してから逆数乗。2つの新手続き(仮分数化・逆数)の合成だが内部は整数演算のまま。",
+   "step_count": 1,
+   "operation": "(w a/b) ÷ c/d",
+   "answer_formula": "(w1 * b1 + a1) * d1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "w1": {
+     "type": "int",
+     "range": [
+      1,
+      2
+     ]
+    },
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      7
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      1,
+      8
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "f1_proper_part",
+     "expr": "a1 < b1",
+     "why": "帯分数の分数部を真分数に保つ"
+    },
+    {
+     "rule": "f1_irreducible",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "分数部を既約に保つ"
+    },
+    {
+     "rule": "f2_proper",
+     "expr": "c1 < d1",
+     "why": "除数は真分数に保つ"
+    },
+    {
+     "rule": "f2_irreducible",
+     "expr": "gcd(c1, d1) == 1",
+     "why": "除数を既約に保つ"
+    },
+    {
+     "rule": "result_bound",
+     "expr": "(w1 * b1 + a1) * d1 < 5 * b1 * c1",
+     "why": "商を5未満に保つ"
+    }
+   ],
+   "computed_slots": {
+    "wn1": {
+     "formula": "w1 * b1 + a1"
+    },
+    "n1": {
+     "formula": "(w1 * b1 + a1) * d1"
+    },
+    "L1": {
+     "formula": "b1 * c1"
+    }
+   },
+   "mixed_display": {
+    "mx1": [
+     "wn1",
+     "b1"
+    ]
+   },
+   "fraction_display": {
+    "f2": [
+     "c1",
+     "d1"
+    ]
+   },
+   "reduced_mixed_display": {
+    "res1": [
+     "n1",
+     "L1"
+    ]
+   },
+   "sentence_templates": [
+    "{mx1}÷{f2}を計算しなさい。"
+   ],
+   "answer_template": "答え {res1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_frac_div_frac_word_01",
+   "grade": "g06",
+   "unit_id": "g06_c03_u04",
+   "unit_name": "分数÷分数",
+   "semantic_category": "分数÷分数(文章・1あたり逆算)",
+   "semantic_note": "c/d dLでa/b m² → 1dLでは。frac_word_semanticsのper_unit_find=g05第3用法(base_find)の分数版。逆算重視方針(②指示)の継承先。",
+   "step_count": 1,
+   "operation": "a/b ÷ c/d (1あたり逆算)",
+   "answer_formula": "a1 * d1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      1,
+      8
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "f1_irreducible",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "出題分数を既約に保つ"
+    },
+    {
+     "rule": "f1_proper",
+     "expr": "a1 < b1",
+     "why": "ぬれた面積を真分数に保つ"
+    },
+    {
+     "rule": "f2_irreducible",
+     "expr": "gcd(c1, d1) == 1",
+     "why": "出題分数を既約に保つ"
+    },
+    {
+     "rule": "f2_proper",
+     "expr": "c1 < d1",
+     "why": "使った量を真分数に保つ(1dLとの大小が逆算の意味を作る)"
+    }
+   ],
+   "computed_slots": {
+    "n1": {
+     "formula": "a1 * d1"
+    },
+    "L1": {
+     "formula": "b1 * c1"
+    }
+   },
+   "fraction_display": {
+    "f1": [
+     "a1",
+     "b1"
+    ],
+    "f2": [
+     "c1",
+     "d1"
+    ]
+   },
+   "reduced_mixed_display": {
+    "res1": [
+     "n1",
+     "L1"
+    ]
+   },
+   "sentence_templates": [
+    "{f2}dLでかべを{f1}m²ぬれるペンキがあります。このペンキ1dLでは、かべを何m²ぬれますか。"
+   ],
+   "answer_template": "しき {f1}÷{f2}={res1} 答え {res1}m²",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "g06_frac_dec_x_01",
+   "grade": "g06",
+   "unit_id": "g06_c03_u05",
+   "unit_name": "いろいろな分数の計算",
+   "semantic_category": "小数×分数",
+   "semantic_note": "小数をp/10に読み替えて分数乗算に帰着。pはdec1数量スロット(スケール10整数・v0.9既存フォーマッタ)。",
+   "step_count": 1,
+   "operation": "p/10 × c/d",
+   "answer_formula": "p1 * c1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "c1": {
+     "type": "int",
+     "range": [
+      1,
+      8
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "quantity_slots": {
+    "p1": {
+     "unit_system": "dec1",
+     "range": [
+      2,
+      24
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "p_not_int",
+     "expr": "p1 % 10 != 0",
+     "why": "被乗数を真に小数に保つ(整数を除外)"
+    },
+    {
+     "rule": "f2_irreducible",
+     "expr": "gcd(c1, d1) == 1",
+     "why": "乗数を既約に保つ"
+    },
+    {
+     "rule": "f2_proper",
+     "expr": "c1 < d1",
+     "why": "乗数は真分数に保つ"
+    }
+   ],
+   "computed_slots": {
+    "n1": {
+     "formula": "p1 * c1"
+    },
+    "L1": {
+     "formula": "10 * d1"
+    }
+   },
+   "fraction_display": {
+    "f2": [
+     "c1",
+     "d1"
+    ]
+   },
+   "reduced_mixed_display": {
+    "res1": [
+     "n1",
+     "L1"
+    ]
+   },
+   "sentence_templates": [
+    "{p1_disp}×{f2}を計算しなさい。答えは分数で書きなさい。"
+   ],
+   "answer_template": "答え {res1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_frac_dec_div_01",
+   "grade": "g06",
+   "unit_id": "g06_c03_u05",
+   "unit_name": "いろいろな分数の計算",
+   "semantic_category": "分数÷小数",
+   "semantic_note": "除数p/10の逆数10/pを乗じる。小数の分数化+逆数の合成。",
+   "step_count": 1,
+   "operation": "a/b ÷ p/10",
+   "answer_formula": "a1 * 10",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "quantity_slots": {
+    "p1": {
+     "unit_system": "dec1",
+     "range": [
+      2,
+      24
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "p_not_int",
+     "expr": "p1 % 10 != 0",
+     "why": "除数を真に小数に保つ"
+    },
+    {
+     "rule": "f1_irreducible",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "被除数を既約に保つ"
+    },
+    {
+     "rule": "f1_not_int",
+     "expr": "a1 != b1",
+     "why": "1(整数)を除外"
+    },
+    {
+     "rule": "f1_bounded",
+     "expr": "a1 < b1 * 2",
+     "why": "被除数は真分数〜小さい仮分数まで"
+    },
+    {
+     "rule": "result_bound",
+     "expr": "a1 * 10 < 5 * b1 * p1",
+     "why": "商を5未満に保つ"
+    }
+   ],
+   "computed_slots": {
+    "n1": {
+     "formula": "a1 * 10"
+    },
+    "L1": {
+     "formula": "b1 * p1"
+    }
+   },
+   "fraction_display": {
+    "f1": [
+     "a1",
+     "b1"
+    ]
+   },
+   "reduced_mixed_display": {
+    "res1": [
+     "n1",
+     "L1"
+    ]
+   },
+   "sentence_templates": [
+    "{f1}÷{p1_disp}を計算しなさい。答えは分数で書きなさい。"
+   ],
+   "answer_template": "答え {res1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_frac_three_ops_01",
+   "grade": "g06",
+   "unit_id": "g06_c03_u05",
+   "unit_name": "いろいろな分数の計算",
+   "semantic_category": "分数3口の乗除",
+   "semantic_note": "a/b×c/d÷e/q。÷は逆数乗に統一してから一括で分子分母の積にする手続きの定着。",
+   "step_count": 2,
+   "operation": "a/b × c/d ÷ e/q",
+   "answer_formula": "a1 * c1 * q1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      7
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      1,
+      7
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    },
+    "e1": {
+     "type": "int",
+     "range": [
+      1,
+      7
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "f1_irreducible",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "出題分数を既約に保つ"
+    },
+    {
+     "rule": "f2_irreducible",
+     "expr": "gcd(c1, d1) == 1",
+     "why": "出題分数を既約に保つ"
+    },
+    {
+     "rule": "f3_irreducible",
+     "expr": "gcd(e1, q1) == 1",
+     "why": "出題分数を既約に保つ"
+    },
+    {
+     "rule": "f1_proper",
+     "expr": "a1 < b1",
+     "why": "3口は全て真分数に保ち計算量を管理"
+    },
+    {
+     "rule": "f2_proper",
+     "expr": "c1 < d1",
+     "why": "同上"
+    },
+    {
+     "rule": "f3_proper",
+     "expr": "e1 < q1",
+     "why": "同上"
+    }
+   ],
+   "computed_slots": {
+    "n1": {
+     "formula": "a1 * c1 * q1"
+    },
+    "L1": {
+     "formula": "b1 * d1 * e1"
+    }
+   },
+   "fraction_display": {
+    "fa": [
+     "a1",
+     "b1"
+    ],
+    "fb": [
+     "c1",
+     "d1"
+    ],
+    "fc": [
+     "e1",
+     "q1"
+    ]
+   },
+   "reduced_mixed_display": {
+    "res1": [
+     "n1",
+     "L1"
+    ]
+   },
+   "sentence_templates": [
+    "{fa}×{fb}÷{fc}を計算しなさい。"
+   ],
+   "answer_template": "答え {res1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_time_h_to_min_01",
+   "grade": "g06",
+   "unit_id": "g06_c04_u01",
+   "unit_name": "速さと分数",
+   "semantic_category": "分数時間→分",
+   "semantic_note": "a/b時間=60×a/b分。bを60の約数に限定して割り切れを構成的に保証。",
+   "step_count": 1,
+   "operation": "a/b 時間 × 60",
+   "answer_formula": "60 * a1 // b1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      14
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "choices": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      10,
+      12,
+      15
+     ],
+     "choice_int": true
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "proper",
+     "expr": "a1 < b1",
+     "why": "1時間未満に保つ(帯分数時間は範囲外)"
+    },
+    {
+     "rule": "irreducible",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "出題分数を既約に保つ"
+    }
+   ],
+   "fraction_display": {
+    "f1": [
+     "a1",
+     "b1"
+    ]
+   },
+   "sentence_templates": [
+    "{f1}時間は何分ですか。"
+   ],
+   "answer_template": "しき 60×{f1}={ans} 答え {ans}分",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_time_sec_to_min_01",
+   "grade": "g06",
+   "unit_id": "g06_c04_u01",
+   "unit_name": "速さと分数",
+   "semantic_category": "秒→分数分",
+   "semantic_note": "s秒=s/60分を約分。s<60なので答えは常に真分数(整数落ちなし=表示退化なし)。",
+   "step_count": 1,
+   "operation": "s ÷ 60 (分数表示)",
+   "answer_formula": "s1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "s1": {
+     "type": "int",
+     "choices": [
+      10,
+      12,
+      15,
+      20,
+      24,
+      25,
+      30,
+      36,
+      40,
+      45,
+      48,
+      50
+     ],
+     "choice_int": true
+    }
+   },
+   "value_constraints": [],
+   "computed_slots": {
+    "n1": {
+     "formula": "s1"
+    },
+    "L1": {
+     "formula": "60"
+    }
+   },
+   "reduced_mixed_display": {
+    "res1": [
+     "n1",
+     "L1"
+    ]
+   },
+   "sentence_templates": [
+    "{s1}秒は何分ですか。分数で答えなさい。"
+   ],
+   "answer_template": "答え {res1}分",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_time_frac_dist_01",
+   "grade": "g06",
+   "unit_id": "g06_c04_u01",
+   "unit_name": "速さと分数",
+   "semantic_category": "速さ×分数時間=道のり",
+   "semantic_note": "g05速さ体系(道のり=速さ×時間)の時間を分数に拡張。積の整数性を制約で構成的に保証。",
+   "step_count": 1,
+   "operation": "v × a/b",
+   "answer_formula": "v1 * a1 // b1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "v1": {
+     "type": "int",
+     "choices": [
+      36,
+      40,
+      42,
+      45,
+      48,
+      54,
+      60,
+      72,
+      80,
+      90
+     ],
+     "choice_int": true
+    },
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "proper",
+     "expr": "a1 < b1",
+     "why": "1時間未満に保つ"
+    },
+    {
+     "rule": "irreducible",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "出題分数を既約に保つ"
+    },
+    {
+     "rule": "divisible",
+     "expr": "(v1 * a1) % b1 == 0",
+     "why": "道のりを整数kmに保つ(割り切れの構成的保証)"
+    }
+   ],
+   "fraction_display": {
+    "f1": [
+     "a1",
+     "b1"
+    ]
+   },
+   "sentence_templates": [
+    "時速{v1}kmで走る自動車が、{f1}時間に進む道のりは何kmですか。"
+   ],
+   "answer_template": "しき {v1}×{f1}={ans} 答え {ans}km",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_speed_meet_01",
+   "grade": "g06",
+   "unit_id": "g06_c04_u02",
+   "unit_name": "速さの問題",
+   "semantic_category": "出会い(速さの和)",
+   "semantic_note": "向かい合って進む2人: t=道のり÷速さの和。道のりを和の倍数に制約して整数分を保証。",
+   "step_count": 2,
+   "operation": "d ÷ (v1 + v2)",
+   "answer_formula": "d1 // (vs1 + vf1)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "vs1": {
+     "type": "int",
+     "choices": [
+      50,
+      60,
+      70,
+      80
+     ],
+     "choice_int": true
+    },
+    "vf1": {
+     "type": "int",
+     "choices": [
+      80,
+      90,
+      120,
+      150,
+      200,
+      240
+     ],
+     "choice_int": true
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      600,
+      2400
+     ],
+     "step": 20
+    },
+    "wa": {
+     "from": "walker_pairs[j].a"
+    },
+    "wb": {
+     "from": "walker_pairs[j].b"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "d1 % (vs1 + vf1) == 0",
+     "why": "出会うまでの時間を整数分に保つ"
+    },
+    {
+     "rule": "t_nontrivial",
+     "expr": "d1 // (vs1 + vf1) >= 3",
+     "why": "1〜2分の自明解を除外"
+    },
+    {
+     "rule": "v_distinct",
+     "expr": "vs1 != vf1",
+     "why": "2人の速さを区別する"
+    }
+   ],
+   "sentence_templates": [
+    "家から駅まで{d1}mあります。{wb}は家から駅へ分速{vs1}mで、{wa}は駅から家へ分速{vf1}mで、同時に出発しました。2人が出会うのは、出発してから何分後ですか。"
+   ],
+   "answer_template": "しき {d1}÷({vs1}+{vf1})={ans} 答え {ans}分後",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2
+   ]
+  },
+  {
+   "pattern_id": "g06_speed_chase_01",
+   "grade": "g06",
+   "unit_id": "g06_c04_u02",
+   "unit_name": "速さの問題",
+   "semantic_category": "追いつき(速さの差)",
+   "semantic_note": "先行分の道のり÷速さの差。2段構造(先行距離→追いつき時間)。可除性を制約で保証。",
+   "step_count": 2,
+   "operation": "(vs × m) ÷ (vf - vs)",
+   "answer_formula": "(vs1 * m1) // (vf1 - vs1)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "vs1": {
+     "type": "int",
+     "choices": [
+      40,
+      50,
+      60,
+      80
+     ],
+     "choice_int": true
+    },
+    "vf1": {
+     "type": "int",
+     "choices": [
+      120,
+      150,
+      180,
+      200,
+      240
+     ],
+     "choice_int": true
+    },
+    "m1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    },
+    "wa": {
+     "from": "walker_pairs[j].a"
+    },
+    "wb": {
+     "from": "walker_pairs[j].b"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "faster",
+     "expr": "vf1 > vs1 * 2",
+     "why": "追いかける側を十分速くして数分内の追いつきを保証"
+    },
+    {
+     "rule": "divisible",
+     "expr": "(vs1 * m1) % (vf1 - vs1) == 0",
+     "why": "追いつく時間を整数分に保つ"
+    },
+    {
+     "rule": "t_nontrivial",
+     "expr": "(vs1 * m1) // (vf1 - vs1) >= 2",
+     "why": "1分の自明解を除外"
+    }
+   ],
+   "sentence_templates": [
+    "{wb}は分速{vs1}mで家を出発しました。その{m1}分後に、{wa}が分速{vf1}mで同じ道を追いかけました。{wa}が{wb}に追いつくのは、{wa}が出発してから何分後ですか。"
+   ],
+   "answer_template": "しき {vs1}×{m1}÷({vf1}-{vs1})={ans} 答え {ans}分後",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_frac_bai_int_01",
+   "grade": "g06",
+   "unit_id": "g06_c04_u03",
+   "unit_name": "割合と分数①",
+   "semantic_category": "何倍か(整数÷整数=分数倍)",
+   "semantic_note": "frac_word_semanticsのtimes_as_much=g05第1用法(ratio_find)の分数値版。倍は仮分数正準(g05_frac_bai_01と一貫)・整数落ちは制約で除外。",
+   "step_count": 1,
+   "operation": "a ÷ b (分数倍)",
+   "answer_formula": "reduce_num(a1, b1)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      40,
+      360
+     ],
+     "step": 10
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      40,
+      360
+     ],
+     "step": 10
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "not_int_ratio",
+     "expr": "a1 % b1 != 0",
+     "why": "整数倍を除外(表示仕様と難度の両面。n/1退化も防ぐ)"
+    },
+    {
+     "rule": "reducible_pair",
+     "expr": "gcd(a1, b1) >= 10",
+     "why": "約分が意味を持つ組に限定"
+    }
+   ],
+   "reduced_fraction_display": {
+    "red1": [
+     "a1",
+     "b1"
+    ]
+   },
+   "sentence_templates": [
+    "{a1}円は{b1}円の何倍ですか。分数で答えなさい。"
+   ],
+   "answer_template": "しき {a1}÷{b1}={red1} 答え {red1}倍",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_frac_bai_frac_01",
+   "grade": "g06",
+   "unit_id": "g06_c04_u03",
+   "unit_name": "割合と分数①",
+   "semantic_category": "何倍か(分数÷分数)",
+   "semantic_note": "分数量どうしの倍。比較量÷基準量の第1用法構造を分数域へ。基準の取り違えが主要誤答(exclusions参照)。",
+   "step_count": 1,
+   "operation": "a/b ÷ c/d (倍)",
+   "answer_formula": "a1 * d1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "obj1": {
+     "from": "length_goods[j].noun"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "f1_irreducible",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "出題分数を既約に保つ"
+    },
+    {
+     "rule": "f2_irreducible",
+     "expr": "gcd(c1, d1) == 1",
+     "why": "出題分数を既約に保つ"
+    },
+    {
+     "rule": "f1_proper",
+     "expr": "a1 < b1",
+     "why": "量を真分数に保つ"
+    },
+    {
+     "rule": "f2_proper",
+     "expr": "c1 < d1",
+     "why": "量を真分数に保つ"
+    },
+    {
+     "rule": "distinct",
+     "expr": "a1 * d1 != b1 * c1",
+     "why": "1倍(同量)を除外"
+    },
+    {
+     "rule": "not_int_ratio",
+     "expr": "(a1 * d1) % (b1 * c1) != 0",
+     "why": "整数倍を除外(仮分数表示の退化n/1を防ぐ)"
+    }
+   ],
+   "computed_slots": {
+    "n1": {
+     "formula": "a1 * d1"
+    },
+    "L1": {
+     "formula": "b1 * c1"
+    }
+   },
+   "fraction_display": {
+    "f1": [
+     "a1",
+     "b1"
+    ],
+    "f2": [
+     "c1",
+     "d1"
+    ]
+   },
+   "reduced_fraction_display": {
+    "red1": [
+     "n1",
+     "L1"
+    ]
+   },
+   "sentence_templates": [
+    "赤い{obj1}が{f1}m、青い{obj1}が{f2}mあります。赤い{obj1}の長さは、青い{obj1}の長さの何倍ですか。"
+   ],
+   "answer_template": "しき {f1}÷{f2}={red1} 答え {red1}倍",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_frac_word_more_01",
+   "grade": "g06",
+   "unit_id": "g06_c04_u04",
+   "unit_name": "割合と分数②",
+   "semantic_category": "基準+基準×分数(〜だけ多い)",
+   "semantic_note": "n+n×a/b。「その」が指す基準の把握が主眼。nをbの倍数に制約して整数解を保証。2段。",
+   "step_count": 2,
+   "operation": "n + n × a/b",
+   "answer_formula": "n1 + n1 * a1 // b1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      12,
+      96
+     ],
+     "step": 2
+    },
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      7
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "proper",
+     "expr": "a1 < b1",
+     "why": "増分割合を1未満に保つ(2倍超は意味領域外)"
+    },
+    {
+     "rule": "irreducible",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "出題分数を既約に保つ"
+    },
+    {
+     "rule": "divisible",
+     "expr": "n1 % b1 == 0",
+     "why": "基準×分数を整数に保つ(割り切れの構成的保証)"
+    }
+   ],
+   "fraction_display": {
+    "f1": [
+     "a1",
+     "b1"
+    ]
+   },
+   "sentence_templates": [
+    "2つのおもりAとBがあります。おもりAの重さは{n1}gで、おもりBはおもりAの重さよりその{f1}だけ重いそうです。おもりBの重さは何gですか。"
+   ],
+   "answer_template": "しき {n1}+{n1}×{f1}={ans} 答え {ans}g",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2
+   ]
+  },
+  {
+   "pattern_id": "g06_frac_word_left_01",
+   "grade": "g06",
+   "unit_id": "g06_c04_u04",
+   "unit_name": "割合と分数②",
+   "semantic_category": "全体×(1-分数)=残り",
+   "semantic_note": "n×(b-a)/b。使った量を引く2段。g05第2用法(compare_find)の引き後形の分数版。",
+   "step_count": 2,
+   "operation": "n - n × a/b",
+   "answer_formula": "n1 * (b1 - a1) // b1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      600,
+      2400
+     ],
+     "step": 50
+    },
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      7
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "proper",
+     "expr": "a1 < b1",
+     "why": "使う割合を1未満に保つ(残りが正になる成立性保証)"
+    },
+    {
+     "rule": "irreducible",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "出題分数を既約に保つ"
+    },
+    {
+     "rule": "divisible",
+     "expr": "n1 % b1 == 0",
+     "why": "使った額を整数円に保つ"
+    }
+   ],
+   "fraction_display": {
+    "f1": [
+     "a1",
+     "b1"
+    ]
+   },
+   "sentence_templates": [
+    "おこづかい{n1}円のうちの{f1}を使いました。あと何円残っていますか。"
+   ],
+   "answer_template": "しき {n1}-{n1}×{f1}={ans} 答え {ans}円",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_hi_arawasu_01",
+   "grade": "g06",
+   "unit_id": "g06_c05_u01",
+   "unit_name": "比",
+   "semantic_category": "比で表す",
+   "semantic_note": "hi_semanticsのexpress。2量をa:bでそのまま表す(簡単化は別カテゴリ)。答えは提示値の転記=採点は完全一致。",
+   "step_count": 1,
+   "operation": "a : b",
+   "answer_formula": "a1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    },
+    "liq": {
+     "from": "liquids"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "distinct",
+     "expr": "a1 != b1",
+     "why": "同量(1:1)を除外"
+    }
+   ],
+   "sentence_templates": [
+    "Aのびんにはコップ{a1}はいの{liq}が、Bのびんにはコップ{b1}はいの{liq}が入っています。AとBに入っている{liq}の量の割合を比で表しなさい。",
+    "縦{a1}cm、横{b1}cmの長方形があります。縦と横の長さの割合を比で表しなさい。"
+   ],
+   "answer_template": "答え {a1}:{b1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_hi_atai_01",
+   "grade": "g06",
+   "unit_id": "g06_c05_u01",
+   "unit_name": "比",
+   "semantic_category": "比の値",
+   "semantic_note": "hi_semanticsのvalue。a:bの比の値=a÷b(分数)。g05第1用法(割合=くらべる量÷もとにする量)と同型なことを接続点とする(②指示)。整数落ちは除外。",
+   "step_count": 1,
+   "operation": "a ÷ b (比の値)",
+   "answer_formula": "reduce_num(a1, b1)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      30
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      30
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "not_int_ratio",
+     "expr": "a1 % b1 != 0",
+     "why": "整数値の比の値を除外(分数表示の退化n/1を防ぐ)"
+    },
+    {
+     "rule": "distinct",
+     "expr": "a1 != b1",
+     "why": "比の値1を除外"
+    }
+   ],
+   "reduced_fraction_display": {
+    "red1": [
+     "a1",
+     "b1"
+    ]
+   },
+   "sentence_templates": [
+    "{a1}:{b1}の比の値を求めなさい。"
+   ],
+   "answer_template": "しき {a1}÷{b1}={red1} 答え {red1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_hi_kantan_01",
+   "grade": "g06",
+   "unit_id": "g06_c05_u02",
+   "unit_name": "比の利用",
+   "semantic_category": "比を簡単にする(整数比)",
+   "semantic_note": "hi_semanticsのsimplify。a=g×p, b=g×qを構成的に生成(gcd(p,q)=1)し、必ず約分が発生する組だけを出題。",
+   "step_count": 1,
+   "operation": "(g×p):(g×q) → p:q",
+   "answer_formula": "p1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "p1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "g1": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "coprime",
+     "expr": "gcd(p1, q1) == 1",
+     "why": "簡単にした結果を既約に保つ(構成的保証)"
+    },
+    {
+     "rule": "distinct",
+     "expr": "p1 != q1",
+     "why": "1:1を除外"
+    }
+   ],
+   "computed_slots": {
+    "a1": {
+     "formula": "g1 * p1"
+    },
+    "b1": {
+     "formula": "g1 * q1"
+    }
+   },
+   "sentence_templates": [
+    "{a1_disp}:{b1_disp}を簡単な整数の比になおしなさい。"
+   ],
+   "answer_template": "答え {p1}:{q1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_unit_system": "raw_min"
+  },
+  {
+   "pattern_id": "g06_hi_kantan_dec_01",
+   "grade": "g06",
+   "unit_id": "g06_c05_u02",
+   "unit_name": "比の利用",
+   "semantic_category": "比を簡単にする(小数比)",
+   "semantic_note": "0.p:0.qを10倍して整数比→約分。dec1数量スロット(v0.9既存)で小数を表示。",
+   "step_count": 2,
+   "operation": "0.p : 0.q → 整数化 → 約分",
+   "answer_formula": "reduce_num(pa1, pb1)",
+   "answer_unit_from": "unit",
+   "slots": {},
+   "quantity_slots": {
+    "pa1": {
+     "unit_system": "dec1",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "pb1": {
+     "unit_system": "dec1",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "distinct",
+     "expr": "pa1 != pb1",
+     "why": "1:1を除外"
+    },
+    {
+     "rule": "reducible_or_not",
+     "expr": "pa1 + pb1 > 4",
+     "why": "0.2:0.2級の極小組を除外(表示の単調さ回避)"
+    }
+   ],
+   "computed_slots": {
+    "rp1": {
+     "formula": "reduce_num(pa1, pb1)"
+    },
+    "rq1": {
+     "formula": "reduce_den(pa1, pb1)"
+    }
+   },
+   "sentence_templates": [
+    "{pa1_disp}:{pb1_disp}を簡単な整数の比になおしなさい。"
+   ],
+   "answer_template": "答え {rp1}:{rq1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_hi_kantan_frac_01",
+   "grade": "g06",
+   "unit_id": "g06_c05_u02",
+   "unit_name": "比の利用",
+   "semantic_category": "比を簡単にする(分数比)",
+   "semantic_note": "a/b:c/dに通分倍(lcm)を掛けて整数比→約分。lcm/gcd/reduceの連鎖=v0.9機構の合成で閉じる(①指示準拠)。",
+   "step_count": 2,
+   "operation": "a/b : c/d → ×lcm(b,d) → 約分",
+   "answer_formula": "ra1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      7
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      1,
+      7
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "f1_irreducible",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "出題分数を既約に保つ"
+    },
+    {
+     "rule": "f2_irreducible",
+     "expr": "gcd(c1, d1) == 1",
+     "why": "出題分数を既約に保つ"
+    },
+    {
+     "rule": "f1_proper",
+     "expr": "a1 < b1",
+     "why": "真分数比に限定"
+    },
+    {
+     "rule": "f2_proper",
+     "expr": "c1 < d1",
+     "why": "真分数比に限定"
+    },
+    {
+     "rule": "distinct",
+     "expr": "a1 * d1 != c1 * b1",
+     "why": "等値比(1:1)を除外"
+    }
+   ],
+   "computed_slots": {
+    "L1": {
+     "formula": "lcm(b1, d1)"
+    },
+    "na1": {
+     "formula": "a1 * (lcm(b1, d1) // b1)"
+    },
+    "nc1": {
+     "formula": "c1 * (lcm(b1, d1) // d1)"
+    },
+    "ra1": {
+     "formula": "reduce_num(a1 * (lcm(b1, d1) // b1), c1 * (lcm(b1, d1) // d1))"
+    },
+    "rc1": {
+     "formula": "reduce_den(a1 * (lcm(b1, d1) // b1), c1 * (lcm(b1, d1) // d1))"
+    }
+   },
+   "fraction_display": {
+    "f1": [
+     "a1",
+     "b1"
+    ],
+    "f2": [
+     "c1",
+     "d1"
+    ]
+   },
+   "sentence_templates": [
+    "{f1}:{f2}を簡単な整数の比になおしなさい。"
+   ],
+   "answer_template": "答え {ra1}:{rc1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_hi_eq_koukou_01",
+   "grade": "g06",
+   "unit_id": "g06_c05_u02",
+   "unit_name": "比の利用",
+   "semantic_category": "等しい比の逆算(x後項)",
+   "semantic_note": "hi_semanticsのeq_solve=g05第3用法(base_find)の後継カテゴリ(②指示)。p:q=pk:xでx=qk。倍率kを構成側に置き成立を保証。",
+   "step_count": 1,
+   "operation": "p:q = p×k:x → x = q×k",
+   "answer_formula": "q1 * k1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "k1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "coprime",
+     "expr": "gcd(p1, q1) == 1",
+     "why": "もとの比を既約に保つ(倍率が一意に見える)"
+    },
+    {
+     "rule": "distinct",
+     "expr": "p1 != q1",
+     "why": "1:1を除外"
+    }
+   ],
+   "computed_slots": {
+    "pk1": {
+     "formula": "p1 * k1"
+    }
+   },
+   "sentence_templates": [
+    "{p1}:{q1}={pk1_disp}:xのとき、xにあてはまる数を求めなさい。"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_unit_system": "raw_min"
+  },
+  {
+   "pattern_id": "g06_hi_eq_zenkou_01",
+   "grade": "g06",
+   "unit_id": "g06_c05_u02",
+   "unit_name": "比の利用",
+   "semantic_category": "等しい比の逆算(x前項)",
+   "semantic_note": "p:q=x:qkでx=pk。未知数の位置を変えた変種。縮小方向(pk:qk=p:x型)は第2波(exclusions参照)。",
+   "step_count": 1,
+   "operation": "p:q = x:q×k → x = p×k",
+   "answer_formula": "p1 * k1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "k1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "coprime",
+     "expr": "gcd(p1, q1) == 1",
+     "why": "もとの比を既約に保つ"
+    },
+    {
+     "rule": "distinct",
+     "expr": "p1 != q1",
+     "why": "1:1を除外"
+    }
+   ],
+   "computed_slots": {
+    "qk1": {
+     "formula": "q1 * k1"
+    }
+   },
+   "sentence_templates": [
+    "{p1}:{q1}=x:{qk1_disp}のとき、xにあてはまる数を求めなさい。"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_unit_system": "raw_min"
+  },
+  {
+   "pattern_id": "g06_hi_bunpai_01",
+   "grade": "g06",
+   "unit_id": "g06_c05_u03",
+   "unit_name": "比の問題",
+   "semantic_category": "比例配分",
+   "semantic_note": "hi_semanticsのdistribute=g05第2用法(compare_find)の後継(全体×部分割合)。全体を(p+q)の倍数に制約。",
+   "step_count": 2,
+   "operation": "T × p ÷ (p+q)",
+   "answer_formula": "t1 * p1 // (p1 + q1)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "t1": {
+     "type": "int",
+     "range": [
+      60,
+      3000
+     ],
+     "step": 20
+    },
+    "obj1": {
+     "from": "length_goods[j].noun"
+    },
+    "wa": {
+     "from": "walker_pairs[j].a"
+    },
+    "wb": {
+     "from": "walker_pairs[j].b"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "coprime",
+     "expr": "gcd(p1, q1) == 1",
+     "why": "比を既約に保つ"
+    },
+    {
+     "rule": "distinct",
+     "expr": "p1 != q1",
+     "why": "等分(1:1)を除外"
+    },
+    {
+     "rule": "divisible",
+     "expr": "t1 % (p1 + q1) == 0",
+     "why": "配分結果を整数に保つ(構成的保証)"
+    }
+   ],
+   "sentence_templates": [
+    "長さ{t1}cmの{obj1}を、{wa}と{wb}で長さの比が{p1}:{q1}になるように分けます。{wa}の分の{obj1}の長さは何cmになりますか。"
+   ],
+   "answer_template": "しき {t1}×{p1}÷({p1}+{q1})={ans} 答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_hi_whole_01",
+   "grade": "g06",
+   "unit_id": "g06_c05_u03",
+   "unit_name": "比の問題",
+   "semantic_category": "部分と全体の比",
+   "semantic_note": "p:qの片方と全体p+qの関係。gcd(p,q)=1ならgcd(p,p+q)=1が自動成立(答えの既約性が構成から従う)。二部構成解答。",
+   "step_count": 2,
+   "operation": "p:(p+q) と T×p÷(p+q)",
+   "answer_formula": "t1 * p1 // (p1 + q1)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "t1": {
+     "type": "int",
+     "range": [
+      600,
+      9000
+     ],
+     "step": 100
+    },
+    "wa": {
+     "from": "walker_pairs[j].a"
+    },
+    "wb": {
+     "from": "walker_pairs[j].b"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "coprime",
+     "expr": "gcd(p1, q1) == 1",
+     "why": "比を既約に保つ→部分:全体も自動的に既約"
+    },
+    {
+     "rule": "distinct",
+     "expr": "p1 != q1",
+     "why": "等分を除外"
+    },
+    {
+     "rule": "divisible",
+     "expr": "t1 % (p1 + q1) == 0",
+     "why": "金額を整数円に保つ"
+    }
+   ],
+   "computed_slots": {
+    "s1": {
+     "formula": "p1 + q1"
+    }
+   },
+   "sentence_templates": [
+    "{t1}円を{wa}と{wb}で{p1}:{q1}になるように分けました。{wa}がもらった金額と全体{t1}円との比を簡単な整数の比で表しなさい。また、{wa}がもらった金額は何円ですか。"
+   ],
+   "answer_template": "答え 比 {p1}:{s1_disp}、金額 {ans}円",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "comparison",
+   "template_number_constants": [],
+   "answer_unit_system": "raw_min"
+  },
+  {
+   "pattern_id": "g06_prop_shiki_01",
+   "grade": "g06",
+   "unit_id": "g06_c11_u02",
+   "unit_name": "比例の式と利用",
+   "semantic_category": "比例・式を求める(find_k)",
+   "semantic_note": "proportion_semanticsのfind_k。1あたり量kが比例定数になることをg05単位量あたりと接続。正準形y=k×x固定で採点の可換問題を回避。",
+   "step_count": 1,
+   "operation": "y = k × x (立式)",
+   "answer_formula": "k1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "k1": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    },
+    "obj": {
+     "from": "heavy_objects"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "1mの重さが{k1}gの{obj}があります。この{obj}の長さをx m、重さをy gとして、yをxの式で表しなさい。"
+   ],
+   "answer_template": "答え y={k1}×x",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "g06_prop_findy_01",
+   "grade": "g06",
+   "unit_id": "g06_c11_u02",
+   "unit_name": "比例の式と利用",
+   "semantic_category": "比例・yを求める(find_y)",
+   "semantic_note": "y=k×xにx代入。g05第2用法(もとにする量×割合)と同型の順方向計算。",
+   "step_count": 1,
+   "operation": "y = k × v",
+   "answer_formula": "k1 * v1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "k1": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    },
+    "v1": {
+     "type": "int",
+     "range": [
+      3,
+      12
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "yはxに比例し、y={k1}×xの式で表されます。xの値が{v1}のときのyの値を求めなさい。"
+   ],
+   "answer_template": "しき {k1}×{v1}={ans} 答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_prop_findx_01",
+   "grade": "g06",
+   "unit_id": "g06_c11_u02",
+   "unit_name": "比例の式と利用",
+   "semantic_category": "比例・xを求める(逆算/find_x)",
+   "semantic_note": "proportion_semanticsのfind_x=逆算。y÷kの可除性を制約で保証。g05第3用法・c02逆算との三点接続(②指示)。",
+   "step_count": 1,
+   "operation": "x = y ÷ k",
+   "answer_formula": "w1 // k1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "k1": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    },
+    "w1": {
+     "type": "int",
+     "range": [
+      12,
+      180
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "w1 % k1 == 0",
+     "why": "xを整数に保つ(割り切れの構成的保証)"
+    },
+    {
+     "rule": "x_nontrivial",
+     "expr": "w1 // k1 > 2",
+     "why": "x=1,2の自明解を除外"
+    }
+   ],
+   "sentence_templates": [
+    "yはxに比例し、y={k1}×xの式で表されます。yの値が{w1}のときのxの値を求めなさい。"
+   ],
+   "answer_template": "しき {w1}÷{k1}={ans} 答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_inv_shiki_01",
+   "grade": "g06",
+   "unit_id": "g06_c11_u05",
+   "unit_name": "反比例の式と利用",
+   "semantic_category": "反比例・式を求める(find_k)",
+   "semantic_note": "積一定(x×y=S)からy=S÷x。面積文脈で決まった数=面積の意味を保持。正準形y=S÷x固定。",
+   "step_count": 1,
+   "operation": "y = S ÷ x (立式)",
+   "answer_formula": "s1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "s1": {
+     "type": "int",
+     "choices": [
+      12,
+      18,
+      20,
+      24,
+      30,
+      36,
+      40,
+      48,
+      54,
+      60,
+      72,
+      90
+     ],
+     "choice_int": true
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "面積が{s1}cm²の長方形があります。縦の長さをx cm、横の長さをy cmとして、yをxの式で表しなさい。"
+   ],
+   "answer_template": "答え y={s1}÷x",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_inv_findy_01",
+   "grade": "g06",
+   "unit_id": "g06_c11_u05",
+   "unit_name": "反比例の式と利用",
+   "semantic_category": "反比例・yを求める(find_y)",
+   "semantic_note": "y=S÷xにx代入。xをSの約数に制約して整数解を保証。",
+   "step_count": 1,
+   "operation": "y = S ÷ v",
+   "answer_formula": "s1 // v1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "s1": {
+     "type": "int",
+     "choices": [
+      24,
+      36,
+      48,
+      60,
+      72,
+      90
+     ],
+     "choice_int": true
+    },
+    "v1": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "s1 % v1 == 0",
+     "why": "yを整数に保つ(約数制約=構成的保証)"
+    },
+    {
+     "rule": "y_nontrivial",
+     "expr": "s1 // v1 > 2",
+     "why": "自明解を除外"
+    }
+   ],
+   "sentence_templates": [
+    "yはxに反比例し、y={s1}÷xの式で表されます。xの値が{v1}のときのyの値を求めなさい。"
+   ],
+   "answer_template": "しき {s1}÷{v1}={ans} 答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_inv_findx_01",
+   "grade": "g06",
+   "unit_id": "g06_c11_u05",
+   "unit_name": "反比例の式と利用",
+   "semantic_category": "反比例・xを求める(逆算/find_x)",
+   "semantic_note": "y=S÷x → x=S÷y。反比例では逆算も除法になる対称性が学習点。可除性を制約で保証。",
+   "step_count": 1,
+   "operation": "x = S ÷ y",
+   "answer_formula": "s1 // w1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "s1": {
+     "type": "int",
+     "choices": [
+      24,
+      36,
+      48,
+      60,
+      72,
+      90
+     ],
+     "choice_int": true
+    },
+    "w1": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "s1 % w1 == 0",
+     "why": "xを整数に保つ"
+    },
+    {
+     "rule": "x_nontrivial",
+     "expr": "s1 // w1 > 2",
+     "why": "自明解を除外"
+    }
+   ],
+   "sentence_templates": [
+    "yはxに反比例し、y={s1}÷xの式で表されます。yの値が{w1}のときのxの値を求めなさい。"
+   ],
+   "answer_template": "しき {s1}÷{w1}={ans} 答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_shukuzu_arawasu_01",
+   "grade": "g06",
+   "unit_id": "g06_c06_u02",
+   "unit_name": "縮図の利用",
+   "semantic_category": "縮尺を表す",
+   "semantic_note": "実長Lmを図上c cmで表す縮尺1/n。nが定番値(500の倍数)になる組だけを制約で採用。二部構成解答(分数と比)。",
+   "step_count": 1,
+   "operation": "n = L×100 ÷ c",
+   "answer_formula": "l1 * 100 // c1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "l1": {
+     "type": "int",
+     "choices": [
+      5,
+      10,
+      20,
+      25,
+      50,
+      100,
+      200
+     ],
+     "choice_int": true
+    },
+    "c1": {
+     "type": "int",
+     "choices": [
+      1,
+      2,
+      4,
+      5
+     ],
+     "choice_int": true
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(l1 * 100) % c1 == 0",
+     "why": "縮尺分母を整数に保つ"
+    },
+    {
+     "rule": "standard_scale",
+     "expr": "(l1 * 100 // c1) % 500 == 0",
+     "why": "縮尺分母を定番値(500の倍数)に限定"
+    },
+    {
+     "rule": "scale_min",
+     "expr": "l1 * 100 // c1 >= 500",
+     "why": "縮尺として意味のある倍率に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "{l1}mの長さを{c1}cmで表した縮図があります。この縮図の縮尺を、分数と比で表しなさい。"
+   ],
+   "answer_template": "答え 分数 1/{ans}、比 1:{ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "comparison",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_shukuzu_to_map_01",
+   "grade": "g06",
+   "unit_id": "g06_c06_u02",
+   "unit_name": "縮図の利用",
+   "semantic_category": "実長→縮図上の長さ",
+   "semantic_note": "図上cm=実長cm÷n。m→cmの単位換算(×100)と縮小の合成。可除性を制約で保証。",
+   "step_count": 2,
+   "operation": "c = L×100 ÷ n",
+   "answer_formula": "l1 * 100 // n1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "choices": [
+      1000,
+      2000,
+      2500,
+      5000
+     ],
+     "choice_int": true
+    },
+    "l1": {
+     "type": "int",
+     "range": [
+      20,
+      400
+     ],
+     "step": 10
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(l1 * 100) % n1 == 0",
+     "why": "図上の長さを整数cmに保つ"
+    },
+    {
+     "rule": "cm_range",
+     "expr": "l1 * 100 // n1 >= 2",
+     "why": "1cm未満・1cmの退化を除外"
+    },
+    {
+     "rule": "cm_max",
+     "expr": "l1 * 100 // n1 <= 20",
+     "why": "図としてあり得る長さに保つ(描画可能性の水準を本文でも維持)"
+    }
+   ],
+   "sentence_templates": [
+    "実際の長さが{l1}mのとき、縮尺1/{n1}の縮図では何cmになりますか。"
+   ],
+   "answer_template": "しき {l1}×100÷{n1}={ans} 答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1,
+    100
+   ]
+  },
+  {
+   "pattern_id": "g06_shukuzu_to_real_01",
+   "grade": "g06",
+   "unit_id": "g06_c06_u02",
+   "unit_name": "縮図の利用",
+   "semantic_category": "縮図上の長さ→実長(km)",
+   "semantic_note": "実長=図上cm×n。内部はm整数、表示はdec3(スケール1000=v0.9既存)でkm小数1位まで。m%100==0制約で表示を1位に制限。",
+   "step_count": 2,
+   "operation": "L = c × n (→km)",
+   "answer_formula": "c1 * n1 // 100",
+   "answer_unit_from": "unit",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "choices": [
+      25000,
+      50000,
+      100000
+     ],
+     "choice_int": true
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "km_display",
+     "expr": "(c1 * n1 // 100) % 100 == 0",
+     "why": "kmの小数第1位までで表示が閉じる組に限定"
+    },
+    {
+     "rule": "km_min",
+     "expr": "c1 * n1 // 100 >= 1000",
+     "why": "1km以上(kmで問う意味の成立性)"
+    }
+   ],
+   "sentence_templates": [
+    "縮尺1/{n1}の縮図で{c1}cmの長さは、実際には何kmありますか。"
+   ],
+   "answer_template": "しき {c1}×{n1}=(cm) 答え {ans_disp}km",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ],
+   "answer_unit_system": "dec3"
+  },
+  {
+   "pattern_id": "g06_baai_narabe_01",
+   "grade": "g06",
+   "unit_id": "g06_c12_u01",
+   "unit_name": "場合の数",
+   "semantic_category": "並べ方(順列)",
+   "semantic_note": "n人の1列並べ=n!。n∈{3,4}に限定し、n!=n×(n-1)×(n-2)の閉形式(n=3で末項1)で整数演算に閉じる。",
+   "step_count": 1,
+   "operation": "n! (n=3,4)",
+   "answer_formula": "n1 * (n1 - 1) * (n1 - 2)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "choices": [
+      3,
+      4
+     ],
+     "choice_int": true
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{n1}人が1列に並びます。並び方は全部で何通りありますか。",
+    "リレーで{n1}人が走ります。走る順番は全部で何通りありますか。"
+   ],
+   "answer_template": "答え {ans}通り",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "g06_baai_joken_01",
+   "grade": "g06",
+   "unit_id": "g06_c12_u01",
+   "unit_name": "場合の数",
+   "semantic_category": "並べ方(1人固定)",
+   "semantic_note": "端の1人を固定した残り(n-1)!。max(1,n-3)でn=3の階乗末項を吸収(maxはSAFE既存=v0.8以前からJS移植済)。",
+   "step_count": 1,
+   "operation": "(n-1)! (n=3,4)",
+   "answer_formula": "(n1 - 1) * (n1 - 2) * max(1, n1 - 3)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "choices": [
+      3,
+      4
+     ],
+     "choice_int": true
+    },
+    "pa": {
+     "from": "actors"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{pa}をふくむ{n1}人が横1列に並びます。{pa}がいちばん左に並ぶとき、並び方は全部で何通りありますか。"
+   ],
+   "answer_template": "答え {ans}通り",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "g06_baai_kumi_01",
+   "grade": "g06",
+   "unit_id": "g06_c12_u01",
+   "unit_name": "場合の数",
+   "semantic_category": "組み合わせ(総当たり)",
+   "semantic_note": "nC2=n(n-1)/2。順列との違い(順序を区別しない)が学習点。偶奇によらずn(n-1)は常に偶数で整数保証。",
+   "step_count": 1,
+   "operation": "n × (n-1) ÷ 2",
+   "answer_formula": "n1 * (n1 - 1) // 2",
+   "answer_unit_from": "unit",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      4,
+      7
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{n1}チームで、どのチームとも1回ずつ試合をします。試合は全部で何試合になりますか。",
+    "{n1}種類のくだものの中から2種類を選びます。選び方は全部で何通りありますか。"
+   ],
+   "answer_template": "答え {ans}試合",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1,
+    2
+   ]
+  }
+ ],
+ "schema_changelog": {
+  "0.9": "g06第1波。生成器v0.9無変更で51パターン追加。新規はバンク側の意味カテゴリ体系(hi/proportion/moji/frac_word_semantics)のみ。dec1/dec3/reduce系/max等は全て既存機構の参照。"
+ }
+}
