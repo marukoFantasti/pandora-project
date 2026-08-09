@@ -1369,7 +1369,7 @@ function showPreview(mode, theme, levelBreakdown, outputJson){
   status.textContent=outputJson.meta.count+'問生成完了（'+levelsDesc+'）';
 }
 
-// ======== パターンバンク（経路A：小2・小3・小4・小5の決定論生成）========
+// ======== パターンバンク（経路A：小2・小3・小4・小5・小6の決定論生成）========
 // pattern_bank/patterns_g02.json・patterns_g03.json・patterns_g04.json・patterns_g05.json・
 // themes/*.json は静的アセットとして fetch で読み込む（Supabase不要）。
 // checkConsistency_retirement_plan.mdに基づき、この経路ではランタイムのAI呼び出し
@@ -1389,7 +1389,7 @@ var MARKED_UNITS = {};
 function loadPatternBank(){
   if (PATTERN_BANK) return Promise.resolve(PATTERN_BANK);
   if (PATTERN_BANK_PROMISE) return PATTERN_BANK_PROMISE;
-  var BANK_FILES = ['pattern_bank/patterns_g02.json', 'pattern_bank/patterns_g03.json', 'pattern_bank/patterns_g04.json', 'pattern_bank/patterns_g05.json'];
+  var BANK_FILES = ['pattern_bank/patterns_g02.json', 'pattern_bank/patterns_g03.json', 'pattern_bank/patterns_g04.json', 'pattern_bank/patterns_g05.json', 'pattern_bank/patterns_g06.json'];
   PATTERN_BANK_PROMISE = Promise.all(BANK_FILES.map(function(f){
     // 1つのバンク読み込み失敗が他方を巻き込まないよう、個別にcatchしてnull化する
     // （例: g03未デプロイでもg02経路Aは生きる）。
@@ -1451,7 +1451,7 @@ function loadTheme(themeId){
 // 混在選択でも、選択単元が全てバンクでカバーされていれば経路A。1つでも外れたら経路B。
 function isPatternEligible(grades, units){
   if (!grades || grades.length === 0) return false;
-  if (!grades.every(function(g){ return g === 'g02' || g === 'g03' || g === 'g04' || g === 'g05'; })) return false;
+  if (!grades.every(function(g){ return g === 'g02' || g === 'g03' || g === 'g04' || g === 'g05' || g === 'g06'; })) return false;
   if (!units || units.length === 0 || units[0] === 'all') return false;
   return units.every(function(u){ return PATTERN_UNIT_INDEX.hasOwnProperty(u) && PATTERN_UNIT_INDEX[u].length > 0; });
 }
@@ -1600,7 +1600,7 @@ function generateQuiz(){
     // 場合（fetch失敗等）は、コンソールだけでなく画面にも一行警告を出す。
     // バンクを持つ学年の静的リスト（BANK_FILESと一致）。読込失敗時はMARKED_UNITSが空で
     // allMarkedが使えないため、この判定で「経路A意図」を推定して警告を出す。
-    var gradesInBankRange = qSelectedGrades.every(function(g){ return g==='g02'||g==='g03'||g==='g04'||g==='g05'; });
+    var gradesInBankRange = qSelectedGrades.every(function(g){ return g==='g02'||g==='g03'||g==='g04'||g==='g05'||g==='g06'; });
     var explicitUnits = targetUnitsForCheck[0] !== 'all';
     var allMarked = explicitUnits && targetUnitsForCheck.every(function(u){ return MARKED_UNITS[u]; });
     if ((allMarked || (PATTERN_BANK_LOAD_FAILED && gradesInBankRange && explicitUnits)) && warnEl) {

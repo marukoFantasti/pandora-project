@@ -25,6 +25,16 @@ const vec = JSON.parse(fs.readFileSync(vecPath, 'utf-8'));
 let bad = 0, total = 0, covered = 0, skipped = [];
 for (const [name, cases] of Object.entries(vec)) {
   if (name === 'comment') continue;
+  // expr_arith: [[expr, env], want] を evalExpr で照合（* / // % の優先順位・左結合の関門）
+  if (name === 'expr_arith') {
+    covered++;
+    for (const [[expr, env], want] of cases) {
+      total++;
+      let got; try { got = P.evalExpr(expr, env); } catch (e) { got = 'ERR:' + e.message; }
+      if (String(got) !== String(want)) { console.log('VEC-FAIL expr_arith', JSON.stringify(expr), '=>', JSON.stringify(got), 'want', JSON.stringify(want)); bad++; }
+    }
+    continue;
+  }
   if (!IMPL[name]) { skipped.push(name); continue; }
   covered++;
   for (const [args, want] of cases) {

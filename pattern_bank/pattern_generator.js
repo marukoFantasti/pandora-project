@@ -14,7 +14,9 @@
   var G04 = '愛案以衣位茨印英栄媛塩岡億加果貨課芽賀改械害街各覚潟完官管関観願岐希季旗器機議求泣給挙漁共協鏡競極熊訓軍郡群径景芸欠結建健験固功好香候康佐差菜最埼材崎昨札刷察参産散残氏司試児治滋辞鹿失借種周祝順初松笑唱焼照城縄臣信井成省清静席積折節説浅戦選然争倉巣束側続卒孫帯隊達単置仲沖兆低底的典伝徒努灯働特徳栃奈梨熱念敗梅博阪飯飛必票標不夫付府阜富副兵別辺変便包法望牧末満未民無約勇要養浴利陸良料量輪類令冷例連老労録';
   // G05: kyoiku_kanji_g1to5.json の g05(193字, MEXT2017)。data/kyoiku_kanji.json['5']と一致。
   var G05 = '圧囲移因永営衛易益液演応往桜可仮価河過快解格確額刊幹慣眼紀基寄規喜技義逆久旧救居許境均禁句型経潔件険検限現減故個護効厚耕航鉱構興講告混査再災妻採際在財罪殺雑酸賛士支史志枝師資飼示似識質舎謝授修述術準序招証象賞条状常情織職制性政勢精製税責績接設絶祖素総造像増則測属率損貸態団断築貯張停提程適統堂銅導得毒独任燃能破犯判版比肥非費備評貧布婦武復複仏粉編弁保墓報豊防貿暴脈務夢迷綿輸余容略留領歴';
-  var KANJI_BY_GRADE = { g01: G01, g02: G02, g03: G03, g04: G04, g05: G05 };
+  // G06: kyoiku_kanji_g1to6.json の g06(191字, MEXT2017)。data/kyoiku_kanji.json['6']と集合一致（順序は出典差・照合は集合）。
+  var G06 = '胃異遺域宇映延沿恩我灰拡革閣割株干巻看簡危机貴揮疑吸供胸郷勤筋系敬警劇激穴券絹権憲源厳己呼誤后孝皇紅降鋼刻穀骨困砂座済裁策冊蚕至私姿視詞誌磁射捨尺若樹収宗就衆従縦縮熟純処署諸除承将傷障蒸針仁垂推寸盛聖誠舌宣専泉洗染銭善奏窓創装層操蔵臓存尊退宅担探誕段暖値宙忠著庁頂腸潮賃痛敵展討党糖届難乳認納脳派拝背肺俳班晩否批秘俵腹奮並陛閉片補暮宝訪亡忘棒枚幕密盟模訳郵優預幼欲翌乱卵覧裏律臨朗論';
+  var KANJI_BY_GRADE = { g01: G01, g02: G02, g03: G03, g04: G04, g05: G05, g06: G06 };
   function buildKanjiSet(str) { var s = {}; str.split('').forEach(function (c) { s[c] = true; }); return s; }
   // kanji_policy.allowed_grades が無いパターンの既定は g01|g02（v0.7 DEFAULT_ALLOWED と同一）。
   var DEFAULT_ALLOWED = buildKanjiSet(G01 + G02);
@@ -171,31 +173,43 @@
   // これ以外のPython構文（**, //, リスト内包表記等）をバンクJSONに書いてはならない。
   // 未対応構文が混入した場合、JSの構文エラーとして即座に失敗する（サイレントな
   // 誤動作にはならない）。
-  // Python の整数除算 // を Math.floor((a)/(b)) に変換。オペランドは atom（識別子・数値・
-  // 1段の括弧グループ）のみ（バンクの // 使用箇所はすべてこの形: n1//n2 / (n_a*n_b)//n2 /
-  // n1//(a1+a2)）。JSでは // は行コメントになるため、new Function 前に必ず潰す。
-  function translateFloorDiv(expr) {
-    // atom = 関数呼び出し max(a,b) / 括弧グループ (a+b) / 識別子・数値。1段の入れ子まで対応。
-    var atom = '(?:\\w+\\([^()]*\\)|\\([^()]*\\)|\\w+)';
-    var re = new RegExp('(' + atom + ')\\s*//\\s*(' + atom + ')');
-    var prev = null;
-    while (prev !== expr) {  // 複数箇所・入れ子（左辺が既に括弧化）に備え収束まで反復
-      prev = expr;
-      expr = expr.replace(re, 'Math.floor(($1)/($2))');
-    }
-    return expr;
+  // Python の * / // % は同順位・左結合。素朴な atom-pair 置換だと "A * B // C" を
+  // "A * Math.floor(B/C)" と誤訳する（Pythonは "(A*B)//C"）。そこで括弧を内側から畳み込み、
+  // 各乗除連鎖を左結合で fold して等価変換する:
+  //   // → Math.floor((左)/(右)) / % → pymod((左),(右)) / *・/ は素の JS 演算（左結合同一）
+  // 除数は常に正（10/100/1000/60/n>0）を前提。pymod は被除数が負でも Python 準拠（(q1-q2)%10等）。
+  // 1つの乗除連鎖 atom(op atom)* を左から fold（op ∈ { * / // % }）。// % が無ければ素通し。
+  function foldMulChain(s) {
+    var atom = '(?:\\w+\\x01\\d+\\x01|\\x01\\d+\\x01|[\\w.]+)';   // 関数呼出(名+token)/括弧(token)/識別子・数値
+    var mulop = '(?:\\/\\/|[*\\/%])';                             // // を / より先に
+    var chain = new RegExp(atom + '(?:\\s*' + mulop + '\\s*' + atom + ')*', 'g');
+    var tokRe = new RegExp(atom + '|\\/\\/|[*\\/%]', 'g');
+    return s.replace(chain, function (m) {
+      if (m.indexOf('//') < 0 && m.indexOf('%') < 0) return m;   // // も % も無ければ変換不要
+      var t = m.match(tokRe), acc = t[0];
+      for (var i = 1; i < t.length; i += 2) {
+        var op = t[i], r = t[i + 1];
+        if (op === '//') acc = 'Math.floor((' + acc + ')/(' + r + '))';
+        else if (op === '%') acc = 'pymod((' + acc + '),(' + r + '))';
+        else acc = acc + op + r;   // * or /（左結合はJSと同一）
+      }
+      return acc;
+    });
   }
-
-  // Python の剰余 % を pymod(a,b) に変換。JS の % は被除数の符号を返す（-28%10=-8）が
-  // Python は除数の符号（-28%10=2）。求差系 (q1-q2)%10 等で負の被除数が出るため必須。
-  // 除数は常に正（10/100/1000/60/n2>0）を前提とする。オペランドは atom（// と同じ）。
-  function translateMod(expr) {
-    var atom = '(?:\\w+\\([^()]*\\)|\\([^()]*\\)|\\w+)';
-    var re = new RegExp('(' + atom + ')\\s*%\\s*(' + atom + ')');
-    var prev = null;
-    while (prev !== expr) {
-      prev = expr;
-      expr = expr.replace(re, 'pymod(($1),($2))');
+  // 括弧を最内から token 退避 → 中身を fold → 上位を fold → token 復元（入れ子対応）。
+  // JSでは // が行コメントになるため new Function 前に必ず潰す。
+  function translateArith(expr) {
+    var stash = [], paren = /\([^()]*\)/, m;
+    while ((m = paren.exec(expr))) {
+      var inner = foldMulChain(m[0].slice(1, -1));
+      stash.push('(' + inner + ')');
+      expr = expr.slice(0, m.index) + '\x01' + (stash.length - 1) + '\x01' + expr.slice(m.index + m[0].length);
+    }
+    expr = foldMulChain(expr);
+    var changed = true;
+    while (changed) {
+      changed = false;
+      expr = expr.replace(/\x01(\d+)\x01/g, function (_, i) { changed = true; return stash[+i]; });
     }
     return expr;
   }
@@ -247,8 +261,7 @@
   function pyExprToJs(expr) {
     var out = expr.match(/^(.+?)\s+if\s+(.+?)\s+else\s+(.+)$/);
     if (out) expr = '(' + out[2] + ') ? (' + out[1] + ') : (' + out[3] + ')';
-    expr = translateFloorDiv(expr);
-    expr = translateMod(expr);
+    expr = translateArith(expr);
     expr = expandChainedComparison(expr);
     return expr
       .replace(/\band\b/g, '&&')

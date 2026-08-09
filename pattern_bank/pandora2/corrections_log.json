@@ -24,5 +24,18 @@
   "instruction": "数字の1が、縦線と交わったらわかりにくくなるね。",
   "resolution": "縦点線からラベルまでの水平クリアランス>=12pxを部品固有の強不変条件(ownMin)としてスキャンにアサーション追加。白フチはangle_sum様式で全ラベル適用済みを確認。",
   "generalization": "数字字形(特に1)と縦線の平行隣接は距離保証と別に水平クリアランスで防ぐ。新kindの仕様段階で『字形と線の紛れ』をチェックリストに含める。"
+ },
+ {
+  "id": "corr-0003",
+  "date": "2026-08-09",
+  "by": "marko",
+  "scope": {
+   "type": "generator",
+   "target": "pattern_generator.js translateFloorDiv / JS検証関門"
+  },
+  "observed": "経路AのJS生成でA*B//C形の答えが誤り（Python(A*B)//Cに対しJSがA*floor(B/C)を算出）。g05本番17パターン・g06新規8パターンが誤答。JSスモーク(生成成功のみ)とPythonゴールデン(Python同士)では構造的に検出不能だった。",
+  "instruction": "(A)translateFloorDivを根治で修正（//・%の左オペランドが * / % // の連鎖を含むよう、Pythonの同順位・左結合と等価に）。JS verifyパリティ(JS生成の答え==Python評価)を全学年の標準関門に昇格。バンクJSONは触らない(括弧化しない)。",
+  "resolution": "pyExprToJsのfloor-div/mod変換を、括弧を内側から畳み込み各乗除連鎖を左結合foldする方式に置換。helpers_test_vectors.jsonに優先順位ベクター(expr_arith)追加。tests/pattern_bank_js_parity.jsを新設しJS↔Python答え照合を関門化。g02-g04不変・g05/g06是正を実証。",
+  "generalization": "式翻訳器は演算子の優先順位・結合性をPython準拠で保証する。生成器変更・バンク追加時は必ずJS↔Python答えパリティ関門を実行する（生成成功チェックだけでは誤訳を検出できない）。"
  }
 ]
