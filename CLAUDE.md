@@ -87,3 +87,9 @@ Do not introduce ad-hoc variants (e.g. a past bug referenced a non-existent `'pa
 ### Dead-code history
 
 `pandora_main.html` used to contain an in-app quiz-HTML generator (`generateQuizHTML`/`buildBaseTemplate`/`buildCoreComponents`, ~300 lines of a React-based template string) that had zero call sites — the real workflow is the copy-JSON-and-paste-into-Claude.ai flow described above. It was removed. If similar large "build a whole page as a string" functions show up unreferenced, check call sites before assuming they're load-bearing.
+
+## Standing convention: corrections log (pandora2 rationale system)
+
+`pattern_bank/pandora2/` holds the "rationale/corrections" training-data scaffolding (design rationales, human-correction log, and `make_training_pairs.py` which emits `pairs_design.jsonl` / `pairs_revision.jsonl` / `rag_docs.jsonl`). The whole directory is **deploy-excluded** (`.vercelignore`) — internal design provenance, never served. Run/verify with `python3 make_training_pairs.py ../patterns_g05.json` from inside `pandora2/` (expect `検証OK → pairs_design 8 / pairs_revision 2 / rag_docs 45`; hygiene forbids material names / real IDs like `ウィンパス`/`ref_g05`/`reference_problems`).
+
+**Mandatory rule:** any session that received a human correction/instruction (the user telling you a specific fix or that something was wrong) MUST, at close, append a record to `pattern_bank/pandora2/corrections_log.json`. Each entry needs `id, date, by, scope, observed, instruction, resolution, generalization` (see `make_training_pairs.py` `validate` and `rationale_schema_spec.md`). This captures "when told it's wrong, here's the general fix" so it becomes revision-training data — treat it as a release-checklist item alongside golden-gate/tests, not an optional extra.
