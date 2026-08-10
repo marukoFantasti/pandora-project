@@ -2,7 +2,7 @@
  "schema": "rationale v1.0 (pattern_bank/pandora2/rationale_schema_spec.md準拠)",
  "grade": "g06",
  "session_date": "2026-08-09",
- "notes": "directivesはbank_directives表+id参照の圧縮表現(仕様拡張)。出所(by/date)は表側に保持。図形なしA層のためfigure_notesは共通文。訓練ペア抽出時はid参照を全文展開すること。",
+ "notes": "directivesはbank_directives表+id参照の圧縮表現(仕様拡張)。出所(by/date)は表側に保持。図形なしA層のためfigure_notesは共通文。訓練ペア抽出時はid参照を全文展開すること。 B層11エントリを同日追記(2026-08-09第2弾)。",
  "bank_directives": [
   {
    "id": "D1",
@@ -1094,6 +1094,235 @@
     "exclusions": "3つ選ぶ組み合わせは範囲外。",
     "figure_notes": "図形なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
     "pedagogy": "対戦表の対角線で見せる指導が前提。式の「÷2」の意味説明は授業側。"
+   }
+  },
+  "g06_circle_area_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "円の面積/基本",
+    "number_domain": "整数半径2〜10・面積dec2",
+    "answer_structure_note": "パターン本体を正とする",
+    "figure": "あり(B層)",
+    "directives": [
+     "D3"
+    ]
+   },
+   "rationale": {
+    "source_features": "半径提示の円面積(単元最多形)。",
+    "representation": "S=r²×3.14。内部スケール100整数(r²×314)・dec2表示=g05面積文化継承。図circle v2 radius_label。",
+    "constructive_guarantees": "整数半径×314は常にスケール100で閉じる(制約不要)。円周率3.14は本文定数として許可集合登録。",
+    "semantic_position": "circle v2(D3判断: 新kindでなく拡張)の初出パターン。g05円周(v1)の面積拡張。",
+    "exclusions": "直径提示型・円周との複合は第2波。",
+    "figure_notes": "B層: 本番反映済みkind(545310c: circle v2/prism/table highlight)を参照",
+    "pedagogy": "公式の言語化(半径×半径×円周率)と3.14筆算の位取り。"
+   }
+  },
+  "g06_circle_area_half_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "円の面積/半円",
+    "number_domain": "整数半径・面積dec2",
+    "answer_structure_note": "パターン本体を正とする",
+    "figure": "あり(B層)",
+    "directives": [
+     "D3"
+    ]
+   },
+   "rationale": {
+    "source_features": "半円の面積。",
+    "representation": "S=r²×3.14÷2=r²×157。314/2=157で常に整数スケールに閉じる=÷2の制約が不要になる数論的好都合。図sector=half。",
+    "constructive_guarantees": "同上(構造的に閉じる)。",
+    "semantic_position": "fullの変形1手(÷2)。分割図形の入口。",
+    "exclusions": "切り口が直径であることの言及は図に委譲。",
+    "figure_notes": "B層: 本番反映済みkind(545310c: circle v2/prism/table highlight)を参照",
+    "pedagogy": "「半分」を式のどこに置くか(最後に÷2)の型。"
+   }
+  },
+  "g06_circle_area_quarter_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "円の面積/四分円",
+    "number_domain": "偶数半径・面積dec2",
+    "answer_structure_note": "パターン本体を正とする",
+    "figure": "あり(B層)",
+    "directives": [
+     "D3"
+    ]
+   },
+   "rationale": {
+    "source_features": "四分円の面積。",
+    "representation": "S=r²×3.14÷4。rを偶数に限定し157r²/2の整数性を保証。図sector=quarter(直角記号)。",
+    "constructive_guarantees": "r∈{2,4,6,8,10}でスケール100整数が構成的に成立。",
+    "semantic_position": "halfの変形。直角記号が「4等分」の視覚根拠。",
+    "exclusions": "奇数半径(答えが小数第3位)は排除。3/4円・組合せ図形は第2波。",
+    "figure_notes": "B層: 本番反映済みkind(545310c: circle v2/prism/table highlight)を参照",
+    "pedagogy": "分割数と除数の対応(4等分→÷4)。"
+   }
+  },
+  "g06_circle_area_reverse_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "円の面積/逆算",
+    "number_domain": "整数半径3〜10(内部)",
+    "answer_structure_note": "パターン本体を正とする",
+    "figure": "あり(B層)",
+    "directives": [
+     "D3"
+    ]
+   },
+   "rationale": {
+    "source_features": "面積から半径を求める逆算。",
+    "representation": "S÷3.14=r²→rを平方数の目測で当てる。面積はr起点の構成的生成でdec2表示(_disp経由でverify許可集合に入る)。ansはr×100でdec2スケール統一。",
+    "constructive_guarantees": "r²が常に平方数として提示される(構成от保証)。",
+    "semantic_position": "面積公式の逆算=g05面積逆算(para_height)の円版。平方数の暗算領域(9〜100)。",
+    "exclusions": "√は範囲外のため平方数のみ。しきの2段目({r}×{r}={r²})で試行の型を提示。",
+    "figure_notes": "B層: 本番反映済みkind(545310c: circle v2/prism/table highlight)を参照",
+    "pedagogy": "「÷3.14が先」の手順と平方数の当たり(9×9=81)の二段構え。"
+   }
+  },
+  "g06_prism_rect_vol_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "角柱体積/四角柱",
+    "number_domain": "整数辺・w>=d",
+    "answer_structure_note": "パターン本体を正とする",
+    "figure": "あり(B層)",
+    "directives": [
+     "D3"
+    ]
+   },
+   "rationale": {
+    "source_features": "四角柱(直方体)の体積を底面積×高さで読む。",
+    "representation": "(w×d)×h。g05直方体公式の再解釈が単元の主眼。図prism rect。",
+    "constructive_guarantees": "整数積で常に閉じる。w>=d制約=corr-0004(横長寄せはレンダラでなくバンク制約)の初回実施。",
+    "semantic_position": "prism kind初出。g05 cuboid体積の意味的後継。",
+    "exclusions": "たて×よこ×高さとの同値性の説明は授業側。円柱はkind未対応のため範囲外(C層/第2波判断)。",
+    "figure_notes": "B層: 本番反映済みkind(545310c: circle v2/prism/table highlight)を参照",
+    "pedagogy": "「底面積×高さ」への読み替えが円柱・cone(jhs)への伏線。"
+   }
+  },
+  "g06_prism_tri_vol_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "角柱体積/三角柱",
+    "number_domain": "整数辺・底面積偶数",
+    "answer_structure_note": "パターン本体を正とする",
+    "figure": "あり(B層)",
+    "directives": [
+     "D3"
+    ]
+   },
+   "rationale": {
+    "source_features": "三角柱の体積。",
+    "representation": "(底辺×底面高÷2)×h。式のA*B//2*C形は根治済みfloor-div左結合の実運用形(パリティ関門対象)。図prism tri。",
+    "constructive_guarantees": "(base×bh)%2==0で底面積整数を保証。base>=bhの横長寄せ。",
+    "semantic_position": "三角形面積(g05)×柱の高さの合成。底面の「高さ」と柱の「高さ」の弁別が学習点。",
+    "exclusions": "底面が直角三角形以外の見取図表現はkind仕様に依存(現行は汎用tri)。",
+    "figure_notes": "B層: 本番反映済みkind(545310c: circle v2/prism/table highlight)を参照",
+    "pedagogy": "2種類の「高さ」の混同が主要誤答仮説→Pandora2重点。"
+   }
+  },
+  "g06_prism_height_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "角柱体積/逆算",
+    "number_domain": "整数(V÷S、2〜12)",
+    "answer_structure_note": "パターン本体を正とする",
+    "figure": "なし",
+    "directives": []
+   },
+   "rationale": {
+    "source_features": "体積と底面積から高さ。",
+    "representation": "h=V÷S。図なし(底面積は図に描けない集約量のため文章提示が自然)。",
+    "constructive_guarantees": "V%S==0+高さ2〜12の範囲制約。",
+    "semantic_position": "体積公式の逆算。c02逆算・prop find_xと同じ除法逆算構造。",
+    "exclusions": "底面積でなく辺提示からの2段逆算は第2波。",
+    "figure_notes": "図なし(集約量提示のため)",
+    "pedagogy": "公式の変形(V=S×h→h=V÷S)を初めて立体で。"
+   }
+  },
+  "g06_prop_table_blank_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "比例の表/空欄補充",
+    "number_domain": "整数k2〜12",
+    "answer_structure_note": "パターン本体を正とする",
+    "figure": "あり(B層)",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "比例の表の空欄(x=4)を埋める。",
+    "representation": "table kindはcol_headerで列数を決定する仕様のため、col_header=x値・rows=y行のみの構成(x/y2行案は列数1と解釈され描画不能=Code実測)。highlightは全セルグリッド基準(row0=ヘッダ行, col0=行ラベル列): designer座標+[1,1]。□セルは[[1,4]]。",
+    "constructive_guarantees": "y=kxの表を構成的に生成、空欄位置はfigure構造上固定(x=4)。",
+    "semantic_position": "proportion_semanticsのB層入口。x1増→yk増(差の一定)とy=kx(商の一定)の両読みができる素材。",
+    "exclusions": "空欄位置の可変化はfigure_params静的構造の制約で不可(位置別パターン追加は第2波)。反比例表も第2波。",
+    "figure_notes": "B層table。col_header列数仕様とhighlightグリッド基準(+1,+1オフセット)は今後の全table設計の前提(2026-08-09 Code実測で確定)。",
+    "pedagogy": "「何倍」と「いくつ増」の2つの見方を許す出題文(方法は固定しない)。"
+   }
+  },
+  "g06_prop_table_shiki_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "比例の表/式化",
+    "number_domain": "整数k2〜12",
+    "answer_structure_note": "パターン本体を正とする",
+    "figure": "あり(B層)",
+    "directives": [
+     "D2"
+    ]
+   },
+   "rationale": {
+    "source_features": "比例の表から式を求める。",
+    "representation": "table kindはcol_headerで列数を決定する仕様のため、col_header=x値・rows=y行のみの構成(x/y2行案は列数1と解釈され描画不能=Code実測)。highlightは全セルグリッド基準(row0=ヘッダ行, col0=行ラベル列): designer座標+[1,1]。",
+    "constructive_guarantees": "構成的生成で表は常に整合。",
+    "semantic_position": "find_kのB層(表読み)版。A層prop_shiki(文章)との対パターン。",
+    "exclusions": "kが表に直接ないケース(x=2起点等)は第2波。",
+    "figure_notes": "B層table。col_header列数仕様とhighlightグリッド基準(+1,+1オフセット)は今後の全table設計の前提(2026-08-09 Code実測で確定)。",
+    "pedagogy": "「x=1の行を探す」方略と「y÷xがどれも同じ」方略の併存。"
+   }
+  },
+  "g06_dosuu_total_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "度数分布/合計",
+    "number_domain": "度数2〜9×4階級",
+    "answer_structure_note": "パターン本体を正とする",
+    "figure": "あり(B層)",
+    "directives": [
+     "D4"
+    ]
+   },
+   "rationale": {
+    "source_features": "度数分布表の合計人数。",
+    "representation": "4階級固定(ソフトボール投げ10〜30m)。度数はスロット生成の架空データのみ(D4)。",
+    "constructive_guarantees": "和は常に正整数。",
+    "semantic_position": "データ読み取り系の最小形。C層histogram・dot_plotの前段。",
+    "exclusions": "最頻階級(文字列解答)は検収UI後の第2波。階級幅変更・5階級は第2波。",
+    "figure_notes": "B層: 本番反映済みkind(545310c: circle v2/prism/table highlight)を参照",
+    "pedagogy": "表の縦(階級)と横(度数)の読み分け。"
+   }
+  },
+  "g06_dosuu_cumul_01": {
+   "brief": {
+    "grade": "g06",
+    "semantic_territory": "度数分布/累積(以上)",
+    "number_domain": "度数2〜9×4階級",
+    "answer_structure_note": "パターン本体を正とする",
+    "figure": "あり(B層)",
+    "directives": [
+     "D4"
+    ]
+   },
+   "rationale": {
+    "source_features": "「20m以上」の人数(上位2階級の和)。",
+    "representation": "以上/未満の範囲判定+加法。20は本文定数登録。",
+    "constructive_guarantees": "和は常に正整数。該当階級の特定が実質の問い。",
+    "semantic_position": "totalとの対パターン。「以上」「未満」の境界処理はjhs資料活用への伏線。",
+    "exclusions": "「未満」側累積・中央値の階級は第2波。",
+    "figure_notes": "B層: 本番反映済みkind(545310c: circle v2/prism/table highlight)を参照",
+    "pedagogy": "境界値(ちょうど20m)がどちらに入るかの確認を促す出題が理想だが第1波は範囲読みのみ。"
    }
   }
  }
