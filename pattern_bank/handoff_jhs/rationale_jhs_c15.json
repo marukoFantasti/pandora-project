@@ -1,0 +1,111 @@
+{
+  "_meta": {
+    "schema": "rationale_schema_spec.md v1.0",
+    "scope": "jhs c15 展開・因数分解(9パターン)",
+    "note": "共通設計判断: _shared.jhs_c15_tenkai(本ファイル)。"
+  },
+  "_shared": {
+    "jhs_c15_tenkai": {
+      "representation": "展開の答えはx²{中間項}{定数項}の3項固定様式(中間項の符号可変はfmt_coefj)。因数分解の答えは因数を定数項の降順で並べる正準(実物12/12全会一致、c17の解降順と同一原理『数値は降順』としてdisplay_canonに追補)。",
+      "constructive_guarantees": "因数分解の可能性は生成時に構成的に保証する: 共通因数型=可除性、(x＋a)(x−b)型=判別式D＝p²＋4qの平方数判定(sqrt_rad(D)＝1)+偶奇一致(sqrt系ヘルパの制約転用・新手筋)、完全平方型=choices整合、和差積型=平方数choices。恒等検算は『因数分解の答えを展開し直して本文多項式と係数一致』で全型実施(展開型は逆向き)。",
+      "exclusion_architecture": "展開5形は相互排他の制約分割: a＝bの縮退は各型で別公式の領分として除外(exp_01のa＝b→exp_03、exp_02のa＝b→exp_05)。型どうしの守備範囲をvalue_constraintsで明文化する設計。",
+      "directives": [
+        {"text": "A層第1波スコープ承認(c15展開因数分解)", "by": "marko", "date": "2026-08-09"},
+        {"text": "章配分増強方針(c15は4→8、実装9)", "by": "marko", "date": "2026-08-10"},
+        {"text": "display_canon⑥裁可(数値は降順)——因数並びへ同一原理を拡張適用", "by": "marko", "date": "2026-08-10"}
+      ]
+    }
+  },
+  "rationales": {
+    "jhs_c15_exp_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c15_u01", "unit_name": "展開・因数分解", "semantic_territory": "展開・(x＋a)(x＋b)両正", "number_domain": "整数係数(全項正)", "answer_structure": "single", "figure": "なし", "step_count": 1, "directives_ref": "_shared.jhs_c15_tenkai.directives"},
+      "source_features": "両正の(x＋a)(x＋b)。和と積の同時管理の入口。",
+      "representation": "_shared参照。中間項a＋b・定数項abともに正=素の数値表示。",
+      "constructive_guarantees": "a≠b(a＝bは(x＋a)²公式の領分・相互排他)。",
+      "semantic_position": "展開の基底。fac_02(逆向き)と対。",
+      "exclusions": "a＝b除外(exp_03の領分)。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c15_exp_02": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c15_u01", "unit_name": "展開・因数分解", "semantic_territory": "展開・(x＋a)(x−b)混合", "number_domain": "整数係数(中間項nonzero・定数項負)", "answer_structure": "single", "figure": "なし", "step_count": 1, "directives_ref": "_shared.jhs_c15_tenkai.directives"},
+      "source_features": "混合符号の展開。中間項の符号判定(a−bの正負)が主眼。",
+      "representation": "中間項=fmt_coefj(±1境界で「＋x」「−x」、狙い撃ち検証済み)。定数項は常に−ab。",
+      "constructive_guarantees": "a≠b(x項消失=和差積の領分・fmt_coefj(0)未定義規約)。",
+      "semantic_position": "展開の主戦場(符号判定)。fac_02と表裏。",
+      "exclusions": "a＝b除外(exp_05の領分)。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c15_exp_03": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c15_u01", "unit_name": "展開・因数分解", "semantic_territory": "展開・公式(x＋a)²", "number_domain": "整数係数(全項正)", "answer_structure": "single", "figure": "なし", "step_count": 1, "directives_ref": "_shared.jhs_c15_tenkai.directives"},
+      "source_features": "乗法公式1。中間項2aの「2倍」を落とす誤りが定番の型。",
+      "representation": "d＝2a・q＝a²をcomputedで表示。",
+      "constructive_guarantees": "a∈[2,9]。",
+      "semantic_position": "公式3本の第1。fac_03(逆)と対。",
+      "exclusions": "a＝1は中間項係数2固定で変化が乏しいため除外。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c15_exp_04": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c15_u01", "unit_name": "展開・因数分解", "semantic_territory": "展開・公式(x−a)²", "number_domain": "整数係数(中間項負)", "answer_structure": "single", "figure": "なし", "step_count": 1, "directives_ref": "_shared.jhs_c15_tenkai.directives"},
+      "source_features": "乗法公式2。定数項が＋a²に戻る符号処理((−a)²＝正、c01_pow_01の接続)。",
+      "representation": "exp_03と同一機構・符号のみテンプレ差。",
+      "constructive_guarantees": "同上。",
+      "semantic_position": "公式3本の第2。",
+      "exclusions": "同上。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c15_exp_05": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c15_u01", "unit_name": "展開・因数分解", "semantic_territory": "展開・公式(和差積)", "number_domain": "整数係数(2項)", "answer_structure": "single", "figure": "なし", "step_count": 1, "directives_ref": "_shared.jhs_c15_tenkai.directives"},
+      "source_features": "乗法公式3。x項が消えて2項になる唯一の型。",
+      "representation": "答えはx²−a²の2項固定。",
+      "constructive_guarantees": "a∈[2,9]。",
+      "semantic_position": "公式3本の第3。fac_04(逆)と対。",
+      "exclusions": "係数付き(3x＋2y)(3x−2y)型は第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c15_fac_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c15_u01", "unit_name": "展開・因数分解", "semantic_territory": "因数分解・共通因数", "number_domain": "整数係数", "answer_structure": "single", "figure": "なし", "step_count": 1, "directives_ref": "_shared.jhs_c15_tenkai.directives"},
+      "source_features": "Ax²＋Bxの共通因数くくり出し。因数分解の第一歩(公式適用前に必ず見る操作)。",
+      "representation": "答えはAx(x＋m)の1様式固定。",
+      "constructive_guarantees": "可除性+m[2,9]。",
+      "semantic_position": "因数分解の基底。",
+      "exclusions": "m＝1退化除外。3項の共通因数(2x²＋4x＋6型)は第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c15_fac_02": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c15_u01", "unit_name": "展開・因数分解", "semantic_territory": "因数分解・(x＋a)(x−b)型", "number_domain": "整数係数(可行(p,q)26種を静的悉皆済み)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c15_tenkai.directives"},
+      "source_features": "x²＋px−qの因数分解。積と差から2数を探す、章の中心技能。",
+      "representation": "因数は(x＋a)(x−b)・定数項降順固定。a,bはsqrt_coef(D)から復元するcomputed。",
+      "constructive_guarantees": "判別式D＝p²＋4qの平方数判定(sqrt_rad(D)＝1)+偶奇一致+b≧1+a≦12。sqrt系ヘルパを『解の存在保証の制約』に転用する新手筋で、可行(p,q)は静的悉皆で26種を確認済み(多様性十分)。恒等検算=(x＋a)(x−b)を展開し直しp,qと係数一致。",
+      "semantic_position": "因数分解の主戦場。c17因数分解型二次方程式の直接の前段(同じ判別式手筋を使う)。",
+      "exclusions": "p＝1は「1x」表記不正のため除外(x²＋x−q型は係数省略表示の別テンプレが要る、第2波)。x²−px−q・x²＋px＋q等の符号バリエーションも第2波(型ごとに1形固定の方針)。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c15_fac_03": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c15_u01", "unit_name": "展開・因数分解", "semantic_territory": "因数分解・(x−a)²型", "number_domain": "整数係数(choices整合)", "answer_structure": "single", "figure": "なし", "step_count": 1, "directives_ref": "_shared.jhs_c15_tenkai.directives"},
+      "source_features": "完全平方の認識(中間項が2aか、定数項がa²か)。",
+      "representation": "d・qを独立choicesで持ち整合制約で束ねる(受容率1/8・充足十分)。",
+      "constructive_guarantees": "(d/2)²＝qの完全一致制約。",
+      "semantic_position": "公式逆の第1。(x＋a)²型はexp_03との対称で第2波判断(まず負側=誤りやすい側を厚く)。",
+      "exclusions": "(x＋a)²型は本波では展開側のみ。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c15_fac_04": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c15_u01", "unit_name": "展開・因数分解", "semantic_territory": "因数分解・a²−b²型", "number_domain": "平方数choices", "answer_structure": "single", "figure": "なし", "step_count": 1, "directives_ref": "_shared.jhs_c15_tenkai.directives"},
+      "source_features": "x²−Nの和差積逆。Nが平方数だと気づく認識問題。",
+      "representation": "a＝sqrt_coef(N)(平方数のときsqrt_coefがそのまま平方根になる性質の利用)。",
+      "constructive_guarantees": "Nは平方数choicesのみ。",
+      "semantic_position": "公式逆の第2。くふう計算(86²−14²)や√への接続点。",
+      "exclusions": "非平方数N(因数分解不能)は構造排除。x²−9y²の2文字版は第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    }
+  }
+}
