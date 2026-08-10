@@ -1,0 +1,447 @@
+{
+ "_meta": {
+  "schema": "rationale_schema_spec.md v1.0",
+  "scope": "jhs c01 完成版(21パターン)",
+  "note": "共通設計判断は _shared に集約。各エントリは directives_ref で参照。"
+ },
+ "_shared": {
+  "jhs_c01_sign_design": {
+   "representation": "スロットは全て正整数で持ち、符号形(＋(−b)・先頭−a・(−a)×等)はテンプレ文字列に固定する。符号形1つ=1パターン(answer_formulaが符号形ごとに異なるため)。負値は答えにのみ現れ、answer_domain宣言+FORMATTERS['signed'](fmt_signed・U+2212)で処理する。",
+   "constructive_guarantees": "本文数値が常に正=verifyのnums_from_slots照合が設計的に自明。負域スロット・abs併記機構(v1.0 §2/§4)に依存しない最小構成を第1パートの基準形とする。",
+   "directives": [
+    {
+     "text": "A層第1波スコープ承認: c01正負/c02c03文字式/c04方程式/c05文章題/c10確率/c15展開因数分解/c16平方根/c17二次方程式/c18数表系、目安50〜60パターン",
+     "by": "marko",
+     "date": "2026-08-09"
+    },
+    {
+     "text": "display_canon⑥裁可: 二次方程式の整数2解は降順固定、採点は両順を正解扱い(ソート正規化)。負数U+2212・負分数sgn_str前置+絶対値reduce・変域a≦y≦b両端符号付き",
+     "by": "marko",
+     "date": "2026-08-10"
+    }
+   ]
+  }
+ },
+ "rationales": {
+  "jhs_c01_asub_01": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c01_u01",
+    "unit_name": "正負の数",
+    "semantic_territory": "正負・加減(正＋負)",
+    "number_domain": "整数(本文は正のみ・答えはany_int)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 1,
+    "directives_ref": "_shared.jhs_c01_sign_design.directives"
+   },
+   "source_features": "正負の加法で最初に現れる「加法記号＋負の項」の符号処理型。実物のconfirmation層に単発計算群として存在する型の抽象。",
+   "representation": "_shared.jhs_c01_sign_design.representation 参照。a1,b1∈[2,9]で暗算域。",
+   "constructive_guarantees": "_shared参照。a1=b1のとき答え0となるが、これは符号処理の正当な帰結として許容(any_int)。",
+   "semantic_position": "c01加減系の基底。asub_02(先頭負)・asub_03(減法変換)・asub_04(負−負)と符号形で直交する4分割の第1。",
+   "exclusions": "1を含む範囲を除外(a1,b1≧2): ±1の加減は数直線1歩で符号規則の練習にならない退化。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c01_asub_02": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c01_u01",
+    "unit_name": "正負の数",
+    "semantic_territory": "正負・加減(負＋正)",
+    "number_domain": "整数(本文は正のみ・答えはany_int)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 1,
+    "directives_ref": "_shared.jhs_c01_sign_design.directives"
+   },
+   "source_features": "先頭項が負(括弧なし−a表記)の加法。実物では(−8)＋3のような括弧付き先頭負も併存するが、表記2種は同一意味カテゴリのため先頭括弧なし形を正準に採る。",
+   "representation": "_shared参照。先頭の−はテンプレ内U+2212直書き。",
+   "constructive_guarantees": "_shared参照。",
+   "semantic_position": "加減4分割の第2。asub_01と対称(交換した形)だが、生徒の誤りモードが異なる(先頭負の見落とし)ため独立パターン。",
+   "exclusions": "a1,b1≧2(±1退化除外)。括弧付き先頭負(−a)＋b表記は第2パートでの表記バリエーション追加候補とし、本パターンには混載しない(1パターン1様式)。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c01_asub_03": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c01_u01",
+    "unit_name": "正負の数",
+    "semantic_territory": "正負・加減(減法→加法変換)",
+    "number_domain": "整数(本文・答えとも正)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 1,
+    "directives_ref": "_shared.jhs_c01_sign_design.directives"
+   },
+   "source_features": "a−(−b)の二重符号打ち消し型。「ひくマイナスはたす」の規則単独練習。",
+   "representation": "_shared参照。",
+   "constructive_guarantees": "答えはa+bで構造上常に正=answer_domain無宣言(既定positive_int)のまま。既定のガードを無償の検算として活かす設計(誤ってformulaを書き換えた場合に既定ゲートが検知する)。",
+   "semantic_position": "加減4分割の第3。乗除の同符号規則(mul_02)と並ぶ「負×2=正」系の入口。",
+   "exclusions": "a1,b1≧2(±1退化除外)。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c01_asub_04": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c01_u01",
+    "unit_name": "正負の数",
+    "semantic_territory": "正負・加減(負−負)",
+    "number_domain": "整数(本文は正のみ・答えはany_int)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 1,
+    "directives_ref": "_shared.jhs_c01_sign_design.directives"
+   },
+   "source_features": "−a−(−b)。先頭負+減法変換の複合で、加減系では最も誤りやすい形。",
+   "semantic_position": "加減4分割の第4(最難)。asub_02とasub_03の合成。",
+   "representation": "_shared参照。",
+   "constructive_guarantees": "_shared参照。a1=b1で答え0(−9−(−9)型)は「打ち消して0」の重要ケースとして意図的に許容。",
+   "exclusions": "a1,b1≧2(±1退化除外)。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c01_mul_01": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c01_u01",
+    "unit_name": "正負の数",
+    "semantic_territory": "正負・乗除(異符号積)",
+    "number_domain": "整数(本文は正のみ・答えは常に負)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 1,
+    "directives_ref": "_shared.jhs_c01_sign_design.directives"
+   },
+   "source_features": "a×(−b)。異符号の積=負の符号規則。",
+   "representation": "_shared参照。answer_formulaは 0 - a1*b1(単項マイナス回避・JS移植時の演算子差異を構造的に排除する既存文化の踏襲)。",
+   "constructive_guarantees": "答えは構造上常に負→any_int宣言。九九域[2,9]×[2,9]で積の暗算を保証。",
+   "semantic_position": "乗除系の基底(異符号)。mul_02(同符号)と対。",
+   "exclusions": "1を除外: ×1は符号規則以外の計算が消える退化。×10以上は筆算化して単元主眼(符号規則)から逸れるため除外。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c01_mul_02": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c01_u01",
+    "unit_name": "正負の数",
+    "semantic_territory": "正負・乗除(同符号積)",
+    "number_domain": "整数(本文は正のみ・答えは常に正)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 1,
+    "directives_ref": "_shared.jhs_c01_sign_design.directives"
+   },
+   "source_features": "(−a)×(−b)。同符号の積=正の規則。",
+   "representation": "_shared参照。両項とも括弧付き負(テンプレ固定)。",
+   "constructive_guarantees": "答えは構造上常に正=answer_domain既定のまま(asub_03と同じ無償検算設計)。",
+   "semantic_position": "乗除系の対(同符号)。",
+   "exclusions": "1除外(退化)。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c01_div_01": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c01_u01",
+    "unit_name": "正負の数",
+    "semantic_territory": "正負・乗除(異符号商)",
+    "number_domain": "整数(整除保証・答えは常に負)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 1,
+    "directives_ref": "_shared.jhs_c01_sign_design.directives"
+   },
+   "source_features": "a÷(−b)。異符号の商=負。実物には非整除→分数答(10÷(−4)=−5/2型)も併存するが、分数答系は負分数規約(sgn_str)と併せて第2パート以降で独立パターン化する。",
+   "representation": "_shared参照。answer_formulaは 0 - a1//b1(正÷正の//のみ使用=床除算の負数挙動に非依存)。",
+   "constructive_guarantees": "a1%b1==0で整除を構成的に保証。商∈[2,9]制約で「÷1」「商1」「商2桁」の退化・逸脱を同時に排除。棄却サンプリング受容率は約1/b1で充足十分(max_tries=3000)。",
+   "semantic_position": "乗除系の商側(異符号)。同符号商(−a)÷(−b)は第2パート。",
+   "exclusions": "非整除(分数答)を除外=本パターンは符号規則の練習に限定し、分数処理を混ぜない。÷1・商1の退化除外。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c01_mix_01": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c01_u01",
+    "unit_name": "正負の数",
+    "semantic_territory": "正負・混合(乗除優先)",
+    "number_domain": "整数(本文は正のみ・答えはany_int)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 2,
+    "directives_ref": "_shared.jhs_c01_sign_design.directives"
+   },
+   "source_features": "a＋b×(−c)。演算順序(乗法先行)と符号規則の2段複合。混合系の入口。",
+   "representation": "_shared参照。",
+   "constructive_guarantees": "a1∈[2,15]・b1∈[2,5]・c1∈[2,9]で積bc∈[4,45]。答えはa−bcで負に偏る分布(約7.5割負)になるが、これは「加えているのに減る」という単元主眼の体験そのものであり意図的。",
+   "semantic_position": "混合系の第1(加+乗)。減−除型(a−b÷(−c))・括弧型((a−b)×c)・累乗型は第2パート。",
+   "exclusions": "b1×c1が2桁後半を超える範囲を除外(暗算域維持)。b1=1除外(乗法が消え加減に退化)。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c01_tri_01": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c01_u01",
+    "unit_name": "正負の数",
+    "semantic_territory": "正負・加減(3項)",
+    "number_domain": "整数(本文は正のみ・答えはany_int)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 2,
+    "directives_ref": "_shared.jhs_c01_sign_design.directives"
+   },
+   "source_features": "3項の加減連鎖。2項の符号形4種(第1パート)を習得した後の連結処理型。",
+   "representation": "_shared参照。3項の符号形は組合せ爆発するため、代表形 a−b＋(−c) の1形に固定。他形が必要になれば量産後の分布検収で判断。",
+   "constructive_guarantees": "a1∈[3,15]で答え域[3−18, 15−4]=[−15,11]。負に偏る分布(約6割)は単元主眼と整合。",
+   "semantic_position": "加減系の連結拡張。第1パート4分割の上位。",
+   "exclusions": "項数4以上は処理量が主眼(符号処理)を薄めるため除外。b1,c1≧2(±1退化除外)。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c01_div_02": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c01_u01",
+    "unit_name": "正負の数",
+    "semantic_territory": "正負・乗除(同符号商)",
+    "number_domain": "整数(整除保証・答えは常に正)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 1,
+    "directives_ref": "_shared.jhs_c01_sign_design.directives"
+   },
+   "source_features": "(−a)÷(−b)。同符号の商=正。div_01(異符号)との対。",
+   "representation": "_shared参照。整除機構はdiv_01と同一(a1%b1==0・商[2,9])。",
+   "constructive_guarantees": "答えは構造上常に正=answer_domain既定のまま(無償検算設計)。",
+   "semantic_position": "乗除2×2(積/商×同/異符号)の第4象限。これでc01乗除の基本4形が完備。",
+   "exclusions": "非整除除外(div_01と同じ理由)。÷1・商1退化除外。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c01_mix_02": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c01_u01",
+    "unit_name": "正負の数",
+    "semantic_territory": "正負・混合(減−除)",
+    "number_domain": "整数(整除保証・答えは常に正)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 2,
+    "directives_ref": "_shared.jhs_c01_sign_design.directives"
+   },
+   "source_features": "a−b÷(−c)。除法先行の演算順序+「−(負)=＋」の複合。「ひいているのに増える」体験がこの型の主眼。",
+   "representation": "_shared参照。answer_formulaは a1 + b1//c1(正÷正の//のみ)。",
+   "constructive_guarantees": "整除・商[2,9]保証。答えは a+商 で構造上常に正=既定のまま。",
+   "semantic_position": "混合系第2(減+除)。mix_01(加+乗・負に偏る)と答えの符号方向が対になる設計。",
+   "exclusions": "b1//c1=1退化除外。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c01_paren_mul_01": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c01_u01",
+    "unit_name": "正負の数",
+    "semantic_territory": "正負・かっこ(差×数)",
+    "number_domain": "整数(本文は正のみ・答えは常に負)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 2,
+    "directives_ref": "_shared.jhs_c01_sign_design.directives"
+   },
+   "source_features": "(a−b)×c で内側が負になる型。「本文に負記号が1つもないのに答えが負」というc01で最初の型であり、かっこ優先と符号発生の複合。",
+   "representation": "_shared参照。answer_formulaは 0−(b1−a1)*c1 で正の差からの構成(負数演算をformula内で使わない)。",
+   "constructive_guarantees": "a1<b1 かつ b1−a1≧2 を制約で保証。内側の差[2,8]×c[2,9]で暗算域。",
+   "semantic_position": "かっこ系第1(×)。paren_div_01(÷)と対。",
+   "exclusions": "a1≧b1(内側が非負)は別意味カテゴリ(通常の乗法に退化)として除外。差1の退化除外。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c01_paren_div_01": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c01_u01",
+    "unit_name": "正負の数",
+    "semantic_territory": "正負・かっこ(差÷数)",
+    "number_domain": "整数(整除保証・答えは常に負)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 2,
+    "directives_ref": "_shared.jhs_c01_sign_design.directives"
+   },
+   "source_features": "(a−b)÷c で内側が負・整除。かっこ優先+負の除法。",
+   "representation": "_shared参照。整除判定は (b1−a1)%c1==0 と正の差側で行い、負数に対する%の言語間挙動差(Python/JSの剰余符号)を構造的に回避する。",
+   "constructive_guarantees": "a1<b1・差≧2・整除・商≦9 の4制約。棄却受容率は概ね1/c1で充足十分。",
+   "semantic_position": "かっこ系第2(÷)。",
+   "exclusions": "非整除除外。差1退化除外。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c01_pow_01": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c01_u01",
+    "unit_name": "正負の数",
+    "semantic_territory": "正負・累乗((−b)²型)",
+    "number_domain": "整数(本文は正のみ・答えはany_int)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 2,
+    "directives_ref": "_shared.jhs_c01_sign_design.directives"
+   },
+   "source_features": "−a＋(−b)²。かっこ付き累乗(−b)²=b²(正)の規則。pow_02のかっこなし形(−b²=負)との対比が単元の要点。",
+   "representation": "_shared参照。累乗は²(U+00B2)をテンプレ直書き、answer_formulaは b1*b1 展開(累乗演算子不使用=SAFE評価域を広げない)。",
+   "constructive_guarantees": "b1∈[2,5]でb²∈[4,25]、a1∈[2,30]で答えは負・零・正に散る(実測 約57/4/39)。",
+   "semantic_position": "累乗系第1(かっこ付き)。",
+   "exclusions": "b1=1除外((−1)²は符号規則のみで累乗計算が消える)。3乗以上は第2波(かっこ有無×偶奇の4象限が必要になった時点で体系化)。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c01_pow_02": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c01_u01",
+    "unit_name": "正負の数",
+    "semantic_territory": "正負・累乗(b²減算型)",
+    "number_domain": "整数(本文は正のみ・答えはany_int)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 2,
+    "directives_ref": "_shared.jhs_c01_sign_design.directives"
+   },
+   "source_features": "a−b²。累乗が減算より先、の優先順位処理。実物の 9−4² 型の抽象。",
+   "representation": "_shared参照。",
+   "constructive_guarantees": "pow_01と同域。答え0(a=b²)は許容(第1パートの0許容方針と一貫)。",
+   "semantic_position": "累乗系第2(かっこなし・優先順位側)。−b²型(かっこなしで負)はpow_01との対比を明示する第3形として第2波候補。",
+   "exclusions": "b1=1除外。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c01_count_01": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c01_u01",
+    "unit_name": "正負の数",
+    "semantic_territory": "正負・数直線(整数の個数)",
+    "number_domain": "小数境界(dec1相当)・答えは正整数",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 2,
+    "directives_ref": "_shared.jhs_c01_sign_design.directives"
+   },
+   "source_features": "−p.f より大きく q.g より小さい整数の個数。数直線上の範囲把握と0を跨ぐ数え上げ。",
+   "representation": "小数境界を整数部・小数部の独立スロット({pl1}.{pf1})でテンプレ合成する。dec1スケール整数を使わないのは、verifyの数値照合をスロット素通しで自明化するため。個数は pl+ql+1 の閉形式。",
+   "constructive_guarantees": "小数部∈[1,9]で境界の非整数性を構成的に保証(小数部0だと個数式が変わる境界退化を範囲レベルで排除)。答えは[5,19]で常に正=既定のまま。",
+   "semantic_position": "計算系から応用系への橋渡し。列挙型(整数を小さい順にすべて書く)は多値解答の定型が要るため第3パート以降の候補。",
+   "exclusions": "小数部0(境界が整数)を除外: 「より大きい/より小さい」と「以上/以下」の判別問題に化けて意味カテゴリが変わるため。両側正・両側負の範囲も除外(0を跨ぐことが本型の定義)。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c01_frac_add_01": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c01_u01",
+    "unit_name": "正負の数",
+    "semantic_territory": "正負・分数(異分母加法・符号可変)",
+    "number_domain": "既約真分数(異分母)・答えは符号可変の既約分数",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 2,
+    "directives_ref": "_shared.jhs_c01_sign_design.directives"
+   },
+   "source_features": "−a/b＋c/dの異分母加法。負の項を含む通分+符号判定の複合で、c01分数系の最難型。",
+   "representation": "display_canonの負分数正準(sgn_str前置+絶対値reduce)の初適用パターン。符号付き分子num_rawをansとして持ち、表示はsg1(sgn_str)+f1(絶対値のreduced_fraction_display)に分離。生成器の分数機構は無変更(仕様§6どおり)。",
+   "constructive_guarantees": "本文分数は既約真分数(gcd==1・a<b)を制約で保証。整数落ち・0落ちは (cb−ad)%(bd)!=0 の1本で同時除外(0%n==0のため)。x%d==0判定は剰余の符号規約(Python/JS差)に依存しないブール式であり、負のnum_rawに対しても言語間で一致する。",
+   "semantic_position": "分数4形の核(符号可変は本型のみ)。answer_domain=nonzero_intの初使用例(制約が保証し宣言が検算する二重化)。",
+   "exclusions": "同分母(b==d)除外=異分母が本型の定義。仮分数の提示除外(真分数×2に限定、仮分数加法は必要なら別型)。整数落ち除外=分数答が本型の定義。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c01_frac_div_01": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c01_u01",
+    "unit_name": "正負の数",
+    "semantic_territory": "正負・分数(整数商の分数答)",
+    "number_domain": "整数÷整数(非整除)・答えは負の既約分数(仮分数可)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 1,
+    "directives_ref": "_shared.jhs_c01_sign_design.directives"
+   },
+   "source_features": "a÷(−b)非整除で商が分数に落ちる型。整数の世界から分数の世界への越境がc01除法の仕上げ。",
+   "representation": "答えは構造上常に負のため、負符号はテンプレ固定(−{f1})とし、sgn_strを使わない。可変符号のときだけsgn_strを使う、という正準の使い分けをここで確立する。reduceは(a1,b1)を直接受ける(絶対値=スロット値そのもの)。",
+   "constructive_guarantees": "a1%b1!=0で非整除=分数答を保証(a1==b1も同時除外)。div_01(整除・整数答)との相互排他が制約レベルで成立。",
+   "semantic_position": "div_01(異符号・整数商)の分数側対。仮分数答(−11/6等)を許容=jhsでは帯分数化しない(g05/g06の帯分数正準とは学年段で切替、display_canonに追記対象)。",
+   "exclusions": "整除除外(div_01の領分)。b1=1除外は範囲で自動(b1≧2)。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c01_frac_mix_01": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c01_u01",
+    "unit_name": "正負の数",
+    "semantic_territory": "正負・分数(分数×整数の混合・整数答)",
+    "number_domain": "整数−真分数×整数(整数落ち構成)・答えは正整数",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 2,
+    "directives_ref": "_shared.jhs_c01_sign_design.directives"
+   },
+   "source_features": "a−b/c×(−d)。分数を含むが答えが整数に落ちる混合型。乗法先行+「−(負)=＋」+約分の3点複合。",
+   "representation": "_shared参照。c|dの構成でb/c×d=b×(d/c)が整数化。answer_formulaは a1 + b1*(d1//c1) で正の//のみ。",
+   "constructive_guarantees": "d1%c1==0・商[2,9]・既約真分数を制約で保証。答えは構造上常に正=answer_domain既定のまま(無償検算)。",
+   "semantic_position": "混合系(mix_01/02)の分数拡張。「分数が見えても答えは整数」という型で、frac_add_01(分数答)との対比が検収観点。",
+   "exclusions": "d/c=1退化除外。非整除(答えが分数に残る)は本型から除外=frac_add_01系の領分。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c01_frac_mul_01": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c01_u01",
+    "unit_name": "正負の数",
+    "semantic_territory": "正負・分数(異符号の積)",
+    "number_domain": "既約真分数×既約真分数・答えは負の既約分数",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 2,
+    "directives_ref": "_shared.jhs_c01_sign_design.directives"
+   },
+   "source_features": "(−a/b)×(c/d)。分数同士の積+異符号規則。積の約分(分子分母のクロス約分)が計算の主眼。",
+   "representation": "積の分子num_c・分母den_cをcomputed_slotsで持ち、reduced_fraction_displayでクロス約分を一括処理。負符号はテンプレ固定(常に負)。",
+   "constructive_guarantees": "真分数×真分数で積<1のため分母1落ちは原理上ないが、(ac)%(bd)!=0を保険制約として明示(設計意図の文書化を兼ねる)。",
+   "semantic_position": "分数4形の積側。同符号積((−a/b)×(−c/d)=正)は退化的差分のため第2波判断。",
+   "exclusions": "整数落ち除外(保険)。帯分数・仮分数の提示除外。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c01_enum_01": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c01_u01",
+    "unit_name": "正負の数",
+    "semantic_territory": "正負・数直線(整数の列挙)",
+    "number_domain": "小数境界・答えは連続整数4個の列挙",
+    "answer_structure": "enumeration",
+    "figure": "なし",
+    "step_count": 2,
+    "directives_ref": "_shared.jhs_c01_sign_design.directives"
+   },
+   "source_features": "不等式範囲内の整数を小さい順に列挙する型。count_01(個数)の解答具体化版で、jissen層に存在する型の抽象。",
+   "representation": "可変長解答はテンプレで表現できないため、個数を4に固定(pl+ql==3制約)し、各項をfmt_signedのcomputed_slots(n1d〜n4d)で整形。列挙区切りは全角読点「，」(display_canonの解列挙と同一様式=c17の複数解表記と規約を共有)。",
+   "constructive_guarantees": "小数部[1,9]で境界の非整数性を保証(count_01と同機構)。pl∈[1,2]×ql=3−plで必ず0を跨ぐ4整数列。",
+   "semantic_position": "数直線系の第2(列挙)。answer_structure=enumerationの初出であり、c17の2解列挙・c10の場合の列挙の様式先例となる。",
+   "exclusions": "個数4以外を除外(構造制約)。個数バリエーション(3個・5個)は同型の範囲違いとして必要時に追加、型としては1つで足りる。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ }
+}

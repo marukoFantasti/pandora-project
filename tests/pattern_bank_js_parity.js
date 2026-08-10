@@ -14,7 +14,12 @@ const ROOT = path.join(__dirname, '..');
 const P = require(path.join(ROOT, 'pattern_bank', 'pattern_generator.js'));
 
 const N = Number(process.argv[2] || 40);
-const bankFiles = fs.readdirSync(path.join(ROOT, 'pattern_bank')).filter(f => /^patterns_g\d\d\.json$/.test(f)).sort();
+// 第2引数(任意): バンクファイル名フィルタ。既定は既存6学年(patterns_gNN)＝標準関門の基準不変。
+// 例) node tests/pattern_bank_js_parity.js 40 jhs_c01  → patterns_jhs_c01.json を照合(840サンプル)。
+const filter = process.argv[3];
+const bankFiles = fs.readdirSync(path.join(ROOT, 'pattern_bank'))
+  .filter(f => filter ? (f.indexOf(filter) >= 0 && /^patterns_.*\.json$/.test(f)) : /^patterns_g\d\d\.json$/.test(f))
+  .sort();
 
 // JS 側: 各パターンを N 回生成し、int env と JS が算出した ans/computed_slots を集める。
 const jobs = [];
@@ -41,26 +46,17 @@ for (const bf of bankFiles) {
   }
 }
 
-// Python 側: 同じ env で answer_formula / computed_slots を評価して返す（generate_poc_v09 の SAFE 準拠）。
+// Python 側: 同じ env で answer_formula / computed_slots を評価して返す。SAFE は生成器
+// (generate_poc_v10.py) の権威 SAFE をそのまま import して使う＝ヘルパ定義の二重管理を避け、
+// v1.0 追加ヘルパ(fmt_signed/sgn_str 等・文字列を返す computed_slots)も自動で解決される。
+// --vectors ガードで import 時のバンク読み込みを回避する。
+const GEN_DIR = path.join(ROOT, 'pattern_bank', 'handoff_jhs');
 const pyProg = `
 import sys, json
-def gcd(a,b):
-    a,b=int(a),int(b)
-    while b: a,b=b,a%b
-    return a
-def lcm(a,b):
-    a,b=int(a),int(b); return a//gcd(a,b)*b
-def reduce_num(n,d): return int(n)//gcd(n,d)
-def reduce_den(n,d): return int(d)//gcd(n,d)
-def round_half_up(n,place):
-    n,place=int(n),int(place); q,r=divmod(n,place)
-    if r*2>=place: q+=1
-    return q*place
-def round_range_lower(x,place): return int(x)-int(place)//2
-def round_range_upper_excl(x,place): return int(x)+int(place)//2
-SAFE={"gcd":gcd,"lcm":lcm,"reduce_num":reduce_num,"reduce_den":reduce_den,
-      "round_half_up":round_half_up,"round_range_lower":round_range_lower,
-      "round_range_upper_excl":round_range_upper_excl,"abs":abs,"max":max,"min":min}
+sys.argv=['x','--vectors']            # バンク読込を回避してヘルパのみ import
+sys.path.insert(0, ${JSON.stringify(GEN_DIR)})
+import generate_poc_v10 as G
+SAFE = G.SAFE
 out=[]
 for j in json.load(sys.stdin):
     env=j["env"]; ienv=j["intEnv"]; res={"ans":None,"cs":{}}

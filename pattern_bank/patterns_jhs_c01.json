@@ -1,0 +1,1305 @@
+{
+ "schema_version": "1.0",
+ "grade": "jhs",
+ "description": "jhs数学バンク A層第1波 c01(正負の数) 完成版: 加減4形+3項/乗除4形/混合2形/かっこ2形/累乗2形/分数4形/個数/列挙 = 21パターン。スロット全正整数・符号形テンプレ固定方式。",
+ "answer_structures": [
+  "enumeration",
+  "single"
+ ],
+ "display_canon": "負数=U+2212統一・ハイフン不使用。負分数=sgn_str前置+絶対値reduce。二次方程式の整数2解は降順固定(x＝a，b で a＞b)、採点は両順を正解扱い(ソート正規化)。±√型は複合表記1本、(p±√q)/r は既約形のみ生成(q平方因数なし∧gcd(p,r)=1)。重解は単独表記。変域は a≦y≦b 両端fmt_signed。",
+ "kanji_note": "jhs常用漢字ベース方針は未確認(bank_directives④)。本パートは計算指示文のみのため g01-g06 配当で閉じることを機械確認済み。文章題パート着手前に方針確定が必要。",
+ "shared_lexicon": {
+  "comment": "c01計算系はレキシコン不要。文章題章(c05)で追加する。"
+ },
+ "patterns": [
+  {
+   "pattern_id": "jhs_c01_asub_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c01_u01",
+   "unit_name": "正負の数",
+   "semantic_category": "正負・加減(正＋負)",
+   "semantic_note": "a＋(−b)。加法記号と負符号の分離処理。答えは a−b で全域(負・0・正)に散る。",
+   "step_count": 1,
+   "operation": "a＋(−b) → a−b",
+   "answer_domain": "any_int",
+   "answer_formula": "a1 - b1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}＋(−{b1})"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c01_asub_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c01_u01",
+   "unit_name": "正負の数",
+   "semantic_category": "正負・加減(負＋正)",
+   "semantic_note": "−a＋b。先頭負項(括弧なし表記)。答えは b−a。",
+   "step_count": 1,
+   "operation": "−a＋b → b−a",
+   "answer_domain": "any_int",
+   "answer_formula": "b1 - a1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の計算をしなさい。\n−{a1}＋{b1}"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c01_asub_03",
+   "grade": "jhs",
+   "unit_id": "jhs_c01_u01",
+   "unit_name": "正負の数",
+   "semantic_category": "正負・加減(減法→加法変換)",
+   "semantic_note": "a−(−b)。減法と負符号の打ち消し。答えは a＋b で常に正=answer_domain無宣言(既定)のまま。",
+   "step_count": 1,
+   "operation": "a−(−b) → a＋b",
+   "answer_formula": "a1 + b1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}−(−{b1})"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c01_asub_04",
+   "grade": "jhs",
+   "unit_id": "jhs_c01_u01",
+   "unit_name": "正負の数",
+   "semantic_category": "正負・加減(負−負)",
+   "semantic_note": "−a−(−b)。二重の符号処理。答えは b−a。",
+   "step_count": 1,
+   "operation": "−a−(−b) → b−a",
+   "answer_domain": "any_int",
+   "answer_formula": "b1 - a1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の計算をしなさい。\n−{a1}−(−{b1})"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c01_mul_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c01_u01",
+   "unit_name": "正負の数",
+   "semantic_category": "正負・乗除(異符号積)",
+   "semantic_note": "a×(−b)。異符号の積=負の規則。答えは常に負。",
+   "step_count": 1,
+   "operation": "a×(−b) → −ab",
+   "answer_domain": "any_int",
+   "answer_formula": "0 - a1 * b1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}×(−{b1})"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c01_mul_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c01_u01",
+   "unit_name": "正負の数",
+   "semantic_category": "正負・乗除(同符号積)",
+   "semantic_note": "(−a)×(−b)。同符号の積=正の規則。答えは常に正=answer_domain無宣言(既定)。",
+   "step_count": 1,
+   "operation": "(−a)×(−b) → ab",
+   "answer_formula": "a1 * b1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の計算をしなさい。\n(−{a1})×(−{b1})"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c01_div_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c01_u01",
+   "unit_name": "正負の数",
+   "semantic_category": "正負・乗除(異符号商)",
+   "semantic_note": "a÷(−b)。整除を構成的に保証(a1%b1==0)、商≧2で自明ケース(÷1・商1)を除外。答えは常に負。",
+   "step_count": 1,
+   "operation": "a÷(−b) → −(a/b)",
+   "answer_domain": "any_int",
+   "answer_formula": "0 - a1 // b1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      4,
+      81
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "a1 % b1 == 0",
+     "why": "整除保証(経路A・整数解答)"
+    },
+    {
+     "rule": "nontrivial_quotient",
+     "expr": "a1 // b1 >= 2",
+     "why": "商1の退化除外"
+    },
+    {
+     "rule": "quotient_cap",
+     "expr": "a1 // b1 <= 9",
+     "why": "商を1桁に保ち暗算域に収める"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}÷(−{b1})"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c01_mix_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c01_u01",
+   "unit_name": "正負の数",
+   "semantic_category": "正負・混合(乗除優先)",
+   "semantic_note": "a＋b×(−c)。演算順序(乗法先行)と符号処理の複合。答えは a−bc で全域に散る。",
+   "step_count": 2,
+   "operation": "a＋b×(−c) → a−bc",
+   "answer_domain": "any_int",
+   "answer_formula": "a1 - b1 * c1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}＋{b1}×(−{c1})"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c01_tri_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c01_u01",
+   "unit_name": "正負の数",
+   "semantic_category": "正負・加減(3項)",
+   "semantic_note": "a−b＋(−c)。加減の連鎖処理。答えは a−b−c で負に偏る。",
+   "step_count": 2,
+   "operation": "a−b＋(−c) → a−b−c",
+   "answer_domain": "any_int",
+   "answer_formula": "a1 - b1 - c1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      3,
+      15
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}−{b1}＋(−{c1})"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c01_div_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c01_u01",
+   "unit_name": "正負の数",
+   "semantic_category": "正負・乗除(同符号商)",
+   "semantic_note": "(−a)÷(−b)。同符号の商=正。整除・商[2,9]保証。答えは常に正=answer_domain無宣言(既定)。",
+   "step_count": 1,
+   "operation": "(−a)÷(−b) → a/b",
+   "answer_formula": "a1 // b1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      4,
+      81
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "a1 % b1 == 0",
+     "why": "整除保証(経路A・整数解答)"
+    },
+    {
+     "rule": "nontrivial_quotient",
+     "expr": "a1 // b1 >= 2",
+     "why": "商1の退化除外"
+    },
+    {
+     "rule": "quotient_cap",
+     "expr": "a1 // b1 <= 9",
+     "why": "商を1桁に保ち暗算域に収める"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n(−{a1})÷(−{b1})"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c01_mix_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c01_u01",
+   "unit_name": "正負の数",
+   "semantic_category": "正負・混合(減−除)",
+   "semantic_note": "a−b÷(−c)。除法先行+「ひく負=たす」の複合。答えは a＋(b/c) で常に正=無宣言(既定)。",
+   "step_count": 2,
+   "operation": "a−b÷(−c) → a＋b/c",
+   "answer_formula": "a1 + b1 // c1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      4,
+      45
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "b1 % c1 == 0",
+     "why": "整除保証"
+    },
+    {
+     "rule": "nontrivial_quotient",
+     "expr": "b1 // c1 >= 2",
+     "why": "商1の退化除外"
+    },
+    {
+     "rule": "quotient_cap",
+     "expr": "b1 // c1 <= 9",
+     "why": "商を1桁に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}−{b1}÷(−{c1})"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c01_paren_mul_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c01_u01",
+   "unit_name": "正負の数",
+   "semantic_category": "正負・かっこ(差×数)",
+   "semantic_note": "(a−b)×c で a<b。かっこ内を先に計算して負が生まれる型。答えは常に負。",
+   "step_count": 2,
+   "operation": "(a−b)×c → (a−b)c",
+   "answer_domain": "any_int",
+   "answer_formula": "0 - (b1 - a1) * c1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      8
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "inner_negative",
+     "expr": "a1 < b1",
+     "why": "かっこ内が負になる型の定義(a≧bは別意味カテゴリ)"
+    },
+    {
+     "rule": "inner_nontrivial",
+     "expr": "b1 - a1 >= 2",
+     "why": "かっこ内±1の退化除外"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n({a1}−{b1})×{c1}"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c01_paren_div_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c01_u01",
+   "unit_name": "正負の数",
+   "semantic_category": "正負・かっこ(差÷数)",
+   "semantic_note": "(a−b)÷c で a<b・整除。かっこ先行+負の除法。答えは常に負。",
+   "step_count": 2,
+   "operation": "(a−b)÷c → (a−b)/c",
+   "answer_domain": "any_int",
+   "answer_formula": "0 - (b1 - a1) // c1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      20
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      3,
+      29
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "inner_negative",
+     "expr": "a1 < b1",
+     "why": "かっこ内が負になる型の定義"
+    },
+    {
+     "rule": "divisible",
+     "expr": "(b1 - a1) % c1 == 0",
+     "why": "整除保証(正の差に対する%のみ使用)"
+    },
+    {
+     "rule": "inner_nontrivial",
+     "expr": "b1 - a1 >= 2",
+     "why": "かっこ内±1の退化除外"
+    },
+    {
+     "rule": "quotient_cap",
+     "expr": "(b1 - a1) // c1 <= 9",
+     "why": "商を1桁に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n({a1}−{b1})÷{c1}"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c01_pow_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c01_u01",
+   "unit_name": "正負の数",
+   "semantic_category": "正負・累乗((−b)²型)",
+   "semantic_note": "−a＋(−b)²。かっこ付き累乗=正、の規則。答えは b²−a で全域に散る。",
+   "step_count": 2,
+   "operation": "−a＋(−b)² → b²−a",
+   "answer_domain": "any_int",
+   "answer_formula": "b1 * b1 - a1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      30
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の計算をしなさい。\n−{a1}＋(−{b1})²"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c01_pow_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c01_u01",
+   "unit_name": "正負の数",
+   "semantic_category": "正負・累乗(b²減算型)",
+   "semantic_note": "a−b²。かっこなし累乗の優先計算。答えは a−b² で全域に散る。",
+   "step_count": 2,
+   "operation": "a−b² → a−b²",
+   "answer_domain": "any_int",
+   "answer_formula": "a1 - b1 * b1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      30
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}−{b1}²"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c01_count_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c01_u01",
+   "unit_name": "正負の数",
+   "semantic_category": "正負・数直線(整数の個数)",
+   "semantic_note": "−p.f より大きく q.g より小さい整数の個数。小数境界(非整数)を構成的に保証し、個数= p+q+1。答えは常に正=無宣言(既定)。",
+   "step_count": 2,
+   "operation": "count{ x∈Z : −p.f < x < q.g } = p+q+1",
+   "answer_formula": "pl1 + ql1 + 1",
+   "slots": {
+    "pl1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "pf1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "ql1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "qf1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "−{pl1}.{pf1}より大きく、{ql1}.{qf1}より小さい整数は、全部で何個ありますか。"
+   ],
+   "answer_template": "答え {ans}個",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c01_frac_add_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c01_u01",
+   "unit_name": "正負の数",
+   "semantic_category": "正負・分数(異分母加法・符号可変)",
+   "semantic_note": "−a/b＋c/d(異分母・両分数は既約真分数)。答えの符号は値次第で変わるため sgn_str 前置+絶対値reduce の正準(display_canon)を初適用。整数落ち・0落ちは制約で除外。",
+   "step_count": 2,
+   "operation": "−a/b＋c/d → (cb−ad)/(bd)",
+   "answer_domain": "nonzero_int",
+   "answer_formula": "c1 * b1 - a1 * d1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      7
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      1,
+      7
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "computed_slots": {
+    "num_raw": {
+     "formula": "c1 * b1 - a1 * d1"
+    },
+    "sg1": {
+     "formula": "sgn_str(c1 * b1 - a1 * d1)"
+    },
+    "num_abs": {
+     "formula": "abs(c1 * b1 - a1 * d1)"
+    },
+    "den_raw": {
+     "formula": "b1 * d1"
+    }
+   },
+   "reduced_fraction_display": {
+    "f1": [
+     "num_abs",
+     "den_raw"
+    ]
+   },
+   "value_constraints": [
+    {
+     "rule": "proper_1",
+     "expr": "a1 < b1",
+     "why": "真分数(仮分数の加法は別カテゴリ)"
+    },
+    {
+     "rule": "proper_2",
+     "expr": "c1 < d1",
+     "why": "真分数"
+    },
+    {
+     "rule": "unlike_denom",
+     "expr": "b1 != d1",
+     "why": "異分母が本型の定義(同分母は退化)"
+    },
+    {
+     "rule": "reduced_1",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "本文分数は既約で提示(表示ハイジーン)"
+    },
+    {
+     "rule": "reduced_2",
+     "expr": "gcd(c1, d1) == 1",
+     "why": "本文分数は既約で提示"
+    },
+    {
+     "rule": "no_integer_fall",
+     "expr": "(c1 * b1 - a1 * d1) % (b1 * d1) != 0",
+     "why": "整数落ち・0落ちの除外(0%n==0のため0も同時に除外される)。x%d==0判定は剰余符号の言語差に依存しない"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n−{a1}/{b1}＋{c1}/{d1}"
+   ],
+   "answer_template": "答え {sg1}{f1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c01_frac_div_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c01_u01",
+   "unit_name": "正負の数",
+   "semantic_category": "正負・分数(整数商の分数答)",
+   "semantic_note": "a÷(−b) 非整除。商が既約分数(仮分数含む)に落ちる型。答えは構造上常に負=負符号はテンプレ固定、絶対値側をreduce。",
+   "step_count": 1,
+   "operation": "a÷(−b) → −(a/b)",
+   "answer_domain": "any_int",
+   "answer_formula": "0 - a1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      20
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "reduced_fraction_display": {
+    "f1": [
+     "a1",
+     "b1"
+    ]
+   },
+   "value_constraints": [
+    {
+     "rule": "non_divisible",
+     "expr": "a1 % b1 != 0",
+     "why": "整除は div_01(整数答)の領分。本型は分数答に限定(a1==b1も同時除外)"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}÷(−{b1})"
+   ],
+   "answer_template": "答え −{f1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c01_frac_mix_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c01_u01",
+   "unit_name": "正負の数",
+   "semantic_category": "正負・分数(分数×整数の混合・整数答)",
+   "semantic_note": "a−b/c×(−d)。分数×整数が整数に落ちる構成(c|d)+乗法先行+「−(負)=＋」。答えは常に正=無宣言(既定)。",
+   "step_count": 2,
+   "operation": "a−(b/c)×(−d) → a＋bd/c",
+   "answer_formula": "a1 + b1 * (d1 // c1)",
+   "answer_unit_system": "signed",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      1,
+      5
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      4,
+      30
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "proper",
+     "expr": "b1 < c1",
+     "why": "真分数"
+    },
+    {
+     "rule": "reduced",
+     "expr": "gcd(b1, c1) == 1",
+     "why": "本文分数は既約で提示"
+    },
+    {
+     "rule": "divisible",
+     "expr": "d1 % c1 == 0",
+     "why": "分数×整数が整数に落ちる構成的保証"
+    },
+    {
+     "rule": "nontrivial_quotient",
+     "expr": "d1 // c1 >= 2",
+     "why": "d/c=1の退化除外"
+    },
+    {
+     "rule": "quotient_cap",
+     "expr": "d1 // c1 <= 9",
+     "why": "中間値を暗算域に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}−{b1}/{c1}×(−{d1})"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c01_frac_mul_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c01_u01",
+   "unit_name": "正負の数",
+   "semantic_category": "正負・分数(異符号の積)",
+   "semantic_note": "(−a/b)×c/d。分数同士の異符号積。答えは構造上常に負=負符号テンプレ固定、積を絶対値側でreduce。整数落ちは制約で除外。",
+   "step_count": 2,
+   "operation": "(−a/b)×(c/d) → −(ac)/(bd)",
+   "answer_domain": "any_int",
+   "answer_formula": "0 - a1 * c1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      5
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      7
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      1,
+      5
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      2,
+      7
+     ]
+    }
+   },
+   "computed_slots": {
+    "num_c": {
+     "formula": "a1 * c1"
+    },
+    "den_c": {
+     "formula": "b1 * d1"
+    }
+   },
+   "reduced_fraction_display": {
+    "f1": [
+     "num_c",
+     "den_c"
+    ]
+   },
+   "value_constraints": [
+    {
+     "rule": "proper_1",
+     "expr": "a1 < b1",
+     "why": "真分数"
+    },
+    {
+     "rule": "proper_2",
+     "expr": "c1 < d1",
+     "why": "真分数"
+    },
+    {
+     "rule": "reduced_1",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "本文分数は既約で提示"
+    },
+    {
+     "rule": "reduced_2",
+     "expr": "gcd(c1, d1) == 1",
+     "why": "本文分数は既約で提示"
+    },
+    {
+     "rule": "no_integer_fall",
+     "expr": "(a1 * c1) % (b1 * d1) != 0",
+     "why": "整数落ち除外(真分数×真分数だが約分で分母1になるケースの保険)"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n(−{a1}/{b1})×{c1}/{d1}"
+   ],
+   "answer_template": "答え −{f1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c01_enum_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c01_u01",
+   "unit_name": "正負の数",
+   "semantic_category": "正負・数直線(整数の列挙)",
+   "semantic_note": "−p.f＜x＜q.g をみたす整数の列挙(小さい順)。個数を4に固定して多値解答をテンプレで閉じる(可変長解答は経路A定型外)。表示はfmt_signedで負整数を整形。",
+   "step_count": 2,
+   "operation": "enum{ x∈Z : −p.f < x < q.g } (個数4固定)",
+   "answer_domain": "any_int",
+   "answer_formula": "0 - pl1",
+   "slots": {
+    "pl1": {
+     "type": "int",
+     "range": [
+      1,
+      2
+     ]
+    },
+    "pf1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "ql1": {
+     "type": "int",
+     "range": [
+      1,
+      2
+     ]
+    },
+    "qf1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    }
+   },
+   "computed_slots": {
+    "n1d": {
+     "formula": "fmt_signed(0 - pl1)"
+    },
+    "n2d": {
+     "formula": "fmt_signed(1 - pl1)"
+    },
+    "n3d": {
+     "formula": "fmt_signed(2 - pl1)"
+    },
+    "n4d": {
+     "formula": "fmt_signed(3 - pl1)"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "count_four",
+     "expr": "pl1 + ql1 == 3",
+     "why": "解の個数を4に固定(−pl〜qlの整数列。可変長はテンプレで表現不能=構造制約)"
+    }
+   ],
+   "sentence_templates": [
+    "−{pl1}.{pf1}＜x＜{ql1}.{qf1} をみたす整数xを、小さい順にすべて書きなさい。"
+   ],
+   "answer_template": "答え {n1d}，{n2d}，{n3d}，{n4d}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "enumeration",
+   "template_number_constants": []
+  }
+ ]
+}

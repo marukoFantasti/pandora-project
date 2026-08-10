@@ -343,12 +343,17 @@
     var jsExpr = pyExprToJs(expr);
     // eslint-disable-next-line no-new-func
     // v0.9: SAFE に追加された gcd/lcm/reduce_num/reduce_den をホワイトリストに追加。
-    // pyExprToJs（構文翻訳器）は変更しない＝許可関数を増やすだけ（abs/max/min と同格）。
+    // v1.0: 符号/係数/平方根ヘルパ(fmt_signed 等)を追加。value_constraints/computed_slots/
+    // answer_formula から Python 名で参照される（jhs frac_add_01 の sgn_str、enum_01 の
+    // fmt_signed が初出＝文字列を返す computed_slots）。pyExprToJs（構文翻訳器）は変更せず
+    // 許可関数を増やすだけ（abs/max/min と同格）。既存バンクは未参照＝非干渉。
     var fn = new Function('abs', 'max', 'min', 'pymod', 'round_half_up', 'round_range_lower', 'round_range_upper_excl',
       'gcd', 'lcm', 'reduce_num', 'reduce_den',
+      'fmt_signed', 'fmt_coef', 'fmt_coefj', 'fmt_termj', 'sgn_str', 'sqrt_coef', 'sqrt_rad', 'fmt_sqrt',
       keys.join(','), 'return (' + jsExpr + ');');
     return fn.apply(null, [Math.abs, Math.max, Math.min, pymod, roundHalfUp, roundRangeLower, roundRangeUpperExcl,
-      gcdInt, lcmInt, reduceNum, reduceDen].concat(vals));
+      gcdInt, lcmInt, reduceNum, reduceDen,
+      fmtSigned, fmtCoef, fmtCoefj, fmtTermj, sgnStr, sqrtCoef, sqrtRad, fmtSqrt].concat(vals));
   }
 
   // ---- スロット解決 ----
