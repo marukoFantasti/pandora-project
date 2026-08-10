@@ -40,6 +40,18 @@ const ID = {
     const tot = e.r1 + e.w1, d = g(e.r1, tot);
     return e.tot1 === tot && (e.r1 / d) * tot === r * (tot / d);                  // rn·tot == r·rd
   },
+  // --- c15 展開・因数分解：多項式係数の恒等(問題多項式 == 答えの展開) ---
+  // 展開5型: 問題=因数積 → 展開係数が答え多項式の係数と一致(答え係数からの復元と等価)
+  jhs_c15_exp_01: (e) => e.s1 === e.a1 + e.b1 && e.t1 === e.a1 * e.b1,            // (x+a)(x+b)=x²+(a+b)x+ab
+  jhs_c15_exp_02: (e) => e.ans === e.a1 - e.b1 && e.t1 === e.a1 * e.b1,           // (x+a)(x−b)=x²+(a−b)x−ab
+  jhs_c15_exp_03: (e) => e.d1 === 2 * e.a1 && e.q1 === e.a1 * e.a1,               // (x+a)²=x²+2ax+a²
+  jhs_c15_exp_04: (e) => e.d1 === 2 * e.a1 && e.q1 === e.a1 * e.a1,               // (x−a)²=x²−2ax+a²
+  jhs_c15_exp_05: (e) => e.q1 === e.a1 * e.a1,                                    // (x+a)(x−a)=x²−a²
+  // 因数分解4型: 答え=因数積を展開し直して本文多項式の係数と一致
+  jhs_c15_fac_01: (e) => e.A1 * e.m1 === e.B1,                                    // Ax²+Bx=Ax(x+B/A)
+  jhs_c15_fac_02: (e) => e.av1 - e.bv1 === e.p1 && e.av1 * e.bv1 === e.q1,        // x²+px−q=(x+av)(x−bv)
+  jhs_c15_fac_03: (e) => 2 * e.av1 === e.d1 && e.av1 * e.av1 === e.q1,            // x²−dx+q=(x−av)²
+  jhs_c15_fac_04: (e) => e.av1 * e.av1 === e.N1,                                  // x²−N=(x+av)(x−av)
 };
 
 const bankFiles = fs.readdirSync(path.join(ROOT, 'pattern_bank'))
