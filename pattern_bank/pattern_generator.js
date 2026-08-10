@@ -104,7 +104,9 @@
     dec2: function (b) { return fmtDec(b, 100); },
     dec3: function (b) { return fmtDec(b, 1000); },
     percent_pm: function (p) { return fmtPercentPm(p); },
-    buai_pm: function (p) { return fmtBuaiPm(p); }
+    buai_pm: function (p) { return fmtBuaiPm(p); },
+    // v1.0 追加（jhs符号付き整数。既存6学年は未参照＝非干渉。fmtSigned は関数宣言で巻き上げ済み）
+    signed: function (b) { return fmtSigned(b); }
   };
 
   // 同分母分数の整形（generate_poc_v07.py fmt_fraction と同一）。num==den→"1"、num==0→"0"。
@@ -123,6 +125,71 @@
     if (rem === 0) return '' + whole;
     if (whole === 0) return '' + rem + '/' + den;
     return '' + whole + 'と' + rem + '/' + den;
+  }
+
+  // ---- v1.0 追加ヘルパ（jhs中学数学・符号/係数/平方根の整形。generate_poc_v10.py と
+  //      1:1移植。整数演算+文字列結合のみ・math不使用＝言語間挙動差なし。マイナスは
+  //      U+2212(−)、連結の＋は U+FF0B。既存6学年バンクは未参照＝非干渉。等価性は
+  //      helpers_test_vectors.json のシード非依存ベクターで両実装照合）。 ----
+  var MINUS = '−';   // U+2212
+  var PLUSJ = '＋';   // U+FF0B
+  // 符号付き整数表示。n≥0→str(n)、n<0→"−"+str(-n)。
+  function fmtSigned(n) {
+    n = Math.trunc(n);
+    return n >= 0 ? String(n) : MINUS + String(-n);
+  }
+  // 先頭項の係数: 1→""、−1→"−"、他→fmtSigned(n)。（例: fmtCoef(-1)="−"）
+  function fmtCoef(n) {
+    n = Math.trunc(n);
+    if (n === 1) return '';
+    if (n === -1) return MINUS;
+    return fmtSigned(n);
+  }
+  // 連結項の係数: 1→"＋"、−1→"−"、n>1→"＋"+n、n<−1→"−"+|n|。fmtCoefj(0)は未定義扱い
+  // （"＋0"を返さない。変数項が消えるケースはバンク側で制約分割して回避＝仕様書§3）。
+  function fmtCoefj(n) {
+    n = Math.trunc(n);
+    if (n === 1) return PLUSJ;
+    if (n === -1) return MINUS;
+    if (n > 1) return PLUSJ + String(n);
+    if (n < -1) return MINUS + String(-n);
+    return '';   // n===0: 未定義扱い（バンクは制約分割で到達しない）
+  }
+  // 連結定数項: 0→""、n>0→"＋"+n、n<0→"−"+|n|。（例: fmtTermj(-49)="−49"）
+  function fmtTermj(n) {
+    n = Math.trunc(n);
+    if (n === 0) return '';
+    return n > 0 ? PLUSJ + String(n) : MINUS + String(-n);
+  }
+  // 符号のみ: n<0→"−"、それ以外→""（負分数の符号前置用）。
+  function sgnStr(n) { return Math.trunc(n) < 0 ? MINUS : ''; }
+  // |n|=k²·m（m平方因数なし）へ分解し [k, m] を返す（d=2から d·d≦残り の反復）。
+  function sqrtDecomp(n) {
+    var m = Math.abs(Math.trunc(n)), k = 1, d = 2;
+    while (d * d <= m) {
+      while (m % (d * d) === 0) { m = Math.trunc(m / (d * d)); k *= d; }
+      d += 1;
+    }
+    return [k, m];
+  }
+  function sqrtCoef(n) { return sqrtDecomp(n)[0]; }   // √n の係数 k（例: sqrtCoef(48)=4）
+  function sqrtRad(n) { return sqrtDecomp(n)[1]; }    // √n の根号内 m（例: sqrtRad(48)=3）
+  // 符号込み√表示: 0→"0"、|n|=k²m で m==1→fmtSigned(±k)、k==1→[−]"√m"、他→[−]"k√m"。
+  function fmtSqrt(n) {
+    n = Math.trunc(n);
+    if (n === 0) return '0';
+    var neg = n < 0, dec = sqrtDecomp(n), k = dec[0], m = dec[1];
+    if (m === 1) return fmtSigned(neg ? -k : k);
+    var sign = neg ? MINUS : '';
+    return k === 1 ? (sign + '√' + m) : (sign + k + '√' + m);
+  }
+  // スロット range=[lo,hi](step) の到達可能値ドメインを "件数:先頭:末尾" で返す
+  // （負域含む Python randrange とのマッピング一致照合用。randRange と同一: n=floor((hi-lo)/step)+1）。
+  function sampleDomain(lo, hi, step) {
+    lo = Math.trunc(lo); hi = Math.trunc(hi); step = Math.trunc(step || 1);
+    var n = Math.floor((hi - lo) / step) + 1;
+    var last = lo + step * (n - 1);
+    return n + ':' + lo + ':' + last;
   }
 
   // がい数（v0.8）: 整数演算のみ（浮動小数点round禁止・言語間挙動差なし）。
@@ -593,7 +660,10 @@
       if (typeof v === 'number' && Number.isInteger(v) &&
         (Object.prototype.hasOwnProperty.call(pattern.slots || {}, k) ||
           Object.prototype.hasOwnProperty.call(pattern.quantity_slots || {}, k))) {
+        // v1.0: 負スロット値対応。本文「−6」は \d+ 抽出で 6 になるため v と abs(v) の
+        // 両方を許可（既存バンクは全て正値=abs(v)==v で非干渉）。
         allowedNums[v] = true;
+        allowedNums[Math.abs(v)] = true;
       }
     });
     Object.keys(env).forEach(function (k) {
@@ -609,11 +679,19 @@
     var textNums = (problem.match(/\d+/g) || []).map(function (x) { return parseInt(x, 10); });
     var numsFromSlots = textNums.every(function (n) { return Object.prototype.hasOwnProperty.call(allowedNums, n); });
 
+    // v1.0: answer_domain（無宣言/"positive_int"→ans>0、"any_int"→任意、"nonzero_int"→≠0）。
+    // 返却キー名 answer_positive は維持し「宣言ドメイン内か」に意味拡張（ハーネス互換）。
+    var dom = pattern.answer_domain || 'positive_int';
+    var a = env.ans, inDomain;
+    if (dom === 'any_int') inDomain = true;
+    else if (dom === 'nonzero_int') inDomain = a !== 0;
+    else inDomain = a > 0;   // positive_int（既定・既存バンク全て）
+
     return {
       checks: {
         kanji_ok: bad.length === 0,
         nums_from_slots: numsFromSlots,
-        answer_positive: env.ans > 0
+        answer_positive: inDomain
       },
       bad: bad
     };
@@ -688,6 +766,16 @@
     roundHalfUp: roundHalfUp,
     roundRangeLower: roundRangeLower,
     roundRangeUpperExcl: roundRangeUpperExcl,
+    // v1.0 ヘルパ（helpers_test_vectors.json ランナー用に公開）
+    fmtSigned: fmtSigned,
+    fmtCoef: fmtCoef,
+    fmtCoefj: fmtCoefj,
+    fmtTermj: fmtTermj,
+    sgnStr: sgnStr,
+    sqrtCoef: sqrtCoef,
+    sqrtRad: sqrtRad,
+    fmtSqrt: fmtSqrt,
+    sampleDomain: sampleDomain,
     resolveFigureParams: resolveFigureParams,
     allowedKanji: allowedKanji,
     kanjiCheck: kanjiCheck,

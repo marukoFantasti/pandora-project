@@ -16,7 +16,11 @@ const P = require(path.join(ROOT, 'pattern_bank', 'pattern_generator.js'));
 const IMPL = {
   gcd: P.gcdInt, lcm: P.lcmInt, reduce_num: P.reduceNum, reduce_den: P.reduceDen,
   fmt_dec: P.fmtDec, fmt_percent_pm: P.fmtPercentPm, fmt_buai_pm: P.fmtBuaiPm,
-  fmt_mixed: P.fmtMixed, fmt_fraction: P.fmtFraction, round_half_up: P.roundHalfUp
+  fmt_mixed: P.fmtMixed, fmt_fraction: P.fmtFraction, round_half_up: P.roundHalfUp,
+  // v1.0 jhs ヘルパ（符号/係数/平方根 + 負域サンプリング照合）
+  fmt_signed: P.fmtSigned, fmt_coef: P.fmtCoef, fmt_coefj: P.fmtCoefj,
+  fmt_termj: P.fmtTermj, sgn_str: P.sgnStr, sqrt_coef: P.sqrtCoef,
+  sqrt_rad: P.sqrtRad, fmt_sqrt: P.fmtSqrt, sample_domain: P.sampleDomain
 };
 
 const vecPath = process.argv[2] || path.join(ROOT, 'pattern_bank', 'handoff_g05', 'helpers_test_vectors.json');
