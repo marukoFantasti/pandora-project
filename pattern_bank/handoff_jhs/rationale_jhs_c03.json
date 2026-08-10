@@ -1,0 +1,70 @@
+{
+  "_meta": {
+    "schema": "rationale_schema_spec.md v1.0",
+    "scope": "jhs c03 立式系(5パターン・c03のA層クローズ)",
+    "note": "共通設計判断: _shared.jhs_c03_ritsushiki(本ファイル)。規則性(図)はB/C層送り、説明・証明は除外(承認スコープ)。"
+  },
+  "_shared": {
+    "jhs_c03_ritsushiki": {
+      "representation": "立式系の解答は文字列完全一致採点=answer_templateが正準形。項順・記号(＝≦)・単位の付置(かっこ外g・係数後ろ円)まで正準に含む。可換表記(c＋ma＝t等)の許容は検収UIの許容登録側に接続(g06積み残し「立式可換表記」と同枠)。",
+      "constructive_guarantees": "文章題の数値には「状況の成立性」制約を課す: 暗黙単価の整数性と現実的価格帯、購入可能個数の下限など。数学的正しさだけでなく、生成文が現実に読める状況であることを制約で保証する(c03で確立し、c05文章題の基準にする)。",
+      "lexicon_policy": "語彙は複数sentence_templatesへの焼き込み方式(荷物/箱、ペン/ノート、りんご/おにぎり等)。lexicon_slots機構の本格投入はバリエーション要求が大きいc05から。D4'に従い、参照元の固有シチュエーション(具体的な数値×品目の組)は転記せず、品目は一般的な教材語彙から再構成。",
+      "directives": [
+        {"text": "A層第1波スコープ承認(c03は立式系のみ・規則性図はB/C層・説明証明は除外)", "by": "marko", "date": "2026-08-09"},
+        {"text": "文字整列xy正準の裁可(異文字積は辞書順、yx表記は採点不正解)", "by": "marko", "date": "2026-08-10"}
+      ]
+    }
+  },
+  "rationales": {
+    "jhs_c03_exp_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c03_u01", "unit_name": "文字式の利用", "semantic_territory": "立式・数量の文字式(和の表現)", "number_domain": "整数個数(答えは文字列)", "answer_structure": "single", "figure": "なし", "step_count": 1, "directives_ref": "_shared.jhs_c03_ritsushiki.directives"},
+      "source_features": "2種の単位量×個数の和。(mx＋ny)g のかっこ+単位様式が正準の要点。",
+      "representation": "_shared参照。単位gはかっこの外(実物の支配的様式)。",
+      "constructive_guarantees": "m≠n制約: 個数が同じだと m(x＋y) 型の同値表現が自然になり正準形が割れるため除外。",
+      "semantic_position": "立式系の基底(未知量が式に残る第一歩)。",
+      "exclusions": "個数同一の除外(正準割れ)。3種以上の品目は処理量過多で除外。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c03_exp_02": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c03_u01", "unit_name": "文字式の利用", "semantic_territory": "立式・数量の文字式(割引)", "number_domain": "割合(整数係数構成)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c03_ritsushiki.directives"},
+      "source_features": "定価のw割引きをn個。割合×文字の型で、g06のhi/proportion体系(割合)とjhs文字式の接続点。",
+      "representation": "係数k=(10−w)n/10が整数に落ちる(w,n)のみ採用(c02等式変形の整数係数構成と同方針)。係数1の除外は文字式系の係数1排除規約の答え側適用。",
+      "constructive_guarantees": "((10−w)n)%10==0で整数保証、k∈[2,18]。",
+      "semantic_position": "g06割合体系のjhs後継の入口(意味カテゴリ接続をrationaleで明示するのは本パターンが初)。",
+      "exclusions": "分数係数落ちの除外。w=0(割引なし)は範囲で自動除外。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c03_eq_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c03_u01", "unit_name": "文字式の利用", "semantic_territory": "立式・等式で表す(買い物)", "number_domain": "金額(円・10円刻み)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c03_ritsushiki.directives"},
+      "source_features": "単価×個数+定額=合計の等式化。「〜でした」→＝の対応。",
+      "representation": "_shared参照。項順は購入記述順(ma→c→t)で固定。",
+      "constructive_guarantees": "状況の成立性: 暗黙単価(t−c)/mが整数かつ[30,500]円。金額はchoices/step10で現実的な丸め。",
+      "semantic_position": "等式化の基底。c04方程式(解く側)の前段で、c04では同じ状況から解を求めさせる対比が作れる。",
+      "exclusions": "暗黙単価が非整数・非現実価格帯の除外。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c03_ineq_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c03_u01", "unit_name": "文字式の利用", "semantic_territory": "立式・不等式で表す(以下)", "number_domain": "金額(円)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c03_ritsushiki.directives"},
+      "source_features": "「以下にします」→≦。不等号の向きと語の対応が主眼。",
+      "representation": "≦はU+2266(実物と同一)。未知数xは個数側。",
+      "constructive_guarantees": "t−q≧2pで「2個は買える」成立性。金額choicesで丸め。",
+      "semantic_position": "不等式化の基底。「以上」「より多い」「未満」の語バリエーションは向き・記号が変わるため別型(第2波で4語完備を判断)。",
+      "exclusions": "以外の不等号語(≧・＜・＞)は別型。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c03_rel_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c03_u01", "unit_name": "文字式の利用", "semantic_territory": "立式・aをbの式で表す(配って余る)", "number_domain": "整数個数", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c03_ritsushiki.directives"},
+      "source_features": "配って余る状況のa＝mb＋r化。除法の関係を乗法+剰余で表す読み替えが主眼。",
+      "representation": "解答形a＝{m}b＋{r}はb項先行(実物の支配的様式)。",
+      "constructive_guarantees": "r∈[1,9]: r=0(割り切れ)は「余る」の語と矛盾するため範囲で除外。",
+      "semantic_position": "「〜を〜の式で表す」型の基底。c02等式変形(形式操作)に対し、こちらは状況からの直接立式。",
+      "exclusions": "r=0除外(語との整合)。「足りない」型(a＝mb−s)は符号が変わる別型。",
+      "figure_notes": null,
+      "pedagogy": []
+    }
+  }
+}

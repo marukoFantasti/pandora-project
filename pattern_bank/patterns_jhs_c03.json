@@ -1,0 +1,144 @@
+{
+  "schema_version": "1.0",
+  "grade": "jhs",
+  "description": "jhs数学バンク A層第1波 c03(文字式の利用・立式系) 5パターン: 数量の文字式表現2形・等式で表す・不等式で表す・aをbの式で表す。解答は文字列完全一致=テンプレが正準形。語彙は複数sentence_templatesへの焼き込み方式(本格レキシコンはc05で投入)。規則性(図)はB/C層送り、説明・証明は除外(承認スコープ)。",
+  "answer_structures": ["single"],
+  "shared_lexicon": {
+    "comment": "c03は複数テンプレ焼き込み方式のためレキシコン未使用。c05文章題で導入する。"
+  },
+  "patterns": [
+    {
+      "pattern_id": "jhs_c03_exp_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c03_u01",
+      "unit_name": "文字式の利用",
+      "semantic_category": "立式・数量の文字式(和の表現)",
+      "semantic_note": "重さxgをm個+重さygをn個 → (mx＋ny)g。2種の未知量の線形結合を単位付きかっこで表す正準((mx＋ny)g様式)。",
+      "step_count": 1,
+      "operation": "m個×xg + n個×yg → (mx＋ny)g",
+      "answer_formula": "m1 + n1",
+      "slots": {
+        "m1": {"type": "int", "range": [2, 9]},
+        "n1": {"type": "int", "range": [2, 9]}
+      },
+      "value_constraints": [
+        {"rule": "distinct_counts", "expr": "m1 != n1", "why": "個数が同じだと(m(x＋y))型の別解釈が生まれ正準形が割れるため除外"}
+      ],
+      "sentence_templates": [
+        "1個の重さがxgの荷物を{m1}個と、1個の重さがygの荷物を{n1}個運びます。全体の重さを、x、yを使った式で表しなさい。",
+        "1個の重さがxgの箱を{m1}個と、1個の重さがygの箱を{n1}個積みます。全体の重さを、x、yを使った式で表しなさい。"
+      ],
+      "answer_template": "答え ({m1}x＋{n1}y)g",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": [1]
+    },
+    {
+      "pattern_id": "jhs_c03_exp_02",
+      "grade": "jhs",
+      "unit_id": "jhs_c03_u01",
+      "unit_name": "文字式の利用",
+      "semantic_category": "立式・数量の文字式(割引・整数係数構成)",
+      "semantic_note": "定価a円のw割引きをn個 → ka円(k=(10−w)n/10)。係数が整数に落ちる(w,n)だけを構成的に採用し、分数係数表示を回避(c02等式変形と同方針)。",
+      "step_count": 2,
+      "operation": "(10−w)/10 × a × n → ka (k整数)",
+      "answer_formula": "(10 - w1) * n1 // 10",
+      "slots": {
+        "w1": {"type": "int", "range": [1, 9]},
+        "n1": {"type": "int", "range": [2, 20]}
+      },
+      "value_constraints": [
+        {"rule": "integer_coef", "expr": "((10 - w1) * n1) % 10 == 0", "why": "係数の整数保証(分数係数答の回避)"},
+        {"rule": "coef_not_one", "expr": "(10 - w1) * n1 // 10 != 1", "why": "係数1は「1a円」表記になり不正(文字式系の本文係数1排除規約の答え側適用)"},
+        {"rule": "coef_cap", "expr": "(10 - w1) * n1 // 10 <= 18", "why": "係数を現実的な範囲に保つ"}
+      ],
+      "sentence_templates": [
+        "定価が1個a円の品物が、定価の{w1}割引きで売られています。この品物を{n1}個買うときの代金を、aを使った式で表しなさい。"
+      ],
+      "answer_template": "答え {ans}a円",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": [1, 10]
+    },
+    {
+      "pattern_id": "jhs_c03_eq_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c03_u01",
+      "unit_name": "文字式の利用",
+      "semantic_category": "立式・等式で表す(買い物)",
+      "semantic_note": "単価a円×m個＋定額c円＝合計t円 → ma＋c＝t。数量関係を等式化する型。暗黙単価(t−c)/mが整数かつ現実的価格帯であることを構成的に保証(状況の成立性)。",
+      "step_count": 2,
+      "operation": "ma＋c＝t",
+      "answer_formula": "(t1 - c1) // m1",
+      "slots": {
+        "m1": {"type": "int", "range": [2, 8]},
+        "c1": {"type": "int", "choices": [100, 120, 150, 180, 200, 250, 300]},
+        "t1": {"type": "int", "range": [300, 2500], "step": 10}
+      },
+      "value_constraints": [
+        {"rule": "consistent", "expr": "(t1 - c1) % m1 == 0", "why": "暗黙単価(t−c)/mの整数保証(状況の成立性)"},
+        {"rule": "price_floor", "expr": "(t1 - c1) // m1 >= 30", "why": "暗黙単価の現実性(30円未満は不自然)"},
+        {"rule": "price_cap", "expr": "(t1 - c1) // m1 <= 500", "why": "暗黙単価の現実性(上限)"}
+      ],
+      "sentence_templates": [
+        "1本a円のペンを{m1}本と、1個{c1}円の筆箱を1個買ったところ、代金の合計は{t1}円でした。この数量の関係を、等式で表しなさい。",
+        "1冊a円のノートを{m1}冊と、1本{c1}円の万年筆を1本買ったところ、代金の合計は{t1}円でした。この数量の関係を、等式で表しなさい。"
+      ],
+      "answer_template": "答え {m1}a＋{c1}＝{t1}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": [1]
+    },
+    {
+      "pattern_id": "jhs_c03_ineq_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c03_u01",
+      "unit_name": "文字式の利用",
+      "semantic_category": "立式・不等式で表す(以下)",
+      "semantic_note": "単価p円×x個＋定額q円≦t円 → px＋q≦t。「以下」→≦の対応。少なくとも2個買える現実性を構成的に保証。",
+      "step_count": 2,
+      "operation": "px＋q≦t",
+      "answer_formula": "t1 - q1",
+      "slots": {
+        "p1": {"type": "int", "choices": [60, 80, 100, 120, 150, 180]},
+        "q1": {"type": "int", "choices": [100, 150, 200, 250, 300]},
+        "t1": {"type": "int", "range": [500, 2000], "step": 100}
+      },
+      "value_constraints": [
+        {"rule": "feasible", "expr": "t1 - q1 >= 2 * p1", "why": "少なくとも2個買える状況の成立性(0個・1個しか買えない不自然さを除外)"}
+      ],
+      "sentence_templates": [
+        "1個{p1}円のりんごをx個と、1個{q1}円のかごを1個買って、代金の合計を{t1}円以下にします。この数量の関係を、不等式で表しなさい。",
+        "1個{p1}円のおにぎりをx個と、1本{q1}円のお茶を1本買って、代金の合計を{t1}円以下にします。この数量の関係を、不等式で表しなさい。"
+      ],
+      "answer_template": "答え {p1}x＋{q1}≦{t1}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": [1]
+    },
+    {
+      "pattern_id": "jhs_c03_rel_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c03_u01",
+      "unit_name": "文字式の利用",
+      "semantic_category": "立式・aをbの式で表す(配って余る)",
+      "semantic_note": "a個をb個ずつm人に配るとr個余る → a＝mb＋r。除法の関係を乗法+剰余の等式に読み替える型。",
+      "step_count": 2,
+      "operation": "a＝mb＋r",
+      "answer_formula": "m1",
+      "slots": {
+        "m1": {"type": "int", "range": [3, 9]},
+        "r1": {"type": "int", "range": [1, 9]}
+      },
+      "value_constraints": [],
+      "sentence_templates": [
+        "a冊のノートを、1人にb冊ずつ{m1}人に配ると、{r1}冊余りました。aを、bを使った式で表しなさい。",
+        "a個のあめを、1人にb個ずつ{m1}人に配ると、{r1}個余りました。aを、bを使った式で表しなさい。"
+      ],
+      "answer_template": "答え a＝{m1}b＋{r1}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": [1]
+    }
+  ]
+}
