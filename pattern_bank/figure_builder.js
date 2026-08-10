@@ -783,6 +783,7 @@
       curve: curve, ends: [curve[0], curve[curve.length - 1]], lattice: lattice };
   }
   function xyGraphLayout(fp) {
+    if (Number(fp.fig_version) === 2) return xyGraphV2Layout(fp);   // v2へ分岐（v1は以下で完全維持・非破壊）
     var mode = fp.mode || 'prop', k = Number(fp.k), xmax = Number(fp.xmax) || 6, ymax = Number(fp.ymax) || 6;
     var g = xyGraphGeom(mode, k, xmax, ymax), U = g.unit, lay = newLayout();
     // 格子
@@ -798,6 +799,124 @@
     if (mode === 'inv') g.lattice.forEach(function (p) { var w = worldFlip([p[0] * U, p[1] * U]); lay.parts.push('<circle cx="' + w[0].toFixed(1) + '" cy="' + w[1].toFixed(1) + '" r="3" fill="' + C_TARGET + '"/>'); });
     // 読み取り点
     if (fp.mark) { var mw = worldFlip([Number(fp.mark[0]) * U, Number(fp.mark[1]) * U]); lay.parts.push('<circle cx="' + mw[0].toFixed(1) + '" cy="' + mw[1].toFixed(1) + '" r="3.5" fill="#fff" stroke="' + C_TARGET + '" stroke-width="2"/>'); }
+    return lay;
+  }
+
+  // ============================================================
+  // xy_graph fig_version 2(jhs B層 c06-c08): 4象限view・有理数[num,den]要素・決定的px。
+  // v1(xyGraphLayout)には一切触れず独立実装(§3非破壊)。共有はマッピング系のみ。
+  // 座標はプロット局所px(0..W,0..H・y下向き)。fig_geometry_reference.py と ±0.5px 照合。
+  // ============================================================
+  var V2_W = 240, V2_H = 240;                 // プロット幅/高px(xmin→xmax / ymin→ymax)
+  var V2_ARROW = 6, V2_TICK = 4, V2_HYP_SAMPLES = 64;   // 矢印px・目盛px・双曲線サンプル数/枝
+  var V2_PT_DX = 8, V2_PT_DY = 8, V2_FLIP_MARGIN = 1;   // 点ラベルオフセットpx・反転マージン(view単位)
+  // 有理数[num,den]→プロット局所px。非等方(x,y独立)・決定的丸め1回(round-half-up=floor(v+0.5))。
+  function v2px(v, xn, xd, yn, yd) {
+    var px = Math.floor((xn - v.xmin * xd) * V2_W / (xd * (v.xmax - v.xmin)) + 0.5);
+    var py = Math.floor((v.ymax * yd - yn) * V2_H / (yd * (v.ymax - v.ymin)) + 0.5);
+    return [px, py];
+  }
+  // 浮動小数点(双曲線サンプル用)。同一マッピング・同一丸め。※Python照合対象外(§4-5は解析点のみ)。
+  function v2pxf(v, x, y) {
+    return [Math.floor((x - v.xmin) / (v.xmax - v.xmin) * V2_W + 0.5), Math.floor((v.ymax - y) / (v.ymax - v.ymin) * V2_H + 0.5)];
+  }
+  // 直線 y=(an/ad)x+(bn/bd) を view矩形でクリップ→2端点px(有理数交点経由・(px_x,px_y)昇順)。
+  function v2clip(v, an, ad, bn, bd) {
+    var cand = [];
+    [v.xmin, v.xmax].forEach(function (xe) {
+      var yn = an * xe * bd + bn * ad, yd = ad * bd;
+      if (yd < 0) { yn = -yn; yd = -yd; }
+      if (v.ymin * yd <= yn && yn <= v.ymax * yd) cand.push([xe, 1, yn, yd]);
+    });
+    if (an !== 0) [v.ymin, v.ymax].forEach(function (ye) {
+      var xn = (ye * bd - bn) * ad, xd = bd * an;
+      if (xd < 0) { xn = -xn; xd = -xd; }
+      if (v.xmin * xd <= xn && xn <= v.xmax * xd) cand.push([xn, xd, ye, 1]);
+    });
+    var seen = {}, pts = [];
+    cand.forEach(function (c) { var p = v2px(v, c[0], c[1], c[2], c[3]), key = p[0] + ',' + p[1]; if (!seen[key]) { seen[key] = 1; pts.push(p); } });
+    pts.sort(function (a, b) { return a[0] - b[0] || a[1] - b[1]; });
+    return pts;
+  }
+  function v2rat(r) { return Array.isArray(r) ? [Number(r[0]), Number(r[1])] : [Number(r), 1]; }
+  function v2ratStr(r) { var a = v2rat(r); return a[1] === 1 ? String(a[0]) : a[0] + '/' + a[1]; }
+  function xyGraphV2Layout(fp) {
+    var v = fp.view, lay = newLayout();
+    if (!v) return lay;
+    // 入力契約 assert(目盛過密回避=設計側値域で保証・レンダラは防御)
+    if ((v.xmax - v.xmin) / v.tick_x > 16 || (v.ymax - v.ymin) / v.tick_y > 16) throw new Error('xy_graph v2: 目盛過密(契約違反)');
+    function Pn(xn, xd, yn, yd) { return v2px(v, xn, xd, yn, yd); }
+    function Pr(xr, yr) { var a = v2rat(xr), b = v2rat(yr); return v2px(v, a[0], a[1], b[0], b[1]); }
+    var ori = Pn(0, 1, 0, 1);
+    // グリッド(tick間隔・薄色)
+    if (v.grid) {
+      for (var gx = v.xmin; gx <= v.xmax + 1e-9; gx += v.tick_x) lay.parts.push(lineEl(Pn(gx, 1, v.ymin, 1), Pn(gx, 1, v.ymax, 1), '#d5deea', 1));
+      for (var gy = v.ymin; gy <= v.ymax + 1e-9; gy += v.tick_y) lay.parts.push(lineEl(Pn(v.xmin, 1, gy, 1), Pn(v.xmax, 1, gy, 1), '#d5deea', 1));
+    }
+    // 軸(矢印付き) x軸=原点行・y軸=原点列
+    var xL = Pn(v.xmin, 1, 0, 1), xR = Pn(v.xmax, 1, 0, 1), yB = Pn(0, 1, v.ymin, 1), yT = Pn(0, 1, v.ymax, 1);
+    lay.parts.push(lineEl(xL, xR, C_STROKE, 1.6));
+    lay.parts.push(lineEl(yB, yT, C_STROKE, 1.6));
+    lay.parts.push('<path d="M' + xR[0].toFixed(1) + ',' + xR[1].toFixed(1) + ' l-' + V2_ARROW + ',-' + (V2_ARROW * 0.6).toFixed(1) + ' v' + (V2_ARROW * 1.2).toFixed(1) + ' z" fill="' + C_STROKE + '"/>');
+    lay.parts.push('<path d="M' + yT[0].toFixed(1) + ',' + yT[1].toFixed(1) + ' l-' + (V2_ARROW * 0.6).toFixed(1) + ',' + V2_ARROW + ' h' + (V2_ARROW * 1.2).toFixed(1) + ' z" fill="' + C_STROKE + '"/>');
+    // 軸ラベル(任意テキスト・全角括弧単位そのまま)
+    var axl = fp.axis_labels || {};
+    lay.parts.push(textEl(xR[0] + 12, xR[1] + 3, axl.x || 'x', 12, '#333'));
+    lay.parts.push(textEl(yT[0] + 2, yT[1] - 12, axl.y || 'y', 12, '#333'));
+    // 目盛数値(0はO表記に譲る)
+    for (var tx = v.xmin; tx <= v.xmax + 1e-9; tx += v.tick_x) { if (tx === 0) continue; var tp = Pn(tx, 1, 0, 1); lay.parts.push(lineEl([tp[0], ori[1] - V2_TICK / 2], [tp[0], ori[1] + V2_TICK / 2], C_STROKE, 1)); lay.parts.push(textEl(tp[0], ori[1] + 12, String(tx), 10, '#555')); }
+    for (var ty = v.ymin; ty <= v.ymax + 1e-9; ty += v.tick_y) { if (ty === 0) continue; var tq = Pn(0, 1, ty, 1); lay.parts.push(lineEl([ori[0] - V2_TICK / 2, tq[1]], [ori[0] + V2_TICK / 2, tq[1]], C_STROKE, 1)); lay.parts.push(textEl(ori[0] - 13, tq[1], String(ty), 10, '#555')); }
+    lay.parts.push(textEl(ori[0] - 9, ori[1] + 12, 'O', 11, '#555'));
+    lay.pts.push([0, 0], [V2_W, V2_H], [xR[0] + 26, xR[1]], [yT[0], yT[1] - 20], [ori[0] - 26, ori[1]]);
+    // elements(配列順=描画順)
+    (fp.elements || []).forEach(function (el) {
+      if (el.type === 'line') {
+        var a = v2rat(el.a), b = v2rat(el.b), pts = v2clip(v, a[0], a[1], b[0], b[1]);
+        if (pts.length < 2) throw new Error('xy_graph v2: lineクリップ結果<2(契約違反)');
+        lay.parts.push(lineEl(pts[0], pts[1], C_TARGET, 2));
+        if (el.label) lay.parts.push(textEl((pts[0][0] + pts[1][0]) / 2 + 10, (pts[0][1] + pts[1][1]) / 2 - 4, el.label, 12, C_TARGET));
+      } else if (el.type === 'hyperbola') {
+        var k = Number(el.k);
+        [-1, 1].forEach(function (s) {                       // 2枝(x<0 / x>0)
+          if (s < 0 && v.xmin >= 0) return;
+          if (s > 0 && v.xmax <= 0) return;
+          // 可視x域: |k/x|≦ymax相当(漸近線側を除外) かつ view内・当該符号側
+          var xa = s < 0 ? v.xmin : Math.max(v.xmin, Math.abs(k) / v.ymax);
+          var xb = s < 0 ? Math.min(v.xmax, -Math.abs(k) / v.ymax) : v.xmax;
+          if (!(xb > xa)) return;
+          var seg = [];
+          for (var i = 0; i < V2_HYP_SAMPLES; i++) {
+            var x = xa + (xb - xa) * i / (V2_HYP_SAMPLES - 1), y = k / x;
+            if (y < v.ymin - 1e-9 || y > v.ymax + 1e-9) continue;
+            seg.push(v2pxf(v, x, y));
+          }
+          if (seg.length < 2) throw new Error('xy_graph v2: hyperbola サンプル残数<2/枝(契約違反)');
+          lay.parts.push('<polyline points="' + seg.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ') + '" fill="none" stroke="' + C_TARGET + '" stroke-width="2"/>');
+        });
+        if (el.label) { var lp = Pr([v.xmax, 1], [k >= 0 ? v.ymax : v.ymin, 1]); lay.parts.push(textEl(lp[0] - 12, lp[1] + (k >= 0 ? 12 : -6), el.label, 12, C_TARGET)); }
+      } else if (el.type === 'segment') {
+        var p1 = Pr(el.x1, el.y1), p2 = Pr(el.x2, el.y2);
+        lay.parts.push(lineEl(p1, p2, C_TARGET, 2, el.style === 'dashed' ? '5,4' : null));
+      } else if (el.type === 'point') {
+        var pp = Pr(el.x, el.y);
+        var xv = v2rat(el.x), yv = v2rat(el.y);
+        var xr = xv[0] / xv[1], yr = yv[0] / yv[1];
+        var guides = el.guides || 'none';
+        if (guides === 'x' || guides === 'both') lay.parts.push(lineEl(pp, [pp[0], ori[1]], C_TARGET, 1, '4,3'));
+        if (guides === 'y' || guides === 'both') lay.parts.push(lineEl(pp, [ori[0], pp[1]], C_TARGET, 1, '4,3'));
+        lay.parts.push('<circle cx="' + pp[0].toFixed(1) + '" cy="' + pp[1].toFixed(1) + '" r="3.5" fill="' + C_TARGET + '"/>');
+        if (el.label || el.show_coords) {
+          var flip = (xr >= v.xmax - V2_FLIP_MARGIN) || (yr >= v.ymax - V2_FLIP_MARGIN);   // 右端/上端近傍で左下反転
+          var lx = pp[0] + (flip ? -V2_PT_DX - 10 : V2_PT_DX + 4), ly = pp[1] + (flip ? V2_PT_DY + 8 : -V2_PT_DY);
+          var txt = el.show_coords ? ('(' + v2ratStr(el.x) + '，' + v2ratStr(el.y) + ')') : el.label;
+          lay.parts.push(textEl(lx, ly, txt, 12, '#333'));
+          lay.pts.push([lx - 14, ly], [lx + 14, ly]);
+        }
+      } else if (el.type === 'curve_label') {
+        var cp = Pr(el.x, el.y);
+        lay.parts.push(textEl(cp[0], cp[1], el.text, 13, C_TARGET));
+      }
+    });
     return lay;
   }
 
@@ -882,7 +1001,14 @@
     sym_polygon: function (shape) { return symPolygonGeom(shape, 0); },
     similar_pair: similarPairGeom,
     xy_graph: xyGraphGeom, dot_plot: function (mn, mx, vals) { return dotPlotGeom(vals, mn, mx); },
-    histogram: function (cw, x0, freqs) { return histogramGeom(cw, freqs, x0); }
+    histogram: function (cw, x0, freqs) { return histogramGeom(cw, freqs, x0); },
+    // xy_graph fig_version 2(fig_geometry_reference.py と ±0.5px 照合)。位置引数=Python同型。
+    xy_graph_v2_px: function (xmin, xmax, ymin, ymax, xnum, xden, ynum, yden) {
+      return v2px({ xmin: xmin, xmax: xmax, ymin: ymin, ymax: ymax }, xnum, xden, ynum, yden);
+    },
+    xy_graph_v2_clip: function (xmin, xmax, ymin, ymax, an, ad, bn, bd) {
+      return { ends: v2clip({ xmin: xmin, xmax: xmax, ymin: ymin, ymax: ymax }, an, ad, bn, bd) };
+    }
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = FigureBuilder;
   else root.FigureBuilder = FigureBuilder;
