@@ -63,6 +63,16 @@ const ID = {
   jhs_c16_add_01: (e, s) => s === e.p1 + e.q1 - e.r1 && s !== 0,                                    // p√m+q√m−r√m=(p+q−r)√m
   jhs_c16_mixadd_01: (e, s) => { const c = isqrt(e.N1 / e.m1); return squareFreePart(e.N1) === e.m1 && c * c * e.m1 === e.N1 && s === c + e.p1; }, // √N=c√m1, sqrt_rad(N)==m1
   jhs_c16_intpart_01: (e, a) => a * a <= e.n1 && e.n1 < (a + 1) * (a + 1) && a === isqrt(e.n1),     // 挟み撃ち a²≦n<(a+1)² 再確認
+  // --- c17 二次方程式：整数解型は解を元方程式に代入して0、無理数解型はk²m復元+D整合 ---
+  // 整数解型: 各解を元の二次多項式 pv(x)=x²+b·x+c に代入し 0（両根を確認）
+  jhs_c17_fact_01: (e) => { const pv = x => x * x + e.p1 * x - e.q1; return pv(e.bv1) === 0 && pv(-e.av1) === 0; },        // x²+px−q=0, 根 bv1,−av1
+  jhs_c17_fact_02: (e) => { const pv = x => x * x + e.d1 * x + e.q1; return pv(-e.bv1) === 0 && pv(-e.av1) === 0; },       // x²+dx+q=0, 根 −bv1,−av1
+  jhs_c17_fact_03: (e, a) => a * a - e.d1 * a + e.q1 === 0,                                                                // (x−a)²=0 重解 x²−dx+q
+  jhs_c17_back_01: (e, a) => e.s1 * e.s1 + a * e.s1 - e.q1 === 0,                                                          // x²+ax−q=0 に x=s1 代入
+  // 無理数解型: 根号の k²m 復元 + 平方因数なし + 判別式整合
+  jhs_c17_sq_01: (e, k) => e.k1 % (k * k) === 0 && isSquareFree(e.k1 / (k * k)) && squareFreePart(e.k1) >= 2,             // x²=k1, x=±sqc√m
+  jhs_c17_sq_02: (e) => { const m = squareFreePart(e.k1), c = isqrt(e.k1 / m); return c * c * m === e.k1 && m >= 2; },     // (x−m)²=k1
+  jhs_c17_formula_01: (e) => { const D = e.p1 * e.p1 - 4 * e.q1; return D >= 2 && isSquareFree(D); },                      // (p±√D)/2, D=p²−4q 既約
 };
 
 const bankFiles = fs.readdirSync(path.join(ROOT, 'pattern_bank'))
