@@ -34,7 +34,7 @@
   }
  },
  "display_canon": "量の答え=reduced_mixed(帯分数・g05一貫)。倍・比の値=reduced_fraction(仮分数)+整数落ち除外制約(g05_frac_bai_01正準の継承)。比の解答はp:q形式の完全一致。",
- "figure_note": "A層51は図形なし。B層11: circle v2(面積4)・prism(体積2)・table(比例表2・度数分布2・図なし逆算1)。対称・拡大縮小・グラフ・ドットプロット・ヒストグラムはC層設計書を参照。",
+ "figure_note": "A層51は図形なし。B層11: circle v2・prism・table。C層9: sym_polygon(2)・similar_pair(2)・xy_graph(3)・dot_plot(1)・histogram(1)。全kind本番反映済(a129c26)。",
  "shared_lexicon": {
   "comment": "g05レキシコンの語感を継承。すべてg01〜g06配当漢字またはかな。実データ・固有教材由来の語は含めない。",
   "actors": [
@@ -111,6 +111,82 @@
    {
     "noun": "ロープ",
     "unit": "m"
+   }
+  ],
+  "sym_shapes_axes": [
+   {
+    "id": "square",
+    "name": "正方形",
+    "axes": 4
+   },
+   {
+    "id": "rect",
+    "name": "長方形",
+    "axes": 2
+   },
+   {
+    "id": "iso_tri",
+    "name": "二等辺三角形",
+    "axes": 1
+   },
+   {
+    "id": "equi_tri",
+    "name": "正三角形",
+    "axes": 3
+   },
+   {
+    "id": "reg_pentagon",
+    "name": "正五角形",
+    "axes": 5
+   },
+   {
+    "id": "reg_hexagon",
+    "name": "正六角形",
+    "axes": 6
+   }
+  ],
+  "sym_shapes_judge": [
+   {
+    "id": "square",
+    "name": "正方形",
+    "judge": "線対称でも点対称でもある",
+    "jid": 3
+   },
+   {
+    "id": "rect",
+    "name": "長方形",
+    "judge": "線対称でも点対称でもある",
+    "jid": 3
+   },
+   {
+    "id": "parallelogram",
+    "name": "平行四辺形",
+    "judge": "点対称",
+    "jid": 2
+   },
+   {
+    "id": "iso_tri",
+    "name": "二等辺三角形",
+    "judge": "線対称",
+    "jid": 1
+   },
+   {
+    "id": "equi_tri",
+    "name": "正三角形",
+    "judge": "線対称",
+    "jid": 1
+   },
+   {
+    "id": "reg_pentagon",
+    "name": "正五角形",
+    "judge": "線対称",
+    "jid": 1
+   },
+   {
+    "id": "reg_hexagon",
+    "name": "正六角形",
+    "judge": "線対称でも点対称でもある",
+    "jid": 3
    }
   ]
  },
@@ -4631,9 +4707,568 @@
    "template_number_constants": [
     20
    ]
+  },
+  {
+   "pattern_id": "g06_sym_axes_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u01",
+   "unit_name": "線対称",
+   "semantic_category": "対称の軸の本数(sym_polygon)",
+   "semantic_note": "形状ごとの軸本数をレキシコン束縛(名前・図形id・本数を同一アイテムから取得=不整合が構造的に起きない)。図はaxis=false(答えを図に出さない)。「称」「軸」はallowed_extra(教科書ルビ付き専門用語)。",
+   "step_count": 1,
+   "operation": "形状 → 軸本数",
+   "answer_formula": "ax1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "sh_id": {
+     "from": "sym_shapes_axes[j].id"
+    },
+    "sh_name": {
+     "from": "sym_shapes_axes[j].name"
+    },
+    "ax1": {
+     "from": "sym_shapes_axes[j].axes"
+    }
+   },
+   "value_constraints": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "sym_polygon",
+    "shape": "{sh_id}",
+    "mode": "line",
+    "axis": false
+   },
+   "sentence_templates": [
+    "右の図の{sh_name}は線対称な図形です。対称の軸は何本ありますか。"
+   ],
+   "answer_template": "答え {ax1}本",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_sym_judge_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u03",
+   "unit_name": "多角形と対称",
+   "semantic_category": "線対称・点対称の判定(sym_polygon)",
+   "semantic_note": "判定語(線対称/点対称/どちらも)をレキシコンの図形アイテムに同梱。答えは文字列・ansは判定コードjid(1〜3)のダミー正整数。平行四辺形(線対称でない)を含む7形状。",
+   "step_count": 1,
+   "operation": "形状 → 判定",
+   "answer_formula": "jid1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "sh_id": {
+     "from": "sym_shapes_judge[j].id"
+    },
+    "sh_name": {
+     "from": "sym_shapes_judge[j].name"
+    },
+    "judge1": {
+     "from": "sym_shapes_judge[j].judge"
+    },
+    "jid1": {
+     "from": "sym_shapes_judge[j].jid"
+    }
+   },
+   "value_constraints": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "sym_polygon",
+    "shape": "{sh_id}",
+    "mode": "line",
+    "axis": false
+   },
+   "sentence_templates": [
+    "右の図の{sh_name}は、線対称な図形ですか、点対称な図形ですか。あてはまるものを答えなさい。"
+   ],
+   "answer_template": "答え {judge1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称"
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_similar_len_01",
+   "grade": "g06",
+   "unit_id": "g06_c06_u01",
+   "unit_name": "拡大図と縮図",
+   "semantic_category": "拡大図の対応する辺(similar_pair)",
+   "semantic_note": "基図の底辺長を提示し拡大図の対応辺を問う。図は底辺ラベルのみ・scaled側ラベル省略(答えを図に出さない)=底辺ラベル限定運用(corr-0005)。",
+   "step_count": 1,
+   "operation": "L × ratio",
+   "answer_formula": "l1 * r1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "l1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    },
+    "r1": {
+     "type": "int",
+     "choices": [
+      2,
+      3
+     ],
+     "choice_int": true
+    },
+    "bs1": {
+     "choices": [
+      "right_tri",
+      "tri",
+      "rect"
+     ]
+    }
+   },
+   "value_constraints": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "similar_pair",
+    "base_shape": "{bs1}",
+    "ratio": "{r1}",
+    "base_label": "{l1}",
+    "unit": "cm"
+   },
+   "sentence_templates": [
+    "右の図で、右側の図形は左側の図形の{r1}倍の拡大図です。左側の図形の長さが書かれた辺は{l1}cmです。右側の図形の対応する辺の長さは何cmですか。"
+   ],
+   "answer_template": "しき {l1}×{r1}={ans} 答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_similar_shrink_01",
+   "grade": "g06",
+   "unit_id": "g06_c06_u01",
+   "unit_name": "拡大図と縮図",
+   "semantic_category": "縮図の対応する辺(similar_pair)",
+   "semantic_note": "1/2の縮図。基図側の辺長を提示、縮図側を問う。Lを偶数に限定して整数解を保証。figureのratioはリテラル0.5(縮小表示)。",
+   "step_count": 1,
+   "operation": "L ÷ 2",
+   "answer_formula": "l1 // 2",
+   "answer_unit_from": "unit",
+   "slots": {
+    "l1": {
+     "type": "int",
+     "range": [
+      4,
+      12
+     ],
+     "step": 2
+    },
+    "bs1": {
+     "choices": [
+      "right_tri",
+      "tri",
+      "rect"
+     ]
+    }
+   },
+   "value_constraints": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "similar_pair",
+    "base_shape": "{bs1}",
+    "ratio": 0.5,
+    "base_label": "{l1}",
+    "unit": "cm"
+   },
+   "sentence_templates": [
+    "右の図で、右側の図形は左側の図形の1/2の縮図です。左側の図形の長さが書かれた辺は{l1}cmです。右側の図形の対応する辺の長さは何cmですか。"
+   ],
+   "answer_template": "しき {l1}÷2={ans} 答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1,
+    2
+   ]
+  },
+  {
+   "pattern_id": "g06_graph_prop_read_01",
+   "grade": "g06",
+   "unit_id": "g06_c11_u03",
+   "unit_name": "比例のグラフ",
+   "semantic_category": "比例グラフの読み取り(xy_graph)",
+   "semantic_note": "グラフ上の点(mark・データ座標)からyを読む。ymaxはk×6の計算スロットで直線が枠に収まる。答えは図から読める=読み取り出題の正常系。",
+   "step_count": 1,
+   "operation": "グラフ読み y = k × x",
+   "answer_formula": "k1 * x1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "k1": {
+     "type": "int",
+     "choices": [
+      1,
+      2
+     ],
+     "choice_int": true
+    },
+    "x1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    }
+   },
+   "value_constraints": [],
+   "computed_slots": {
+    "ym1": {
+     "formula": "k1 * 6"
+    },
+    "my1": {
+     "formula": "k1 * x1"
+    }
+   },
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "xy_graph",
+    "mode": "prop",
+    "k": "{k1}",
+    "xmax": 6,
+    "ymax": "{ym1}",
+    "mark": [
+     "{x1}",
+     "{my1}"
+    ]
+   },
+   "sentence_templates": [
+    "右のグラフは、yがxに比例するようすを表しています。xの値が{x1}のときのyの値を、グラフから読み取りなさい。"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_graph_prop_shiki_01",
+   "grade": "g06",
+   "unit_id": "g06_c11_u03",
+   "unit_name": "比例のグラフ",
+   "semantic_category": "比例グラフ→式(xy_graph)",
+   "semantic_note": "x=1のときのy(=k)をグラフから読んで式化。proportion_semantics/find_kのグラフ版(文章A層・表B層・グラフC層の3表現完備)。正準形y=k×x固定。",
+   "step_count": 1,
+   "operation": "グラフ → y = k × x",
+   "answer_formula": "k1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "k1": {
+     "type": "int",
+     "choices": [
+      1,
+      2,
+      3,
+      4
+     ],
+     "choice_int": true
+    }
+   },
+   "value_constraints": [],
+   "computed_slots": {
+    "ym1": {
+     "formula": "k1 * 6"
+    }
+   },
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "xy_graph",
+    "mode": "prop",
+    "k": "{k1}",
+    "xmax": 6,
+    "ymax": "{ym1}"
+   },
+   "sentence_templates": [
+    "右のグラフは、yがxに比例するようすを表しています。グラフから、yをxの式で表しなさい。"
+   ],
+   "answer_template": "答え y={k1}×x",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_graph_inv_read_01",
+   "grade": "g06",
+   "unit_id": "g06_c11_u06",
+   "unit_name": "反比例のグラフ",
+   "semantic_category": "反比例グラフの読み取り(xy_graph)",
+   "semantic_note": "平滑化曲線(corr-0005)上の整数格子点(赤丸強調)からyを読む。xをkの約数に制約し読み取り点が必ず格子点になる。",
+   "step_count": 1,
+   "operation": "グラフ読み y = k ÷ x",
+   "answer_formula": "k1 // x1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "k1": {
+     "type": "int",
+     "choices": [
+      8,
+      12
+     ],
+     "choice_int": true
+    },
+    "x1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "lattice",
+     "expr": "k1 % x1 == 0",
+     "why": "読み取り点を整数格子点に保つ(赤丸強調と一致)"
+    },
+    {
+     "rule": "in_frame",
+     "expr": "k1 // x1 <= 6",
+     "why": "yを枠内(ymax6)に保つ"
+    }
+   ],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "xy_graph",
+    "mode": "inv",
+    "k": "{k1}",
+    "xmax": 6,
+    "ymax": 6
+   },
+   "sentence_templates": [
+    "右のグラフは、yがxに反比例するようすを表しています。xの値が{x1}のときのyの値を、グラフから読み取りなさい。"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_dotplot_mode_01",
+   "grade": "g06",
+   "unit_id": "g06_c07_u01",
+   "unit_name": "資料の整理",
+   "semantic_category": "ドットプロット・最頻値(dot_plot)",
+   "semantic_note": "最頻値mvを先に決め、他5値をmv±固定オフセット(-2,-1,+1,+2,+3)で構成=分布形(3-1-1-1-1-1)が構造的に保証されargmax計算が不要。値域はmin/max計算スロットで枠追従。",
+   "step_count": 1,
+   "operation": "分布 → 最頻値",
+   "answer_formula": "mv1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "mv1": {
+     "type": "int",
+     "range": [
+      4,
+      8
+     ]
+    }
+   },
+   "value_constraints": [],
+   "computed_slots": {
+    "p1": {
+     "formula": "mv1 - 2"
+    },
+    "p2": {
+     "formula": "mv1 - 1"
+    },
+    "p3": {
+     "formula": "mv1 + 1"
+    },
+    "p4": {
+     "formula": "mv1 + 2"
+    },
+    "p5": {
+     "formula": "mv1 + 3"
+    },
+    "lo1": {
+     "formula": "mv1 - 3"
+    },
+    "hi1": {
+     "formula": "mv1 + 4"
+    }
+   },
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "dot_plot",
+    "values": [
+     "{mv1}",
+     "{mv1}",
+     "{mv1}",
+     "{p1}",
+     "{p2}",
+     "{p3}",
+     "{p4}",
+     "{p5}"
+    ],
+    "min": "{lo1}",
+    "max": "{hi1}"
+   },
+   "sentence_templates": [
+    "右のドットプロットは、あるはんの計算テストの点数を整理したものです。いちばん人数が多かった点数は何点ですか。"
+   ],
+   "answer_template": "答え {ans}点",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_hist_read_01",
+   "grade": "g06",
+   "unit_id": "g06_c07_u02",
+   "unit_name": "度数分布表",
+   "semantic_category": "ヒストグラムの読み取り(histogram)",
+   "semantic_note": "15m以上20m未満の柱の高さを読む。B層度数分布表(dosuu系)と同一データ構造の図版=表とグラフの往復素材。階級はclass_width5・x0=10の固定4階級。",
+   "step_count": 1,
+   "operation": "ヒストグラム読み",
+   "answer_formula": "f2",
+   "answer_unit_from": "unit",
+   "slots": {
+    "f1": {
+     "type": "int",
+     "range": [
+      1,
+      8
+     ]
+    },
+    "f2": {
+     "type": "int",
+     "range": [
+      1,
+      8
+     ]
+    },
+    "f3": {
+     "type": "int",
+     "range": [
+      1,
+      8
+     ]
+    },
+    "f4": {
+     "type": "int",
+     "range": [
+      1,
+      8
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "readable",
+     "expr": "f2 != f1",
+     "why": "問う柱が隣と同高で紛れるのを避ける(読み取りの一意性を視覚的に保つ)"
+    }
+   ],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "histogram",
+    "class_width": 5,
+    "x0": 10,
+    "freqs": [
+     "{f1}",
+     "{f2}",
+     "{f3}",
+     "{f4}"
+    ]
+   },
+   "sentence_templates": [
+    "右のグラフは、あるクラスのソフトボール投げのきろくを整理したものです。15m以上20m未満の人は何人ですか。"
+   ],
+   "answer_template": "答え {ans}人",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    15,
+    20
+   ]
   }
  ],
  "schema_changelog": {
-  "0.9": "g06第1波。生成器v0.9無変更で51パターン追加。新規はバンク側の意味カテゴリ体系(hi/proportion/moji/frac_word_semantics)のみ。dec1/dec3/reduce系/max等は全て既存機構の参照。 B層11パターン追加(2026-08-09同日第2弾): circle fig_version2/prism/table highlightの本番kind(545310c)を参照。生成器・figure_builder無変更。"
+  "0.9": "g06第1波。生成器v0.9無変更で51パターン追加。新規はバンク側の意味カテゴリ体系(hi/proportion/moji/frac_word_semantics)のみ。dec1/dec3/reduce系/max等は全て既存機構の参照。 B層11パターン追加(2026-08-09同日第2弾): circle fig_version2/prism/table highlightの本番kind(545310c)を参照。生成器・figure_builder無変更。 C層9パターン追加(同日第3弾): 5新kind(a129c26)参照、対称は「称」をallowed_extra(v0.8機構)で個別許可。"
  }
 }
