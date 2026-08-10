@@ -73,6 +73,21 @@ const ID = {
   jhs_c17_sq_01: (e, k) => e.k1 % (k * k) === 0 && isSquareFree(e.k1 / (k * k)) && squareFreePart(e.k1) >= 2,             // x²=k1, x=±sqc√m
   jhs_c17_sq_02: (e) => { const m = squareFreePart(e.k1), c = isqrt(e.k1 / m); return c * c * m === e.k1 && m >= 2; },     // (x−m)²=k1
   jhs_c17_formula_01: (e) => { const D = e.p1 * e.p1 - 4 * e.q1; return D >= 2 && isSquareFree(D); },                      // (p±√D)/2, D=p²−4q 既約
+  // --- c18 二次関数 y=ax²：復元・代入・変化の割合の整数恒等 + 変域は数値走査 ---
+  jhs_c18_table_01: (e) => e.a1v * e.s1 * e.s1 === e.t1,                                                                  // a=t/s² 復元: a·s²==t
+  jhs_c18_val_01: (e, ans) => ans === e.a1 * e.u1 * e.u1,                                                                 // y=a·(−u)²=a·u²
+  jhs_c18_rate_01: (e, ans) => ans * (e.v1 - e.u1) === e.a1 * e.v1 * e.v1 - e.a1 * e.u1 * e.u1,                           // 変化の割合 ans·(v−u)==av²−au²
+  // 変域: x∈[−p,q] を0.1刻み悉皆走査した近似y範囲が閉形式(0≦y≦M / −M≦y≦0)と一致
+  jhs_c18_range_01: (e) => {
+    const M = e.M1, a = e.a1; let mn = Infinity, mx = -Infinity;
+    for (let i = 0; i <= (e.p1 + e.q1) * 10; i++) { const x = -e.p1 + i * 0.1, y = a * x * x; if (y < mn) mn = y; if (y > mx) mx = y; }
+    return M === a * Math.max(e.p1, e.q1) * Math.max(e.p1, e.q1) && Math.abs(mn) < 1e-6 && Math.abs(mx - M) < 1e-6;        // 下に凸: 最小0(頂点)・最大M
+  },
+  jhs_c18_range_02: (e) => {
+    const M = e.M1, a = e.a1; let mn = Infinity, mx = -Infinity;
+    for (let i = 0; i <= (e.p1 + e.q1) * 10; i++) { const x = -e.p1 + i * 0.1, y = -a * x * x; if (y < mn) mn = y; if (y > mx) mx = y; }
+    return M === a * Math.max(e.p1, e.q1) * Math.max(e.p1, e.q1) && Math.abs(mx) < 1e-6 && Math.abs(mn + M) < 1e-6;        // 上に凸: 最大0(頂点)・最小−M
+  },
 };
 
 const bankFiles = fs.readdirSync(path.join(ROOT, 'pattern_bank'))
