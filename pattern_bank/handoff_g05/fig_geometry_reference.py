@@ -173,17 +173,22 @@ def similar_pair_geom(base_shape, ratio):
     bw = max(p[0] for p in base)
     return {"base": [[R(x), R(y)] for x, y in base], "scaled": [[R(x), R(y)] for x, y in scaled], "base_off": [0, 0], "scaled_off": [R(bw + 40), 0]}
 def xy_graph_geom(mode, k, xmax, ymax):
-    U = min(260 // xmax, 260 // ymax, 30); pts = []; lattice = []
+    U = min(260 // xmax, 260 // ymax, 30); curve = []; lattice = []
     if mode == "prop":
-        pts = [[0, 0], [xmax, min(k * xmax, ymax)]]
+        curve = [[0, 0], [xmax, min(k * xmax, ymax)]]
     else:
-        for x in range(1, xmax + 1):
-            y = k / x
-            if y <= ymax + 1e-9: pts.append([x, y])
+        xTop = k / ymax; curve.append([xTop, ymax])
+        x0 = math.ceil(xTop * 4) / 4; x = x0
+        while x <= xmax + 1e-9:
+            curve.append([x, k / x]); x += 0.25
+        if abs(curve[-1][0] - xmax) > 1e-6: curve.append([xmax, k / xmax])
         for xi in range(1, xmax + 1):
             yi = k / xi
             if abs(yi - round(yi)) < 1e-9 and yi <= ymax: lattice.append([xi, round(yi)])
-    return {"unit": U, "W": xmax * U, "H": ymax * U, "curve": [[R(a), R(b)] for a, b in pts], "lattice": [[a, b] for a, b in lattice]}
+    # ベクター照合: 端点(ends)+整数格子点(lattice)の代表点（curve全点は描画用でJS側のみ保持）
+    return {"unit": U, "W": xmax * U, "H": ymax * U,
+            "ends": [[R(curve[0][0]), R(curve[0][1])], [R(curve[-1][0]), R(curve[-1][1])]],
+            "lattice": [[a, b] for a, b in lattice]}
 def dot_plot_geom(mn, mx, values):
     U = min(280 // (mx - mn), 26); count = {}; dots = []
     for v in values:

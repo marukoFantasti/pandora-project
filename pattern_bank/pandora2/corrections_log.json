@@ -50,5 +50,18 @@
   "instruction": "cuboid横長寄せは figure_builder.js のレンダラを変更せず、今後のB層バンクパターン側の制約(w1>=h1型)で対応する（本文と図の対応保全を優先）。table に highlight:[[row,col],...] を追加実装（任意・省略時無挙動）を承認。",
   "resolution": "cuboidレンダラは無変更のまま確定（既存出力バイト不変）。drawTableに highlight 背景描画を加法追加（未指定=無挙動でtable既存出力バイト不変）。table scan に強調セルの検証ケースを1件追加。circle v2/prism API は報告のまま確定。",
   "generalization": "図と本文の対応が崩れる懸念のある描画制約は、レンダラ側で図形を変えるのではなくバンク(env生成)側の制約で吸収する。表示上の強調は加法パラメータ(省略時無挙動)で後方互換に足す。"
+ },
+ {
+  "id": "corr-0005",
+  "date": "2026-08-09",
+  "by": "marko",
+  "scope": {
+   "type": "figure",
+   "target": "figure_builder.js C層5kind(xy_graph/similar_pair/sym_polygon)"
+  },
+  "observed": "C層5kindレビュー: xy_graph inv曲線の折れ線表現、similar_pairのラベル範囲、sym_polygon軸位置のベクター化要否。",
+  "instruction": "C層5kind API承認。xy_graph inv は平滑化(x刻み0.25)し折れ線は不採用(誤概念誘発のため)、整数格子点強調は維持。similar_pairは底辺ラベル限定で第1波運用。sym_polygonは現行承認(軸位置のベクター化不要・本数n_axesのみ検証)。",
+  "resolution": "xyGraphGeom invを0.25刻みサンプルの平滑曲線に変更。幾何ベクターは端点(ends)+整数格子点(lattice)の代表点で照合するよう更新。similar_pair底辺ラベル・sym_polygon現行のまま確定。後方互換15kindバイト不変・パリティ全一致で本番反映。",
+  "generalization": "連続関数のグラフは折れ線でなく細かいサンプルで滑らかに描く(数学的概念の誤誘発を避ける)。幾何ベクターは全サンプルでなく代表点+意味的特徴点(格子点等)で照合し、描画の細部変更に対して頑健にする。"
  }
 ]

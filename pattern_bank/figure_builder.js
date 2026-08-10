@@ -767,14 +767,20 @@
   // ---- 3. xy_graph: mode=prop(y=kx直線)/inv(y=k/x曲線)。格子・軸・読み取り点。反比例は整数格子点強調 ----
   function xyGraphGeom(mode, k, xmax, ymax) {
     var U = Math.min(Math.floor(260 / xmax), Math.floor(260 / ymax), 30);   // 1目盛りpx
-    var W = xmax * U, H = ymax * U, pts = [], lattice = [];
+    var curve = [], lattice = [];
     if (mode === 'prop') {
-      pts = [[0, 0], [xmax, Math.min(k * xmax, ymax)]];
+      curve = [[0, 0], [xmax, Math.min(k * xmax, ymax)]];
     } else {
-      for (var x = 1; x <= xmax; x++) { var y = k / x; if (y <= ymax + 1e-9) pts.push([x, y]); }
+      // 反比例 y=k/x を 0.25刻みで平滑サンプル（折れ線=誤概念誘発を避ける）。可視域: y<=ymax の x から xmax。
+      var xTop = k / ymax; curve.push([xTop, ymax]);
+      var x0 = Math.ceil(xTop * 4) / 4;
+      for (var x = x0; x <= xmax + 1e-9; x += 0.25) curve.push([x, k / x]);
+      if (Math.abs(curve[curve.length - 1][0] - xmax) > 1e-6) curve.push([xmax, k / xmax]);
       for (var xi = 1; xi <= xmax; xi++) { var yi = k / xi; if (Math.abs(yi - Math.round(yi)) < 1e-9 && yi <= ymax) lattice.push([xi, Math.round(yi)]); }
     }
-    return { unit: U, xaxis: [[0, 0], [xmax, 0]], yaxis: [[0, 0], [0, ymax]], W: W, H: H, curve: pts, lattice: lattice };
+    // ベクター照合は 端点(ends)+整数格子点(lattice) の代表点で行う（curve全点は描画用）。
+    return { unit: U, xaxis: [[0, 0], [xmax, 0]], yaxis: [[0, 0], [0, ymax]], W: xmax * U, H: ymax * U,
+      curve: curve, ends: [curve[0], curve[curve.length - 1]], lattice: lattice };
   }
   function xyGraphLayout(fp) {
     var mode = fp.mode || 'prop', k = Number(fp.k), xmax = Number(fp.xmax) || 6, ymax = Number(fp.ymax) || 6;
