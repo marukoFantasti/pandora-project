@@ -1,0 +1,327 @@
+{
+ "_meta": {
+  "schema": "rationale_schema_spec.md v1.0",
+  "scope": "jhs c02 完成版(15パターン)"
+ },
+ "_shared": {
+  "jhs_c02_coef_display": {
+   "representation": "文字式の答え表示は係数ヘルパで組む: x係数=fmt_coef(1→''、−1→'−'、他→符号付き数)、連結定数項=fmt_termj(0→''、正→＋n、負→−n)。多項式の汎用整形(係数配列→文字列)はv1.0スコープ外のため、項構成はパターンごとにテンプレ固定(c01の符号形固定方式と同じ思想)。",
+   "constructive_guarantees": "本文に現れる係数スロットは全て[2,9]: 係数1は本文で「1x」表記になり数学的に不正のため、範囲レベルで排除する(答え側の±1係数はfmt_coefが正しく処理し、差が±1のケースで自然発生する)。x係数0(項消失)は制約分割で除外(仕様§3のfmt_coefj(0)未定義規約と同系)。定数項0はfmt_termj(0)=''が定義済みのため許容(単項に落ちる正当ケース)。",
+   "corrections_note": "「本文係数1の排除」は本セッションの機械検収(サンプル目視)で発見・即修正した設計項目。人間訂正ではなくAI自己検収のためcorrections_log対象外だが、文字式系の全パターンに適用する一般規約としてここに記録する。",
+   "directives": [
+    {
+     "text": "A層第1波スコープ承認(c02c03文字式を含む)",
+     "by": "marko",
+     "date": "2026-08-09"
+    },
+    {
+     "text": "c01クローズ後、(a)案=c01配線と並行してc02c03設計に着手",
+     "by": "marko",
+     "date": "2026-08-10"
+    }
+   ]
+  }
+ },
+ "rationales": {
+  "jhs_c02_like_01": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c02_u01",
+    "unit_name": "式の計算",
+    "semantic_territory": "文字式・同類項(加法)",
+    "number_domain": "整数係数(答えは正)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 1,
+    "directives_ref": "_shared.jhs_c02_coef_display.directives"
+   },
+   "source_features": "ax＋bx。同類項をまとめる最初の型。",
+   "representation": "係数和は[4,18]で構造上2以上のため、fmt_coef不要=素の{ans}x。ヘルパを使わない最小形を基底に置く。",
+   "constructive_guarantees": "_shared参照(本文係数≧2)。答えは常に正=answer_domain既定。",
+   "semantic_position": "c02の基底。like_02(減法・符号可変)と対。",
+   "exclusions": "本文係数1の排除(_shared)。文字違い(ax＋by)はまとめられない型として別カテゴリ(第2波判断)。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c02_like_02": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c02_u01",
+    "unit_name": "式の計算",
+    "semantic_territory": "文字式・同類項(減法・符号可変)",
+    "number_domain": "整数係数(答えの係数はnonzero_int)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 1,
+    "directives_ref": "_shared.jhs_c02_coef_display.directives"
+   },
+   "source_features": "ax−bx。係数が負・±1に落ちる同類項整理。6x−x→5x型の実物特徴(本文側の係数1)は本文表記不正のため採らず、±1は答え側でのみ出す。",
+   "representation": "fmt_coefの本番初投入。cd1=fmt_coef(a−b)で''/−/±nの3態を単一テンプレ{cd1}xが吸収。",
+   "constructive_guarantees": "a1≠b1制約で係数0(x消失)を分割除外+answer_domain=nonzero_intの二重化。±1境界は|a−b|=1で自然発生(狙い撃ち検証済み: 3x−2x→x、6x＋9−…→−x＋13)。",
+   "semantic_position": "fmt_coefの規約確立パターン。以後の文字式系すべての先例。",
+   "exclusions": "係数0除外(制約分割)。本文係数1除外(_shared)。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c02_paren_01": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c02_u01",
+    "unit_name": "式の計算",
+    "semantic_territory": "文字式・かっこはずし(減法)",
+    "number_domain": "整数係数(x係数nonzero・定数項は正)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 2,
+    "directives_ref": "_shared.jhs_c02_coef_display.directives"
+   },
+   "source_features": "px＋q−(rx−s)。かっこ前のマイナスによる内部符号反転(−(−s)=＋s)がc01減法変換のx項拡張になっている。",
+   "representation": "x係数=fmt_coef(可変符号)、定数項=fmt_termj(q＋sで構造上常に＋)。{cd1}x{td1}の2ヘルパ連結様式を確立。",
+   "constructive_guarantees": "p≠r制約(x消失分割)。定数項はq＋s∈[4,18]で0落ちなし(構造保証)。",
+   "semantic_position": "かっこ系第1(分配なし)。dist_01(分配あり)の前段。",
+   "exclusions": "x係数0除外。かっこ内定数の符号形バリエーション(＋s版)は同型の鏡像のため1形に固定。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c02_dist_01": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c02_u01",
+    "unit_name": "式の計算",
+    "semantic_territory": "文字式・分配とかっこはずし",
+    "number_domain": "整数係数(x係数nonzero・定数項は符号可変・0許容)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 2,
+    "directives_ref": "_shared.jhs_c02_coef_display.directives"
+   },
+   "source_features": "k(px−q)−(rx−s)。分配法則と符号反転の複合、c02計算系の最難形。",
+   "representation": "係数・定数項ともfmt_coef/fmt_termjの全域(負・±1・0)を通す。定数項0(s=kq)は単項落ちとして許容し、fmt_termj(0)=''の仕様定義を実戦で使う(狙い撃ち検証済み: 2(5x−4)−(8x−8)→2x)。",
+   "constructive_guarantees": "kp≠r制約(x消失分割)。k∈[2,5]×p∈[2,5]でkp∈[4,25]、暗算域。",
+   "semantic_position": "かっこ系第2(分配側)。両側分配k(…)−m(…)型は第2パート候補。",
+   "exclusions": "x係数0除外。両側分配は別型(処理量が1段上)として分離。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c02_mono_mul_01": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c02_u01",
+    "unit_name": "式の計算",
+    "semantic_territory": "文字式・単項式の乗法(同文字)",
+    "number_domain": "整数係数(答えは常に負)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 1,
+    "directives_ref": "_shared.jhs_c02_coef_display.directives"
+   },
+   "source_features": "px×(−qx)。係数の積(異符号)+同文字の累乗化x·x=x²の同時処理。",
+   "representation": "答えは構造上常に負=負符号テンプレ固定(c01のsgn_str使い分け規約を継承)。x²の²はU+00B2直書き。",
+   "constructive_guarantees": "p,q∈[2,6]で積[4,36]。係数1排除は範囲で自動。",
+   "semantic_position": "単項式乗法の基底。指数付き((−3a)²×等)はsqrt系と別の指数表示規約が要るため第2パートで体系化。",
+   "exclusions": "異文字積(px×qy→pqxy)は文字整列規約(xy順)の宣言と併せて第2パート。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c02_mono_div_01": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c02_u01",
+    "unit_name": "式の計算",
+    "semantic_territory": "文字式・単項式の除法(文字消去)",
+    "number_domain": "整数係数(整除・答えは正)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 1,
+    "directives_ref": "_shared.jhs_c02_coef_display.directives"
+   },
+   "source_features": "Axy÷Bx。係数の整除と文字の約分(xが消えてyが残る)の同時処理。",
+   "representation": "c01整除機構(divisible+商[2,9])の文字式版。",
+   "constructive_guarantees": "整除保証で分数係数答を排除。答えは常に正=既定。",
+   "semantic_position": "単項式除法の基底。分数係数除算(÷(2/3)b型)は逆数化の中間表示が要るため第2波判断。",
+   "exclusions": "非整除除外。÷1・商1退化除外。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c02_subst_01": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c02_u01",
+    "unit_name": "式の計算",
+    "semantic_territory": "文字式・式の値(負数代入)",
+    "number_domain": "整数(答えはany_int)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 2,
+    "directives_ref": "_shared.jhs_c02_coef_display.directives"
+   },
+   "source_features": "x＝−kのときpx＋qの値。負数代入はc01乗法規則の適用先であり、章間の橋渡し型。",
+   "representation": "代入値の負符号はテンプレ固定(x＝−{k1})、答えはsigned整形。",
+   "constructive_guarantees": "答えq−pkは負・零・正に散る(実測 約65/5/30)。0許容はc01方針と一貫。",
+   "semantic_position": "式の値系第1(1変数)。subst_02(2変数)へ拡張。",
+   "exclusions": "x²項を含む代入(a²−1/3a型)は分数係数表示が要るため第2パート以降。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c02_subst_02": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c02_u01",
+    "unit_name": "式の計算",
+    "semantic_territory": "文字式・式の値(2変数・負数代入)",
+    "number_domain": "整数(答えは常に正)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 2,
+    "directives_ref": "_shared.jhs_c02_coef_display.directives"
+   },
+   "source_features": "x＝a，y＝−bのときpx−qyの値。2変数の同時管理+「−(負)=＋」。",
+   "representation": "代入値の列挙は全角読点区切り(x＝{a1}，y＝−{b1})=enum系と区切り規約共有。",
+   "constructive_guarantees": "pa＋qbで構造上常に正=answer_domain既定(無償検算)。",
+   "semantic_position": "式の値系第2。c03立式系で使う「文字に意味が付く」前段。",
+   "exclusions": "3変数以上は処理量過多で除外。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c02_dist_02": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c02_u01",
+    "unit_name": "式の計算",
+    "semantic_territory": "文字式・両側分配",
+    "number_domain": "整数係数(x係数nonzero・定数項符号可変0許容)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 2,
+    "directives_ref": "_shared.jhs_c02_coef_display.directives"
+   },
+   "source_features": "k(px−q)−m(rx−s)。両側分配+後項の符号反転。dist_01の上位形でc02計算系の頂点。",
+   "representation": "dist_01と同一の{cd1}x{td1}様式。分配係数k,m∈[2,4]で積を暗算域に抑制。",
+   "constructive_guarantees": "kp≠mr制約(x消失分割)。定数項ms−kqの0落ち(単項化)は許容(fmt_termj(0)=''、狙い撃ち検証済み)。",
+   "semantic_position": "かっこ・分配系の最終形。これでc02の1次式操作(同類項→かっこ→片側分配→両側分配)の4段が完備。",
+   "exclusions": "x係数0除外。3括弧以上は処理量過多で除外。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c02_mono_mul_02": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c02_u01",
+    "unit_name": "式の計算",
+    "semantic_territory": "文字式・単項式の乗法(異文字)",
+    "number_domain": "整数係数(答えは常に負)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 1,
+    "directives_ref": "_shared.jhs_c02_coef_display.directives"
+   },
+   "source_features": "px×(−qy)。異文字の積で文字が並ぶ(累乗化しない)側。mono_mul_01(同文字→x²)との対比。",
+   "representation": "文字整列は辞書順xy を表示正準として宣言(yx表記は採点上不正解になるため、display_canon追記対象)。",
+   "constructive_guarantees": "係数≧2(本文係数1排除の一般規約)。",
+   "semantic_position": "単項式乗法の異文字側。3文字積は除外。",
+   "exclusions": "同文字(mono_mul_01の領分)。係数1除外。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c02_pow_mono_01": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c02_u01",
+    "unit_name": "式の計算",
+    "semantic_territory": "文字式・累乗を含む乗法(正)",
+    "number_domain": "整数係数(答えは常に正)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 2,
+    "directives_ref": "_shared.jhs_c02_coef_display.directives"
+   },
+   "source_features": "(−pa)²×qa。かっこ付き累乗の符号処理(c01_pow_01の文字式版)+指数法則a²·a=a³の初出。",
+   "representation": "指数表示規約を確立: Unicode上付き文字(²=U+00B2、³=U+00B3、⁵=U+2075)をテンプレ直書き。指数の動的計算はしない(指数もテンプレ固定=多項式汎用整形のスコープ外方針と一貫)。",
+   "constructive_guarantees": "p∈[2,4]でp²∈[4,16]、積は[8,80]。答えは構造上常に正=既定(無償検算)。",
+   "semantic_position": "指数系第1(正)。pow_mono_02(負)と対。",
+   "exclusions": "かっこなし累乗−pa²型は符号の別規則のため別型(第2波判断)。指数1の因子は表記が変わるため範囲で排除。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c02_pow_mono_02": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c02_u01",
+    "unit_name": "式の計算",
+    "semantic_territory": "文字式・累乗を含む乗法(負)",
+    "number_domain": "整数係数(答えは常に負)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 2,
+    "directives_ref": "_shared.jhs_c02_coef_display.directives"
+   },
+   "source_features": "(−pa)²×(−qa³)。正×負=負と指数加法2＋3=5の複合。実物のa⁵到達型の抽象。",
+   "representation": "pow_mono_01と同一規約。負符号テンプレ固定。",
+   "constructive_guarantees": "同上。答えは構造上常に負。",
+   "semantic_position": "指数系第2(負)。指数の組は(2,3)→5に固定(組を動かすのは指数の動的表示が必要になるため第2波)。",
+   "exclusions": "指数の動的変化除外(テンプレ固定方針)。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c02_form_01": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c02_u01",
+    "unit_name": "式の計算",
+    "semantic_territory": "文字式・等式変形(分母はらい)",
+    "number_domain": "整数係数構成(答えは文字列完全一致)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 2,
+    "directives_ref": "_shared.jhs_c02_coef_display.directives"
+   },
+   "source_features": "a＋b/n＝mc〔b〕。分母をはらう移項操作。実物には分数係数答(y＝4/5x＋7/5型)が多いが、A層は整数係数に落ちる形だけを構成的に採る(分数係数の等式変形は表示・採点とも重いため除外)。",
+   "representation": "解答はテンプレ=正準形(b＝{k}c−{n}a)の文字列完全一致採点。項順(c項→a項)は「解いた文字の右辺は移項元の逆順」という実物の支配的様式に合わせた固定。可換表記(−na＋mnc等)の許容は検収UIの許容登録側で扱う(積み残し接続)。",
+   "constructive_guarantees": "n,m∈[2,5]で係数mn∈[4,25]・全て整数。分数が答えに出ない構成保証。",
+   "semantic_position": "等式変形系第1。c17の解の公式的操作の遠い前段。",
+   "exclusions": "分数係数答の除外(A層方針)。解く文字が分母にある形(S＝ah/2〔h〕等の逆数側)は別型で第2波判断。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c02_form_02": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c02_u01",
+    "unit_name": "式の計算",
+    "semantic_territory": "文字式・等式変形(移項と分母はらい)",
+    "number_domain": "整数係数構成",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 2,
+    "directives_ref": "_shared.jhs_c02_coef_display.directives"
+   },
+   "source_features": "y＝c−x/n〔x〕。負係数が先頭に立つ解答形(x＝−ny＋nc)。実物のy＝2−x/3→x＝−3y＋6型の抽象。",
+   "representation": "負係数先頭はテンプレ直書き(−{n1}y)。定数項は正で＋連結。",
+   "constructive_guarantees": "nc=n×cで整数保証。",
+   "semantic_position": "等式変形系第2(符号反転を含む側)。form_01と合わせて移項の2方向をカバー。",
+   "exclusions": "分数係数答除外。",
+   "figure_notes": null,
+   "pedagogy": []
+  },
+  "jhs_c02_ab_subst_01": {
+   "brief": {
+    "grade": "jhs",
+    "unit_id": "jhs_c02_u01",
+    "unit_name": "式の計算",
+    "semantic_territory": "文字式・式の代入(uA−vB)",
+    "number_domain": "整数係数(x係数nonzero・y係数は正)",
+    "answer_structure": "single",
+    "figure": "なし",
+    "step_count": 2,
+    "directives_ref": "_shared.jhs_c02_coef_display.directives"
+   },
+   "source_features": "A＝px＋qy，B＝rx−syのときuA−vB。式全体を1つの対象として代入する抽象度の跳躍。実物jissen層の2A−3B型の抽象。",
+   "representation": "fmt_coefjの本番初投入: y係数=fmt_coefj(uq＋vs)で＋n連結(構造上常に正だが、ヘルパ経由にすることで将来の符号可変形と様式を揃える)。x係数はfmt_coef。{cxd}x{cyd}yの2文字連結様式。",
+   "constructive_guarantees": "up≠vr制約(x消失分割)。uq＋vs≧8で係数±1・0はy側に出ない(fmt_coefj(0)未定義規約に構造で抵触しない)。",
+   "semantic_position": "c02計算系の統合形(分配+同類項+2文字管理)。c02クローズパターン。",
+   "exclusions": "x係数0除外。uA＋vB(全項正)は退化的差分のため除外、uA−vBの1形に固定。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ }
+}

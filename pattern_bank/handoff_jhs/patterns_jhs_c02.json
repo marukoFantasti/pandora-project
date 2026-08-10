@@ -1,0 +1,904 @@
+{
+ "schema_version": "1.0",
+ "grade": "jhs",
+ "description": "jhs数学バンク A層第1波 c02(式の計算) 完成版: 同類項2・かっこ/分配3・単項式乗除4(指数系2含む)・式の値2・等式変形2・AB代入1 = 15パターン。",
+ "answer_structures": [
+  "single"
+ ],
+ "shared_lexicon": {
+  "comment": "c02計算系はレキシコン不要。"
+ },
+ "patterns": [
+  {
+   "pattern_id": "jhs_c02_like_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c02_u01",
+   "unit_name": "式の計算",
+   "semantic_category": "文字式・同類項(加法)",
+   "semantic_note": "ax＋bx → (a＋b)x。同類項をまとめる基本形。係数和は構造上2以上=係数表示は素の整数で足りる。",
+   "step_count": 1,
+   "operation": "ax＋bx → (a＋b)x",
+   "answer_formula": "a1 + b1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}x＋{b1}x"
+   ],
+   "answer_template": "答え {ans}x",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c02_like_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c02_u01",
+   "unit_name": "式の計算",
+   "semantic_category": "文字式・同類項(減法・符号可変)",
+   "semantic_note": "ax−bx → (a−b)x。係数が負・±1になり得るためfmt_coefを初投入(fmt_coef(1)=''でx、fmt_coef(−1)='−'で−x)。係数0はx消失=制約分割規約で除外。 本文側係数は[2,9](係数1は「1x」表記になり不正のため範囲で排除。答え側±1はfmt_coefが処理)。",
+   "step_count": 1,
+   "operation": "ax−bx → (a−b)x",
+   "answer_domain": "nonzero_int",
+   "answer_formula": "a1 - b1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "computed_slots": {
+    "cd1": {
+     "formula": "fmt_coef(a1 - b1)"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_vanish",
+     "expr": "a1 != b1",
+     "why": "係数0でxが消えるケースの制約分割(仕様§3のfmt_coefj(0)未定義規約と同系の設計規約)"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}x−{b1}x"
+   ],
+   "answer_template": "答え {cd1}x",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c02_paren_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c02_u01",
+   "unit_name": "式の計算",
+   "semantic_category": "文字式・かっこはずし(減法)",
+   "semantic_note": "px＋q−(rx−s) → (p−r)x＋(q＋s)。かっこ前のマイナスで内部符号が反転する要点。x係数はfmt_coef(可変符号)、定数項はfmt_termj(構造上常に＋)。 本文側係数は[2,9](係数1は「1x」表記になり不正のため範囲で排除。答え側±1はfmt_coefが処理)。",
+   "step_count": 2,
+   "operation": "px＋q−(rx−s) → (p−r)x＋(q＋s)",
+   "answer_domain": "nonzero_int",
+   "answer_formula": "p1 - r1",
+   "slots": {
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "r1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "s1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "computed_slots": {
+    "cd1": {
+     "formula": "fmt_coef(p1 - r1)"
+    },
+    "td1": {
+     "formula": "fmt_termj(q1 + s1)"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_vanish",
+     "expr": "p1 != r1",
+     "why": "x係数0の消失ケースを制約分割で除外"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{p1}x＋{q1}−({r1}x−{s1})"
+   ],
+   "answer_template": "答え {cd1}x{td1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c02_dist_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c02_u01",
+   "unit_name": "式の計算",
+   "semantic_category": "文字式・分配とかっこはずし",
+   "semantic_note": "k(px−q)−(rx−s) → (kp−r)x＋(s−kq)。分配法則+符号反転の複合。係数・定数項とも符号可変(fmt_coef+fmt_termj)。定数項0は許容(単項に落ちる正当ケース、fmt_termj(0)=''が仕様で定義済み)。 本文側係数は[2,9](係数1は「1x」表記になり不正のため範囲で排除。答え側±1はfmt_coefが処理)。",
+   "step_count": 2,
+   "operation": "k(px−q)−(rx−s) → (kp−r)x＋(s−kq)",
+   "answer_domain": "nonzero_int",
+   "answer_formula": "k1 * p1 - r1",
+   "slots": {
+    "k1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    },
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    },
+    "r1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "s1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "computed_slots": {
+    "cd1": {
+     "formula": "fmt_coef(k1 * p1 - r1)"
+    },
+    "td1": {
+     "formula": "fmt_termj(s1 - k1 * q1)"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_vanish",
+     "expr": "k1 * p1 != r1",
+     "why": "x係数0の消失ケースを制約分割で除外"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{k1}({p1}x−{q1})−({r1}x−{s1})"
+   ],
+   "answer_template": "答え {cd1}x{td1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c02_mono_mul_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c02_u01",
+   "unit_name": "式の計算",
+   "semantic_category": "文字式・単項式の乗法(同文字)",
+   "semantic_note": "px×(−qx) → −pq x²。係数積+文字の累乗化+異符号規則。答えは構造上常に負=負符号テンプレ固定。",
+   "step_count": 1,
+   "operation": "px×(−qx) → −pq·x²",
+   "answer_domain": "any_int",
+   "answer_formula": "0 - p1 * q1",
+   "slots": {
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    }
+   },
+   "computed_slots": {
+    "m1": {
+     "formula": "p1 * q1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{p1}x×(−{q1}x)"
+   ],
+   "answer_template": "答え −{m1}x²",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c02_mono_div_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c02_u01",
+   "unit_name": "式の計算",
+   "semantic_category": "文字式・単項式の除法(文字消去)",
+   "semantic_note": "Axy÷Bx → (A/B)y。係数の整除+文字の約分。整除・商[2,9]を構成的に保証。",
+   "step_count": 1,
+   "operation": "Axy÷Bx → (A/B)y",
+   "answer_formula": "A1 // B1",
+   "slots": {
+    "A1": {
+     "type": "int",
+     "range": [
+      4,
+      81
+     ]
+    },
+    "B1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "A1 % B1 == 0",
+     "why": "係数の整除保証(分数係数答は本型から除外)"
+    },
+    {
+     "rule": "nontrivial_quotient",
+     "expr": "A1 // B1 >= 2",
+     "why": "商1の退化除外"
+    },
+    {
+     "rule": "quotient_cap",
+     "expr": "A1 // B1 <= 9",
+     "why": "商を1桁に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{A1}xy÷{B1}x"
+   ],
+   "answer_template": "答え {ans}y",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c02_subst_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c02_u01",
+   "unit_name": "式の計算",
+   "semantic_category": "文字式・式の値(負数代入)",
+   "semantic_note": "x＝−k のとき px＋q の値。負数代入で積が負になる処理。答えは q−pk で全域に散る。",
+   "step_count": 2,
+   "operation": "px＋q | x=−k → q−pk",
+   "answer_domain": "any_int",
+   "answer_formula": "q1 - p1 * k1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      20
+     ]
+    },
+    "k1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "x＝−{k1} のとき、{p1}x＋{q1} の値を求めなさい。"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c02_subst_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c02_u01",
+   "unit_name": "式の計算",
+   "semantic_category": "文字式・式の値(2変数・負数代入)",
+   "semantic_note": "x＝a，y＝−b のとき px−qy の値。2変数同時代入+「−(負)=＋」。答えは pa＋qb で構造上常に正=無宣言(既定)。",
+   "step_count": 2,
+   "operation": "px−qy | x=a, y=−b → pa＋qb",
+   "answer_formula": "p1 * a1 + q1 * b1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    },
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "x＝{a1}，y＝−{b1} のとき、{p1}x−{q1}y の値を求めなさい。"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c02_dist_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c02_u01",
+   "unit_name": "式の計算",
+   "semantic_category": "文字式・両側分配",
+   "semantic_note": "k(px−q)−m(rx−s) → (kp−mr)x＋(ms−kq)。両側分配+符号反転、c02計算系の最難形。係数・定数項とも符号可変、定数項0(単項落ち)許容。",
+   "step_count": 2,
+   "operation": "k(px−q)−m(rx−s) → (kp−mr)x＋(ms−kq)",
+   "answer_domain": "nonzero_int",
+   "answer_formula": "k1 * p1 - m1 * r1",
+   "slots": {
+    "k1": {
+     "type": "int",
+     "range": [
+      2,
+      4
+     ]
+    },
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    },
+    "m1": {
+     "type": "int",
+     "range": [
+      2,
+      4
+     ]
+    },
+    "r1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    },
+    "s1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    }
+   },
+   "computed_slots": {
+    "cd1": {
+     "formula": "fmt_coef(k1 * p1 - m1 * r1)"
+    },
+    "td1": {
+     "formula": "fmt_termj(m1 * s1 - k1 * q1)"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_vanish",
+     "expr": "k1 * p1 != m1 * r1",
+     "why": "x係数0の消失ケースを制約分割で除外"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{k1}({p1}x−{q1})−{m1}({r1}x−{s1})"
+   ],
+   "answer_template": "答え {cd1}x{td1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c02_mono_mul_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c02_u01",
+   "unit_name": "式の計算",
+   "semantic_category": "文字式・単項式の乗法(異文字)",
+   "semantic_note": "px×(−qy) → −pq·xy。異文字の積。文字整列は辞書順xy(表示正準)。答えは構造上常に負=負符号テンプレ固定。",
+   "step_count": 1,
+   "operation": "px×(−qy) → −pq·xy",
+   "answer_domain": "any_int",
+   "answer_formula": "0 - p1 * q1",
+   "slots": {
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    }
+   },
+   "computed_slots": {
+    "m1": {
+     "formula": "p1 * q1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{p1}x×(−{q1}y)"
+   ],
+   "answer_template": "答え −{m1}xy",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c02_pow_mono_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c02_u01",
+   "unit_name": "式の計算",
+   "semantic_category": "文字式・累乗を含む乗法(正)",
+   "semantic_note": "(−pa)²×qa → p²q·a³。かっこ付き累乗=正(c01_pow_01の文字式版)+指数の加法a²·a=a³。答えは構造上常に正=無宣言(既定)。指数表示はUnicode上付き(²³)。",
+   "step_count": 2,
+   "operation": "(−pa)²×qa → p²q·a³",
+   "answer_formula": "p1 * p1 * q1",
+   "slots": {
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      4
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の計算をしなさい。\n(−{p1}a)²×{q1}a"
+   ],
+   "answer_template": "答え {ans}a³",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c02_pow_mono_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c02_u01",
+   "unit_name": "式の計算",
+   "semantic_category": "文字式・累乗を含む乗法(負)",
+   "semantic_note": "(−pa)²×(−qa³) → −p²q·a⁵。かっこ付き累乗=正×負=負、指数の加法2＋3=5。答えは構造上常に負=負符号テンプレ固定。",
+   "step_count": 2,
+   "operation": "(−pa)²×(−qa³) → −p²q·a⁵",
+   "answer_domain": "any_int",
+   "answer_formula": "0 - p1 * p1 * q1",
+   "slots": {
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      4
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    }
+   },
+   "computed_slots": {
+    "m1": {
+     "formula": "p1 * p1 * q1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の計算をしなさい。\n(−{p1}a)²×(−{q1}a³)"
+   ],
+   "answer_template": "答え −{m1}a⁵",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c02_form_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c02_u01",
+   "unit_name": "式の計算",
+   "semantic_category": "文字式・等式変形(分母はらい)",
+   "semantic_note": "a＋b/n＝mc を b について解く → b＝mn·c−n·a。答えの係数が整数に落ちる形だけを構成的に採る(分数係数答の等式変形はA層から除外)。解答は文字列完全一致=テンプレが正準形。",
+   "step_count": 2,
+   "operation": "a＋b/n＝mc 〔b〕 → b＝mnc−na",
+   "answer_formula": "n1 * m1",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    },
+    "m1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    }
+   },
+   "computed_slots": {
+    "k1": {
+     "formula": "n1 * m1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の等式を、b について解きなさい。\na＋b/{n1}＝{m1}c"
+   ],
+   "answer_template": "答え b＝{k1}c−{n1}a",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c02_form_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c02_u01",
+   "unit_name": "式の計算",
+   "semantic_category": "文字式・等式変形(移項と分母はらい)",
+   "semantic_note": "y＝c−x/n を x について解く → x＝−ny＋nc。負係数先頭の解答形。整数係数構成。",
+   "step_count": 2,
+   "operation": "y＝c−x/n 〔x〕 → x＝−ny＋nc",
+   "answer_formula": "n1 * c1",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "computed_slots": {
+    "nc1": {
+     "formula": "n1 * c1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の等式を、x について解きなさい。\ny＝{c1}−x/{n1}"
+   ],
+   "answer_template": "答え x＝−{n1}y＋{nc1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c02_ab_subst_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c02_u01",
+   "unit_name": "式の計算",
+   "semantic_category": "文字式・式の代入(uA−vB)",
+   "semantic_note": "A＝px＋qy，B＝rx−sy のとき uA−vB → (up−vr)x＋(uq＋vs)y。式全体の代入と分配。x係数=fmt_coef(可変)、y係数=fmt_coefj(構造上常に＋n)の連結様式。",
+   "step_count": 2,
+   "operation": "uA−vB | A=px+qy, B=rx−sy → (up−vr)x＋(uq＋vs)y",
+   "answer_domain": "nonzero_int",
+   "answer_formula": "u1 * p1 - v1 * r1",
+   "slots": {
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    },
+    "r1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "s1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    },
+    "u1": {
+     "type": "int",
+     "range": [
+      2,
+      4
+     ]
+    },
+    "v1": {
+     "type": "int",
+     "range": [
+      2,
+      4
+     ]
+    }
+   },
+   "computed_slots": {
+    "cxd": {
+     "formula": "fmt_coef(u1 * p1 - v1 * r1)"
+    },
+    "cyd": {
+     "formula": "fmt_coefj(u1 * q1 + v1 * s1)"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_vanish",
+     "expr": "u1 * p1 != v1 * r1",
+     "why": "x係数0の消失ケースを制約分割で除外"
+    }
+   ],
+   "sentence_templates": [
+    "A＝{p1}x＋{q1}y，B＝{r1}x−{s1}y のとき、{u1}A−{v1}B を計算しなさい。"
+   ],
+   "answer_template": "答え {cxd}x{cyd}y",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  }
+ ]
+}
