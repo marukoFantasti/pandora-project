@@ -16,6 +16,11 @@ const P = require(path.join(ROOT, 'pattern_bank', 'pattern_generator.js'));
 const N = Number(process.argv[2] || 200);
 const glob = process.argv[3] || 'jhs_c0';   // 既定: jhs バンク全部
 
+// --- 独立整数ヘルパ(生成器のsqrt_coef/sqrt_radとは別実装＝循環回避) ---
+function isqrt(n) { n = Math.trunc(n); let a = Math.floor(Math.sqrt(n)); while (a * a > n) a--; while ((a + 1) * (a + 1) <= n) a++; return a; }
+function isSquareFree(n) { n = Math.trunc(Math.abs(n)); for (let d = 2; d * d <= n; d++) if (n % (d * d) === 0) return false; return true; }
+function squareFreePart(n) { n = Math.trunc(Math.abs(n)); for (let d = 2; d * d <= n; d++) while (n % (d * d) === 0) n = n / (d * d); return n; }
+
 // pid -> (env, ans) => bool。env はスロット整数、ans は answer_formula の解。
 // 例外的に pair 型(renritsu)は y を env から再導出して両式を確認。
 const ID = {
@@ -52,6 +57,12 @@ const ID = {
   jhs_c15_fac_02: (e) => e.av1 - e.bv1 === e.p1 && e.av1 * e.bv1 === e.q1,        // x²+px−q=(x+av)(x−bv)
   jhs_c15_fac_03: (e) => 2 * e.av1 === e.d1 && e.av1 * e.av1 === e.q1,            // x²−dx+q=(x−av)²
   jhs_c15_fac_04: (e) => e.av1 * e.av1 === e.N1,                                  // x²−N=(x+av)(x−av)
+  // --- c16 根号：k²m復元・平方因数・挟み撃ちを独立整数演算で再確認 ---
+  jhs_c16_simp_01: (e, k) => e.N1 % (k * k) === 0 && isSquareFree(e.N1 / (k * k)) && k >= 2,       // √N=k√m, k最大(mが平方因数なし)
+  jhs_c16_mul_01: (e, k) => { const P = e.a1 * e.b1; return P % (k * k) === 0 && isSquareFree(P / (k * k)); }, // √a·√b=√(ab)=k√m
+  jhs_c16_add_01: (e, s) => s === e.p1 + e.q1 - e.r1 && s !== 0,                                    // p√m+q√m−r√m=(p+q−r)√m
+  jhs_c16_mixadd_01: (e, s) => { const c = isqrt(e.N1 / e.m1); return squareFreePart(e.N1) === e.m1 && c * c * e.m1 === e.N1 && s === c + e.p1; }, // √N=c√m1, sqrt_rad(N)==m1
+  jhs_c16_intpart_01: (e, a) => a * a <= e.n1 && e.n1 < (a + 1) * (a + 1) && a === isqrt(e.n1),     // 挟み撃ち a²≦n<(a+1)² 再確認
 };
 
 const bankFiles = fs.readdirSync(path.join(ROOT, 'pattern_bank'))
