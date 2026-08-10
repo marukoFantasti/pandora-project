@@ -1,0 +1,69 @@
+{
+  "_meta": {
+    "schema": "rationale_schema_spec.md v1.0",
+    "scope": "jhs c18 関数y＝ax²(5パターン・A層第1波最終章)",
+    "note": "共通設計判断: _shared.jhs_c18_quadfunc(本ファイル)。"
+  },
+  "_shared": {
+    "jhs_c18_quadfunc": {
+      "representation": "変域は「a≦y≦b」両端様式(仕様§7・c18実物精査で確定)。式の答えは「y＝ax²」表記(係数1は排除=一般規約)。変化の割合はa(u＋v)の閉形式。",
+      "constructive_guarantees": "変域2形は『0を跨ぐx域』を範囲設計(p,q≧1)で構造保証し、min/max端が0になる罠の型を純粋に出す。独立検算は数値走査(x域を0.1刻みで悉皆)によりy範囲を近似再計算して閉形式と照合(閉形式の導出誤りを実装非依存で検出)。割合は差分定義 ans·(v−u)＝av²−au² の整数恒等。",
+      "directives": [
+        {"text": "A層第1波スコープ承認(c18のy＝ax²数表系)", "by": "marko", "date": "2026-08-09"},
+        {"text": "章配分増強方針(c18は3→5)", "by": "marko", "date": "2026-08-10"}
+      ]
+    }
+  },
+  "rationales": {
+    "jhs_c18_table_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c18_u01", "unit_name": "関数y＝ax²", "semantic_territory": "y＝ax²・式の決定", "number_domain": "a∈[2,5]整数構成", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c18_quadfunc.directives"},
+      "source_features": "1点(s,t)から比例定数を決める。g05比例(y＝ax)のjhs後継=意味カテゴリ接続点。",
+      "representation": "答えは式「y＝ax²」の文字列一致。",
+      "constructive_guarantees": "可除性+a∈[2,5](a＝1は「x²」表記の別形として除外)。",
+      "semantic_position": "c18の基底。数表(複数点)からの決定は表描画が要るためB層(c09流用)送り。",
+      "exclusions": "a負(t負の−表示)は第2波。a分数は表示重く第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c18_val_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c18_u01", "unit_name": "関数y＝ax²", "semantic_territory": "y＝ax²・値の計算", "number_domain": "整数(答えは常に正)", "answer_structure": "single", "figure": "なし", "step_count": 1, "directives_ref": "_shared.jhs_c18_quadfunc.directives"},
+      "source_features": "負のxを代入して正のyが返る、y＝ax²の対称性の体験。c01の(−b)²規則の関数版。",
+      "representation": "代入値の負符号テンプレ固定(x＝−{u})。",
+      "constructive_guarantees": "au²∈[8,180]。答え構造上常に正=既定(無償検算)。",
+      "semantic_position": "値計算の基底。逆向き(yからxを求める=±2解)は第2波。",
+      "exclusions": "逆向きは±解の様式が要るため除外(第2波)。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c18_range_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c18_u01", "unit_name": "関数y＝ax²", "semantic_territory": "y＝ax²・変域(a正)", "number_domain": "0を跨ぐx域・y∈[0,M]", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c18_quadfunc.directives"},
+      "source_features": "最小値が端でなく頂点(0)になる、変域の代表的な罠。実物の0≦y≦16型。",
+      "representation": "「0≦y≦M」固定様式・M＝a·max(p,q)²。maxはSAFE既存。",
+      "constructive_guarantees": "p,q≧1で0跨ぎを構造保証。p≠q(対称域は端選択の主眼が消える)。独立検算=数値走査(_shared)。",
+      "semantic_position": "変域の罠側(a正)。range_02と対。",
+      "exclusions": "0を跨がない域(0＜u≦x≦v)は単調で罠が消えるため別型・第2波。対称域除外。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c18_range_02": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c18_u01", "unit_name": "関数y＝ax²", "semantic_territory": "y＝ax²・変域(a負)", "number_domain": "0を跨ぐx域・y∈[−M,0]", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c18_quadfunc.directives"},
+      "source_features": "上に凸で最大が0。実物の−12≦y≦0型。",
+      "representation": "「−M≦y≦0」固定様式(負号テンプレ直書き+M絶対値表示)。",
+      "constructive_guarantees": "range_01と同一機構の符号鏡像。",
+      "semantic_position": "変域の対(a負)。2形で凸の向き×変域の完備。",
+      "exclusions": "同上。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c18_rate_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c18_u01", "unit_name": "関数y＝ax²", "semantic_territory": "y＝ax²・変化の割合", "number_domain": "正域u<v・割合a(u＋v)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c18_quadfunc.directives"},
+      "source_features": "一次関数と違い割合が区間依存になる、y＝ax²の核心概念。",
+      "representation": "閉形式a(u＋v)。独立検算は差分定義の整数恒等 ans·(v−u)＝av²−au²。",
+      "constructive_guarantees": "u<v(増加の語と整合)。正域限定で割合は常に正=signed表示だが実質正。",
+      "semantic_position": "割合系の基底。負域跨ぎ(−2から3まで等)は割合の符号が動く上位形として第2波。a負版も第2波。",
+      "exclusions": "負域・a負は第2波(符号可変の割合はany_int宣言で同機構のまま拡張可能)。",
+      "figure_notes": null,
+      "pedagogy": []
+    }
+  }
+}

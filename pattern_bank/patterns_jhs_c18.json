@@ -1,0 +1,150 @@
+{
+  "schema_version": "1.0",
+  "grade": "jhs",
+  "description": "jhs数学バンク A層第1波 c18(関数y＝ax²) 5パターン: 数表からa決定・y値計算(負数代入)・変域2形(a正/a負)・変化の割合。変域は「a≦y≦b」両端様式(仕様§7・c18実物精査で確定済み)。A層第1波の最終章。",
+  "answer_structures": ["single"],
+  "shared_lexicon": {
+    "comment": "c18計算系はレキシコン不要。"
+  },
+  "patterns": [
+    {
+      "pattern_id": "jhs_c18_table_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c18_u01",
+      "unit_name": "関数y＝ax²",
+      "semantic_category": "y＝ax²・式の決定",
+      "semantic_note": "yはx²に比例、(s,t)を通る → a＝t/s²。aが整数[2,5]に落ちる(s,t)のみ構成。答えは「y＝ax²」の式表記。",
+      "step_count": 2,
+      "operation": "t＝a·s² → a＝t/s²",
+      "answer_formula": "t1 // (s1 * s1)",
+      "slots": {
+        "s1": {"type": "int", "range": [2, 4]},
+        "t1": {"type": "int", "range": [8, 80]}
+      },
+      "computed_slots": {
+        "a1v": {"formula": "t1 // (s1 * s1)"}
+      },
+      "value_constraints": [
+        {"rule": "divisible", "expr": "t1 % (s1 * s1) == 0", "why": "比例定数の整数保証"},
+        {"rule": "a_floor", "expr": "t1 // (s1 * s1) >= 2", "why": "a＝1は「1x²」ではなく「x²」表記が要る別形。係数1排除の一般規約"},
+        {"rule": "a_cap", "expr": "t1 // (s1 * s1) <= 5", "why": "比例定数を小さく保つ"}
+      ],
+      "sentence_templates": [
+        "y は x の2乗に比例し、x＝{s1} のとき y＝{t1} です。y を x の式で表しなさい。"
+      ],
+      "answer_template": "答え y＝{a1v}x²",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": [2]
+    },
+    {
+      "pattern_id": "jhs_c18_val_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c18_u01",
+      "unit_name": "関数y＝ax²",
+      "semantic_category": "y＝ax²・値の計算(負数代入)",
+      "semantic_note": "y＝ax²にx＝−uを代入 → y＝au²(負を代入しても正、が主眼)。c01(−b)²規則の関数版。",
+      "step_count": 1,
+      "operation": "y＝a·(−u)²＝au²",
+      "answer_formula": "a1 * u1 * u1",
+      "answer_unit_system": "signed",
+      "slots": {
+        "a1": {"type": "int", "range": [2, 5]},
+        "u1": {"type": "int", "range": [2, 6]}
+      },
+      "value_constraints": [],
+      "sentence_templates": [
+        "関数 y＝{a1}x² について、x＝−{u1} のときの y の値を求めなさい。"
+      ],
+      "answer_template": "答え y＝{ans_disp}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": []
+    },
+    {
+      "pattern_id": "jhs_c18_range_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c18_u01",
+      "unit_name": "関数y＝ax²",
+      "semantic_category": "y＝ax²・変域(a正)",
+      "semantic_note": "a>0、−p≦x≦q(0を跨ぐ) → 0≦y≦a·max(p,q)²。最小値が端でなく0になる、変域の代表的な罠。両端表示は「a≦y≦b」様式(仕様§7)。",
+      "step_count": 2,
+      "operation": "−p≦x≦q, a>0 → 0≦y≦a·max(p,q)²",
+      "answer_formula": "a1 * max(p1, q1) * max(p1, q1)",
+      "slots": {
+        "a1": {"type": "int", "range": [2, 4]},
+        "p1": {"type": "int", "range": [1, 4]},
+        "q1": {"type": "int", "range": [1, 4]}
+      },
+      "computed_slots": {
+        "M1": {"formula": "a1 * max(p1, q1) * max(p1, q1)"}
+      },
+      "value_constraints": [
+        {"rule": "asymmetric", "expr": "p1 != q1", "why": "対称域(p＝q)は「どちらの端でも同じ」になり最大値の端選択という主眼が消えるため除外"}
+      ],
+      "sentence_templates": [
+        "関数 y＝{a1}x² について、x の変域が −{p1}≦x≦{q1} のときの y の変域を求めなさい。"
+      ],
+      "answer_template": "答え 0≦y≦{M1}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": []
+    },
+    {
+      "pattern_id": "jhs_c18_range_02",
+      "grade": "jhs",
+      "unit_id": "jhs_c18_u01",
+      "unit_name": "関数y＝ax²",
+      "semantic_category": "y＝ax²・変域(a負)",
+      "semantic_note": "a<0、−p≦x≦q(0を跨ぐ) → −a·max(p,q)²≦y≦0。上に凸で最大が0になる側。range_01との対。",
+      "step_count": 2,
+      "operation": "−p≦x≦q, a<0 → −|a|·max(p,q)²≦y≦0",
+      "answer_formula": "a1 * max(p1, q1) * max(p1, q1)",
+      "slots": {
+        "a1": {"type": "int", "range": [2, 4]},
+        "p1": {"type": "int", "range": [1, 4]},
+        "q1": {"type": "int", "range": [1, 4]}
+      },
+      "computed_slots": {
+        "M1": {"formula": "a1 * max(p1, q1) * max(p1, q1)"}
+      },
+      "value_constraints": [
+        {"rule": "asymmetric", "expr": "p1 != q1", "why": "対称域除外(range_01と同一理由)"}
+      ],
+      "sentence_templates": [
+        "関数 y＝−{a1}x² について、x の変域が −{p1}≦x≦{q1} のときの y の変域を求めなさい。"
+      ],
+      "answer_template": "答え −{M1}≦y≦0",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": []
+    },
+    {
+      "pattern_id": "jhs_c18_rate_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c18_u01",
+      "unit_name": "関数y＝ax²",
+      "semantic_category": "y＝ax²・変化の割合",
+      "semantic_note": "xがuからvまで増加(0<u<v) → 変化の割合＝a(u＋v)。公式の閉形式。正域限定(第1波)。",
+      "step_count": 2,
+      "operation": "(av²−au²)/(v−u)＝a(u＋v)",
+      "answer_formula": "a1 * (u1 + v1)",
+      "answer_unit_system": "signed",
+      "slots": {
+        "a1": {"type": "int", "range": [2, 5]},
+        "u1": {"type": "int", "range": [1, 5]},
+        "v1": {"type": "int", "range": [2, 6]}
+      },
+      "value_constraints": [
+        {"rule": "increasing", "expr": "u1 < v1", "why": "「uからvまで増加する」の語と整合(u≧vは文が破綻)"}
+      ],
+      "sentence_templates": [
+        "関数 y＝{a1}x² について、x の値が {u1} から {v1} まで増加するときの変化の割合を求めなさい。"
+      ],
+      "answer_template": "答え {ans_disp}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": []
+    }
+  ]
+}
