@@ -98,5 +98,126 @@
    ]
   },
   "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 104\" width=\"160\" height=\"104\" role=\"img\"><g transform=\"translate(1,1)\"><text x=\"78.62\" y=\"13\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"bold\" fill=\"#222\">面積とにわとり</text><rect x=\"0\" y=\"21\" width=\"157.24\" height=\"27\" fill=\"#eef4ff\"/><rect x=\"0\" y=\"21\" width=\"87.08\" height=\"81\" fill=\"#f4f7fd\"/><line x1=\"0\" y1=\"21\" x2=\"157.24\" y2=\"21\" stroke=\"#1a56c4\" stroke-width=\"1\"/><line x1=\"0\" y1=\"48\" x2=\"157.24\" y2=\"48\" stroke=\"#1a56c4\" stroke-width=\"1\"/><line x1=\"0\" y1=\"75\" x2=\"157.24\" y2=\"75\" stroke=\"#1a56c4\" stroke-width=\"1\"/><line x1=\"0\" y1=\"102\" x2=\"157.24\" y2=\"102\" stroke=\"#1a56c4\" stroke-width=\"1\"/><line x1=\"0\" y1=\"21\" x2=\"0\" y2=\"102\" stroke=\"#1a56c4\" stroke-width=\"1\"/><line x1=\"87.08\" y1=\"21\" x2=\"87.08\" y2=\"102\" stroke=\"#1a56c4\" stroke-width=\"1\"/><line x1=\"122.16\" y1=\"21\" x2=\"122.16\" y2=\"102\" stroke=\"#1a56c4\" stroke-width=\"1\"/><line x1=\"157.24\" y1=\"21\" x2=\"157.24\" y2=\"102\" stroke=\"#1a56c4\" stroke-width=\"1\"/><text x=\"104.62\" y=\"38.92\" text-anchor=\"middle\" font-size=\"13\" fill=\"#222\">A</text><text x=\"139.7\" y=\"38.92\" text-anchor=\"middle\" font-size=\"13\" fill=\"#222\">B</text><text x=\"43.54\" y=\"65.92\" text-anchor=\"middle\" font-size=\"13\" fill=\"#222\">面積（m2）</text><text x=\"104.62\" y=\"65.92\" text-anchor=\"middle\" font-size=\"13\" fill=\"#222\">12</text><text x=\"139.7\" y=\"65.92\" text-anchor=\"middle\" font-size=\"13\" fill=\"#222\">18</text><text x=\"43.54\" y=\"92.92\" text-anchor=\"middle\" font-size=\"13\" fill=\"#222\">羽数</text><text x=\"104.62\" y=\"92.92\" text-anchor=\"middle\" font-size=\"13\" fill=\"#222\">36</text><text x=\"139.7\" y=\"92.92\" text-anchor=\"middle\" font-size=\"13\" fill=\"#222\">45</text></g></svg>"
+ },
+ {
+  "params": {
+   "fig_version": 1,
+   "kind": "xy_graph",
+   "mode": "prop",
+   "k": 2,
+   "xmax": 6,
+   "ymax": 12,
+   "mark": [
+    3,
+    6
+   ]
+  },
+  "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"-20.0 -272.0 166.0 292.0\" width=\"166\" height=\"292\" role=\"img\"><line x1=\"0.00\" y1=\"0.00\" x2=\"0.00\" y2=\"-252.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"21.00\" y1=\"0.00\" x2=\"21.00\" y2=\"-252.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"42.00\" y1=\"0.00\" x2=\"42.00\" y2=\"-252.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"63.00\" y1=\"0.00\" x2=\"63.00\" y2=\"-252.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"84.00\" y1=\"0.00\" x2=\"84.00\" y2=\"-252.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"105.00\" y1=\"0.00\" x2=\"105.00\" y2=\"-252.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"126.00\" y1=\"0.00\" x2=\"126.00\" y2=\"-252.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"0.00\" x2=\"126.00\" y2=\"0.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-21.00\" x2=\"126.00\" y2=\"-21.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-42.00\" x2=\"126.00\" y2=\"-42.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-63.00\" x2=\"126.00\" y2=\"-63.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-84.00\" x2=\"126.00\" y2=\"-84.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-105.00\" x2=\"126.00\" y2=\"-105.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-126.00\" x2=\"126.00\" y2=\"-126.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-147.00\" x2=\"126.00\" y2=\"-147.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-168.00\" x2=\"126.00\" y2=\"-168.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-189.00\" x2=\"126.00\" y2=\"-189.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-210.00\" x2=\"126.00\" y2=\"-210.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-231.00\" x2=\"126.00\" y2=\"-231.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-252.00\" x2=\"126.00\" y2=\"-252.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"0.00\" x2=\"126.00\" y2=\"0.00\" stroke=\"#1a56c4\" stroke-width=\"1.6\"/><line x1=\"0.00\" y1=\"0.00\" x2=\"0.00\" y2=\"-252.00\" stroke=\"#1a56c4\" stroke-width=\"1.6\"/><polyline points=\"0.0,0.0 126.0,-252.0\" fill=\"none\" stroke=\"#C0392B\" stroke-width=\"2\"/><circle cx=\"63.0\" cy=\"-126.0\" r=\"3.5\" fill=\"#fff\" stroke=\"#C0392B\" stroke-width=\"2\"/></svg>"
+ },
+ {
+  "params": {
+   "fig_version": 1,
+   "kind": "xy_graph",
+   "mode": "prop",
+   "k": 1,
+   "xmax": 6,
+   "ymax": 6
+  },
+  "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"-20.0 -200.0 220.0 220.0\" width=\"220\" height=\"220\" role=\"img\"><line x1=\"0.00\" y1=\"0.00\" x2=\"0.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"30.00\" y1=\"0.00\" x2=\"30.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"60.00\" y1=\"0.00\" x2=\"60.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"90.00\" y1=\"0.00\" x2=\"90.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"120.00\" y1=\"0.00\" x2=\"120.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"150.00\" y1=\"0.00\" x2=\"150.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"180.00\" y1=\"0.00\" x2=\"180.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"0.00\" x2=\"180.00\" y2=\"0.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-30.00\" x2=\"180.00\" y2=\"-30.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-60.00\" x2=\"180.00\" y2=\"-60.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-90.00\" x2=\"180.00\" y2=\"-90.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-120.00\" x2=\"180.00\" y2=\"-120.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-150.00\" x2=\"180.00\" y2=\"-150.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-180.00\" x2=\"180.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"0.00\" x2=\"180.00\" y2=\"0.00\" stroke=\"#1a56c4\" stroke-width=\"1.6\"/><line x1=\"0.00\" y1=\"0.00\" x2=\"0.00\" y2=\"-180.00\" stroke=\"#1a56c4\" stroke-width=\"1.6\"/><polyline points=\"0.0,0.0 180.0,-180.0\" fill=\"none\" stroke=\"#C0392B\" stroke-width=\"2\"/></svg>"
+ },
+ {
+  "params": {
+   "fig_version": 1,
+   "kind": "xy_graph",
+   "mode": "inv",
+   "k": 8,
+   "xmax": 6,
+   "ymax": 6
+  },
+  "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"-20.0 -200.0 220.0 220.0\" width=\"220\" height=\"220\" role=\"img\"><line x1=\"0.00\" y1=\"0.00\" x2=\"0.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"30.00\" y1=\"0.00\" x2=\"30.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"60.00\" y1=\"0.00\" x2=\"60.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"90.00\" y1=\"0.00\" x2=\"90.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"120.00\" y1=\"0.00\" x2=\"120.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"150.00\" y1=\"0.00\" x2=\"150.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"180.00\" y1=\"0.00\" x2=\"180.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"0.00\" x2=\"180.00\" y2=\"0.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-30.00\" x2=\"180.00\" y2=\"-30.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-60.00\" x2=\"180.00\" y2=\"-60.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-90.00\" x2=\"180.00\" y2=\"-90.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-120.00\" x2=\"180.00\" y2=\"-120.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-150.00\" x2=\"180.00\" y2=\"-150.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-180.00\" x2=\"180.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"0.00\" x2=\"180.00\" y2=\"0.00\" stroke=\"#1a56c4\" stroke-width=\"1.6\"/><line x1=\"0.00\" y1=\"0.00\" x2=\"0.00\" y2=\"-180.00\" stroke=\"#1a56c4\" stroke-width=\"1.6\"/><polyline points=\"40.0,-180.0 45.0,-160.0 52.5,-137.1 60.0,-120.0 67.5,-106.7 75.0,-96.0 82.5,-87.3 90.0,-80.0 97.5,-73.8 105.0,-68.6 112.5,-64.0 120.0,-60.0 127.5,-56.5 135.0,-53.3 142.5,-50.5 150.0,-48.0 157.5,-45.7 165.0,-43.6 172.5,-41.7 180.0,-40.0\" fill=\"none\" stroke=\"#C0392B\" stroke-width=\"2\"/><circle cx=\"60.0\" cy=\"-120.0\" r=\"3\" fill=\"#C0392B\"/><circle cx=\"120.0\" cy=\"-60.0\" r=\"3\" fill=\"#C0392B\"/></svg>"
+ },
+ {
+  "params": {
+   "fig_version": 1,
+   "kind": "xy_graph",
+   "mode": "inv",
+   "k": 12,
+   "xmax": 6,
+   "ymax": 6
+  },
+  "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"-20.0 -200.0 220.0 220.0\" width=\"220\" height=\"220\" role=\"img\"><line x1=\"0.00\" y1=\"0.00\" x2=\"0.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"30.00\" y1=\"0.00\" x2=\"30.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"60.00\" y1=\"0.00\" x2=\"60.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"90.00\" y1=\"0.00\" x2=\"90.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"120.00\" y1=\"0.00\" x2=\"120.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"150.00\" y1=\"0.00\" x2=\"150.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"180.00\" y1=\"0.00\" x2=\"180.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"0.00\" x2=\"180.00\" y2=\"0.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-30.00\" x2=\"180.00\" y2=\"-30.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-60.00\" x2=\"180.00\" y2=\"-60.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-90.00\" x2=\"180.00\" y2=\"-90.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-120.00\" x2=\"180.00\" y2=\"-120.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-150.00\" x2=\"180.00\" y2=\"-150.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-180.00\" x2=\"180.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"0.00\" x2=\"180.00\" y2=\"0.00\" stroke=\"#1a56c4\" stroke-width=\"1.6\"/><line x1=\"0.00\" y1=\"0.00\" x2=\"0.00\" y2=\"-180.00\" stroke=\"#1a56c4\" stroke-width=\"1.6\"/><polyline points=\"60.0,-180.0 60.0,-180.0 67.5,-160.0 75.0,-144.0 82.5,-130.9 90.0,-120.0 97.5,-110.8 105.0,-102.9 112.5,-96.0 120.0,-90.0 127.5,-84.7 135.0,-80.0 142.5,-75.8 150.0,-72.0 157.5,-68.6 165.0,-65.5 172.5,-62.6 180.0,-60.0\" fill=\"none\" stroke=\"#C0392B\" stroke-width=\"2\"/><circle cx=\"60.0\" cy=\"-180.0\" r=\"3\" fill=\"#C0392B\"/><circle cx=\"90.0\" cy=\"-120.0\" r=\"3\" fill=\"#C0392B\"/><circle cx=\"120.0\" cy=\"-90.0\" r=\"3\" fill=\"#C0392B\"/><circle cx=\"180.0\" cy=\"-60.0\" r=\"3\" fill=\"#C0392B\"/></svg>"
+ },
+ {
+  "params": {
+   "kind": "xy_graph",
+   "mode": "prop",
+   "k": 3,
+   "xmax": 6,
+   "ymax": 18,
+   "mark": [
+    2,
+    6
+   ]
+  },
+  "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"-20.0 -272.0 124.0 292.0\" width=\"124\" height=\"292\" role=\"img\"><line x1=\"0.00\" y1=\"0.00\" x2=\"0.00\" y2=\"-252.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"14.00\" y1=\"0.00\" x2=\"14.00\" y2=\"-252.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"28.00\" y1=\"0.00\" x2=\"28.00\" y2=\"-252.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"42.00\" y1=\"0.00\" x2=\"42.00\" y2=\"-252.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"56.00\" y1=\"0.00\" x2=\"56.00\" y2=\"-252.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"70.00\" y1=\"0.00\" x2=\"70.00\" y2=\"-252.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"84.00\" y1=\"0.00\" x2=\"84.00\" y2=\"-252.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"0.00\" x2=\"84.00\" y2=\"0.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-14.00\" x2=\"84.00\" y2=\"-14.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-28.00\" x2=\"84.00\" y2=\"-28.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-42.00\" x2=\"84.00\" y2=\"-42.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-56.00\" x2=\"84.00\" y2=\"-56.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-70.00\" x2=\"84.00\" y2=\"-70.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-84.00\" x2=\"84.00\" y2=\"-84.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-98.00\" x2=\"84.00\" y2=\"-98.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-112.00\" x2=\"84.00\" y2=\"-112.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-126.00\" x2=\"84.00\" y2=\"-126.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-140.00\" x2=\"84.00\" y2=\"-140.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-154.00\" x2=\"84.00\" y2=\"-154.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-168.00\" x2=\"84.00\" y2=\"-168.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-182.00\" x2=\"84.00\" y2=\"-182.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-196.00\" x2=\"84.00\" y2=\"-196.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-210.00\" x2=\"84.00\" y2=\"-210.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-224.00\" x2=\"84.00\" y2=\"-224.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-238.00\" x2=\"84.00\" y2=\"-238.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-252.00\" x2=\"84.00\" y2=\"-252.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"0.00\" x2=\"84.00\" y2=\"0.00\" stroke=\"#1a56c4\" stroke-width=\"1.6\"/><line x1=\"0.00\" y1=\"0.00\" x2=\"0.00\" y2=\"-252.00\" stroke=\"#1a56c4\" stroke-width=\"1.6\"/><polyline points=\"0.0,0.0 84.0,-252.0\" fill=\"none\" stroke=\"#C0392B\" stroke-width=\"2\"/><circle cx=\"28.0\" cy=\"-84.0\" r=\"3.5\" fill=\"#fff\" stroke=\"#C0392B\" stroke-width=\"2\"/></svg>"
+ },
+ {
+  "params": {
+   "kind": "xy_graph",
+   "mode": "inv",
+   "k": 6,
+   "xmax": 6,
+   "ymax": 6
+  },
+  "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"-20.0 -200.0 220.0 220.0\" width=\"220\" height=\"220\" role=\"img\"><line x1=\"0.00\" y1=\"0.00\" x2=\"0.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"30.00\" y1=\"0.00\" x2=\"30.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"60.00\" y1=\"0.00\" x2=\"60.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"90.00\" y1=\"0.00\" x2=\"90.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"120.00\" y1=\"0.00\" x2=\"120.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"150.00\" y1=\"0.00\" x2=\"150.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"180.00\" y1=\"0.00\" x2=\"180.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"0.00\" x2=\"180.00\" y2=\"0.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-30.00\" x2=\"180.00\" y2=\"-30.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-60.00\" x2=\"180.00\" y2=\"-60.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-90.00\" x2=\"180.00\" y2=\"-90.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-120.00\" x2=\"180.00\" y2=\"-120.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-150.00\" x2=\"180.00\" y2=\"-150.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"-180.00\" x2=\"180.00\" y2=\"-180.00\" stroke=\"#d5deea\" stroke-width=\"1\"/><line x1=\"0.00\" y1=\"0.00\" x2=\"180.00\" y2=\"0.00\" stroke=\"#1a56c4\" stroke-width=\"1.6\"/><line x1=\"0.00\" y1=\"0.00\" x2=\"0.00\" y2=\"-180.00\" stroke=\"#1a56c4\" stroke-width=\"1.6\"/><polyline points=\"30.0,-180.0 30.0,-180.0 37.5,-144.0 45.0,-120.0 52.5,-102.9 60.0,-90.0 67.5,-80.0 75.0,-72.0 82.5,-65.5 90.0,-60.0 97.5,-55.4 105.0,-51.4 112.5,-48.0 120.0,-45.0 127.5,-42.4 135.0,-40.0 142.5,-37.9 150.0,-36.0 157.5,-34.3 165.0,-32.7 172.5,-31.3 180.0,-30.0\" fill=\"none\" stroke=\"#C0392B\" stroke-width=\"2\"/><circle cx=\"30.0\" cy=\"-180.0\" r=\"3\" fill=\"#C0392B\"/><circle cx=\"60.0\" cy=\"-90.0\" r=\"3\" fill=\"#C0392B\"/><circle cx=\"90.0\" cy=\"-60.0\" r=\"3\" fill=\"#C0392B\"/><circle cx=\"180.0\" cy=\"-30.0\" r=\"3\" fill=\"#C0392B\"/></svg>"
+ },
+ {
+  "params": {
+   "fig_version": 1,
+   "kind": "histogram",
+   "class_width": 5,
+   "x0": 10,
+   "freqs": [
+    3,
+    7,
+    5,
+    2
+   ]
+  },
+  "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"-14.0 -161.0 204.0 175.0\" width=\"204\" height=\"175\" role=\"img\"><line x1=\"0.00\" y1=\"0.00\" x2=\"176.00\" y2=\"0.00\" stroke=\"#1a56c4\" stroke-width=\"1.6\"/><line x1=\"0.00\" y1=\"0.00\" x2=\"0.00\" y2=\"-147.00\" stroke=\"#1a56c4\" stroke-width=\"1.6\"/><rect x=\"0.0\" y=\"-63.0\" width=\"44\" height=\"63.0\" fill=\"#eef4ff\" stroke=\"#1a56c4\" stroke-width=\"1.4\"/><text x=\"22.00\" y=\"15.40\" text-anchor=\"middle\" font-size=\"10\" paint-order=\"stroke\" stroke=\"#fff\" stroke-width=\"3\" fill=\"#333\">10</text><rect x=\"44.0\" y=\"-147.0\" width=\"44\" height=\"147.0\" fill=\"#eef4ff\" stroke=\"#1a56c4\" stroke-width=\"1.4\"/><text x=\"66.00\" y=\"15.40\" text-anchor=\"middle\" font-size=\"10\" paint-order=\"stroke\" stroke=\"#fff\" stroke-width=\"3\" fill=\"#333\">15</text><rect x=\"88.0\" y=\"-105.0\" width=\"44\" height=\"105.0\" fill=\"#eef4ff\" stroke=\"#1a56c4\" stroke-width=\"1.4\"/><text x=\"110.00\" y=\"15.40\" text-anchor=\"middle\" font-size=\"10\" paint-order=\"stroke\" stroke=\"#fff\" stroke-width=\"3\" fill=\"#333\">20</text><rect x=\"132.0\" y=\"-42.0\" width=\"44\" height=\"42.0\" fill=\"#eef4ff\" stroke=\"#1a56c4\" stroke-width=\"1.4\"/><text x=\"154.00\" y=\"15.40\" text-anchor=\"middle\" font-size=\"10\" paint-order=\"stroke\" stroke=\"#fff\" stroke-width=\"3\" fill=\"#333\">25</text></svg>"
+ },
+ {
+  "params": {
+   "kind": "histogram",
+   "class_width": 10,
+   "x0": 0,
+   "freqs": [
+    2,
+    5,
+    8,
+    4,
+    1
+   ]
+  },
+  "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"-14.0 -158.0 248.0 172.0\" width=\"248\" height=\"172\" role=\"img\"><line x1=\"0.00\" y1=\"0.00\" x2=\"220.00\" y2=\"0.00\" stroke=\"#1a56c4\" stroke-width=\"1.6\"/><line x1=\"0.00\" y1=\"0.00\" x2=\"0.00\" y2=\"-144.00\" stroke=\"#1a56c4\" stroke-width=\"1.6\"/><rect x=\"0.0\" y=\"-36.0\" width=\"44\" height=\"36.0\" fill=\"#eef4ff\" stroke=\"#1a56c4\" stroke-width=\"1.4\"/><text x=\"22.00\" y=\"15.40\" text-anchor=\"middle\" font-size=\"10\" paint-order=\"stroke\" stroke=\"#fff\" stroke-width=\"3\" fill=\"#333\">0</text><rect x=\"44.0\" y=\"-90.0\" width=\"44\" height=\"90.0\" fill=\"#eef4ff\" stroke=\"#1a56c4\" stroke-width=\"1.4\"/><text x=\"66.00\" y=\"15.40\" text-anchor=\"middle\" font-size=\"10\" paint-order=\"stroke\" stroke=\"#fff\" stroke-width=\"3\" fill=\"#333\">10</text><rect x=\"88.0\" y=\"-144.0\" width=\"44\" height=\"144.0\" fill=\"#eef4ff\" stroke=\"#1a56c4\" stroke-width=\"1.4\"/><text x=\"110.00\" y=\"15.40\" text-anchor=\"middle\" font-size=\"10\" paint-order=\"stroke\" stroke=\"#fff\" stroke-width=\"3\" fill=\"#333\">20</text><rect x=\"132.0\" y=\"-72.0\" width=\"44\" height=\"72.0\" fill=\"#eef4ff\" stroke=\"#1a56c4\" stroke-width=\"1.4\"/><text x=\"154.00\" y=\"15.40\" text-anchor=\"middle\" font-size=\"10\" paint-order=\"stroke\" stroke=\"#fff\" stroke-width=\"3\" fill=\"#333\">30</text><rect x=\"176.0\" y=\"-18.0\" width=\"44\" height=\"18.0\" fill=\"#eef4ff\" stroke=\"#1a56c4\" stroke-width=\"1.4\"/><text x=\"198.00\" y=\"15.40\" text-anchor=\"middle\" font-size=\"10\" paint-order=\"stroke\" stroke=\"#fff\" stroke-width=\"3\" fill=\"#333\">40</text></svg>"
+ },
+ {
+  "params": {
+   "fig_version": 1,
+   "kind": "dot_plot",
+   "values": [
+    6,
+    6,
+    6,
+    4,
+    5,
+    7,
+    8,
+    9
+   ],
+   "min": 0,
+   "max": 10
+  },
+  "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"-14.0 -50.0 288.0 82.0\" width=\"288\" height=\"82\" role=\"img\"><line x1=\"0.00\" y1=\"0.00\" x2=\"260.00\" y2=\"0.00\" stroke=\"#1a56c4\" stroke-width=\"1.6\"/><line x1=\"0.00\" y1=\"0.00\" x2=\"0.00\" y2=\"4.00\" stroke=\"#1a56c4\" stroke-width=\"1\"/><text x=\"0.00\" y=\"15.74\" text-anchor=\"middle\" font-size=\"11\" paint-order=\"stroke\" stroke=\"#fff\" stroke-width=\"3\" fill=\"#333\">0</text><line x1=\"26.00\" y1=\"0.00\" x2=\"26.00\" y2=\"4.00\" stroke=\"#1a56c4\" stroke-width=\"1\"/><text x=\"26.00\" y=\"15.74\" text-anchor=\"middle\" font-size=\"11\" paint-order=\"stroke\" stroke=\"#fff\" stroke-width=\"3\" fill=\"#333\">1</text><line x1=\"52.00\" y1=\"0.00\" x2=\"52.00\" y2=\"4.00\" stroke=\"#1a56c4\" stroke-width=\"1\"/><text x=\"52.00\" y=\"15.74\" text-anchor=\"middle\" font-size=\"11\" paint-order=\"stroke\" stroke=\"#fff\" stroke-width=\"3\" fill=\"#333\">2</text><line x1=\"78.00\" y1=\"0.00\" x2=\"78.00\" y2=\"4.00\" stroke=\"#1a56c4\" stroke-width=\"1\"/><text x=\"78.00\" y=\"15.74\" text-anchor=\"middle\" font-size=\"11\" paint-order=\"stroke\" stroke=\"#fff\" stroke-width=\"3\" fill=\"#333\">3</text><line x1=\"104.00\" y1=\"0.00\" x2=\"104.00\" y2=\"4.00\" stroke=\"#1a56c4\" stroke-width=\"1\"/><text x=\"104.00\" y=\"15.74\" text-anchor=\"middle\" font-size=\"11\" paint-order=\"stroke\" stroke=\"#fff\" stroke-width=\"3\" fill=\"#333\">4</text><line x1=\"130.00\" y1=\"0.00\" x2=\"130.00\" y2=\"4.00\" stroke=\"#1a56c4\" stroke-width=\"1\"/><text x=\"130.00\" y=\"15.74\" text-anchor=\"middle\" font-size=\"11\" paint-order=\"stroke\" stroke=\"#fff\" stroke-width=\"3\" fill=\"#333\">5</text><line x1=\"156.00\" y1=\"0.00\" x2=\"156.00\" y2=\"4.00\" stroke=\"#1a56c4\" stroke-width=\"1\"/><text x=\"156.00\" y=\"15.74\" text-anchor=\"middle\" font-size=\"11\" paint-order=\"stroke\" stroke=\"#fff\" stroke-width=\"3\" fill=\"#333\">6</text><line x1=\"182.00\" y1=\"0.00\" x2=\"182.00\" y2=\"4.00\" stroke=\"#1a56c4\" stroke-width=\"1\"/><text x=\"182.00\" y=\"15.74\" text-anchor=\"middle\" font-size=\"11\" paint-order=\"stroke\" stroke=\"#fff\" stroke-width=\"3\" fill=\"#333\">7</text><line x1=\"208.00\" y1=\"0.00\" x2=\"208.00\" y2=\"4.00\" stroke=\"#1a56c4\" stroke-width=\"1\"/><text x=\"208.00\" y=\"15.74\" text-anchor=\"middle\" font-size=\"11\" paint-order=\"stroke\" stroke=\"#fff\" stroke-width=\"3\" fill=\"#333\">8</text><line x1=\"234.00\" y1=\"0.00\" x2=\"234.00\" y2=\"4.00\" stroke=\"#1a56c4\" stroke-width=\"1\"/><text x=\"234.00\" y=\"15.74\" text-anchor=\"middle\" font-size=\"11\" paint-order=\"stroke\" stroke=\"#fff\" stroke-width=\"3\" fill=\"#333\">9</text><line x1=\"260.00\" y1=\"0.00\" x2=\"260.00\" y2=\"4.00\" stroke=\"#1a56c4\" stroke-width=\"1\"/><text x=\"260.00\" y=\"15.74\" text-anchor=\"middle\" font-size=\"11\" paint-order=\"stroke\" stroke=\"#fff\" stroke-width=\"3\" fill=\"#333\">10</text><circle cx=\"156.0\" cy=\"-12.0\" r=\"4\" fill=\"#C0392B\"/><circle cx=\"156.0\" cy=\"-24.0\" r=\"4\" fill=\"#C0392B\"/><circle cx=\"156.0\" cy=\"-36.0\" r=\"4\" fill=\"#C0392B\"/><circle cx=\"104.0\" cy=\"-12.0\" r=\"4\" fill=\"#C0392B\"/><circle cx=\"130.0\" cy=\"-12.0\" r=\"4\" fill=\"#C0392B\"/><circle cx=\"182.0\" cy=\"-12.0\" r=\"4\" fill=\"#C0392B\"/><circle cx=\"208.0\" cy=\"-12.0\" r=\"4\" fill=\"#C0392B\"/><circle cx=\"234.0\" cy=\"-12.0\" r=\"4\" fill=\"#C0392B\"/></svg>"
  }
 ]

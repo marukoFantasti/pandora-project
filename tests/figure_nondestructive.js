@@ -17,7 +17,7 @@ let dBad = 0;
 golden.forEach(function (g) {
   if (FB.build(g.params) !== g.svg) { dBad++; console.log('  CHANGED', g.params.kind, JSON.stringify(g.params)); }
 });
-console.log('非破壊(既存3kind rect_area/angle_sum/table): ' + (golden.length - dBad) + '/' + golden.length + (dBad === 0 ? ' バイト一致 ✅' : ' ❌'));
+console.log('非破壊(既存kind rect_area/angle_sum/table/histogram/dot_plot + xy_graph fig_version 1): ' + (golden.length - dBad) + '/' + golden.length + (dBad === 0 ? ' バイト一致 ✅' : ' ❌'));
 
 // e. JS生成スモーク 70/70
 const bank = JSON.parse(fs.readFileSync(path.join(ROOT, 'pattern_bank', 'patterns_g05.json'), 'utf-8'));
