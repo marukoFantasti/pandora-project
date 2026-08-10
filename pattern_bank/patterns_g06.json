@@ -34,7 +34,7 @@
   }
  },
  "display_canon": "量の答え=reduced_mixed(帯分数・g05一貫)。倍・比の値=reduced_fraction(仮分数)+整数落ち除外制約(g05_frac_bai_01正準の継承)。比の解答はp:q形式の完全一致。",
- "figure_note": "A層は全パターン図形なし(figure_params未使用)。円の面積(circle拡張fig_version2)・対称・拡大縮小・グラフ・度数分布はB/C層設計書を参照。",
+ "figure_note": "A層51は図形なし。B層11: circle v2(面積4)・prism(体積2)・table(比例表2・度数分布2・図なし逆算1)。対称・拡大縮小・グラフ・ドットプロット・ヒストグラムはC層設計書を参照。",
  "shared_lexicon": {
   "comment": "g05レキシコンの語感を継承。すべてg01〜g06配当漢字またはかな。実データ・固有教材由来の語は含めない。",
   "actors": [
@@ -3893,9 +3893,747 @@
     1,
     2
    ]
+  },
+  {
+   "pattern_id": "g06_circle_area_01",
+   "grade": "g06",
+   "unit_id": "g06_c08_u01",
+   "unit_name": "円の面積",
+   "semantic_category": "円の面積(半径提示)",
+   "semantic_note": "S=r×r×3.14。内部はスケール100整数(r²×314)、表示はdec2=g05面積文化の継承。図はcircle v2(radius_label)。",
+   "step_count": 1,
+   "operation": "r × r × 3.14",
+   "answer_formula": "r1 * r1 * 314",
+   "answer_unit_from": "unit",
+   "slots": {
+    "r1": {
+     "type": "int",
+     "range": [
+      2,
+      10
+     ]
+    }
+   },
+   "value_constraints": [],
+   "figure_params": {
+    "fig_version": 2,
+    "kind": "circle",
+    "sector": "full",
+    "radius_label": true,
+    "value": "{r1}",
+    "unit": "cm"
+   },
+   "sentence_templates": [
+    "次の円の面積を求めなさい。円周率は3.14とします。"
+   ],
+   "answer_template": "しき {r1}×{r1}×3.14={ans_disp} 答え {ans_disp}cm²",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    3,
+    14
+   ],
+   "answer_unit_system": "dec2"
+  },
+  {
+   "pattern_id": "g06_circle_area_half_01",
+   "grade": "g06",
+   "unit_id": "g06_c08_u01",
+   "unit_name": "円の面積",
+   "semantic_category": "半円の面積",
+   "semantic_note": "S=r×r×3.14÷2。314/2=157で常にスケール100整数に閉じる(制約不要)。図はcircle v2 sector=half。",
+   "step_count": 2,
+   "operation": "r × r × 3.14 ÷ 2",
+   "answer_formula": "r1 * r1 * 157",
+   "answer_unit_from": "unit",
+   "slots": {
+    "r1": {
+     "type": "int",
+     "range": [
+      2,
+      10
+     ]
+    }
+   },
+   "value_constraints": [],
+   "figure_params": {
+    "fig_version": 2,
+    "kind": "circle",
+    "sector": "half",
+    "radius_label": true,
+    "value": "{r1}",
+    "unit": "cm"
+   },
+   "sentence_templates": [
+    "次の図は、半径{r1}cmの円の半分の形です。この図形の面積を求めなさい。円周率は3.14とします。"
+   ],
+   "answer_template": "しき {r1}×{r1}×3.14÷2={ans_disp} 答え {ans_disp}cm²",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    3,
+    14
+   ],
+   "answer_unit_system": "dec2"
+  },
+  {
+   "pattern_id": "g06_circle_area_quarter_01",
+   "grade": "g06",
+   "unit_id": "g06_c08_u01",
+   "unit_name": "円の面積",
+   "semantic_category": "四分円の面積",
+   "semantic_note": "S=r×r×3.14÷4。rを偶数に限定してスケール100整数を保証(157r²/2の整数性)。図はcircle v2 sector=quarter(直角記号)。",
+   "step_count": 2,
+   "operation": "r × r × 3.14 ÷ 4",
+   "answer_formula": "157 * r1 * r1 // 2",
+   "answer_unit_from": "unit",
+   "slots": {
+    "r1": {
+     "type": "int",
+     "choices": [
+      2,
+      4,
+      6,
+      8,
+      10
+     ],
+     "choice_int": true
+    }
+   },
+   "value_constraints": [],
+   "figure_params": {
+    "fig_version": 2,
+    "kind": "circle",
+    "sector": "quarter",
+    "radius_label": true,
+    "value": "{r1}",
+    "unit": "cm"
+   },
+   "sentence_templates": [
+    "次の図は、半径{r1}cmの円を4等分した1つ分の形です。この図形の面積を求めなさい。円周率は3.14とします。"
+   ],
+   "answer_template": "しき {r1}×{r1}×3.14÷4={ans_disp} 答え {ans_disp}cm²",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    3,
+    14,
+    4,
+    1
+   ],
+   "answer_unit_system": "dec2"
+  },
+  {
+   "pattern_id": "g06_circle_area_reverse_01",
+   "grade": "g06",
+   "unit_id": "g06_c08_u01",
+   "unit_name": "円の面積",
+   "semantic_category": "面積→半径(逆算)",
+   "semantic_note": "面積÷3.14=r²からrを求める。面積は構成的にr起点で生成しdec2表示(_disp経由でverify許可)。ansはr×100でdec2表示スケールに統一。",
+   "step_count": 2,
+   "operation": "S ÷ 3.14 = r² → r",
+   "answer_formula": "r1 * 100",
+   "answer_unit_from": "unit",
+   "slots": {
+    "r1": {
+     "type": "int",
+     "range": [
+      3,
+      10
+     ]
+    }
+   },
+   "value_constraints": [],
+   "computed_slots": {
+    "area1": {
+     "formula": "r1 * r1 * 314"
+    },
+    "r2s": {
+     "formula": "r1 * r1 * 100"
+    }
+   },
+   "figure_params": {
+    "fig_version": 2,
+    "kind": "circle",
+    "sector": "full",
+    "radius_label": false
+   },
+   "sentence_templates": [
+    "面積が{area1_disp}cm²の円があります。この円の半径は何cmですか。円周率は3.14とします。"
+   ],
+   "answer_template": "しき {area1_disp}÷3.14={r2s_disp}、{r1}×{r1}={r2s_disp} 答え {ans_disp}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    3,
+    14
+   ],
+   "answer_unit_system": "dec2"
+  },
+  {
+   "pattern_id": "g06_prism_rect_vol_01",
+   "grade": "g06",
+   "unit_id": "g06_c09_u01",
+   "unit_name": "角柱と円柱の体積",
+   "semantic_category": "四角柱の体積",
+   "semantic_note": "V=底面積×高さ=(w×d)×h。g05直方体体積の再解釈(底面積×高さへの読み替え)。w>=d制約=corr-0004横長寄せ方針のバンク側実施。図はprism rect。",
+   "step_count": 2,
+   "operation": "(w × d) × h",
+   "answer_formula": "w1 * d1 * h1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "w1": {
+     "type": "int",
+     "range": [
+      3,
+      12
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    },
+    "h1": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "landscape",
+     "expr": "w1 >= d1",
+     "why": "図を横長寄せに保つ(corr-0004: レンダラ無変更・バンク制約方式)"
+    }
+   ],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "prism",
+    "base_kind": "rect",
+    "w": "{w1}",
+    "d": "{d1}",
+    "height": "{h1}",
+    "unit": "cm"
+   },
+   "sentence_templates": [
+    "次の四角柱の体積を求めなさい。"
+   ],
+   "answer_template": "しき {w1}×{d1}×{h1}={ans} 答え {ans}cm³",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_prism_tri_vol_01",
+   "grade": "g06",
+   "unit_id": "g06_c09_u01",
+   "unit_name": "角柱と円柱の体積",
+   "semantic_category": "三角柱の体積",
+   "semantic_note": "V=(底辺×底面の高さ÷2)×h。底面積の偶数性を制約で保証。式のA*B//2*C形は根治済みfloor-div左結合のパリティ関門対象形。図はprism tri。",
+   "step_count": 2,
+   "operation": "(base × bh ÷ 2) × h",
+   "answer_formula": "base1 * bh1 // 2 * h1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "base1": {
+     "type": "int",
+     "range": [
+      3,
+      12
+     ]
+    },
+    "bh1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    },
+    "h1": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "even_base_area",
+     "expr": "(base1 * bh1) % 2 == 0",
+     "why": "底面積を整数に保つ(÷2の構成的保証)"
+    },
+    {
+     "rule": "landscape",
+     "expr": "base1 >= bh1",
+     "why": "底面三角形を横長寄せに保つ(corr-0004方針)"
+    }
+   ],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "prism",
+    "base_kind": "tri",
+    "base": "{base1}",
+    "base_height": "{bh1}",
+    "height": "{h1}",
+    "unit": "cm"
+   },
+   "sentence_templates": [
+    "次の三角柱の体積を求めなさい。"
+   ],
+   "answer_template": "しき {base1}×{bh1}÷2×{h1}={ans} 答え {ans}cm³",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_prism_height_01",
+   "grade": "g06",
+   "unit_id": "g06_c09_u01",
+   "unit_name": "角柱と円柱の体積",
+   "semantic_category": "体積と底面積→高さ(逆算)",
+   "semantic_note": "h=V÷S。体積公式の逆算=g05_para_height(面積逆算)の立体版。可除性を制約で保証。図なし(底面積は図に描けない量のため文章提示)。",
+   "step_count": 1,
+   "operation": "V ÷ S",
+   "answer_formula": "v1 // s1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "s1": {
+     "type": "int",
+     "choices": [
+      12,
+      18,
+      20,
+      24,
+      30,
+      36
+     ],
+     "choice_int": true
+    },
+    "v1": {
+     "type": "int",
+     "range": [
+      48,
+      360
+     ],
+     "step": 6
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "v1 % s1 == 0",
+     "why": "高さを整数に保つ"
+    },
+    {
+     "rule": "h_range",
+     "expr": "2 <= v1 // s1 <= 12",
+     "why": "立体としてあり得る高さに保つ"
+    }
+   ],
+   "sentence_templates": [
+    "底面積が{s1}cm²で、体積が{v1}cm³の四角柱があります。この四角柱の高さは何cmですか。"
+   ],
+   "answer_template": "しき {v1}÷{s1}={ans} 答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_prop_table_blank_01",
+   "grade": "g06",
+   "unit_id": "g06_c11_u01",
+   "unit_name": "比例の性質",
+   "semantic_category": "比例の表・空欄補充(table)",
+   "semantic_note": "y=kxの表でx=4の欄が空欄(□・highlight強調)。col_headerがx値を担い、y行のみをrowsに置く(table kindはcol_headerで列数決定)。highlightは全セルグリッド基準(row0=ヘッダ行, col0=行ラベル列)で[[1,4]]。空欄位置は構造上固定。",
+   "step_count": 1,
+   "operation": "y = k × 4",
+   "answer_formula": "k1 * 4",
+   "answer_unit_from": "unit",
+   "slots": {
+    "k1": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    }
+   },
+   "value_constraints": [],
+   "computed_slots": {
+    "y1v": {
+     "formula": "k1"
+    },
+    "y2v": {
+     "formula": "k1 * 2"
+    },
+    "y3v": {
+     "formula": "k1 * 3"
+    },
+    "y5v": {
+     "formula": "k1 * 5"
+    }
+   },
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "xとyの関係",
+    "col_header": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5"
+    ],
+    "rows": [
+     {
+      "label": "y",
+      "values": [
+       "{y1v}",
+       "{y2v}",
+       "{y3v}",
+       "□",
+       "{y5v}"
+      ]
+     }
+    ],
+    "highlight": [
+     [
+      1,
+      4
+     ]
+    ]
+   },
+   "sentence_templates": [
+    "右の表は、xの値とyの値の関係を表していて、yはxに比例しています。表の□にあてはまる数を求めなさい。"
+   ],
+   "answer_template": "しき {k1}×4={ans} 答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_prop_table_shiki_01",
+   "grade": "g06",
+   "unit_id": "g06_c11_u01",
+   "unit_name": "比例の性質",
+   "semantic_category": "比例の表→式(table)",
+   "semantic_note": "比例の表から式化。col_headerがx値・rowsはy行のみ(table kind列数仕様準拠)。正準形y=k×x固定。",
+   "step_count": 1,
+   "operation": "表 → y = k × x",
+   "answer_formula": "k1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "k1": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    }
+   },
+   "value_constraints": [],
+   "computed_slots": {
+    "y1v": {
+     "formula": "k1"
+    },
+    "y2v": {
+     "formula": "k1 * 2"
+    },
+    "y3v": {
+     "formula": "k1 * 3"
+    },
+    "y4v": {
+     "formula": "k1 * 4"
+    },
+    "y5v": {
+     "formula": "k1 * 5"
+    }
+   },
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "xとyの関係",
+    "col_header": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5"
+    ],
+    "rows": [
+     {
+      "label": "y",
+      "values": [
+       "{y1v}",
+       "{y2v}",
+       "{y3v}",
+       "{y4v}",
+       "{y5v}"
+      ]
+     }
+    ]
+   },
+   "sentence_templates": [
+    "右の表は、xの値とyの値の関係を表していて、yはxに比例しています。yをxの式で表しなさい。"
+   ],
+   "answer_template": "答え y={k1}×x",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_dosuu_total_01",
+   "grade": "g06",
+   "unit_id": "g06_c07_u02",
+   "unit_name": "度数分布表",
+   "semantic_category": "度数分布表・合計(table)",
+   "semantic_note": "4階級の度数合計。階級文字列は図内定数(架空データのみ=D4ハイジーン)。データ読み取り系の最小形。",
+   "step_count": 1,
+   "operation": "v1+v2+v3+v4",
+   "answer_formula": "v1 + v2 + v3 + v4",
+   "answer_unit_from": "unit",
+   "slots": {
+    "v1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "v2": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "v3": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "v4": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "ソフトボール投げのきろく",
+    "col_header": [
+     "10m以上15m未満",
+     "15m以上20m未満",
+     "20m以上25m未満",
+     "25m以上30m未満"
+    ],
+    "rows": [
+     {
+      "label": "人数（人）",
+      "values": [
+       "{v1}",
+       "{v2}",
+       "{v3}",
+       "{v4}"
+      ]
+     }
+    ]
+   },
+   "sentence_templates": [
+    "右の表は、あるクラスのソフトボール投げのきろくを整理したものです。調べた人数は全部で何人ですか。"
+   ],
+   "answer_template": "しき {v1}+{v2}+{v3}+{v4}={ans} 答え {ans}人",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_dosuu_cumul_01",
+   "grade": "g06",
+   "unit_id": "g06_c07_u02",
+   "unit_name": "度数分布表",
+   "semantic_category": "度数分布表・以上の累積(table)",
+   "semantic_note": "20m以上=上位2階級の和。「以上」の範囲を表から拾う読み取り+加法。最頻階級(文字列解答)は検収UI整備後の第2波。",
+   "step_count": 1,
+   "operation": "v3+v4",
+   "answer_formula": "v3 + v4",
+   "answer_unit_from": "unit",
+   "slots": {
+    "v1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "v2": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "v3": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "v4": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "ソフトボール投げのきろく",
+    "col_header": [
+     "10m以上15m未満",
+     "15m以上20m未満",
+     "20m以上25m未満",
+     "25m以上30m未満"
+    ],
+    "rows": [
+     {
+      "label": "人数（人）",
+      "values": [
+       "{v1}",
+       "{v2}",
+       "{v3}",
+       "{v4}"
+      ]
+     }
+    ]
+   },
+   "sentence_templates": [
+    "右の表は、あるクラスのソフトボール投げのきろくを整理したものです。20m以上投げた人は全部で何人ですか。"
+   ],
+   "answer_template": "しき {v3}+{v4}={ans} 答え {ans}人",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    20
+   ]
   }
  ],
  "schema_changelog": {
-  "0.9": "g06第1波。生成器v0.9無変更で51パターン追加。新規はバンク側の意味カテゴリ体系(hi/proportion/moji/frac_word_semantics)のみ。dec1/dec3/reduce系/max等は全て既存機構の参照。"
+  "0.9": "g06第1波。生成器v0.9無変更で51パターン追加。新規はバンク側の意味カテゴリ体系(hi/proportion/moji/frac_word_semantics)のみ。dec1/dec3/reduce系/max等は全て既存機構の参照。 B層11パターン追加(2026-08-09同日第2弾): circle fig_version2/prism/table highlightの本番kind(545310c)を参照。生成器・figure_builder無変更。"
  }
 }
