@@ -1,0 +1,91 @@
+{
+  "_meta": {
+    "schema": "rationale_schema_spec.md v1.0",
+    "scope": "jhs c05 文章題(7パターン)",
+    "note": "共通設計判断: _shared.jhs_c05_bunshoudai(本ファイル)。c03の状況成立性基準・c04の恒等検算基準を継承。"
+  },
+  "_shared": {
+    "jhs_c05_bunshoudai": {
+      "representation": "lexicon_slots本格投入: goods[j]の共有インデックス束縛で品目と助数詞(個/本/冊/枚)の対応を構造保証。答えの単位も同じ助数詞スロットを参照({ans}{cnt1})し、本文と解答の単位が必ず一致する。金額・速さはchoices/stepで現実的丸め。",
+      "constructive_guarantees": "全パターンに(1)解の整数性(可除性制約)、(2)状況の成立性(人数・個数・時間・年齢の現実域キャップ)、(3)恒等検算(生成解をシナリオ等式に代入して成立確認・機械検収300回/型)。c03-c04で確立した文章題品質三点セットの完成形。",
+      "kanji_note": "中学配当漢字(離・歳・齢)を方針A裁可後に初使用。該当パターンのみallowed_gradesに'jhs'を追加宣言(必要な章だけ広げる最小宣言方針)。",
+      "directives": [
+        {"text": "A層第1波スコープ承認(c05文章題)", "by": "marko", "date": "2026-08-09"},
+        {"text": "jhs漢字方針A裁可(常用漢字ベース)", "by": "marko", "date": "2026-08-10"},
+        {"text": "章配分を厚くする方針(c05は4→7に増強)", "by": "marko", "date": "2026-08-10"}
+      ]
+    }
+  },
+  "rationales": {
+    "jhs_c05_kaimono_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c05_u01", "unit_name": "方程式の利用", "semantic_territory": "文章題・個数と代金", "number_domain": "金額(円・丸め)・個数[3,12]", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c05_bunshoudai.directives"},
+      "source_features": "単価×個数+定額=合計から個数を求める。c03_eq_01(立式)と同一状況の「解く側」で、立式→求解の教材接続が作れる対設計。",
+      "representation": "_shared参照。「何{cnt}か」の疑問表現も助数詞スロットで束縛。",
+      "constructive_guarantees": "可除性+個数[3,12]。",
+      "semantic_position": "文章題の基底(1未知数・直訳立式)。",
+      "exclusions": "個数2以下(「何個か」の言い回しと不整合)除外。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c05_kafusoku_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c05_u01", "unit_name": "方程式の利用", "semantic_territory": "文章題・過不足(人数)", "number_domain": "整数個数・人数[3,15]", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c05_bunshoudai.directives"},
+      "source_features": "「a個ずつでr個余り、b個ずつでs個足りない」。同一総数の2通り表現を等置する過不足の古典形。",
+      "representation": "_shared参照。配布対象はpeople_groups(生徒/子ども)。",
+      "constructive_guarantees": "b>a(構造定義)+可除性+人数[3,15](教室規模)。",
+      "semantic_position": "過不足系の第1(人数を問う)。kafusoku_02(総数)と対。",
+      "exclusions": "「ちょうど配り切れる」(r=0またはs=0)は過不足の定義から除外(範囲で自動)。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c05_kafusoku_02": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c05_u01", "unit_name": "方程式の利用", "semantic_territory": "文章題・過不足(総数・2段)", "number_domain": "整数個数", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c05_bunshoudai.directives"},
+      "source_features": "同じ過不足状況で総数を問う。人数を求めてから総数へ戻る2段計算。",
+      "representation": "kafusoku_01と同一スロット構造・同一制約(問いだけが違う)。恒等検算はax＋r＝bx−s両側で総数一致を確認。",
+      "constructive_guarantees": "kafusoku_01と同一。",
+      "semantic_position": "過不足系の第2(2段)。同一状況・別問いのペア設計は、生徒に「式は同じで問いが違う」ことを見せる教材接続点。",
+      "exclusions": "同上。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c05_hayasa_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c05_u01", "unit_name": "方程式の利用", "semantic_territory": "文章題・速さ(追いつき)", "number_domain": "分速m・時間[2,20]分", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c05_bunshoudai.directives"},
+      "source_features": "先発の徒歩を後発の自転車が追う。距離一致 vb·t＝va·(t＋d) の立式。",
+      "representation": "速さはchoices(徒歩50-80/自転車150-240)で現実的な組だけを許す。",
+      "constructive_guarantees": "可除性+時間[2,20]分。速度域の分離(choices)でvb>vaが常に成立。",
+      "semantic_position": "速さ系第1(同方向)。hayasa_02(対向)と対。",
+      "exclusions": "追いつけない(vb≦va)はchoices設計で構造排除。1分即着の不自然除外。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c05_hayasa_02": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c05_u01", "unit_name": "方程式の利用", "semantic_territory": "文章題・速さ(出会い)", "number_domain": "分速m・距離m・時間[3,15]分", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c05_bunshoudai.directives"},
+      "source_features": "対向出発の出会い。距離和 (va＋vb)·t＝L の立式。",
+      "representation": "中学配当漢字「離」の初使用パターン=方針Aの実戦経路検証を兼ねる(kanji_policyに'jhs'追加宣言)。",
+      "constructive_guarantees": "可除性+時間[3,15]+同速除外(対称退化)。",
+      "semantic_position": "速さ系第2(対向)。往復・池の周回は第2波。",
+      "exclusions": "同速除外。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c05_nenrei_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c05_u01", "unit_name": "方程式の利用", "semantic_territory": "文章題・年齢", "number_domain": "年齢(親30-52/子4-14)・年数[1,20]", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c05_bunshoudai.directives"},
+      "source_features": "「t年後に父が子のk倍」。両者が同じだけ年を取る不変量(年齢差一定)の型。",
+      "representation": "中学配当漢字「歳」「齢」使用('jhs'宣言)。",
+      "constructive_guarantees": "将来解のみ(P−kC>0)+可除性+年数[1,20]+親子差≧20歳の現実性。",
+      "semantic_position": "年齢系の基底。「何年前」(過去解)は符号が変わる別型として第2波。",
+      "exclusions": "過去解除外(構造定義)。0年後(現在)除外。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c05_seisu_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c05_u01", "unit_name": "方程式の利用", "semantic_territory": "文章題・連続する整数", "number_domain": "整数(和はstep3レンジ)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c05_bunshoudai.directives"},
+      "source_features": "連続3整数の和から最小を求める。和=中央値×3の構造利用。c03の説明・証明系(連続整数の和は3の倍数)のA層採点可能版という位置づけ。",
+      "representation": "Sをstep3レンジで持ち、可除性を範囲レベルで保証(制約ゼロのパターン=step機構の教科書例)。",
+      "constructive_guarantees": "step3で3の倍数のみ生成。",
+      "semantic_position": "整数系の基底。連続奇数・偶数(step変更で同型)は第2波の量産余地。",
+      "exclusions": "負域の和は第1波では除外(正の整数列に限定)。",
+      "figure_notes": null,
+      "pedagogy": []
+    }
+  }
+}

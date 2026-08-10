@@ -1,0 +1,79 @@
+{
+  "_meta": {
+    "schema": "rationale_schema_spec.md v1.0",
+    "scope": "jhs c04 方程式(6パターン)",
+    "note": "共通設計判断: _shared.jhs_c04_equation(本ファイル)。"
+  },
+  "_shared": {
+    "jhs_c04_equation": {
+      "representation": "解表示は「x＝(符号付き整数)」、連立は「x＝…，y＝…」の全角読点区切り(enum系・c17と共有の列挙規約)。解の符号はパターン構造で固定(正解型/負解型を分離)し、負数除算をformulaから排除する(正の差・正の和からの構成)。",
+      "constructive_guarantees": "全パターンで整数解を可除性制約により構成的に保証し、解の絶対値を暗算検算域(≦12〜36)にキャップ。品質保証の核として恒等検算(生成解を元方程式に代入して成立確認)を機械検収に含める(c04で確立、以後の方程式系章の標準)。",
+      "directives": [
+        {"text": "A層第1波スコープ承認(c04方程式)", "by": "marko", "date": "2026-08-09"},
+        {"text": "jhs漢字方針A裁可(常用漢字ベース=中学配当1110字リスト整備)", "by": "marko", "date": "2026-08-10"}
+      ]
+    }
+  },
+  "rationales": {
+    "jhs_c04_move_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c04_u01", "unit_name": "方程式", "semantic_territory": "方程式・移項(正の解)", "number_domain": "整数解(正・≦12)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c04_equation.directives"},
+      "source_features": "px−q＝rx＋s。両辺にxがある方程式の移項基本形。実物の4x−9＝x＋6型の抽象。",
+      "representation": "_shared参照。x＝(q＋s)/(p−r)を正の量のみで構成。",
+      "constructive_guarantees": "p>r(x項が左辺に正で残る)+可除性+解キャップ[1,12]。",
+      "semantic_position": "方程式系の基底(正解側)。move_02(負解側)と対。",
+      "exclusions": "p≦rの形は負解側・係数負側の別型として分離。x係数差1のとき除算が消えるが移項練習としては正当のため許容。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c04_move_02": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c04_u01", "unit_name": "方程式", "semantic_territory": "方程式・移項(負の解)", "number_domain": "整数解(負・|x|≦12)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c04_equation.directives"},
+      "source_features": "px＋q＝rx＋s (q>s)。定数移項で分子が負になり解が負に落ちる形。実物の2x＋3＝7x＋13(x＝−2)型と同値クラス。",
+      "representation": "解は0−(q−s)//(p−r)で正の差から構成(負数除算の言語間挙動差を構造的に回避)。",
+      "constructive_guarantees": "q>s+可除性(正の差側で判定)+|解|≦12。",
+      "semantic_position": "移項系の負解側。move_01と合わせて解の符号2象限をカバー。",
+      "exclusions": "解0(q＝s)は境界退化として除外(q>s制約に内包)。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c04_paren_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c04_u01", "unit_name": "方程式", "semantic_territory": "方程式・分配を含む(負の解)", "number_domain": "整数解(負・|x|≦12)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c04_equation.directives"},
+      "source_features": "k(x−m)＝rx＋s。分配→移項の2段。実物の5(x−3)＝9x＋1(x＝−4)型の抽象。",
+      "representation": "r>kで解が負に落ちる形に固定。0−(km＋s)//(r−k)で正の和から構成。",
+      "constructive_guarantees": "r>k+可除性+|解|≦12。",
+      "semantic_position": "分配系。正解側のk(x−m)＝rx＋s (k>r, km>s…)は制約が複雑化するため、正解側はmove_01が代表する設計(分配の主眼は符号処理側にある)。",
+      "exclusions": "両辺分配は処理量過多で除外。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c04_ratio_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c04_u01", "unit_name": "方程式", "semantic_territory": "方程式・比例式", "number_domain": "整数解(正・[2,36])", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c04_equation.directives"},
+      "source_features": "a：x＝b：c。内項の積=外項の積。実物の4：x＝2：3型の抽象。g06の比体系(hi)のjhs後継=意味カテゴリ接続点。",
+      "representation": "比記号は全角コロン(：)。xの位置は第2項に固定(位置バリエーションは第2波)。",
+      "constructive_guarantees": "可除性+a≠b(x＝c即答の退化除外)+解[2,36]。",
+      "semantic_position": "g06比体系→jhs方程式の橋。分数比((1/3)：(2/5)型)・複合項((x＋4)型)は第2波。",
+      "exclusions": "a＝b退化除外。解1除外。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c04_coeff_back_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c04_u01", "unit_name": "方程式", "semantic_territory": "方程式・係数の逆算", "number_domain": "整数(aは符号可変nonzero・|a|≦20)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c04_equation.directives"},
+      "source_features": "px＋a＝tの解がx＝sのときのa。解の代入という逆向き操作。実物の4x＋a＝10(解3→a＝−2)型そのものの抽象。",
+      "representation": "a＝t−psの直接計算、signed表示。",
+      "constructive_guarantees": "t≠ps(a＝0退化除外)+nonzero_int宣言の二重化+|a|≦20。",
+      "semantic_position": "「解く」から「解を使う」への視点転換。c17の解と係数逆算の前段。",
+      "exclusions": "a＝0除外。2係数同時逆算(a，b)は連立が要るため除外。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c04_renritsu_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c04_u01", "unit_name": "方程式", "semantic_territory": "方程式・連立(和差型)", "number_domain": "整数解(x正・y符号可変)", "answer_structure": "pair", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c04_equation.directives"},
+      "source_features": "x＋y＝A, x−y＝B。加減法が1回の加減で決まる連立の入口形。",
+      "representation": "解2つは「x＝…，y＝…」の変数名付き列挙(c01 enum・c17の値のみ列挙と区別: 連立は変数名を付けるのが実物の正準)。両解ともfmt_signedのcomputed。",
+      "constructive_guarantees": "偶奇一致制約(A＋B偶数)で両解の整数性を保証。これにより(A−B)//2は負でも厳密除算となり床除算挙動を実質発動させない(可除性保証下の負//は言語間一致——本バンクで負//を許す唯一の例外、理由をここに記録)。A≠Bでy＝0の縮退近傍を除外。",
+      "semantic_position": "連立の基底。係数付き連立(2x＋3y型)は消去計算が2段になるため第2波。",
+      "exclusions": "y＝0除外。係数付き・代入法形は第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    }
+  }
+}

@@ -1,0 +1,194 @@
+{
+  "schema_version": "1.0",
+  "grade": "jhs",
+  "description": "jhs数学バンク A層第1波 c04(方程式) 6パターン: 移項2形(正解/負解)・分配方程式・比例式・係数逆算・連立(和差型)。解表示はx＝形式、複数解は全角読点区切り(確立済み規約)。",
+  "answer_structures": ["single", "pair"],
+  "shared_lexicon": {
+    "comment": "c04計算系はレキシコン不要。"
+  },
+  "patterns": [
+    {
+      "pattern_id": "jhs_c04_move_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c04_u01",
+      "unit_name": "方程式",
+      "semantic_category": "方程式・移項(正の解)",
+      "semantic_note": "px−q＝rx＋s (p>r) → x＝(q＋s)/(p−r)。両辺にxがある移項の基本形。解は構造上常に正。",
+      "step_count": 2,
+      "operation": "px−q＝rx＋s → x＝(q＋s)/(p−r)",
+      "answer_formula": "(q1 + s1) // (p1 - r1)",
+      "answer_unit_system": "signed",
+      "slots": {
+        "p1": {"type": "int", "range": [3, 9]},
+        "q1": {"type": "int", "range": [2, 15]},
+        "r1": {"type": "int", "range": [2, 8]},
+        "s1": {"type": "int", "range": [2, 15]}
+      },
+      "value_constraints": [
+        {"rule": "x_side", "expr": "p1 > r1", "why": "x項が左辺に正で残る形の定義(p<rは負解側の別型)"},
+        {"rule": "divisible", "expr": "(q1 + s1) % (p1 - r1) == 0", "why": "整数解の構成的保証"},
+        {"rule": "sol_cap", "expr": "(q1 + s1) // (p1 - r1) <= 12", "why": "解を暗算検算可能な範囲に保つ"},
+        {"rule": "sol_floor", "expr": "(q1 + s1) // (p1 - r1) >= 1", "why": "解0はこの形では発生しないが明示(q+s>0)"}
+      ],
+      "sentence_templates": [
+        "次の方程式を解きなさい。\n{p1}x−{q1}＝{r1}x＋{s1}"
+      ],
+      "answer_template": "答え x＝{ans_disp}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": []
+    },
+    {
+      "pattern_id": "jhs_c04_move_02",
+      "grade": "jhs",
+      "unit_id": "jhs_c04_u01",
+      "unit_name": "方程式",
+      "semantic_category": "方程式・移項(負の解)",
+      "semantic_note": "px＋q＝rx＋s (p>r, q>s) → x＝−(q−s)/(p−r)。定数の移項で分子が負になる形。解は構造上常に負。",
+      "step_count": 2,
+      "operation": "px＋q＝rx＋s → x＝(s−q)/(p−r)",
+      "answer_domain": "any_int",
+      "answer_formula": "0 - (q1 - s1) // (p1 - r1)",
+      "answer_unit_system": "signed",
+      "slots": {
+        "p1": {"type": "int", "range": [3, 9]},
+        "q1": {"type": "int", "range": [3, 20]},
+        "r1": {"type": "int", "range": [2, 8]},
+        "s1": {"type": "int", "range": [2, 15]}
+      },
+      "value_constraints": [
+        {"rule": "x_side", "expr": "p1 > r1", "why": "x項が左辺に正で残る形の定義"},
+        {"rule": "neg_numer", "expr": "q1 > s1", "why": "解が負になる形の定義(正の差(q−s)から構成し負数除算を回避)"},
+        {"rule": "divisible", "expr": "(q1 - s1) % (p1 - r1) == 0", "why": "整数解の構成的保証(正の差側で判定)"},
+        {"rule": "sol_cap", "expr": "(q1 - s1) // (p1 - r1) <= 12", "why": "解の絶対値を暗算域に保つ"}
+      ],
+      "sentence_templates": [
+        "次の方程式を解きなさい。\n{p1}x＋{q1}＝{r1}x＋{s1}"
+      ],
+      "answer_template": "答え x＝{ans_disp}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": []
+    },
+    {
+      "pattern_id": "jhs_c04_paren_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c04_u01",
+      "unit_name": "方程式",
+      "semantic_category": "方程式・分配を含む(負の解)",
+      "semantic_note": "k(x−m)＝rx＋s (r>k) → x＝−(km＋s)/(r−k)。分配してから移項する2段。解は構造上常に負。",
+      "step_count": 2,
+      "operation": "k(x−m)＝rx＋s → x＝−(km＋s)/(r−k)",
+      "answer_domain": "any_int",
+      "answer_formula": "0 - (k1 * m1 + s1) // (r1 - k1)",
+      "answer_unit_system": "signed",
+      "slots": {
+        "k1": {"type": "int", "range": [2, 6]},
+        "m1": {"type": "int", "range": [2, 6]},
+        "r1": {"type": "int", "range": [3, 9]},
+        "s1": {"type": "int", "range": [1, 15]}
+      },
+      "value_constraints": [
+        {"rule": "neg_side", "expr": "r1 > k1", "why": "x項を右辺に集めると正、左辺基準で解が負になる形の定義"},
+        {"rule": "divisible", "expr": "(k1 * m1 + s1) % (r1 - k1) == 0", "why": "整数解の構成的保証(正の和側で判定)"},
+        {"rule": "sol_cap", "expr": "(k1 * m1 + s1) // (r1 - k1) <= 12", "why": "解の絶対値を暗算域に保つ"}
+      ],
+      "sentence_templates": [
+        "次の方程式を解きなさい。\n{k1}(x−{m1})＝{r1}x＋{s1}"
+      ],
+      "answer_template": "答え x＝{ans_disp}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": []
+    },
+    {
+      "pattern_id": "jhs_c04_ratio_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c04_u01",
+      "unit_name": "方程式",
+      "semantic_category": "方程式・比例式",
+      "semantic_note": "a：x＝b：c → bx＝ac → x＝ac/b。内項外項の積。整数解構成。",
+      "step_count": 2,
+      "operation": "a：x＝b：c → x＝ac/b",
+      "answer_formula": "a1 * c1 // b1",
+      "answer_unit_system": "signed",
+      "slots": {
+        "a1": {"type": "int", "range": [2, 12]},
+        "b1": {"type": "int", "range": [2, 9]},
+        "c1": {"type": "int", "range": [2, 12]}
+      },
+      "value_constraints": [
+        {"rule": "divisible", "expr": "(a1 * c1) % b1 == 0", "why": "整数解の構成的保証"},
+        {"rule": "nontrivial", "expr": "a1 != b1", "why": "a＝bだとx＝cが即答になる退化を除外"},
+        {"rule": "sol_cap", "expr": "a1 * c1 // b1 <= 36", "why": "解の上限"},
+        {"rule": "sol_floor", "expr": "a1 * c1 // b1 >= 2", "why": "解1の退化除外"}
+      ],
+      "sentence_templates": [
+        "次の比例式を解きなさい。\n{a1}：x＝{b1}：{c1}"
+      ],
+      "answer_template": "答え x＝{ans_disp}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": []
+    },
+    {
+      "pattern_id": "jhs_c04_coeff_back_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c04_u01",
+      "unit_name": "方程式",
+      "semantic_category": "方程式・係数の逆算",
+      "semantic_note": "xについての方程式 px＋a＝t の解が x＝s のとき a＝t−ps。解を代入して未知係数を求める逆向き思考。aは符号可変(nonzero)。",
+      "step_count": 2,
+      "operation": "px＋a＝t, x＝s → a＝t−ps",
+      "answer_domain": "nonzero_int",
+      "answer_formula": "t1 - p1 * s1",
+      "answer_unit_system": "signed",
+      "slots": {
+        "p1": {"type": "int", "range": [2, 6]},
+        "s1": {"type": "int", "range": [2, 6]},
+        "t1": {"type": "int", "range": [2, 40]}
+      },
+      "value_constraints": [
+        {"rule": "a_nonzero", "expr": "t1 != p1 * s1", "why": "a＝0(aが消える退化)の除外+nonzero_int宣言の二重化"},
+        {"rule": "a_cap", "expr": "abs(t1 - p1 * s1) <= 20", "why": "aの絶対値を暗算域に保つ"}
+      ],
+      "sentence_templates": [
+        "x についての方程式 {p1}x＋a＝{t1} の解が x＝{s1} のとき、a の値を求めなさい。"
+      ],
+      "answer_template": "答え a＝{ans_disp}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": []
+    },
+    {
+      "pattern_id": "jhs_c04_renritsu_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c04_u01",
+      "unit_name": "方程式",
+      "semantic_category": "方程式・連立(和差型)",
+      "semantic_note": "x＋y＝A, x−y＝B → x＝(A＋B)/2, y＝(A−B)/2。加減法が一撃で決まる基本形。yは符号可変(B>Aで負)。偶奇一致制約で両解の整数性を保証。",
+      "step_count": 2,
+      "operation": "x＋y＝A, x−y＝B → x＝(A＋B)/2, y＝(A−B)/2",
+      "answer_formula": "(A1 + B1) // 2",
+      "slots": {
+        "A1": {"type": "int", "range": [3, 17]},
+        "B1": {"type": "int", "range": [1, 15]}
+      },
+      "computed_slots": {
+        "xd1": {"formula": "fmt_signed((A1 + B1) // 2)"},
+        "yd1": {"formula": "fmt_signed((A1 - B1) // 2)"}
+      },
+      "value_constraints": [
+        {"rule": "parity", "expr": "(A1 + B1) % 2 == 0", "why": "A＋B偶数(=A−Bも偶数)で両解の整数性を保証。偶奇一致により(A−B)//2は負でも厳密除算=床除算挙動を実質的に発動させない(言語間一致)"},
+        {"rule": "y_nonzero", "expr": "A1 != B1", "why": "y＝0の退化除外(x＝yの2式が実質1本になる縮退近傍を避ける)"}
+      ],
+      "sentence_templates": [
+        "次の連立方程式を解きなさい。\nx＋y＝{A1}，x−y＝{B1}"
+      ],
+      "answer_template": "答え x＝{xd1}，y＝{yd1}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "pair",
+      "template_number_constants": []
+    }
+  ]
+}

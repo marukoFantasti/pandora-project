@@ -1,0 +1,226 @@
+{
+  "schema_version": "1.0",
+  "grade": "jhs",
+  "description": "jhs数学バンク A層第1波 c05(方程式の利用・文章題) 7パターン: 個数と代金・過不足2形(人数/総数)・速さ2形(追いつき/出会い)・年齢・連続整数。lexicon_slots本格投入(goods[j]束縛で品目と助数詞の対応保証)。中学配当漢字(離・歳・齢)初使用=方針Aの実戦経路。全パターンに状況の成立性制約(c03確立基準)。",
+  "answer_structures": ["single"],
+  "shared_lexicon": {
+    "goods": [
+      {"name": "りんご", "counter": "個"},
+      {"name": "みかん", "counter": "個"},
+      {"name": "パン", "counter": "個"},
+      {"name": "ペン", "counter": "本"},
+      {"name": "ジュース", "counter": "本"},
+      {"name": "ノート", "counter": "冊"},
+      {"name": "クッキー", "counter": "枚"},
+      {"name": "せんべい", "counter": "枚"}
+    ],
+    "people_groups": ["生徒", "子ども"]
+  },
+  "patterns": [
+    {
+      "pattern_id": "jhs_c05_kaimono_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c05_u01",
+      "unit_name": "方程式の利用",
+      "semantic_category": "文章題・個数と代金",
+      "semantic_note": "px＋c＝t → x＝(t−c)/p。c03_eq_01(立式)の解く側。個数[3,12]・単価と定額はchoicesで現実的丸め。",
+      "step_count": 2,
+      "operation": "px＋c＝t → x＝(t−c)/p",
+      "answer_formula": "(t1 - c1) // p1",
+      "slots": {
+        "item1": {"from": "goods[j].name"},
+        "cnt1": {"from": "goods[j].counter"},
+        "p1": {"type": "int", "choices": [60, 80, 90, 120, 150]},
+        "c1": {"type": "int", "choices": [100, 150, 200, 250]},
+        "t1": {"type": "int", "range": [400, 2200], "step": 10}
+      },
+      "value_constraints": [
+        {"rule": "divisible", "expr": "(t1 - c1) % p1 == 0", "why": "個数の整数保証(状況の成立性)"},
+        {"rule": "count_floor", "expr": "(t1 - c1) // p1 >= 3", "why": "個数3未満は「何個か」の言い回しに合わない"},
+        {"rule": "count_cap", "expr": "(t1 - c1) // p1 <= 12", "why": "現実的な購入数"}
+      ],
+      "sentence_templates": [
+        "1{cnt1}{p1}円の{item1}を何{cnt1}か買って、{c1}円の箱につめてもらったところ、代金の合計は{t1}円になりました。{item1}を何{cnt1}買いましたか。"
+      ],
+      "answer_template": "答え {ans}{cnt1}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": [1]
+    },
+    {
+      "pattern_id": "jhs_c05_kafusoku_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c05_u01",
+      "unit_name": "方程式の利用",
+      "semantic_category": "文章題・過不足(人数)",
+      "semantic_note": "ax＋r＝bx−s → x＝(r＋s)/(b−a)。「余る」と「足りない」の2条件から人数を求める過不足の代表形。",
+      "step_count": 2,
+      "operation": "ax＋r＝bx−s → x＝(r＋s)/(b−a)",
+      "answer_formula": "(r1 + s1) // (b1 - a1)",
+      "slots": {
+        "item1": {"from": "goods[j].name"},
+        "cnt1": {"from": "goods[j].counter"},
+        "ppl1": {"from": "people_groups"},
+        "a1": {"type": "int", "range": [2, 6]},
+        "r1": {"type": "int", "range": [2, 20]},
+        "b1": {"type": "int", "range": [3, 9]},
+        "s1": {"type": "int", "range": [2, 20]}
+      },
+      "value_constraints": [
+        {"rule": "b_gt_a", "expr": "b1 > a1", "why": "多く配ると足りなくなる構造の定義"},
+        {"rule": "divisible", "expr": "(r1 + s1) % (b1 - a1) == 0", "why": "人数の整数保証"},
+        {"rule": "count_floor", "expr": "(r1 + s1) // (b1 - a1) >= 3", "why": "人数3人未満は「何人か」に合わない"},
+        {"rule": "count_cap", "expr": "(r1 + s1) // (b1 - a1) <= 15", "why": "教室規模の現実性"}
+      ],
+      "sentence_templates": [
+        "何人かの{ppl1}に{item1}を配ります。1人に{a1}{cnt1}ずつ配ると{r1}{cnt1}余り、1人に{b1}{cnt1}ずつ配ると{s1}{cnt1}足りません。{ppl1}の人数を求めなさい。"
+      ],
+      "answer_template": "答え {ans}人",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": [1]
+    },
+    {
+      "pattern_id": "jhs_c05_kafusoku_02",
+      "grade": "jhs",
+      "unit_id": "jhs_c05_u01",
+      "unit_name": "方程式の利用",
+      "semantic_category": "文章題・過不足(総数・2段)",
+      "semantic_note": "同じ過不足状況から品物の総数 a·x＋r を求める2段計算(人数を経由)。kafusoku_01との対で問いの深さを1段上げる。",
+      "step_count": 2,
+      "operation": "x＝(r＋s)/(b−a) → 総数＝ax＋r",
+      "answer_formula": "a1 * ((r1 + s1) // (b1 - a1)) + r1",
+      "slots": {
+        "item1": {"from": "goods[j].name"},
+        "cnt1": {"from": "goods[j].counter"},
+        "ppl1": {"from": "people_groups"},
+        "a1": {"type": "int", "range": [2, 6]},
+        "r1": {"type": "int", "range": [2, 20]},
+        "b1": {"type": "int", "range": [3, 9]},
+        "s1": {"type": "int", "range": [2, 20]}
+      },
+      "value_constraints": [
+        {"rule": "b_gt_a", "expr": "b1 > a1", "why": "過不足構造の定義"},
+        {"rule": "divisible", "expr": "(r1 + s1) % (b1 - a1) == 0", "why": "人数の整数保証"},
+        {"rule": "count_floor", "expr": "(r1 + s1) // (b1 - a1) >= 3", "why": "人数の現実性(下限)"},
+        {"rule": "count_cap", "expr": "(r1 + s1) // (b1 - a1) <= 15", "why": "人数の現実性(上限)"}
+      ],
+      "sentence_templates": [
+        "何人かの{ppl1}に{item1}を配ります。1人に{a1}{cnt1}ずつ配ると{r1}{cnt1}余り、1人に{b1}{cnt1}ずつ配ると{s1}{cnt1}足りません。{item1}は全部で何{cnt1}ありますか。"
+      ],
+      "answer_template": "答え {ans}{cnt1}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": [1]
+    },
+    {
+      "pattern_id": "jhs_c05_hayasa_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c05_u01",
+      "unit_name": "方程式の利用",
+      "semantic_category": "文章題・速さ(追いつき)",
+      "semantic_note": "兄が出発してt分後: vb·t＝va·(t＋d) → t＝va·d/(vb−va)。先行者と追走者の距離一致で立式する追いつき形。",
+      "step_count": 2,
+      "operation": "vb·t＝va·(t＋d) → t＝va·d/(vb−va)",
+      "answer_formula": "va1 * d1 // (vb1 - va1)",
+      "slots": {
+        "va1": {"type": "int", "choices": [50, 60, 70, 80]},
+        "vb1": {"type": "int", "choices": [150, 180, 200, 210, 240]},
+        "d1": {"type": "int", "range": [2, 12]}
+      },
+      "value_constraints": [
+        {"rule": "divisible", "expr": "(va1 * d1) % (vb1 - va1) == 0", "why": "追いつき時刻の整数保証"},
+        {"rule": "time_floor", "expr": "va1 * d1 // (vb1 - va1) >= 2", "why": "1分未満・1分の即着は不自然"},
+        {"rule": "time_cap", "expr": "va1 * d1 // (vb1 - va1) <= 20", "why": "徒歩・自転車の現実的時間"}
+      ],
+      "sentence_templates": [
+        "弟が家を出発して、分速{va1}mで駅に向かって歩いています。兄は、弟が出発してから{d1}分後に家を出発し、分速{vb1}mの自転車で弟を追いかけました。兄は、出発してから何分後に弟に追いつきますか。"
+      ],
+      "answer_template": "答え {ans}分後",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": []
+    },
+    {
+      "pattern_id": "jhs_c05_hayasa_02",
+      "grade": "jhs",
+      "unit_id": "jhs_c05_u01",
+      "unit_name": "方程式の利用",
+      "semantic_category": "文章題・速さ(出会い)",
+      "semantic_note": "(va＋vb)·t＝L → t＝L/(va＋vb)。向かい合って進む2人の距離和で立式する出会い形。中学配当漢字(離)の初使用パターン。",
+      "step_count": 2,
+      "operation": "(va＋vb)·t＝L → t＝L/(va＋vb)",
+      "answer_formula": "L1 // (va1 + vb1)",
+      "slots": {
+        "va1": {"type": "int", "choices": [50, 60, 70, 80, 90]},
+        "vb1": {"type": "int", "choices": [50, 60, 70, 80, 90]},
+        "L1": {"type": "int", "range": [600, 4000], "step": 10}
+      },
+      "value_constraints": [
+        {"rule": "divisible", "expr": "L1 % (va1 + vb1) == 0", "why": "出会い時刻の整数保証"},
+        {"rule": "time_floor", "expr": "L1 // (va1 + vb1) >= 3", "why": "短すぎる出会いは不自然"},
+        {"rule": "time_cap", "expr": "L1 // (va1 + vb1) <= 15", "why": "徒歩の現実的時間"},
+        {"rule": "distinct_speed", "expr": "va1 != vb1", "why": "同速は対称退化(どちらの速さの情報も使わない印象になる)を避ける"}
+      ],
+      "sentence_templates": [
+        "AさんとBさんが、{L1}m離れた2つの地点から、同時に向かい合って出発します。Aさんは分速{va1}m、Bさんは分速{vb1}mで歩くとき、2人は出発してから何分後に出会いますか。"
+      ],
+      "answer_template": "答え {ans}分後",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06", "jhs"]},
+      "answer_structure": "single",
+      "template_number_constants": [2]
+    },
+    {
+      "pattern_id": "jhs_c05_nenrei_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c05_u01",
+      "unit_name": "方程式の利用",
+      "semantic_category": "文章題・年齢",
+      "semantic_note": "P＋t＝k(C＋t) → t＝(P−kC)/(k−1)。両者が同じだけ年を取る不変量の型。中学配当漢字(歳・齢)使用。",
+      "step_count": 2,
+      "operation": "P＋t＝k(C＋t) → t＝(P−kC)/(k−1)",
+      "answer_formula": "(P1 - k1 * C1) // (k1 - 1)",
+      "slots": {
+        "P1": {"type": "int", "range": [30, 52]},
+        "C1": {"type": "int", "range": [4, 14]},
+        "k1": {"type": "int", "range": [2, 4]}
+      },
+      "value_constraints": [
+        {"rule": "future", "expr": "P1 - k1 * C1 > 0", "why": "「何年後」が正になる構造の定義(過去解は別型)"},
+        {"rule": "divisible", "expr": "(P1 - k1 * C1) % (k1 - 1) == 0", "why": "年数の整数保証"},
+        {"rule": "time_floor", "expr": "(P1 - k1 * C1) // (k1 - 1) >= 1", "why": "0年後(現在)の退化除外"},
+        {"rule": "time_cap", "expr": "(P1 - k1 * C1) // (k1 - 1) <= 20", "why": "現実的な年数"},
+        {"rule": "age_gap", "expr": "P1 - C1 >= 20", "why": "親子の年齢差の現実性"}
+      ],
+      "sentence_templates": [
+        "現在、父は{P1}歳、子は{C1}歳です。父の年齢が子の年齢の{k1}倍になるのは、今から何年後ですか。"
+      ],
+      "answer_template": "答え {ans}年後",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06", "jhs"]},
+      "answer_structure": "single",
+      "template_number_constants": []
+    },
+    {
+      "pattern_id": "jhs_c05_seisu_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c05_u01",
+      "unit_name": "方程式の利用",
+      "semantic_category": "文章題・連続する整数",
+      "semantic_note": "連続3整数 n−1, n, n＋1 の和がS → 最小の整数＝S/3−1。和が中央値の3倍という構造の利用。Sはstep3レンジで割り切れを範囲レベル保証(制約不要)。",
+      "step_count": 2,
+      "operation": "3n＝S → 最小＝S/3−1",
+      "answer_formula": "S1 // 3 - 1",
+      "slots": {
+        "S1": {"type": "int", "range": [12, 60], "step": 3}
+      },
+      "value_constraints": [],
+      "sentence_templates": [
+        "連続する3つの整数があり、その和は{S1}です。もっとも小さい整数を求めなさい。"
+      ],
+      "answer_template": "答え {ans}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": [3]
+    }
+  ]
+}
