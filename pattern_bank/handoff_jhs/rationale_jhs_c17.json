@@ -1,0 +1,91 @@
+{
+  "_meta": {
+    "schema": "rationale_schema_spec.md v1.0",
+    "scope": "jhs c17 二次方程式(7パターン)",
+    "note": "共通設計判断: _shared.jhs_c17_quadratic(本ファイル)。c15判別式手筋・c16 fmt_sqrt・裁可済み降順正準の合流章。"
+  },
+  "_shared": {
+    "jhs_c17_quadratic": {
+      "representation": "解表示の正準(まるこ裁可 2026-08-10): 整数2解は降順「x＝a，b」(a>b)・採点は両順可(ソート正規化)。重解は単独「x＝a」。±√型は複合表記1本(x＝±k√m / x＝m±k√m)。解の公式型は(p±√D)/2の既約形のみ生成(D平方因数なし∧p奇数→gcd(p,2)＝1の構成的保証で約分過程を排除)。",
+      "constructive_guarantees": "因数分解型はc15fac_02の判別式手筋(sqrt_rad(D)＝1+偶奇)を流用、重解型はc15fac_03のchoices整合を流用。D＜0(虚解)はD≧1制約で排除し、sqrt_radのabs挙動(負Dの|D|が平方でも真を返す)への防波堤として大小制約を必ず併置する規約。恒等検算は全型で『解を元方程式に代入して0』(無理数解型は代数恒等: k²m復元+squarefree確認で代替)。",
+      "template_note": "『＝0』を含む方程式テンプレは template_number_constants に0を必ず含める(本文数値抽出に0が乗るため)。本章の機械検収で発見・即修正した一般規約(c04一次方程式は右辺が数値スロットのため非該当だった)。",
+      "directives": [
+        {"text": "A層第1波スコープ承認(c17は数表系中心の当初案から拡張)", "by": "marko", "date": "2026-08-09"},
+        {"text": "display_canon⑥裁可: 解2つ降順・両順採点可・±√複合表記・既約(p±√D)/r・重解単独", "by": "marko", "date": "2026-08-10"},
+        {"text": "章配分増強方針(c17は4→6、実装7)", "by": "marko", "date": "2026-08-10"}
+      ]
+    }
+  },
+  "rationales": {
+    "jhs_c17_fact_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c17_u01", "unit_name": "二次方程式", "semantic_territory": "二次方程式・因数分解型(異符号解)", "number_domain": "整数解(正・負の対)", "answer_structure": "pair", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c17_quadratic.directives"},
+      "source_features": "x²＋px−q＝0。定数項負→異符号解。実物のx＝2，−6型(降順16/19の主戦場)。",
+      "representation": "解は降順「x＝b，−a」(正の解が先=裁可正準)。c15fac_02と同一の判別式computed。",
+      "constructive_guarantees": "_shared参照。可行(p,q)はc15fac_02と同一の26種。",
+      "semantic_position": "c15fac_02の方程式版(因数分解→解の読み取りの1段先)。",
+      "exclusions": "p＝1(「1x」表記)除外。x²−px−q等の符号形は第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c17_fact_02": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c17_u01", "unit_name": "二次方程式", "semantic_territory": "二次方程式・因数分解型(両負解)", "number_domain": "整数解(両負)", "answer_structure": "pair", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c17_quadratic.directives"},
+      "source_features": "x²＋dx＋q＝0(全項正)。定数項正・中間項正→両負解。実物のx＝−1，−5型。",
+      "representation": "解は降順「x＝−b，−a」(絶対値小が先)。D＝d²−4qで減算側の判別式。",
+      "constructive_guarantees": "D≧1を先頭制約に置く(重解・虚解排除+sqrt_rad abs挙動への防波堤=_shared規約の初適用)。",
+      "semantic_position": "異符号解(fact_01)との対で、定数項符号→解の符号配置の対応を完備。両正解型(x²−dx＋q)は鏡像のため第2波。",
+      "exclusions": "重解(D＝0)はfact_03の領分。両正解型は第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c17_fact_03": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c17_u01", "unit_name": "二次方程式", "semantic_territory": "二次方程式・重解", "number_domain": "整数重解", "answer_structure": "single", "figure": "なし", "step_count": 1, "directives_ref": "_shared.jhs_c17_quadratic.directives"},
+      "source_features": "完全平方＝0。解が1つに縮む特別ケースの認識。",
+      "representation": "単独表記「x＝a」(裁可正準)。c15fac_03のchoices整合機構を流用。",
+      "constructive_guarantees": "(d/2)²＝q整合。",
+      "semantic_position": "因数分解型3形(異符号/両負/重解)の完備点。",
+      "exclusions": "なし(型が単純)。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c17_sq_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c17_u01", "unit_name": "二次方程式", "semantic_territory": "二次方程式・x²＝k型", "number_domain": "無理数解(±√・簡約表示)", "answer_structure": "single", "figure": "なし", "step_count": 1, "directives_ref": "_shared.jhs_c17_quadratic.directives"},
+      "source_features": "平方根の考えの直接適用。±を落とす誤りが定番。",
+      "representation": "±複合表記1本(裁可正準)。fmt_sqrtで簡約表示(x＝±2√5型を含む)。",
+      "constructive_guarantees": "k非平方(整数解排除)。c16simp_01の簡約保証を継承。",
+      "semantic_position": "平方根系の基底。c16→c17の接続点。",
+      "exclusions": "平方数k(x＝±m整数解)は第2波判断(±整数表記の正準が別途要る)。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c17_sq_02": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c17_u01", "unit_name": "二次方程式", "semantic_territory": "二次方程式・(x−m)²＝k型", "number_domain": "無理数解(m±√k)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c17_quadratic.directives"},
+      "source_features": "平方完成済み形。実物のx＝5±√3型そのまま。",
+      "representation": "「x＝m±(簡約√)」複合表記。fmt_sqrtにより√12→2√3の簡約込み(x＝5±2√3)。",
+      "constructive_guarantees": "k非平方。",
+      "semantic_position": "sq_01の平行移動版。平方完成を自分で行う形(x²＋bx＝c)は第2波。",
+      "exclusions": "平方数k除外(整数2解=因数分解型の領分)。(x＋m)²形は先頭−表示が要るため1形固定。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c17_formula_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c17_u01", "unit_name": "二次方程式", "semantic_territory": "二次方程式・解の公式", "number_domain": "無理数解((p±√D)/2既約)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c17_quadratic.directives"},
+      "source_features": "解の公式の適用。実物の(3±√5)/2型・約分過程((6±√56)/2＝3±√14)は既約構成で生成器から排除(裁可正準)。",
+      "representation": "x²−px＋qのp奇数choices+D平方因数なし制約で(p±√D)/2が構成的に既約。fmt_sqrt(D)はsquarefreeゆえ常に係数1(√Dそのまま)。",
+      "constructive_guarantees": "D≧2+sqrt_coef(D)＝1+p奇数。3制約で既約性を証明的に保証(gcd(p,2)＝1が自動)。",
+      "semantic_position": "公式適用の基底。a≠1の一般形(2x²＋…)は分母2a・約分判定が要るため第2波。",
+      "exclusions": "D平方数(有理解)・D平方因数あり(要約分)を構造排除。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c17_back_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c17_u01", "unit_name": "二次方程式", "semantic_territory": "二次方程式・係数の逆算", "number_domain": "整数(aは符号可変nonzero・|a|≦12)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c17_quadratic.directives"},
+      "source_features": "1つの解の代入からaを求める。c04coeff_backの二次版。",
+      "representation": "a＝q/s−sの正除算形。s|(q−s²)⟺s|q の同値変形により、当初案の(q−s²)/s(負floor-div)を正の除算のみに再構成(設計中の自己修正・負floor-div回避文化の維持)。上下キャップも正の量の不等式で表現。",
+      "constructive_guarantees": "s|q+a≠0+|a|≦12。恒等検算はs²＋as−q＝0の成立。",
+      "semantic_position": "逆算系。「もう1つの解を求めよ」の連問形は第2波。",
+      "exclusions": "a＝0除外。",
+      "figure_notes": null,
+      "pedagogy": []
+    }
+  }
+}

@@ -1,0 +1,475 @@
+{
+ "schema_version": "1.0",
+ "grade": "jhs",
+ "description": "jhs数学バンク A層第1波 c17(二次方程式) 7パターン: 因数分解型2形(異符号解/両負解=判別式手筋)・重解型・x²＝k型・(x−m)²＝k型・解の公式型(既約構成)・係数逆算。2解は降順列挙(裁可済み正準・採点は両順可)、±√型は複合表記1本、(p±√D)/2は既約形のみ生成。",
+ "answer_structures": [
+  "single",
+  "pair"
+ ],
+ "shared_lexicon": {
+  "comment": "c17計算系はレキシコン不要。"
+ },
+ "patterns": [
+  {
+   "pattern_id": "jhs_c17_fact_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c17_u01",
+   "unit_name": "二次方程式",
+   "semantic_category": "二次方程式・因数分解型(異符号解)",
+   "semantic_note": "x²＋px−q＝0 → (x＋a)(x−b)＝0 → x＝b，−a。c15fac_02の判別式手筋を流用。解は降順(正の解b先・負の解−a後=裁可済み正準)。",
+   "step_count": 2,
+   "operation": "x²＋px−q＝0 → x＝b，−a (a＝(√D＋p)/2, b＝(√D−p)/2, D＝p²＋4q)",
+   "answer_formula": "(sqrt_coef(p1 * p1 + 4 * q1) - p1) // 2",
+   "slots": {
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      3,
+      36
+     ]
+    }
+   },
+   "computed_slots": {
+    "av1": {
+     "formula": "(sqrt_coef(p1 * p1 + 4 * q1) + p1) // 2"
+    },
+    "bv1": {
+     "formula": "(sqrt_coef(p1 * p1 + 4 * q1) - p1) // 2"
+    },
+    "s2d": {
+     "formula": "fmt_signed(0 - (sqrt_coef(p1 * p1 + 4 * q1) + p1) // 2)"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "square_disc",
+     "expr": "sqrt_rad(p1 * p1 + 4 * q1) == 1",
+     "why": "判別式平方数=整数解の存在保証(c15fac_02と同一手筋)"
+    },
+    {
+     "rule": "parity",
+     "expr": "(sqrt_coef(p1 * p1 + 4 * q1) - p1) % 2 == 0",
+     "why": "解の整数性"
+    },
+    {
+     "rule": "b_floor",
+     "expr": "(sqrt_coef(p1 * p1 + 4 * q1) - p1) // 2 >= 1",
+     "why": "正の解≧1"
+    },
+    {
+     "rule": "a_cap",
+     "expr": "(sqrt_coef(p1 * p1 + 4 * q1) + p1) // 2 <= 12",
+     "why": "解の絶対値を暗算域に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "次の二次方程式を解きなさい。\nx²＋{p1}x−{q1}＝0"
+   ],
+   "answer_template": "答え x＝{bv1}，{s2d}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "pair",
+   "template_number_constants": [
+    0
+   ]
+  },
+  {
+   "pattern_id": "jhs_c17_fact_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c17_u01",
+   "unit_name": "二次方程式",
+   "semantic_category": "二次方程式・因数分解型(両負解)",
+   "semantic_note": "x²＋dx＋q＝0 → (x＋a)(x＋b)＝0 → x＝−b，−a (a>b)。判別式D＝d²−4q平方数+D≧1(重解除外)。解は降順(−b先)。",
+   "step_count": 2,
+   "operation": "x²＋dx＋q＝0 → x＝−b，−a (a＝(d＋√D)/2, b＝(d−√D)/2, D＝d²−4q)",
+   "answer_formula": "0 - (d1 - sqrt_coef(d1 * d1 - 4 * q1)) // 2",
+   "answer_domain": "any_int",
+   "slots": {
+    "d1": {
+     "type": "int",
+     "range": [
+      3,
+      12
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      35
+     ]
+    }
+   },
+   "computed_slots": {
+    "av1": {
+     "formula": "(d1 + sqrt_coef(d1 * d1 - 4 * q1)) // 2"
+    },
+    "bv1": {
+     "formula": "(d1 - sqrt_coef(d1 * d1 - 4 * q1)) // 2"
+    },
+    "s1d": {
+     "formula": "fmt_signed(0 - (d1 - sqrt_coef(d1 * d1 - 4 * q1)) // 2)"
+    },
+    "s2d": {
+     "formula": "fmt_signed(0 - (d1 + sqrt_coef(d1 * d1 - 4 * q1)) // 2)"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "disc_positive",
+     "expr": "d1 * d1 - 4 * q1 >= 1",
+     "why": "D≧1(D＝0の重解はfact_03の領分・D＜0の虚解排除。sqrt_radのabs挙動への防波堤として必ず先頭評価対象に含める)"
+    },
+    {
+     "rule": "square_disc",
+     "expr": "sqrt_rad(d1 * d1 - 4 * q1) == 1",
+     "why": "判別式平方数=整数解保証"
+    },
+    {
+     "rule": "parity",
+     "expr": "(d1 - sqrt_coef(d1 * d1 - 4 * q1)) % 2 == 0",
+     "why": "解の整数性"
+    },
+    {
+     "rule": "b_floor",
+     "expr": "(d1 - sqrt_coef(d1 * d1 - 4 * q1)) // 2 >= 1",
+     "why": "b≧1(b＝0はq＝0退化)"
+    }
+   ],
+   "sentence_templates": [
+    "次の二次方程式を解きなさい。\nx²＋{d1}x＋{q1}＝0"
+   ],
+   "answer_template": "答え x＝{s1d}，{s2d}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "pair",
+   "template_number_constants": [
+    0
+   ]
+  },
+  {
+   "pattern_id": "jhs_c17_fact_03",
+   "grade": "jhs",
+   "unit_id": "jhs_c17_u01",
+   "unit_name": "二次方程式",
+   "semantic_category": "二次方程式・重解",
+   "semantic_note": "x²−dx＋q＝0 (q＝(d/2)²) → (x−a)²＝0 → x＝a 単独表記(裁可済み正準)。c15fac_03のchoices整合機構を流用。",
+   "step_count": 1,
+   "operation": "x²−2ax＋a²＝0 → x＝a(重解)",
+   "answer_formula": "d1 // 2",
+   "slots": {
+    "d1": {
+     "type": "int",
+     "choices": [
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "choices": [
+      4,
+      9,
+      16,
+      25,
+      36,
+      49,
+      64,
+      81
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "perfect_square_match",
+     "expr": "(d1 // 2) * (d1 // 2) == q1",
+     "why": "完全平方整合(c15fac_03と同一機構)"
+    }
+   ],
+   "sentence_templates": [
+    "次の二次方程式を解きなさい。\nx²−{d1}x＋{q1}＝0"
+   ],
+   "answer_template": "答え x＝{ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    0
+   ]
+  },
+  {
+   "pattern_id": "jhs_c17_sq_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c17_u01",
+   "unit_name": "二次方程式",
+   "semantic_category": "二次方程式・x²＝k型(±√)",
+   "semantic_note": "x²＝k → x＝±√k(簡約はfmt_sqrt)。±複合表記1本(裁可済み正準・2解に展開しない)。kは非平方数のみ(整数解は因数分解型の領分)。",
+   "step_count": 1,
+   "operation": "x²＝k → x＝±fmt_sqrt(k)",
+   "answer_formula": "sqrt_coef(k1)",
+   "slots": {
+    "k1": {
+     "type": "int",
+     "range": [
+      2,
+      75
+     ]
+    }
+   },
+   "computed_slots": {
+    "sd1": {
+     "formula": "fmt_sqrt(k1)"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "not_square",
+     "expr": "sqrt_rad(k1) >= 2",
+     "why": "平方数(整数解±m)は別型の領分。無理数解に限定"
+    }
+   ],
+   "sentence_templates": [
+    "次の二次方程式を解きなさい。\nx²＝{k1}"
+   ],
+   "answer_template": "答え x＝±{sd1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c17_sq_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c17_u01",
+   "unit_name": "二次方程式",
+   "semantic_category": "二次方程式・(x−m)²＝k型",
+   "semantic_note": "(x−m)²＝k → x＝m±√k。平方根の考えの応用形。実物のx＝5±√3型そのまま。kは非平方(整数解排除)、√kはfmt_sqrtで簡約表示。",
+   "step_count": 2,
+   "operation": "(x−m)²＝k → x＝m±fmt_sqrt(k)",
+   "answer_formula": "m1",
+   "slots": {
+    "m1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "k1": {
+     "type": "int",
+     "range": [
+      2,
+      50
+     ]
+    }
+   },
+   "computed_slots": {
+    "sd1": {
+     "formula": "fmt_sqrt(k1)"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "not_square",
+     "expr": "sqrt_rad(k1) >= 2",
+     "why": "平方数kは整数2解(因数分解型で解ける)になり型の主眼(±√の扱い)を外れる"
+    }
+   ],
+   "sentence_templates": [
+    "次の二次方程式を解きなさい。\n(x−{m1})²＝{k1}"
+   ],
+   "answer_template": "答え x＝{m1}±{sd1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c17_formula_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c17_u01",
+   "unit_name": "二次方程式",
+   "semantic_category": "二次方程式・解の公式(既約構成)",
+   "semantic_note": "x²−px＋q＝0(p奇数) → x＝(p±√D)/2, D＝p²−4q。既約形のみ生成(裁可済み正準): D平方因数なし(sqrt_coef(D)＝1)∧p奇数でgcd(p,2)＝1が自動成立。約分過程を生成器から排除する構成。",
+   "step_count": 2,
+   "operation": "x²−px＋q＝0 → x＝(p±√D)/2, D＝p²−4q",
+   "answer_formula": "p1",
+   "slots": {
+    "p1": {
+     "type": "int",
+     "choices": [
+      3,
+      5,
+      7,
+      9
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      1,
+      15
+     ]
+    }
+   },
+   "computed_slots": {
+    "sdD": {
+     "formula": "fmt_sqrt(p1 * p1 - 4 * q1)"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "disc_positive",
+     "expr": "p1 * p1 - 4 * q1 >= 2",
+     "why": "D≧2(実数2解・D＝1は有理解でx＝整数に落ちる)"
+    },
+    {
+     "rule": "squarefree_disc",
+     "expr": "sqrt_coef(p1 * p1 - 4 * q1) == 1",
+     "why": "D平方因数なし=√Dが既約・(p±√D)/2が既約形(p奇数と併せて構成的保証)"
+    }
+   ],
+   "sentence_templates": [
+    "次の二次方程式を、解の公式を使って解きなさい。\nx²−{p1}x＋{q1}＝0"
+   ],
+   "answer_template": "答え x＝({p1}±{sdD})/2",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    0
+   ]
+  },
+  {
+   "pattern_id": "jhs_c17_back_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c17_u01",
+   "unit_name": "二次方程式",
+   "semantic_category": "二次方程式・係数の逆算",
+   "semantic_note": "x²＋ax−q＝0の1つの解がx＝s → a＝q/s−s。s|(q−s²)⟺s|q の同値変形で正の除算のみに再構成(負floor-div回避のバンク文化維持)。aは符号可変nonzero。",
+   "step_count": 2,
+   "operation": "s²＋as−q＝0 → a＝q/s−s (s|(q−s²)⟺s|q)",
+   "answer_domain": "nonzero_int",
+   "answer_formula": "q1 // s1 - s1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "s1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      60
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "q1 % s1 == 0",
+     "why": "aの整数保証。s|(q−s²)⟺s|q の同値により正のq側で判定(負数剰余を制約から排除)"
+    },
+    {
+     "rule": "a_nonzero",
+     "expr": "q1 != s1 * s1",
+     "why": "a＝0退化の除外+nonzero_int宣言の二重化"
+    },
+    {
+     "rule": "a_cap_hi",
+     "expr": "q1 // s1 - s1 <= 12",
+     "why": "a≦12"
+    },
+    {
+     "rule": "a_cap_lo",
+     "expr": "s1 - q1 // s1 <= 12",
+     "why": "a≧−12(正の量の不等式で表現)"
+    }
+   ],
+   "sentence_templates": [
+    "x についての二次方程式 x²＋ax−{q1}＝0 の1つの解が x＝{s1} のとき、a の値を求めなさい。"
+   ],
+   "answer_template": "答え a＝{ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1,
+    0
+   ]
+  }
+ ]
+}
