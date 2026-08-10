@@ -1,0 +1,159 @@
+{
+  "schema_version": "1.0",
+  "grade": "jhs",
+  "description": "jhs数学バンク A層第1波 c10(確率) 5パターン: さいころ1個(m以下)・2個の和・2個の積(照合表束縛)・硬貨2枚(事象×場合数ペア)・玉の取り出し。答えは既約分数(reduce)、閉形式で数えられない場合数はレキシコンのペアリストで照合表化する新技法。",
+  "answer_structures": ["single"],
+  "shared_lexicon": {
+    "prod_cases": [[4, 3], [5, 2], [6, 4], [8, 2], [10, 2], [12, 4]],
+    "coin_events": [["2枚とも表になる", 1], ["1枚だけ表になる", 2], ["少なくとも1枚は表になる", 3]]
+  },
+  "patterns": [
+    {
+      "pattern_id": "jhs_c10_dice_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c10_u01",
+      "unit_name": "確率",
+      "semantic_category": "確率・さいころ1個(m以下)",
+      "semantic_note": "1個のさいころでm以下の目 → m/6 既約。全事象6の基本形。",
+      "step_count": 1,
+      "operation": "P(目≦m) ＝ m/6",
+      "answer_formula": "m1",
+      "slots": {
+        "m1": {"type": "int", "range": [2, 5]}
+      },
+      "computed_slots": {
+        "d6": {"formula": "6"}
+      },
+      "reduced_fraction_display": {
+        "f1": ["m1", "d6"]
+      },
+      "value_constraints": [],
+      "sentence_templates": [
+        "1つのさいころを投げるとき、出る目が{m1}以下になる確率を求めなさい。"
+      ],
+      "answer_template": "答え {f1}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": [1]
+    },
+    {
+      "pattern_id": "jhs_c10_dice_02",
+      "grade": "jhs",
+      "unit_id": "jhs_c10_u01",
+      "unit_name": "確率",
+      "semantic_category": "確率・さいころ2個(和)",
+      "semantic_note": "大小2個の和がs → (6−|s−7|)/36 既約。場合数が閉形式で書ける2個型。",
+      "step_count": 2,
+      "operation": "P(和＝s) ＝ (6−|s−7|)/36",
+      "answer_formula": "6 - abs(s1 - 7)",
+      "slots": {
+        "s1": {"type": "int", "range": [3, 11]}
+      },
+      "computed_slots": {
+        "num_c": {"formula": "6 - abs(s1 - 7)"},
+        "d36": {"formula": "36"}
+      },
+      "reduced_fraction_display": {
+        "f1": ["num_c", "d36"]
+      },
+      "value_constraints": [],
+      "sentence_templates": [
+        "大小2つのさいころを同時に投げるとき、出る目の和が{s1}になる確率を求めなさい。"
+      ],
+      "answer_template": "答え {f1}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": [2]
+    },
+    {
+      "pattern_id": "jhs_c10_dice_03",
+      "grade": "jhs",
+      "unit_id": "jhs_c10_u01",
+      "unit_name": "確率",
+      "semantic_category": "確率・さいころ2個(積・照合表)",
+      "semantic_note": "積がkになる場合数は閉形式で書けないため、レキシコンのペアリスト prod_cases[[k,場合数]] を共有インデックス束縛で引く照合表方式(新技法)。値と場合数の対応はバンク設計時に悉皆検証。",
+      "step_count": 2,
+      "operation": "P(積＝k) ＝ cnt(k)/36(照合表)",
+      "answer_formula": "cnt1",
+      "slots": {
+        "k1": {"from": "prod_cases[i][0]"},
+        "cnt1": {"from": "prod_cases[i][1]"}
+      },
+      "computed_slots": {
+        "d36": {"formula": "36"}
+      },
+      "reduced_fraction_display": {
+        "f1": ["cnt1", "d36"]
+      },
+      "value_constraints": [],
+      "sentence_templates": [
+        "大小2つのさいころを同時に投げるとき、出る目の積が{k1}になる確率を求めなさい。"
+      ],
+      "answer_template": "答え {f1}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": [2]
+    },
+    {
+      "pattern_id": "jhs_c10_coin_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c10_u01",
+      "unit_name": "確率",
+      "semantic_category": "確率・硬貨2枚(事象照合表)",
+      "semantic_note": "2枚の硬貨の事象(2枚とも表/1枚だけ表/少なくとも1枚表)を事象文×場合数のペアで束縛。全事象4。中学配当漢字(硬)使用。",
+      "step_count": 2,
+      "operation": "P(事象) ＝ cnt/4(照合表)",
+      "answer_formula": "cnt1",
+      "slots": {
+        "ev1": {"from": "coin_events[i][0]"},
+        "cnt1": {"from": "coin_events[i][1]"}
+      },
+      "computed_slots": {
+        "d4": {"formula": "4"}
+      },
+      "reduced_fraction_display": {
+        "f1": ["cnt1", "d4"]
+      },
+      "value_constraints": [],
+      "sentence_templates": [
+        "2枚の硬貨を同時に投げるとき、{ev1}確率を求めなさい。"
+      ],
+      "answer_template": "答え {f1}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06", "jhs"]},
+      "answer_structure": "single",
+      "template_number_constants": [1, 2]
+    },
+    {
+      "pattern_id": "jhs_c10_ball_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c10_u01",
+      "unit_name": "確率",
+      "semantic_category": "確率・玉の取り出し",
+      "semantic_note": "赤玉r個・白玉w個から1個 → r/(r＋w) 既約。全事象がスロット依存になる基本形。中学配当漢字(袋)使用。",
+      "step_count": 1,
+      "operation": "P(赤) ＝ r/(r＋w)",
+      "answer_formula": "r1",
+      "slots": {
+        "r1": {"type": "int", "range": [2, 8]},
+        "w1": {"type": "int", "range": [2, 8]}
+      },
+      "computed_slots": {
+        "tot1": {"formula": "r1 + w1"}
+      },
+      "reduced_fraction_display": {
+        "f1": ["r1", "tot1"]
+      },
+      "value_constraints": [
+        {"rule": "total_cap", "expr": "r1 + w1 <= 12", "why": "玉の総数を現実的な範囲に保つ"},
+        {"rule": "distinct", "expr": "r1 != w1", "why": "r＝wは1/2固定になり赤白の個数情報が答えに効かない印象を与えるため除外"}
+      ],
+      "sentence_templates": [
+        "袋の中に、赤玉が{r1}個、白玉が{w1}個入っています。この袋から玉を1個取り出すとき、取り出した玉が赤玉である確率を求めなさい。"
+      ],
+      "answer_template": "答え {f1}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06", "jhs"]},
+      "answer_structure": "single",
+      "template_number_constants": [1]
+    }
+  ]
+}

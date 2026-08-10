@@ -1,0 +1,69 @@
+{
+  "_meta": {
+    "schema": "rationale_schema_spec.md v1.0",
+    "scope": "jhs c10 確率(5パターン)",
+    "note": "共通設計判断: _shared.jhs_c10_probability(本ファイル)。"
+  },
+  "_shared": {
+    "jhs_c10_probability": {
+      "representation": "確率の答えは既約分数(reduced_fraction_display)。分母は全事象(6/36/4/r＋w)をcomputed_slotsで持つ。場合数が閉形式で書けない事象(2個の積・硬貨の事象)は、レキシコンのペアリスト([値, 場合数])を共有インデックス束縛で引く『照合表方式』を新設。照合表の正しさは総当たり悉皆検証を機械検収に含める(値と場合数の対応誤りを構造的に排除)。",
+      "constructive_guarantees": "確率0・1になる事象は範囲・照合表の設計段階で排除(0<P<1のみ生成)。既約化はreduce機構に委譲。",
+      "directives": [
+        {"text": "A層第1波スコープ承認(c10確率)", "by": "marko", "date": "2026-08-09"},
+        {"text": "章配分増強方針(c10は3→5)", "by": "marko", "date": "2026-08-10"}
+      ]
+    }
+  },
+  "rationales": {
+    "jhs_c10_dice_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c10_u01", "unit_name": "確率", "semantic_territory": "確率・さいころ1個(m以下)", "number_domain": "分数(分母6・既約)", "answer_structure": "single", "figure": "なし", "step_count": 1, "directives_ref": "_shared.jhs_c10_probability.directives"},
+      "source_features": "1個のさいころ・m以下の目。全事象6の等確率入門形。",
+      "representation": "_shared参照。分子=m(閉形式)。",
+      "constructive_guarantees": "m∈[2,5]: m=1は「以下」の言い回しが不自然、m=6は確率1で除外。",
+      "semantic_position": "確率系の基底。「偶数の目」「k の倍数の目」等の事象バリエーションは照合表方式で第2波拡張可。",
+      "exclusions": "P=1(m=6)・言い回し退化(m=1)の除外。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c10_dice_02": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c10_u01", "unit_name": "確率", "semantic_territory": "確率・さいころ2個(和)", "number_domain": "分数(分母36・既約)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c10_probability.directives"},
+      "source_features": "大小2個の和。6×6=36マスの数え上げの代表形。",
+      "representation": "場合数は閉形式 6−|s−7|(和の分布の三角形)。absはSAFE既存関数。",
+      "constructive_guarantees": "s∈[3,11]: s=2,12(1/36の端)は照合表なしで正しいが、端は数え上げ練習にならないため除外。",
+      "semantic_position": "2個型の閉形式側。dice_03(照合表側)と対で、場合数導出の2方式を示す。",
+      "exclusions": "端(s=2,12)除外。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c10_dice_03": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c10_u01", "unit_name": "確率", "semantic_territory": "確率・さいころ2個(積・照合表)", "number_domain": "分数(分母36・既約)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c10_probability.directives"},
+      "source_features": "積がkになる場合数は約数構造に依存し閉形式で書けない。",
+      "representation": "照合表方式の初出: prod_cases=[[k,場合数]]をprod_cases[i][0]/[i][1]の共有インデックスで束縛。SAFE評価域を広げず(ループ・分岐を導入せず)非閉形式の場合数を扱う手筋で、以後の数え上げ系(c10第2波・c17の解の個数等)の汎用技法。",
+      "constructive_guarantees": "照合表6件の場合数を総当たり(6×6悉皆)で独立検証し機械検収に組み込み(検証済: 全6件一致)。",
+      "semantic_position": "照合表方式の規約確立パターン。",
+      "exclusions": "k=1,36等の端(場合数1)は数え上げ練習性が低く除外。表にない積は生成されない(構造保証)。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c10_coin_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c10_u01", "unit_name": "確率", "semantic_territory": "確率・硬貨2枚(事象照合表)", "number_domain": "分数(分母4・既約)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c10_probability.directives"},
+      "source_features": "2枚の硬貨の3事象(とも表/だけ表/少なくとも表)。「少なくとも」の余事象的発想を含む。",
+      "representation": "照合表の文字列版: 事象文×場合数のペア束縛。事象文内の数字(2枚・1枚)はtemplate_number_constantsで許可。中学配当漢字「硬」使用('jhs'宣言)。",
+      "constructive_guarantees": "3事象の場合数を表裏4通りの総当たりで独立検証(検証済)。",
+      "semantic_position": "事象バリエーションを文字列照合表で持つ先例(dice_01第2波の事象拡張はこの方式)。",
+      "exclusions": "3枚硬貨(全事象8)は第2波。「2枚とも裏」は「2枚とも表」と対称のため表に含めず(冗長回避)。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c10_ball_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c10_u01", "unit_name": "確率", "semantic_territory": "確率・玉の取り出し", "number_domain": "分数(分母r＋w・既約)", "answer_structure": "single", "figure": "なし", "step_count": 1, "directives_ref": "_shared.jhs_c10_probability.directives"},
+      "source_features": "赤r個・白w個から1個。全事象がスロット依存(r＋w)になる最初の形。",
+      "representation": "分母をcomputed(tot=r＋w)で持ちreduce。中学配当漢字「袋」使用。",
+      "constructive_guarantees": "総数≦12(現実性)。r≠w(1/2固定の情報退化を除外)。",
+      "semantic_position": "全事象可変の基底。2個取り出し・色3種は組合せ計算が要るため第2波。",
+      "exclusions": "r＝w除外。取り出し2個は除外(第2波)。",
+      "figure_notes": null,
+      "pedagogy": []
+    }
+  }
+}
