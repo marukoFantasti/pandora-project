@@ -34,6 +34,12 @@ const ID = {
   jhs_c05_hayasa_02: (e, t) => (e.va1 + e.vb1) * t === e.L1,                      // (va＋vb)·t＝L
   jhs_c05_nenrei_01: (e, t) => e.P1 + t === e.k1 * (e.C1 + t),                    // P＋t＝k(C＋t)
   jhs_c05_seisu_01: (e, m) => m + (m + 1) + (m + 2) === e.S1,                     // 連続3整数の和
+  // --- c10 確率（ball_01のみ恒等検算。dice/coinは pattern_bank_jhs_c10_tables.js の照合表悉皆で代替=item9） ---
+  jhs_c10_ball_01: (e, r) => {                                                    // P×(r＋w)＝r：既約f1が r/(r+w) と等価
+    const g = (a, b) => { a = Math.abs(a); b = Math.abs(b); while (b) { const t = a % b; a = b; b = t; } return a; };
+    const tot = e.r1 + e.w1, d = g(e.r1, tot);
+    return e.tot1 === tot && (e.r1 / d) * tot === r * (tot / d);                  // rn·tot == r·rd
+  },
 };
 
 const bankFiles = fs.readdirSync(path.join(ROOT, 'pattern_bank'))
