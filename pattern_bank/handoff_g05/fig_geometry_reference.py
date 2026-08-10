@@ -148,10 +148,61 @@ def prism_geom(base_kind, a, b, h):
     return {"base": [[R(x), R(y)] for x, y in base], "top": [[R(x), R(y)] for x, y in top],
             "off": [R(ox), R(oy)], "scale": R(sc)}
 
+# ---------- C層(第5弾) sym_polygon/similar_pair/xy_graph/dot_plot/histogram ----------
+def _regular_poly(n, r):
+    return [[r * math.cos(math.radians(90 + 360 * i / n)), r * math.sin(math.radians(90 + 360 * i / n))] for i in range(n)]
+SYM = {
+    "square": {"verts": [[-40, -40], [40, -40], [40, 40], [-40, 40]], "n_axes": 4},
+    "rect": {"verts": [[-50, -30], [50, -30], [50, 30], [-50, 30]], "n_axes": 2},
+    "parallelogram": {"verts": [[-45, -25], [25, -25], [45, 25], [-25, 25]], "n_axes": 0},
+    "iso_tri": {"verts": [[-38, -28], [38, -28], [0, 44]], "n_axes": 1},
+    "equi_tri": {"regular": 3}, "reg_pentagon": {"regular": 5}, "reg_hexagon": {"regular": 6},
+}
+def sym_polygon_geom(shape):
+    sh = SYM.get(shape, SYM["square"])
+    if sh.get("regular"):
+        n = sh["regular"]; verts = _regular_poly(n, 45); n_axes = n
+    else:
+        verts = sh["verts"]; n_axes = sh["n_axes"]
+    return {"verts": [[R(x), R(y)] for x, y in verts], "center": [0, 0], "n_axes": n_axes}
+SIM_BASES = {"right_tri": [[0, 0], [40, 0], [0, 30]], "tri": [[0, 0], [50, 0], [15, 35]],
+             "rect": [[0, 0], [40, 0], [40, 30], [0, 30]], "lshape": [[0, 0], [40, 0], [40, 20], [20, 20], [20, 40], [0, 40]]}
+def similar_pair_geom(base_shape, ratio):
+    base = SIM_BASES.get(base_shape, SIM_BASES["right_tri"])
+    scaled = [[p[0] * ratio, p[1] * ratio] for p in base]
+    bw = max(p[0] for p in base)
+    return {"base": [[R(x), R(y)] for x, y in base], "scaled": [[R(x), R(y)] for x, y in scaled], "base_off": [0, 0], "scaled_off": [R(bw + 40), 0]}
+def xy_graph_geom(mode, k, xmax, ymax):
+    U = min(260 // xmax, 260 // ymax, 30); pts = []; lattice = []
+    if mode == "prop":
+        pts = [[0, 0], [xmax, min(k * xmax, ymax)]]
+    else:
+        for x in range(1, xmax + 1):
+            y = k / x
+            if y <= ymax + 1e-9: pts.append([x, y])
+        for xi in range(1, xmax + 1):
+            yi = k / xi
+            if abs(yi - round(yi)) < 1e-9 and yi <= ymax: lattice.append([xi, round(yi)])
+    return {"unit": U, "W": xmax * U, "H": ymax * U, "curve": [[R(a), R(b)] for a, b in pts], "lattice": [[a, b] for a, b in lattice]}
+def dot_plot_geom(mn, mx, values):
+    U = min(280 // (mx - mn), 26); count = {}; dots = []
+    for v in values:
+        count[v] = count.get(v, 0) + 1
+        dots.append([(v - mn) * U, 12 + (count[v] - 1) * 12])
+    return {"unit": U, "axis": [[0, 0], [(mx - mn) * U, 0]], "dots": [[R(x), R(y)] for x, y in dots]}
+def histogram_geom(class_width, x0, freqs):
+    maxF = max(freqs); barW = min(300 // len(freqs), 44); U = min(150 // max(maxF, 1), 22)
+    return {"barW": barW, "unit": U, "bars": [{"x": i * barW, "y": 0, "w": barW, "h": f * U, "f": f} for i, f in enumerate(freqs)]}
+
 GEOMS = {
     "tri_angle": (tri_angle_geom, [(25, 40), (60, 60), (75, 75), (100, 45), (30, 115), (115, 30), (50, 90), (65, 35)]),
     "circle_v2": (circle_v2_geom, [("full",), ("half",), ("quarter",)]),
     "prism": (prism_geom, [("rect", 6, 4, 8), ("rect", 10, 3, 5), ("tri", 8, 5, 7), ("tri", 6, 4, 6)]),
+    "sym_polygon": (sym_polygon_geom, [("square",), ("rect",), ("parallelogram",), ("iso_tri",), ("equi_tri",), ("reg_pentagon",), ("reg_hexagon",)]),
+    "similar_pair": (similar_pair_geom, [("right_tri", 2), ("right_tri", 3), ("rect", 2), ("tri", 0.5)]),
+    "xy_graph": (xy_graph_geom, [("prop", 2, 6, 6), ("inv", 12, 6, 6), ("prop", 1, 8, 8), ("inv", 6, 6, 6)]),
+    "dot_plot": (dot_plot_geom, [(0, 8, [2, 3, 3, 4, 4, 4, 5, 6]), (0, 10, [1, 5, 5, 9])]),
+    "histogram": (histogram_geom, [(5, 10, [3, 7, 5, 2]), (10, 0, [2, 4, 6, 3, 1])]),
     "tri_angle_iso": (tri_angle_iso_geom, [(30,), (60,), (90,), (120,), (44,), (100,)]),
     "quad_angle": (quad_angle_geom, [(90, 90, 90), (65, 97, 73), (125, 65, 65), (80, 110, 95), (65, 125, 65), (100, 100, 95), (65, 65, 105), (120, 70, 90)]),
     "para_area": (para_area_geom, [(12, 7, 65), (6, 4, 75), (16, 12, 60), (9, 6, 70)]),

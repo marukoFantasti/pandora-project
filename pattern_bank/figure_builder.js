@@ -696,10 +696,144 @@
     return lay;
   }
 
+  // ============================================================
+  // C層(第5弾) 5kind: sym_polygon / similar_pair / xy_graph / dot_plot / histogram
+  // 幾何は y上向きローカル、fig_geometry_reference.py と ±0.5px 照合。座標規約は各APIに明記。
+  // ============================================================
+  function rotPt(p, deg) { var a = d2r(deg), c = Math.cos(a), s = Math.sin(a); return [p[0] * c - p[1] * s, p[0] * s + p[1] * c]; }
+  function regularPoly(n, r) { var v = []; for (var i = 0; i < n; i++) { var a = d2r(90 + 360 * i / n); v.push([r * Math.cos(a), r * Math.sin(a)]); } return v; }
+
+  // ---- 1. sym_polygon: 形状id固定頂点。mode=line(対称軸)/point(点対称中心)。axis表示有無・rotate度 ----
+  var SYM_SHAPES = {
+    square: { verts: [[-40, -40], [40, -40], [40, 40], [-40, 40]], axes: [[[-56, 0], [56, 0]], [[0, -56], [0, 56]], [[-56, -56], [56, 56]], [[-56, 56], [56, -56]]], point_sym: true },
+    rect: { verts: [[-50, -30], [50, -30], [50, 30], [-50, 30]], axes: [[[-64, 0], [64, 0]], [[0, -44], [0, 44]]], point_sym: true },
+    parallelogram: { verts: [[-45, -25], [25, -25], [45, 25], [-25, 25]], axes: [], point_sym: true },
+    iso_tri: { verts: [[-38, -28], [38, -28], [0, 44]], axes: [[[0, -40], [0, 56]]], point_sym: false },
+    equi_tri: { regular: 3, point_sym: false },
+    reg_pentagon: { regular: 5, point_sym: false },
+    reg_hexagon: { regular: 6, point_sym: true }
+  };
+  function symPolygonGeom(shape, rotate) {
+    rotate = rotate || 0;
+    var sh = SYM_SHAPES[shape] || SYM_SHAPES.square, verts, axes;
+    if (sh.regular) {
+      var n = sh.regular; verts = regularPoly(n, 45); axes = [];
+      // 対称軸n本。奇数=各頂点↔対辺中点(360/n間隔)、偶数=頂点対と辺中点対で180/n間隔。
+      for (var k = 0; k < n; k++) { var ang = d2r(n % 2 ? (90 + 360 * k / n) : (90 + 180 * k / n)); axes.push([[62 * Math.cos(ang), 62 * Math.sin(ang)], [-62 * Math.cos(ang), -62 * Math.sin(ang)]]); }
+    } else { verts = sh.verts; axes = sh.axes; }
+    verts = verts.map(function (p) { return rotPt(p, rotate); });
+    axes = axes.map(function (seg) { return [rotPt(seg[0], rotate), rotPt(seg[1], rotate)]; });
+    return { verts: verts, center: [0, 0], axes: axes, n_axes: axes.length, point_sym: sh.point_sym };
+  }
+  function symPolygonLayout(fp) {
+    var g = symPolygonGeom(fp.shape || 'square', Number(fp.rotate) || 0), lay = newLayout();
+    var wp = g.verts.map(worldFlip);
+    lay.parts.push(polygonEl(wp, C_FILL));
+    wp.forEach(function (p) { lay.pts.push(p); });
+    var showAxis = fp.axis !== false, mode = fp.mode || 'line';
+    if (showAxis && mode === 'line') {
+      g.axes.forEach(function (seg) { var a = worldFlip(seg[0]), b = worldFlip(seg[1]); lay.parts.push(lineEl(a, b, C_TARGET, 1.4, '5,4')); lay.pts.push(a, b); });
+    } else if (showAxis && mode === 'point' && g.point_sym) {
+      lay.parts.push('<circle cx="0" cy="0" r="3" fill="' + C_TARGET + '"/>');
+    }
+    return lay;
+  }
+
+  // ---- 2. similar_pair: base多角形×ratio を並置。座標は整数格子(10px単位)。対応辺ラベル ----
+  var SIM_BASES = {
+    right_tri: [[0, 0], [40, 0], [0, 30]],
+    tri: [[0, 0], [50, 0], [15, 35]],
+    rect: [[0, 0], [40, 0], [40, 30], [0, 30]],
+    lshape: [[0, 0], [40, 0], [40, 20], [20, 20], [20, 40], [0, 40]]
+  };
+  function similarPairGeom(base_shape, ratio) {
+    var base = SIM_BASES[base_shape] || SIM_BASES.right_tri, r = ratio;
+    var scaled = base.map(function (p) { return [p[0] * r, p[1] * r]; });
+    var bw = Math.max.apply(null, base.map(function (p) { return p[0]; }));
+    return { base: base, scaled: scaled, base_off: [0, 0], scaled_off: [bw + 40, 0], ratio: r };
+  }
+  function similarPairLayout(fp) {
+    var g = similarPairGeom(fp.base_shape || 'right_tri', Number(fp.ratio) || 2), u = fp.unit || 'cm', lay = newLayout();
+    function place(verts, off) { return verts.map(function (p) { return worldFlip([p[0] + off[0], p[1] + off[1]]); }); }
+    var b = place(g.base, g.base_off), s = place(g.scaled, g.scaled_off);
+    lay.parts.push(polygonEl(b, C_FILL)); lay.parts.push(polygonEl(s, '#eaf3ff'));
+    b.concat(s).forEach(function (p) { lay.pts.push(p); });
+    // 対応辺（底辺 verts[0]-verts[1]）にラベル
+    if (fp.base_label !== undefined) lay.parts.push(textEl((b[0][0] + b[1][0]) / 2, b[0][1] + 14, fp.base_label + u, 13, '#333'));
+    if (fp.scaled_label !== undefined) lay.parts.push(textEl((s[0][0] + s[1][0]) / 2, s[0][1] + 14, fp.scaled_label + u, 13, '#333'));
+    return lay;
+  }
+
+  // ---- 3. xy_graph: mode=prop(y=kx直線)/inv(y=k/x曲線)。格子・軸・読み取り点。反比例は整数格子点強調 ----
+  function xyGraphGeom(mode, k, xmax, ymax) {
+    var U = Math.min(Math.floor(260 / xmax), Math.floor(260 / ymax), 30);   // 1目盛りpx
+    var W = xmax * U, H = ymax * U, pts = [], lattice = [];
+    if (mode === 'prop') {
+      pts = [[0, 0], [xmax, Math.min(k * xmax, ymax)]];
+    } else {
+      for (var x = 1; x <= xmax; x++) { var y = k / x; if (y <= ymax + 1e-9) pts.push([x, y]); }
+      for (var xi = 1; xi <= xmax; xi++) { var yi = k / xi; if (Math.abs(yi - Math.round(yi)) < 1e-9 && yi <= ymax) lattice.push([xi, Math.round(yi)]); }
+    }
+    return { unit: U, xaxis: [[0, 0], [xmax, 0]], yaxis: [[0, 0], [0, ymax]], W: W, H: H, curve: pts, lattice: lattice };
+  }
+  function xyGraphLayout(fp) {
+    var mode = fp.mode || 'prop', k = Number(fp.k), xmax = Number(fp.xmax) || 6, ymax = Number(fp.ymax) || 6;
+    var g = xyGraphGeom(mode, k, xmax, ymax), U = g.unit, lay = newLayout();
+    // 格子
+    for (var gx = 0; gx <= xmax; gx++) { var a = worldFlip([gx * U, 0]), b = worldFlip([gx * U, ymax * U]); lay.parts.push(lineEl(a, b, '#d5deea', 1)); }
+    for (var gy = 0; gy <= ymax; gy++) { var c = worldFlip([0, gy * U]), d = worldFlip([xmax * U, gy * U]); lay.parts.push(lineEl(c, d, '#d5deea', 1)); }
+    // 軸
+    lay.parts.push(lineEl(worldFlip([0, 0]), worldFlip([xmax * U, 0]), C_STROKE, 1.6));
+    lay.parts.push(lineEl(worldFlip([0, 0]), worldFlip([0, ymax * U]), C_STROKE, 1.6));
+    lay.pts.push(worldFlip([-6, -6]), worldFlip([xmax * U + 6, ymax * U + 6]));
+    // 曲線/直線
+    var wpts = g.curve.map(function (p) { return worldFlip([p[0] * U, p[1] * U]); });
+    lay.parts.push('<polyline points="' + wpts.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ') + '" fill="none" stroke="' + C_TARGET + '" stroke-width="2"/>');
+    if (mode === 'inv') g.lattice.forEach(function (p) { var w = worldFlip([p[0] * U, p[1] * U]); lay.parts.push('<circle cx="' + w[0].toFixed(1) + '" cy="' + w[1].toFixed(1) + '" r="3" fill="' + C_TARGET + '"/>'); });
+    // 読み取り点
+    if (fp.mark) { var mw = worldFlip([Number(fp.mark[0]) * U, Number(fp.mark[1]) * U]); lay.parts.push('<circle cx="' + mw[0].toFixed(1) + '" cy="' + mw[1].toFixed(1) + '" r="3.5" fill="#fff" stroke="' + C_TARGET + '" stroke-width="2"/>'); }
+    return lay;
+  }
+
+  // ---- 4. dot_plot: 数直線 min..max、各値の上にドット積み上げ ----
+  function dotPlotGeom(values, mn, mx) {
+    var U = Math.min(Math.floor(280 / (mx - mn)), 26), axisY = 0, count = {};
+    var dots = values.map(function (v) { count[v] = (count[v] || 0) + 1; return [(v - mn) * U, 12 + (count[v] - 1) * 12]; });
+    return { unit: U, axis: [[0, 0], [(mx - mn) * U, 0]], ticks: [], dots: dots, min: mn, max: mx };
+  }
+  function dotPlotLayout(fp) {
+    var vals = (fp.values || []).map(Number), mn = Number(fp.min), mx = Number(fp.max), g = dotPlotGeom(vals, mn, mx), U = g.unit, lay = newLayout();
+    lay.parts.push(lineEl(worldFlip([0, 0]), worldFlip([(mx - mn) * U, 0]), C_STROKE, 1.6));
+    for (var t = mn; t <= mx; t++) { var x = (t - mn) * U, tk = worldFlip([x, 0]); lay.parts.push(lineEl(tk, worldFlip([x, -4]), C_STROKE, 1)); lay.parts.push(textEl(tk[0], tk[1] + 12, String(t), 11, '#333')); }
+    g.dots.forEach(function (dp) { var w = worldFlip(dp); lay.parts.push('<circle cx="' + w[0].toFixed(1) + '" cy="' + w[1].toFixed(1) + '" r="4" fill="' + C_TARGET + '"/>'); lay.pts.push(w); });
+    lay.pts.push(worldFlip([0, -18]), worldFlip([(mx - mn) * U, 0]));
+    return lay;
+  }
+
+  // ---- 5. histogram: 階級幅・度数配列。B層tableの度数分布と同一データ ----
+  function histogramGeom(class_width, freqs, x0) {
+    var maxF = Math.max.apply(null, freqs), barW = Math.min(Math.floor(300 / freqs.length), 44), U = Math.min(Math.floor(150 / Math.max(maxF, 1)), 22);
+    var bars = freqs.map(function (f, i) { return { x: i * barW, y: 0, w: barW, h: f * U, f: f }; });
+    return { barW: barW, unit: U, bars: bars, axisX: [[0, 0], [freqs.length * barW, 0]], axisY: [[0, 0], [0, maxF * U]], x0: x0, class_width: class_width };
+  }
+  function histogramLayout(fp) {
+    var freqs = (fp.freqs || []).map(Number), g = histogramGeom(Number(fp.class_width), freqs, Number(fp.x0) || 0), lay = newLayout();
+    lay.parts.push(lineEl(worldFlip([0, 0]), worldFlip([freqs.length * g.barW, 0]), C_STROKE, 1.6));
+    lay.parts.push(lineEl(worldFlip([0, 0]), worldFlip([0, g.bars.reduce(function (m, b) { return Math.max(m, b.h); }, 0)]), C_STROKE, 1.6));
+    g.bars.forEach(function (b, i) {
+      var tl = worldFlip([b.x, b.h]);   // 左上(world)
+      lay.parts.push('<rect x="' + tl[0].toFixed(1) + '" y="' + tl[1].toFixed(1) + '" width="' + b.w + '" height="' + (b.h).toFixed(1) + '" fill="' + C_FILL + '" stroke="' + C_STROKE + '" stroke-width="1.4"/>');
+      lay.pts.push(tl, worldFlip([b.x + b.w, 0]));
+      lay.parts.push(textEl(b.x + b.w / 2, 12, String(fp.x0 + i * fp.class_width), 10, '#333'));  // 階級下端値
+    });
+    return lay;
+  }
+
   var C_LAYOUTS = {
     tri_angle: triAngleLayout, tri_angle_iso: triAngleIsoLayout, quad_angle: quadAngleLayout,
     para_area: paraAreaLayout, tri_area: triAreaLayout, trap_area: trapAreaLayout,
-    rhombus_area: rhombusAreaLayout, circle: circleLayout, cuboid: cuboidLayout, prism: prismLayout
+    rhombus_area: rhombusAreaLayout, circle: circleLayout, cuboid: cuboidLayout, prism: prismLayout,
+    sym_polygon: symPolygonLayout, similar_pair: similarPairLayout, xy_graph: xyGraphLayout, dot_plot: dotPlotLayout, histogram: histogramLayout
   };
   var C_ANGLE = { tri_angle: 1, tri_angle_iso: 1, quad_angle: 1 };
   function makeCBuilder(kind) { return function (fp) { return layoutToSvg(C_LAYOUTS[kind](fp)); }; }
@@ -738,7 +872,11 @@
     prism: function (base_kind, a, b, h) {
       return prismGeom(base_kind === 'rect' ? { base_kind: 'rect', w: a, d: b, height: h }
         : { base_kind: 'tri', base: a, base_height: b, height: h });
-    }
+    },
+    sym_polygon: function (shape) { return symPolygonGeom(shape, 0); },
+    similar_pair: similarPairGeom,
+    xy_graph: xyGraphGeom, dot_plot: function (mn, mx, vals) { return dotPlotGeom(vals, mn, mx); },
+    histogram: function (cw, x0, freqs) { return histogramGeom(cw, freqs, x0); }
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = FigureBuilder;
   else root.FigureBuilder = FigureBuilder;
