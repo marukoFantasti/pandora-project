@@ -189,6 +189,37 @@ def xy_graph_geom(mode, k, xmax, ymax):
     return {"unit": U, "W": xmax * U, "H": ymax * U,
             "ends": [[R(curve[0][0]), R(curve[0][1])], [R(curve[-1][0]), R(curve[-1][1])]],
             "lattice": [[a, b] for a, b in lattice]}
+# ---------- xy_graph fig_version 2: 4象限view→プロット局所px(0..W,0..H, y下向き)。 ----------
+# 有理数[num,den]入力を決定的丸め1回でpx化。W/H=プロット定数。JS(figure_builder.js)と同一手順。
+# 丸めは round-half-up(floor(v+0.5))で両言語一致(Pythonのbanker's rounding非依存)。
+_V2_W = 240   # プロット幅px(xmin→xmax)
+_V2_H = 240   # プロット高px(ymin→ymax)
+def _v2round(v):
+    return math.floor(v + 0.5)
+def xy_graph_v2_px(xmin, xmax, ymin, ymax, xnum, xden, ynum, yden):
+    """点[xnum/xden, ynum/yden]のプロット局所px。非等方スケール(x,y独立)。決定的丸め1回。"""
+    px = _v2round((xnum - xmin * xden) * _V2_W / (xden * (xmax - xmin)))
+    py = _v2round((ymax * yden - ynum) * _V2_H / (yden * (ymax - ymin)))
+    return [px, py]
+def xy_graph_v2_clip(xmin, xmax, ymin, ymax, an, ad, bn, bd):
+    """直線 y=(an/ad)x+(bn/bd) をview矩形でクリップした2端点のpx。有理数交点経由→px→(px_x,px_y)昇順。"""
+    cand = []   # (xnum,xden,ynum,yden)
+    for xe in (xmin, xmax):                       # 左右辺: y=(an*xe*bd+bn*ad)/(ad*bd)
+        yn, yd = an * xe * bd + bn * ad, ad * bd
+        if yd < 0: yn, yd = -yn, -yd
+        if ymin * yd <= yn <= ymax * yd: cand.append((xe, 1, yn, yd))
+    if an != 0:
+        for ye in (ymin, ymax):                   # 上下辺: x=((ye*bd-bn)*ad)/(bd*an)
+            xn, xd = (ye * bd - bn) * ad, bd * an
+            if xd < 0: xn, xd = -xn, -xd
+            if xmin * xd <= xn <= xmax * xd: cand.append((xn, xd, ye, 1))
+    seen, pts = set(), []
+    for (xn, xd, yn, yd) in cand:
+        p = tuple(xy_graph_v2_px(xmin, xmax, ymin, ymax, xn, xd, yn, yd))
+        if p not in seen: seen.add(p); pts.append(list(p))
+    pts.sort(key=lambda p: (p[0], p[1]))
+    return {"ends": [pts[0], pts[1]]}              # レンダラ側でサンプル残数≧2をassert
+
 def dot_plot_geom(mn, mx, values):
     U = min(280 // (mx - mn), 26); count = {}; dots = []
     for v in values:
@@ -215,6 +246,18 @@ GEOMS = {
     "rhombus_area": (rhombus_area_geom, [(12, 6), (4, 10), (16, 8), (6, 14)]),
     "circle": (circle_geom, [("diameter",), ("radius",)]),
     "cuboid": (cuboid_geom, [(8, 10, 6), (5, 3, 6), (10, 10, 10), (12, 3, 4)]),
+    # xy_graph fig_version 2(§4): 点マッピング(4象限/原点/分数傾き格子点/双曲線解析点/非等方/非対称view)
+    "xy_graph_v2_px": (xy_graph_v2_px, [
+        (-6, 6, -6, 6, 5, 1, 5, 1), (-6, 6, -6, 6, 5, 1, -5, 1),     # §4-1 (±5,±5)
+        (-6, 6, -6, 6, -5, 1, 5, 1), (-6, 6, -6, 6, -5, 1, -5, 1),
+        (-6, 6, -6, 6, 0, 1, 0, 1),                                   # §4-2 原点
+        (-6, 6, -6, 6, 4, 1, -1, 1),                                  # §4-4 分数傾き格子点 x=4→y=-1
+        (-6, 6, -6, 6, 2, 1, 3, 1), (-6, 6, -6, 6, -2, 1, -3, 1), (-6, 6, -6, 6, 6, 1, 1, 1),  # §4-5 双曲線k=6解析点
+        (0, 40, 0, 3000, 0, 1, 0, 1), (0, 40, 0, 3000, 9, 1, 18, 1),  # §4-6 第1象限非等方
+        (-4, 8, -6, 2, 0, 1, 0, 1),                                   # §4-7 非対称view原点
+    ]),
+    # §4-3 lineクリップ: y=-2x+1 の view(-6..6,-6..6) 2端点
+    "xy_graph_v2_clip": (xy_graph_v2_clip, [(-6, 6, -6, 6, -2, 1, 1, 1)]),
 }
 
 def make_vectors():
