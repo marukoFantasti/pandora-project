@@ -1,0 +1,181 @@
+{
+  "schema_version": "1.0",
+  "grade": "jhs",
+  "description": "jhs数学バンク A層第1波 c16(平方根) 6パターン: √の簡約(fmt_sqrt)・√×√・同類√加減・簡約混合加法・分配・整数部分(証人スロット手筋)。根号内は平方因数なしが表示正準。√係数の1は省略(fmt_coef系と同一規約)。",
+  "answer_structures": ["single"],
+  "shared_lexicon": {
+    "comment": "c16計算系はレキシコン不要。"
+  },
+  "patterns": [
+    {
+      "pattern_id": "jhs_c16_simp_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c16_u01",
+      "unit_name": "平方根",
+      "semantic_category": "平方根・簡約(√N→k√m)",
+      "semantic_note": "√N＝k√m(k≧2・m平方因数なし)。fmt_sqrtの本番初投入。整数落ち(N平方数)・簡約不能(N平方因数なし)は制約で除外し、必ず簡約が起こるNのみ生成。",
+      "step_count": 1,
+      "operation": "√N → sqrt_coef(N)√sqrt_rad(N)",
+      "answer_formula": "sqrt_coef(N1)",
+      "slots": {
+        "N1": {"type": "int", "range": [8, 99]}
+      },
+      "computed_slots": {
+        "sd1": {"formula": "fmt_sqrt(N1)"}
+      },
+      "value_constraints": [
+        {"rule": "reducible", "expr": "sqrt_coef(N1) >= 2", "why": "簡約が起こるNのみ(平方因数なしは出題の意味がない)"},
+        {"rule": "not_square", "expr": "sqrt_rad(N1) >= 2", "why": "平方数(整数落ち)は別型の領分"}
+      ],
+      "sentence_templates": [
+        "次の数を、根号の中をできるだけ小さい自然数にして表しなさい。\n√{N1}"
+      ],
+      "answer_template": "答え {sd1}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": []
+    },
+    {
+      "pattern_id": "jhs_c16_mul_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c16_u01",
+      "unit_name": "平方根",
+      "semantic_category": "平方根・乗法(√a×√b)",
+      "semantic_note": "√a×√b＝√(ab)→簡約。a,bとも平方因数なし(本文の√は既約提示)・積に平方因数が生まれる組のみ・a≠b(積が平方数になる唯一の経路を閉鎖)。",
+      "step_count": 2,
+      "operation": "√a×√b → fmt_sqrt(ab)",
+      "answer_formula": "sqrt_coef(a1 * b1)",
+      "slots": {
+        "a1": {"type": "int", "range": [2, 15]},
+        "b1": {"type": "int", "range": [2, 15]}
+      },
+      "computed_slots": {
+        "sd1": {"formula": "fmt_sqrt(a1 * b1)"}
+      },
+      "value_constraints": [
+        {"rule": "sf_a", "expr": "sqrt_coef(a1) == 1", "why": "本文の√は平方因数なしで提示(表示正準)"},
+        {"rule": "sf_b", "expr": "sqrt_coef(b1) == 1", "why": "同上"},
+        {"rule": "product_reducible", "expr": "sqrt_coef(a1 * b1) >= 2", "why": "積で簡約が起こる組のみ(共通素因数の存在保証)"},
+        {"rule": "distinct", "expr": "a1 != b1", "why": "a＝bは積が平方数(整数落ち)になる唯一の経路。閉鎖"}
+      ],
+      "sentence_templates": [
+        "次の計算をしなさい。\n√{a1}×√{b1}"
+      ],
+      "answer_template": "答え {sd1}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": []
+    },
+    {
+      "pattern_id": "jhs_c16_add_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c16_u01",
+      "unit_name": "平方根",
+      "semantic_category": "平方根・同類√の加減",
+      "semantic_note": "p√m＋q√m−r√m＝(p＋q−r)√m。√mを文字とみなす同類項整理(c02同類項の√版)。結果係数はfmt_coef(±1で「√m」「−√m」、0は制約分割)。",
+      "step_count": 1,
+      "operation": "p√m＋q√m−r√m → (p＋q−r)√m",
+      "answer_domain": "nonzero_int",
+      "answer_formula": "p1 + q1 - r1",
+      "slots": {
+        "m1": {"type": "int", "choices": [2, 3, 5, 6, 7, 10]},
+        "p1": {"type": "int", "range": [2, 9]},
+        "q1": {"type": "int", "range": [2, 9]},
+        "r1": {"type": "int", "range": [2, 9]}
+      },
+      "computed_slots": {
+        "cd1": {"formula": "fmt_coef(p1 + q1 - r1)"}
+      },
+      "value_constraints": [
+        {"rule": "no_vanish", "expr": "p1 + q1 != r1", "why": "係数0(√項消失)の制約分割"}
+      ],
+      "sentence_templates": [
+        "次の計算をしなさい。\n{p1}√{m1}＋{q1}√{m1}−{r1}√{m1}"
+      ],
+      "answer_template": "答え {cd1}√{m1}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": []
+    },
+    {
+      "pattern_id": "jhs_c16_mixadd_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c16_u01",
+      "unit_name": "平方根",
+      "semantic_category": "平方根・簡約してから加法",
+      "semantic_note": "√N＋p√m(sqrt_rad(N)＝m)＝(k＋p)√m。簡約と同類項整理の複合(章の中心技能)。Nとmの整合は制約で保証。",
+      "step_count": 2,
+      "operation": "√N＋p√m → (sqrt_coef(N)＋p)√m",
+      "answer_formula": "sqrt_coef(N1) + p1",
+      "slots": {
+        "N1": {"type": "int", "range": [8, 75]},
+        "m1": {"type": "int", "choices": [2, 3, 5]},
+        "p1": {"type": "int", "range": [2, 9]}
+      },
+      "computed_slots": {
+        "s1": {"formula": "sqrt_coef(N1) + p1"}
+      },
+      "value_constraints": [
+        {"rule": "same_radical", "expr": "sqrt_rad(N1) == m1", "why": "簡約後に同類√になる整合保証"},
+        {"rule": "reducible", "expr": "sqrt_coef(N1) >= 2", "why": "簡約が起こるNのみ(√8＝2√2型)"}
+      ],
+      "sentence_templates": [
+        "次の計算をしなさい。\n√{N1}＋{p1}√{m1}"
+      ],
+      "answer_template": "答え {s1}√{m1}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": []
+    },
+    {
+      "pattern_id": "jhs_c16_dist_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c16_u01",
+      "unit_name": "平方根",
+      "semantic_category": "平方根・分配(√m(√m＋p))",
+      "semantic_note": "√m(√m＋p)＝m＋p√m。√m×√m＝mの自乗消去+分配。答えは整数項＋√項の2項固定様式。",
+      "step_count": 2,
+      "operation": "√m(√m＋p) → m＋p√m",
+      "answer_formula": "m1 + p1",
+      "slots": {
+        "m1": {"type": "int", "choices": [2, 3, 5, 6, 7, 10]},
+        "p1": {"type": "int", "range": [2, 9]}
+      },
+      "value_constraints": [],
+      "sentence_templates": [
+        "次の計算をしなさい。\n√{m1}(√{m1}＋{p1})"
+      ],
+      "answer_template": "答え {m1}＋{p1}√{m1}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": []
+    },
+    {
+      "pattern_id": "jhs_c16_intpart_01",
+      "grade": "jhs",
+      "unit_id": "jhs_c16_u01",
+      "unit_name": "平方根",
+      "semantic_category": "平方根・整数部分(証人スロット)",
+      "semantic_note": "√nの整数部分a(a²≦n＜(a＋1)²)。aを本文に現れない『証人スロット』として持ち、挟み撃ち制約で一意に固定する新手筋(平方根計算をSAFEに増やさず整数部分を扱う)。nは非平方数のみ。",
+      "step_count": 2,
+      "operation": "a²≦n＜(a＋1)² → 整数部分＝a",
+      "answer_formula": "a1",
+      "slots": {
+        "n1": {"type": "int", "range": [5, 99]},
+        "a1": {"type": "int", "range": [2, 9]}
+      },
+      "value_constraints": [
+        {"rule": "witness_lower", "expr": "a1 * a1 <= n1", "why": "証人スロットの下界(a≦√n)"},
+        {"rule": "witness_upper", "expr": "n1 < (a1 + 1) * (a1 + 1)", "why": "証人スロットの上界(√n＜a＋1)。両制約でaが一意に固定される"},
+        {"rule": "not_square", "expr": "sqrt_rad(n1) >= 2", "why": "平方数(√nが整数)は「整数部分」の問いが退化するため除外"}
+      ],
+      "sentence_templates": [
+        "√{n1} の整数部分を求めなさい。"
+      ],
+      "answer_template": "答え {ans}",
+      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+      "answer_structure": "single",
+      "template_number_constants": []
+    }
+  ]
+}

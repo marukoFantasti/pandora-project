@@ -1,0 +1,80 @@
+{
+  "_meta": {
+    "schema": "rationale_schema_spec.md v1.0",
+    "scope": "jhs c16 平方根(6パターン)",
+    "note": "共通設計判断: _shared.jhs_c16_sqrt(本ファイル)。"
+  },
+  "_shared": {
+    "jhs_c16_sqrt": {
+      "representation": "根号内は平方因数なしが表示正準(本文・答えとも)。√の係数1は省略(fmt_coef系と同一規約)、簡約表示はfmt_sqrt(v1.0)に委譲。答えの2項様式は『整数項＋√項』の順で固定。",
+      "constructive_guarantees": "簡約の発生(sqrt_coef≧2)・整数落ちの排除(sqrt_rad≧2)・同類√の整合(sqrt_rad(N)＝m)を全てsqrt系ヘルパの制約転用で構成的に保証。c15の判別式手筋と同族で、√ヘルパが『表示』と『存在保証』の二役を務める。",
+      "witness_slot_technique": "本文に現れない派生値(√nの整数部分a)を通常スロットとして持ち、挟み撃ち制約(a²≦n＜(a＋1)²)で一意に固定する『証人スロット』手筋を新設。SAFEに新関数(isqrt等)を足さずに派生量を扱える。一意性は独立実装(math.isqrt)との照合で機械検収済み。",
+      "directives": [
+        {"text": "A層第1波スコープ承認(c16平方根)", "by": "marko", "date": "2026-08-09"},
+        {"text": "章配分増強方針(c16は4→6)", "by": "marko", "date": "2026-08-10"}
+      ]
+    }
+  },
+  "rationales": {
+    "jhs_c16_simp_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c16_u01", "unit_name": "平方根", "semantic_territory": "平方根・簡約", "number_domain": "N∈[8,99](簡約必発・非平方)", "answer_structure": "single", "figure": "なし", "step_count": 1, "directives_ref": "_shared.jhs_c16_sqrt.directives"},
+      "source_features": "√N→k√m。章の全技能の土台となる簡約操作。",
+      "representation": "fmt_sqrt本番初投入。",
+      "constructive_guarantees": "sqrt_coef(N)≧2(簡約必発)+sqrt_rad(N)≧2(整数落ち排除)。恒等検算はk²m＝Nの復元一致。",
+      "semantic_position": "c16の基底。c17の±√表示(x²＝k型)がこの簡約に依存。",
+      "exclusions": "平方数N・平方因数なしNの除外(出題として退化)。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c16_mul_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c16_u01", "unit_name": "平方根", "semantic_territory": "平方根・乗法", "number_domain": "a,b平方因数なし・積は簡約可", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c16_sqrt.directives"},
+      "source_features": "√a×√b＝√ab→簡約。積で平方因数が生まれる(共通素因数)組の認識。",
+      "representation": "本文の√は平方因数なし提示(表示正準を本文にも適用)。",
+      "constructive_guarantees": "両者squarefree+積が簡約可+a≠b。squarefree同士ではa＝bが積平方数の唯一経路であることを利用した最小制約(証明的な除外設計)。",
+      "semantic_position": "乗法側。除法√a÷√bは有理化が絡むためスコープ外(v1.0仕様§9)と整合して第2波。",
+      "exclusions": "整数落ち(a＝b)除外。除法は第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c16_add_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c16_u01", "unit_name": "平方根", "semantic_territory": "平方根・同類√の加減", "number_domain": "係数[2,9]×3項・結果nonzero", "answer_structure": "single", "figure": "なし", "step_count": 1, "directives_ref": "_shared.jhs_c16_sqrt.directives"},
+      "source_features": "p√m＋q√m−r√m。√mを文字とみなす同類項整理で、c02同類項(like_02)の√版。",
+      "representation": "結果係数はfmt_coef(±1境界で「√m」「−√m」、狙い撃ち検証済み)。本文係数は[2,9](係数1の「1√m」表記排除=c02一般規約の√適用)。",
+      "constructive_guarantees": "p＋q≠r(係数0の制約分割)。",
+      "semantic_position": "加減系の基底。mixadd_01(簡約複合)の前段。",
+      "exclusions": "異なる根号の混在(2√2＋3√3=まとめられない型)は判断問題として別型・第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c16_mixadd_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c16_u01", "unit_name": "平方根", "semantic_territory": "平方根・簡約してから加法", "number_domain": "N[8,75]・m∈{2,3,5}", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c16_sqrt.directives"},
+      "source_features": "√48＋6√3型。簡約と同類項整理の複合=章の中心技能。",
+      "representation": "sqrt_rad(N)＝mの整合制約で「簡約すると同類になる」ことを保証。",
+      "constructive_guarantees": "整合制約+簡約必発(sqrt_coef(N)≧2)。",
+      "semantic_position": "c16の頂点(simp＋addの合成)。減法版・3項版は第2波の量産余地。",
+      "exclusions": "簡約後も異類になるNは構造排除。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c16_dist_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c16_u01", "unit_name": "平方根", "semantic_territory": "平方根・分配", "number_domain": "m squarefree choices・p[2,9]", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c16_sqrt.directives"},
+      "source_features": "√m(√m＋p)。√m×√m＝mの自乗消去+分配の複合。",
+      "representation": "答えは『整数項＋√項』順の2項固定(表示正準)。全スロット直書きでcomputed不要の最小構成。",
+      "constructive_guarantees": "m squarefree choices。",
+      "semantic_position": "分配系。(√a＋b)(√a−b)型(和差積の√版)は第2波。",
+      "exclusions": "係数付き√の分配は第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c16_intpart_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c16_u01", "unit_name": "平方根", "semantic_territory": "平方根・整数部分", "number_domain": "n[5,99]非平方・a[2,9]", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c16_sqrt.directives"},
+      "source_features": "√nの整数部分。√の大きさの感覚(平方数で挟む)を問う型。",
+      "representation": "証人スロット手筋の初出(_shared参照): 答えaを本文非出現スロットとして持ち、挟み撃ち制約で一意固定。",
+      "constructive_guarantees": "a²≦n＜(a＋1)²の2制約で一意性(独立実装math.isqrtとの照合で機械検収済み・300回一致)。非平方制約で退化排除。",
+      "semantic_position": "数直線感覚系。「√nに最も近い整数」「a＜√n＜bの整数n列挙」等の同族は証人スロットで同様に作れる(第2波量産余地)。",
+      "exclusions": "平方数n除外(問いの退化)。小数部分(√n−a)は無理数表示が要るため除外。",
+      "figure_notes": null,
+      "pedagogy": []
+    }
+  }
+}
