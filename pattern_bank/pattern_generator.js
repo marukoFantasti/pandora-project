@@ -71,6 +71,13 @@
     var s = String(frac).padStart(width, '0').replace(/0+$/, '');
     return s ? (whole + '.' + s) : String(whole);
   }
+  // 相対度数 固定2桁（B層c09）。スケール100整数→末尾ゼロ保持: 30→"0.30", 100→"1.00", 44→"0.44"。
+  // generate_poc_v10.py fmt_dec2fix と1:1。dec2(末尾ゼロ省略)と異なり常に小数第2位まで。非負前提。
+  function fmtDec2fix(b) {
+    b = Math.trunc(b);
+    var whole = Math.trunc(b / 100), frac = b % 100;
+    return whole + '.' + String(frac).padStart(2, '0');
+  }
   // 千分率整数→百分率表記。1150→"115%", 25→"2.5%", 5→"0.5%"。
   function fmtPercentPm(p) {
     p = Math.trunc(p);
@@ -110,7 +117,9 @@
     percent_pm: function (p) { return fmtPercentPm(p); },
     buai_pm: function (p) { return fmtBuaiPm(p); },
     // v1.0 追加（jhs符号付き整数。既存6学年は未参照＝非干渉。fmtSigned は関数宣言で巻き上げ済み）
-    signed: function (b) { return fmtSigned(b); }
+    signed: function (b) { return fmtSigned(b); },
+    // B層c09追加（相対度数 固定2桁・末尾ゼロ保持）
+    dec2fix: function (b) { return fmtDec2fix(b); }
   };
 
   // 同分母分数の整形（generate_poc_v07.py fmt_fraction と同一）。num==den→"1"、num==0→"0"。
@@ -353,11 +362,11 @@
     // 許可関数を増やすだけ（abs/max/min と同格）。既存バンクは未参照＝非干渉。
     var fn = new Function('abs', 'max', 'min', 'pymod', 'round_half_up', 'round_range_lower', 'round_range_upper_excl',
       'gcd', 'lcm', 'reduce_num', 'reduce_den',
-      'fmt_signed', 'fmt_coef', 'fmt_coefj', 'fmt_termj', 'sgn_str', 'sqrt_coef', 'sqrt_rad', 'fmt_sqrt',
+      'fmt_signed', 'fmt_coef', 'fmt_coefj', 'fmt_termj', 'sgn_str', 'sqrt_coef', 'sqrt_rad', 'fmt_sqrt', 'dec2fix',
       keys.join(','), 'return (' + jsExpr + ');');
     return fn.apply(null, [Math.abs, Math.max, Math.min, pymod, roundHalfUp, roundRangeLower, roundRangeUpperExcl,
       gcdInt, lcmInt, reduceNum, reduceDen,
-      fmtSigned, fmtCoef, fmtCoefj, fmtTermj, sgnStr, sqrtCoef, sqrtRad, fmtSqrt].concat(vals));
+      fmtSigned, fmtCoef, fmtCoefj, fmtTermj, sgnStr, sqrtCoef, sqrtRad, fmtSqrt, fmtDec2fix].concat(vals));
   }
 
   // ---- スロット解決 ----
@@ -784,6 +793,7 @@
     sqrtCoef: sqrtCoef,
     sqrtRad: sqrtRad,
     fmtSqrt: fmtSqrt,
+    fmtDec2fix: fmtDec2fix,
     sampleDomain: sampleDomain,
     resolveFigureParams: resolveFigureParams,
     allowedKanji: allowedKanji,

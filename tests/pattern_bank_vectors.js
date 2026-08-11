@@ -20,7 +20,8 @@ const IMPL = {
   // v1.0 jhs ヘルパ（符号/係数/平方根 + 負域サンプリング照合）
   fmt_signed: P.fmtSigned, fmt_coef: P.fmtCoef, fmt_coefj: P.fmtCoefj,
   fmt_termj: P.fmtTermj, sgn_str: P.sgnStr, sqrt_coef: P.sqrtCoef,
-  sqrt_rad: P.sqrtRad, fmt_sqrt: P.fmtSqrt, sample_domain: P.sampleDomain
+  sqrt_rad: P.sqrtRad, fmt_sqrt: P.fmtSqrt, sample_domain: P.sampleDomain,
+  dec2fix: P.fmtDec2fix
 };
 
 const vecPath = process.argv[2] || path.join(ROOT, 'pattern_bank', 'handoff_g05', 'helpers_test_vectors.json');

@@ -171,6 +171,13 @@
     return w;
   }
   // レイアウト（テスト可能・描画から分離）。cell[row][col]: row0=ヘッダ, col0=行ラベル, 左上=空。
+  // 列書式(B層c09): col_formats[c] が "dec2fix" の値セルをスケール100整数→固定2桁(末尾ゼロ保持)。
+  // 未指定 or "raw"(または非整数値)は String(v) で既存挙動バイト不変。generate_poc_v10 fmt_dec2fix と同一。
+  function tblDec2fix(b) { b = Math.trunc(b); return Math.trunc(b / 100) + '.' + String(b % 100).padStart(2, '0'); }
+  function tblFmtCell(colFormats, c, raw) {
+    if (Array.isArray(colFormats) && colFormats[c] === 'dec2fix' && /^-?\d+$/.test(String(raw))) return tblDec2fix(parseInt(raw, 10));
+    return String(raw);
+  }
   function tableLayout(fp) {
     var colHeader = fp.col_header || [], rows = fp.rows || [];
     var nCol = 1 + colHeader.length, nRow = 1 + rows.length;
@@ -181,7 +188,7 @@
         if (r === 0 && c === 0) cell[r][c] = '';
         else if (r === 0) cell[r][c] = String(colHeader[c - 1]);
         else if (c === 0) cell[r][c] = String(rows[r - 1].label);
-        else { var vals = rows[r - 1].values || []; cell[r][c] = String(vals[c - 1] !== undefined ? vals[c - 1] : ''); }
+        else { var vals = rows[r - 1].values || []; cell[r][c] = tblFmtCell(fp.col_formats, c, vals[c - 1] !== undefined ? vals[c - 1] : ''); }
       }
     }
     var HPAD = 10, VPAD = 7, MAXW = 460, fs = 13, colW, rowH, tableW;

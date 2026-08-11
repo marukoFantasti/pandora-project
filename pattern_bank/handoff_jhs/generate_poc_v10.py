@@ -283,6 +283,8 @@ FORMATTERS = {
     "buai_pm":    lambda p: fmt_buai_pm(p),
     # --- v1.0追加（jhs符号付き整数。既存6学年は未参照＝非干渉） ---
     "signed": fmt_signed,
+    # --- B層c09追加（相対度数 dec2fix。スケール100整数→固定2桁・末尾ゼロ保持） ---
+    "dec2fix": lambda b: fmt_dec2fix(b),
 }
 
 def fmt_dec(b, scale):
@@ -292,6 +294,15 @@ def fmt_dec(b, scale):
     width = len(str(scale)) - 1
     s = str(frac).zfill(width).rstrip("0")
     return f"{whole}.{s}" if s else str(whole)
+
+def fmt_dec2fix(b):
+    """相対度数の固定2桁表記（B層c09）。スケール100整数→末尾ゼロを保持: 30→'0.30'、100→'1.00'、
+    44→'0.44'、250→'2.50'。dec2(末尾ゼロ省略)との違いは常に小数第2位まで表示する点。非負前提。"""
+    b = int(b)
+    whole, frac = divmod(b, 100)
+    return f"{whole}.{frac:02d}"
+
+SAFE.update({"dec2fix": fmt_dec2fix})
 
 def fmt_percent_pm(p):
     """千分率整数→百分率表記（v0.9）。1150→'115%', 25→'2.5%', 5→'0.5%'"""
@@ -557,7 +568,8 @@ def _run_vectors(path):
             "fmt_mixed": fmt_mixed, "fmt_fraction": fmt_fraction, "round_half_up": round_half_up,
             "fmt_signed": fmt_signed, "fmt_coef": fmt_coef, "fmt_coefj": fmt_coefj,
             "fmt_termj": fmt_termj, "sgn_str": sgn_str, "sqrt_coef": sqrt_coef,
-            "sqrt_rad": sqrt_rad, "fmt_sqrt": fmt_sqrt, "sample_domain": sample_domain}
+            "sqrt_rad": sqrt_rad, "fmt_sqrt": fmt_sqrt, "sample_domain": sample_domain,
+            "dec2fix": fmt_dec2fix}
     bad = total = covered = 0
     skipped = []
     for name, cases in vec.items():
