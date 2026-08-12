@@ -103,5 +103,15 @@
   "instruction": "原因を(a)プレビュー設定ミス vs (b)描画間状態リークで切り分けて報告。",
   "resolution": "(a)確定。プレビュー生成スクリプトの④line labelを除去し再出力。(b)否定の根拠として同一入力の反復描画バイト一致を確認(状態リーク無し)。",
   "generalization": "検収でのラベル重なり指摘は、まず反復描画バイト一致で(a)入力/プレビュー設定 と (b)レンダラ非決定性 を切り分ける。決定的なら入力側を正す。"
+ },
+ {
+  "id": "corr-0010",
+  "date": "2026-08-12",
+  "by": "marko",
+  "scope": "運用改善(handoff_jhs 配布物の取り扱い)",
+  "observed": "配布物(handoff_jhs配下)の未コミット変更を、ブランチ切替のため git checkout -- で破棄し復元不能となった(rationale_jhs_c09.json の figure_wiring_resolution 追記+139行)。",
+  "instruction": "破棄前退避の運用改善。",
+  "resolution": "Fableが最新版を再デリバリし再適用(配信除外ソースのためmd5/golden影響なし)。",
+  "generalization": "handoff_jhs配下の変更は破棄前に必ず stash 退避する。配布物の正は Fable 側とし、再デリバリ可能性を前提に扱う(Code側で確定編集しない)。"
  }
 ]

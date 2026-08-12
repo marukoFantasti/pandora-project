@@ -50,3 +50,4 @@
 {"doc_type": "correction", "section": "generalization", "scope": "jhs_c04_ratio_01 + 比例式系の全域規約", "by": "marko", "text": "b≠c制約を追加。以後、比・比例式系は「答えが本文数値の転記で得られる」退化経路を悉皆列挙して制約化する。 → 機械検収に「答え==いずれかの本文スロット値」の転記検査を加えると、この族の退化を自動検出できる(次期ハーネス候補)。"}
 {"doc_type": "correction", "section": "generalization", "scope": "kind xy_graph fig_version 2 / 点ラベル配置", "by": "marko", "text": "まるこ「交点の座標、グラフと被らないほうがいい」。 → ラベル配置は幾何を知る設計側が方位を宣言し、レンダラは決定的配置のみ行う。レンダラ側の自動回避(端反転)は後方互換の既定に留める。"}
 {"doc_type": "correction", "section": "generalization", "scope": "検収プレビュー(xy_graph fig_version 2) / 診断切り分け", "by": "marko", "text": "原因を(a)プレビュー設定ミス vs (b)描画間状態リークで切り分けて報告。 → 検収でのラベル重なり指摘は、まず反復描画バイト一致で(a)入力/プレビュー設定 と (b)レンダラ非決定性 を切り分ける。決定的なら入力側を正す。"}
+{"doc_type": "correction", "section": "generalization", "scope": "運用改善(handoff_jhs 配布物の取り扱い)", "by": "marko", "text": "破棄前退避の運用改善。 → handoff_jhs配下の変更は破棄前に必ず stash 退避する。配布物の正は Fable 側とし、再デリバリ可能性を前提に扱う(Code側で確定編集しない)。"}
