@@ -1,5 +1,5 @@
 {
- "_comment": "corr-0007 転記検査(表示答えの数値∈本文の数値)の正当な例外リスト。理由コード体系(reason_codes)で登録。同コードの新規追加は既裁可運用(コード新設のみ裁可要)。provisional=true は暫定(再設計で解消時に登録解除)。統一遡及フェーズ③・トリアージ裁可2026-08-12。",
+ "_comment": "corr-0007 転記検査(表示答えの数値∈本文の数値)の正当な例外リスト。理由コード体系(reason_codes)で登録。同コードの新規追加は既裁可運用(コード新設のみ裁可要)。統一遡及フェーズ③・トリアージ裁可2026-08-12。 [フェーズ⑤純化: HOLD_REDESIGN(暫定)を撤去。例外は全て恒久正当のみ。]",
  "reason_codes": {
   "FRAC_PRESERVE": "分数の分母分子保存は正解の構成要素(同値変形・帯分数化・通分で分母/分子を保存するのが学習内容)。",
   "RATIO_PRESERVE": "比の表現・比の値は本文値の写し/保存が正解(a:b や比の値の分母分子が本文値そのもの)。",
@@ -9,7 +9,6 @@
   "COMPOUND_UNIT_PRESERVE": "複合単位の非演算位保存は正解の構成要素(m/cm・L/dL・時/分など演算しない位が本文値のまま残る)。",
   "NOTATION_CONVERT": "表記変換は数値保存が定義(歩合・縮尺など、数値を保ったまま表記を変える操作)。",
   "COORD_DENOM": "既約分数の分母/座標値＝本文座標そのもの(交点・軸の座標が答えの構成要素。比の値と同構造)。",
-  "HOLD_REDESIGN": "保留・再設計待ち(制約が重い/値域再設計で解消予定。解消時に登録解除する暫定例外)。",
   "SELECTION_ANSWER": "答＝本文の提示値そのものを選ぶ/同定するのが学習内容(かずの大小比較・値の弁別)。jhs_c07_jiku_01と同性質。"
  },
  "exemptions": [
@@ -311,21 +310,6 @@
   {
    "pattern_id": "g02_time_after_01",
    "code": "COMPOUND_UNIT_PRESERVE"
-  },
-  {
-   "pattern_id": "jhs_c07_niten_01",
-   "code": "HOLD_REDESIGN",
-   "provisional": true
-  },
-  {
-   "pattern_id": "g05_heikin_reverse_01",
-   "code": "HOLD_REDESIGN",
-   "provisional": true
-  },
-  {
-   "pattern_id": "g06_graph_prop_read_01",
-   "code": "HOLD_REDESIGN",
-   "provisional": true
   },
   {
    "pattern_id": "g01_kurabe_01",

@@ -5013,7 +5013,13 @@
      ]
     }
    },
-   "value_constraints": [],
+   "value_constraints": [
+    {
+     "rule": "no_transcribe",
+     "expr": "k1 != 1",
+     "why": "転記型リーク排除(k＝1は恒等直線y＝xで答＝x写し=グラフを読まず正解。k＝3拡張は図契約確認後の第2波・C保留解消バッチ3 2026-08-12)"
+    }
+   ],
    "computed_slots": {
     "ym1": {
      "formula": "k1 * 6"

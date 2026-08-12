@@ -136,6 +136,66 @@
      "rule": "y_lo_cap",
      "expr": "b1 - a1 * p1 <= 8",
      "why": "負座標の絶対値キャップ(正の量の不等式で表現)"
+    },
+    {
+     "rule": "nt_p_a",
+     "expr": "p1 != a1",
+     "why": "転記型リーク排除(座標＝答傾き・C保留解消バッチ3 2026-08-12)"
+    },
+    {
+     "rule": "nt_p_b",
+     "expr": "p1 != b1",
+     "why": "同(座標＝答切片)"
+    },
+    {
+     "rule": "nt_p2_a",
+     "expr": "p1 + d1 != a1",
+     "why": "同"
+    },
+    {
+     "rule": "nt_p2_b",
+     "expr": "p1 + d1 != b1",
+     "why": "同"
+    },
+    {
+     "rule": "nt_y1a1",
+     "expr": "a1 * p1 - b1 != a1",
+     "why": "同(y座標＝傾き)"
+    },
+    {
+     "rule": "nt_y1a2",
+     "expr": "b1 - a1 * p1 != a1",
+     "why": "同(|負y|＝傾き)"
+    },
+    {
+     "rule": "nt_y1b1",
+     "expr": "a1 * p1 - b1 != b1",
+     "why": "同(y座標＝切片)"
+    },
+    {
+     "rule": "nt_y1b2",
+     "expr": "b1 - a1 * p1 != b1",
+     "why": "同"
+    },
+    {
+     "rule": "nt_y2a1",
+     "expr": "a1 * (p1 + d1) - b1 != a1",
+     "why": "同"
+    },
+    {
+     "rule": "nt_y2a2",
+     "expr": "b1 - a1 * (p1 + d1) != a1",
+     "why": "同"
+    },
+    {
+     "rule": "nt_y2b1",
+     "expr": "a1 * (p1 + d1) - b1 != b1",
+     "why": "同"
+    },
+    {
+     "rule": "nt_y2b2",
+     "expr": "b1 - a1 * (p1 + d1) != b1",
+     "why": "同"
     }
    ],
    "sentence_templates": [

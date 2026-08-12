@@ -2475,6 +2475,11 @@
      "rule": "big_enough",
      "expr": "a1 * d1 >= 3000",
      "why": "kgが立つ大きさにする"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "(a1 * d1) % 1000 != a1",
+     "why": "転記型リーク排除(合計のg部＝1日量a。a(d−1)≡0 mod1000の組を排除・C保留解消バッチ3 2026-08-12)"
     }
    ],
    "sentence_templates": [
