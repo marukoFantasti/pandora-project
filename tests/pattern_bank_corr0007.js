@@ -196,9 +196,14 @@ if (gateMode) {
   const staleP = pendingList.filter(e => !detectedIds.has(e.pattern_id));  // pendingだが検出0=制約済み→消し込め
   console.log('\ncorr-0007 GATE [固定シード ' + GATE_SEEDS.join('/') + ' ×' + GATE_N + '本 / v2.1本実装]');
   console.log('  例外(legitimate) ' + detections.filter(d => d.exempt).length + '件 / pending(バッチ2予定) ' + pending.size + '件');
-  // 恒常在庫防止: pendingが空になったら機構撤去を促す存在チェック
-  if (pendingList.length === 0 && fs.existsSync(PENDING_PATH)) {
-    console.log('  ⚠️ pending空: 恒常在庫防止のため ' + path.relative(ROOT, PENDING_PATH) + ' と本機構を撤去せよ(以後pendingを常設在庫化しない)。');
+  // 存在チェック: pending機構はバッチ2完了(2026-08-12)で撤去済み。ファイル不在=定常。
+  // 再出現(ファイルが非空で復活)は恒常在庫化の兆候→要再裁可として明示。空ファイル残置は撤去を促す。
+  if (!fs.existsSync(PENDING_PATH)) {
+    console.log('  pending機構: 撤去済み(存在チェックのみ・再出現は要再裁可)。');
+  } else if (pendingList.length === 0) {
+    console.log('  ⚠️ pending空ファイル残置: ' + path.relative(ROOT, PENDING_PATH) + ' を撤去せよ(恒常在庫化防止)。');
+  } else {
+    console.log('  ⚠️ pending再出現 ' + pending.size + '件: 撤去後の再導入は要再裁可(triage→裁可の手続を経ること)。');
   }
   // 消し込み補助: バッチ2で制約が入り検出0になったpendingエントリを提示
   if (staleP.length) {

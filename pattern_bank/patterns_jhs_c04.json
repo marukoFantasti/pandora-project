@@ -71,6 +71,26 @@
      "rule": "sol_floor",
      "expr": "(q1 + s1) // (p1 - r1) >= 1",
      "why": "解0はこの形では発生しないが明示(q+s>0)"
+    },
+    {
+     "rule": "no_transcribe_p1",
+     "expr": "(q1 + s1) // (p1 - r1) != p1",
+     "why": "転記型リーク排除(解＝本文係数・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_q1",
+     "expr": "(q1 + s1) // (p1 - r1) != q1",
+     "why": "転記型リーク排除(解＝本文係数・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_r1",
+     "expr": "(q1 + s1) // (p1 - r1) != r1",
+     "why": "転記型リーク排除(解＝本文係数・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_s1",
+     "expr": "(q1 + s1) // (p1 - r1) != s1",
+     "why": "転記型リーク排除(解＝本文係数・corr-0007バッチ2 2026-08-12)"
     }
    ],
    "sentence_templates": [
@@ -152,6 +172,26 @@
      "rule": "sol_cap",
      "expr": "(q1 - s1) // (p1 - r1) <= 12",
      "why": "解の絶対値を暗算域に保つ"
+    },
+    {
+     "rule": "no_transcribe_p1",
+     "expr": "(q1 - s1) // (p1 - r1) != p1",
+     "why": "転記型リーク排除(|解|＝本文係数・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_q1",
+     "expr": "(q1 - s1) // (p1 - r1) != q1",
+     "why": "転記型リーク排除(|解|＝本文係数・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_r1",
+     "expr": "(q1 - s1) // (p1 - r1) != r1",
+     "why": "転記型リーク排除(|解|＝本文係数・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_s1",
+     "expr": "(q1 - s1) // (p1 - r1) != s1",
+     "why": "転記型リーク排除(|解|＝本文係数・corr-0007バッチ2 2026-08-12)"
     }
    ],
    "sentence_templates": [
@@ -228,6 +268,26 @@
      "rule": "sol_cap",
      "expr": "(k1 * m1 + s1) // (r1 - k1) <= 12",
      "why": "解の絶対値を暗算域に保つ"
+    },
+    {
+     "rule": "no_transcribe_k1",
+     "expr": "(k1 * m1 + s1) // (r1 - k1) != k1",
+     "why": "転記型リーク排除(|解|＝本文係数・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_m1",
+     "expr": "(k1 * m1 + s1) // (r1 - k1) != m1",
+     "why": "転記型リーク排除(|解|＝本文係数・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_r1",
+     "expr": "(k1 * m1 + s1) // (r1 - k1) != r1",
+     "why": "転記型リーク排除(|解|＝本文係数・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_s1",
+     "expr": "(k1 * m1 + s1) // (r1 - k1) != s1",
+     "why": "転記型リーク排除(|解|＝本文係数・corr-0007バッチ2 2026-08-12)"
     }
    ],
    "sentence_templates": [
@@ -306,6 +366,11 @@
      "rule": "sol_floor",
      "expr": "a1 * c1 // b1 >= 2",
      "why": "解1の退化除外"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "(a1 * c1) // b1 != b1",
+     "why": "転記型リーク排除(ac＝b²で解＝b(a＝b・b＝cは既存制約で他2経路排除済み)・corr-0007バッチ2 2026-08-12)"
     }
    ],
    "sentence_templates": [
@@ -370,6 +435,21 @@
      "rule": "a_cap",
      "expr": "abs(t1 - p1 * s1) <= 20",
      "why": "aの絶対値を暗算域に保つ"
+    },
+    {
+     "rule": "no_transcribe_p",
+     "expr": "abs(t1 - p1 * s1) != p1",
+     "why": "転記型リーク排除(|a|＝p・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_s",
+     "expr": "abs(t1 - p1 * s1) != s1",
+     "why": "転記型リーク排除(|a|＝s・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_t",
+     "expr": "abs(t1 - p1 * s1) != t1",
+     "why": "転記型リーク排除(|a|＝t・corr-0007バッチ2 2026-08-12)"
     }
    ],
    "sentence_templates": [
@@ -433,6 +513,16 @@
      "rule": "y_nonzero",
      "expr": "A1 != B1",
      "why": "y＝0の退化除外(x＝yの2式が実質1本になる縮退近傍を避ける)"
+    },
+    {
+     "rule": "no_transcribe_y1",
+     "expr": "A1 != 3 * B1",
+     "why": "転記型リーク排除(y＝B・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_y2",
+     "expr": "B1 != 3 * A1",
+     "why": "転記型リーク排除(|y|＝A・corr-0007バッチ2 2026-08-12)"
     }
    ],
    "sentence_templates": [

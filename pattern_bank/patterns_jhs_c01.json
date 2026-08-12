@@ -40,7 +40,18 @@
      ]
     }
    },
-   "value_constraints": [],
+   "value_constraints": [
+    {
+     "rule": "no_transcribe_1",
+     "expr": "a1 != 2 * b1",
+     "why": "転記型リーク排除(|答|＝b・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_2",
+     "expr": "b1 != 2 * a1",
+     "why": "転記型リーク排除(|答|＝a・corr-0007バッチ2 2026-08-12)"
+    }
+   ],
    "sentence_templates": [
     "次の計算をしなさい。\n{a1}＋(−{b1})"
    ],
@@ -86,7 +97,18 @@
      ]
     }
    },
-   "value_constraints": [],
+   "value_constraints": [
+    {
+     "rule": "no_transcribe_1",
+     "expr": "a1 != 2 * b1",
+     "why": "転記型リーク排除(|答|＝b・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_2",
+     "expr": "b1 != 2 * a1",
+     "why": "転記型リーク排除(|答|＝a・corr-0007バッチ2 2026-08-12)"
+    }
+   ],
    "sentence_templates": [
     "次の計算をしなさい。\n−{a1}＋{b1}"
    ],
@@ -177,7 +199,18 @@
      ]
     }
    },
-   "value_constraints": [],
+   "value_constraints": [
+    {
+     "rule": "no_transcribe_1",
+     "expr": "a1 != 2 * b1",
+     "why": "転記型リーク排除(|答|＝b・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_2",
+     "expr": "b1 != 2 * a1",
+     "why": "転記型リーク排除(|答|＝a・corr-0007バッチ2 2026-08-12)"
+    }
+   ],
    "sentence_templates": [
     "次の計算をしなさい。\n−{a1}−(−{b1})"
    ],
@@ -329,6 +362,11 @@
      "rule": "quotient_cap",
      "expr": "a1 // b1 <= 9",
      "why": "商を1桁に保ち暗算域に収める"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "a1 != b1 * b1",
+     "why": "転記型リーク排除(a＝b²で|答|＝b・corr-0007バッチ2 2026-08-12)"
     }
    ],
    "sentence_templates": [
@@ -383,7 +421,33 @@
      ]
     }
    },
-   "value_constraints": [],
+   "value_constraints": [
+    {
+     "rule": "no_transcribe_a",
+     "expr": "2 * a1 != b1 * c1",
+     "why": "転記型リーク排除(答＝−a・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_b1",
+     "expr": "a1 != b1 * (c1 + 1)",
+     "why": "転記型リーク排除(答＝b・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_b2",
+     "expr": "a1 != b1 * (c1 - 1)",
+     "why": "転記型リーク排除(答＝−b・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_c1",
+     "expr": "a1 != c1 * (b1 + 1)",
+     "why": "転記型リーク排除(答＝c・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_c2",
+     "expr": "a1 != c1 * (b1 - 1)",
+     "why": "転記型リーク排除(答＝−c・corr-0007バッチ2 2026-08-12)"
+    }
+   ],
    "sentence_templates": [
     "次の計算をしなさい。\n{a1}＋{b1}×(−{c1})"
    ],
@@ -436,7 +500,33 @@
      ]
     }
    },
-   "value_constraints": [],
+   "value_constraints": [
+    {
+     "rule": "no_transcribe_ab",
+     "expr": "a1 != b1",
+     "why": "転記型リーク排除(答＝−c(先頭2項相殺)・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_ac",
+     "expr": "a1 != c1",
+     "why": "転記型リーク排除(答＝−b・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_c",
+     "expr": "a1 != b1 + 2 * c1",
+     "why": "転記型リーク排除(答＝c・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_b",
+     "expr": "a1 != 2 * b1 + c1",
+     "why": "転記型リーク排除(答＝b・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_a",
+     "expr": "2 * a1 != b1 + c1",
+     "why": "転記型リーク排除(答＝−a・corr-0007バッチ2 2026-08-12)"
+    }
+   ],
    "sentence_templates": [
     "次の計算をしなさい。\n{a1}−{b1}＋(−{c1})"
    ],
@@ -496,6 +586,11 @@
      "rule": "quotient_cap",
      "expr": "a1 // b1 <= 9",
      "why": "商を1桁に保ち暗算域に収める"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "a1 != b1 * b1",
+     "why": "転記型リーク排除(a＝b²で答＝b・corr-0007バッチ2 2026-08-12)"
     }
    ],
    "sentence_templates": [
@@ -564,6 +659,16 @@
      "rule": "quotient_cap",
      "expr": "b1 // c1 <= 9",
      "why": "商を1桁に保つ"
+    },
+    {
+     "rule": "no_transcribe_b",
+     "expr": "a1 * c1 != b1 * (c1 - 1)",
+     "why": "転記型リーク排除(答＝b・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_c",
+     "expr": "a1 * c1 != c1 * c1 - b1",
+     "why": "転記型リーク排除(答＝c・corr-0007バッチ2 2026-08-12)"
     }
    ],
    "sentence_templates": [
@@ -628,6 +733,21 @@
      "rule": "inner_nontrivial",
      "expr": "b1 - a1 >= 2",
      "why": "かっこ内±1の退化除外"
+    },
+    {
+     "rule": "no_transcribe_b",
+     "expr": "b1 * (c1 - 1) != a1 * c1",
+     "why": "転記型リーク排除(|答|＝b・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_a",
+     "expr": "b1 * c1 != a1 * (c1 + 1)",
+     "why": "転記型リーク排除(|答|＝a・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_c",
+     "expr": "b1 != a1 + 1",
+     "why": "転記型リーク排除(|答|＝c(差1×c)・corr-0007バッチ2 2026-08-12)"
     }
    ],
    "sentence_templates": [
@@ -702,6 +822,16 @@
      "rule": "quotient_cap",
      "expr": "(b1 - a1) // c1 <= 9",
      "why": "商を1桁に保つ"
+    },
+    {
+     "rule": "no_transcribe_c",
+     "expr": "b1 - a1 != c1 * c1",
+     "why": "転記型リーク排除(|答|＝c・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_a",
+     "expr": "b1 != a1 * (c1 + 1)",
+     "why": "転記型リーク排除(|答|＝a・corr-0007バッチ2 2026-08-12)"
     }
    ],
    "sentence_templates": [
@@ -749,7 +879,23 @@
      ]
     }
    },
-   "value_constraints": [],
+   "value_constraints": [
+    {
+     "rule": "no_transcribe_1",
+     "expr": "a1 != b1 * b1 + b1",
+     "why": "転記型リーク排除(答＝−b・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_2",
+     "expr": "a1 != b1 * b1 - b1",
+     "why": "転記型リーク排除(答＝b・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_3",
+     "expr": "b1 * b1 != 2 * a1",
+     "why": "転記型リーク排除(答＝±a・corr-0007バッチ2 2026-08-12)"
+    }
+   ],
    "sentence_templates": [
     "次の計算をしなさい。\n−{a1}＋(−{b1})²"
    ],
@@ -795,7 +941,23 @@
      ]
     }
    },
-   "value_constraints": [],
+   "value_constraints": [
+    {
+     "rule": "no_transcribe_1",
+     "expr": "a1 != b1 * b1 + b1",
+     "why": "転記型リーク排除(答＝b・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_2",
+     "expr": "a1 != b1 * b1 - b1",
+     "why": "転記型リーク排除(答＝−b・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_3",
+     "expr": "b1 * b1 != 2 * a1",
+     "why": "転記型リーク排除(答＝±a・corr-0007バッチ2 2026-08-12)"
+    }
+   ],
    "sentence_templates": [
     "次の計算をしなさい。\n{a1}−{b1}²"
    ],
@@ -1104,6 +1266,16 @@
      "rule": "quotient_cap",
      "expr": "d1 // c1 <= 9",
      "why": "中間値を暗算域に保つ"
+    },
+    {
+     "rule": "no_transcribe_d",
+     "expr": "a1 * c1 != d1 * (c1 - b1)",
+     "why": "転記型リーク排除(答＝d・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_c",
+     "expr": "a1 * c1 != c1 * c1 - b1 * d1",
+     "why": "転記型リーク排除(答＝c・corr-0007バッチ2 2026-08-12)"
     }
    ],
    "sentence_templates": [

@@ -1,263 +1,551 @@
 {
-  "schema_version": "1.0",
-  "grade": "jhs",
-  "description": "jhs数学バンク A層第1波 c15(展開・因数分解) 9パターン: 展開5形((x＋a)(x＋b)/(x＋a)(x−b)/(x＋a)²/(x−a)²/和差積)+因数分解4形(共通因数/(x＋a)(x−b)型=判別式制約/(x−a)²型/a²−b²型)。因数の並びは定数項降順(実物12/12全会一致・c17解降順と同一原理)。判別式の平方数判定にsqrt_coef/sqrt_radを転用。",
-  "answer_structures": ["single"],
-  "display_canon_addendum": "因数分解の因数は定数項の降順で並べる((x＋5)(x−2)、(x−1)(x−2))。c17の解の降順と同一原理『数値は降順』。",
-  "shared_lexicon": {
-    "comment": "c15計算系はレキシコン不要。"
-  },
-  "patterns": [
-    {
-      "pattern_id": "jhs_c15_exp_01",
-      "grade": "jhs",
-      "unit_id": "jhs_c15_u01",
-      "unit_name": "展開・因数分解",
-      "semantic_category": "展開・(x＋a)(x＋b)両正",
-      "semantic_note": "(x＋a)(x＋b) → x²＋(a＋b)x＋ab。展開の入口形(全項正)。",
-      "step_count": 1,
-      "operation": "(x＋a)(x＋b) → x²＋(a＋b)x＋ab",
-      "answer_formula": "a1 + b1",
-      "slots": {
-        "a1": {"type": "int", "range": [1, 9]},
-        "b1": {"type": "int", "range": [1, 9]}
-      },
-      "computed_slots": {
-        "s1": {"formula": "a1 + b1"},
-        "t1": {"formula": "a1 * b1"}
-      },
-      "value_constraints": [
-        {"rule": "distinct", "expr": "a1 != b1", "why": "a＝bは(x＋a)²=公式形(exp_03)の領分。型の相互排他"}
-      ],
-      "sentence_templates": [
-        "次の式を展開しなさい。\n(x＋{a1})(x＋{b1})"
-      ],
-      "answer_template": "答え x²＋{s1}x＋{t1}",
-      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
-      "answer_structure": "single",
-      "template_number_constants": []
+ "schema_version": "1.0",
+ "grade": "jhs",
+ "description": "jhs数学バンク A層第1波 c15(展開・因数分解) 9パターン: 展開5形((x＋a)(x＋b)/(x＋a)(x−b)/(x＋a)²/(x−a)²/和差積)+因数分解4形(共通因数/(x＋a)(x−b)型=判別式制約/(x−a)²型/a²−b²型)。因数の並びは定数項降順(実物12/12全会一致・c17解降順と同一原理)。判別式の平方数判定にsqrt_coef/sqrt_radを転用。",
+ "answer_structures": [
+  "single"
+ ],
+ "display_canon_addendum": "因数分解の因数は定数項の降順で並べる((x＋5)(x−2)、(x−1)(x−2))。c17の解の降順と同一原理『数値は降順』。",
+ "shared_lexicon": {
+  "comment": "c15計算系はレキシコン不要。"
+ },
+ "patterns": [
+  {
+   "pattern_id": "jhs_c15_exp_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c15_u01",
+   "unit_name": "展開・因数分解",
+   "semantic_category": "展開・(x＋a)(x＋b)両正",
+   "semantic_note": "(x＋a)(x＋b) → x²＋(a＋b)x＋ab。展開の入口形(全項正)。",
+   "step_count": 1,
+   "operation": "(x＋a)(x＋b) → x²＋(a＋b)x＋ab",
+   "answer_formula": "a1 + b1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
     },
-    {
-      "pattern_id": "jhs_c15_exp_02",
-      "grade": "jhs",
-      "unit_id": "jhs_c15_u01",
-      "unit_name": "展開・因数分解",
-      "semantic_category": "展開・(x＋a)(x−b)混合",
-      "semantic_note": "(x＋a)(x−b) → x²＋(a−b)x−ab。中間項の符号が可変(fmt_coefj)、定数項は常に負。a−b＝±1で「＋x」「−x」境界を通す。",
-      "step_count": 1,
-      "operation": "(x＋a)(x−b) → x²＋(a−b)x−ab",
-      "answer_domain": "nonzero_int",
-      "answer_formula": "a1 - b1",
-      "slots": {
-        "a1": {"type": "int", "range": [1, 9]},
-        "b1": {"type": "int", "range": [1, 9]}
-      },
-      "computed_slots": {
-        "md1": {"formula": "fmt_coefj(a1 - b1)"},
-        "t1": {"formula": "a1 * b1"}
-      },
-      "value_constraints": [
-        {"rule": "no_vanish", "expr": "a1 != b1", "why": "a＝bはx項消失=(和差積)exp_05の領分。fmt_coefj(0)未定義規約の制約分割"}
-      ],
-      "sentence_templates": [
-        "次の式を展開しなさい。\n(x＋{a1})(x−{b1})"
-      ],
-      "answer_template": "答え x²{md1}x−{t1}",
-      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "jhs_c15_exp_03",
-      "grade": "jhs",
-      "unit_id": "jhs_c15_u01",
-      "unit_name": "展開・因数分解",
-      "semantic_category": "展開・公式(x＋a)²",
-      "semantic_note": "(x＋a)² → x²＋2a·x＋a²。乗法公式1。",
-      "step_count": 1,
-      "operation": "(x＋a)² → x²＋2ax＋a²",
-      "answer_formula": "2 * a1",
-      "slots": {
-        "a1": {"type": "int", "range": [2, 9]}
-      },
-      "computed_slots": {
-        "d1": {"formula": "2 * a1"},
-        "q1": {"formula": "a1 * a1"}
-      },
-      "value_constraints": [],
-      "sentence_templates": [
-        "次の式を展開しなさい。\n(x＋{a1})²"
-      ],
-      "answer_template": "答え x²＋{d1}x＋{q1}",
-      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "jhs_c15_exp_04",
-      "grade": "jhs",
-      "unit_id": "jhs_c15_u01",
-      "unit_name": "展開・因数分解",
-      "semantic_category": "展開・公式(x−a)²",
-      "semantic_note": "(x−a)² → x²−2a·x＋a²。乗法公式2(符号側)。",
-      "step_count": 1,
-      "operation": "(x−a)² → x²−2ax＋a²",
-      "answer_formula": "2 * a1",
-      "slots": {
-        "a1": {"type": "int", "range": [2, 9]}
-      },
-      "computed_slots": {
-        "d1": {"formula": "2 * a1"},
-        "q1": {"formula": "a1 * a1"}
-      },
-      "value_constraints": [],
-      "sentence_templates": [
-        "次の式を展開しなさい。\n(x−{a1})²"
-      ],
-      "answer_template": "答え x²−{d1}x＋{q1}",
-      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "jhs_c15_exp_05",
-      "grade": "jhs",
-      "unit_id": "jhs_c15_u01",
-      "unit_name": "展開・因数分解",
-      "semantic_category": "展開・公式(和差積)",
-      "semantic_note": "(x＋a)(x−a) → x²−a²。乗法公式3。",
-      "step_count": 1,
-      "operation": "(x＋a)(x−a) → x²−a²",
-      "answer_formula": "a1 * a1",
-      "slots": {
-        "a1": {"type": "int", "range": [2, 9]}
-      },
-      "computed_slots": {
-        "q1": {"formula": "a1 * a1"}
-      },
-      "value_constraints": [],
-      "sentence_templates": [
-        "次の式を展開しなさい。\n(x＋{a1})(x−{a1})"
-      ],
-      "answer_template": "答え x²−{q1}",
-      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "jhs_c15_fac_01",
-      "grade": "jhs",
-      "unit_id": "jhs_c15_u01",
-      "unit_name": "展開・因数分解",
-      "semantic_category": "因数分解・共通因数",
-      "semantic_note": "Ax²＋Bx → Ax(x＋m)(m＝B/A)。共通因数のくくり出し。整除・m[2,9]保証。",
-      "step_count": 1,
-      "operation": "Ax²＋Bx → Ax(x＋B/A)",
-      "answer_formula": "B1 // A1",
-      "slots": {
-        "A1": {"type": "int", "range": [2, 5]},
-        "B1": {"type": "int", "range": [4, 45]}
-      },
-      "computed_slots": {
-        "m1": {"formula": "B1 // A1"}
-      },
-      "value_constraints": [
-        {"rule": "divisible", "expr": "B1 % A1 == 0", "why": "共通因数がきれいにくくれる構成保証"},
-        {"rule": "m_floor", "expr": "B1 // A1 >= 2", "why": "m＝1の退化除外"},
-        {"rule": "m_cap", "expr": "B1 // A1 <= 9", "why": "括り出し後の定数を1桁に保つ"}
-      ],
-      "sentence_templates": [
-        "次の式を因数分解しなさい。\n{A1}x²＋{B1}x"
-      ],
-      "answer_template": "答え {A1}x(x＋{m1})",
-      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "jhs_c15_fac_02",
-      "grade": "jhs",
-      "unit_id": "jhs_c15_u01",
-      "unit_name": "展開・因数分解",
-      "semantic_category": "因数分解・(x＋a)(x−b)型(判別式制約)",
-      "semantic_note": "x²＋px−q → (x＋a)(x−b)。因数分解可能性を判別式D＝p²＋4qの平方数判定(sqrt_rad(D)＝1)+偶奇一致で構成的に保証する新手筋。因数は定数項降順(＋a先・a>b)。",
-      "step_count": 2,
-      "operation": "x²＋px−q → (x＋a)(x−b), a＝(√D＋p)/2, b＝(√D−p)/2, D＝p²＋4q",
-      "answer_formula": "(sqrt_coef(p1 * p1 + 4 * q1) + p1) // 2",
-      "slots": {
-        "p1": {"type": "int", "range": [2, 8]},
-        "q1": {"type": "int", "range": [3, 36]}
-      },
-      "computed_slots": {
-        "av1": {"formula": "(sqrt_coef(p1 * p1 + 4 * q1) + p1) // 2"},
-        "bv1": {"formula": "(sqrt_coef(p1 * p1 + 4 * q1) - p1) // 2"}
-      },
-      "value_constraints": [
-        {"rule": "square_disc", "expr": "sqrt_rad(p1 * p1 + 4 * q1) == 1", "why": "判別式が平方数=整数因数分解の存在保証(sqrt_radの制約転用)"},
-        {"rule": "parity", "expr": "(sqrt_coef(p1 * p1 + 4 * q1) - p1) % 2 == 0", "why": "因数定数の整数性(√D−pが偶数)"},
-        {"rule": "b_floor", "expr": "(sqrt_coef(p1 * p1 + 4 * q1) - p1) // 2 >= 1", "why": "b≧1(b＝0はq＝0退化)"},
-        {"rule": "a_cap", "expr": "(sqrt_coef(p1 * p1 + 4 * q1) + p1) // 2 <= 12", "why": "因数定数を暗算域に保つ"}
-      ],
-      "sentence_templates": [
-        "次の式を因数分解しなさい。\nx²＋{p1}x−{q1}"
-      ],
-      "answer_template": "答え (x＋{av1})(x−{bv1})",
-      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "jhs_c15_fac_03",
-      "grade": "jhs",
-      "unit_id": "jhs_c15_u01",
-      "unit_name": "展開・因数分解",
-      "semantic_category": "因数分解・(x−a)²型",
-      "semantic_note": "x²−dx＋q → (x−a)²(d＝2a, q＝a²)。完全平方の認識。dとqの整合をchoices+制約で構成。",
-      "step_count": 1,
-      "operation": "x²−2ax＋a² → (x−a)²",
-      "answer_formula": "d1 // 2",
-      "slots": {
-        "d1": {"type": "int", "choices": [4, 6, 8, 10, 12, 14, 16, 18]},
-        "q1": {"type": "int", "choices": [4, 9, 16, 25, 36, 49, 64, 81]}
-      },
-      "computed_slots": {
-        "av1": {"formula": "d1 // 2"}
-      },
-      "value_constraints": [
-        {"rule": "perfect_square_match", "expr": "(d1 // 2) * (d1 // 2) == q1", "why": "d＝2a・q＝a²の完全平方整合"}
-      ],
-      "sentence_templates": [
-        "次の式を因数分解しなさい。\nx²−{d1}x＋{q1}"
-      ],
-      "answer_template": "答え (x−{av1})²",
-      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "jhs_c15_fac_04",
-      "grade": "jhs",
-      "unit_id": "jhs_c15_u01",
-      "unit_name": "展開・因数分解",
-      "semantic_category": "因数分解・a²−b²型",
-      "semantic_note": "x²−N → (x＋a)(x−a)(N＝a²)。和差積の逆。Nは平方数choices、a＝sqrt_coef(N)。",
-      "step_count": 1,
-      "operation": "x²−a² → (x＋a)(x−a)",
-      "answer_formula": "sqrt_coef(N1)",
-      "slots": {
-        "N1": {"type": "int", "choices": [4, 9, 16, 25, 36, 49, 64, 81]}
-      },
-      "computed_slots": {
-        "av1": {"formula": "sqrt_coef(N1)"}
-      },
-      "value_constraints": [],
-      "sentence_templates": [
-        "次の式を因数分解しなさい。\nx²−{N1}"
-      ],
-      "answer_template": "答え (x＋{av1})(x−{av1})",
-      "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
-      "answer_structure": "single",
-      "template_number_constants": []
+    "b1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
     }
-  ]
+   },
+   "computed_slots": {
+    "s1": {
+     "formula": "a1 + b1"
+    },
+    "t1": {
+     "formula": "a1 * b1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "distinct",
+     "expr": "a1 != b1",
+     "why": "a＝bは(x＋a)²=公式形(exp_03)の領分。型の相互排他"
+    },
+    {
+     "rule": "no_transcribe_a",
+     "expr": "a1 != 1",
+     "why": "転記型リーク排除(a＝1で定数項＝b(×1保存)・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_b",
+     "expr": "b1 != 1",
+     "why": "転記型リーク排除(b＝1で定数項＝a・corr-0007バッチ2 2026-08-12)"
+    }
+   ],
+   "sentence_templates": [
+    "次の式を展開しなさい。\n(x＋{a1})(x＋{b1})"
+   ],
+   "answer_template": "答え x²＋{s1}x＋{t1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c15_exp_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c15_u01",
+   "unit_name": "展開・因数分解",
+   "semantic_category": "展開・(x＋a)(x−b)混合",
+   "semantic_note": "(x＋a)(x−b) → x²＋(a−b)x−ab。中間項の符号が可変(fmt_coefj)、定数項は常に負。a−b＝±1で「＋x」「−x」境界を通す。",
+   "step_count": 1,
+   "operation": "(x＋a)(x−b) → x²＋(a−b)x−ab",
+   "answer_domain": "nonzero_int",
+   "answer_formula": "a1 - b1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    }
+   },
+   "computed_slots": {
+    "md1": {
+     "formula": "fmt_coefj(a1 - b1)"
+    },
+    "t1": {
+     "formula": "a1 * b1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_vanish",
+     "expr": "a1 != b1",
+     "why": "a＝bはx項消失=(和差積)exp_05の領分。fmt_coefj(0)未定義規約の制約分割"
+    },
+    {
+     "rule": "no_transcribe_a",
+     "expr": "a1 != 1",
+     "why": "転記型リーク排除(a＝1で定数項＝b・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_b",
+     "expr": "b1 != 1",
+     "why": "転記型リーク排除(b＝1で定数項＝a・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_2b",
+     "expr": "a1 != 2 * b1",
+     "why": "転記型リーク排除(|中間係数|＝b・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_2a",
+     "expr": "b1 != 2 * a1",
+     "why": "転記型リーク排除(|中間係数|＝a・corr-0007バッチ2 2026-08-12)"
+    }
+   ],
+   "sentence_templates": [
+    "次の式を展開しなさい。\n(x＋{a1})(x−{b1})"
+   ],
+   "answer_template": "答え x²{md1}x−{t1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c15_exp_03",
+   "grade": "jhs",
+   "unit_id": "jhs_c15_u01",
+   "unit_name": "展開・因数分解",
+   "semantic_category": "展開・公式(x＋a)²",
+   "semantic_note": "(x＋a)² → x²＋2a·x＋a²。乗法公式1。",
+   "step_count": 1,
+   "operation": "(x＋a)² → x²＋2ax＋a²",
+   "answer_formula": "2 * a1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "computed_slots": {
+    "d1": {
+     "formula": "2 * a1"
+    },
+    "q1": {
+     "formula": "a1 * a1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の式を展開しなさい。\n(x＋{a1})²"
+   ],
+   "answer_template": "答え x²＋{d1}x＋{q1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c15_exp_04",
+   "grade": "jhs",
+   "unit_id": "jhs_c15_u01",
+   "unit_name": "展開・因数分解",
+   "semantic_category": "展開・公式(x−a)²",
+   "semantic_note": "(x−a)² → x²−2a·x＋a²。乗法公式2(符号側)。",
+   "step_count": 1,
+   "operation": "(x−a)² → x²−2ax＋a²",
+   "answer_formula": "2 * a1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "computed_slots": {
+    "d1": {
+     "formula": "2 * a1"
+    },
+    "q1": {
+     "formula": "a1 * a1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の式を展開しなさい。\n(x−{a1})²"
+   ],
+   "answer_template": "答え x²−{d1}x＋{q1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c15_exp_05",
+   "grade": "jhs",
+   "unit_id": "jhs_c15_u01",
+   "unit_name": "展開・因数分解",
+   "semantic_category": "展開・公式(和差積)",
+   "semantic_note": "(x＋a)(x−a) → x²−a²。乗法公式3。",
+   "step_count": 1,
+   "operation": "(x＋a)(x−a) → x²−a²",
+   "answer_formula": "a1 * a1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "computed_slots": {
+    "q1": {
+     "formula": "a1 * a1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の式を展開しなさい。\n(x＋{a1})(x−{a1})"
+   ],
+   "answer_template": "答え x²−{q1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c15_fac_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c15_u01",
+   "unit_name": "展開・因数分解",
+   "semantic_category": "因数分解・共通因数",
+   "semantic_note": "Ax²＋Bx → Ax(x＋m)(m＝B/A)。共通因数のくくり出し。整除・m[2,9]保証。",
+   "step_count": 1,
+   "operation": "Ax²＋Bx → Ax(x＋B/A)",
+   "answer_formula": "B1 // A1",
+   "slots": {
+    "A1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    },
+    "B1": {
+     "type": "int",
+     "range": [
+      4,
+      45
+     ]
+    }
+   },
+   "computed_slots": {
+    "m1": {
+     "formula": "B1 // A1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "B1 % A1 == 0",
+     "why": "共通因数がきれいにくくれる構成保証"
+    },
+    {
+     "rule": "m_floor",
+     "expr": "B1 // A1 >= 2",
+     "why": "m＝1の退化除外"
+    },
+    {
+     "rule": "m_cap",
+     "expr": "B1 // A1 <= 9",
+     "why": "括り出し後の定数を1桁に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "次の式を因数分解しなさい。\n{A1}x²＋{B1}x"
+   ],
+   "answer_template": "答え {A1}x(x＋{m1})",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c15_fac_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c15_u01",
+   "unit_name": "展開・因数分解",
+   "semantic_category": "因数分解・(x＋a)(x−b)型(判別式制約)",
+   "semantic_note": "x²＋px−q → (x＋a)(x−b)。因数分解可能性を判別式D＝p²＋4qの平方数判定(sqrt_rad(D)＝1)+偶奇一致で構成的に保証する新手筋。因数は定数項降順(＋a先・a>b)。",
+   "step_count": 2,
+   "operation": "x²＋px−q → (x＋a)(x−b), a＝(√D＋p)/2, b＝(√D−p)/2, D＝p²＋4q",
+   "answer_formula": "(sqrt_coef(p1 * p1 + 4 * q1) + p1) // 2",
+   "slots": {
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      3,
+      36
+     ]
+    }
+   },
+   "computed_slots": {
+    "av1": {
+     "formula": "(sqrt_coef(p1 * p1 + 4 * q1) + p1) // 2"
+    },
+    "bv1": {
+     "formula": "(sqrt_coef(p1 * p1 + 4 * q1) - p1) // 2"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "square_disc",
+     "expr": "sqrt_rad(p1 * p1 + 4 * q1) == 1",
+     "why": "判別式が平方数=整数因数分解の存在保証(sqrt_radの制約転用)"
+    },
+    {
+     "rule": "parity",
+     "expr": "(sqrt_coef(p1 * p1 + 4 * q1) - p1) % 2 == 0",
+     "why": "因数定数の整数性(√D−pが偶数)"
+    },
+    {
+     "rule": "b_floor",
+     "expr": "(sqrt_coef(p1 * p1 + 4 * q1) - p1) // 2 >= 2",
+     "why": "b≧1(b＝0はq＝0退化)→≧2へ強化(b＝1で本文q＝a×1の転記経路・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "a_cap",
+     "expr": "(sqrt_coef(p1 * p1 + 4 * q1) + p1) // 2 <= 12",
+     "why": "因数定数を暗算域に保つ"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "(sqrt_coef(p1 * p1 + 4 * q1) - p1) // 2 != p1",
+     "why": "転記型リーク排除(因数定数b＝p(a＝2p)・corr-0007バッチ2 2026-08-12)"
+    }
+   ],
+   "sentence_templates": [
+    "次の式を因数分解しなさい。\nx²＋{p1}x−{q1}"
+   ],
+   "answer_template": "答え (x＋{av1})(x−{bv1})",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c15_fac_03",
+   "grade": "jhs",
+   "unit_id": "jhs_c15_u01",
+   "unit_name": "展開・因数分解",
+   "semantic_category": "因数分解・(x−a)²型",
+   "semantic_note": "x²−dx＋q → (x−a)²(d＝2a, q＝a²)。完全平方の認識。dとqの整合をchoices+制約で構成。",
+   "step_count": 1,
+   "operation": "x²−2ax＋a² → (x−a)²",
+   "answer_formula": "d1 // 2",
+   "slots": {
+    "d1": {
+     "type": "int",
+     "choices": [
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "choices": [
+      4,
+      9,
+      16,
+      25,
+      36,
+      49,
+      64,
+      81
+     ]
+    }
+   },
+   "computed_slots": {
+    "av1": {
+     "formula": "d1 // 2"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "perfect_square_match",
+     "expr": "(d1 // 2) * (d1 // 2) == q1",
+     "why": "d＝2a・q＝a²の完全平方整合"
+    }
+   ],
+   "sentence_templates": [
+    "次の式を因数分解しなさい。\nx²−{d1}x＋{q1}"
+   ],
+   "answer_template": "答え (x−{av1})²",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c15_fac_04",
+   "grade": "jhs",
+   "unit_id": "jhs_c15_u01",
+   "unit_name": "展開・因数分解",
+   "semantic_category": "因数分解・a²−b²型",
+   "semantic_note": "x²−N → (x＋a)(x−a)(N＝a²)。和差積の逆。Nは平方数choices、a＝sqrt_coef(N)。",
+   "step_count": 1,
+   "operation": "x²−a² → (x＋a)(x−a)",
+   "answer_formula": "sqrt_coef(N1)",
+   "slots": {
+    "N1": {
+     "type": "int",
+     "choices": [
+      4,
+      9,
+      16,
+      25,
+      36,
+      49,
+      64,
+      81
+     ]
+    }
+   },
+   "computed_slots": {
+    "av1": {
+     "formula": "sqrt_coef(N1)"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の式を因数分解しなさい。\nx²−{N1}"
+   ],
+   "answer_template": "答え (x＋{av1})(x−{av1})",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  }
+ ]
 }

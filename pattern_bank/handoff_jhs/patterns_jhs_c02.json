@@ -90,6 +90,16 @@
      "rule": "no_vanish",
      "expr": "a1 != b1",
      "why": "係数0でxが消えるケースの制約分割(仕様§3のfmt_coefj(0)未定義規約と同系の設計規約)"
+    },
+    {
+     "rule": "no_transcribe_1",
+     "expr": "a1 != 2 * b1",
+     "why": "転記型リーク排除(答＝b・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_2",
+     "expr": "b1 != 2 * a1",
+     "why": "転記型リーク排除(|答|＝a・corr-0007バッチ2 2026-08-12)"
     }
    ],
    "sentence_templates": [
@@ -163,6 +173,36 @@
      "rule": "no_vanish",
      "expr": "p1 != r1",
      "why": "x係数0の消失ケースを制約分割で除外"
+    },
+    {
+     "rule": "no_transcribe_Ap1",
+     "expr": "abs(p1 - r1) != p1",
+     "why": "転記型リーク排除(出力x係数＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Aq1",
+     "expr": "abs(p1 - r1) != q1",
+     "why": "転記型リーク排除(出力x係数＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Ar1",
+     "expr": "abs(p1 - r1) != r1",
+     "why": "転記型リーク排除(出力x係数＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_As1",
+     "expr": "abs(p1 - r1) != s1",
+     "why": "転記型リーク排除(出力x係数＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Bp",
+     "expr": "q1 + s1 != p1",
+     "why": "転記型リーク排除(出力定数項＝p・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Br",
+     "expr": "q1 + s1 != r1",
+     "why": "転記型リーク排除(出力定数項＝r・corr-0007バッチ2 2026-08-12)"
     }
    ],
    "sentence_templates": [
@@ -243,6 +283,56 @@
      "rule": "no_vanish",
      "expr": "k1 * p1 != r1",
      "why": "x係数0の消失ケースを制約分割で除外"
+    },
+    {
+     "rule": "no_transcribe_Ak1",
+     "expr": "abs(k1 * p1 - r1) != k1",
+     "why": "転記型リーク排除(出力x係数＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Ap1",
+     "expr": "abs(k1 * p1 - r1) != p1",
+     "why": "転記型リーク排除(出力x係数＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Aq1",
+     "expr": "abs(k1 * p1 - r1) != q1",
+     "why": "転記型リーク排除(出力x係数＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Ar1",
+     "expr": "abs(k1 * p1 - r1) != r1",
+     "why": "転記型リーク排除(出力x係数＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_As1",
+     "expr": "abs(k1 * p1 - r1) != s1",
+     "why": "転記型リーク排除(出力x係数＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Bk1",
+     "expr": "abs(s1 - k1 * q1) != k1",
+     "why": "転記型リーク排除(出力定数項＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Bp1",
+     "expr": "abs(s1 - k1 * q1) != p1",
+     "why": "転記型リーク排除(出力定数項＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Bq1",
+     "expr": "abs(s1 - k1 * q1) != q1",
+     "why": "転記型リーク排除(出力定数項＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Br1",
+     "expr": "abs(s1 - k1 * q1) != r1",
+     "why": "転記型リーク排除(出力定数項＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Bs1",
+     "expr": "abs(s1 - k1 * q1) != s1",
+     "why": "転記型リーク排除(出力定数項＝本文値・corr-0007バッチ2 2026-08-12)"
     }
    ],
    "sentence_templates": [
@@ -353,6 +443,11 @@
      "rule": "quotient_cap",
      "expr": "A1 // B1 <= 9",
      "why": "商を1桁に保つ"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "A1 != B1 * B1",
+     "why": "転記型リーク排除(A＝B²で答係数＝B・corr-0007バッチ2 2026-08-12)"
     }
    ],
    "sentence_templates": [
@@ -407,7 +502,33 @@
      ]
     }
    },
-   "value_constraints": [],
+   "value_constraints": [
+    {
+     "rule": "no_transcribe_q",
+     "expr": "p1 * k1 != 2 * q1",
+     "why": "転記型リーク排除(|答|＝q・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_p1",
+     "expr": "q1 - p1 * k1 != p1",
+     "why": "転記型リーク排除(答＝p・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_p2",
+     "expr": "p1 * k1 - q1 != p1",
+     "why": "転記型リーク排除(答＝−p・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_k1",
+     "expr": "q1 - p1 * k1 != k1",
+     "why": "転記型リーク排除(答＝k・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_k2",
+     "expr": "p1 * k1 - q1 != k1",
+     "why": "転記型リーク排除(答＝−k・corr-0007バッチ2 2026-08-12)"
+    }
+   ],
    "sentence_templates": [
     "x＝−{k1} のとき、{p1}x＋{q1} の値を求めなさい。"
    ],
@@ -552,6 +673,66 @@
      "rule": "no_vanish",
      "expr": "k1 * p1 != m1 * r1",
      "why": "x係数0の消失ケースを制約分割で除外"
+    },
+    {
+     "rule": "no_transcribe_Ak1",
+     "expr": "abs(k1 * p1 - m1 * r1) != k1",
+     "why": "転記型リーク排除(出力x係数＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Ap1",
+     "expr": "abs(k1 * p1 - m1 * r1) != p1",
+     "why": "転記型リーク排除(出力x係数＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Aq1",
+     "expr": "abs(k1 * p1 - m1 * r1) != q1",
+     "why": "転記型リーク排除(出力x係数＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Am1",
+     "expr": "abs(k1 * p1 - m1 * r1) != m1",
+     "why": "転記型リーク排除(出力x係数＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Ar1",
+     "expr": "abs(k1 * p1 - m1 * r1) != r1",
+     "why": "転記型リーク排除(出力x係数＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_As1",
+     "expr": "abs(k1 * p1 - m1 * r1) != s1",
+     "why": "転記型リーク排除(出力x係数＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Bk1",
+     "expr": "abs(m1 * s1 - k1 * q1) != k1",
+     "why": "転記型リーク排除(出力定数項＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Bp1",
+     "expr": "abs(m1 * s1 - k1 * q1) != p1",
+     "why": "転記型リーク排除(出力定数項＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Bq1",
+     "expr": "abs(m1 * s1 - k1 * q1) != q1",
+     "why": "転記型リーク排除(出力定数項＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Bm1",
+     "expr": "abs(m1 * s1 - k1 * q1) != m1",
+     "why": "転記型リーク排除(出力定数項＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Br1",
+     "expr": "abs(m1 * s1 - k1 * q1) != r1",
+     "why": "転記型リーク排除(出力定数項＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Bs1",
+     "expr": "abs(m1 * s1 - k1 * q1) != s1",
+     "why": "転記型リーク排除(出力定数項＝本文値・corr-0007バッチ2 2026-08-12)"
     }
    ],
    "sentence_templates": [
@@ -881,6 +1062,66 @@
      "rule": "no_vanish",
      "expr": "u1 * p1 != v1 * r1",
      "why": "x係数0の消失ケースを制約分割で除外"
+    },
+    {
+     "rule": "no_transcribe_Ap1",
+     "expr": "abs(u1 * p1 - v1 * r1) != p1",
+     "why": "転記型リーク排除(出力x係数＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Aq1",
+     "expr": "abs(u1 * p1 - v1 * r1) != q1",
+     "why": "転記型リーク排除(出力x係数＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Ar1",
+     "expr": "abs(u1 * p1 - v1 * r1) != r1",
+     "why": "転記型リーク排除(出力x係数＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_As1",
+     "expr": "abs(u1 * p1 - v1 * r1) != s1",
+     "why": "転記型リーク排除(出力x係数＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Au1",
+     "expr": "abs(u1 * p1 - v1 * r1) != u1",
+     "why": "転記型リーク排除(出力x係数＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Av1",
+     "expr": "abs(u1 * p1 - v1 * r1) != v1",
+     "why": "転記型リーク排除(出力x係数＝本文値・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Bp1",
+     "expr": "u1 * q1 + v1 * s1 != p1",
+     "why": "転記型リーク排除(出力y係数(uq＋vs)＝本文値・式訂正済・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Bq1",
+     "expr": "u1 * q1 + v1 * s1 != q1",
+     "why": "転記型リーク排除(出力y係数(uq＋vs)＝本文値・式訂正済・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Br1",
+     "expr": "u1 * q1 + v1 * s1 != r1",
+     "why": "転記型リーク排除(出力y係数(uq＋vs)＝本文値・式訂正済・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Bs1",
+     "expr": "u1 * q1 + v1 * s1 != s1",
+     "why": "転記型リーク排除(出力y係数(uq＋vs)＝本文値・式訂正済・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Bu1",
+     "expr": "u1 * q1 + v1 * s1 != u1",
+     "why": "転記型リーク排除(出力y係数(uq＋vs)＝本文値・式訂正済・corr-0007バッチ2 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_Bv1",
+     "expr": "u1 * q1 + v1 * s1 != v1",
+     "why": "転記型リーク排除(出力y係数(uq＋vs)＝本文値・式訂正済・corr-0007バッチ2 2026-08-12)"
     }
    ],
    "sentence_templates": [

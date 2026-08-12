@@ -55,6 +55,11 @@
      "rule": "a_cap",
      "expr": "t1 // (s1 * s1) <= 5",
      "why": "比例定数を小さく保つ"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "t1 // (s1 * s1) != s1",
+     "why": "転記型リーク排除(a＝sで係数＝本文x値・corr-0007バッチ2 2026-08-12)"
     }
    ],
    "sentence_templates": [

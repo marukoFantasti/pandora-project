@@ -44,3 +44,16 @@
   g06 de487d1d / jhs_c01 4c39abce / c02 feed610d / c03 6d8e6ede / c04 b9137f9b / c05 3a8a488e /
   c06 00ba3cf0 / c07 b6746602 / c08 8c1197f7 / c09 7bdf4082 / c10 9427e7a3 / c15 79d3ad90 /
   c16 2d8f37b7 / c17 1df8cea7 / c18 5bda8385。
+
+### 2026-08-12 バッチ2 6バンク配線(corr-0007トリアージ・統一遡及フェーズ④Part A)
+- 理由: corr-0007トリアージ裁可(2026-08-12)。B制約117本(パターン33件)を6バンクへ追加。制約追加のみ(構造diff実証)。verify 各300本 fail0(計19500本)・パリティ全通過。全て本番配信中(pandora_main BANK_FILESにc01-c18登録)=デプロイ込み。
+- pending 33件を全消し込み→corr0007_batch2_pending.json 撤去(存在チェックのみへ切替)。固定シード関門は非例外・非pending残差0で厳格緑。
+
+| 章 | 旧md5 | 新md5 | 制約変更pat |
+|---|---|---|---|
+| jhs_c01 | 4c39abce | 76dbe64c | 13 |
+| jhs_c02 | feed610d | 082b2c3f | 7 |
+| jhs_c04 | b9137f9b | b221d05f | 6 |
+| jhs_c05 | 3a8a488e | a571bf63 | 3 |
+| jhs_c15 | 79d3ad90 | a1e38dba | 3 |
+| jhs_c18 | 5bda8385 | 5bda8385 | 1(★md5不変=g04同型・退化ケース3本golden未出現) |
