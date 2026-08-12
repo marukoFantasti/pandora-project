@@ -1,0 +1,1043 @@
+{
+ "schema_version": "1.0",
+ "grade": "jhs",
+ "description": "jhs数学バンク B層第1波 c07(1次関数・その1) 12パターン: 変化の割合+1点→式(a負)・2点→式(逆算生成)・平行+1点・増加量2形(順/逆)・変域2形(a正0跨ぎ/a負逆転)・グラフ読み取り(a負・切片+格子点・xy_graph v2)・2直線の交点(逆算生成)・x軸平行・対応表p(table・3兄弟)・交点を通る直線(逆算合成)。転記排除はスカラー答に全面適用・複合答は紛れ排除のみ併置。jhs宣言=割・傾。",
+ "answer_structures": [
+  "single"
+ ],
+ "shared_lexicon": {
+  "comment": "c07は計算系中心でレキシコン不要。"
+ },
+ "patterns": [
+  {
+   "pattern_id": "jhs_c07_katamuki_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c07_u01",
+   "unit_name": "1次関数",
+   "semantic_category": "1次関数・変化の割合と1点→式(a負)",
+   "semantic_note": "a＝−a1指定+点(p，q)→b＝q＋ap(a負×正域点でb正が自動成立=符号形の構成保証)。a正版は鏡像で第2波。",
+   "step_count": 2,
+   "operation": "b＝q−(−a)p＝q＋ap → y＝−ax＋b",
+   "answer_formula": "q1 + a1 * p1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    },
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "computed_slots": {
+    "b1": {
+     "formula": "q1 + a1 * p1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "b_cap",
+     "expr": "q1 + a1 * p1 <= 30",
+     "why": "切片の暗算域"
+    }
+   ],
+   "sentence_templates": [
+    "変化の割合が−{a1}で、x＝{p1}のときy＝{q1}である1次関数の式を求めなさい。"
+   ],
+   "answer_template": "答え y＝−{a1}x＋{b1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "割"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "jhs_c07_niten_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c07_u01",
+   "unit_name": "1次関数",
+   "semantic_category": "1次関数・2点→式(逆算生成)",
+   "semantic_note": "逆算生成: (a，b)を先に引き2点(p，ap−b)・(p＋d，a(p＋d)−b)を導出→傾き整数・切片整数が構成的に自動成立。y座標は符号可変(signed表示)でjhsらしさ確保。答スロット(a，b)は本文非出現(転記構造ゼロ)。",
+   "step_count": 2,
+   "operation": "(a，b)先行抽選 → 2点導出 → y＝ax−b",
+   "answer_formula": "a1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "p1": {
+     "type": "int",
+     "range": [
+      1,
+      4
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      1,
+      4
+     ]
+    }
+   },
+   "computed_slots": {
+    "p2v": {
+     "formula": "p1 + d1"
+    },
+    "y1v": {
+     "formula": "a1 * p1 - b1"
+    },
+    "y2v": {
+     "formula": "a1 * (p1 + d1) - b1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "y_hi_cap",
+     "expr": "a1 * (p1 + d1) - b1 <= 15",
+     "why": "座標の暗算域"
+    },
+    {
+     "rule": "y_lo_cap",
+     "expr": "b1 - a1 * p1 <= 8",
+     "why": "負座標の絶対値キャップ(正の量の不等式で表現)"
+    }
+   ],
+   "sentence_templates": [
+    "2点({p1}，{y1v_disp})，({p2v_disp}，{y2v_disp})を通る1次関数の式を求めなさい。"
+   ],
+   "answer_template": "答え y＝{a1}x−{b1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2,
+    1
+   ]
+  },
+  {
+   "pattern_id": "jhs_c07_heikou_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c07_u01",
+   "unit_name": "1次関数",
+   "semantic_category": "1次関数・平行条件+1点→式",
+   "semantic_note": "傾き転記(−a)+b＝q＋apの逆算。b≠c制約で与直線との同一直線退化(点が与直線上)を排除。",
+   "step_count": 2,
+   "operation": "平行→傾き−a、b＝q＋ap",
+   "answer_formula": "q1 + a1 * p1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    }
+   },
+   "computed_slots": {
+    "b1": {
+     "formula": "q1 + a1 * p1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "not_same_line",
+     "expr": "q1 + a1 * p1 != c1",
+     "why": "b＝cだと与直線と同一直線(点が与直線上)の退化"
+    },
+    {
+     "rule": "b_cap",
+     "expr": "q1 + a1 * p1 <= 28",
+     "why": "切片の暗算域"
+    }
+   ],
+   "sentence_templates": [
+    "直線 y＝−{a1}x＋{c1} に平行で、点({p1}，{q1})を通る直線の式を求めなさい。"
+   ],
+   "answer_template": "答え y＝−{a1}x＋{b1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c07_zoka_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c07_u01",
+   "unit_name": "1次関数",
+   "semantic_category": "1次関数・増加量(Δy＝aΔx)",
+   "semantic_note": "a負×Δx正→Δy負。切片cは答に無関係の攪乱値(切片を使わない理解の検査)。ad≠cの転記排除。",
+   "step_count": 1,
+   "operation": "Δy＝−a·Δx",
+   "answer_formula": "0 - a1 * d1",
+   "answer_domain": "any_int",
+   "answer_unit_system": "signed",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "ans_cap",
+     "expr": "a1 * d1 <= 30",
+     "why": "暗算域"
+    },
+    {
+     "rule": "no_transcribe_c",
+     "expr": "a1 * d1 != c1",
+     "why": "転記型リーク排除(|答|＝切片cの一致を排除)"
+    }
+   ],
+   "sentence_templates": [
+    "1次関数 y＝−{a1}x＋{c1} で、xの増加量が{d1}のときのyの増加量を求めなさい。"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "jhs_c07_heniki_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c07_u01",
+   "unit_name": "1次関数",
+   "semantic_category": "1次関数・変域(a正・0跨ぎ)",
+   "semantic_note": "増加関数の端点代入。y域が0を跨ぐ符号形(lo負・hi正)に固定=負数を含む変域処理のjhsらしさ。端点同順(逆転なし)でheniki_02と対。",
+   "step_count": 2,
+   "operation": "x∈[p，q] → y∈[ap−b，aq−b] (ap−b＜0＜aq−b)",
+   "answer_formula": "a1 * q1 - b1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      4
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      3,
+      15
+     ]
+    },
+    "p1": {
+     "type": "int",
+     "range": [
+      1,
+      3
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      3,
+      7
+     ]
+    }
+   },
+   "computed_slots": {
+    "lo1": {
+     "formula": "a1 * p1 - b1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "width",
+     "expr": "q1 >= p1 + 2",
+     "why": "区間の非退化(幅≧2)"
+    },
+    {
+     "rule": "lo_neg",
+     "expr": "b1 - a1 * p1 >= 1",
+     "why": "y下端が負(0跨ぎ符号形の固定)"
+    },
+    {
+     "rule": "hi_pos",
+     "expr": "a1 * q1 - b1 >= 1",
+     "why": "y上端が正(同上)"
+    },
+    {
+     "rule": "lo_cap",
+     "expr": "b1 - a1 * p1 <= 12",
+     "why": "端点絶対値キャップ(正の量で表現)"
+    },
+    {
+     "rule": "hi_cap",
+     "expr": "a1 * q1 - b1 <= 20",
+     "why": "端点キャップ"
+    }
+   ],
+   "sentence_templates": [
+    "1次関数 y＝{a1}x−{b1} について、xの変域が {p1}≦x≦{q1} のときのyの変域を求めなさい。"
+   ],
+   "answer_template": "答え {lo1_disp}≦y≦{ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "jhs_c07_heniki_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c07_u01",
+   "unit_name": "1次関数",
+   "semantic_category": "1次関数・変域(a負・端点逆転)",
+   "semantic_note": "減少関数→x左端がy上端に対応する端点逆転が主眼。y域0跨ぎ(lo負・hi正)も併置。c06heniki_02の1次関数版(切片あり)。",
+   "step_count": 2,
+   "operation": "x∈[p，q] → y∈[c−aq，c−ap] (逆転)",
+   "answer_formula": "c1 - a1 * p1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      4
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      3,
+      15
+     ]
+    },
+    "p1": {
+     "type": "int",
+     "range": [
+      1,
+      3
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      3,
+      7
+     ]
+    }
+   },
+   "computed_slots": {
+    "lo1": {
+     "formula": "c1 - a1 * q1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "width",
+     "expr": "q1 >= p1 + 2",
+     "why": "区間の非退化"
+    },
+    {
+     "rule": "hi_pos",
+     "expr": "c1 - a1 * p1 >= 1",
+     "why": "y上端が正(0跨ぎ符号形)"
+    },
+    {
+     "rule": "lo_neg",
+     "expr": "a1 * q1 - c1 >= 1",
+     "why": "y下端が負(同上・正の量で表現)"
+    },
+    {
+     "rule": "hi_cap",
+     "expr": "c1 - a1 * p1 <= 12",
+     "why": "端点キャップ"
+    },
+    {
+     "rule": "lo_cap",
+     "expr": "a1 * q1 - c1 <= 12",
+     "why": "端点絶対値キャップ"
+    }
+   ],
+   "sentence_templates": [
+    "1次関数 y＝−{a1}x＋{c1} について、xの変域が {p1}≦x≦{q1} のときのyの変域を求めなさい。"
+   ],
+   "answer_template": "答え {lo1_disp}≦y≦{ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "jhs_c07_graph_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c07_u01",
+   "unit_name": "1次関数",
+   "semantic_category": "1次関数・グラフ読み取り→式(a負)",
+   "semantic_note": "切片(0，b)と格子点(p，b−ap)の2点guides+座標表示から式を読む。a∈{−1,−2}(標準枠幾何・fmt_coef処理はc06pgraphと同系)。第2点のy座標は符号可変(x軸より下も出る)。",
+   "step_count": 2,
+   "operation": "切片b+傾き読み → y＝−ax＋b",
+   "answer_formula": "0 - av1",
+   "answer_domain": "any_int",
+   "answer_unit_system": "signed",
+   "slots": {
+    "av1": {
+     "type": "int",
+     "range": [
+      1,
+      2
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    },
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    }
+   },
+   "computed_slots": {
+    "y2v": {
+     "formula": "b1 - av1 * p1"
+    },
+    "na1": {
+     "formula": "0 - av1"
+    },
+    "ac1": {
+     "formula": "fmt_coef(0 - av1)"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "in_view",
+     "expr": "av1 * p1 - b1 <= 5",
+     "why": "第2点が標準枠内マージン1(|y|≦5・描画可能性・正の量で表現)"
+    }
+   ],
+   "sentence_templates": [
+    "図の直線は、ある1次関数のグラフである。yをxの式で表しなさい。"
+   ],
+   "answer_template": "答え y＝{ac1}x＋{b1}",
+   "figure_params": {
+    "kind": "xy_graph",
+    "fig_version": 2,
+    "view": {
+     "xmin": -6,
+     "xmax": 6,
+     "ymin": -6,
+     "ymax": 6,
+     "tick_x": 1,
+     "tick_y": 1,
+     "grid": true
+    },
+    "axis_labels": {
+     "x": "x",
+     "y": "y"
+    },
+    "elements": [
+     {
+      "type": "line",
+      "a": [
+       "{na1}",
+       1
+      ],
+      "b": [
+       "{b1}",
+       1
+      ]
+     },
+     {
+      "type": "point",
+      "x": [
+       0,
+       1
+      ],
+      "y": [
+       "{b1}",
+       1
+      ],
+      "guides": "none",
+      "show_coords": true
+     },
+     {
+      "type": "point",
+      "x": [
+       "{p1}",
+       1
+      ],
+      "y": [
+       "{y2v}",
+       1
+      ],
+      "guides": "both",
+      "show_coords": true
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "jhs_c07_kouten_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c07_u01",
+   "unit_name": "1次関数",
+   "semantic_category": "1次関数・2直線の交点(逆算生成)",
+   "semantic_note": "逆算生成: 交点(s，t)を先に引きc1＝a1s−t・c2＝a2s＋tを導出→格子交点が構成的に自動成立。傾きは正負対(a1正・−a2)で交差保証。c1∉{s,t}の紛れ排除。",
+   "step_count": 2,
+   "operation": "(s，t)先行 → c1＝a1s−t, c2＝a2s＋t → 交点求解",
+   "answer_formula": "s1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "s1": {
+     "type": "int",
+     "range": [
+      1,
+      4
+     ]
+    },
+    "t1": {
+     "type": "int",
+     "range": [
+      1,
+      5
+     ]
+    },
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      3
+     ]
+    },
+    "a2": {
+     "type": "int",
+     "range": [
+      2,
+      3
+     ]
+    }
+   },
+   "computed_slots": {
+    "c1v": {
+     "formula": "a1 * s1 - t1"
+    },
+    "c2v": {
+     "formula": "a2 * s1 + t1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "c1_floor",
+     "expr": "a1 * s1 - t1 >= 1",
+     "why": "c1≧1(−c1表記の符号形固定)"
+    },
+    {
+     "rule": "c1_cap",
+     "expr": "a1 * s1 - t1 <= 10",
+     "why": "暗算域"
+    },
+    {
+     "rule": "c2_cap",
+     "expr": "a2 * s1 + t1 <= 17",
+     "why": "暗算域"
+    },
+    {
+     "rule": "no_confuse_s",
+     "expr": "a1 * s1 - t1 != s1",
+     "why": "紛れ排除(c1＝sだと本文値と答x座標が一致)"
+    },
+    {
+     "rule": "no_confuse_t",
+     "expr": "a1 * s1 - t1 != t1",
+     "why": "紛れ排除(c1＝tだと本文値と答y座標が一致)"
+    }
+   ],
+   "sentence_templates": [
+    "2直線 y＝{a1}x−{c1v_disp} と y＝−{a2}x＋{c2v_disp} の交点の座標を求めなさい。"
+   ],
+   "answer_template": "答え ({s1}，{t1})",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2
+   ]
+  },
+  {
+   "pattern_id": "jhs_c07_jiku_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c07_u01",
+   "unit_name": "1次関数",
+   "semantic_category": "1次関数・x軸に平行な直線",
+   "semantic_note": "y＝定数の理解。答＝本文のy座標は本型の学習内容そのもの(どちらの座標が残るかの弁別)=転記検査の設計上例外(除外登録必要)。p≠qで座標弁別を実質化。負符号形(y＝−q)で写経性を1段緩和。",
+   "step_count": 1,
+   "operation": "点(p，−q)を通りx軸平行 → y＝−q",
+   "answer_formula": "0 - q1",
+   "answer_domain": "any_int",
+   "answer_unit_system": "signed",
+   "slots": {
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "discriminate",
+     "expr": "p1 != q1",
+     "why": "座標弁別の実質化(p＝qだとどちらを答えても同値になり検査力を失う)"
+    }
+   ],
+   "sentence_templates": [
+    "点({p1}，−{q1})を通り、x軸に平行な直線の式を求めなさい。"
+   ],
+   "answer_template": "答え y＝{ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c07_taiou_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c07_u01",
+   "unit_name": "1次関数",
+   "semantic_category": "1次関数・対応表の穴埋め",
+   "semantic_note": "逆算生成: (a，b)先行でy＝ax−bの対応列を導出。x行{1..5}定数・穴はx＝4固定。左端セルは符号可変(signed)。答∉{1..5}(x行定数との一致排除)。対応表3兄弟のc07担当。",
+   "step_count": 2,
+   "operation": "対応差分→a→ア＝4a−b",
+   "answer_formula": "4 * a1 - b1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      4
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      1,
+      5
+     ]
+    }
+   },
+   "computed_slots": {
+    "y1v": {
+     "formula": "a1 - b1"
+    },
+    "y2v": {
+     "formula": "2 * a1 - b1"
+    },
+    "y3v": {
+     "formula": "3 * a1 - b1"
+    },
+    "y5v": {
+     "formula": "5 * a1 - b1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_xlabel_collide",
+     "expr": "4 * a1 - b1 >= 6",
+     "why": "答がx行定数{1..5}と一致しない(紛れ排除)"
+    }
+   ],
+   "sentence_templates": [
+    "表は、yがxの1次関数である関係を表したものである。表のアにあてはまる数を求めなさい。"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "figure_params": {
+    "kind": "table",
+    "fig_version": 1,
+    "corner_label": "x",
+    "col_header": [
+     1,
+     2,
+     3,
+     4,
+     5
+    ],
+    "rows": [
+     {
+      "label": "y",
+      "values": [
+       "{y1v_disp}",
+       "{y2v_disp}",
+       "{y3v_disp}",
+       "ア",
+       "{y5v_disp}"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "jhs_c07_tsuten_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c07_u01",
+   "unit_name": "1次関数",
+   "semantic_category": "1次関数・交点を通る直線(逆算合成)",
+   "semantic_note": "kouten_01の逆算生成に傾き指定(−m)を合成: b＝t＋ms。m≠a2(答切片＝c2の一致排除が同値で成立)+2t≠(a1−m)s(答切片＝c1の一致排除)。整数保証が全段で連鎖。",
+   "step_count": 2,
+   "operation": "(s，t)先行 → 交点求解 → b＝t＋ms → y＝−mx＋b",
+   "answer_formula": "t1 + m1 * s1",
+   "slots": {
+    "s1": {
+     "type": "int",
+     "range": [
+      1,
+      4
+     ]
+    },
+    "t1": {
+     "type": "int",
+     "range": [
+      1,
+      5
+     ]
+    },
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      3
+     ]
+    },
+    "a2": {
+     "type": "int",
+     "range": [
+      2,
+      3
+     ]
+    },
+    "m1": {
+     "type": "int",
+     "range": [
+      2,
+      4
+     ]
+    }
+   },
+   "computed_slots": {
+    "c1v": {
+     "formula": "a1 * s1 - t1"
+    },
+    "c2v": {
+     "formula": "a2 * s1 + t1"
+    },
+    "bb1": {
+     "formula": "t1 + m1 * s1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "c1_floor",
+     "expr": "a1 * s1 - t1 >= 1",
+     "why": "c1≧1(符号形固定)"
+    },
+    {
+     "rule": "c1_cap",
+     "expr": "a1 * s1 - t1 <= 10",
+     "why": "暗算域"
+    },
+    {
+     "rule": "c2_cap",
+     "expr": "a2 * s1 + t1 <= 17",
+     "why": "暗算域"
+    },
+    {
+     "rule": "m_ne_a2",
+     "expr": "m1 != a2",
+     "why": "指定傾きが与直線2と一致する退化排除+答切片b＝c2の一致排除(b＝c2⟺m＝a2の同値)"
+    },
+    {
+     "rule": "b_ne_c1",
+     "expr": "2 * t1 != (a1 - m1) * s1",
+     "why": "答切片b＝c1の一致排除(b＝c1⟺2t＝(a1−m)s)"
+    },
+    {
+     "rule": "b_cap",
+     "expr": "t1 + m1 * s1 <= 20",
+     "why": "切片の暗算域"
+    }
+   ],
+   "sentence_templates": [
+    "2直線 y＝{a1}x−{c1v_disp} と y＝−{a2}x＋{c2v_disp} の交点を通り、傾きが−{m1}である直線の式を求めなさい。"
+   ],
+   "answer_template": "答え y＝−{m1}x＋{bb1}",
+   "answer_unit_system": "signed",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "傾"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2
+   ]
+  },
+  {
+   "pattern_id": "jhs_c07_zoka_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c07_u01",
+   "unit_name": "1次関数",
+   "semantic_category": "1次関数・増加量の逆向き(Δx＝Δy/a)",
+   "semantic_note": "zoka_01の逆。a|Δyの可除性構成。答∉{c，a由来}の転記排除(Δy＝a²で答＝aになる一致を排除)。",
+   "step_count": 1,
+   "operation": "Δx＝Δy/a",
+   "answer_formula": "dy1 // a1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "dy1": {
+     "type": "int",
+     "range": [
+      6,
+      36
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "dy1 % a1 == 0",
+     "why": "増加量の整数保証"
+    },
+    {
+     "rule": "ans_floor",
+     "expr": "dy1 // a1 >= 2",
+     "why": "Δx≧2(Δx＝1の自明除外)"
+    },
+    {
+     "rule": "ans_cap",
+     "expr": "dy1 // a1 <= 9",
+     "why": "暗算域"
+    },
+    {
+     "rule": "no_transcribe_c",
+     "expr": "dy1 // a1 != c1",
+     "why": "転記型リーク排除(答＝切片cの一致)"
+    },
+    {
+     "rule": "no_transcribe_a",
+     "expr": "dy1 != a1 * a1",
+     "why": "転記型リーク排除(Δy＝a²だと答＝aで本文値一致)"
+    }
+   ],
+   "sentence_templates": [
+    "1次関数 y＝{a1}x＋{c1} で、yの増加量が{dy1}のときのxの増加量を求めなさい。"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  }
+ ]
+}

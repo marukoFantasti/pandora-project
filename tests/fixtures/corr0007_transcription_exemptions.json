@@ -1,0 +1,9 @@
+{
+ "_comment": "corr-0007 転記検査(表示答え∈本文スロット値)の正当な例外リスト。将来の統一corr-0007ハーネスが参照する。以後の例外はここに pattern_id+理由 を追記して恒久化する。",
+ "exemptions": [
+  {
+   "pattern_id": "jhs_c07_jiku_01",
+   "reason": "答＝本文のy座標が学習内容そのもの(座標の弁別・軸に平行な直線の式)。転記ではなく座標概念の完備点。rationale _shared.transcription_exemption 参照。"
+  }
+ ]
+}

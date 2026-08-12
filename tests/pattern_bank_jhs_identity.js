@@ -126,6 +126,19 @@ const ID = {
   jhs_c06_bunsho_02: (e, ans) => e.u1 * ans === e.v1 * e.t1 && ans !== e.v1 && ans !== e.t1,                              // 反比例文章: u·答=vt
   jhs_c06_taiou_01: (e, ans) => ans === Math.floor(e.a1 / 3) && ![e.a1, Math.floor(e.a1 / 2), Math.floor(e.a1 / 4), Math.floor(e.a1 / 6)].includes(ans), // 対応表: 答∉表値
   jhs_c06_kouten_01: (e, ans) => { const t = Math.floor(e.k1 / e.s1), g = gcdH(t, e.s1); return e.k1 === e.s1 * t && ans === t / g && Math.floor(e.s1 / g) >= 2; }, // 交点既約表示: gcd検算∧s/g≧2
+  // --- c07 1次関数(1)：切片/傾き復元/変域/交点の逆算恒等 ---
+  jhs_c07_katamuki_01: (e, ans) => -e.a1 * e.p1 + ans === e.q1 && ans >= 6,                                               // −ap＋b＝q ∧ b≧6
+  jhs_c07_niten_01: (e, ans) => ans === e.a1 && (e.y2v - e.y1v) === e.a1 * (e.p2v - e.p1) && e.p2v === e.p1 + e.d1 && e.y1v === e.a1 * e.p1 - e.b1, // 2点が直線上∧差分傾き=a
+  jhs_c07_heikou_01: (e, ans) => -e.a1 * e.p1 + ans === e.q1 && ans !== e.c1,                                              // 平行+点通過∧b≠c
+  jhs_c07_zoka_01: (e, ans) => ans === -e.a1 * e.d1 && Math.abs(ans) !== e.c1,                                            // 増加量=−ad∧|答|≠c
+  jhs_c07_heniki_01: (e, ans) => e.lo1 === e.a1 * e.p1 - e.b1 && ans === e.a1 * e.q1 - e.b1 && e.lo1 <= -1 && ans >= 1,    // 変域端点∧lo≦−1∧hi≧1
+  jhs_c07_heniki_02: (e, ans) => ans === e.c1 - e.a1 * e.p1 && e.lo1 === e.c1 - e.a1 * e.q1 && ans >= 1 && e.lo1 <= -1,    // 逆転端点∧0跨ぎ
+  jhs_c07_graph_01: (e, ans) => ans === -e.av1 && e.y2v === -e.av1 * e.p1 + e.b1 && Math.abs(e.y2v) <= 5 && (ans === -1 || ans === -2), // グラフ読取: 第2点直線上∧|y2|≦5∧fmt_coef∈{−,−2}
+  jhs_c07_kouten_01: (e, ans) => e.c1v === e.a1 * e.s1 - e.t1 && e.c2v === e.a2 * e.s1 + e.t1 && ans === e.s1 && e.c1v !== e.s1 && e.c1v !== e.t1, // 両直線通過∧c1∉{s,t}
+  jhs_c07_jiku_01: (e, ans) => ans === -e.q1 && e.p1 !== e.q1,                                                            // 軸平行: 答＝−q∧p≠q
+  jhs_c07_taiou_01: (e, ans) => e.y2v - e.y1v === e.a1 && e.y3v - e.y2v === e.a1 && ans - e.y3v === e.a1 && e.y5v - ans === e.a1 && ans >= 6, // 対応表: セル等差=a悉皆∧答≧6
+  jhs_c07_tsuten_01: (e, ans) => ans === e.t1 + e.m1 * e.s1 && e.c1v === e.a1 * e.s1 - e.t1 && e.c2v === e.a2 * e.s1 + e.t1 && ans !== e.c1v && ans !== e.c2v && e.m1 !== e.a2, // 交点恒等∧新直線通過∧b∉{c1,c2}∧m≠a2
+  jhs_c07_zoka_02: (e, ans) => ans * e.a1 === e.dy1 && ans !== e.c1 && ans !== e.a1,                                      // 答×a＝Δy∧答∉{c,a}
 };
 
 const bankFiles = fs.readdirSync(path.join(ROOT, 'pattern_bank'))

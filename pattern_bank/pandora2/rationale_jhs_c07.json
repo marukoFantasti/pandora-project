@@ -1,0 +1,141 @@
+{
+  "_meta": {
+    "schema": "rationale_schema_spec.md v1.0",
+    "scope": "jhs c07 1次関数・その1(12パターン・B層)",
+    "note": "共通設計判断: _shared.jhs_c07_ichiji。逆算生成主体の章(答先行抽選→本文値導出で整数保証が連鎖)。"
+  },
+  "_shared": {
+    "jhs_c07_ichiji": {
+      "representation": "符号形選定: 式決定系はa負b正(b＝q＋apでb正が自動成立する側)、変域は2形とも0跨ぎy域(負数を含む変域処理=jhsらしさ)に固定。座標・変域端点の符号可変値は全てsigned _disp経由で本文表示(computed生値の本文露出はverify照合で構造的に不能)。テンプレ定数「1次関数」「2直線」「2点」の数字はtemplate_number_constantsに登録。",
+      "constructive_guarantees": "逆算生成の連鎖が本章の核: niten(a,b先行→2点導出)・kouten(交点(s,t)先行→切片導出)・tsuten(kouten合成+b＝t＋ms)・taiou(a,b先行→対応列導出)。いずれも可除性制約が不要になり棄却が軽い。転記排除の適用範囲を本章で明文化: スカラー答は全面適用(zoka系のad≠c等)、複合答(式・座標対・変域)は成分一致まで締めず紛れ排除のみ併置(kouten: c1∉{s,t}、tsuten: b∉{c1,c2}を同値変形で保証)。",
+      "transcription_exemption": "jiku_01は「答＝本文のy座標」が学習内容そのもの(座標弁別)であり、転記検査ハーネス(corr-0007 generalization)の設計上例外。ハーネス側に除外登録が必要(配線指示に含める)。p≠q制約で弁別の検査力を確保し、負符号形で写経性を1段緩和。",
+      "kanji_note": "c07のjhs配当宣言(最小宣言方針): 割(変化の割合・katamuki_01)・傾(傾き・tsuten_01)・軸(x軸・jiku_01)。軸は機械検収で検出→宣言追加(ストレスが漢字方針の検出器として機能した記録)。",
+      "directives": [
+        {"text": "B層配分増強裁可(c07は9→12: 対応表・交点を通る直線・増加量逆向きを前倒し)", "by": "marko", "date": "2026-08-10"},
+        {"text": "B層量産続行承認(c06完了後)", "by": "marko", "date": "2026-08-10"}
+      ]
+    }
+  },
+  "rationales": {
+    "jhs_c07_katamuki_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c07_u01", "unit_name": "1次関数", "semantic_territory": "変化の割合+1点→式", "number_domain": "整数(a負・b正6〜30)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c07_ichiji.directives"},
+      "source_features": "傾きと1点から式。b＝q−apの符号処理が主眼。",
+      "representation": "a負×正域点でb＝q＋ap>0が自動成立(引き算の借りが出ない側の符号形)。",
+      "constructive_guarantees": "b正の構成的保証(制約不要)。b≠p,q,cは値域で自動成立(b≧6)。恒等: 点通過(−ap＋b＝q)。",
+      "semantic_position": "c07式決定系の基底。c06prop_01の1次関数版。",
+      "exclusions": "a正版(b負処理)は鏡像で第2波。分数aは第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c07_niten_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c07_u01", "unit_name": "1次関数", "semantic_territory": "2点→式", "number_domain": "整数(y座標符号可変)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c07_ichiji.directives"},
+      "source_features": "2点から傾き・切片。連立または傾き公式。",
+      "representation": "逆算生成: (a，b)先行→2点(p，ap−b)・(p＋d，…)導出。y座標signed表示で負座標を自然に含む。",
+      "constructive_guarantees": "傾き整数が構成的に自動(可除性制約ゼロ)。答スロット(a，b)は本文非出現=転記構造ゼロの理想形。恒等: 2点通過+差分から傾き復元。",
+      "semantic_position": "式決定系の中核。kouten_01と逆算生成の型を共有。",
+      "exclusions": "x座標負の点は座標表示の符号形が増えるため第2波。分数傾き(可除性が壊れる2点)は構造排除。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c07_heikou_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c07_u01", "unit_name": "1次関数", "semantic_territory": "平行条件+1点→式", "number_domain": "整数(b正≦28)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c07_ichiji.directives"},
+      "source_features": "平行⟺傾き相等の適用+b逆算。",
+      "representation": "katamuki_01と同じa負b正側。",
+      "constructive_guarantees": "b≠c制約: b＝cは与直線と同一直線(点が与直線上にある退化)。恒等: 点通過。",
+      "semantic_position": "katamuki_01の条件読み替え版。",
+      "exclusions": "垂直条件は中学範囲外。y軸上の点を通る形(b直読)は自明で除外。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c07_zoka_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c07_u01", "unit_name": "1次関数", "semantic_territory": "増加量(順)", "number_domain": "整数(答負・signed)", "answer_structure": "single", "figure": "なし", "step_count": 1, "directives_ref": "_shared.jhs_c07_ichiji.directives"},
+      "source_features": "Δy＝aΔx。切片が無関係であることの理解。",
+      "representation": "切片cを攪乱値として本文に置く(答に使わない値の弁別=検査設計)。a負でΔy負。",
+      "constructive_guarantees": "ad≠c(転記排除)。ad≠a・ad≠dは|a|,d≧2で自動。恒等: 答＝−ad。",
+      "semantic_position": "zoka_02(逆向き)と対。変化の割合概念の直接適用。",
+      "exclusions": "Δx負(増加量が負)は用語の混乱を招くため第2波(要文言裁可)。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c07_heniki_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c07_u01", "unit_name": "1次関数", "semantic_territory": "変域(a正)", "number_domain": "整数端点(0跨ぎ)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c07_ichiji.directives"},
+      "source_features": "増加関数の端点代入(同順)。",
+      "representation": "y域0跨ぎ符号形(lo負・hi正)に固定: 負数を含む1次式評価がjhs新規性。両端signed表示。",
+      "constructive_guarantees": "lo≦−1∧hi≧1の両側制約で0跨ぎを構成保証。恒等: 両端点代入。",
+      "semantic_position": "heniki_02(逆転)との対で「a符号→端点対応」を完備。c06heniki系の1次関数版。",
+      "exclusions": "y域が片符号に収まる形は自明側で第2波。x域が負を含む形は符号形展開で第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c07_heniki_02": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c07_u01", "unit_name": "1次関数", "semantic_territory": "変域(a負・逆転)", "number_domain": "整数端点(0跨ぎ)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c07_ichiji.directives"},
+      "source_features": "減少関数→x左端がy上端。端点入替が主眼。",
+      "representation": "heniki_01と同一テンプレ構造で式の符号のみ反転(対比学習を成立させる平行設計)。",
+      "constructive_guarantees": "0跨ぎ両側制約+逆転の恒等(y(p)＝hi・y(q)＝lo)。",
+      "semantic_position": "c06heniki_02の切片つき版。",
+      "exclusions": "同上。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c07_graph_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c07_u01", "unit_name": "1次関数", "semantic_territory": "グラフ読み取り→式", "number_domain": "整数(a∈{−1,−2}・b∈[2,5])", "answer_structure": "single", "figure": "xy_graph v2", "step_count": 2, "directives_ref": "_shared.jhs_c07_ichiji.directives"},
+      "source_features": "切片と格子点の2点読み。y＝ax＋bのグラフ的理解。",
+      "representation": "切片(0，b)+第2点(p，b−ap)の2点座標表示。第2点y座標は符号可変(x軸の下も出る=負域の実利用)。答はfmt_coef(±1処理)。",
+      "constructive_guarantees": "in_view制約(|y2|≦5・正の量表現)。描画悉皆28組全適合(c06pgraphの5組から大幅拡大: 切片自由度の効果)。恒等: 第2点が直線上。",
+      "semantic_position": "c06pgraph_01の切片つき版。答種8(pgraphの2から改善)。",
+      "exclusions": "a正版・分数傾き(2目盛で1上がる型)は第2波。切片負版は鏡像で第2波。",
+      "figure_notes": "line(a負b正)+切片点(guides不要・軸上)+第2点(guides both)。2点の座標ラベルはp≧2で分離。y2＝0(x切片)も許容(軸上ラベルの目視確認対象)。",
+      "pedagogy": []
+    },
+    "jhs_c07_kouten_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c07_u01", "unit_name": "1次関数", "semantic_territory": "2直線の交点", "number_domain": "整数格子交点(Q1)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c07_ichiji.directives"},
+      "source_features": "連立方程式の図形的意味。",
+      "representation": "傾き正負対(a1・−a2)で交差が構造保証(平行退化ゼロ)。逆算生成: (s，t)先行→c1・c2導出。",
+      "constructive_guarantees": "格子交点が構成的に自動成立(可除性制約ゼロ)。紛れ排除c1∉{s,t}。c2>s,tは値域で自動。恒等: 両直線通過。",
+      "semantic_position": "c04連立の関数的再文脈化。tsuten_01の部品。",
+      "exclusions": "同符号傾き対(交差条件の場合分けが要る)・分数交点は第2波。図あり版(2直線+交点)は目視検収後の第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c07_jiku_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c07_u01", "unit_name": "1次関数", "semantic_territory": "x軸に平行な直線", "number_domain": "整数(y＝−q)", "answer_structure": "single", "figure": "なし", "step_count": 1, "directives_ref": "_shared.jhs_c07_ichiji.directives"},
+      "source_features": "y＝定数の理解(傾き0)。どちらの座標が式に残るかの弁別。",
+      "representation": "負符号形(点(p，−q)→y＝−q)。",
+      "constructive_guarantees": "p≠q(弁別の検査力確保)。**転記検査の設計上例外**(_shared.transcription_exemption参照・答＝本文値が学習内容)。",
+      "semantic_position": "座標概念の完備点。y軸平行(x＝p・関数でない)は概念上の対だが式の型が異なるため第2波で別途。",
+      "exclusions": "y軸平行版は第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c07_taiou_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c07_u01", "unit_name": "1次関数", "semantic_territory": "対応表の穴埋め", "number_domain": "整数(等差列・左端符号可変)", "answer_structure": "single", "figure": "table", "step_count": 2, "directives_ref": "_shared.jhs_c07_ichiji.directives"},
+      "source_features": "対応表の等差構造から1次関数を読む。",
+      "representation": "逆算生成(a，b先行)。x行{1..5}定数・穴x＝4固定(c06taiouと共通規約)。左端セルa−bは符号可変(signed)でjhsらしさ。",
+      "constructive_guarantees": "答≧6(x行定数{1..5}との一致排除)。恒等: セル列の等差＝a悉皆。",
+      "semantic_position": "対応表3兄弟のc07担当(式でなく値を問う=c06と問い方を分担)。",
+      "exclusions": "式を問う形は採点欄がc06と重複するため値問いに固定。x＝0列(切片直読)は自明化するため除外。",
+      "figure_notes": "table流用・横型(c06taiouと同形)。セルは全て_disp参照(符号可変値の表示層一貫)。",
+      "pedagogy": []
+    },
+    "jhs_c07_tsuten_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c07_u01", "unit_name": "1次関数", "semantic_territory": "交点を通る直線", "number_domain": "整数(b＝t＋ms≦20)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c07_ichiji.directives"},
+      "source_features": "交点求解→式決定の合成(章内技能の統合点)。",
+      "representation": "kouten_01の構成に傾き指定−mを合成。b＝t＋msが正で自動成立。",
+      "constructive_guarantees": "m≠a2(傾き退化排除と答切片b＝c2排除が同値で同時成立)+2t≠(a1−m)s(b＝c1排除の同値変形)。恒等: 交点通過3本(与2直線+新直線)。",
+      "semantic_position": "B層c07の頂点(kouten+katamukiの合成)。",
+      "exclusions": "「交点とy軸上の点を通る」等の条件変種は第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c07_zoka_02": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c07_u01", "unit_name": "1次関数", "semantic_territory": "増加量(逆向き)", "number_domain": "整数(Δx 2〜9)", "answer_structure": "single", "figure": "なし", "step_count": 1, "directives_ref": "_shared.jhs_c07_ichiji.directives"},
+      "source_features": "Δx＝Δy/a。除算方向の理解(順方向との弁別)。",
+      "representation": "a正形(Δy正÷a正)。切片cは攪乱値(zoka_01と共通設計)。",
+      "constructive_guarantees": "a|Δy可除性+答≠c+Δy≠a²(答＝a一致排除)+Δx≧2(自明除外)。恒等: 答×a＝Δy。",
+      "semantic_position": "zoka_01の逆。除算が入るためa負形は符号処理が重く第2波。",
+      "exclusions": "a負版は第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    }
+  }
+}
