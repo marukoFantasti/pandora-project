@@ -1,0 +1,84 @@
+{
+ "schema_version": "1.0",
+ "grade": "jhs",
+ "description": "jhs数学バンク B層 c18追補(数表版・2パターン): y＝ax²対応表の式決定・穴埋め。対応表3兄弟(c06反比例/c07 1次関数/c18 y＝ax²)の完結。既存patterns_jhs_c18.jsonのpatterns配列へ加法マージ(ID・unit_id重複はハーネス関門で検査)。",
+ "answer_structures": ["single"],
+ "shared_lexicon": {"comment": "レキシコン不要。"},
+ "patterns": [
+  {
+   "pattern_id": "jhs_c18_taiou_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c18_u01",
+   "unit_name": "関数y＝ax²",
+   "semantic_category": "y＝ax²・対応表から式の決定",
+   "semantic_note": "x行は{2,3,4,5}定数(x＝1列を除外: y(1)＝aの直読を排除し比の思考を要求。答aが図に非出現になる転記構造ゼロの効果も同時に得る)。全セル＝a·x²で整数が自動。²はUnicode上付き直書き(規約7)。",
+   "step_count": 2,
+   "operation": "a＝y/x² → y＝ax²",
+   "answer_formula": "a1",
+   "slots": {
+    "a1": {"type": "int", "range": [2, 4]}
+   },
+   "computed_slots": {
+    "y2v": {"formula": "4 * a1"},
+    "y3v": {"formula": "9 * a1"},
+    "y4v": {"formula": "16 * a1"},
+    "y5v": {"formula": "25 * a1"}
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "表は、yがxの2乗に比例する関係を表したものである。yをxの式で表しなさい。"
+   ],
+   "answer_template": "答え y＝{a1}x²",
+   "figure_params": {
+    "kind": "table",
+    "fig_version": 1,
+    "corner_label": "x",
+    "col_header": [2, 3, 4, 5],
+    "rows": [
+     {"label": "y", "values": ["{y2v}", "{y3v}", "{y4v}", "{y5v}"]}
+    ]
+   },
+   "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+   "answer_structure": "single",
+   "template_number_constants": [2]
+  },
+  {
+   "pattern_id": "jhs_c18_taiou_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c18_u01",
+   "unit_name": "関数y＝ax²",
+   "semantic_category": "y＝ax²・対応表の穴埋め",
+   "semantic_note": "穴はx＝4固定(3兄弟共通規約)。a＝y(2)/4を読み→ア＝16a。答16aは他セル{4a,9a,25a}と係数の相異で不衝突・x行定数{2..5}とも16a≧32で不衝突(構成保証)。",
+   "step_count": 2,
+   "operation": "a＝y(2)/4 → ア＝16a",
+   "answer_formula": "16 * a1",
+   "slots": {
+    "a1": {"type": "int", "range": [2, 4]}
+   },
+   "computed_slots": {
+    "y2v": {"formula": "4 * a1"},
+    "y3v": {"formula": "9 * a1"},
+    "y5v": {"formula": "25 * a1"}
+   },
+   "value_constraints": [
+    {"rule": "no_xlabel_collide", "expr": "16 * a1 >= 32", "why": "答がx行定数{2..5}・他セルと一致しない(値域で自動成立・二重化)"}
+   ],
+   "sentence_templates": [
+    "表は、yがxの2乗に比例する関係を表したものである。表のアにあてはまる数を求めなさい。"
+   ],
+   "answer_template": "答え {ans}",
+   "figure_params": {
+    "kind": "table",
+    "fig_version": 1,
+    "corner_label": "x",
+    "col_header": [2, 3, 4, 5],
+    "rows": [
+     {"label": "y", "values": ["{y2v}", "{y3v}", "ア", "{y5v}"]}
+    ]
+   },
+   "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
+   "answer_structure": "single",
+   "template_number_constants": [2]
+  }
+ ]
+}

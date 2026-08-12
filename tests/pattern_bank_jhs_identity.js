@@ -148,6 +148,9 @@ const ID = {
   jhs_c08_ryokin_01: (e, ans) => e.pa1 + ans * e.qa1 === e.pb1 + ans * e.qb1 && ans !== e.qb1,                            // 等額式両辺一致 ∧ 答≠qB
   jhs_c08_haisui_01: (e, ans) => ans === e.v1 * e.t1 && e.vv1 === ans && ans >= 24 && ans <= 100,                         // y(T)=0 ∧ 24≦V≦100
   jhs_c08_dankai_01: (e, ans) => ans === e.p1 - e.u1 * e.t01 && e.cc1 === ans && ans % 50 === 0 && ans !== e.u1,          // y(t0)=p ∧ 切片%50=0 ∧ 切片≠u
+  // --- c18追補 数表版 y=ax²：全セル y/x²=a 悉皆 ---
+  jhs_c18_taiou_01: (e, ans) => e.y2v === e.a1 * 4 && e.y3v === e.a1 * 9 && e.y4v === e.a1 * 16 && e.y5v === e.a1 * 25 && ans === e.a1, // 全セル y_i=a·i²(x=2,3,4,5)∧答=a
+  jhs_c18_taiou_02: (e, ans) => e.y2v === e.a1 * 4 && e.y3v === e.a1 * 9 && e.y5v === e.a1 * 25 && ans === e.a1 * 16 && ![e.y2v, e.y3v, e.y5v].includes(ans) && ans >= 32, // 比悉皆∧答=a·16∉{他セル}∧答≧32
 };
 
 const bankFiles = fs.readdirSync(path.join(ROOT, 'pattern_bank'))
