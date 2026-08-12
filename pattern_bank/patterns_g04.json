@@ -1,1499 +1,1519 @@
 {
-  "schema_version": "0.8",
-  "description": "小4パターンバンク セッション1: 純計算・文章題(経路A)+ がい数/帯分数スキーマ拡張 + figure_params基盤(面積・角度)。",
-  "source_analysis": "標準的な小4算数カリキュラム（大きい数の計算・整数/小数のわり算・小数の四則・計算のきまり・□を使った式・がい数・分数(帯分数)・面積・角度）の単元構成に基づく設計。実データは含めない。",
-  "answer_structures": {
-    "single": "単一の数値・式",
-    "comparison": "求差の二部構成（誰が/どちらが + 差）",
-    "round_range": "がい数の範囲解答（『X以上Y未満』。round_range_lower/upper_excl で機械導出。comparison と同格の明示種別）"
-  },
-  "figure_note": "figure_params は kind + スロット参照。make_problem が本文と同一の env で解決するため、図中数値と問題文の食い違いが構造的に起きない。描画は pattern_bank/figure_builder.js（両テンプレ共有・二重実装しない）。fig_version はkind追加時の後方互換用。",
-  "shared_lexicon": {
-    "comment": "g02/g03 から actors を継承。文章題用に割り切れる文脈の object を用意。すべて g01〜g04 配当漢字またはひらがな。",
-    "actors": [
-      "たろうさん",
-      "はなこさん",
-      "ゆうたさん",
-      "さくらさん",
-      "けんとさん",
-      "みおさん"
-    ],
-    "div_object_pairs": [
-      {
-        "object": "色紙",
-        "counter": "まい",
-        "verb_use": "つかいました"
-      },
-      {
-        "object": "カード",
-        "counter": "まい",
-        "verb_use": "つかいました"
-      },
-      {
-        "object": "りんご",
-        "counter": "こ",
-        "verb_use": "配りました"
-      },
-      {
-        "object": "あめ",
-        "counter": "こ",
-        "verb_use": "配りました"
-      }
-    ],
-    "big_units": [
-      "万",
-      "億"
-    ],
-    "box_ops": [
-      {
-        "op": "add",
-        "shown": "□＋{a}＝{b}",
-        "solve": "□＝{b}－{a}"
-      },
-      {
-        "op": "sub",
-        "shown": "□－{a}＝{b}",
-        "solve": "□＝{b}＋{a}"
-      },
-      {
-        "op": "mult",
-        "shown": "□×{a}＝{b}",
-        "solve": "□＝{b}÷{a}"
-      },
-      {
-        "op": "div",
-        "shown": "□÷{a}＝{b}",
-        "solve": "□＝{b}×{a}"
-      }
-    ],
-    "dec_containers": [
-      {
-        "noun": "リボン",
-        "unit": "m",
-        "add_a": "長いリボンが",
-        "add_b": "短いリボンが",
-        "mult_counter": "本",
-        "dv_counter": "本",
-        "dv_vessel": "",
-        "dv_qword": "長さ",
-        "dv_verb": "切り分けます",
-        "dv_per": "1本分"
-      },
-      {
-        "noun": "水",
-        "unit": "L",
-        "add_a": "大きいびんに水が",
-        "add_b": "小さいびんに水が",
-        "mult_counter": "本",
-        "dv_counter": "本",
-        "dv_vessel": "のびん",
-        "dv_qword": "かさ",
-        "dv_verb": "分けます",
-        "dv_per": "1本分"
-      },
-      {
-        "noun": "さとう",
-        "unit": "kg",
-        "add_a": "大きいふくろにさとうが",
-        "add_b": "小さいふくろにさとうが",
-        "mult_counter": "ふくろ",
-        "dv_counter": "つ",
-        "dv_vessel": "のふくろ",
-        "dv_qword": "重さ",
-        "dv_verb": "分けます",
-        "dv_per": "1つ分"
-      }
-    ]
-  },
-  "patterns": [
-    {
-      "pattern_id": "g04_bignum_calc_01",
-      "grade": "g04",
-      "unit_id": "g04_c01_u03",
-      "unit_name": "大きい数の計算",
-      "semantic_category": "大きな数の加減",
-      "semantic_note": "万・億の単位をそろえた加減。単位語を固定し、係数の整数演算に還元する。",
-      "step_count": 1,
-      "operation": "n1 + n2 (単位語つき)",
-      "answer_formula": "n1 + n2",
-      "answer_unit_from": "unit",
-      "slots": {
-        "unit": {
-          "from": "big_units"
-        },
-        "n1": {
-          "type": "int",
-          "range": [
-            2,
-            89
-          ]
-        },
-        "n2": {
-          "type": "int",
-          "range": [
-            2,
-            89
-          ]
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "no_carry_over_100",
-          "expr": "n1 + n2 <= 99",
-          "why": "同じ位の中で完結（位上がりで単位が変わらない）"
-        }
-      ],
-      "sentence_templates": [
-        "次の計算をしなさい。{n1}{unit}+{n2}{unit}"
-      ],
-      "answer_template": "しき {n1}{unit}+{n2}{unit}={ans}{unit} 答え {ans}{unit}",
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ]
-      },
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "g04_div_1digit_01",
-      "grade": "g04",
-      "unit_id": "g04_c03_u01",
-      "unit_name": "1けたの数でわるわり算",
-      "semantic_category": "わり算(1けた・あまりあり)",
-      "semantic_note": "2〜3けた÷1けた。あまりのある除法。商とあまりの整数演算に還元。",
-      "step_count": 1,
-      "operation": "n1 ÷ n2 = 商 あまり r",
-      "answer_formula": "n1 // n2",
-      "slots": {
-        "n1": {
-          "type": "int",
-          "range": [
-            23,
-            97
-          ]
-        },
-        "n2": {
-          "type": "int",
-          "range": [
-            3,
-            8
-          ]
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "has_remainder",
-          "expr": "n1 % n2 >= 1",
-          "why": "あまりが出る"
-        },
-        {
-          "rule": "quotient_2digit",
-          "expr": "10 <= n1 // n2 <= 30",
-          "why": "商が2けた程度に収まる"
-        }
-      ],
-      "sentence_templates": [
-        "次の計算をしなさい。{n1}÷{n2}"
-      ],
-      "answer_template": "しき {n1}÷{n2}={ans}あまり{r} 答え {ans}あまり{r}",
-      "computed_slots": {
-        "r": {
-          "formula": "n1 % n2"
-        }
-      },
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ]
-      },
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "g04_div_2digit_01",
-      "grade": "g04",
-      "unit_id": "g04_c07_u01",
-      "unit_name": "2けたの数でわるわり算",
-      "semantic_category": "わり算(2けた・あまりあり)",
-      "semantic_note": "2〜3けた÷2けた。商1けた・あまりあり。整数演算に還元。",
-      "step_count": 1,
-      "operation": "n1 ÷ n2 = 商 あまり r",
-      "answer_formula": "n1 // n2",
-      "slots": {
-        "n1": {
-          "type": "int",
-          "range": [
-            40,
-            290
-          ]
-        },
-        "n2": {
-          "type": "int",
-          "range": [
-            12,
-            39
-          ]
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "has_remainder",
-          "expr": "n1 % n2 >= 1",
-          "why": "あまりが出る"
-        },
-        {
-          "rule": "quotient_1digit",
-          "expr": "2 <= n1 // n2 <= 9",
-          "why": "商が1けた（見当をつける学習の範囲）"
-        }
-      ],
-      "sentence_templates": [
-        "次の計算をしなさい。{n1}÷{n2}"
-      ],
-      "answer_template": "しき {n1}÷{n2}={ans}あまり{r} 答え {ans}あまり{r}",
-      "computed_slots": {
-        "r": {
-          "formula": "n1 % n2"
-        }
-      },
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ]
-      },
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "g04_dec_addsub_01",
-      "grade": "g04",
-      "unit_id": "g04_c06_u03",
-      "unit_name": "小数のたし算とひき算",
-      "semantic_category": "小数の加減",
-      "semantic_note": "1/10の位までの小数の加減。内部は1/10単位の整数、表示は dec1。文章題化(合併)。",
-      "step_count": 1,
-      "operation": "q1 + q2 (0.1単位の整数)",
-      "answer_formula": "q1 + q2",
-      "answer_unit_system": "dec1",
-      "slots": {
-        "add_a": {
-          "from": "dec_containers[j].add_a"
-        },
-        "add_b": {
-          "from": "dec_containers[j].add_b"
-        },
-        "unit": {
-          "from": "dec_containers[j].unit"
-        }
-      },
-      "quantity_slots": {
-        "q1": {
-          "unit_system": "dec1",
-          "range": [
-            12,
-            89
-          ]
-        },
-        "q2": {
-          "unit_system": "dec1",
-          "range": [
-            12,
-            89
-          ]
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "both_decimal",
-          "expr": "(q1 % 10) > 0 and (q2 % 10) > 0",
-          "why": "両方とも小数第一位がある"
-        }
-      ],
-      "sentence_templates": [
-        "{add_a}{q1_disp}{unit}、{add_b}{q2_disp}{unit}あります。あわせて何{unit}ありますか。"
-      ],
-      "answer_template": "しき {q1_disp}+{q2_disp}={ans_disp} 答え {ans_disp}{unit}",
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ]
-      },
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "g04_dec_mult_01",
-      "grade": "g04",
-      "unit_id": "g04_c11_u01",
-      "unit_name": "小数×整数",
-      "semantic_category": "小数×整数",
-      "semantic_note": "1/10の位の小数×整数。内部は0.1単位の整数×整数、表示は dec1。",
-      "step_count": 1,
-      "operation": "q1 × n (0.1単位)",
-      "answer_formula": "q1 * n",
-      "answer_unit_system": "dec1",
-      "slots": {
-        "noun": {
-          "from": "dec_containers[j].noun"
-        },
-        "unit": {
-          "from": "dec_containers[j].unit"
-        },
-        "mc": {
-          "from": "dec_containers[j].mult_counter"
-        },
-        "n": {
-          "type": "int",
-          "range": [
-            2,
-            8
-          ]
-        }
-      },
-      "quantity_slots": {
-        "q1": {
-          "unit_system": "dec1",
-          "range": [
-            12,
-            48
-          ]
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "is_decimal",
-          "expr": "(q1 % 10) > 0",
-          "why": "小数第一位がある"
-        }
-      ],
-      "sentence_templates": [
-        "1{mc}{q1_disp}{unit}の{noun}が{n}{mc}あります。ぜんぶで何{unit}ありますか。"
-      ],
-      "answer_template": "しき {q1_disp}×{n}={ans_disp} 答え {ans_disp}{unit}",
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ]
-      },
-      "answer_structure": "single",
-      "template_number_constants": [
-        1
-      ]
-    },
-    {
-      "pattern_id": "g04_dec_div_01",
-      "grade": "g04",
-      "unit_id": "g04_c11_u03",
-      "unit_name": "小数÷整数②",
-      "semantic_category": "小数÷整数(割り切れる)",
-      "semantic_note": "0.1単位の整数が整数で割り切れる小数の除法。表示は dec1。",
-      "step_count": 1,
-      "operation": "q1 ÷ n (0.1単位)",
-      "answer_formula": "q1 // n",
-      "answer_unit_system": "dec1",
-      "slots": {
-        "noun": {
-          "from": "dec_containers[j].noun"
-        },
-        "unit": {
-          "from": "dec_containers[j].unit"
-        },
-        "dvc": {
-          "from": "dec_containers[j].dv_counter"
-        },
-        "dvv": {
-          "from": "dec_containers[j].dv_vessel"
-        },
-        "dvq": {
-          "from": "dec_containers[j].dv_qword"
-        },
-        "dvverb": {
-          "from": "dec_containers[j].dv_verb"
-        },
-        "dvper": {
-          "from": "dec_containers[j].dv_per"
-        },
-        "n": {
-          "type": "int",
-          "range": [
-            2,
-            6
-          ]
-        }
-      },
-      "quantity_slots": {
-        "q1": {
-          "unit_system": "dec1",
-          "range": [
-            24,
-            96
-          ]
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "divisible",
-          "expr": "q1 % n == 0",
-          "why": "0.1単位で割り切れる"
-        },
-        {
-          "rule": "is_decimal_ans",
-          "expr": "(q1 // n) % 10 > 0",
-          "why": "商が小数になる"
-        }
-      ],
-      "sentence_templates": [
-        "{q1_disp}{unit}の{noun}を、{n}{dvc}{dvv}に同じ{dvq}ずつ{dvverb}。{dvper}は何{unit}ですか。"
-      ],
-      "answer_template": "しき {q1_disp}÷{n}={ans_disp} 答え {ans_disp}{unit}",
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ]
-      },
-      "answer_structure": "single",
-      "template_number_constants": [
-        1
-      ]
-    },
-    {
-      "pattern_id": "g04_order_01",
-      "grade": "g04",
-      "unit_id": "g04_c09_u01",
-      "unit_name": "計算のじゅんじょ",
-      "semantic_category": "四則の順序(かっこ)",
-      "semantic_note": "かっこを先に計算する順序の理解。( )内の和を先に、その後にかけ算。",
-      "step_count": 2,
-      "operation": "(n1 + n2) × n3",
-      "answer_formula": "(n1 + n2) * n3",
-      "slots": {
-        "n1": {
-          "type": "int",
-          "range": [
-            12,
-            48
-          ]
-        },
-        "n2": {
-          "type": "int",
-          "range": [
-            12,
-            48
-          ]
-        },
-        "n3": {
-          "type": "int",
-          "range": [
-            2,
-            7
-          ]
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "sum_round",
-          "expr": "(n1 + n2) % 10 == 0",
-          "why": "かっこの和がキリの良い数（順序で楽になる）"
-        }
-      ],
-      "sentence_templates": [
-        "次の計算をしなさい。（{n1}+{n2}）×{n3}"
-      ],
-      "answer_template": "しき {n1}+{n2}={mid} {mid}×{n3}={ans} 答え {ans}",
-      "computed_slots": {
-        "mid": {
-          "formula": "n1 + n2"
-        }
-      },
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ]
-      },
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "g04_box_add_01",
-      "grade": "g04",
-      "unit_id": "g04_c09_u04",
-      "unit_name": "□を使った式",
-      "semantic_category": "□を使った式(たし算)",
-      "semantic_note": "□＋a＝b から □＝b－a を逆算。表示式と解法式が別（inverse_thinking）。",
-      "inverse_thinking": true,
-      "step_count": 1,
-      "operation": "□ + a = b → □ = b - a",
-      "answer_formula": "b - a",
-      "slots": {
-        "a": {
-          "type": "int",
-          "range": [
-            12,
-            79
-          ]
-        },
-        "b": {
-          "type": "int",
-          "range": [
-            40,
-            150
-          ]
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "box_positive",
-          "expr": "b - a >= 11",
-          "why": "□が2けた程度の正の数"
-        }
-      ],
-      "sentence_templates": [
-        "次の□にあてはまる数を求めなさい。□+{a}={b}"
-      ],
-      "answer_template": "しき □={b}-{a}={ans} 答え {ans}",
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ]
-      },
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "g04_box_mult_01",
-      "grade": "g04",
-      "unit_id": "g04_c09_u04",
-      "unit_name": "□を使った式",
-      "semantic_category": "□を使った式(かけ算)",
-      "semantic_note": "□×a＝b から □＝b÷a を逆算。□が整数になるよう割り切れ制約。",
-      "inverse_thinking": true,
-      "step_count": 1,
-      "operation": "□ × a = b → □ = b ÷ a",
-      "answer_formula": "b // a",
-      "slots": {
-        "a": {
-          "type": "int",
-          "range": [
-            3,
-            9
-          ]
-        },
-        "b": {
-          "type": "int",
-          "range": [
-            12,
-            81
-          ]
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "divisible",
-          "expr": "b % a == 0",
-          "why": "□が整数になる"
-        },
-        {
-          "rule": "box_2to9",
-          "expr": "2 <= b // a <= 9",
-          "why": "□が九九の範囲"
-        }
-      ],
-      "sentence_templates": [
-        "次の□にあてはまる数を求めなさい。□×{a}={b}"
-      ],
-      "answer_template": "しき □={b}÷{a}={ans} 答え {ans}",
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ]
-      },
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "g04_gaisu_round_01",
-      "grade": "g04",
-      "unit_id": "g04_c08_u01",
-      "unit_name": "がい数",
-      "semantic_category": "四捨五入(位)",
-      "semantic_note": "指定した位で四捨五入。round_half_up(整数演算)で機械導出。境界(5ちょうど)も安定。",
-      "step_count": 1,
-      "operation": "round_half_up(n, place)",
-      "answer_formula": "round_half_up(n, place)",
-      "slots": {
-        "n": {
-          "type": "int",
-          "range": [
-            1200,
-            98999
-          ]
-        },
-        "place": {
-          "choice_int": true,
-          "choices": [
-            100,
-            1000
-          ]
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "not_already_round",
-          "expr": "n % place != 0",
-          "why": "四捨五入で値が変わる（学習上意味がある）"
-        },
-        {
-          "rule": "positive_result",
-          "expr": "round_half_up(n, place) >= place",
-          "why": "結果が正"
-        }
-      ],
-      "sentence_templates": [
-        "{n}を四捨五入して、{place_name}の位までのがい数にしなさい。"
-      ],
-      "answer_template": "答え {ans}",
-      "computed_slots": {
-        "place_name": {
-          "formula": "'百' if place == 100 else '千'"
-        }
-      },
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ],
-        "allowed_extra": "捨"
-      },
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "g04_gaisu_range_01",
-      "grade": "g04",
-      "unit_id": "g04_c08_u01",
-      "unit_name": "がい数",
-      "semantic_category": "四捨五入(範囲)",
-      "semantic_note": "四捨五入して X になる整数の範囲。以上/未満を round_range_lower/upper_excl で導出。answer_structure=round_range。",
-      "step_count": 1,
-      "operation": "四捨五入で target(千の倍数)になる整数範囲",
-      "answer_formula": "round_range_lower(target, 1000)",
-      "slots": {
-        "target": {
-          "type": "int",
-          "range": [
-            3000,
-            89000
-          ],
-          "step": 1000
-        }
-      },
-      "computed_slots": {
-        "lo": {
-          "formula": "round_range_lower(target, 1000)"
-        },
-        "hi_excl": {
-          "formula": "round_range_upper_excl(target, 1000)"
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "positive_lo",
-          "expr": "round_range_lower(target, 1000) >= 1",
-          "why": "下限が正"
-        }
-      ],
-      "sentence_templates": [
-        "四捨五入して千の位までのがい数が{target}になる整数のはんいを答えなさい。"
-      ],
-      "answer_template": "答え {lo}以上{hi_excl}未満",
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ],
-        "allowed_extra": "捨"
-      },
-      "answer_structure": "round_range",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "g04_frac_convert_01",
-      "grade": "g04",
-      "unit_id": "g04_c12_u01",
-      "unit_name": "いろいろな分数",
-      "semantic_category": "仮分数→帯分数",
-      "semantic_note": "仮分数を帯分数になおす。分子の整数演算に還元し mixed_display で表記（g03分数表記と一貫）。",
-      "step_count": 1,
-      "operation": "num/den を帯分数表記",
-      "answer_formula": "num",
-      "slots": {
-        "den": {
-          "type": "int",
-          "range": [
-            3,
-            8
-          ]
-        },
-        "num": {
-          "type": "int",
-          "range": [
-            7,
-            39
-          ]
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "improper",
-          "expr": "num > den",
-          "why": "仮分数（帯分数になおす対象）"
-        },
-        {
-          "rule": "not_whole",
-          "expr": "num % den != 0",
-          "why": "整数に落ちない（帯分数になる）"
-        }
-      ],
-      "sentence_templates": [
-        "次の仮分数を帯分数になおしなさい。{num}/{den}"
-      ],
-      "answer_template": "答え {mixed}",
-      "mixed_display": {
-        "mixed": [
-          "num",
-          "den"
-        ]
-      },
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ],
-        "allowed_extra": "仮"
-      },
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "g04_frac_addsub_01",
-      "grade": "g04",
-      "unit_id": "g04_c12_u02",
-      "unit_name": "分数のたし算とひき算",
-      "semantic_category": "同分母分数の加(帯分数化)",
-      "semantic_note": "同分母分数の和が仮分数になり帯分数へ。分子の整数演算に還元、和は mixed_display。",
-      "step_count": 1,
-      "operation": "num1 + num2 over den",
-      "answer_formula": "num1 + num2",
-      "slots": {
-        "den": {
-          "type": "int",
-          "range": [
-            4,
-            9
-          ]
-        },
-        "num1": {
-          "type": "int",
-          "range": [
-            2,
-            8
-          ]
-        },
-        "num2": {
-          "type": "int",
-          "range": [
-            2,
-            8
-          ]
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "both_proper",
-          "expr": "num1 < den and num2 < den",
-          "why": "たす前は真分数"
-        },
-        {
-          "rule": "sum_improper",
-          "expr": "num1 + num2 > den",
-          "why": "和が仮分数（帯分数になる）"
-        }
-      ],
-      "sentence_templates": [
-        "リボンを{num1}/{den}mと{num2}/{den}mつかいました。あわせて何mつかいましたか。"
-      ],
-      "answer_template": "しき {num1}/{den}+{num2}/{den}={mixed} 答え {mixed}m",
-      "mixed_display": {
-        "mixed": [
-          "num_sum",
-          "den"
-        ]
-      },
-      "computed_slots": {
-        "num_sum": {
-          "formula": "num1 + num2"
-        }
-      },
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ]
-      },
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "g04_div_riyou_01",
-      "grade": "g04",
-      "unit_id": "g04_c03_u02",
-      "unit_name": "1けたの数でわるわり算の利用",
-      "semantic_category": "わり算の文章題(等分)",
-      "semantic_note": "総数を人数で等分する文章題。動詞・助数詞を語彙束縛。割り切れる範囲。",
-      "step_count": 1,
-      "operation": "n1 ÷ n2",
-      "answer_formula": "n1 // n2",
-      "answer_unit_from": "counter",
-      "slots": {
-        "object": {
-          "from": "div_object_pairs[j].object"
-        },
-        "counter": {
-          "from": "div_object_pairs[j].counter"
-        },
-        "n1": {
-          "type": "int",
-          "range": [
-            24,
-            96
-          ]
-        },
-        "n2": {
-          "type": "int",
-          "range": [
-            3,
-            8
-          ]
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "divisible",
-          "expr": "n1 % n2 == 0",
-          "why": "割り切れる"
-        },
-        {
-          "rule": "quotient_2digit",
-          "expr": "10 <= n1 // n2 <= 24",
-          "why": "商が2けた程度"
-        }
-      ],
-      "sentence_templates": [
-        "{object}が{n1}{counter}あります。{n2}人で同じ数ずつ分けると、1人分は何{counter}になりますか。"
-      ],
-      "answer_template": "しき {n1}÷{n2}={ans} 答え {ans}{counter}",
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ]
-      },
-      "answer_structure": "single",
-      "template_number_constants": [
-        1
-      ]
-    },
-    {
-      "pattern_id": "g04_rect_area_01",
-      "grade": "g04",
-      "unit_id": "g04_c10_u01",
-      "unit_name": "長方形や正方形の面積",
-      "semantic_category": "長方形の面積",
-      "semantic_note": "たて×横の長方形の面積。図(figure_params rect_area)と本文が同一envから駆動。",
-      "step_count": 1,
-      "operation": "w × h",
-      "answer_formula": "w * h",
-      "slots": {
-        "w": {
-          "type": "int",
-          "range": [
-            2,
-            12
-          ]
-        },
-        "h": {
-          "type": "int",
-          "range": [
-            2,
-            12
-          ]
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "not_square",
-          "expr": "w != h",
-          "why": "長方形（正方形は別パターン）"
-        }
-      ],
-      "sentence_templates": [
-        "図のような長方形の面積を求めなさい。"
-      ],
-      "answer_template": "しき {h}×{w}={ans} 答え {ans}cm²",
-      "figure_params": {
-        "fig_version": 1,
-        "kind": "rect_area",
-        "w": "{w}",
-        "h": "{h}",
-        "unit": "cm",
-        "show_dims": true
-      },
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ]
-      },
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "g04_angle_sum_01",
-      "grade": "g04",
-      "unit_id": "g04_c04_u02",
-      "unit_name": "角度の計算",
-      "semantic_category": "角度の和",
-      "semantic_note": "2つの角を合わせた角度。図(figure_params angle_sum)と本文が同一envから駆動。180未満で保つ。",
-      "step_count": 1,
-      "operation": "a1 + a2",
-      "answer_formula": "a1 + a2",
-      "slots": {
-        "a1": {
-          "type": "int",
-          "range": [
-            20,
-            80
-          ],
-          "step": 5
-        },
-        "a2": {
-          "type": "int",
-          "range": [
-            20,
-            80
-          ],
-          "step": 5
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "sum_under_180",
-          "expr": "a1 + a2 <= 175",
-          "why": "合わせても180°未満"
-        },
-        {
-          "rule": "not_right",
-          "expr": "a1 + a2 != 90",
-          "why": "直角に見えないよう90°を避ける"
-        }
-      ],
-      "sentence_templates": [
-        "図のあの角度を求めなさい。"
-      ],
-      "answer_template": "しき {a1}+{a2}={ans} 答え {ans}度",
-      "figure_params": {
-        "fig_version": 1,
-        "kind": "angle_sum",
-        "a1": "{a1}",
-        "a2": "{a2}",
-        "label": "あ"
-      },
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ]
-      },
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "g04_div_int_01",
-      "grade": "g04",
-      "unit_id": "g04_c07_u02",
-      "unit_name": "整数のわり算",
-      "semantic_category": "わり算(2けたでわる・商2けた)",
-      "semantic_note": "3けた÷2けた、商が2けたであまりあり。整数演算に還元。",
-      "step_count": 1,
-      "operation": "n1 ÷ n2 = 商 あまり r",
-      "answer_formula": "n1 // n2",
-      "slots": {
-        "n1": {
-          "type": "int",
-          "range": [
-            200,
-            899
-          ]
-        },
-        "n2": {
-          "type": "int",
-          "range": [
-            12,
-            39
-          ]
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "has_remainder",
-          "expr": "n1 % n2 >= 1",
-          "why": "あまりが出る"
-        },
-        {
-          "rule": "quotient_2digit",
-          "expr": "10 <= n1 // n2 <= 40",
-          "why": "商が2けた"
-        }
-      ],
-      "sentence_templates": [
-        "次の計算をしなさい。{n1}÷{n2}"
-      ],
-      "answer_template": "しき {n1}÷{n2}={ans}あまり{r} 答え {ans}あまり{r}",
-      "computed_slots": {
-        "r": {
-          "formula": "n1 % n2"
-        }
-      },
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ]
-      },
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "g04_estimate_01",
-      "grade": "g04",
-      "unit_id": "g04_c08_u02",
-      "unit_name": "見積もり",
-      "semantic_category": "和の見積もり(がい数)",
-      "semantic_note": "各項を百の位までのがい数にして和を見積もる。round_half_up(整数演算)で導出。",
-      "step_count": 2,
-      "operation": "round_half_up(a,100)+round_half_up(b,100)",
-      "answer_formula": "round_half_up(a, 100) + round_half_up(b, 100)",
-      "slots": {
-        "a": {
-          "type": "int",
-          "range": [
-            1230,
-            8790
-          ]
-        },
-        "b": {
-          "type": "int",
-          "range": [
-            1230,
-            8790
-          ]
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "a_needs_round",
-          "expr": "a % 100 != 0",
-          "why": "四捨五入で値が変わる"
-        },
-        {
-          "rule": "b_needs_round",
-          "expr": "b % 100 != 0",
-          "why": "四捨五入で値が変わる"
-        }
-      ],
-      "sentence_templates": [
-        "{a}と{b}を、それぞれ百の位までのがい数にして、和を見積もりなさい。"
-      ],
-      "answer_template": "しき {ra}+{rb}={ans} 答え およそ{ans}",
-      "computed_slots": {
-        "ra": {
-          "formula": "round_half_up(a, 100)"
-        },
-        "rb": {
-          "formula": "round_half_up(b, 100)"
-        }
-      },
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ]
-      },
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "g04_dist_law_01",
-      "grade": "g04",
-      "unit_id": "g04_c09_u02",
-      "unit_name": "計算のきまり",
-      "semantic_category": "分配法則のくふう",
-      "semantic_note": "a×c+b×c=(a+b)×c。和がキリの良い数になるようにして計算を楽にする。",
-      "step_count": 2,
-      "operation": "(a+b)×c",
-      "answer_formula": "(a + b) * c",
-      "slots": {
-        "a": {
-          "type": "int",
-          "range": [
-            12,
-            88
-          ]
-        },
-        "b": {
-          "type": "int",
-          "range": [
-            12,
-            88
-          ]
-        },
-        "c": {
-          "type": "int",
-          "range": [
-            3,
-            9
-          ]
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "sum_round",
-          "expr": "(a + b) == 100",
-          "why": "和が100（分配法則の旨みが出る）"
-        }
-      ],
-      "sentence_templates": [
-        "くふうして計算しなさい。{a}×{c}+{b}×{c}"
-      ],
-      "answer_template": "しき （{a}+{b}）×{c}={sum}×{c}={ans} 答え {ans}",
-      "computed_slots": {
-        "sum": {
-          "formula": "a + b"
-        }
-      },
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ]
-      },
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "g04_mult_trick_01",
-      "grade": "g04",
-      "unit_id": "g04_c09_u03",
-      "unit_name": "かけ算とわり算のくふう",
-      "semantic_category": "×99のくふう",
-      "semantic_note": "×99を×100−×1に分けて計算するくふう。",
-      "step_count": 2,
-      "operation": "a×99 = a×100 - a",
-      "answer_formula": "a * 99",
-      "slots": {
-        "a": {
-          "type": "int",
-          "range": [
-            3,
-            9
-          ]
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "positive",
-          "expr": "a >= 3",
-          "why": "2けたの結果"
-        }
-      ],
-      "sentence_templates": [
-        "くふうして計算しなさい。{a}×99"
-      ],
-      "answer_template": "しき {a}×100-{a}={h}-{a}={ans} 答え {ans}",
-      "computed_slots": {
-        "h": {
-          "formula": "a * 100"
-        }
-      },
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ]
-      },
-      "answer_structure": "single",
-      "template_number_constants": [
-        99,
-        100
-      ]
-    },
-    {
-      "pattern_id": "g04_dec_div_simple_01",
-      "grade": "g04",
-      "unit_id": "g04_c11_u02",
-      "unit_name": "小数÷整数①",
-      "semantic_category": "小数÷整数(純計算)",
-      "semantic_note": "0.1単位の整数が割り切れる小数の除法（純計算）。表示は dec1。",
-      "step_count": 1,
-      "operation": "q1 ÷ n (0.1単位)",
-      "answer_formula": "q1 // n",
-      "answer_unit_system": "dec1",
-      "slots": {
-        "n": {
-          "type": "int",
-          "range": [
-            2,
-            4
-          ]
-        }
-      },
-      "quantity_slots": {
-        "q1": {
-          "unit_system": "dec1",
-          "range": [
-            24,
-            96
-          ]
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "divisible",
-          "expr": "q1 % n == 0",
-          "why": "0.1単位で割り切れる"
-        },
-        {
-          "rule": "is_decimal",
-          "expr": "(q1 // n) % 10 > 0",
-          "why": "商が小数になる"
-        }
-      ],
-      "sentence_templates": [
-        "次の計算をしなさい。{q1_disp}÷{n}"
-      ],
-      "answer_template": "しき {q1_disp}÷{n}={ans_disp} 答え {ans_disp}",
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ]
-      },
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "g04_bignum_write_01",
-      "grade": "g04",
-      "unit_id": "g04_c01_u01",
-      "unit_name": "大きい数の表し方",
-      "semantic_category": "大きい数を数字で書く",
-      "semantic_note": "万の位と下4けたの合成。位取りの理解を数字表記に還元。",
-      "step_count": 1,
-      "operation": "n1*10000 + n2",
-      "answer_formula": "n1 * 10000 + n2",
-      "slots": {
-        "n1": {
-          "type": "int",
-          "range": [
-            3,
-            89
-          ]
-        },
-        "n2": {
-          "type": "int",
-          "range": [
-            1001,
-            9989
-          ]
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "n2_no_zero_lead",
-          "expr": "n2 >= 1001",
-          "why": "下4けたが4けたで安定（位取りが明確）"
-        }
-      ],
-      "sentence_templates": [
-        "{n1}万{n2}を数字で書きなさい。"
-      ],
-      "answer_template": "答え {ans}",
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ]
-      },
-      "answer_structure": "single",
-      "template_number_constants": []
-    },
-    {
-      "pattern_id": "g04_bignum_x10_01",
-      "grade": "g04",
-      "unit_id": "g04_c01_u02",
-      "unit_name": "大きい数のしくみ",
-      "semantic_category": "10倍のしくみ",
-      "semantic_note": "10倍すると位が1つ上がる（末尾に0が1つつく）しくみ。",
-      "step_count": 1,
-      "operation": "n × 10",
-      "answer_formula": "n * 10",
-      "slots": {
-        "n": {
-          "type": "int",
-          "range": [
-            230,
-            9800
-          ]
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "positive",
-          "expr": "n >= 230",
-          "why": "3けた以上"
-        }
-      ],
-      "sentence_templates": [
-        "{n}を10倍した数を書きなさい。"
-      ],
-      "answer_template": "答え {ans}",
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ]
-      },
-      "answer_structure": "single",
-      "template_number_constants": [
-        10
-      ]
-    },
-    {
-      "pattern_id": "g04_div_bai_01",
-      "grade": "g04",
-      "unit_id": "g04_c07_u03",
-      "unit_name": "整数のわり算の利用",
-      "semantic_category": "倍を求める(わり算)",
-      "semantic_note": "2量の何倍かをわり算で求める文章題。割り切れる範囲。",
-      "step_count": 1,
-      "operation": "a ÷ b",
-      "answer_formula": "a // b",
-      "slots": {
-        "a": {
-          "type": "int",
-          "range": [
-            24,
-            96
-          ]
-        },
-        "b": {
-          "type": "int",
-          "range": [
-            3,
-            12
-          ]
-        }
-      },
-      "value_constraints": [
-        {
-          "rule": "divisible",
-          "expr": "a % b == 0",
-          "why": "割り切れる（何倍かが整数）"
-        },
-        {
-          "rule": "bai_2to9",
-          "expr": "2 <= a // b <= 9",
-          "why": "倍が2〜9"
-        }
-      ],
-      "sentence_templates": [
-        "赤いテープが{a}cm、青いテープが{b}cmあります。赤いテープは青いテープの何倍ですか。"
-      ],
-      "answer_template": "しき {a}÷{b}={ans} 答え {ans}倍",
-      "kanji_policy": {
-        "allowed_grades": [
-          "g01",
-          "g02",
-          "g03",
-          "g04"
-        ]
-      },
-      "answer_structure": "single",
-      "template_number_constants": []
-    }
+ "schema_version": "0.8",
+ "description": "小4パターンバンク セッション1: 純計算・文章題(経路A)+ がい数/帯分数スキーマ拡張 + figure_params基盤(面積・角度)。",
+ "source_analysis": "標準的な小4算数カリキュラム（大きい数の計算・整数/小数のわり算・小数の四則・計算のきまり・□を使った式・がい数・分数(帯分数)・面積・角度）の単元構成に基づく設計。実データは含めない。",
+ "answer_structures": {
+  "single": "単一の数値・式",
+  "comparison": "求差の二部構成（誰が/どちらが + 差）",
+  "round_range": "がい数の範囲解答（『X以上Y未満』。round_range_lower/upper_excl で機械導出。comparison と同格の明示種別）"
+ },
+ "figure_note": "figure_params は kind + スロット参照。make_problem が本文と同一の env で解決するため、図中数値と問題文の食い違いが構造的に起きない。描画は pattern_bank/figure_builder.js（両テンプレ共有・二重実装しない）。fig_version はkind追加時の後方互換用。",
+ "shared_lexicon": {
+  "comment": "g02/g03 から actors を継承。文章題用に割り切れる文脈の object を用意。すべて g01〜g04 配当漢字またはひらがな。",
+  "actors": [
+   "たろうさん",
+   "はなこさん",
+   "ゆうたさん",
+   "さくらさん",
+   "けんとさん",
+   "みおさん"
   ],
-  "schema_changelog": {
-    "0.8": [
-      "がい数: round_half_up(整数四捨五入)・round_range_lower/upper_excl(以上/未満)を SAFE に追加。answer_structure に round_range を新設。",
-      "帯分数: fmt_mixed('aとb/c') と mixed_display 機構を追加（g03分数表記と一貫）。",
-      "figure_params: kind + スロット参照。make_problem が env で解決（本文と同一env→図中数値と問題文が食い違わない）。fig_version でkind追加時の後方互換を確保。描画は pattern_bank/figure_builder.js（両テンプレ共有）。",
-      "box_ops: □を使った式で四則を choices 切替。shown/solve は computed_slots で .format 整形。"
+  "div_object_pairs": [
+   {
+    "object": "色紙",
+    "counter": "まい",
+    "verb_use": "つかいました"
+   },
+   {
+    "object": "カード",
+    "counter": "まい",
+    "verb_use": "つかいました"
+   },
+   {
+    "object": "りんご",
+    "counter": "こ",
+    "verb_use": "配りました"
+   },
+   {
+    "object": "あめ",
+    "counter": "こ",
+    "verb_use": "配りました"
+   }
+  ],
+  "big_units": [
+   "万",
+   "億"
+  ],
+  "box_ops": [
+   {
+    "op": "add",
+    "shown": "□＋{a}＝{b}",
+    "solve": "□＝{b}－{a}"
+   },
+   {
+    "op": "sub",
+    "shown": "□－{a}＝{b}",
+    "solve": "□＝{b}＋{a}"
+   },
+   {
+    "op": "mult",
+    "shown": "□×{a}＝{b}",
+    "solve": "□＝{b}÷{a}"
+   },
+   {
+    "op": "div",
+    "shown": "□÷{a}＝{b}",
+    "solve": "□＝{b}×{a}"
+   }
+  ],
+  "dec_containers": [
+   {
+    "noun": "リボン",
+    "unit": "m",
+    "add_a": "長いリボンが",
+    "add_b": "短いリボンが",
+    "mult_counter": "本",
+    "dv_counter": "本",
+    "dv_vessel": "",
+    "dv_qword": "長さ",
+    "dv_verb": "切り分けます",
+    "dv_per": "1本分"
+   },
+   {
+    "noun": "水",
+    "unit": "L",
+    "add_a": "大きいびんに水が",
+    "add_b": "小さいびんに水が",
+    "mult_counter": "本",
+    "dv_counter": "本",
+    "dv_vessel": "のびん",
+    "dv_qword": "かさ",
+    "dv_verb": "分けます",
+    "dv_per": "1本分"
+   },
+   {
+    "noun": "さとう",
+    "unit": "kg",
+    "add_a": "大きいふくろにさとうが",
+    "add_b": "小さいふくろにさとうが",
+    "mult_counter": "ふくろ",
+    "dv_counter": "つ",
+    "dv_vessel": "のふくろ",
+    "dv_qword": "重さ",
+    "dv_verb": "分けます",
+    "dv_per": "1つ分"
+   }
+  ]
+ },
+ "patterns": [
+  {
+   "pattern_id": "g04_bignum_calc_01",
+   "grade": "g04",
+   "unit_id": "g04_c01_u03",
+   "unit_name": "大きい数の計算",
+   "semantic_category": "大きな数の加減",
+   "semantic_note": "万・億の単位をそろえた加減。単位語を固定し、係数の整数演算に還元する。",
+   "step_count": 1,
+   "operation": "n1 + n2 (単位語つき)",
+   "answer_formula": "n1 + n2",
+   "answer_unit_from": "unit",
+   "slots": {
+    "unit": {
+     "from": "big_units"
+    },
+    "n1": {
+     "type": "int",
+     "range": [
+      2,
+      89
+     ]
+    },
+    "n2": {
+     "type": "int",
+     "range": [
+      2,
+      89
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_carry_over_100",
+     "expr": "n1 + n2 <= 99",
+     "why": "同じ位の中で完結（位上がりで単位が変わらない）"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。{n1}{unit}+{n2}{unit}"
+   ],
+   "answer_template": "しき {n1}{unit}+{n2}{unit}={ans}{unit} 答え {ans}{unit}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
     ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_div_1digit_01",
+   "grade": "g04",
+   "unit_id": "g04_c03_u01",
+   "unit_name": "1けたの数でわるわり算",
+   "semantic_category": "わり算(1けた・あまりあり)",
+   "semantic_note": "2〜3けた÷1けた。あまりのある除法。商とあまりの整数演算に還元。",
+   "step_count": 1,
+   "operation": "n1 ÷ n2 = 商 あまり r",
+   "answer_formula": "n1 // n2",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      23,
+      97
+     ]
+    },
+    "n2": {
+     "type": "int",
+     "range": [
+      3,
+      8
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "has_remainder",
+     "expr": "n1 % n2 >= 1",
+     "why": "あまりが出る"
+    },
+    {
+     "rule": "quotient_2digit",
+     "expr": "10 <= n1 // n2 <= 30",
+     "why": "商が2けた程度に収まる"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。{n1}÷{n2}"
+   ],
+   "answer_template": "しき {n1}÷{n2}={ans}あまり{r} 答え {ans}あまり{r}",
+   "computed_slots": {
+    "r": {
+     "formula": "n1 % n2"
+    }
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_div_2digit_01",
+   "grade": "g04",
+   "unit_id": "g04_c07_u01",
+   "unit_name": "2けたの数でわるわり算",
+   "semantic_category": "わり算(2けた・あまりあり)",
+   "semantic_note": "2〜3けた÷2けた。商1けた・あまりあり。整数演算に還元。",
+   "step_count": 1,
+   "operation": "n1 ÷ n2 = 商 あまり r",
+   "answer_formula": "n1 // n2",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      40,
+      290
+     ]
+    },
+    "n2": {
+     "type": "int",
+     "range": [
+      12,
+      39
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "has_remainder",
+     "expr": "n1 % n2 >= 1",
+     "why": "あまりが出る"
+    },
+    {
+     "rule": "quotient_1digit",
+     "expr": "2 <= n1 // n2 <= 9",
+     "why": "商が1けた（見当をつける学習の範囲）"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。{n1}÷{n2}"
+   ],
+   "answer_template": "しき {n1}÷{n2}={ans}あまり{r} 答え {ans}あまり{r}",
+   "computed_slots": {
+    "r": {
+     "formula": "n1 % n2"
+    }
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_dec_addsub_01",
+   "grade": "g04",
+   "unit_id": "g04_c06_u03",
+   "unit_name": "小数のたし算とひき算",
+   "semantic_category": "小数の加減",
+   "semantic_note": "1/10の位までの小数の加減。内部は1/10単位の整数、表示は dec1。文章題化(合併)。",
+   "step_count": 1,
+   "operation": "q1 + q2 (0.1単位の整数)",
+   "answer_formula": "q1 + q2",
+   "answer_unit_system": "dec1",
+   "slots": {
+    "add_a": {
+     "from": "dec_containers[j].add_a"
+    },
+    "add_b": {
+     "from": "dec_containers[j].add_b"
+    },
+    "unit": {
+     "from": "dec_containers[j].unit"
+    }
+   },
+   "quantity_slots": {
+    "q1": {
+     "unit_system": "dec1",
+     "range": [
+      12,
+      89
+     ]
+    },
+    "q2": {
+     "unit_system": "dec1",
+     "range": [
+      12,
+      89
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "both_decimal",
+     "expr": "(q1 % 10) > 0 and (q2 % 10) > 0",
+     "why": "両方とも小数第一位がある"
+    }
+   ],
+   "sentence_templates": [
+    "{add_a}{q1_disp}{unit}、{add_b}{q2_disp}{unit}あります。あわせて何{unit}ありますか。"
+   ],
+   "answer_template": "しき {q1_disp}+{q2_disp}={ans_disp} 答え {ans_disp}{unit}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_dec_mult_01",
+   "grade": "g04",
+   "unit_id": "g04_c11_u01",
+   "unit_name": "小数×整数",
+   "semantic_category": "小数×整数",
+   "semantic_note": "1/10の位の小数×整数。内部は0.1単位の整数×整数、表示は dec1。",
+   "step_count": 1,
+   "operation": "q1 × n (0.1単位)",
+   "answer_formula": "q1 * n",
+   "answer_unit_system": "dec1",
+   "slots": {
+    "noun": {
+     "from": "dec_containers[j].noun"
+    },
+    "unit": {
+     "from": "dec_containers[j].unit"
+    },
+    "mc": {
+     "from": "dec_containers[j].mult_counter"
+    },
+    "n": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    }
+   },
+   "quantity_slots": {
+    "q1": {
+     "unit_system": "dec1",
+     "range": [
+      12,
+      48
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "is_decimal",
+     "expr": "(q1 % 10) > 0",
+     "why": "小数第一位がある"
+    }
+   ],
+   "sentence_templates": [
+    "1{mc}{q1_disp}{unit}の{noun}が{n}{mc}あります。ぜんぶで何{unit}ありますか。"
+   ],
+   "answer_template": "しき {q1_disp}×{n}={ans_disp} 答え {ans_disp}{unit}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "g04_dec_div_01",
+   "grade": "g04",
+   "unit_id": "g04_c11_u03",
+   "unit_name": "小数÷整数②",
+   "semantic_category": "小数÷整数(割り切れる)",
+   "semantic_note": "0.1単位の整数が整数で割り切れる小数の除法。表示は dec1。",
+   "step_count": 1,
+   "operation": "q1 ÷ n (0.1単位)",
+   "answer_formula": "q1 // n",
+   "answer_unit_system": "dec1",
+   "slots": {
+    "noun": {
+     "from": "dec_containers[j].noun"
+    },
+    "unit": {
+     "from": "dec_containers[j].unit"
+    },
+    "dvc": {
+     "from": "dec_containers[j].dv_counter"
+    },
+    "dvv": {
+     "from": "dec_containers[j].dv_vessel"
+    },
+    "dvq": {
+     "from": "dec_containers[j].dv_qword"
+    },
+    "dvverb": {
+     "from": "dec_containers[j].dv_verb"
+    },
+    "dvper": {
+     "from": "dec_containers[j].dv_per"
+    },
+    "n": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    }
+   },
+   "quantity_slots": {
+    "q1": {
+     "unit_system": "dec1",
+     "range": [
+      24,
+      96
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "q1 % n == 0",
+     "why": "0.1単位で割り切れる"
+    },
+    {
+     "rule": "is_decimal_ans",
+     "expr": "(q1 // n) % 10 > 0",
+     "why": "商が小数になる"
+    }
+   ],
+   "sentence_templates": [
+    "{q1_disp}{unit}の{noun}を、{n}{dvc}{dvv}に同じ{dvq}ずつ{dvverb}。{dvper}は何{unit}ですか。"
+   ],
+   "answer_template": "しき {q1_disp}÷{n}={ans_disp} 答え {ans_disp}{unit}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "g04_order_01",
+   "grade": "g04",
+   "unit_id": "g04_c09_u01",
+   "unit_name": "計算のじゅんじょ",
+   "semantic_category": "四則の順序(かっこ)",
+   "semantic_note": "かっこを先に計算する順序の理解。( )内の和を先に、その後にかけ算。",
+   "step_count": 2,
+   "operation": "(n1 + n2) × n3",
+   "answer_formula": "(n1 + n2) * n3",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      12,
+      48
+     ]
+    },
+    "n2": {
+     "type": "int",
+     "range": [
+      12,
+      48
+     ]
+    },
+    "n3": {
+     "type": "int",
+     "range": [
+      2,
+      7
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "sum_round",
+     "expr": "(n1 + n2) % 10 == 0",
+     "why": "かっこの和がキリの良い数（順序で楽になる）"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。（{n1}+{n2}）×{n3}"
+   ],
+   "answer_template": "しき {n1}+{n2}={mid} {mid}×{n3}={ans} 答え {ans}",
+   "computed_slots": {
+    "mid": {
+     "formula": "n1 + n2"
+    }
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_box_add_01",
+   "grade": "g04",
+   "unit_id": "g04_c09_u04",
+   "unit_name": "□を使った式",
+   "semantic_category": "□を使った式(たし算)",
+   "semantic_note": "□＋a＝b から □＝b－a を逆算。表示式と解法式が別（inverse_thinking）。",
+   "inverse_thinking": true,
+   "step_count": 1,
+   "operation": "□ + a = b → □ = b - a",
+   "answer_formula": "b - a",
+   "slots": {
+    "a": {
+     "type": "int",
+     "range": [
+      12,
+      79
+     ]
+    },
+    "b": {
+     "type": "int",
+     "range": [
+      40,
+      150
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "box_positive",
+     "expr": "b - a >= 11",
+     "why": "□が2けた程度の正の数"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "b != 2 * a",
+     "why": "転記型リーク排除(b＝2aだと答＝aで本文値の写し。corr-0007 v2検出2/200・統一遡及2026-08-12)"
+    }
+   ],
+   "sentence_templates": [
+    "次の□にあてはまる数を求めなさい。□+{a}={b}"
+   ],
+   "answer_template": "しき □={b}-{a}={ans} 答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_box_mult_01",
+   "grade": "g04",
+   "unit_id": "g04_c09_u04",
+   "unit_name": "□を使った式",
+   "semantic_category": "□を使った式(かけ算)",
+   "semantic_note": "□×a＝b から □＝b÷a を逆算。□が整数になるよう割り切れ制約。",
+   "inverse_thinking": true,
+   "step_count": 1,
+   "operation": "□ × a = b → □ = b ÷ a",
+   "answer_formula": "b // a",
+   "slots": {
+    "a": {
+     "type": "int",
+     "range": [
+      3,
+      9
+     ]
+    },
+    "b": {
+     "type": "int",
+     "range": [
+      12,
+      81
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "b % a == 0",
+     "why": "□が整数になる"
+    },
+    {
+     "rule": "box_2to9",
+     "expr": "2 <= b // a <= 9",
+     "why": "□が九九の範囲"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "b != a * a",
+     "why": "転記型リーク排除(b＝a²だと答＝a。jhs c07 zoka_02のdy≠a²と同一手筋・検出19/200)"
+    }
+   ],
+   "sentence_templates": [
+    "次の□にあてはまる数を求めなさい。□×{a}={b}"
+   ],
+   "answer_template": "しき □={b}÷{a}={ans} 答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_gaisu_round_01",
+   "grade": "g04",
+   "unit_id": "g04_c08_u01",
+   "unit_name": "がい数",
+   "semantic_category": "四捨五入(位)",
+   "semantic_note": "指定した位で四捨五入。round_half_up(整数演算)で機械導出。境界(5ちょうど)も安定。",
+   "step_count": 1,
+   "operation": "round_half_up(n, place)",
+   "answer_formula": "round_half_up(n, place)",
+   "slots": {
+    "n": {
+     "type": "int",
+     "range": [
+      1200,
+      98999
+     ]
+    },
+    "place": {
+     "choice_int": true,
+     "choices": [
+      100,
+      1000
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "not_already_round",
+     "expr": "n % place != 0",
+     "why": "四捨五入で値が変わる（学習上意味がある）"
+    },
+    {
+     "rule": "positive_result",
+     "expr": "round_half_up(n, place) >= place",
+     "why": "結果が正"
+    }
+   ],
+   "sentence_templates": [
+    "{n}を四捨五入して、{place_name}の位までのがい数にしなさい。"
+   ],
+   "answer_template": "答え {ans}",
+   "computed_slots": {
+    "place_name": {
+     "formula": "'百' if place == 100 else '千'"
+    }
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ],
+    "allowed_extra": "捨"
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_gaisu_range_01",
+   "grade": "g04",
+   "unit_id": "g04_c08_u01",
+   "unit_name": "がい数",
+   "semantic_category": "四捨五入(範囲)",
+   "semantic_note": "四捨五入して X になる整数の範囲。以上/未満を round_range_lower/upper_excl で導出。answer_structure=round_range。",
+   "step_count": 1,
+   "operation": "四捨五入で target(千の倍数)になる整数範囲",
+   "answer_formula": "round_range_lower(target, 1000)",
+   "slots": {
+    "target": {
+     "type": "int",
+     "range": [
+      3000,
+      89000
+     ],
+     "step": 1000
+    }
+   },
+   "computed_slots": {
+    "lo": {
+     "formula": "round_range_lower(target, 1000)"
+    },
+    "hi_excl": {
+     "formula": "round_range_upper_excl(target, 1000)"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "positive_lo",
+     "expr": "round_range_lower(target, 1000) >= 1",
+     "why": "下限が正"
+    }
+   ],
+   "sentence_templates": [
+    "四捨五入して千の位までのがい数が{target}になる整数のはんいを答えなさい。"
+   ],
+   "answer_template": "答え {lo}以上{hi_excl}未満",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ],
+    "allowed_extra": "捨"
+   },
+   "answer_structure": "round_range",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_frac_convert_01",
+   "grade": "g04",
+   "unit_id": "g04_c12_u01",
+   "unit_name": "いろいろな分数",
+   "semantic_category": "仮分数→帯分数",
+   "semantic_note": "仮分数を帯分数になおす。分子の整数演算に還元し mixed_display で表記（g03分数表記と一貫）。",
+   "step_count": 1,
+   "operation": "num/den を帯分数表記",
+   "answer_formula": "num",
+   "slots": {
+    "den": {
+     "type": "int",
+     "range": [
+      3,
+      8
+     ]
+    },
+    "num": {
+     "type": "int",
+     "range": [
+      7,
+      39
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "improper",
+     "expr": "num > den",
+     "why": "仮分数（帯分数になおす対象）"
+    },
+    {
+     "rule": "not_whole",
+     "expr": "num % den != 0",
+     "why": "整数に落ちない（帯分数になる）"
+    }
+   ],
+   "sentence_templates": [
+    "次の仮分数を帯分数になおしなさい。{num}/{den}"
+   ],
+   "answer_template": "答え {mixed}",
+   "mixed_display": {
+    "mixed": [
+     "num",
+     "den"
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ],
+    "allowed_extra": "仮"
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_frac_addsub_01",
+   "grade": "g04",
+   "unit_id": "g04_c12_u02",
+   "unit_name": "分数のたし算とひき算",
+   "semantic_category": "同分母分数の加(帯分数化)",
+   "semantic_note": "同分母分数の和が仮分数になり帯分数へ。分子の整数演算に還元、和は mixed_display。",
+   "step_count": 1,
+   "operation": "num1 + num2 over den",
+   "answer_formula": "num1 + num2",
+   "slots": {
+    "den": {
+     "type": "int",
+     "range": [
+      4,
+      9
+     ]
+    },
+    "num1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    },
+    "num2": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "both_proper",
+     "expr": "num1 < den and num2 < den",
+     "why": "たす前は真分数"
+    },
+    {
+     "rule": "sum_improper",
+     "expr": "num1 + num2 > den",
+     "why": "和が仮分数（帯分数になる）"
+    }
+   ],
+   "sentence_templates": [
+    "リボンを{num1}/{den}mと{num2}/{den}mつかいました。あわせて何mつかいましたか。"
+   ],
+   "answer_template": "しき {num1}/{den}+{num2}/{den}={mixed} 答え {mixed}m",
+   "mixed_display": {
+    "mixed": [
+     "num_sum",
+     "den"
+    ]
+   },
+   "computed_slots": {
+    "num_sum": {
+     "formula": "num1 + num2"
+    }
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_div_riyou_01",
+   "grade": "g04",
+   "unit_id": "g04_c03_u02",
+   "unit_name": "1けたの数でわるわり算の利用",
+   "semantic_category": "わり算の文章題(等分)",
+   "semantic_note": "総数を人数で等分する文章題。動詞・助数詞を語彙束縛。割り切れる範囲。",
+   "step_count": 1,
+   "operation": "n1 ÷ n2",
+   "answer_formula": "n1 // n2",
+   "answer_unit_from": "counter",
+   "slots": {
+    "object": {
+     "from": "div_object_pairs[j].object"
+    },
+    "counter": {
+     "from": "div_object_pairs[j].counter"
+    },
+    "n1": {
+     "type": "int",
+     "range": [
+      24,
+      96
+     ]
+    },
+    "n2": {
+     "type": "int",
+     "range": [
+      3,
+      8
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "n1 % n2 == 0",
+     "why": "割り切れる"
+    },
+    {
+     "rule": "quotient_2digit",
+     "expr": "10 <= n1 // n2 <= 24",
+     "why": "商が2けた程度"
+    }
+   ],
+   "sentence_templates": [
+    "{object}が{n1}{counter}あります。{n2}人で同じ数ずつ分けると、1人分は何{counter}になりますか。"
+   ],
+   "answer_template": "しき {n1}÷{n2}={ans} 答え {ans}{counter}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "g04_rect_area_01",
+   "grade": "g04",
+   "unit_id": "g04_c10_u01",
+   "unit_name": "長方形や正方形の面積",
+   "semantic_category": "長方形の面積",
+   "semantic_note": "たて×横の長方形の面積。図(figure_params rect_area)と本文が同一envから駆動。",
+   "step_count": 1,
+   "operation": "w × h",
+   "answer_formula": "w * h",
+   "slots": {
+    "w": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    },
+    "h": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "not_square",
+     "expr": "w != h",
+     "why": "長方形（正方形は別パターン）"
+    }
+   ],
+   "sentence_templates": [
+    "図のような長方形の面積を求めなさい。"
+   ],
+   "answer_template": "しき {h}×{w}={ans} 答え {ans}cm²",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "rect_area",
+    "w": "{w}",
+    "h": "{h}",
+    "unit": "cm",
+    "show_dims": true
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_angle_sum_01",
+   "grade": "g04",
+   "unit_id": "g04_c04_u02",
+   "unit_name": "角度の計算",
+   "semantic_category": "角度の和",
+   "semantic_note": "2つの角を合わせた角度。図(figure_params angle_sum)と本文が同一envから駆動。180未満で保つ。",
+   "step_count": 1,
+   "operation": "a1 + a2",
+   "answer_formula": "a1 + a2",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      20,
+      80
+     ],
+     "step": 5
+    },
+    "a2": {
+     "type": "int",
+     "range": [
+      20,
+      80
+     ],
+     "step": 5
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "sum_under_180",
+     "expr": "a1 + a2 <= 175",
+     "why": "合わせても180°未満"
+    },
+    {
+     "rule": "not_right",
+     "expr": "a1 + a2 != 90",
+     "why": "直角に見えないよう90°を避ける"
+    }
+   ],
+   "sentence_templates": [
+    "図のあの角度を求めなさい。"
+   ],
+   "answer_template": "しき {a1}+{a2}={ans} 答え {ans}度",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "angle_sum",
+    "a1": "{a1}",
+    "a2": "{a2}",
+    "label": "あ"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_div_int_01",
+   "grade": "g04",
+   "unit_id": "g04_c07_u02",
+   "unit_name": "整数のわり算",
+   "semantic_category": "わり算(2けたでわる・商2けた)",
+   "semantic_note": "3けた÷2けた、商が2けたであまりあり。整数演算に還元。",
+   "step_count": 1,
+   "operation": "n1 ÷ n2 = 商 あまり r",
+   "answer_formula": "n1 // n2",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      200,
+      899
+     ]
+    },
+    "n2": {
+     "type": "int",
+     "range": [
+      12,
+      39
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "has_remainder",
+     "expr": "n1 % n2 >= 1",
+     "why": "あまりが出る"
+    },
+    {
+     "rule": "quotient_2digit",
+     "expr": "10 <= n1 // n2 <= 40",
+     "why": "商が2けた"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "n1 // n2 != n2",
+     "why": "紛れ排除(商＝除数の偶然一致・検出4/200)"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。{n1}÷{n2}"
+   ],
+   "answer_template": "しき {n1}÷{n2}={ans}あまり{r} 答え {ans}あまり{r}",
+   "computed_slots": {
+    "r": {
+     "formula": "n1 % n2"
+    }
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_estimate_01",
+   "grade": "g04",
+   "unit_id": "g04_c08_u02",
+   "unit_name": "見積もり",
+   "semantic_category": "和の見積もり(がい数)",
+   "semantic_note": "各項を百の位までのがい数にして和を見積もる。round_half_up(整数演算)で導出。",
+   "step_count": 2,
+   "operation": "round_half_up(a,100)+round_half_up(b,100)",
+   "answer_formula": "round_half_up(a, 100) + round_half_up(b, 100)",
+   "slots": {
+    "a": {
+     "type": "int",
+     "range": [
+      1230,
+      8790
+     ]
+    },
+    "b": {
+     "type": "int",
+     "range": [
+      1230,
+      8790
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "a_needs_round",
+     "expr": "a % 100 != 0",
+     "why": "四捨五入で値が変わる"
+    },
+    {
+     "rule": "b_needs_round",
+     "expr": "b % 100 != 0",
+     "why": "四捨五入で値が変わる"
+    }
+   ],
+   "sentence_templates": [
+    "{a}と{b}を、それぞれ百の位までのがい数にして、和を見積もりなさい。"
+   ],
+   "answer_template": "しき {ra}+{rb}={ans} 答え およそ{ans}",
+   "computed_slots": {
+    "ra": {
+     "formula": "round_half_up(a, 100)"
+    },
+    "rb": {
+     "formula": "round_half_up(b, 100)"
+    }
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_dist_law_01",
+   "grade": "g04",
+   "unit_id": "g04_c09_u02",
+   "unit_name": "計算のきまり",
+   "semantic_category": "分配法則のくふう",
+   "semantic_note": "a×c+b×c=(a+b)×c。和がキリの良い数になるようにして計算を楽にする。",
+   "step_count": 2,
+   "operation": "(a+b)×c",
+   "answer_formula": "(a + b) * c",
+   "slots": {
+    "a": {
+     "type": "int",
+     "range": [
+      12,
+      88
+     ]
+    },
+    "b": {
+     "type": "int",
+     "range": [
+      12,
+      88
+     ]
+    },
+    "c": {
+     "type": "int",
+     "range": [
+      3,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "sum_round",
+     "expr": "(a + b) == 100",
+     "why": "和が100（分配法則の旨みが出る）"
+    }
+   ],
+   "sentence_templates": [
+    "くふうして計算しなさい。{a}×{c}+{b}×{c}"
+   ],
+   "answer_template": "しき （{a}+{b}）×{c}={sum}×{c}={ans} 答え {ans}",
+   "computed_slots": {
+    "sum": {
+     "formula": "a + b"
+    }
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_mult_trick_01",
+   "grade": "g04",
+   "unit_id": "g04_c09_u03",
+   "unit_name": "かけ算とわり算のくふう",
+   "semantic_category": "×99のくふう",
+   "semantic_note": "×99を×100−×1に分けて計算するくふう。",
+   "step_count": 2,
+   "operation": "a×99 = a×100 - a",
+   "answer_formula": "a * 99",
+   "slots": {
+    "a": {
+     "type": "int",
+     "range": [
+      3,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "positive",
+     "expr": "a >= 3",
+     "why": "2けたの結果"
+    }
+   ],
+   "sentence_templates": [
+    "くふうして計算しなさい。{a}×99"
+   ],
+   "answer_template": "しき {a}×100-{a}={h}-{a}={ans} 答え {ans}",
+   "computed_slots": {
+    "h": {
+     "formula": "a * 100"
+    }
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    99,
+    100
+   ]
+  },
+  {
+   "pattern_id": "g04_dec_div_simple_01",
+   "grade": "g04",
+   "unit_id": "g04_c11_u02",
+   "unit_name": "小数÷整数①",
+   "semantic_category": "小数÷整数(純計算)",
+   "semantic_note": "0.1単位の整数が割り切れる小数の除法（純計算）。表示は dec1。",
+   "step_count": 1,
+   "operation": "q1 ÷ n (0.1単位)",
+   "answer_formula": "q1 // n",
+   "answer_unit_system": "dec1",
+   "slots": {
+    "n": {
+     "type": "int",
+     "range": [
+      2,
+      4
+     ]
+    }
+   },
+   "quantity_slots": {
+    "q1": {
+     "unit_system": "dec1",
+     "range": [
+      24,
+      96
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "q1 % n == 0",
+     "why": "0.1単位で割り切れる"
+    },
+    {
+     "rule": "is_decimal",
+     "expr": "(q1 // n) % 10 > 0",
+     "why": "商が小数になる"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。{q1_disp}÷{n}"
+   ],
+   "answer_template": "しき {q1_disp}÷{n}={ans_disp} 答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_bignum_write_01",
+   "grade": "g04",
+   "unit_id": "g04_c01_u01",
+   "unit_name": "大きい数の表し方",
+   "semantic_category": "大きい数を数字で書く",
+   "semantic_note": "万の位と下4けたの合成。位取りの理解を数字表記に還元。",
+   "step_count": 1,
+   "operation": "n1*10000 + n2",
+   "answer_formula": "n1 * 10000 + n2",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      3,
+      89
+     ]
+    },
+    "n2": {
+     "type": "int",
+     "range": [
+      1001,
+      9989
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "n2_no_zero_lead",
+     "expr": "n2 >= 1001",
+     "why": "下4けたが4けたで安定（位取りが明確）"
+    }
+   ],
+   "sentence_templates": [
+    "{n1}万{n2}を数字で書きなさい。"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_bignum_x10_01",
+   "grade": "g04",
+   "unit_id": "g04_c01_u02",
+   "unit_name": "大きい数のしくみ",
+   "semantic_category": "10倍のしくみ",
+   "semantic_note": "10倍すると位が1つ上がる（末尾に0が1つつく）しくみ。",
+   "step_count": 1,
+   "operation": "n × 10",
+   "answer_formula": "n * 10",
+   "slots": {
+    "n": {
+     "type": "int",
+     "range": [
+      230,
+      9800
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "positive",
+     "expr": "n >= 230",
+     "why": "3けた以上"
+    }
+   ],
+   "sentence_templates": [
+    "{n}を10倍した数を書きなさい。"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    10
+   ]
+  },
+  {
+   "pattern_id": "g04_div_bai_01",
+   "grade": "g04",
+   "unit_id": "g04_c07_u03",
+   "unit_name": "整数のわり算の利用",
+   "semantic_category": "倍を求める(わり算)",
+   "semantic_note": "2量の何倍かをわり算で求める文章題。割り切れる範囲。",
+   "step_count": 1,
+   "operation": "a ÷ b",
+   "answer_formula": "a // b",
+   "slots": {
+    "a": {
+     "type": "int",
+     "range": [
+      24,
+      96
+     ]
+    },
+    "b": {
+     "type": "int",
+     "range": [
+      3,
+      12
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "a % b == 0",
+     "why": "割り切れる（何倍かが整数）"
+    },
+    {
+     "rule": "bai_2to9",
+     "expr": "2 <= a // b <= 9",
+     "why": "倍が2〜9"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "a != b * b",
+     "why": "転記型リーク排除(a＝b²だと答＝b倍。box_mult同手筋の除算版・検出14/200)"
+    }
+   ],
+   "sentence_templates": [
+    "赤いテープが{a}cm、青いテープが{b}cmあります。赤いテープは青いテープの何倍ですか。"
+   ],
+   "answer_template": "しき {a}÷{b}={ans} 答え {ans}倍",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
   }
+ ],
+ "schema_changelog": {
+  "0.8": [
+   "がい数: round_half_up(整数四捨五入)・round_range_lower/upper_excl(以上/未満)を SAFE に追加。answer_structure に round_range を新設。",
+   "帯分数: fmt_mixed('aとb/c') と mixed_display 機構を追加（g03分数表記と一貫）。",
+   "figure_params: kind + スロット参照。make_problem が env で解決（本文と同一env→図中数値と問題文が食い違わない）。fig_version でkind追加時の後方互換を確保。描画は pattern_bank/figure_builder.js（両テンプレ共有）。",
+   "box_ops: □を使った式で四則を choices 切替。shown/solve は computed_slots で .format 整形。"
+  ]
+ }
 }

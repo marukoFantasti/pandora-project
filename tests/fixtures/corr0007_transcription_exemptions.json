@@ -4,6 +4,14 @@
   {
    "pattern_id": "jhs_c07_jiku_01",
    "reason": "答＝本文のy座標が学習内容そのもの(座標の弁別・軸に平行な直線の式)。転記ではなく座標概念の完備点。rationale _shared.transcription_exemption 参照。"
+  },
+  {
+   "pattern_id": "g04_frac_convert_01",
+   "reason": "帯分数化で分母を保存するのが正解そのもの(分母保存=同値変形の学習内容)。表示答えの分母が本文の分母と一致するのは構造的必然。"
+  },
+  {
+   "pattern_id": "g04_frac_addsub_01",
+   "reason": "同分母分数の加減で分母を保存するのが正解そのもの。表示答えの分母が本文分母と一致するのは構造的必然。"
   }
  ]
 }
