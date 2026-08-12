@@ -139,6 +139,15 @@ const ID = {
   jhs_c07_taiou_01: (e, ans) => e.y2v - e.y1v === e.a1 && e.y3v - e.y2v === e.a1 && ans - e.y3v === e.a1 && e.y5v - ans === e.a1 && ans >= 6, // 対応表: セル等差=a悉皆∧答≧6
   jhs_c07_tsuten_01: (e, ans) => ans === e.t1 + e.m1 * e.s1 && e.c1v === e.a1 * e.s1 - e.t1 && e.c2v === e.a2 * e.s1 + e.t1 && ans !== e.c1v && ans !== e.c2v && e.m1 !== e.a2, // 交点恒等∧新直線通過∧b∉{c1,c2}∧m≠a2
   jhs_c07_zoka_02: (e, ans) => ans * e.a1 === e.dy1 && ans !== e.c1 && ans !== e.a1,                                      // 答×a＝Δy∧答∉{c,a}
+  // --- c08 1次関数(2)：注水/追いかけ/距離グラフ/料金/排水/段階 の逆算恒等 ---
+  jhs_c08_chusui_01: (e, ans) => ans === (e.b1 - e.a1) * e.t01 && e.cv1 === ans && ans !== e.b1,                          // 連続性y(t0)=at0 ∧ 切片≠b
+  jhs_c08_chusui_02: (e, ans) => ans === e.t01 + e.dt1 && e.vv1 === e.a1 * e.t01 + e.b1 * e.dt1 && e.vv1 % 5 === 0 && ans !== e.a1 && ans !== e.b1, // at0+b(T−t0)=V ∧ V%5=0 ∧ T∉{a,b}
+  jhs_c08_oikake_01: (e, ans) => e.v2 * ans === e.v1 * (e.t01 + ans) && ans >= 2 && ans <= 15 && ans !== e.t01,           // v2t=v1(t0+t) ∧ 2≦t≦15 ∧ t≠t0
+  jhs_c08_gyomi_01: (e, ans) => ans * e.t1 === e.dv1 && (e.t1 + e.r1 + e.u1) <= 13 && e.dv1 <= 450,                       // 答×t1=D ∧ T≦13 ∧ D≦450
+  jhs_c08_gyomi_02: (e, ans) => ans * e.u1 === e.dv1 && (-ans * e.t3v + e.cc1) === 0 && (-ans * e.t2v + e.cc1) === e.dv1 && ans <= 120, // 答×u=D ∧ 式が(t2,D)(t3,0)通過 ∧ s2≦120
+  jhs_c08_ryokin_01: (e, ans) => e.pa1 + ans * e.qa1 === e.pb1 + ans * e.qb1 && ans !== e.qb1,                            // 等額式両辺一致 ∧ 答≠qB
+  jhs_c08_haisui_01: (e, ans) => ans === e.v1 * e.t1 && e.vv1 === ans && ans >= 24 && ans <= 100,                         // y(T)=0 ∧ 24≦V≦100
+  jhs_c08_dankai_01: (e, ans) => ans === e.p1 - e.u1 * e.t01 && e.cc1 === ans && ans % 50 === 0 && ans !== e.u1,          // y(t0)=p ∧ 切片%50=0 ∧ 切片≠u
 };
 
 const bankFiles = fs.readdirSync(path.join(ROOT, 'pattern_bank'))

@@ -1,0 +1,872 @@
+{
+ "schema_version": "1.0",
+ "grade": "jhs",
+ "description": "jhs数学バンク B層第1波 c08(1次関数の利用) 8パターン: 注水2段階(式/満水時刻)・追いつき(整数分・裁可済み)・距離グラフ読み取り2形(行き速さ/帰り式・xy_graph v2 segment+選択的座標ラベル)・料金プラン等額点(table・逆算生成)・排水式・2段階料金の区間式。全パターン逆算生成(目標値先行抽選)で可除性制約を排除。図は1パターン1図の原則で問いに必要な頂点のみshow_coords(ラベル衝突の構造回避)。",
+ "answer_structures": [
+  "single"
+ ],
+ "shared_lexicon": {
+  "comment": "c08は文脈をテンプレ固定(注水・徒歩・プリント・かし出し)。D4'差し替え済み。"
+ },
+ "patterns": [
+  {
+   "pattern_id": "jhs_c08_chusui_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c08_u01",
+   "unit_name": "1次関数の利用",
+   "semantic_category": "注水2段階・後段の式",
+   "semantic_note": "前段a L/分×t0分→後段b L/分。y＝bx−(b−a)t0の切片導出。連続性恒等y(t0)＝at0が構成で自動成立。b≧a＋2で切片＝t0退化((b−a)t0＝t0⟺b−a＝1)も自動排除。",
+   "step_count": 2,
+   "operation": "x≧t0で y＝bx−(b−a)t0",
+   "answer_formula": "(b1 - a1) * t01",
+   "slots": {
+    "t01": {
+     "type": "int",
+     "range": [
+      4,
+      10
+     ]
+    },
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      4,
+      12
+     ]
+    }
+   },
+   "computed_slots": {
+    "cv1": {
+     "formula": "(b1 - a1) * t01"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "phase_order",
+     "expr": "b1 >= a1 + 2",
+     "why": "後段増量の非退化(差≧2)"
+    },
+    {
+     "rule": "c_cap",
+     "expr": "(b1 - a1) * t01 <= 60",
+     "why": "切片の暗算域"
+    },
+    {
+     "rule": "no_transcribe_b",
+     "expr": "(b1 - a1) * t01 != b1",
+     "why": "転記型リーク排除(切片＝bの一致)"
+    }
+   ],
+   "sentence_templates": [
+    "空の水そうに、はじめの{t01}分間は毎分{a1}Lずつ、その後は毎分{b1}Lずつ水を入れる。水を入れ始めてからx分後の水の量をyLとするとき、x≧{t01}のとき、yをxの式で表しなさい。"
+   ],
+   "answer_template": "答え y＝{b1}x−{cv1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c08_chusui_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c08_u01",
+   "unit_name": "1次関数の利用",
+   "semantic_category": "注水2段階・満水時刻",
+   "semantic_note": "逆算生成: 満水時刻T＝t0＋dTを先に引き容積V＝at0＋b·dTを導出→整数時刻が構成的に自動成立。T∉{a,b}の転記排除。",
+   "step_count": 2,
+   "operation": "T先行 → V＝at0＋b(T−t0)",
+   "answer_formula": "t01 + dt1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "t01": {
+     "type": "int",
+     "range": [
+      4,
+      10
+     ]
+    },
+    "dt1": {
+     "type": "int",
+     "range": [
+      2,
+      10
+     ]
+    },
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      4,
+      12
+     ]
+    }
+   },
+   "computed_slots": {
+    "vv1": {
+     "formula": "a1 * t01 + b1 * dt1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "phase_order",
+     "expr": "b1 >= a1 + 2",
+     "why": "後段増量の非退化"
+    },
+    {
+     "rule": "v_round",
+     "expr": "(a1 * t01 + b1 * dt1) % 5 == 0",
+     "why": "容積の現実性(5L刻み・成立性)"
+    },
+    {
+     "rule": "v_cap",
+     "expr": "a1 * t01 + b1 * dt1 <= 150",
+     "why": "容積の現実域"
+    },
+    {
+     "rule": "t_cap",
+     "expr": "t01 + dt1 <= 18",
+     "why": "時刻の現実域"
+    },
+    {
+     "rule": "no_transcribe_a",
+     "expr": "t01 + dt1 != a1",
+     "why": "転記型リーク排除(答＝a)"
+    },
+    {
+     "rule": "no_transcribe_b",
+     "expr": "t01 + dt1 != b1",
+     "why": "転記型リーク排除(答＝b)"
+    }
+   ],
+   "sentence_templates": [
+    "容積が{vv1_disp}Lの空の水そうに、はじめの{t01}分間は毎分{a1}Lずつ、その後は毎分{b1}Lずつ水を入れる。水そうが満水になるのは、水を入れ始めてから何分後ですか。"
+   ],
+   "answer_template": "答え {ans}分後",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c08_oikake_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c08_u01",
+   "unit_name": "1次関数の利用",
+   "semantic_category": "追いつき(整数分)",
+   "semantic_note": "第1波は整数分のみ(裁可済み・fmt_minsecはv1.1)。分速choices(徒歩50〜80/自転車180〜240)は2v1＝v2の組が空集合になるよう選定(答＝t0転記の構造排除・制約は二重化)。",
+   "step_count": 2,
+   "operation": "t＝v1·t0/(v2−v1)",
+   "answer_formula": "(v1 * t01) // (v2 - v1)",
+   "slots": {
+    "t01": {
+     "type": "int",
+     "range": [
+      3,
+      12
+     ]
+    },
+    "v1": {
+     "type": "int",
+     "choices": [
+      50,
+      60,
+      70,
+      80
+     ]
+    },
+    "v2": {
+     "type": "int",
+     "choices": [
+      180,
+      200,
+      210,
+      240
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(v1 * t01) % (v2 - v1) == 0",
+     "why": "追いつき時刻の整数保証(第1波正準・裁可済み)"
+    },
+    {
+     "rule": "ans_floor",
+     "expr": "(v1 * t01) // (v2 - v1) >= 2",
+     "why": "2分以上(即時追いつきの退化排除)"
+    },
+    {
+     "rule": "ans_cap",
+     "expr": "(v1 * t01) // (v2 - v1) <= 15",
+     "why": "現実域"
+    },
+    {
+     "rule": "no_transcribe_t",
+     "expr": "(v1 * t01) // (v2 - v1) != t01",
+     "why": "転記型リーク排除(答＝t0⟺v2＝2v1・choicesで空集合だが二重化)"
+    }
+   ],
+   "sentence_templates": [
+    "弟が家を出発してから{t01}分後に、兄が自転車で同じ道を追いかけた。弟は分速{v1}m、兄は分速{v2}mで進むとき、兄が出発してから何分後に弟に追いつきますか。"
+   ],
+   "answer_template": "答え {ans}分後",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c08_gyomi_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c08_u01",
+   "unit_name": "1次関数の利用",
+   "semantic_category": "距離グラフ読み取り・行きの速さ",
+   "semantic_note": "行き→休憩→帰りのsegment折れ線。問いに必要な頂点(t1，D)のみshow_coords(1パターン1図の原則によるラベル衝突の構造回避)。速さs1先行→D＝s1·t1導出でs1は図・本文に非出現(転記構造ゼロ)。",
+   "step_count": 1,
+   "operation": "行きの分速＝D/t1(＝先行抽選のs1)",
+   "answer_formula": "s1",
+   "slots": {
+    "s1": {
+     "type": "int",
+     "choices": [
+      50,
+      60,
+      70,
+      80
+     ]
+    },
+    "t1": {
+     "type": "int",
+     "range": [
+      4,
+      6
+     ]
+    },
+    "r1": {
+     "type": "int",
+     "range": [
+      2,
+      3
+     ]
+    },
+    "u1": {
+     "type": "int",
+     "range": [
+      3,
+      5
+     ]
+    }
+   },
+   "computed_slots": {
+    "dv1": {
+     "formula": "s1 * t1"
+    },
+    "t2v": {
+     "formula": "t1 + r1"
+    },
+    "t3v": {
+     "formula": "t1 + r1 + u1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "x_in_view",
+     "expr": "t1 + r1 + u1 <= 13",
+     "why": "終点が枠内マージン1(view 0..14・描画可能性)"
+    },
+    {
+     "rule": "y_headroom",
+     "expr": "s1 * t1 <= 450",
+     "why": "頂点座標ラベルの上端余白(view 0..500・ラベル8px上方оффセットのはみ出し防止)"
+    }
+   ],
+   "sentence_templates": [
+    "図は、Aさんが家を出発して公園まで歩き、公園で休んだ後、同じ道を歩いて家にもどったようすを表したものである。行きの速さは分速何mですか。"
+   ],
+   "answer_template": "答え 分速{ans}m",
+   "figure_params": {
+    "kind": "xy_graph",
+    "fig_version": 2,
+    "view": {
+     "xmin": 0,
+     "xmax": 14,
+     "ymin": 0,
+     "ymax": 500,
+     "tick_x": 1,
+     "tick_y": 50,
+     "grid": true
+    },
+    "axis_labels": {
+     "x": "x(分)",
+     "y": "y(m)"
+    },
+    "elements": [
+     {
+      "type": "segment",
+      "x1": [
+       0,
+       1
+      ],
+      "y1": [
+       0,
+       1
+      ],
+      "x2": [
+       "{t1}",
+       1
+      ],
+      "y2": [
+       "{dv1}",
+       1
+      ]
+     },
+     {
+      "type": "segment",
+      "x1": [
+       "{t1}",
+       1
+      ],
+      "y1": [
+       "{dv1}",
+       1
+      ],
+      "x2": [
+       "{t2v}",
+       1
+      ],
+      "y2": [
+       "{dv1}",
+       1
+      ]
+     },
+     {
+      "type": "segment",
+      "x1": [
+       "{t2v}",
+       1
+      ],
+      "y1": [
+       "{dv1}",
+       1
+      ],
+      "x2": [
+       "{t3v}",
+       1
+      ],
+      "y2": [
+       0,
+       1
+      ]
+     },
+     {
+      "type": "point",
+      "x": [
+       "{t1}",
+       1
+      ],
+      "y": [
+       "{dv1}",
+       1
+      ],
+      "guides": "both",
+      "show_coords": true
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c08_gyomi_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c08_u01",
+   "unit_name": "1次関数の利用",
+   "semantic_category": "距離グラフ読み取り・帰りの式",
+   "semantic_note": "gyomi_01と同一の折れ線構成で問いが帰り区間の式y＝−s2x＋s2·t3。u1|D制約で帰り速さ整数保証。show_coordsは(t2，D)と(t3，0)の2点(高さ差で分離・衝突なし)。",
+   "step_count": 2,
+   "operation": "s2＝D/u → y＝−s2x＋s2·t3",
+   "answer_formula": "(s1 * t1) // u1",
+   "slots": {
+    "s1": {
+     "type": "int",
+     "choices": [
+      50,
+      60,
+      70,
+      80
+     ]
+    },
+    "t1": {
+     "type": "int",
+     "range": [
+      4,
+      6
+     ]
+    },
+    "r1": {
+     "type": "int",
+     "range": [
+      2,
+      3
+     ]
+    },
+    "u1": {
+     "type": "int",
+     "range": [
+      3,
+      5
+     ]
+    }
+   },
+   "computed_slots": {
+    "dv1": {
+     "formula": "s1 * t1"
+    },
+    "t2v": {
+     "formula": "t1 + r1"
+    },
+    "t3v": {
+     "formula": "t1 + r1 + u1"
+    },
+    "s2v": {
+     "formula": "(s1 * t1) // u1"
+    },
+    "cc1": {
+     "formula": "((s1 * t1) // u1) * (t1 + r1 + u1)"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(s1 * t1) % u1 == 0",
+     "why": "帰り速さの整数保証"
+    },
+    {
+     "rule": "s2_cap",
+     "expr": "(s1 * t1) // u1 <= 120",
+     "why": "帰り速さの現実域(徒歩〜早歩き)"
+    },
+    {
+     "rule": "x_in_view",
+     "expr": "t1 + r1 + u1 <= 13",
+     "why": "終点が枠内マージン1(描画可能性)"
+    },
+    {
+     "rule": "y_headroom",
+     "expr": "s1 * t1 <= 450",
+     "why": "座標ラベル上端余白"
+    }
+   ],
+   "sentence_templates": [
+    "図は、Aさんが家を出発して公園まで歩き、公園で休んだ後、同じ道を歩いて家にもどったようすを表したものである。家にもどる区間について、yをxの式で表しなさい。"
+   ],
+   "answer_template": "答え y＝−{s2v}x＋{cc1}",
+   "figure_params": {
+    "kind": "xy_graph",
+    "fig_version": 2,
+    "view": {
+     "xmin": 0,
+     "xmax": 14,
+     "ymin": 0,
+     "ymax": 500,
+     "tick_x": 1,
+     "tick_y": 50,
+     "grid": true
+    },
+    "axis_labels": {
+     "x": "x(分)",
+     "y": "y(m)"
+    },
+    "elements": [
+     {
+      "type": "segment",
+      "x1": [
+       0,
+       1
+      ],
+      "y1": [
+       0,
+       1
+      ],
+      "x2": [
+       "{t1}",
+       1
+      ],
+      "y2": [
+       "{dv1}",
+       1
+      ]
+     },
+     {
+      "type": "segment",
+      "x1": [
+       "{t1}",
+       1
+      ],
+      "y1": [
+       "{dv1}",
+       1
+      ],
+      "x2": [
+       "{t2v}",
+       1
+      ],
+      "y2": [
+       "{dv1}",
+       1
+      ]
+     },
+     {
+      "type": "segment",
+      "x1": [
+       "{t2v}",
+       1
+      ],
+      "y1": [
+       "{dv1}",
+       1
+      ],
+      "x2": [
+       "{t3v}",
+       1
+      ],
+      "y2": [
+       0,
+       1
+      ]
+     },
+     {
+      "type": "point",
+      "x": [
+       "{t2v}",
+       1
+      ],
+      "y": [
+       "{dv1}",
+       1
+      ],
+      "guides": "both",
+      "show_coords": true
+     },
+     {
+      "type": "point",
+      "x": [
+       "{t3v}",
+       1
+      ],
+      "y": [
+       0,
+       1
+      ],
+      "guides": "none",
+      "show_coords": true
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c08_ryokin_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c08_u01",
+   "unit_name": "1次関数の利用",
+   "semantic_category": "料金プラン・等額点",
+   "semantic_note": "逆算生成: 等額点s先行→pB＝pA＋s·(qA−qB)導出で等額点整数が構成的に自動成立。sは本文・図に非出現。料金表はtable流用。",
+   "step_count": 2,
+   "operation": "s先行 → pB導出 → pA＋qA·s＝pB＋qB·s",
+   "answer_formula": "s1",
+   "slots": {
+    "s1": {
+     "type": "int",
+     "range": [
+      5,
+      20
+     ]
+    },
+    "pa1": {
+     "type": "int",
+     "range": [
+      200,
+      600
+     ],
+     "step": 100
+    },
+    "qb1": {
+     "type": "int",
+     "range": [
+      20,
+      60
+     ],
+     "step": 10
+    },
+    "dq1": {
+     "type": "int",
+     "range": [
+      10,
+      40
+     ],
+     "step": 10
+    }
+   },
+   "computed_slots": {
+    "qa1": {
+     "formula": "qb1 + dq1"
+    },
+    "pb1": {
+     "formula": "pa1 + s1 * dq1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "pb_cap",
+     "expr": "pa1 + s1 * dq1 <= 1400",
+     "why": "基本料金の現実域"
+    },
+    {
+     "rule": "no_transcribe_qb",
+     "expr": "s1 != qb1",
+     "why": "転記型リーク排除(答＝qBの一致)"
+    }
+   ],
+   "sentence_templates": [
+    "写真のプリント料金について、表のような2つのプランA、Bがある。プランAとプランBの料金が等しくなるのは、写真が何枚のときですか。"
+   ],
+   "answer_template": "答え {ans}枚",
+   "figure_params": {
+    "kind": "table",
+    "fig_version": 1,
+    "caption": "プリント料金",
+    "corner_label": "プラン",
+    "col_header": [
+     "基本料金(円)",
+     "1枚あたりの料金(円)"
+    ],
+    "rows": [
+     {
+      "label": "A",
+      "values": [
+       "{pa1}",
+       "{qa1}"
+      ]
+     },
+     {
+      "label": "B",
+      "values": [
+       "{pb1}",
+       "{qb1}"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2
+   ]
+  },
+  {
+   "pattern_id": "jhs_c08_haisui_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c08_u01",
+   "unit_name": "1次関数の利用",
+   "semantic_category": "排水・減少の式",
+   "semantic_note": "逆算生成: 空時刻T先行→V＝vT導出。減少グラフの符号形(y＝−vx＋V)。Tは本文非出現。",
+   "step_count": 1,
+   "operation": "T先行 → V＝vT → y＝−vx＋V",
+   "answer_formula": "v1 * t1",
+   "answer_unit_system": "signed",
+   "slots": {
+    "v1": {
+     "type": "int",
+     "range": [
+      3,
+      9
+     ]
+    },
+    "t1": {
+     "type": "int",
+     "range": [
+      6,
+      15
+     ]
+    }
+   },
+   "computed_slots": {
+    "vv1": {
+     "formula": "v1 * t1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "v_cap",
+     "expr": "v1 * t1 <= 100",
+     "why": "水量の現実域"
+    },
+    {
+     "rule": "v_floor",
+     "expr": "v1 * t1 >= 24",
+     "why": "自明小容量の除外"
+    }
+   ],
+   "sentence_templates": [
+    "水が{vv1_disp}L入っている水そうから、毎分{v1}Lずつ水をぬく。水をぬき始めてからx分後の水そうの水の量をyLとするとき、yをxの式で表しなさい。"
+   ],
+   "answer_template": "答え y＝−{v1}x＋{vv1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c08_dankai_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c08_u01",
+   "unit_name": "1次関数の利用",
+   "semantic_category": "2段階料金・超過区間の式",
+   "semantic_note": "基本域(t0時間まで定額p)+超過域(1時間ごとu加算)。y＝ux＋(p−u·t0)。切片正の符号形固定(p≧u·t0＋100)。50円刻みはstepで構成保証。",
+   "step_count": 2,
+   "operation": "x≧t0で y＝ux＋(p−u·t0)",
+   "answer_formula": "p1 - u1 * t01",
+   "slots": {
+    "t01": {
+     "type": "int",
+     "range": [
+      2,
+      4
+     ]
+    },
+    "p1": {
+     "type": "int",
+     "range": [
+      400,
+      1000
+     ],
+     "step": 100
+    },
+    "u1": {
+     "type": "int",
+     "choices": [
+      100,
+      150,
+      200
+     ]
+    }
+   },
+   "computed_slots": {
+    "cc1": {
+     "formula": "p1 - u1 * t01"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "c_floor",
+     "expr": "p1 - u1 * t01 >= 100",
+     "why": "切片正の符号形固定+現実域"
+    },
+    {
+     "rule": "c_cap",
+     "expr": "p1 - u1 * t01 <= 500",
+     "why": "暗算域"
+    },
+    {
+     "rule": "no_transcribe_u",
+     "expr": "p1 - u1 * t01 != u1",
+     "why": "転記型リーク排除(切片＝uの一致)"
+    }
+   ],
+   "sentence_templates": [
+    "ある店の自転車のかし出し料金は、最初の{t01}時間までは{p1}円で、その後は1時間ごとに{u1}円が加算される。かりる時間がx時間(x≧{t01})のときの料金をy円とするとき、yをxの式で表しなさい。"
+   ],
+   "answer_template": "答え y＝{u1}x＋{cc1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  }
+ ]
+}

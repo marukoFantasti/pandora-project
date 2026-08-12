@@ -1,0 +1,128 @@
+{
+  "_meta": {
+    "schema": "rationale_schema_spec.md v1.0",
+    "scope": "jhs c08 1次関数の利用(8パターン)+c18追補 数表版(2パターン)。B層設計側の最終章",
+    "note": "共通設計判断: _shared.jhs_c08_riyo / _shared.jhs_c18_taiou。c08は全パターン逆算生成。"
+  },
+  "_shared": {
+    "jhs_c08_riyo": {
+      "representation": "文脈はテンプレ固定4種(注水/排水・徒歩折れ線・写真プリント・自転車かし出し)でD4'差し替え済み(実物の電話料金・タンク系を置換)。区間式の切片は全て正の符号形に構成(chusui: (b−a)t0・dankai: p−ut0≧100)。graph系のviewはパターン定数(0..14分×0..500m・tick_x1/tick_y50=契約16以内)。",
+      "constructive_guarantees": "全8パターンが逆算生成(満水時刻T・追いつき時刻・等額点s・空時刻T・速さs1の先行抽選)で、可除性制約はgyomi_02のu|Dとoikakeの(v2−v1)|v1t0のみ。答スロット(s1・s・T)が本文図に非出現の転記構造ゼロが4パターン(gyomi_01/ryokin/haisui/chusui_02のT)。連続性・通過の恒等検算(y(t0)＝at0・折れ線3点通過・等額式)を全パターンに設置。",
+      "figure_label_policy": "「1パターン=1図」の原則の新用法: 同一の折れ線構成でも、問いに必要な頂点のみshow_coordsを付与(gyomi_01は(t1,D)のみ・gyomi_02は(t2,D)と(t3,0))。座標ラベルの衝突を配置計算でなく設計で構造回避する。水平に隣接する2頂点への同時ラベルは本viewでは禁止(ラベル幅>頂点間隔になり得るため)=図規約として記録。",
+      "kanji_note": "c08はjhs配当宣言ゼロ(全テンプレが教育漢字+かなで成立。駐車場→自転車かし出しの差し替えは駐=jhs回避を兼ねる)。",
+      "directives": [
+        {"text": "c08追いつきは第1波整数分のみ・fmt_minsecはv1.1送り", "by": "marko", "date": "2026-08-10"},
+        {"text": "B層配分増強裁可(c08は6→8: 排水型・2段階料金を前倒し)", "by": "marko", "date": "2026-08-10"}
+      ]
+    },
+    "jhs_c18_taiou": {
+      "representation": "対応表3兄弟(c06反比例/c07 1次関数/c18 y＝ax²)の完結。共通規約: corner_label「x」・label「y」・穴はx＝4固定。c18はx行{2,3,4,5}(x＝1列を除外)。²は上付き直書き(規約7)。",
+      "constructive_guarantees": "x＝1列の除外は二重の効果: y(1)＝aの直読排除(比の思考の要求)+答aの図内非出現(転記構造ゼロ)。全セルa·x²の整数が自動。",
+      "directives": [
+        {"text": "c18数表版(+2)を本セッションスコープに含める", "by": "marko", "date": "2026-08-10"}
+      ]
+    }
+  },
+  "rationales": {
+    "jhs_c08_chusui_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c08_u01", "unit_name": "1次関数の利用", "semantic_territory": "注水2段階・式", "number_domain": "整数(切片8〜60)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c08_riyo.directives"},
+      "source_features": "2段階変化の後段区間式。切片が「開始時の仮想値」である理解。",
+      "representation": "y＝bx−(b−a)t0。切片は減算形だが値は正整数(スロット正+テンプレ−記号)。",
+      "constructive_guarantees": "b≧a＋2で増量非退化+切片＝t0退化((b−a)＝1)を同時排除。連続性恒等y(t0)＝at0が構成で自動成立。切片≠b転記排除。",
+      "semantic_position": "c08の基底。chusui_02(時刻)と対。",
+      "exclusions": "変域併記(t0≦x≦T)は連問化のため第2波。3段階(仕切り水そう)は第2波本丸側。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c08_chusui_02": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c08_u01", "unit_name": "1次関数の利用", "semantic_territory": "注水2段階・満水時刻", "number_domain": "整数分(6〜18)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c08_riyo.directives"},
+      "source_features": "容積からの逆算。2段階の区間分けを自分で行う。",
+      "representation": "逆算生成: T＝t0＋dT先行→V導出。Vは容積の現実性として5L刻み制約(設計中の目視で101L型の不自然さを検出→追加)。",
+      "constructive_guarantees": "T整数が構成保証(可除性ゼロ)。T∉{a,b}転記排除。恒等: at0＋b(T−t0)＝V。",
+      "semantic_position": "chusui_01の逆向き。",
+      "exclusions": "満水後の放置(定数区間)は第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c08_oikake_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c08_u01", "unit_name": "1次関数の利用", "semantic_territory": "追いつき", "number_domain": "整数分(2〜15)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c08_riyo.directives"},
+      "source_features": "先行者への追いつき。距離等置の立式。",
+      "representation": "整数分のみ(裁可済み・fmt_minsecはv1.1)。分速choicesは徒歩50〜80/自転車180〜240の現実域。",
+      "constructive_guarantees": "(v2−v1)|v1t0可除性。choices設計で2v1＝v2(答＝t0転記)の組が空集合(制約は二重化)。恒等: v2t＝v1(t0＋t)。",
+      "semantic_position": "速さ系の基底。往復・周回は第2波在庫。",
+      "exclusions": "分秒答(fmt_minsec)・出会い(対向)は第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c08_gyomi_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c08_u01", "unit_name": "1次関数の利用", "semantic_territory": "距離グラフ・行きの速さ", "number_domain": "整数分速(50〜80)", "answer_structure": "single", "figure": "xy_graph v2(segment)", "step_count": 1, "directives_ref": "_shared.jhs_c08_riyo.directives"},
+      "source_features": "折れ線から区間の傾き＝速さを読む。segment要素の初投入。",
+      "representation": "行き→休憩→帰りの3segment。速さs1先行→D＝s1t1導出でs1は図・本文に非出現(転記構造ゼロ)。座標ラベルは(t1，D)のみ(_shared.figure_label_policy)。",
+      "constructive_guarantees": "枠内制約(T≦13・D≦450=座標ラベル上端余白込み)。描画悉皆63組全適合。恒等: 答×t1＝D。",
+      "semantic_position": "gyomi_02と同一図構成の対(問い違い)。",
+      "exclusions": "休憩時間・帰りの速さを同時に問う連問は第2波。非等方viewの目盛読み取り型(座標ラベルなし)は目視検収後の第2波。",
+      "figure_notes": "view(0..14, 0..500)tick(1,50)=x14目盛・y10目盛(契約16以内・推奨12を微超過はx側のみ・目視確認対象)。頂点は座標ラベルで読ませる方式(tick整列に依存しない)。水平隣接頂点への同時ラベル禁止規約の初出。",
+      "pedagogy": []
+    },
+    "jhs_c08_gyomi_02": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c08_u01", "unit_name": "1次関数の利用", "semantic_territory": "距離グラフ・帰りの式", "number_domain": "整数(s2≦120・切片≦1560)", "answer_structure": "single", "figure": "xy_graph v2(segment)", "step_count": 2, "directives_ref": "_shared.jhs_c08_riyo.directives"},
+      "source_features": "減少区間の式。負の傾き＝帰りの速さの対応。",
+      "representation": "y＝−s2x＋s2t3。座標ラベルは(t2，D)と(t3，0)(高さ差で分離・衝突なし)。",
+      "constructive_guarantees": "u|D可除性+s2≦120現実域。恒等: 式が(t2，D)・(t3，0)を通過(2点検算)。描画悉皆45組全適合。",
+      "semantic_position": "gyomi_01の式版。c07graph_01(読み取り→式)のsegment文脈版。",
+      "exclusions": "変域併記は第2波。行き区間の式(原点比例で自明)は不採用。",
+      "figure_notes": "gyomi_01と同一view・同一折れ線。ラベル頂点のみ差し替え(1パターン1図原則の実装例)。",
+      "pedagogy": []
+    },
+    "jhs_c08_ryokin_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c08_u01", "unit_name": "1次関数の利用", "semantic_territory": "料金プラン・等額点", "number_domain": "整数枚(5〜20)", "answer_structure": "single", "figure": "table", "step_count": 2, "directives_ref": "_shared.jhs_c08_riyo.directives"},
+      "source_features": "2つの1次式の等置。表からの立式。",
+      "representation": "写真プリント文脈(D4'差し替え)。逆算生成: 等額点s先行→pB＝pA＋s·Δq導出。sは本文・図に非出現。",
+      "constructive_guarantees": "等額点整数が構成保証(可除性ゼロ)。s≠qB転記排除。恒等: 等額式の両辺一致。",
+      "semantic_position": "c07kouten_01の文章題版(連立の利用)。",
+      "exclusions": "「どちらが安いか」の不等式判断は第2波(答形式が別)。3プランは第2波。",
+      "figure_notes": "table流用・corner_label「プラン」・2行2列。図中のpB・qAはcomputed(逆算の跡が図に出ない)。",
+      "pedagogy": []
+    },
+    "jhs_c08_haisui_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c08_u01", "unit_name": "1次関数の利用", "semantic_territory": "排水・減少の式", "number_domain": "整数(V 24〜100)", "answer_structure": "single", "figure": "なし", "step_count": 1, "directives_ref": "_shared.jhs_c08_riyo.directives"},
+      "source_features": "減少の1次関数。切片＝初期量・傾き＝−排出率の対応。",
+      "representation": "逆算生成: 空時刻T先行→V＝vT。Tは本文非出現。",
+      "constructive_guarantees": "V域24〜100(自明小容量除外+現実域)。恒等: y(T)＝0。",
+      "semantic_position": "chusui系の鏡像(減少)。c07heniki_02(減少関数)の文脈版。",
+      "exclusions": "空になる時刻問い(chusui_02と問い構造重複)は不採用・式問いに固定。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c08_dankai_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c08_u01", "unit_name": "1次関数の利用", "semantic_territory": "2段階料金・区間式", "number_domain": "整数(切片100〜500・50円刻み)", "answer_structure": "single", "figure": "なし", "step_count": 2, "directives_ref": "_shared.jhs_c08_riyo.directives"},
+      "source_features": "定額域+従量域の区間式。chusui_01の料金版(同型の再文脈化)。",
+      "representation": "自転車かし出し文脈(駐車場の駐=jhs回避を兼ねたD4'差し替え)。切片正形(p−ut0≧100)固定。",
+      "constructive_guarantees": "50円刻みはstepスロットで自動。切片≠u転記排除。恒等: y(t0)＝p(基本域端点)。",
+      "semantic_position": "chusui_01と同型異文脈(転移の検査)。",
+      "exclusions": "切片負形(p＜ut0)は不自然(基本料金が割高でない設定)のため不採用。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c18_taiou_01": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c18_u01", "unit_name": "関数y＝ax²", "semantic_territory": "対応表→式の決定", "number_domain": "整数(a 2〜4)", "answer_structure": "single", "figure": "table", "step_count": 2, "directives_ref": "_shared.jhs_c18_taiou.directives"},
+      "source_features": "対応表の2乗比例構造を読む。等差でない増え方の認識。",
+      "representation": "_shared参照。x行{2..5}(x＝1除外)。",
+      "constructive_guarantees": "x＝1除外の二重効果(比の思考+転記ゼロ)。恒等: 全セルy/x²＝a悉皆。",
+      "semantic_position": "対応表3兄弟の完結点(c06=値・c07=値・c18=式と問いを分担)。",
+      "exclusions": "負のa版は第2波(セル全負の表示裁可が要る)。",
+      "figure_notes": "table流用・3兄弟共通形(corner「x」・label「y」)。",
+      "pedagogy": []
+    },
+    "jhs_c18_taiou_02": {
+      "brief": {"grade": "jhs", "unit_id": "jhs_c18_u01", "unit_name": "関数y＝ax²", "semantic_territory": "対応表の穴埋め", "number_domain": "整数(16a・32〜64)", "answer_structure": "single", "figure": "table", "step_count": 2, "directives_ref": "_shared.jhs_c18_taiou.directives"},
+      "source_features": "a読み→2乗代入の2段。",
+      "representation": "穴x＝4固定(3兄弟共通)。",
+      "constructive_guarantees": "答16aは他セル{4a,9a,25a}と係数相異で不衝突・x行定数とも16a≧32で不衝突。恒等: 比の悉皆+衝突なし。",
+      "semantic_position": "taiou_01の値問い版。",
+      "exclusions": "y側からxを求める逆向き(±2解)は第2波(2解正準の裁可が要る)。",
+      "figure_notes": "taiou_01と同形・アセルのみ差。",
+      "pedagogy": []
+    }
+  }
+}
