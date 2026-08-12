@@ -20,6 +20,8 @@ const glob = process.argv[3] || 'jhs_c0';   // 既定: jhs バンク全部
 function isqrt(n) { n = Math.trunc(n); let a = Math.floor(Math.sqrt(n)); while (a * a > n) a--; while ((a + 1) * (a + 1) <= n) a++; return a; }
 function isSquareFree(n) { n = Math.trunc(Math.abs(n)); for (let d = 2; d * d <= n; d++) if (n % (d * d) === 0) return false; return true; }
 function squareFreePart(n) { n = Math.trunc(Math.abs(n)); for (let d = 2; d * d <= n; d++) while (n % (d * d) === 0) n = n / (d * d); return n; }
+function gcdH(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { const t = a % b; a = b; b = t; } return a; }
+function numDivisors(n) { n = Math.abs(n); let c = 0; for (let d = 1; d <= n; d++) if (n % d === 0) c++; return c; }
 
 // pid -> (env, ans) => bool。env はスロット整数、ans は answer_formula の解。
 // 例外的に pair 型(renritsu)は y を env から再導出して両式を確認。
@@ -110,6 +112,20 @@ const ID = {
     const v = [e.lo1, e.lo2, e.lo3, e.lo4, e.m1, e.m2, e.hi1, e.hi2, e.hi3, e.hi4].slice().sort((a, b) => a - b);
     return v[4] === e.m1 && v[5] === e.m2 && (e.m1 + e.m2) % 2 === 0 && ans === (e.m1 + e.m2) / 2;
   },
+  // --- c06 比例・反比例：比例定数/値/変域/交点の逆算恒等 + 転記退化排除 ---
+  jhs_c06_prop_01: (e, ans) => ans * e.p1 === -e.q1 && Math.abs(ans) >= 2 && Math.abs(ans) !== e.p1,                       // a·p=−q(比例定数)
+  jhs_c06_prop_02: (e, ans) => { const a = -Math.floor(e.q1 / e.p1); return ans === a * e.r1 && Math.abs(ans) !== e.p1 && Math.abs(ans) !== e.q1; }, // 答=−(q/p)r
+  jhs_c06_inv_01: (e, ans) => ans === e.p1 * e.q1,                                                                        // 反比例定数 a=pq
+  jhs_c06_inv_02: (e, ans) => ans * e.r1 === -(e.p1 * e.q1) && Math.abs(ans) !== e.p1 && Math.abs(ans) !== e.q1,           // 答·r=−pq
+  jhs_c06_pgraph_01: (e, ans) => ans === -e.a1 && e.qv1 === e.a1 * e.p1 && e.a1 * e.p1 <= 5,                               // グラフ読取: q=ap
+  jhs_c06_igraph_01: (e, ans) => ans === e.p1 * e.q1 && ans <= 25 && e.p1 >= 2 && e.p1 <= 5 && e.q1 >= 2 && e.q1 <= 5,     // 双曲線読取: k=pq≦25
+  jhs_c06_heniki_01: (e, ans) => e.a1 === ans * e.q1 && e.a1 === e.lv1 * e.p1 && ans > e.lv1 && e.lv1 > 0 && !(ans === e.p1 && e.lv1 === e.q1), // 反比例変域: a=答·q=lv·p
+  jhs_c06_heniki_02: (e, ans) => ans === e.a1 * e.q1 && e.hp1 === e.a1 * e.p1 && ans > e.hp1,                              // 端点積∧順序
+  jhs_c06_lattice_01: (e, ans) => ans === e.nd1 && ans !== e.k1,                                                          // 格子点個数(brute照合は別ハーネス)∧答≠k
+  jhs_c06_bunsho_01: (e, ans) => e.q1 % e.p1 === 0 && ans === Math.floor(e.q1 / e.p1) * e.r1 && ans !== e.p1 && ans !== e.q1, // 比例文章: w·p=q
+  jhs_c06_bunsho_02: (e, ans) => e.u1 * ans === e.v1 * e.t1 && ans !== e.v1 && ans !== e.t1,                              // 反比例文章: u·答=vt
+  jhs_c06_taiou_01: (e, ans) => ans === Math.floor(e.a1 / 3) && ![e.a1, Math.floor(e.a1 / 2), Math.floor(e.a1 / 4), Math.floor(e.a1 / 6)].includes(ans), // 対応表: 答∉表値
+  jhs_c06_kouten_01: (e, ans) => { const t = Math.floor(e.k1 / e.s1), g = gcdH(t, e.s1); return e.k1 === e.s1 * t && ans === t / g && Math.floor(e.s1 / g) >= 2; }, // 交点既約表示: gcd検算∧s/g≧2
 };
 
 const bankFiles = fs.readdirSync(path.join(ROOT, 'pattern_bank'))
