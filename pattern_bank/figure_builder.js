@@ -171,6 +171,13 @@
     return w;
   }
   // レイアウト（テスト可能・描画から分離）。cell[row][col]: row0=ヘッダ, col0=行ラベル, 左上=空。
+  // 列書式(B層c09): col_formats[c] が "dec2fix" の値セルをスケール100整数→固定2桁(末尾ゼロ保持)。
+  // 未指定 or "raw"(または非整数値)は String(v) で既存挙動バイト不変。generate_poc_v10 fmt_dec2fix と同一。
+  function tblDec2fix(b) { b = Math.trunc(b); return Math.trunc(b / 100) + '.' + String(b % 100).padStart(2, '0'); }
+  function tblFmtCell(colFormats, c, raw) {
+    if (Array.isArray(colFormats) && colFormats[c] === 'dec2fix' && /^-?\d+$/.test(String(raw))) return tblDec2fix(parseInt(raw, 10));
+    return String(raw);
+  }
   function tableLayout(fp) {
     var colHeader = fp.col_header || [], rows = fp.rows || [];
     var nCol = 1 + colHeader.length, nRow = 1 + rows.length;
@@ -178,10 +185,10 @@
     for (var r = 0; r < nRow; r++) {
       cell[r] = [];
       for (var c = 0; c < nCol; c++) {
-        if (r === 0 && c === 0) cell[r][c] = '';
+        if (r === 0 && c === 0) cell[r][c] = fp.corner_label !== undefined ? String(fp.corner_label) : '';   // corner_label(B層c09・不在=空セル=既存バイト不変)
         else if (r === 0) cell[r][c] = String(colHeader[c - 1]);
         else if (c === 0) cell[r][c] = String(rows[r - 1].label);
-        else { var vals = rows[r - 1].values || []; cell[r][c] = String(vals[c - 1] !== undefined ? vals[c - 1] : ''); }
+        else { var vals = rows[r - 1].values || []; cell[r][c] = tblFmtCell(fp.col_formats, c, vals[c - 1] !== undefined ? vals[c - 1] : ''); }
       }
     }
     var HPAD = 10, VPAD = 7, MAXW = 460, fs = 13, colW, rowH, tableW;
@@ -964,6 +971,17 @@
       lay.pts.push(tl, worldFlip([b.x + b.w, 0]));
       lay.parts.push(textEl(b.x + b.w / 2, 12, String(fp.x0 + i * fp.class_width), 10, '#333'));  // 階級下端値
     });
+    // 軸タイトル(B層c09・不在=描画なし=既存バイト不変)。x_label=x軸下・中央、y_label=y軸左・縦書き(-90°)
+    var maxH = g.bars.reduce(function (m, b) { return Math.max(m, b.h); }, 0), chartW = freqs.length * g.barW;
+    if (fp.x_label !== undefined) {
+      lay.parts.push(textEl(chartW / 2, 30, String(fp.x_label), 11, '#333'));
+      lay.pts.push([chartW / 2 - 32, 30], [chartW / 2 + 32, 30]);
+    }
+    if (fp.y_label !== undefined) {
+      var yx = -18, yy = -maxH / 2;
+      lay.parts.push('<text x="' + yx + '" y="' + yy.toFixed(1) + '" text-anchor="middle" font-size="11" paint-order="stroke" stroke="#fff" stroke-width="3" fill="#333" transform="rotate(-90 ' + yx + ' ' + yy.toFixed(1) + ')">' + esc(String(fp.y_label)) + '</text>');
+      lay.pts.push([yx - 7, -maxH], [yx + 7, 0]);
+    }
     return lay;
   }
 

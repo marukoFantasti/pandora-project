@@ -1,0 +1,256 @@
+{
+  "_meta": {
+    "schema": "rationale_schema_spec.md v1.0",
+    "scope": "jhs c09 資料の活用(11パターン・B層第1波先行章)",
+    "note": "共通設計判断: _shared.jhs_c09_shiryo。table/histogram既存kind流用(fig_version 1)・レンダラ改修なしでB層先行量産した章。"
+  },
+  "_shared": {
+    "jhs_c09_shiryo": {
+      "representation": "相対度数はdec2スケール100整数(千分率でなくスケール100=表示がdec2直結)。N∈{20,25,50}choicesにより100/N∈{5,4,2}で全相対度数が正確にdec2で切れる(悉皆保証・棄却なし)。fmt_decの末尾ゼロ省略仕様(30→\"0.3\")と表示正準(0.30)の衝突は二層で解決: 答側は末尾ゼロなし制約(ans%10≠0)で省略が発生しない値のみ生成、図中の相対度数列はレンダラ側dec2fix列整形(末尾ゼロ保持)に委譲。気温はスケール10整数+dec1。境界値は幅スロットからのcomputed(b_i＝i·w)または図内定数。",
+      "constructive_guarantees": "統計量の構成保証は全て範囲分割か逆算構成で棄却ゼロ〜軽微に設計: 一意最大(mode)はf4∈[7,12]×他∈[1,6]の範囲分割、一意最大最小(range)はoffset∈[1,29]×R∈[30,40]、中央2値位置(med_02)は挟み撃ち(4低値<m1≦m2<4高値・m2＝m1＋偶数step)、中央値階級(med_01)は累積度数の両側制約で第3階級に固定。恒等検算は全パターンで統計量の力任せ再計算(ソート・累積・総和)と照合。",
+      "template_note": "生成器仕様の発見(本章で確立した一般規約候補): resolve_figure_paramsは完全一致\"{slot}\"のみ解決し複合文字列(\"{t1}の度数分布\")は解決されない。→図内文字列は定数または純スロット参照のみ(タイトルに文脈を入れたい場合は本文側で示す)。またデータ列・境界値は図側配置ならverifyの本文数値照合の対象外だが、同一env駆動により本文との食い違いは構造的に起きない(v0.8 figure_params設計の恩恵)。",
+      "figure_wiring_note": "配線時確認3点: (1)table kindの想定スキーマ(title/header/col_formats/rows)をg04レンダラ実契約に整合させる。(2)相対度数列のdec2fix整形(末尾ゼロ保持・スケール100整数→\"0.30\"/\"1.00\")はレンダラ側の列書式として追加(加法・生成器SAFEヘルパ改修なし)。(3)histogram kindの階級数上限・度数軸上限の実装定数を確認し、本章の度数キャップ(≦12)・階級数(4〜6)が契約内であることを描画可能性悉皆に記録。",
+      "kanji_note": "c09のjhs配当宣言(最小宣言方針): 頻(最頻値・mode_01)・範(範囲・kinji_01/range_01)・累(累乗・yuko_01)。囲はg05配当のため宣言不要。",
+      "directives": [
+        {
+          "text": "B層配分増強(c09は9→11)・c18数表版スコープ入り",
+          "by": "marko",
+          "date": "2026-08-10"
+        },
+        {
+          "text": "c09階級値平均は第1波割り切れ構成のみ(四捨五入指定型は丸め正準裁可後の第2波)",
+          "by": "marko",
+          "date": "2026-08-10"
+        },
+        {
+          "text": "c09先行量産(fig_version 2実装と並行)を承認",
+          "by": "marko",
+          "date": "2026-08-10"
+        }
+      ],
+      "figure_wiring_resolution": "確定記録(2026-08-10・Phase A完遂): (1)table/histogram正準契約に3章一括準拠(rows={label,values}・class_width/x0・データ列テーブルは番号見出し方式)。(2)dec2fix列書式=コミット1e5b61b(corr-0006 3経路E2E 600全一致)、corner_label+histogram x_label/y_label=コミットcf37792(加法・nondestructive 19/19)。(3)histogram実装定数: barW=min(⌊300/n⌋,44)px・度数軸U=min(⌊150/maxF⌋,22)px→c09の階級数4〜6・度数≦12は契約内。軸ラベル定数: font11・y_label縦書きrotate(-90)。c09基準md5=7bdf408(16本目)。"
+    }
+  },
+  "rationales": {
+    "jhs_c09_dosu_01": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c09_u01",
+        "unit_name": "資料の活用",
+        "semantic_territory": "度数分布・度数の穴埋め",
+        "number_domain": "整数度数",
+        "answer_structure": "single",
+        "figure": "table",
+        "step_count": 1,
+        "directives_ref": "_shared.jhs_c09_shiryo.directives"
+      },
+      "source_features": "度数分布表の合計行からの逆算。表の読み方の基底。",
+      "representation": "穴は第6階級固定(位置固定=A層の構造固定文化)。時間文脈レキシコン×0〜120分幅20の固定枠。",
+      "constructive_guarantees": "1≦ア≦12(0人階級を穴にしない成立性+現実域キャップ)。恒等: 全度数和＝N。",
+      "semantic_position": "c09表読みの基底。dosu_02(相対度数)への1段前。",
+      "exclusions": "穴2箇所連立は第2波。累積度数の穴も第2波。",
+      "figure_notes": "table流用。タイトルは定数「度数分布表」(複合文字列不可規約=_shared参照)。度数≦12・6階級+合計行の固定形。",
+      "pedagogy": []
+    },
+    "jhs_c09_dosu_02": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c09_u01",
+        "unit_name": "資料の活用",
+        "semantic_territory": "度数分布・相対度数の穴埋め",
+        "number_domain": "相対度数(dec2スケール100)",
+        "answer_structure": "single",
+        "figure": "table",
+        "step_count": 2,
+        "directives_ref": "_shared.jhs_c09_shiryo.directives"
+      },
+      "source_features": "相対度数＝度数/合計。dec2表示と合計1.00の整合が採点の核。",
+      "representation": "_shared参照(N∈{20,25,50}悉皆・答側末尾ゼロなし・図中dec2fix)。穴は第3階級固定。",
+      "constructive_guarantees": "全相対度数dec2正確(悉皆保証)+Σ相対度数＝1.00の恒等検算をストレスに内蔵。平均試行8.4回(棄却軽微)。",
+      "semantic_position": "dosu_01の1段先。dosu_03(逆算)との対。",
+      "exclusions": "N＝40系(全度数偶数制約が要る)は値域制約の複雑化に見合わず除外(N choices 3種で分布は十分)。",
+      "figure_notes": "相対度数列はレンダラdec2fix(配線時確認=_shared figure_wiring_note)。合計行の相対度数は定数100(→\"1.00\")。",
+      "pedagogy": []
+    },
+    "jhs_c09_dosu_03": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c09_u01",
+        "unit_name": "資料の活用",
+        "semantic_territory": "相対度数からの人数逆算",
+        "number_domain": "整数度数",
+        "answer_structure": "single",
+        "figure": "なし",
+        "step_count": 1,
+        "directives_ref": "_shared.jhs_c09_shiryo.directives"
+      },
+      "source_features": "度数＝N×相対度数の逆向き適用。",
+      "representation": "相対度数はquantityスロット(dec2表示・choices末尾5のみ=表示に末尾ゼロが出ない)。図なしで成立する文章提示型。",
+      "constructive_guarantees": "N∈{20,40,60}×r∈{5,15,25,35,45}の全15組で(N·r)%100＝0が成立(全組検査済み・棄却ゼロ。divisible制約は二重化)。",
+      "semantic_position": "dosu_02の逆算版。割合逆算系(g05第3用法)のjhs接続点。",
+      "exclusions": "末尾ゼロ相対度数(0.10等)はdec2省略仕様と衝突するためchoicesから構造排除。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c09_med_01": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c09_u01",
+        "unit_name": "資料の活用",
+        "semantic_territory": "中央値の階級",
+        "number_domain": "整数境界(答は階級区間)",
+        "answer_structure": "round_range",
+        "figure": "histogram",
+        "step_count": 2,
+        "directives_ref": "_shared.jhs_c09_shiryo.directives"
+      },
+      "source_features": "N偶数の中央2値がどの階級に入るか。累積度数の読みが主眼。",
+      "representation": "答は「b2m以上b3m未満」の区間文字列(round_range構造の流用)。境界は幅スロットw∈{4,5,6}のcomputed。",
+      "constructive_guarantees": "N偶数制約+累積両側制約(2(f1＋f2)≦S−2 ∧ 2(f1＋f2＋f3)≧S＋2)で第N/2位・第N/2＋1位がともに第3階級に入ることを構成保証。恒等検算は累積走査の力任せ照合。平均試行5.6回。",
+      "semantic_position": "med_02(生データ)と対。位置は第3階級固定(可変位置は第2波)。",
+      "exclusions": "中央2値が階級境界を跨ぐケース(答が2階級になる)は制約で構造排除(第1波は一意答のみ)。N奇数版は第2波。",
+      "figure_notes": "histogram流用。階級数6・度数≦9で度数軸契約内(_shared figure_wiring_note(3))。境界はcomputed参照で図と答が同一env(食い違い構造排除)。",
+      "pedagogy": []
+    },
+    "jhs_c09_mode_01": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c09_u01",
+        "unit_name": "資料の活用",
+        "semantic_territory": "最頻値",
+        "number_domain": "整数階級値",
+        "answer_structure": "single",
+        "figure": "histogram",
+        "step_count": 1,
+        "directives_ref": "_shared.jhs_c09_shiryo.directives"
+      },
+      "source_features": "最大度数階級の階級値。「度数最大の読み取り」と「階級値＝区間中央」の2概念の合流。",
+      "representation": "最大は第4階級固定。答＝7w/2(w偶数choices{4,6}で整数保証)。",
+      "constructive_guarantees": "範囲分割(f4∈[7,12]・他∈[1,6])で一意最大が棄却ゼロで自動成立(制約は二重化)。恒等: argmax一意の力任せ照合。",
+      "semantic_position": "代表値3種(平均・中央値・最頻値)の完備点。",
+      "exclusions": "答域が2値({14,21})に薄いのは階級値整数条件(7w/2)による構造制約。最大位置バリエーション(答域拡大)は第2波(位置可変=符号形展開と同型の別パターン化)。",
+      "figure_notes": "histogram流用。最大度数12が度数軸キャップと同値(契約上限の確認対象=_shared figure_wiring_note(3))。",
+      "pedagogy": []
+    },
+    "jhs_c09_pct_01": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c09_u01",
+        "unit_name": "資料の活用",
+        "semantic_territory": "以上の割合%",
+        "number_domain": "整数%",
+        "answer_structure": "single",
+        "figure": "table",
+        "step_count": 2,
+        "directives_ref": "_shared.jhs_c09_shiryo.directives"
+      },
+      "source_features": "境界以上の度数集計→割合化。相対度数の百分率読み替え。",
+      "representation": "境界60分はテンプレ定数(w＝20固定枠の第4階級下端)。答＝100(N−f1−f2−f3)/N。",
+      "constructive_guarantees": "N∈{20,25,50}で%整数が悉皆保証(dosu_02と同一手筋)。第6階級≧1の成立性。恒等: 部分和再計算照合+0＜%＜100。",
+      "semantic_position": "dosu_02(個別相対度数)の集計版。",
+      "exclusions": "「未満側」%は鏡像のため第2波。2境界の帯(40分以上80分未満)も第2波。",
+      "figure_notes": "table流用(dosu_01と同形・穴なし全記入)。",
+      "pedagogy": []
+    },
+    "jhs_c09_kinji_01": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c09_u01",
+        "unit_name": "資料の活用",
+        "semantic_territory": "近似値の範囲",
+        "number_domain": "dec1(スケール10)",
+        "answer_structure": "round_range",
+        "figure": "なし",
+        "step_count": 1,
+        "directives_ref": "_shared.jhs_c09_shiryo.directives"
+      },
+      "source_features": "四捨五入の逆問題。以上/未満の非対称(下限含む・上限含まず)が主眼。",
+      "representation": "スケール10整数+round_range_lower/upper_excl(v0.8がい数手筋のdec1適用)。答表記「a−0.5≦x＜a＋0.5」。",
+      "constructive_guarantees": "ヘルパ流用で±5の対称性が自動。恒等: 下限+上限＝20a照合。棄却ゼロ。",
+      "semantic_position": "測定値系(yuko_01)と対の誤差系基底。",
+      "exclusions": "誤差の絶対値(定数0.5が答になる)は答固定の退化のため除外。小数第2位版はdec2表示との組合せ検証後の第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c09_yuko_01": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c09_u01",
+        "unit_name": "資料の活用",
+        "semantic_territory": "有効数字表記",
+        "number_domain": "仮数dec2×10⁴",
+        "answer_structure": "single",
+        "figure": "なし",
+        "step_count": 1,
+        "directives_ref": "_shared.jhs_c09_shiryo.directives"
+      },
+      "source_features": "測定値→(1けた整数部の小数)×(10の累乗)。有効数字のけた数の非曖昧性が設計の核。",
+      "representation": "指数10⁴固定・上付きはテンプレ直書き(A層規約7「指数はUnicode上付き直書き・動的計算なし」に従う=1指数1パターン)。測定値はstep100スロット(5けた・下2けた00)、答は仮数のdec2表示(v//100)。",
+      "constructive_guarantees": "有効数字3けた目≠0制約((v//100)%10≠0)で「けた数の曖昧化」を構造排除+dec2末尾ゼロ省略とも整合。恒等: 仮数×100＝測定値の復元照合。",
+      "semantic_position": "測定値・誤差系。kinji_01と対。",
+      "exclusions": "他指数(10³/10⁵)は上付き直書き規約により指数別パターン=第2波。有効数字2けた版も第2波(仮数dec1の別正準)。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c09_mean_01": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c09_u01",
+        "unit_name": "資料の活用",
+        "semantic_territory": "階級値平均",
+        "number_domain": "整数(割り切れ構成)",
+        "answer_structure": "single",
+        "figure": "table",
+        "step_count": 2,
+        "directives_ref": "_shared.jhs_c09_shiryo.directives"
+      },
+      "source_features": "Σ(階級値×度数)/N。階級値の代表値としての利用。",
+      "representation": "階級枠55〜95点・幅10固定(階級値60〜90が図内定数列)。得点文脈は整数と自然に整合。",
+      "constructive_guarantees": "割り切れ制約(Σ(mid·f)%N＝0)が第1波正準(裁可済み)。平均試行8.6回(棄却軽微)。恒等: 力任せ再計算+60≦平均≦90(凸結合域)。",
+      "semantic_position": "代表値系。丸め正準裁可後に四捨五入版を第2波で併設予定。",
+      "exclusions": "四捨五入指定型(小数第1位まで等)は丸め正準未裁可のため第2波(directives参照)。",
+      "figure_notes": "table流用・3列(階級/階級値/度数)。階級値列は図内定数(computedでなく定数=境界固定枠のため)。",
+      "pedagogy": []
+    },
+    "jhs_c09_range_01": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c09_u01",
+        "unit_name": "資料の活用",
+        "semantic_territory": "分布の範囲",
+        "number_domain": "整数(生データN＝9)",
+        "answer_structure": "single",
+        "figure": "table",
+        "step_count": 1,
+        "directives_ref": "_shared.jhs_c09_shiryo.directives"
+      },
+      "source_features": "範囲＝最大−最小。生データからの2値抽出。",
+      "representation": "最小＝rawスロットb1・最大＝b1＋R・中間7値＝b1＋offset。データ列は図側配置(verify本文照合の外=_shared template_note)。提示順はテンプレ固定シャッフル。",
+      "constructive_guarantees": "範囲分割(offset∈[1,29]・R∈[30,40])で最大最小の一意性が棄却ゼロで自動成立(制約は二重化)。答＝Rは本文・図に非出現(転記型リークなし=corr-0007の思想を設計段階で先取り)。恒等: max−minの力任せ照合+位置検証。",
+      "semantic_position": "散らばり指標の基底。四分位(高校範囲)には踏み込まない。",
+      "exclusions": "最大最小がタイ(複数個)のケースは一意性構成で排除。dec1データ版はmed_02の領分。",
+      "figure_notes": "table流用・1行9値の横並び形(スキーマ整合は配線時確認)。",
+      "pedagogy": []
+    },
+    "jhs_c09_med_02": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c09_u01",
+        "unit_name": "資料の活用",
+        "semantic_territory": "生データの中央値(偶数個)",
+        "number_domain": "dec1(スケール10・気温)",
+        "answer_structure": "single",
+        "figure": "table",
+        "step_count": 2,
+        "directives_ref": "_shared.jhs_c09_shiryo.directives"
+      },
+      "source_features": "N＝10偶数→中央2値の平均。「並べ替えてから中央」の手続きが主眼。",
+      "representation": "スケール10整数+dec1。m1はquantityスロット(dec1表示)・他9値はcomputed(answer_unit_system dec1で_disp自動生成)。提示順はテンプレ固定シャッフル。",
+      "constructive_guarantees": "挟み撃ち構成: 4低値＝m1−e(e≧2)＜m1≦m2＝m1＋g(g偶数step)＜4高値＝m2＋f(f≧2)で第5・6位＝(m1,m2)を構成保証(棄却ゼロ)。gの偶数stepで(m1＋m2)偶数→中央値がdec1の.0/.5に正確に落ちる。恒等: 10値ソート→中央2値平均の力任せ照合+位置検証。",
+      "semantic_position": "med_01(階級版)の生データ版。偶数個平均の完備点。奇数個版は自明のため第2波でも低優先。",
+      "exclusions": "中央2値のタイ(m1＝m2)はg≧2で排除(平均の意味が消える退化)。低値・高値間の同値タイは許容(気温の現実性)。",
+      "figure_notes": "table流用・1行10値(全て_disp文字列参照)。図中数値は全てdec1表示でスケール整数が露出しない(表示層の一貫性)。",
+      "pedagogy": []
+    }
+  }
+}

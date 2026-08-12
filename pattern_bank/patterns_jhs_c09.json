@@ -1,0 +1,1344 @@
+{
+ "schema_version": "1.0",
+ "grade": "jhs",
+ "description": "jhs数学バンク B層第1波 c09(資料の活用) 11パターン: 度数分布穴埋め2形(度数/相対度数)・相対度数からの人数逆算・中央値の階級・最頻値・割合%・近似値の範囲・有効数字・階級値平均(割り切れ構成)・分布の範囲・生データ中央値(N=10偶数)。表/ヒストグラムは既存kind流用(fig_version 1)。相対度数はN∈{20,25,50}構成でdec2悉皆保証・答側は末尾ゼロなし制約。データ列は図側配置(verify本文照合の外・同一env駆動で整合保証)。",
+ "answer_structures": [
+  "single",
+  "round_range"
+ ],
+ "shared_lexicon": {
+  "ctx_time": [
+   {
+    "topic": "通学時間"
+   },
+   {
+    "topic": "学習時間"
+   },
+   {
+    "topic": "読書時間"
+   }
+  ],
+  "ctx_rec_m": [
+   {
+    "topic": "ソフトボール投げの記録"
+   },
+   {
+    "topic": "ボール投げの記録"
+   }
+  ],
+  "ctx_count": [
+   {
+    "topic": "反復横とびの記録"
+   },
+   {
+    "topic": "縄とびの回数"
+   }
+  ]
+ },
+ "patterns": [
+  {
+   "pattern_id": "jhs_c09_dosu_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c09_u01",
+   "unit_name": "資料の活用",
+   "semantic_category": "度数分布・度数の穴埋め",
+   "semantic_note": "合計から未記入度数を逆算。穴は第6階級(位置固定=構造固定文化)。1≦ア≦12の成立域キャップ。",
+   "step_count": 1,
+   "operation": "ア＝N−(f1＋…＋f5)",
+   "answer_formula": "n1 - (f1 + f2 + f3 + f4 + f5)",
+   "slots": {
+    "t1": {
+     "from": "ctx_time[j].topic"
+    },
+    "n1": {
+     "type": "int",
+     "range": [
+      26,
+      45
+     ]
+    },
+    "f1": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    },
+    "f2": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    },
+    "f3": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    },
+    "f4": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    },
+    "f5": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "hole_floor",
+     "expr": "n1 - (f1 + f2 + f3 + f4 + f5) >= 1",
+     "why": "未記入度数≧1(0人の階級を穴にしない成立性)"
+    },
+    {
+     "rule": "hole_cap",
+     "expr": "n1 - (f1 + f2 + f3 + f4 + f5) <= 12",
+     "why": "度数の現実域キャップ(他階級と同域)"
+    }
+   ],
+   "sentence_templates": [
+    "表は、あるクラスの生徒の{t1}を調べて、度数分布表に整理したものである。表のアにあてはまる度数を求めなさい。"
+   ],
+   "answer_template": "答え {ans}人",
+   "figure_params": {
+    "kind": "table",
+    "fig_version": 1,
+    "caption": "度数分布表",
+    "corner_label": "階級(分)",
+    "col_header": [
+     "度数(人)"
+    ],
+    "rows": [
+     {
+      "label": "0以上20未満",
+      "values": [
+       "{f1}"
+      ]
+     },
+     {
+      "label": "20以上40未満",
+      "values": [
+       "{f2}"
+      ]
+     },
+     {
+      "label": "40以上60未満",
+      "values": [
+       "{f3}"
+      ]
+     },
+     {
+      "label": "60以上80未満",
+      "values": [
+       "{f4}"
+      ]
+     },
+     {
+      "label": "80以上100未満",
+      "values": [
+       "{f5}"
+      ]
+     },
+     {
+      "label": "100以上120未満",
+      "values": [
+       "ア"
+      ]
+     },
+     {
+      "label": "合計",
+      "values": [
+       "{n1}"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c09_dosu_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c09_u01",
+   "unit_name": "資料の活用",
+   "semantic_category": "度数分布・相対度数の穴埋め",
+   "semantic_note": "N∈{20,25,50}構成で全相対度数がdec2で正確に切れる(100/N∈{5,4,2}=悉皆保証)。答側は末尾ゼロなし制約(dec2の末尾ゼロ省略仕様と表示正準の両立)。図中の相対度数列はレンダラ側dec2fix整形(配線時確認)。穴は第3階級固定。",
+   "step_count": 2,
+   "operation": "イ＝f3/N (千分率でなくdec2スケール100整数)",
+   "answer_formula": "100 * f3 // n1",
+   "answer_unit_system": "dec2",
+   "slots": {
+    "t1": {
+     "from": "ctx_time[j].topic"
+    },
+    "n1": {
+     "type": "int",
+     "choices": [
+      20,
+      25,
+      50
+     ]
+    },
+    "f1": {
+     "type": "int",
+     "range": [
+      1,
+      12
+     ]
+    },
+    "f2": {
+     "type": "int",
+     "range": [
+      1,
+      12
+     ]
+    },
+    "f3": {
+     "type": "int",
+     "range": [
+      1,
+      12
+     ]
+    },
+    "f4": {
+     "type": "int",
+     "range": [
+      1,
+      12
+     ]
+    },
+    "f5": {
+     "type": "int",
+     "range": [
+      1,
+      12
+     ]
+    }
+   },
+   "computed_slots": {
+    "c6": {
+     "formula": "n1 - (f1 + f2 + f3 + f4 + f5)"
+    },
+    "r1": {
+     "formula": "100 * f1 // n1"
+    },
+    "r2": {
+     "formula": "100 * f2 // n1"
+    },
+    "r4": {
+     "formula": "100 * f4 // n1"
+    },
+    "r5": {
+     "formula": "100 * f5 // n1"
+    },
+    "r6": {
+     "formula": "100 * (n1 - (f1 + f2 + f3 + f4 + f5)) // n1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "hole6_floor",
+     "expr": "n1 - (f1 + f2 + f3 + f4 + f5) >= 1",
+     "why": "第6階級度数≧1(成立性)"
+    },
+    {
+     "rule": "hole6_cap",
+     "expr": "n1 - (f1 + f2 + f3 + f4 + f5) <= 12",
+     "why": "度数の現実域キャップ"
+    },
+    {
+     "rule": "ans_no_trailing_zero",
+     "expr": "(100 * f3 // n1) % 10 != 0",
+     "why": "答の相対度数はdec2末尾ゼロなし(fmt_decの末尾ゼロ省略仕様下で0.30型を答に出さない表示正準)"
+    }
+   ],
+   "sentence_templates": [
+    "表は、あるクラスの生徒の{t1}を調べて、度数分布表に整理したものである。表のイにあてはまる相対度数を求めなさい。"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "figure_params": {
+    "kind": "table",
+    "fig_version": 1,
+    "caption": "度数分布表",
+    "corner_label": "階級(分)",
+    "col_header": [
+     "度数(人)",
+     "相対度数"
+    ],
+    "col_formats": [
+     "raw",
+     "raw",
+     "dec2fix"
+    ],
+    "rows": [
+     {
+      "label": "0以上20未満",
+      "values": [
+       "{f1}",
+       "{r1}"
+      ]
+     },
+     {
+      "label": "20以上40未満",
+      "values": [
+       "{f2}",
+       "{r2}"
+      ]
+     },
+     {
+      "label": "40以上60未満",
+      "values": [
+       "{f3}",
+       "イ"
+      ]
+     },
+     {
+      "label": "60以上80未満",
+      "values": [
+       "{f4}",
+       "{r4}"
+      ]
+     },
+     {
+      "label": "80以上100未満",
+      "values": [
+       "{f5}",
+       "{r5}"
+      ]
+     },
+     {
+      "label": "100以上120未満",
+      "values": [
+       "{c6}",
+       "{r6}"
+      ]
+     },
+     {
+      "label": "合計",
+      "values": [
+       "{n1}",
+       100
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c09_dosu_03",
+   "grade": "jhs",
+   "unit_id": "jhs_c09_u01",
+   "unit_name": "資料の活用",
+   "semantic_category": "相対度数からの人数逆算",
+   "semantic_note": "度数＝N×相対度数。N∈{20,40,60}×r∈{0.05..0.45末尾5}の全組で(N·r)%100＝0が成立(構成的保証・棄却ゼロ)。rはquantityスロットdec2表示。図なしで成立。",
+   "step_count": 1,
+   "operation": "度数＝n·r/100",
+   "answer_formula": "n1 * r1 // 100",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "choices": [
+      20,
+      40,
+      60
+     ]
+    }
+   },
+   "quantity_slots": {
+    "r1": {
+     "choices": [
+      5,
+      15,
+      25,
+      35,
+      45
+     ],
+     "unit_system": "dec2"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(n1 * r1) % 100 == 0",
+     "why": "度数の整数保証(choices全組で自動成立・二重化)"
+    }
+   ],
+   "sentence_templates": [
+    "あるクラスの生徒{n1}人の通学時間を調べて、度数分布表に整理したところ、ある階級の相対度数は{r1_disp}であった。この階級の度数を求めなさい。"
+   ],
+   "answer_template": "答え {ans}人",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c09_med_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c09_u01",
+   "unit_name": "資料の活用",
+   "semantic_category": "中央値の階級(ヒストグラム)",
+   "semantic_note": "N偶数構成で第N/2位・第N/2＋1位が同一階級(第3階級固定)に入る構成保証(累積度数が中央境界を跨がない)。階級幅wスロットで答が変動(境界はcomputed)。",
+   "step_count": 2,
+   "operation": "累積度数で中央2値の階級を特定(構成上つねに第3階級)",
+   "answer_formula": "2 * w1",
+   "slots": {
+    "t1": {
+     "from": "ctx_rec_m[j].topic"
+    },
+    "w1": {
+     "type": "int",
+     "choices": [
+      4,
+      5,
+      6
+     ]
+    },
+    "f1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "f2": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "f3": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "f4": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "f5": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "f6": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    }
+   },
+   "computed_slots": {
+    "b2": {
+     "formula": "2 * w1"
+    },
+    "b3": {
+     "formula": "3 * w1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "n_even",
+     "expr": "(f1 + f2 + f3 + f4 + f5 + f6) % 2 == 0",
+     "why": "N偶数(中央2値の同一階級判定を主眼にする)"
+    },
+    {
+     "rule": "med_lo",
+     "expr": "2 * (f1 + f2) <= f1 + f2 + f3 + f4 + f5 + f6 - 2",
+     "why": "第N/2位が第3階級以降(累積2＜N/2)"
+    },
+    {
+     "rule": "med_hi",
+     "expr": "2 * (f1 + f2 + f3) >= f1 + f2 + f3 + f4 + f5 + f6 + 2",
+     "why": "第N/2＋1位が第3階級以内(累積3≧N/2＋1)。med_loと併せ中央2値とも第3階級に固定"
+    }
+   ],
+   "sentence_templates": [
+    "ヒストグラムは、あるクラスの生徒の{t1}を調べた結果を表したものである。中央値がふくまれる階級を答えなさい。"
+   ],
+   "answer_template": "答え {ans}m以上{b3}m未満",
+   "figure_params": {
+    "kind": "histogram",
+    "fig_version": 1,
+    "class_width": "{w1}",
+    "x0": 0,
+    "x_label": "記録(m)",
+    "y_label": "人数(人)",
+    "freqs": [
+     "{f1}",
+     "{f2}",
+     "{f3}",
+     "{f4}",
+     "{f5}",
+     "{f6}"
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "round_range",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c09_mode_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c09_u01",
+   "unit_name": "資料の活用",
+   "semantic_category": "最頻値(ヒストグラム)",
+   "semantic_note": "最大度数階級は第4階級固定。範囲分割(f4∈[7,12]・他∈[1,6])で一意最大を構成的に保証(棄却ゼロ・制約は二重化)。答＝第4階級の階級値7w/2(w偶数choicesで整数保証)。",
+   "step_count": 1,
+   "operation": "最頻値＝最大度数階級の階級値＝(3w＋4w)/2",
+   "answer_formula": "7 * w1 // 2",
+   "slots": {
+    "t1": {
+     "from": "ctx_rec_m[j].topic"
+    },
+    "w1": {
+     "type": "int",
+     "choices": [
+      4,
+      6
+     ]
+    },
+    "f1": {
+     "type": "int",
+     "range": [
+      1,
+      6
+     ]
+    },
+    "f2": {
+     "type": "int",
+     "range": [
+      1,
+      6
+     ]
+    },
+    "f3": {
+     "type": "int",
+     "range": [
+      1,
+      6
+     ]
+    },
+    "f4": {
+     "type": "int",
+     "range": [
+      7,
+      12
+     ]
+    },
+    "f5": {
+     "type": "int",
+     "range": [
+      1,
+      6
+     ]
+    },
+    "f6": {
+     "type": "int",
+     "range": [
+      1,
+      6
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "mode_unique",
+     "expr": "f4 >= max(f1, f2, f3, f5, f6) + 1",
+     "why": "最大度数の一意性(範囲分割で自動成立・二重化)"
+    },
+    {
+     "rule": "mid_int",
+     "expr": "7 * w1 % 2 == 0",
+     "why": "階級値の整数保証(w偶数choicesで自動成立・二重化)"
+    }
+   ],
+   "sentence_templates": [
+    "ヒストグラムは、あるクラスの生徒の{t1}を調べた結果を表したものである。この記録の最頻値を求めなさい。"
+   ],
+   "answer_template": "答え {ans}m",
+   "figure_params": {
+    "kind": "histogram",
+    "fig_version": 1,
+    "class_width": "{w1}",
+    "x0": 0,
+    "x_label": "記録(m)",
+    "y_label": "人数(人)",
+    "freqs": [
+     "{f1}",
+     "{f2}",
+     "{f3}",
+     "{f4}",
+     "{f5}",
+     "{f6}"
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "頻"
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c09_pct_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c09_u01",
+   "unit_name": "資料の活用",
+   "semantic_category": "度数分布・以上の割合%",
+   "semantic_note": "60分以上(第4〜6階級)の割合。N∈{20,25,50}構成で%整数が悉皆保証(dosu_02と同一手筋)。境界60はテンプレ定数(w＝20固定枠)。",
+   "step_count": 2,
+   "operation": "%＝100·(N−f1−f2−f3)/N",
+   "answer_formula": "100 * (n1 - f1 - f2 - f3) // n1",
+   "slots": {
+    "t1": {
+     "from": "ctx_time[j].topic"
+    },
+    "n1": {
+     "type": "int",
+     "choices": [
+      20,
+      25,
+      50
+     ]
+    },
+    "f1": {
+     "type": "int",
+     "range": [
+      1,
+      12
+     ]
+    },
+    "f2": {
+     "type": "int",
+     "range": [
+      1,
+      12
+     ]
+    },
+    "f3": {
+     "type": "int",
+     "range": [
+      1,
+      12
+     ]
+    },
+    "f4": {
+     "type": "int",
+     "range": [
+      1,
+      12
+     ]
+    },
+    "f5": {
+     "type": "int",
+     "range": [
+      1,
+      12
+     ]
+    }
+   },
+   "computed_slots": {
+    "c6": {
+     "formula": "n1 - (f1 + f2 + f3 + f4 + f5)"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "hole6_floor",
+     "expr": "n1 - (f1 + f2 + f3 + f4 + f5) >= 1",
+     "why": "第6階級度数≧1(成立性)"
+    },
+    {
+     "rule": "hole6_cap",
+     "expr": "n1 - (f1 + f2 + f3 + f4 + f5) <= 12",
+     "why": "度数の現実域キャップ"
+    }
+   ],
+   "sentence_templates": [
+    "表は、あるクラスの生徒の{t1}を調べて、度数分布表に整理したものである。{t1}が60分以上である生徒は、全体の何%か求めなさい。"
+   ],
+   "answer_template": "答え {ans}%",
+   "figure_params": {
+    "kind": "table",
+    "fig_version": 1,
+    "caption": "度数分布表",
+    "corner_label": "階級(分)",
+    "col_header": [
+     "度数(人)"
+    ],
+    "rows": [
+     {
+      "label": "0以上20未満",
+      "values": [
+       "{f1}"
+      ]
+     },
+     {
+      "label": "20以上40未満",
+      "values": [
+       "{f2}"
+      ]
+     },
+     {
+      "label": "40以上60未満",
+      "values": [
+       "{f3}"
+      ]
+     },
+     {
+      "label": "60以上80未満",
+      "values": [
+       "{f4}"
+      ]
+     },
+     {
+      "label": "80以上100未満",
+      "values": [
+       "{f5}"
+      ]
+     },
+     {
+      "label": "100以上120未満",
+      "values": [
+       "{c6}"
+      ]
+     },
+     {
+      "label": "合計",
+      "values": [
+       "{n1}"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    60
+   ]
+  },
+  {
+   "pattern_id": "jhs_c09_kinji_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c09_u01",
+   "unit_name": "資料の活用",
+   "semantic_category": "近似値の範囲",
+   "semantic_note": "小数第1位四捨五入の逆問題。内部表現スケール10整数・round_range_lower/upper_excl流用(v0.8がい数手筋のdec1版)。answer_structure＝round_range。",
+   "step_count": 1,
+   "operation": "a−0.5≦x＜a＋0.5 (スケール10: 10a−5 / 10a＋5)",
+   "answer_formula": "round_range_lower(10 * a1, 10)",
+   "answer_unit_system": "dec1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      7,
+      48
+     ]
+    }
+   },
+   "computed_slots": {
+    "hi1": {
+     "formula": "round_range_upper_excl(10 * a1, 10)"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "lo_positive",
+     "expr": "10 * a1 - 5 >= 1",
+     "why": "下限正(a1≧7で自動成立・二重化)"
+    }
+   ],
+   "sentence_templates": [
+    "ある数xの小数第1位を四捨五入したところ、{a1}になった。xの値の範囲を、不等号を使って表しなさい。"
+   ],
+   "answer_template": "答え {ans_disp}≦x＜{hi1_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "範"
+   },
+   "answer_structure": "round_range",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "jhs_c09_yuko_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c09_u01",
+   "unit_name": "資料の活用",
+   "semantic_category": "有効数字表記",
+   "semantic_note": "有効数字3けた・10⁴固定(指数はUnicode上付き直書き規約=1指数1パターン。他指数は第2波)。測定値はstep100スロット・末位≠0制約で有効数字の非曖昧性を構成保証。答は仮数のdec2表示。",
+   "step_count": 1,
+   "operation": "v＝M×100 → M/100×10⁴ (仮数スケール100＝dec2)",
+   "answer_formula": "v1 // 100",
+   "answer_unit_system": "dec2",
+   "slots": {
+    "v1": {
+     "type": "int",
+     "range": [
+      10200,
+      98900
+     ],
+     "step": 100
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "last_sig_nonzero",
+     "expr": "(v1 // 100) % 10 != 0",
+     "why": "有効数字3けた目≠0(末尾ゼロだと有効数字のけた数が曖昧になる退化の除外)"
+    }
+   ],
+   "sentence_templates": [
+    "ある道のりを測定したところ、{v1}mであった。これを有効数字を3けたとして、整数部分が1けたの小数と10の累乗との積の形で表しなさい。"
+   ],
+   "answer_template": "答え {ans_disp}×10⁴m",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "累"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    10,
+    3,
+    1
+   ]
+  },
+  {
+   "pattern_id": "jhs_c09_mean_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c09_u01",
+   "unit_name": "資料の活用",
+   "semantic_category": "階級値平均(割り切れ構成)",
+   "semantic_note": "Σ(階級値×度数)/N。第1波は割り切れ構成のみ(裁可済み。四捨五入指定型は丸め正準裁可後の第2波)。階級枠は55〜95点・幅10固定(階級値60〜90)。",
+   "step_count": 2,
+   "operation": "平均＝(60f1＋70f2＋80f3＋90f4)/N",
+   "answer_formula": "(60 * f1 + 70 * f2 + 80 * f3 + 90 * f4) // (f1 + f2 + f3 + f4)",
+   "slots": {
+    "f1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "f2": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "f3": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "f4": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(60 * f1 + 70 * f2 + 80 * f3 + 90 * f4) % (f1 + f2 + f3 + f4) == 0",
+     "why": "平均の整数保証(第1波正準＝割り切れ構成・裁可済み)"
+    }
+   ],
+   "sentence_templates": [
+    "表は、あるクラスの生徒の小テストの得点を調べて、度数分布表に整理したものである。この度数分布表から得点の平均値を求めなさい。"
+   ],
+   "answer_template": "答え {ans}点",
+   "figure_params": {
+    "kind": "table",
+    "fig_version": 1,
+    "caption": "度数分布表",
+    "corner_label": "階級(点)",
+    "col_header": [
+     "階級値(点)",
+     "度数(人)"
+    ],
+    "rows": [
+     {
+      "label": "55以上65未満",
+      "values": [
+       60,
+       "{f1}"
+      ]
+     },
+     {
+      "label": "65以上75未満",
+      "values": [
+       70,
+       "{f2}"
+      ]
+     },
+     {
+      "label": "75以上85未満",
+      "values": [
+       80,
+       "{f3}"
+      ]
+     },
+     {
+      "label": "85以上95未満",
+      "values": [
+       90,
+       "{f4}"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c09_range_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c09_u01",
+   "unit_name": "資料の活用",
+   "semantic_category": "分布の範囲",
+   "semantic_note": "範囲＝最大−最小。範囲分割構成(中間offsetは[1,29]・範囲Rは[30,40])で最大最小の一意性が棄却ゼロで自動成立。答＝Rはスロットだが本文・図に非出現(転記型リークなし)。データ列は図側配置。",
+   "step_count": 1,
+   "operation": "範囲＝(b1＋R)−b1＝R",
+   "answer_formula": "r1",
+   "slots": {
+    "t1": {
+     "from": "ctx_count[j].topic"
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      8,
+      15
+     ]
+    },
+    "r1": {
+     "type": "int",
+     "range": [
+      30,
+      40
+     ]
+    },
+    "g1": {
+     "type": "int",
+     "range": [
+      1,
+      29
+     ]
+    },
+    "g2": {
+     "type": "int",
+     "range": [
+      1,
+      29
+     ]
+    },
+    "g3": {
+     "type": "int",
+     "range": [
+      1,
+      29
+     ]
+    },
+    "g4": {
+     "type": "int",
+     "range": [
+      1,
+      29
+     ]
+    },
+    "g5": {
+     "type": "int",
+     "range": [
+      1,
+      29
+     ]
+    },
+    "g6": {
+     "type": "int",
+     "range": [
+      1,
+      29
+     ]
+    },
+    "g7": {
+     "type": "int",
+     "range": [
+      1,
+      29
+     ]
+    }
+   },
+   "computed_slots": {
+    "vmax": {
+     "formula": "b1 + r1"
+    },
+    "m1v": {
+     "formula": "b1 + g1"
+    },
+    "m2v": {
+     "formula": "b1 + g2"
+    },
+    "m3v": {
+     "formula": "b1 + g3"
+    },
+    "m4v": {
+     "formula": "b1 + g4"
+    },
+    "m5v": {
+     "formula": "b1 + g5"
+    },
+    "m6v": {
+     "formula": "b1 + g6"
+    },
+    "m7v": {
+     "formula": "b1 + g7"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "max_unique",
+     "expr": "r1 >= max(g1, g2, g3, g4, g5, g6, g7) + 1",
+     "why": "最大値の一意性(範囲分割で自動成立・二重化)"
+    },
+    {
+     "rule": "min_unique",
+     "expr": "min(g1, g2, g3, g4, g5, g6, g7) >= 1",
+     "why": "最小値の一意性(offset下限で自動成立・二重化)"
+    }
+   ],
+   "sentence_templates": [
+    "表は、あるクラスの生徒9人の{t1}を調べたものである。この記録の分布の範囲を求めなさい。"
+   ],
+   "answer_template": "答え {ans}回",
+   "figure_params": {
+    "kind": "table",
+    "fig_version": 1,
+    "corner_label": "番号",
+    "col_header": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9"
+    ],
+    "rows": [
+     {
+      "label": "記録(回)",
+      "values": [
+       "{m1v}",
+       "{m2v}",
+       "{vmax}",
+       "{m3v}",
+       "{b1}",
+       "{m4v}",
+       "{m5v}",
+       "{m6v}",
+       "{m7v}"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "範"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    9
+   ]
+  },
+  {
+   "pattern_id": "jhs_c09_med_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c09_u01",
+   "unit_name": "資料の活用",
+   "semantic_category": "生データの中央値(N＝10偶数)",
+   "semantic_note": "偶数個→中央2値平均が主眼。挟み撃ち構成(4低値＝m1−e・4高値＝m2＋f・m2＝m1＋偶数step)で第5・6位＝m1・m2を構成保証、和が偶数でdec1整数保証(.0/.5)。気温データはスケール10整数・図側配置(提示順はテンプレ固定シャッフル)。",
+   "step_count": 2,
+   "operation": "中央値＝(m1＋m2)/2 (スケール10)",
+   "answer_formula": "(m1 + m1 + g1) // 2",
+   "answer_unit_system": "dec1",
+   "slots": {
+    "g1": {
+     "type": "int",
+     "range": [
+      2,
+      30
+     ],
+     "step": 2
+    },
+    "e1": {
+     "type": "int",
+     "range": [
+      2,
+      60
+     ]
+    },
+    "e2": {
+     "type": "int",
+     "range": [
+      2,
+      60
+     ]
+    },
+    "e3": {
+     "type": "int",
+     "range": [
+      2,
+      60
+     ]
+    },
+    "e4": {
+     "type": "int",
+     "range": [
+      2,
+      60
+     ]
+    },
+    "f1": {
+     "type": "int",
+     "range": [
+      2,
+      60
+     ]
+    },
+    "f2": {
+     "type": "int",
+     "range": [
+      2,
+      60
+     ]
+    },
+    "f3": {
+     "type": "int",
+     "range": [
+      2,
+      60
+     ]
+    },
+    "f4": {
+     "type": "int",
+     "range": [
+      2,
+      60
+     ]
+    }
+   },
+   "quantity_slots": {
+    "m1": {
+     "range": [
+      180,
+      240
+     ],
+     "unit_system": "dec1"
+    }
+   },
+   "computed_slots": {
+    "m2": {
+     "formula": "m1 + g1"
+    },
+    "lo1": {
+     "formula": "m1 - e1"
+    },
+    "lo2": {
+     "formula": "m1 - e2"
+    },
+    "lo3": {
+     "formula": "m1 - e3"
+    },
+    "lo4": {
+     "formula": "m1 - e4"
+    },
+    "hi1": {
+     "formula": "m1 + g1 + f1"
+    },
+    "hi2": {
+     "formula": "m1 + g1 + f2"
+    },
+    "hi3": {
+     "formula": "m1 + g1 + f3"
+    },
+    "hi4": {
+     "formula": "m1 + g1 + f4"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "parity",
+     "expr": "(m1 + m1 + g1) % 2 == 0",
+     "why": "中央2値の和が偶数(gの偶数stepで自動成立・二重化)＝dec1で.0/.5に正確に落ちる"
+    }
+   ],
+   "sentence_templates": [
+    "表は、ある10日間の毎日の気温を記録したものである。この10日間の気温の中央値を求めなさい。"
+   ],
+   "answer_template": "答え {ans_disp}℃",
+   "figure_params": {
+    "kind": "table",
+    "fig_version": 1,
+    "caption": "気温の記録",
+    "corner_label": "番号",
+    "col_header": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10"
+    ],
+    "rows": [
+     {
+      "label": "気温(℃)",
+      "values": [
+       "{lo1_disp}",
+       "{hi2_disp}",
+       "{m1_disp}",
+       "{lo3_disp}",
+       "{hi4_disp}",
+       "{lo2_disp}",
+       "{m2_disp}",
+       "{hi1_disp}",
+       "{lo4_disp}",
+       "{hi3_disp}"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    10
+   ]
+  }
+ ]
+}

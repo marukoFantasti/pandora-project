@@ -88,6 +88,28 @@ const ID = {
     for (let i = 0; i <= (e.p1 + e.q1) * 10; i++) { const x = -e.p1 + i * 0.1, y = -a * x * x; if (y < mn) mn = y; if (y > mx) mx = y; }
     return M === a * Math.max(e.p1, e.q1) * Math.max(e.p1, e.q1) && Math.abs(mx) < 1e-6 && Math.abs(mn + M) < 1e-6;        // 上に凸: 最大0(頂点)・最小−M
   },
+  // --- c09 資料の活用：統計量を独立再計算(度数/相対度数/中央値/最頻値/範囲/平均等) ---
+  jhs_c09_dosu_01: (e, ans) => ans + e.f1 + e.f2 + e.f3 + e.f4 + e.f5 === e.n1,                                            // Σ度数=N(未記入度数逆算)
+  jhs_c09_dosu_02: (e, ans) => {                                                                                          // Σ相対度数=100 ∧ 全セル100f%N=0 ∧ 答%10≠0
+    const fs = [e.f1, e.f2, e.f3, e.f4, e.f5, e.c6];
+    return fs.every(f => (100 * f) % e.n1 === 0) && fs.reduce((s, f) => s + Math.floor(100 * f / e.n1), 0) === 100 && ans % 10 !== 0 && ans === Math.floor(100 * e.f3 / e.n1);
+  },
+  jhs_c09_dosu_03: (e, ans) => ans * 100 === e.n1 * e.r1,                                                                 // 答×100=N×r(人数逆算)
+  jhs_c09_med_01: (e, ans) => { const N = e.f1 + e.f2 + e.f3 + e.f4 + e.f5 + e.f6; return N % 2 === 0 && (e.f1 + e.f2) < N / 2 && (e.f1 + e.f2 + e.f3) >= N / 2 + 1 && ans === 2 * e.w1; }, // 中央値階級=第3(累積走査)
+  jhs_c09_mode_01: (e, ans) => e.f4 > Math.max(e.f1, e.f2, e.f3, e.f5, e.f6) && ans === Math.floor(7 * e.w1 / 2),          // 最頻値=第4階級(argmax一意)
+  jhs_c09_pct_01: (e, ans) => (100 * (e.n1 - e.f1 - e.f2 - e.f3)) % e.n1 === 0 && ans > 0 && ans < 100 && ans === Math.floor(100 * (e.n1 - e.f1 - e.f2 - e.f3) / e.n1), // 割合%整数
+  jhs_c09_kinji_01: (e, ans) => ans + e.hi1 === 20 * e.a1,                                                                // 近似値範囲: 下限+上限=20a
+  jhs_c09_yuko_01: (e, ans) => ans * 100 === e.v1 && ans % 10 !== 0,                                                       // 有効数字: 答×100=v ∧ 末尾≠0
+  jhs_c09_mean_01: (e, ans) => { const N = e.f1 + e.f2 + e.f3 + e.f4, S = 60 * e.f1 + 70 * e.f2 + 80 * e.f3 + 90 * e.f4; return S % N === 0 && ans === S / N; }, // 階級値平均(割り切れ)
+  jhs_c09_range_01: (e, ans) => {                                                                                         // 範囲=max−min ∧ 最大最小一意
+    const v = [e.b1, e.b1 + e.g1, e.b1 + e.g2, e.b1 + e.g3, e.b1 + e.g4, e.b1 + e.g5, e.b1 + e.g6, e.b1 + e.g7, e.b1 + e.r1];
+    const mx = Math.max.apply(null, v), mn = Math.min.apply(null, v);
+    return mx - mn === ans && ans === e.r1 && v.filter(x => x === mx).length === 1 && v.filter(x => x === mn).length === 1;
+  },
+  jhs_c09_med_02: (e, ans) => {                                                                                           // 10値ソート→第5・6位=(m1,m2) ∧ 和偶数
+    const v = [e.lo1, e.lo2, e.lo3, e.lo4, e.m1, e.m2, e.hi1, e.hi2, e.hi3, e.hi4].slice().sort((a, b) => a - b);
+    return v[4] === e.m1 && v[5] === e.m2 && (e.m1 + e.m2) % 2 === 0 && ans === (e.m1 + e.m2) / 2;
+  },
 };
 
 const bankFiles = fs.readdirSync(path.join(ROOT, 'pattern_bank'))
