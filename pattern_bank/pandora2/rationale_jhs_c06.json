@@ -1,0 +1,299 @@
+{
+  "_meta": {
+    "schema": "rationale_schema_spec.md v1.0",
+    "scope": "jhs c06 比例・反比例(13パターン・B層・xy_graph fig_version 2初投入章)",
+    "note": "共通設計判断: _shared.jhs_c06_hirei。符号形の行内展開を整理し各行1符号形固定・鏡像第2波で13に確定(裁可13の充足)。"
+  },
+  "_shared": {
+    "jhs_c06_hirei": {
+      "representation": "jhsらしさ(負域)優先の符号形選定: 式決定＝q負・比例逆算＝x負代入・反比例逆算＝a負・グラフ読み取り＝a負Q2/k正Q1・変域＝端点逆転が生じる側(比例a負/反比例a正×負域)。反比例式はy＝a/xのスラッシュ表記(c17の(p±√D)/2と同系)。分数傾きの答はreduced_fraction_display既約表示(g05既約正準の流用・新宣言としてまるこ検収対象)。",
+      "constructive_guarantees": "転記型リーク排除をr≠p/r≠q/u≠v/u≠t型の同値変形で証明的に統一(例: pq/r＝q⟺r＝p、pq/r＝p⟺r＝q、vt/u＝t⟺u＝v)。積・除算の答が本文スロット値と一致する経路を制約で全て塞ぐ(corr-0007の設計段階先取り)。heniki_01のa＝pq退化(y域端点＝(p,q)＝x域の写し)も同系として排除。逆算生成(kouten: (k,s)→t構成)で交点格子性・枠内が自動成立。",
+      "figure_contract": "fig_version 2実装定数(240px・|k|≦25・点マージン: 標準枠−6..6で|座標|≦5・双曲線点|x|≧2)に対し、図あり4パターン(pgraph/igraph/lattice/kouten)は全スロット組合せの悉皆列挙で契約適合を機械検収(可行5/16/6/11組・全適合)。整数傾き×|t|≦5×a≧2の幾何で組合せが枯れる箇所(pgraph答2種・kouten整数傾き0組)は構造制約として記録し、鏡像・広枠は第2波。",
+      "template_note": "図内文字列は定数or純スロット参照のみ(c09確立規約の継続適用)。curve_labelに式文字列(y＝{k}/x型の複合)を置けないため、式は本文側に置く設計で統一。",
+      "directives": [
+        {
+          "text": "B層配分増強裁可(c06は10→13: 対応表・比例変域a負・交点逆算を前倒し)",
+          "by": "marko",
+          "date": "2026-08-10"
+        },
+        {
+          "text": "c06格子点個数は図あり化(双曲線+通過点のみ・格子点プロット禁止)",
+          "by": "marko",
+          "date": "2026-08-10"
+        },
+        {
+          "text": "fig_version 2の丸めfloor(v+0.5)・240px実装定数を検収承認(設計側値域の根拠)",
+          "by": "marko",
+          "date": "2026-08-10"
+        },
+        {
+          "text": "点ラベルは曲線と被らない方位に(交点座標のグラフ被り指摘)→label_pos加法+設計側方位宣言方式で対応",
+          "by": "marko",
+          "date": "2026-08-12"
+        }
+      ]
+    }
+  },
+  "rationales": {
+    "jhs_c06_prop_01": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c06_u01",
+        "unit_name": "比例・反比例",
+        "semantic_territory": "比例・式の決定",
+        "number_domain": "整数係数(a負・|a|2〜9)",
+        "answer_structure": "single",
+        "figure": "なし",
+        "step_count": 1,
+        "directives_ref": "_shared.jhs_c06_hirei.directives"
+      },
+      "source_features": "1組の対応値から式。jhsの新規性＝負値対応(a正のみはg06比例の領分)。",
+      "representation": "符号形テンプレ固定(y＝−{q}表示・スロット正整数)。答はy＝−{av}x(|a|≧2固定なのでfmt不要)。",
+      "constructive_guarantees": "p|q可除性。q≠p²(|a|＝p転記一致の排除)。恒等: a·p＝−q代入。",
+      "semantic_position": "c06の基底。prop_02(2段)の1段目に相当。",
+      "exclusions": "a正版(g06と重複)・|a|＝1(係数1排除、fmt_coef処理型はpgraph側に集約)は不採用。分数係数は第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c06_prop_02": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c06_u01",
+        "unit_name": "比例・反比例",
+        "semantic_territory": "比例・値の逆算",
+        "number_domain": "整数(答負・signed)",
+        "answer_structure": "single",
+        "figure": "なし",
+        "step_count": 2,
+        "directives_ref": "_shared.jhs_c06_hirei.directives"
+      },
+      "source_features": "式決定→負のxでの求値。正×負の符号処理が主眼。",
+      "representation": "a正で与え、x＝−rの代入で答が負になる符号形。answer_domain any_int+signed整形。",
+      "constructive_guarantees": "p|q+r≠p(ar＝q⟺r＝p)+ar≠p。答キャップ72。恒等: 答＝−(q/p)r。",
+      "semantic_position": "prop_01の2段版。",
+      "exclusions": "与値側が負(x正代入)は鏡像で第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c06_inv_01": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c06_u01",
+        "unit_name": "比例・反比例",
+        "semantic_territory": "反比例・式の決定",
+        "number_domain": "整数(a＝pq・6〜60)",
+        "answer_structure": "single",
+        "figure": "なし",
+        "step_count": 1,
+        "directives_ref": "_shared.jhs_c06_hirei.directives"
+      },
+      "source_features": "a＝xyの積構成。可除性が不要な最軽量の型。",
+      "representation": "y＝{a}/xスラッシュ表記(_shared参照)。",
+      "constructive_guarantees": "a＝pq∈[6,60](自明積4の除外)。転記: pq＝p⟺q＝1・pq＝q⟺p＝1は値域(≧2)で構造排除。",
+      "semantic_position": "反比例系の基底。",
+      "exclusions": "a負版は鏡像で第2波(inv_02が負形を担当し符号カバレッジは章内で確保)。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c06_inv_02": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c06_u01",
+        "unit_name": "比例・反比例",
+        "semantic_territory": "反比例・値の逆算",
+        "number_domain": "整数(答負・signed)",
+        "answer_structure": "single",
+        "figure": "なし",
+        "step_count": 2,
+        "directives_ref": "_shared.jhs_c06_hirei.directives"
+      },
+      "source_features": "a負の反比例で式決定→求値。除算の符号処理。",
+      "representation": "y＝−{q}与値でa＝−pq、x＝rでy＝−pq/r。signed整形。",
+      "constructive_guarantees": "r|pq+r≠p(答＝−q排除)+r≠q(答＝−p排除)。恒等: 答·r＝−pq。",
+      "semantic_position": "inv_01の2段版・負形担当。",
+      "exclusions": "求値点x負(答正になる形)は鏡像で第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c06_pgraph_01": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c06_u01",
+        "unit_name": "比例・反比例",
+        "semantic_territory": "比例・グラフ読み取り",
+        "number_domain": "整数係数(a∈{−1,−2})",
+        "answer_structure": "single",
+        "figure": "xy_graph v2",
+        "step_count": 1,
+        "directives_ref": "_shared.jhs_c06_hirei.directives"
+      },
+      "source_features": "負傾き直線とQ2格子点の座標から式を読む。fig_version 2(負域4象限)の初投入。",
+      "representation": "点(−p，ap)をguides+座標表示。答はfmt_coefで±1処理(y＝−x型・A層規約2の答側±1処理を初適用)。",
+      "constructive_guarantees": "in_view制約ap≦5(描画悉皆5組全適合)。恒等: 点が直線上(q＝ap)。",
+      "semantic_position": "式決定(prop_01)の図版。igraph_01と対。",
+      "exclusions": "答2種({−x,−2x})は標準枠×整数傾き×係数1排除の幾何的構造制約(mode_01と同系)。a正Q1版・分数傾き版・広枠版は第2波。",
+      "figure_notes": "line(a負)+point(Q2・guides both・show_coords)。全組合せ悉皆で枠内マージン1適合。ラベル反転はx負側で発生しない(右上オフセット既定のまま)。",
+      "pedagogy": []
+    },
+    "jhs_c06_igraph_01": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c06_u01",
+        "unit_name": "比例・反比例",
+        "semantic_territory": "反比例・グラフ読み取り",
+        "number_domain": "整数(k＝pq・4〜25)",
+        "answer_structure": "single",
+        "figure": "xy_graph v2",
+        "step_count": 1,
+        "directives_ref": "_shared.jhs_c06_hirei.directives"
+      },
+      "source_features": "双曲線とQ1格子点の座標からkを読む。",
+      "representation": "点(p，q)のguides+座標表示、k＝pqはcomputed。",
+      "constructive_guarantees": "|k|≦25可視性契約+|p|≧2漸近線マージン(値域で構造保証・悉皆16組全適合)。転記: k＝pq≠p,q(値域≧2)。",
+      "semantic_position": "pgraph_01と対。lattice_01・kouten_01への図的基底。",
+      "exclusions": "k負版(Q2・Q4枝)は鏡像で第2波。座標非表示で目盛から読ませる形は目視検収後の第2波。",
+      "figure_notes": "hyperbola(k正)+point(Q1)。k∈[4,25]で両枝サンプル残数十分(契約|k|≦25内)。",
+      "pedagogy": []
+    },
+    "jhs_c06_heniki_01": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c06_u01",
+        "unit_name": "比例・反比例",
+        "semantic_territory": "反比例・変域(負域)",
+        "number_domain": "整数端点(負・≦12)",
+        "answer_structure": "single",
+        "figure": "なし",
+        "step_count": 2,
+        "directives_ref": "_shared.jhs_c06_hirei.directives"
+      },
+      "source_features": "負枝での変域。端点対応の逆転(x左端→y上端)が主眼。",
+      "representation": "y＝{a}/x(a正)×x∈[−p，−q]。答「−(a/q)≦y≦−(a/p)」両端正準。設計中の自己修正: 当初のy＝−a/x案は負域でy正となり逆転が消える符号誤り→a正形に確定(semantic_noteに記録)。",
+      "constructive_guarantees": "p|a∧q|a(端点整数)+p>q+a≠pq(y域端点＝(p,q)＝x域の写しになる退化の排除)。恒等: 両端点のy＝a/x代入。",
+      "semantic_position": "heniki_02(比例)と逆転主眼の対。",
+      "exclusions": "正域変域(逆転なし・自明)は不採用。0跨ぎは反比例では定義域外のため対象外。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c06_heniki_02": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c06_u01",
+        "unit_name": "比例・反比例",
+        "semantic_territory": "比例・変域(a負)",
+        "number_domain": "整数端点(負・≦40)",
+        "answer_structure": "single",
+        "figure": "なし",
+        "step_count": 1,
+        "directives_ref": "_shared.jhs_c06_hirei.directives"
+      },
+      "source_features": "減少関数での端点入替。",
+      "representation": "y＝−{a}x×x∈[p，q](正域)。答「−aq≦y≦−ap」。",
+      "constructive_guarantees": "p<q非退化+端点キャップ40。aq＝p型衝突は値域で構造排除(aq≧6>p最大4)。恒等: 端点積。",
+      "semantic_position": "heniki_01と対。c07変域(a<0)への接続点。",
+      "exclusions": "0跨ぎ域(p負q正→y域が0を含む)は別符号形で第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c06_lattice_01": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c06_u01",
+        "unit_name": "比例・反比例",
+        "semantic_territory": "双曲線上の格子点個数",
+        "number_domain": "整数(2d(k)・8〜16)",
+        "answer_structure": "single",
+        "figure": "xy_graph v2",
+        "step_count": 2,
+        "directives_ref": "_shared.jhs_c06_hirei.directives"
+      },
+      "source_features": "y＝k/xの整数点＝xがkの正負約数を走る。約数構造と関数の合流点。",
+      "representation": "答＝2d(k)。d(k)がSAFE閉形式で書けないため照合表方式(規約5): lattice_pairsで(k，2d(k))をレキシコン束縛、表の正しさはハーネス総当たり悉皆で担保。",
+      "constructive_guarantees": "2d(k)＝kとなるk(8,12)は答＝本文値一致の転記型リークとして表から構造排除(設計中に検出・修正)。k≦24で可視性契約内。",
+      "semantic_position": "約数(g05 gcd系)とjhs関数の橋。図あり化は裁可済み(格子点プロット禁止規約)。",
+      "exclusions": "k負版・「x座標が正の点のみ」版(答＝d(k))は第2波。",
+      "figure_notes": "hyperbola単独(点・格子点プロットなし=図から数えられる転記防止・裁可済み)。gridはtickグリッドのみで格子点は非強調。悉皆6組全適合。",
+      "pedagogy": []
+    },
+    "jhs_c06_bunsho_01": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c06_u01",
+        "unit_name": "比例・反比例",
+        "semantic_territory": "比例・文章題",
+        "number_domain": "整数(単位重さ2〜9g)",
+        "answer_structure": "single",
+        "figure": "なし",
+        "step_count": 2,
+        "directives_ref": "_shared.jhs_c06_hirei.directives"
+      },
+      "source_features": "個数×単位重さの比例。実物の紙・くぎ系をレキシコン差し替え(D4')。",
+      "representation": "prop_itemsレキシコン(くぎ/ボルト/ねじ・全てかな表記で漢字方針に中立)。",
+      "constructive_guarantees": "三点セット: p|q(単位重さ整数)+現実域(2〜9g/本・答≦150g)+恒等(w·p＝q)。転記: r≠p+答≠p。",
+      "semantic_position": "比例の適用。g06単価問題のjhs継承(式を立てる指導文脈)。",
+      "exclusions": "「yをxの式で表してから求めよ」の連問形は採点2欄が要るため第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c06_bunsho_02": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c06_u01",
+        "unit_name": "比例・反比例",
+        "semantic_territory": "反比例・文章題",
+        "number_domain": "整数(答2〜60分)",
+        "answer_structure": "single",
+        "figure": "なし",
+        "step_count": 2,
+        "directives_ref": "_shared.jhs_c06_hirei.directives"
+      },
+      "source_features": "仕事量一定(毎分×時間)の反比例。実物の機械台数系を注水文脈に差し替え(D4')。",
+      "representation": "全体量V＝vtの積固定構成。",
+      "constructive_guarantees": "三点セット: u|vt+現実域(2〜60分)+恒等(u·答＝vt)。転記: u≠v(答＝t排除)+u≠t(答＝v排除)+答≠v。",
+      "semantic_position": "bunsho_01と対。c08水そう(1次関数)とは文脈は近いが構造が別(積一定vs和構造)。",
+      "exclusions": "3条件比較(vをxにした式問い)は第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "jhs_c06_taiou_01": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c06_u01",
+        "unit_name": "比例・反比例",
+        "semantic_territory": "反比例・対応表",
+        "number_domain": "整数(a∈{12,24,36})",
+        "answer_structure": "single",
+        "figure": "table",
+        "step_count": 1,
+        "directives_ref": "_shared.jhs_c06_hirei.directives"
+      },
+      "source_features": "対応表の穴埋めから反比例の対応関係を読む。",
+      "representation": "x行{1,2,3,4,6}定数(5の除外で全xがaの約数)。穴はx＝3固定。",
+      "constructive_guarantees": "a＝12の倍数choicesで全セル整数(構成保証・棄却ゼロ)。答a/3は他セル{a,a/2,a/4,a/6}と約数の相異で不衝突(転記悉皆で機械確認)。",
+      "semantic_position": "対応表3兄弟(c06反比例/c07 1次関数/c18 y＝ax²)の第1号。表構造・穴位置規約を共通化。",
+      "exclusions": "比例版対応表は自明性が高く不採用。式を問う形は3兄弟のc07側に配置。",
+      "figure_notes": "table流用(横型: header=x行・rows=y行)。x行は図内定数。正準契約準拠済(corner_label「x」使用・2026-08-10確定)。",
+      "pedagogy": []
+    },
+    "jhs_c06_kouten_01": {
+      "brief": {
+        "grade": "jhs",
+        "unit_id": "jhs_c06_u01",
+        "unit_name": "比例・反比例",
+        "semantic_territory": "比例×反比例・交点逆算",
+        "number_domain": "分数(既約・非整数傾き)",
+        "answer_structure": "single",
+        "figure": "xy_graph v2",
+        "step_count": 2,
+        "directives_ref": "_shared.jhs_c06_hirei.directives"
+      },
+      "source_features": "双曲線上の点を通る原点直線の傾き。2関数の合流・B層の頂点。",
+      "representation": "a＝t/sのreduced_fraction_display既約表示(新宣言・まるこ検収対象: 比例定数の分数答正準)。逆算生成: (k,s)→t＝k/s構成で交点格子性・枠内が自動成立。",
+      "constructive_guarantees": "s|k+2≦t≦5(枠内)+t%s≠0(整数傾き排除=fmt_fractionのn/1未対応への防波堤兼、分数傾きが主眼)。恒等: k＝st+既約表示のgcd検算。悉皆11組全適合。",
+      "semantic_position": "c07交点(2直線)への前哨。整数傾き版は標準枠幾何で0組(構造的不成立)のため分数形が唯一形。",
+      "exclusions": "整数傾き(悉皆0組)・Q3側交点(鏡像)・y座標を問う形は第2波。",
+      "figure_notes": "hyperbola+line(分数傾き[t,s]生値ペア)+point A(guides x・座標非表示=x座標は本文与値)。ラベルAはlabel_pos e指定(直線と双曲線の対角レイを避ける水平配置・まるこ検収指摘 2026-08-12起点のlabel_pos方式初適用)。",
+      "pedagogy": []
+    }
+  }
+}

@@ -1394,7 +1394,7 @@ function loadPatternBank(){
   // 載せないことで実現する(ハードコード章リスト不要)。
   var BANK_FILES = ['pattern_bank/patterns_g02.json', 'pattern_bank/patterns_g03.json', 'pattern_bank/patterns_g04.json', 'pattern_bank/patterns_g05.json', 'pattern_bank/patterns_g06.json',
     'pattern_bank/patterns_jhs_c01.json', 'pattern_bank/patterns_jhs_c02.json', 'pattern_bank/patterns_jhs_c03.json', 'pattern_bank/patterns_jhs_c04.json', 'pattern_bank/patterns_jhs_c05.json',
-    'pattern_bank/patterns_jhs_c09.json', 'pattern_bank/patterns_jhs_c10.json', 'pattern_bank/patterns_jhs_c15.json', 'pattern_bank/patterns_jhs_c16.json', 'pattern_bank/patterns_jhs_c17.json', 'pattern_bank/patterns_jhs_c18.json'];
+    'pattern_bank/patterns_jhs_c06.json', 'pattern_bank/patterns_jhs_c09.json', 'pattern_bank/patterns_jhs_c10.json', 'pattern_bank/patterns_jhs_c15.json', 'pattern_bank/patterns_jhs_c16.json', 'pattern_bank/patterns_jhs_c17.json', 'pattern_bank/patterns_jhs_c18.json'];
   PATTERN_BANK_PROMISE = Promise.all(BANK_FILES.map(function(f){
     // 1つのバンク読み込み失敗が他方を巻き込まないよう、個別にcatchしてnull化する
     // （例: g03未デプロイでもg02経路Aは生きる）。

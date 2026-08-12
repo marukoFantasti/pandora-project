@@ -1,0 +1,1119 @@
+{
+ "schema_version": "1.0",
+ "grade": "jhs",
+ "description": "jhs数学バンク B層第1波 c06(比例・反比例) 13パターン: 式の決定2形(比例q負/反比例a正)・値の逆算2形(比例x負代入/反比例a負)・グラフ読み取り2形(比例a負Q2/反比例k正Q1・xy_graph fig_version 2)・変域2形(反比例負域/比例a負・端点逆転)・格子点個数(照合表方式・図あり)・文章題2形(三点セット)・対応表穴埋め(table流用)・交点逆算(分数傾き既約・逆算生成)。各行1符号形固定・鏡像は第2波。転記回避はr≠p/u≠v型の構成保証で統一。",
+ "answer_structures": [
+  "single"
+ ],
+ "shared_lexicon": {
+  "prop_items": [
+   {
+    "item": "くぎ"
+   },
+   {
+    "item": "ボルト"
+   },
+   {
+    "item": "ねじ"
+   }
+  ],
+  "lattice_pairs": [
+   [
+    6,
+    8
+   ],
+   [
+    10,
+    8
+   ],
+   [
+    16,
+    10
+   ],
+   [
+    18,
+    12
+   ],
+   [
+    20,
+    12
+   ],
+   [
+    24,
+    16
+   ]
+  ]
+ },
+ "patterns": [
+  {
+   "pattern_id": "jhs_c06_prop_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c06_u01",
+   "unit_name": "比例・反比例",
+   "semantic_category": "比例・式の決定(a負)",
+   "semantic_note": "x＝p→y＝−q(符号形テンプレ固定: 負値はテンプレ側・スロット正整数)。a＝−q/pの整数保証p|q。|a|≧2(係数1排除・a＝−1形はグラフ読み取り側でfmt_coef処理するため本型から除外)。a正版はg06比例と重なるため負形を第1波主形に採用。",
+   "step_count": 1,
+   "operation": "y＝ax, a＝−q/p",
+   "answer_formula": "0 - q1 // p1",
+   "answer_domain": "any_int",
+   "slots": {
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      4,
+      48
+     ]
+    }
+   },
+   "computed_slots": {
+    "av1": {
+     "formula": "q1 // p1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "q1 % p1 == 0",
+     "why": "比例定数の整数保証"
+    },
+    {
+     "rule": "a_floor",
+     "expr": "q1 // p1 >= 2",
+     "why": "係数1排除(|a|≧2)"
+    },
+    {
+     "rule": "a_cap",
+     "expr": "q1 // p1 <= 9",
+     "why": "暗算域"
+    },
+    {
+     "rule": "no_transcribe_a",
+     "expr": "q1 != p1 * p1",
+     "why": "転記型リーク排除(q＝p²だと|a|＝pで本文値一致)"
+    }
+   ],
+   "sentence_templates": [
+    "yはxに比例し、x＝{p1}のときy＝−{q1}である。yをxの式で表しなさい。"
+   ],
+   "answer_template": "答え y＝−{av1}x",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c06_prop_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c06_u01",
+   "unit_name": "比例・反比例",
+   "semantic_category": "比例・値の逆算(x負代入・2段)",
+   "semantic_note": "式決定→x＝−rでの求値。a正×x負→y負。r≠pの構成保証で転記型リーク(x＝−pならy＝−q)を排除(ar＝q⟺r＝pの同値による証明的保証)。",
+   "step_count": 2,
+   "operation": "a＝q/p → y＝−ar",
+   "answer_formula": "0 - (q1 // p1) * r1",
+   "answer_domain": "any_int",
+   "answer_unit_system": "signed",
+   "slots": {
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      4,
+      48
+     ]
+    },
+    "r1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "q1 % p1 == 0",
+     "why": "比例定数の整数保証"
+    },
+    {
+     "rule": "a_floor",
+     "expr": "q1 // p1 >= 2",
+     "why": "係数1排除"
+    },
+    {
+     "rule": "a_cap",
+     "expr": "q1 // p1 <= 9",
+     "why": "暗算域"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "r1 != p1",
+     "why": "転記型リーク排除(r＝pだと答＝−qで本文値の写しになる)"
+    },
+    {
+     "rule": "ans_cap",
+     "expr": "(q1 // p1) * r1 <= 72",
+     "why": "答の暗算域"
+    },
+    {
+     "rule": "no_transcribe_p",
+     "expr": "(q1 // p1) * r1 != p1",
+     "why": "転記型リーク排除(答絶対値＝pの一致を排除)"
+    }
+   ],
+   "sentence_templates": [
+    "yはxに比例し、x＝{p1}のときy＝{q1}である。x＝−{r1}のときのyの値を求めなさい。"
+   ],
+   "answer_template": "答え y＝{ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c06_inv_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c06_u01",
+   "unit_name": "比例・反比例",
+   "semantic_category": "反比例・式の決定(a正)",
+   "semantic_note": "a＝pq(積構成・可除性不要)。y＝a/xのスラッシュ分数表記(c17の(p±√D)/2と同系の表記文化)。a負版は鏡像のため第2波。",
+   "step_count": 1,
+   "operation": "y＝a/x, a＝pq",
+   "answer_formula": "p1 * q1",
+   "slots": {
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "a_cap",
+     "expr": "p1 * q1 <= 60",
+     "why": "暗算域"
+    },
+    {
+     "rule": "a_floor",
+     "expr": "p1 * q1 >= 6",
+     "why": "自明積(4)の回避"
+    }
+   ],
+   "sentence_templates": [
+    "yはxに反比例し、x＝{p1}のときy＝{q1}である。yをxの式で表しなさい。"
+   ],
+   "answer_template": "答え y＝{ans}/x",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c06_inv_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c06_u01",
+   "unit_name": "比例・反比例",
+   "semantic_category": "反比例・値の逆算(a負・2段)",
+   "semantic_note": "a＝−pq→x＝rでの求値y＝−pq/r。r|pq可除性+r≠p転記排除(pq/r＝q⟺r＝pの同値)。",
+   "step_count": 2,
+   "operation": "a＝−pq → y＝−pq/r",
+   "answer_formula": "0 - (p1 * q1) // r1",
+   "answer_domain": "any_int",
+   "answer_unit_system": "signed",
+   "slots": {
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "r1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(p1 * q1) % r1 == 0",
+     "why": "求値の整数保証"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "r1 != p1",
+     "why": "転記型リーク排除(r＝pだと答＝−q)"
+    },
+    {
+     "rule": "a_cap",
+     "expr": "p1 * q1 <= 60",
+     "why": "暗算域"
+    },
+    {
+     "rule": "a_floor",
+     "expr": "p1 * q1 >= 6",
+     "why": "自明積の回避"
+    },
+    {
+     "rule": "no_transcribe_q",
+     "expr": "r1 != q1",
+     "why": "転記型リーク排除(r＝qだと答＝−pで本文値の写し)"
+    }
+   ],
+   "sentence_templates": [
+    "yはxに反比例し、x＝{p1}のときy＝−{q1}である。x＝{r1}のときのyの値を求めなさい。"
+   ],
+   "answer_template": "答え y＝{ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c06_pgraph_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c06_u01",
+   "unit_name": "比例・反比例",
+   "semantic_category": "比例・グラフ読み取り(a負・Q2点)",
+   "semantic_note": "xy_graph fig_version 2初投入。負傾き直線+Q2格子点(−p，ap)のguides+座標表示から式を読む。a∈{1,2}(標準枠|値|≦5の幾何制約で組合せが薄い=構造制約。答側a＝−1はfmt_coefが処理=A層規約2)。a正Q1版・分数傾き版は第2波。",
+   "step_count": 1,
+   "operation": "点(−p，ap)を通る直線 → y＝−ax",
+   "answer_formula": "0 - a1",
+   "answer_domain": "any_int",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      2
+     ]
+    },
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    }
+   },
+   "computed_slots": {
+    "qv1": {
+     "formula": "a1 * p1"
+    },
+    "np1": {
+     "formula": "0 - p1"
+    },
+    "na1": {
+     "formula": "0 - a1"
+    },
+    "ac1": {
+     "formula": "fmt_coef(0 - a1)"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "in_view",
+     "expr": "a1 * p1 <= 5",
+     "why": "読み取り点が標準枠内マージン1(|y|≦5)＝描画可能性"
+    }
+   ],
+   "sentence_templates": [
+    "図の直線は、比例のグラフである。yをxの式で表しなさい。"
+   ],
+   "answer_template": "答え y＝{ac1}x",
+   "figure_params": {
+    "kind": "xy_graph",
+    "fig_version": 2,
+    "view": {
+     "xmin": -6,
+     "xmax": 6,
+     "ymin": -6,
+     "ymax": 6,
+     "tick_x": 1,
+     "tick_y": 1,
+     "grid": true
+    },
+    "axis_labels": {
+     "x": "x",
+     "y": "y"
+    },
+    "elements": [
+     {
+      "type": "line",
+      "a": [
+       "{na1}",
+       1
+      ],
+      "b": [
+       0,
+       1
+      ]
+     },
+     {
+      "type": "point",
+      "x": [
+       "{np1}",
+       1
+      ],
+      "y": [
+       "{qv1}",
+       1
+      ],
+      "guides": "both",
+      "show_coords": true
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c06_igraph_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c06_u01",
+   "unit_name": "比例・反比例",
+   "semantic_category": "反比例・グラフ読み取り(k正・Q1点)",
+   "semantic_note": "双曲線+Q1格子点(p，q)の座標表示からk＝pqを読む。|p|≧2(漸近線近傍ラベル干渉の除外)・k＝pq≦25(可視性契約)。k負版(Q2・Q4枝)は第2波。",
+   "step_count": 1,
+   "operation": "点(p，q)を通る双曲線 → y＝pq/x",
+   "answer_formula": "p1 * q1",
+   "slots": {
+    "p1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    }
+   },
+   "computed_slots": {
+    "kv1": {
+     "formula": "p1 * q1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "k_cap",
+     "expr": "p1 * q1 <= 25",
+     "why": "双曲線可視性契約|k|≦25(描画可能性)"
+    }
+   ],
+   "sentence_templates": [
+    "図の曲線は、反比例のグラフである。yをxの式で表しなさい。"
+   ],
+   "answer_template": "答え y＝{ans}/x",
+   "figure_params": {
+    "kind": "xy_graph",
+    "fig_version": 2,
+    "view": {
+     "xmin": -6,
+     "xmax": 6,
+     "ymin": -6,
+     "ymax": 6,
+     "tick_x": 1,
+     "tick_y": 1,
+     "grid": true
+    },
+    "axis_labels": {
+     "x": "x",
+     "y": "y"
+    },
+    "elements": [
+     {
+      "type": "hyperbola",
+      "k": "{kv1}"
+     },
+     {
+      "type": "point",
+      "x": [
+       "{p1}",
+       1
+      ],
+      "y": [
+       "{q1}",
+       1
+      ],
+      "guides": "both",
+      "show_coords": true
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c06_heniki_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c06_u01",
+   "unit_name": "比例・反比例",
+   "semantic_category": "反比例・変域(負域・端点逆転)",
+   "semantic_note": "y＝a/x(a>0)の負域変域−p≦x≦−q(p>q)。負枝でy＝a/xは減少→端点逆転: x左端(−p)がy上端(−a/p)に対応し、y∈[−a/q，−a/p]。両端整数保証p|a∧q|a。変域正準「小≦y≦大」両端。a負形(y正域)は逆転が消えるため不採用(設計中の自己修正: 当初−a/x案は符号誤り)。",
+   "step_count": 2,
+   "operation": "x∈[−p，−q] → y∈[−a/q，−a/p]",
+   "answer_formula": "a1 // q1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      8,
+      48
+     ]
+    },
+    "p1": {
+     "type": "int",
+     "range": [
+      3,
+      8
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    }
+   },
+   "computed_slots": {
+    "lv1": {
+     "formula": "a1 // p1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "order",
+     "expr": "p1 >= q1 + 1",
+     "why": "区間の非退化(p>q)"
+    },
+    {
+     "rule": "div_p",
+     "expr": "a1 % p1 == 0",
+     "why": "端点整数保証"
+    },
+    {
+     "rule": "div_q",
+     "expr": "a1 % q1 == 0",
+     "why": "端点整数保証"
+    },
+    {
+     "rule": "end_cap",
+     "expr": "a1 // q1 <= 12",
+     "why": "端点の暗算域"
+    },
+    {
+     "rule": "no_mirror_interval",
+     "expr": "a1 != p1 * q1",
+     "why": "a＝pqだとy域端点＝(p,q)となりx域の写しに見える退化(y域＝x域一致)の排除"
+    }
+   ],
+   "sentence_templates": [
+    "関数 y＝{a1}/x について、xの変域が −{p1}≦x≦−{q1} のときのyの変域を求めなさい。"
+   ],
+   "answer_template": "答え −{ans}≦y≦−{lv1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c06_heniki_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c06_u01",
+   "unit_name": "比例・反比例",
+   "semantic_category": "比例・変域(a負・端点逆転)",
+   "semantic_note": "y＝−ax(a>0)は減少→x∈[p，q]でy∈[−aq，−ap]の端点逆転が主眼。0跨ぎ域(p負q正)は別符号形のため第2波。",
+   "step_count": 1,
+   "operation": "x∈[p，q] → y∈[−aq，−ap]",
+   "answer_formula": "a1 * q1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    },
+    "p1": {
+     "type": "int",
+     "range": [
+      1,
+      4
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      3,
+      8
+     ]
+    }
+   },
+   "computed_slots": {
+    "hp1": {
+     "formula": "a1 * p1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "order",
+     "expr": "q1 >= p1 + 1",
+     "why": "区間の非退化(p<q)"
+    },
+    {
+     "rule": "end_cap",
+     "expr": "a1 * q1 <= 40",
+     "why": "端点の暗算域"
+    }
+   ],
+   "sentence_templates": [
+    "関数 y＝−{a1}x について、xの変域が {p1}≦x≦{q1} のときのyの変域を求めなさい。"
+   ],
+   "answer_template": "答え −{ans}≦y≦−{hp1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c06_lattice_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c06_u01",
+   "unit_name": "比例・反比例",
+   "semantic_category": "双曲線上の格子点個数",
+   "semantic_note": "答＝2·d(k)(xがkの正負の約数を走る)。閉形式(約数個数)がSAFEに無いため照合表方式(規約5): lattice_pairsレキシコンで(k，2d(k))を束縛し(2d(k)＝kとなるk＝8,12は答＝本文値一致の転記型リークのため表から構造排除)、表の正しさはハーネスの総当たり悉皆で担保。図は双曲線のみ(格子点プロット禁止=図から答が数えられる転記型リークの防止・裁可済み)。",
+   "step_count": 2,
+   "operation": "y＝k/x の整数点個数＝2·d(k)",
+   "answer_formula": "nd1",
+   "slots": {
+    "k1": {
+     "from": "lattice_pairs[i][0]"
+    },
+    "nd1": {
+     "from": "lattice_pairs[i][1]"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "図は、関数 y＝{k1}/x のグラフである。このグラフ上にある点のうち、x座標、y座標がともに整数である点は全部で何個ありますか。"
+   ],
+   "answer_template": "答え {ans}個",
+   "figure_params": {
+    "kind": "xy_graph",
+    "fig_version": 2,
+    "view": {
+     "xmin": -6,
+     "xmax": 6,
+     "ymin": -6,
+     "ymax": 6,
+     "tick_x": 1,
+     "tick_y": 1,
+     "grid": true
+    },
+    "axis_labels": {
+     "x": "x",
+     "y": "y"
+    },
+    "elements": [
+     {
+      "type": "hyperbola",
+      "k": "{k1}"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c06_bunsho_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c06_u01",
+   "unit_name": "比例・反比例",
+   "semantic_category": "比例・文章題",
+   "semantic_note": "単価型(本数×単位重さ)。三点セット: 可除性(単位重さ整数)+現実域キャップ+恒等検算(w·p＝q)。r≠pの転記排除。",
+   "step_count": 2,
+   "operation": "w＝q/p → 答＝w·r",
+   "answer_formula": "(q1 // p1) * r1",
+   "slots": {
+    "it1": {
+     "from": "prop_items[j].item"
+    },
+    "p1": {
+     "type": "int",
+     "range": [
+      3,
+      8
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      12,
+      72
+     ]
+    },
+    "r1": {
+     "type": "int",
+     "range": [
+      5,
+      20
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "q1 % p1 == 0",
+     "why": "単位重さの整数保証(三点セット)"
+    },
+    {
+     "rule": "unit_floor",
+     "expr": "q1 // p1 >= 2",
+     "why": "単位重さ≧2g(現実域)"
+    },
+    {
+     "rule": "unit_cap",
+     "expr": "q1 // p1 <= 9",
+     "why": "単位重さ≦9g(現実域)"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "r1 != p1",
+     "why": "転記型リーク排除"
+    },
+    {
+     "rule": "ans_cap",
+     "expr": "(q1 // p1) * r1 <= 150",
+     "why": "答の現実域キャップ"
+    },
+    {
+     "rule": "no_transcribe_p",
+     "expr": "(q1 // p1) * r1 != p1",
+     "why": "転記型リーク排除(答＝本数pの一致を排除)"
+    }
+   ],
+   "sentence_templates": [
+    "同じ種類の{it1}{p1}本の重さをはかったところ、{q1}gであった。この{it1}{r1}本の重さは何gですか。"
+   ],
+   "answer_template": "答え {ans}g",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c06_bunsho_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c06_u01",
+   "unit_name": "比例・反比例",
+   "semantic_category": "反比例・文章題",
+   "semantic_note": "仕事量一定型(毎分vL×t分＝全量固定)。三点セット: 可除性(u|vt)+現実域+恒等検算(u·ans＝v·t)。u≠vの転記排除(vt/u＝t⟺u＝v)。",
+   "step_count": 2,
+   "operation": "V＝vt → 答＝vt/u",
+   "answer_formula": "(v1 * t1) // u1",
+   "slots": {
+    "v1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "t1": {
+     "type": "int",
+     "range": [
+      4,
+      20
+     ]
+    },
+    "u1": {
+     "type": "int",
+     "range": [
+      3,
+      12
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(v1 * t1) % u1 == 0",
+     "why": "時間の整数保証(三点セット)"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "u1 != v1",
+     "why": "転記型リーク排除(u＝vだと答＝t)"
+    },
+    {
+     "rule": "ans_floor",
+     "expr": "(v1 * t1) // u1 >= 2",
+     "why": "現実域(1分未満・1分ちょうどの退化回避)"
+    },
+    {
+     "rule": "ans_cap",
+     "expr": "(v1 * t1) // u1 <= 60",
+     "why": "現実域キャップ"
+    },
+    {
+     "rule": "no_transcribe_t2",
+     "expr": "u1 != t1",
+     "why": "転記型リーク排除(u＝tだと答＝v)"
+    },
+    {
+     "rule": "no_transcribe_v",
+     "expr": "(v1 * t1) // u1 != v1",
+     "why": "転記型リーク排除(答＝毎分vの一致を排除)"
+    }
+   ],
+   "sentence_templates": [
+    "ある水そうを満水にするのに、毎分{v1}Lずつ水を入れると{t1}分かかる。毎分{u1}Lずつ水を入れると何分かかりますか。"
+   ],
+   "answer_template": "答え {ans}分",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c06_taiou_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c06_u01",
+   "unit_name": "比例・反比例",
+   "semantic_category": "反比例・対応表の穴埋め",
+   "semantic_note": "x行{1,2,3,4,6}定数×a∈{12,24,36}(全xで割り切れる12の倍数choices=構成保証)。穴はx＝3固定。答a/3は他セル値{a,a/2,a/4,a/6}と衝突しない(約数の相異)。c07taiou・c18数表版と対応表3兄弟。",
+   "step_count": 1,
+   "operation": "ア＝a/3",
+   "answer_formula": "a1 // 3",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "choices": [
+      12,
+      24,
+      36
+     ]
+    }
+   },
+   "computed_slots": {
+    "y1": {
+     "formula": "a1"
+    },
+    "y2": {
+     "formula": "a1 // 2"
+    },
+    "y4": {
+     "formula": "a1 // 4"
+    },
+    "y6": {
+     "formula": "a1 // 6"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "div_all",
+     "expr": "a1 % 12 == 0",
+     "why": "x行{1,2,3,4,6}全てで割り切れる(choicesで自動成立・二重化)"
+    }
+   ],
+   "sentence_templates": [
+    "表は、yがxに反比例する関係を表したものである。表のアにあてはまる数を求めなさい。"
+   ],
+   "answer_template": "答え {ans}",
+   "figure_params": {
+    "kind": "table",
+    "fig_version": 1,
+    "corner_label": "x",
+    "col_header": [
+     1,
+     2,
+     3,
+     4,
+     6
+    ],
+    "rows": [
+     {
+      "label": "y",
+      "values": [
+       "{y1}",
+       "{y2}",
+       "ア",
+       "{y4}",
+       "{y6}"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c06_kouten_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c06_u01",
+   "unit_name": "比例・反比例",
+   "semantic_category": "比例×反比例・交点でa逆算(分数傾き既約)",
+   "semantic_note": "y＝k/x上の点A(x座標s)をy＝axが通る→a＝(k/s)/s。整数傾きは標準枠幾何(|t|≦5∧a≧2∧s≧2)で組合せが枯れるため、第1波はa分数(t%s≠0)を主形としreduced_fraction_display既約表示(g05既約正準の流用)。逆算生成: (k,s)からt＝k/s∈[2,5]を構成→交点格子・枠内が自動成立。 点Aはlabel_pos e(直線NEレイ・双曲線SEレイの間の水平くさび=まるこ検収指摘によるlabel_pos方式の初適用)。",
+   "step_count": 2,
+   "operation": "t＝k/s → a＝t/s(既約)",
+   "answer_formula": "reduce_num(k1 // s1, s1)",
+   "slots": {
+    "k1": {
+     "type": "int",
+     "range": [
+      6,
+      25
+     ]
+    },
+    "s1": {
+     "type": "int",
+     "range": [
+      2,
+      5
+     ]
+    }
+   },
+   "computed_slots": {
+    "tv1": {
+     "formula": "k1 // s1"
+    }
+   },
+   "reduced_fraction_display": {
+    "ad1": [
+     "tv1",
+     "s1"
+    ]
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "k1 % s1 == 0",
+     "why": "交点の格子性(t整数)"
+    },
+    {
+     "rule": "t_floor",
+     "expr": "k1 // s1 >= 2",
+     "why": "点ラベルの軸マージン(|t|≧2)"
+    },
+    {
+     "rule": "t_cap",
+     "expr": "k1 // s1 <= 5",
+     "why": "点が標準枠内マージン1(描画可能性)"
+    },
+    {
+     "rule": "frac_slope",
+     "expr": "(k1 // s1) % s1 != 0",
+     "why": "整数傾き排除(fmt_fractionのn/1未対応+分数傾きが本型の主眼)"
+    }
+   ],
+   "sentence_templates": [
+    "図のように、関数 y＝{k1}/x のグラフと、原点を通る直線 y＝ax のグラフが、点Aで交わっている。点Aのx座標が{s1}のとき、aの値を求めなさい。"
+   ],
+   "answer_template": "答え a＝{ad1}",
+   "figure_params": {
+    "kind": "xy_graph",
+    "fig_version": 2,
+    "view": {
+     "xmin": -6,
+     "xmax": 6,
+     "ymin": -6,
+     "ymax": 6,
+     "tick_x": 1,
+     "tick_y": 1,
+     "grid": true
+    },
+    "axis_labels": {
+     "x": "x",
+     "y": "y"
+    },
+    "elements": [
+     {
+      "type": "hyperbola",
+      "k": "{k1}"
+     },
+     {
+      "type": "line",
+      "a": [
+       "{tv1}",
+       "{s1}"
+      ],
+      "b": [
+       0,
+       1
+      ]
+     },
+     {
+      "type": "point",
+      "x": [
+       "{s1}",
+       1
+      ],
+      "y": [
+       "{tv1}",
+       1
+      ],
+      "label": "A",
+      "guides": "x",
+      "show_coords": false,
+      "label_pos": "e"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  }
+ ]
+}
