@@ -1,0 +1,195 @@
+{
+ "g05_int_div_dec_calc_01": {
+  "brief": {
+   "semantic_territory": "整数÷小数の純計算",
+   "number_domain": "整数, dec1",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "異分母分数でgcd/lcmヘルパが要るはず。整数演算実装+シード非依存の等価性ベクター必須(v0.8の縛りと同じ)",
+     "by": "marko",
+     "date": "2026-06"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "小数除法の導入単元。除数が小数のとき10倍して整数除法に帰着する手続きが学習目標で、商が割り切れる組でなければ趣旨がぼやける。",
+   "representation": "除数d1はスケール10整数(dec1)。式はn1×10÷d1と内部で常に整数演算。浮動小数を一切使わない。",
+   "constructive_guarantees": "割り切れは(n1*10)%d1==0を制約に置き棄却サンプリングで保証。d1をchoices(12,14,15…48)に限定して受理率を確保(レンジ乱択だと棄却が過多になる)。商レンジ5〜40で桁の暴走も防ぐ。",
+   "semantic_position": "c01の計算系列(整数×小数→小数×小数→整数÷小数→小数÷小数)の3番目。次パターンの小数÷小数がスケール100へ拡張する布石。",
+   "exclusions": "d1%10==0(除数が実は整数)を除外。真に小数で割る必然性を保つ。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_gcd_word_divide_01": {
+  "brief": {
+   "semantic_territory": "公約数の利用(あまりなく分ける最大人数)",
+   "number_domain": "整数",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "スコープは文章題+純計算単元。できる領域は全部経路Aへ",
+     "by": "marko",
+     "date": "2026-06"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "2種の品物を同数ずつあまりなく分ける定番文脈。答えがgcdそのものになる構造で、gcdヘルパの文章題側の代表。",
+   "representation": "整数のみ。gcdはSAFEのEuclid反復ヘルパ(JS移植と同一手順)。",
+   "constructive_guarantees": "gcd>=4で公約数が複数ある組に限定し「最大」を問う必然性を作る。互いに倍数関係(b%a==0等)を除外して暗算即答を防ぐ。",
+   "semantic_position": "c05の約数系列の応用位。lcm側(バス同時発車・しきつめ)と対をなす。",
+   "exclusions": "a1==b1(同数=自明)、倍数関係(片方が答えになる自明形)。品物はレキシコンをa/b別セットに分割し同一品物の組を構造的に排除(制約で文字列比較はできない仕様のため)。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_unit_price_compare_01": {
+  "brief": {
+   "semantic_territory": "単位量あたり(どちらが安いか)",
+   "number_domain": "整数",
+   "answer_structure": "comparison",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "単位量単元の中心は比較判断。単価を各自求めてから大小を比べる二段の思考で、answer_structure=comparisonの代表形。",
+   "representation": "整数のみ。勝者はcomputed_slotsの条件式で文字列('A店'/'B店')を機械決定し、テンプレの分岐を排除。ansは求差abs(uA-uB)で正値保証を満たす形式解。",
+   "constructive_guarantees": "両店とも単価整数(pa%na==0等)。abs(uA-uB)<=30で「近い単価」に限定し、比較の必然性(見ただけで分からない)を数値設計で作る。",
+   "semantic_position": "c08の中核。速さのどちらが速いか(c09)と同型で、comparison族として横展開。",
+   "exclusions": "引き分け(uA==uB)を除外。単価レンジ60〜160円で非現実な値を排除。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_base_find_01": {
+  "brief": {
+   "semantic_territory": "割合・第3用法(もとにする量の逆算)",
+   "number_domain": "千分率整数",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "割合(くらべる量・もとにする量・割合)は新しい意味カテゴリ体系として設計、第3用法の難しさを構造に反映すること",
+     "by": "marko",
+     "date": "2026-06"
+    },
+    {
+     "text": "割合の内部表現は千分率整数(厘まで)で承認",
+     "by": "marko",
+     "date": "2026-06"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "3用法のうち逆算(第3用法)は正答率が段違いに低い。混ぜて出すと難度制御ができないため、独立パターンとして分離し出題比率を個別に持つのが体系の骨子。",
+   "representation": "割合pは千分率整数(115%=1150)。表示はpercent_pm(本文)とcomputed文字列p_dec(式中の小数)の二重整形。js_formatterヒントでJS側はdec3フォーマッタに束ねる。",
+   "constructive_guarantees": "もとにする量=(c×1000)÷pの割り切れを制約で保証。pのchoicesに1150等の100%超を含め「もと<くらべる」の直観破りを構造に内蔵。",
+   "semantic_position": "ratio_find(第1)/compare_find(第2)/base_find(第3)の3カテゴリ体系の第3位。発展形base_find_discount(引き後逆算・2段)へ接続。",
+   "exclusions": "定員レンジ40〜400で非現実値を排除。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_frac_add_unlike_01": {
+  "brief": {
+   "semantic_territory": "異分母分数のたし算",
+   "number_domain": "分数(既約・真分数)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "gcd/lcmは整数演算実装+シード非依存の等価性ベクター必須",
+     "by": "marko",
+     "date": "2026-06"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "通分→加算→約分(→帯分数化)の全工程を1問に含む単元の主形。答えの整形が学習内容そのもの。",
+   "representation": "分子分母は整数スロット。和はcomputed(n1,L1=lcm)で保持し、表示はreduced_mixed_display(gcd約分→帯分数整形)に一任。手計算の各段が機構に1対1対応。",
+   "constructive_guarantees": "既約(gcd(a,b)==1)から出題し通分の必然性を保証。lcm<=60で共通分母の暴走防止。",
+   "semantic_position": "c06系列(約分→通分→加減→帯分数→3口)の中心。減法版は結果正制約を足した対パターン。",
+   "exclusions": "同分母(b==d)を除外。分母choicesを3〜12に限定し素数の大分母を避ける。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_circle_diam_from_circum_01": {
+  "brief": {
+   "semantic_territory": "円周から直径の逆算",
+   "number_domain": "整数, dec2(3.14=スケール整数314)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "円周÷3.14の逆算。実物にはがい数指定の割り切れない版もあるが、本パターンは割り切れる版に限定(がい数版は別パターン候補)。",
+   "representation": "円周率はスケール整数314。円周c_len=d1×314をcomputedで持ちdec2表示。",
+   "constructive_guarantees": "答え(直径d1)を先にサンプリングし、問題文の円周を答えから構成する『構成的逆算』。割り切れ制約が不要になり全域で厳密成立。逆方向(円周を乱択して割り切れを棄却)より受理率も自然さも優る——逆算系の標準手筋。",
+   "semantic_position": "circle_circum(順方向2種)と対をなす逆算位。平行四辺形・三角形の高さ逆算と同じ設計原理。",
+   "exclusions": "d1レンジ4〜25で円周が2桁小数に収まる範囲に限定。",
+   "figure_notes": "図なし(円周の値がテキスト提示のため。circle kindは順方向のみに使用)。",
+   "pedagogy": []
+  }
+ },
+ "g05_quad_angle_01": {
+  "brief": {
+   "semantic_territory": "四角形の内角(3known→1unknown)",
+   "number_domain": "整数(度)",
+   "answer_structure": "single",
+   "figure": "quad_angle",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "angle_sumで確立した配置原則——ラベルは自要素束縛、可動は半径・フォントのみ、全域機械スキャン——に従うこと。図と本文は同一envから駆動",
+     "by": "marko",
+     "date": "2026-06"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "内角和360°の適用。実物形式は角度が図中表記・本文は問いのみで、verify(本文スキャン)と自然に整合する。",
+   "representation": "整数度。図はfigure_paramsのスロット参照のみ(数値直書き禁止)で本文と同一env駆動。",
+   "constructive_guarantees": "作図成立(凸性・最短辺)はAD長の決定的適応(固定候補列走査・最短辺42px基準)で全130,931組合せ100%を悉皆検証。乱数を使わないのでシード再現性を保つ。",
+   "semantic_position": "tri_angle(180°)の拡張位。五角形以降はv2候補。",
+   "exclusions": "当初の内角レンジ65〜125°を65〜100°に強化。理由は描画都合ではなくラベル分離可能性——鈍角の既知角ラベルと未知ラベルが短辺を挟んで衝突する組合せを、配置シミュレーション悉皆で排除した(≤105°では残存、≤102°で0件、マージンで100°採用)。",
+   "figure_notes": "『可読性の限界はbuilderで図形を歪めず、バンク値域で表現する』原則の代表例。kindを増やすときは値域決定に配置シミュレーションを伴わせること。",
+   "pedagogy": []
+  }
+ },
+ "g05_table_heikin_01": {
+  "brief": {
+   "semantic_territory": "表から平均を求める",
+   "number_domain": "整数",
+   "answer_structure": "single",
+   "figure": "table",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "table kindはv0.9スコープに含める(B層)",
+     "by": "marko",
+     "date": "2026-06"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "平均単元の実物は約半数が表参照型。表を新kindにすることで経路Aのカバー率を大きく上げるB層の中核。",
+   "representation": "表のセル値はfigure_params内のスロット参照。図(表)と本文が同一envで駆動され数値食い違いが構造的に起きない。",
+   "constructive_guarantees": "(Σv)%4==0で平均整数。max-min>=20のばらつき制約で『全部同じ値』の退化を排除し、平均を求める意味を保つ。",
+   "semantic_position": "c07平均のB層位。単位量・割合u01の表参照型と同じtable kindを共有。",
+   "exclusions": "ばらつき不足(差20未満)を除外。",
+   "figure_notes": "tableの配置原則はangle_sum原則の写像(セル束縛/可動はフォント・列幅のみ/はみ出し0px+間隔10pxスキャン)。",
+   "pedagogy": []
+  }
+ }
+}

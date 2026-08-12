@@ -1,0 +1,5265 @@
+{
+ "schema_version": 0.9,
+ "description": "小5パターンバンク セッション1: 純計算・文章題(経路A・23単元)+ 割合3用法体系(千分率整数) + gcd/lcm/約分機構 + dec2/dec3固定小数点 + table kind(B層)。 / セッション2追補: C層(角・面積・円周・体積)17パターン(kind: tri_angle/tri_angle_iso/quad_angle/para_area/tri_area/trap_area/rhombus_area/circle/cuboid)。",
+ "source_analysis": "標準的な小5算数カリキュラム(小数の乗除・整数の性質・異分母分数の加減・平均・単位量あたり・速さ・割合と百分率/歩合・2量の変わり方)の単元構成に基づく設計。実データは含めない。",
+ "answer_structures": {
+  "single": "単一の数値・式",
+  "comparison": "求差の二部構成(誰が/どちらが + 差)",
+  "round_range": "がい数の範囲解答(v0.8から継承。g05セッション1では未使用)"
+ },
+ "ratio_semantics": {
+  "comment": "割合の意味カテゴリ体系(3用法)。第3用法(base_find)は独立カテゴリとして分離し、難度・出題比率を個別制御。内部表現は千分率整数(厘=0.1%まで整数で閉じる)。",
+  "ratio_find": "第1用法: 割合 = くらべる量 ÷ もとにする量",
+  "compare_find": "第2用法: くらべる量 = もとにする量 × 割合",
+  "base_find": "第3用法: もとにする量 = くらべる量 ÷ 割合(逆算。100%超・引き後逆算の発展形を含む)"
+ },
+ "figure_note": "figure_params は kind + スロット参照。make_problem が本文と同一の env で解決するため、図中数値と問題文の食い違いが構造的に起きない。描画は pattern_bank/figure_builder.js(両テンプレ共有・二重実装しない)。v0.9で kind:table を追加(B層)。fig_version はkind追加時の後方互換用。 セッション2で幾何系9kindを追加(描画可能性はパターン側制約で全域保証・スキャンは検収ネット)。",
+ "shared_lexicon": {
+  "comment": "g04からactorsの語感を継承した新レキシコン。すべてg01〜g05配当漢字またはひらがな。実データ・固有教材由来の語は含めない。",
+  "actors": [
+   "ゆうたさん",
+   "さくらさん",
+   "はるとさん",
+   "みおさん",
+   "けんとさん",
+   "ももかさん"
+  ],
+  "length_goods": [
+   {
+    "noun": "リボン",
+    "unit": "m"
+   },
+   {
+    "noun": "テープ",
+    "unit": "m"
+   },
+   {
+    "noun": "ロープ",
+    "unit": "m"
+   }
+  ],
+  "liquids": [
+   "オレンジジュース",
+   "りんごジュース",
+   "ぶどうジュース",
+   "お茶",
+   "麦茶"
+  ],
+  "heavy_objects": [
+   "はり金",
+   "パイプ",
+   "鉄のぼう"
+  ],
+  "share_items_a": [
+   {
+    "noun": "えん筆",
+    "counter": "本"
+   },
+   {
+    "noun": "消しゴム",
+    "counter": "こ"
+   }
+  ],
+  "share_items_b": [
+   {
+    "noun": "色紙",
+    "counter": "まい"
+   },
+   {
+    "noun": "画用紙",
+    "counter": "まい"
+   },
+   {
+    "noun": "おかし",
+    "counter": "こ"
+   }
+  ],
+  "stationery": [
+   {
+    "noun": "ノート",
+    "counter": "さつ"
+   },
+   {
+    "noun": "色紙",
+    "counter": "まい"
+   },
+   {
+    "noun": "画用紙",
+    "counter": "まい"
+   }
+  ],
+  "destinations": [
+   "東町",
+   "西町",
+   "南町",
+   "北町"
+  ]
+ },
+ "patterns": [
+  {
+   "pattern_id": "g05_dec_shift_up_01",
+   "grade": "g05",
+   "unit_id": "g05_c01_u01",
+   "unit_name": "整数×小数",
+   "semantic_category": "小数の位取りシフト(倍)",
+   "semantic_note": "小数×10/100/1000。内部はスケール100整数、シフトは整数乗算。末尾ゼロ省略はdec2整形が担う。",
+   "step_count": 1,
+   "operation": "a × k (位取りシフト)",
+   "answer_formula": "a * k",
+   "answer_unit_from": "unit",
+   "slots": {
+    "k": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      10,
+      100,
+      1000
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "a_not_int",
+     "expr": "a % 100 != 0",
+     "why": "被乗数を真に小数にする(整数を除外)"
+    }
+   ],
+   "sentence_templates": [
+    "{a_disp}を{k}倍した数を書きなさい。"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "quantity_slots": {
+    "a": {
+     "unit_system": "dec2",
+     "range": [
+      105,
+      989
+     ]
+    }
+   },
+   "answer_unit_system": "dec2"
+  },
+  {
+   "pattern_id": "g05_dec_shift_down_01",
+   "grade": "g05",
+   "unit_id": "g05_c01_u01",
+   "unit_name": "整数×小数",
+   "semantic_category": "小数の位取りシフト(分の一)",
+   "semantic_note": "1/10・1/100。内部はスケール1000整数(dec1値×100)、シフトは整数除算で割り切れが構造保証。",
+   "step_count": 1,
+   "operation": "a ÷ k (位取りシフト)",
+   "answer_formula": "a // k",
+   "answer_unit_from": "unit",
+   "slots": {
+    "k": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      10,
+      100
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "a_not_int",
+     "expr": "a % 1000 != 0",
+     "why": "対象を真に小数にする"
+    }
+   ],
+   "sentence_templates": [
+    "{a_disp}を1/{k}にした数を書きなさい。"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ],
+   "quantity_slots": {
+    "a": {
+     "unit_system": "dec3",
+     "range": [
+      10500,
+      99500
+     ],
+     "step": 100
+    }
+   },
+   "answer_unit_system": "dec3"
+  },
+  {
+   "pattern_id": "g05_int_x_dec_calc_01",
+   "grade": "g05",
+   "unit_id": "g05_c01_u01",
+   "unit_name": "整数×小数",
+   "semantic_category": "整数×小数(純計算)",
+   "semantic_note": "n×d(d=dec1)。積はスケール10整数のままdec1整形。",
+   "step_count": 1,
+   "operation": "n × d",
+   "answer_formula": "n1 * d1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      12,
+      39
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "d_not_int",
+     "expr": "d1 % 10 != 0",
+     "why": "乗数を真に小数にする"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。{n1}×{d1_disp}"
+   ],
+   "answer_template": "しき {n1}×{d1_disp}={ans_disp} 答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "quantity_slots": {
+    "d1": {
+     "unit_system": "dec1",
+     "range": [
+      11,
+      49
+     ]
+    }
+   },
+   "answer_unit_system": "dec1"
+  },
+  {
+   "pattern_id": "g05_int_x_dec_word_01",
+   "grade": "g05",
+   "unit_id": "g05_c01_u01",
+   "unit_name": "整数×小数",
+   "semantic_category": "単価×小数量(文章題)",
+   "semantic_note": "1mあたりn円×d m。金額は整数円: (n×d)%10==0 を制約で保証。",
+   "step_count": 1,
+   "operation": "n × d ÷ 10(スケール解消)",
+   "answer_formula": "n1 * d1 // 10",
+   "answer_unit_from": "unit",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      40,
+      480
+     ],
+     "step": 10
+    },
+    "obj": {
+     "from": "length_goods[j].noun"
+    },
+    "unit": {
+     "from": "length_goods[j].unit"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "yen_int",
+     "expr": "(n1 * d1) % 10 == 0",
+     "why": "代金が整数円になる"
+    },
+    {
+     "rule": "d_not_int",
+     "expr": "d1 % 10 != 0",
+     "why": "買う長さを真に小数にする"
+    }
+   ],
+   "sentence_templates": [
+    "1{unit}のねだんが{n1}円の{obj}を、{d1_disp}{unit}買いました。代金はいくらですか。"
+   ],
+   "answer_template": "しき {n1}×{d1_disp}={ans} 答え {ans}円",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ],
+   "quantity_slots": {
+    "d1": {
+     "unit_system": "dec1",
+     "range": [
+      11,
+      49
+     ]
+    }
+   }
+  },
+  {
+   "pattern_id": "g05_dec_x_dec_calc_01",
+   "grade": "g05",
+   "unit_id": "g05_c01_u02",
+   "unit_name": "小数×小数",
+   "semantic_category": "小数×小数(純計算)",
+   "semantic_note": "dec1×dec1→スケール100の積をdec2整形。末尾ゼロ省略(12.00→12)。",
+   "step_count": 1,
+   "operation": "a × b (スケール10×10→100)",
+   "answer_formula": "a1 * b1",
+   "answer_unit_from": "unit",
+   "slots": {},
+   "value_constraints": [
+    {
+     "rule": "a_not_int",
+     "expr": "a1 % 10 != 0",
+     "why": "被乗数を真に小数にする"
+    },
+    {
+     "rule": "b_not_int",
+     "expr": "b1 % 10 != 0",
+     "why": "乗数を真に小数にする"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。{a1_disp}×{b1_disp}"
+   ],
+   "answer_template": "しき {a1_disp}×{b1_disp}={ans_disp} 答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "quantity_slots": {
+    "a1": {
+     "unit_system": "dec1",
+     "range": [
+      11,
+      99
+     ]
+    },
+    "b1": {
+     "unit_system": "dec1",
+     "range": [
+      11,
+      99
+     ]
+    }
+   },
+   "answer_unit_system": "dec2"
+  },
+  {
+   "pattern_id": "g05_dec_x_dec_word_01",
+   "grade": "g05",
+   "unit_id": "g05_c01_u02",
+   "unit_name": "小数×小数",
+   "semantic_category": "単位量×小数量(文章題)",
+   "semantic_note": "1Lあたりa kg×b L。答えはdec2。",
+   "step_count": 1,
+   "operation": "a × b",
+   "answer_formula": "a1 * b1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "liq": {
+     "from": "liquids"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "a_not_int",
+     "expr": "a1 % 10 != 0",
+     "why": "単位量を真に小数にする"
+    },
+    {
+     "rule": "b_not_int",
+     "expr": "b1 % 10 != 0",
+     "why": "かさを真に小数にする"
+    }
+   ],
+   "sentence_templates": [
+    "1Lの重さが{a1_disp}kgの{liq}があります。この{liq}{b1_disp}Lの重さは何kgですか。"
+   ],
+   "answer_template": "しき {a1_disp}×{b1_disp}={ans_disp} 答え {ans_disp}kg",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ],
+   "quantity_slots": {
+    "a1": {
+     "unit_system": "dec1",
+     "range": [
+      11,
+      29
+     ]
+    },
+    "b1": {
+     "unit_system": "dec1",
+     "range": [
+      11,
+      49
+     ]
+    }
+   },
+   "answer_unit_system": "dec2"
+  },
+  {
+   "pattern_id": "g05_int_div_dec_calc_01",
+   "grade": "g05",
+   "unit_id": "g05_c01_u03",
+   "unit_name": "整数÷小数",
+   "semantic_category": "整数÷小数(純計算)",
+   "semantic_note": "n÷d(d=dec1)。(n×10)%d==0で商が整数になる組のみ生成(割り切れ保証)。",
+   "step_count": 1,
+   "operation": "n×10 ÷ d(スケール合わせ)",
+   "answer_formula": "n1 * 10 // d1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      12,
+      120
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(n1 * 10) % d1 == 0",
+     "why": "商が整数で割り切れる"
+    },
+    {
+     "rule": "d_not_int",
+     "expr": "d1 % 10 != 0",
+     "why": "除数を真に小数にする"
+    },
+    {
+     "rule": "q_range",
+     "expr": "5 <= (n1 * 10) // d1 <= 40",
+     "why": "商を無理のない大きさに保つ"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。{n1}÷{d1_disp}"
+   ],
+   "answer_template": "しき {n1}÷{d1_disp}={ans} 答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "quantity_slots": {
+    "d1": {
+     "unit_system": "dec1",
+     "choices": [
+      12,
+      14,
+      15,
+      16,
+      18,
+      24,
+      25,
+      28,
+      32,
+      35,
+      36,
+      45,
+      48
+     ]
+    }
+   }
+  },
+  {
+   "pattern_id": "g05_int_div_dec_word_01",
+   "grade": "g05",
+   "unit_id": "g05_c01_u03",
+   "unit_name": "整数÷小数",
+   "semantic_category": "代金÷小数量=単価(文章題)",
+   "semantic_note": "d m買ってn円→1mのねだん。整数円保証。",
+   "step_count": 1,
+   "operation": "n×10 ÷ d",
+   "answer_formula": "n1 * 10 // d1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      120,
+      960
+     ],
+     "step": 10
+    },
+    "obj": {
+     "from": "length_goods[j].noun"
+    },
+    "unit": {
+     "from": "length_goods[j].unit"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(n1 * 10) % d1 == 0",
+     "why": "1mあたりが整数円で割り切れる"
+    },
+    {
+     "rule": "d_not_int",
+     "expr": "d1 % 10 != 0",
+     "why": "長さを真に小数にする"
+    },
+    {
+     "rule": "q_range",
+     "expr": "40 <= (n1 * 10) // d1 <= 400",
+     "why": "単価を現実的な範囲に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "{obj}を{d1_disp}{unit}買ったら、代金は{n1}円でした。この{obj}1{unit}のねだんはいくらですか。"
+   ],
+   "answer_template": "しき {n1}÷{d1_disp}={ans} 答え {ans}円",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ],
+   "quantity_slots": {
+    "d1": {
+     "unit_system": "dec1",
+     "choices": [
+      12,
+      15,
+      16,
+      24,
+      25,
+      32,
+      35,
+      45,
+      48
+     ]
+    }
+   }
+  },
+  {
+   "pattern_id": "g05_dec_div_dec_calc_01",
+   "grade": "g05",
+   "unit_id": "g05_c01_u04",
+   "unit_name": "小数÷小数",
+   "semantic_category": "小数÷小数(純計算)",
+   "semantic_note": "a÷b(両方dec1)。(a×100)%b==0で商dec2が有限確定。",
+   "step_count": 1,
+   "operation": "a×100 ÷ b(スケール10→100)",
+   "answer_formula": "a1 * 100 // b1",
+   "answer_unit_from": "unit",
+   "slots": {},
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(a1 * 100) % b1 == 0",
+     "why": "商がdec2で割り切れる"
+    },
+    {
+     "rule": "a_not_int",
+     "expr": "a1 % 10 != 0",
+     "why": "被除数を真に小数にする"
+    },
+    {
+     "rule": "q_range",
+     "expr": "105 <= (a1 * 100) // b1 <= 995",
+     "why": "商を1台〜9台に保つ"
+    },
+    {
+     "rule": "q_not_int",
+     "expr": "((a1 * 100) // b1) % 100 != 0",
+     "why": "商も真に小数にする"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。{a1_disp}÷{b1_disp}"
+   ],
+   "answer_template": "しき {a1_disp}÷{b1_disp}={ans_disp} 答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "quantity_slots": {
+    "a1": {
+     "unit_system": "dec1",
+     "range": [
+      101,
+      999
+     ]
+    },
+    "b1": {
+     "unit_system": "dec1",
+     "choices": [
+      12,
+      15,
+      16,
+      24,
+      25,
+      28,
+      32,
+      35,
+      36,
+      45,
+      48,
+      52,
+      64,
+      65,
+      72,
+      75
+     ]
+    }
+   },
+   "answer_unit_system": "dec2"
+  },
+  {
+   "pattern_id": "g05_dec_div_dec_word_01",
+   "grade": "g05",
+   "unit_id": "g05_c01_u04",
+   "unit_name": "小数÷小数",
+   "semantic_category": "全体÷小数量=単位量(文章題)",
+   "semantic_note": "b mの重さa kg→1mの重さ。商dec2確定。",
+   "step_count": 1,
+   "operation": "a×100 ÷ b",
+   "answer_formula": "a1 * 100 // b1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "obj": {
+     "from": "heavy_objects"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(a1 * 100) % b1 == 0",
+     "why": "1mあたりがdec2で割り切れる"
+    },
+    {
+     "rule": "a_not_int",
+     "expr": "a1 % 10 != 0",
+     "why": "重さを真に小数にする"
+    },
+    {
+     "rule": "q_range",
+     "expr": "105 <= (a1 * 100) // b1 <= 495",
+     "why": "単位量を現実的に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "{b1_disp}mの重さが{a1_disp}kgの{obj}があります。この{obj}1mの重さは何kgですか。"
+   ],
+   "answer_template": "しき {a1_disp}÷{b1_disp}={ans_disp} 答え {ans_disp}kg",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ],
+   "quantity_slots": {
+    "a1": {
+     "unit_system": "dec1",
+     "range": [
+      31,
+      199
+     ]
+    },
+    "b1": {
+     "unit_system": "dec1",
+     "choices": [
+      12,
+      15,
+      16,
+      24,
+      25,
+      28,
+      32,
+      35,
+      36,
+      45,
+      48
+     ]
+    }
+   },
+   "answer_unit_system": "dec2"
+  },
+  {
+   "pattern_id": "g05_dec_riyou_01",
+   "grade": "g05",
+   "unit_id": "g05_c01_u05",
+   "unit_name": "小数のかけ算とわり算の利用",
+   "semantic_category": "小数乗算+ひき算(2段)",
+   "semantic_note": "単価×小数量→出したお金からおつり。ステップ2。",
+   "step_count": 2,
+   "operation": "m − n×d÷10",
+   "answer_formula": "m1 - n1 * d1 // 10",
+   "answer_unit_from": "unit",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      60,
+      380
+     ],
+     "step": 10
+    },
+    "m1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      500,
+      1000
+     ]
+    },
+    "obj": {
+     "from": "length_goods[j].noun"
+    },
+    "unit": {
+     "from": "length_goods[j].unit"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "yen_int",
+     "expr": "(n1 * d1) % 10 == 0",
+     "why": "代金が整数円"
+    },
+    {
+     "rule": "d_not_int",
+     "expr": "d1 % 10 != 0",
+     "why": "長さを真に小数にする"
+    },
+    {
+     "rule": "change_pos",
+     "expr": "m1 - n1 * d1 // 10 > 0",
+     "why": "おつりが正になる"
+    }
+   ],
+   "sentence_templates": [
+    "1{unit}のねだんが{n1}円の{obj}を{d1_disp}{unit}買って、{m1}円を出しました。おつりはいくらですか。"
+   ],
+   "answer_template": "しき {n1}×{d1_disp}、{m1}−(代金) 答え {ans}円",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ],
+   "quantity_slots": {
+    "d1": {
+     "unit_system": "dec1",
+     "range": [
+      11,
+      29
+     ]
+    }
+   }
+  },
+  {
+   "pattern_id": "g05_dec_bai_ratio_01",
+   "grade": "g05",
+   "unit_id": "g05_c01_u06",
+   "unit_name": "小数の倍",
+   "semantic_category": "何倍か(小数倍)",
+   "semantic_note": "aはbの何倍(答えが小数)。(a×100)%b==0でdec2確定。第1用法(割合)の前史に位置づく。",
+   "step_count": 1,
+   "operation": "a ÷ b",
+   "answer_formula": "a1 * 100 // b1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "liq": {
+     "from": "liquids"
+    },
+    "liq2": {
+     "from": "liquids(distinct)"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(a1 * 100) % b1 == 0",
+     "why": "倍がdec2で割り切れる"
+    },
+    {
+     "rule": "bai_range",
+     "expr": "105 <= (a1 * 100) // b1 <= 395",
+     "why": "倍を1台〜3台に保つ"
+    },
+    {
+     "rule": "bai_not_int",
+     "expr": "((a1 * 100) // b1) % 100 != 0",
+     "why": "倍も真に小数にする"
+    }
+   ],
+   "sentence_templates": [
+    "{liq}が{a1_disp}L、{liq2}が{b1_disp}Lあります。{liq}のかさは、{liq2}のかさの何倍ですか。"
+   ],
+   "answer_template": "しき {a1_disp}÷{b1_disp}={ans_disp} 答え {ans_disp}倍",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "quantity_slots": {
+    "a1": {
+     "unit_system": "dec1",
+     "range": [
+      11,
+      99
+     ]
+    },
+    "b1": {
+     "unit_system": "dec1",
+     "choices": [
+      12,
+      15,
+      16,
+      24,
+      25,
+      32,
+      35,
+      45,
+      48
+     ]
+    }
+   },
+   "answer_unit_system": "dec2"
+  },
+  {
+   "pattern_id": "g05_dec_bai_apply_01",
+   "grade": "g05",
+   "unit_id": "g05_c01_u06",
+   "unit_name": "小数の倍",
+   "semantic_category": "もとにする量×小数倍",
+   "semantic_note": "b mのk倍(k=dec1)。第2用法の前史。",
+   "step_count": 1,
+   "operation": "b × k",
+   "answer_formula": "b1 * k1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "b1": {
+     "type": "int",
+     "range": [
+      4,
+      12
+     ]
+    },
+    "obj": {
+     "from": "length_goods[j].noun"
+    },
+    "unit": {
+     "from": "length_goods[j].unit"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "k_not_int",
+     "expr": "k1 % 10 != 0",
+     "why": "倍を真に小数にする"
+    }
+   ],
+   "sentence_templates": [
+    "白い{obj}の長さは{b1}{unit}です。赤い{obj}の長さは、白い{obj}の長さの{k1_disp}倍です。赤い{obj}は何{unit}ですか。"
+   ],
+   "answer_template": "しき {b1}×{k1_disp}={ans_disp} 答え {ans_disp}{unit}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "quantity_slots": {
+    "k1": {
+     "unit_system": "dec1",
+     "range": [
+      11,
+      29
+     ]
+    }
+   },
+   "answer_unit_system": "dec1"
+  },
+  {
+   "pattern_id": "g05_evenodd_01",
+   "grade": "g05",
+   "unit_id": "g05_c05_u01",
+   "unit_name": "偶数と奇数",
+   "semantic_category": "偶数・奇数の判定",
+   "semantic_note": "パリティ判定。答えは分類語(文字列)。ans は判定対象の数(正)を形式上使う。",
+   "step_count": 1,
+   "operation": "n mod 2 判定",
+   "answer_formula": "n1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      11,
+      499
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{n1}は、偶数と奇数のどちらですか。"
+   ],
+   "answer_template": "答え {parity}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ],
+    "allowed_extra": "偶奇"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "parity": {
+     "formula": "'偶数' if n1 % 2 == 0 else '奇数'"
+    }
+   }
+  },
+  {
+   "pattern_id": "g05_lcm_calc_01",
+   "grade": "g05",
+   "unit_id": "g05_c05_u02",
+   "unit_name": "倍数と公倍数",
+   "semantic_category": "最小公倍数と公倍数",
+   "semantic_note": "lcmヘルパ使用。公倍数はlcmの倍数(答えのみで使用、本文には出さない)。",
+   "step_count": 1,
+   "operation": "lcm(a,b)",
+   "answer_formula": "lcm(a1, b1)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      4,
+      24
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      4,
+      24
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "distinct",
+     "expr": "a1 != b1",
+     "why": "同じ数を除外"
+    },
+    {
+     "rule": "nontrivial",
+     "expr": "b1 % a1 != 0 and a1 % b1 != 0",
+     "why": "一方が他方の倍数の自明ケースを除外"
+    },
+    {
+     "rule": "lcm_cap",
+     "expr": "lcm(a1, b1) <= 120",
+     "why": "最小公倍数を扱いやすい大きさに保つ"
+    }
+   ],
+   "sentence_templates": [
+    "（{a1}、{b1}）の最小公倍数を求めなさい。また、（{a1}、{b1}）の公倍数を小さいほうから順に3つ書きなさい。"
+   ],
+   "answer_template": "答え 最小公倍数 {ans}、公倍数 {ans}、{m2}、{m3}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    3
+   ],
+   "computed_slots": {
+    "m2": {
+     "formula": "2 * lcm(a1, b1)"
+    },
+    "m3": {
+     "formula": "3 * lcm(a1, b1)"
+    }
+   }
+  },
+  {
+   "pattern_id": "g05_gcd_calc_01",
+   "grade": "g05",
+   "unit_id": "g05_c05_u04",
+   "unit_name": "約数と公約数",
+   "semantic_category": "最大公約数と公約数",
+   "semantic_note": "gcdヘルパ使用。",
+   "step_count": 1,
+   "operation": "gcd(a,b)",
+   "answer_formula": "gcd(a1, b1)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      12,
+      72
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      12,
+      72
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "distinct",
+     "expr": "a1 != b1",
+     "why": "同じ数を除外"
+    },
+    {
+     "rule": "nontrivial",
+     "expr": "gcd(a1, b1) >= 4",
+     "why": "公約数が複数ある組に限定"
+    },
+    {
+     "rule": "proper",
+     "expr": "b1 % a1 != 0 and a1 % b1 != 0",
+     "why": "一方が他方の約数の自明ケースを除外"
+    }
+   ],
+   "sentence_templates": [
+    "（{a1}、{b1}）の最大公約数を求めなさい。"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g05_lcm_word_clock_01",
+   "grade": "g05",
+   "unit_id": "g05_c05_u03",
+   "unit_name": "倍数と公倍数の利用",
+   "semantic_category": "周期の一致(時刻)",
+   "semantic_note": "a分ごと/b分ごとの同時発車→次の同時刻。clock整形(v0.7既存)+lcm(v0.9)。",
+   "step_count": 1,
+   "operation": "t0 + lcm(a,b)",
+   "answer_formula": "t0 + lcm(a1, b1)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      4,
+      6,
+      8,
+      9,
+      10,
+      12,
+      15
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      4,
+      6,
+      8,
+      9,
+      10,
+      12,
+      15
+     ]
+    },
+    "dest_a": {
+     "from": "destinations"
+    },
+    "dest_b": {
+     "from": "destinations(distinct)"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "order",
+     "expr": "a1 < b1",
+     "why": "aとbに順序をつけ重複を除外"
+    },
+    {
+     "rule": "nontrivial",
+     "expr": "b1 % a1 != 0",
+     "why": "周期が倍数関係の自明ケースを除外"
+    },
+    {
+     "rule": "lcm_cap",
+     "expr": "lcm(a1, b1) <= 60",
+     "why": "次の一致が1時間以内"
+    },
+    {
+     "rule": "not_on_hour",
+     "expr": "(t0 + lcm(a1, b1)) % 60 != 0",
+     "why": "「何時何分」の問いと表示を整合させる"
+    }
+   ],
+   "sentence_templates": [
+    "あるバス停では、{dest_a}行きのバスが{a1}分ごとに、{dest_b}行きのバスが{b1}分ごとに出発します。{t0_disp}に{dest_a}行きと{dest_b}行きのバスが同時に出発しました。次に2つのバスが同時に出発するのは何時何分ですか。"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2
+   ],
+   "quantity_slots": {
+    "t0": {
+     "unit_system": "clock",
+     "range": [
+      540,
+      660
+     ],
+     "step": 5
+    }
+   },
+   "answer_unit_system": "clock"
+  },
+  {
+   "pattern_id": "g05_lcm_word_tile_01",
+   "grade": "g05",
+   "unit_id": "g05_c05_u03",
+   "unit_name": "倍数と公倍数の利用",
+   "semantic_category": "しきつめ最小正方形",
+   "semantic_note": "たてa×横bの長方形の紙をすきまなくしきつめる最小の正方形の1辺=lcm。図なし文章版。",
+   "step_count": 1,
+   "operation": "lcm(a,b)",
+   "answer_formula": "lcm(a1, b1)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      4,
+      6,
+      8,
+      9,
+      10,
+      12,
+      15,
+      18
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      4,
+      6,
+      8,
+      9,
+      10,
+      12,
+      15,
+      18
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "order",
+     "expr": "a1 < b1",
+     "why": "たて<横に固定して重複除外"
+    },
+    {
+     "rule": "nontrivial",
+     "expr": "b1 % a1 != 0",
+     "why": "自明ケースを除外"
+    },
+    {
+     "rule": "common",
+     "expr": "gcd(a1, b1) > 1",
+     "why": "公約数を持つ組に限定(計算のうまみ)"
+    },
+    {
+     "rule": "lcm_cap",
+     "expr": "lcm(a1, b1) <= 90",
+     "why": "1辺を扱いやすく保つ"
+    }
+   ],
+   "sentence_templates": [
+    "たて{a1}cm、横{b1}cmの長方形の紙を、同じ向きにすきまなくしきつめて、できるだけ小さい正方形をつくります。正方形の1辺の長さは何cmになりますか。"
+   ],
+   "answer_template": "しき （{a1}と{b1}の最小公倍数） 答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "g05_gcd_word_divide_01",
+   "grade": "g05",
+   "unit_id": "g05_c05_u05",
+   "unit_name": "公約数の利用",
+   "semantic_category": "あまりなく分ける最大人数",
+   "semantic_note": "a個とb個をあまりなく同数ずつ→最大人数=gcd。",
+   "step_count": 1,
+   "operation": "gcd(a,b)",
+   "answer_formula": "gcd(a1, b1)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      12,
+      60
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      12,
+      60
+     ]
+    },
+    "obj_a": {
+     "from": "share_items_a[j].noun"
+    },
+    "cnt_a": {
+     "from": "share_items_a[j].counter"
+    },
+    "obj_b": {
+     "from": "share_items_b[k].noun"
+    },
+    "cnt_b": {
+     "from": "share_items_b[k].counter"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "distinct_n",
+     "expr": "a1 != b1",
+     "why": "個数が同じ自明ケースを除外"
+    },
+    {
+     "rule": "nontrivial",
+     "expr": "gcd(a1, b1) >= 4 and b1 % a1 != 0 and a1 % b1 != 0",
+     "why": "計算の必然性を保つ"
+    }
+   ],
+   "sentence_templates": [
+    "{obj_a}が{a1}{cnt_a}と{obj_b}が{b1}{cnt_b}あります。これを何人かの子どもに、それぞれ同じ数ずつ、あまりが出ないように分けます。できるだけ多くの子どもに分けるとき、何人に分けることができますか。"
+   ],
+   "answer_template": "しき （{a1}と{b1}の最大公約数） 答え {ans}人",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g05_yakubun_01",
+   "grade": "g05",
+   "unit_id": "g05_c06_u01",
+   "unit_name": "約分",
+   "semantic_category": "約分",
+   "semantic_note": "gcd>1の分数を約分。reduced_fraction_display(v0.9)で機械約分。整数落ちは制約で除外。",
+   "step_count": 1,
+   "operation": "num/gcd ÷ den/gcd",
+   "answer_formula": "reduce_num(num1, den1)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "num1": {
+     "type": "int",
+     "range": [
+      4,
+      46
+     ]
+    },
+    "den1": {
+     "type": "int",
+     "range": [
+      6,
+      48
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "proper",
+     "expr": "num1 < den1",
+     "why": "真分数に限定"
+    },
+    {
+     "rule": "reducible",
+     "expr": "gcd(num1, den1) > 1",
+     "why": "約分できる分数に限定"
+    },
+    {
+     "rule": "not_int",
+     "expr": "num1 % den1 != 0",
+     "why": "整数落ちを除外(真分数なので自明だが明示)"
+    }
+   ],
+   "sentence_templates": [
+    "次の分数を約分しなさい。{raw1}"
+   ],
+   "answer_template": "答え {red1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "fraction_display": {
+    "raw1": [
+     "num1",
+     "den1"
+    ]
+   },
+   "reduced_fraction_display": {
+    "red1": [
+     "num1",
+     "den1"
+    ]
+   }
+  },
+  {
+   "pattern_id": "g05_tsubun_01",
+   "grade": "g05",
+   "unit_id": "g05_c06_u02",
+   "unit_name": "通分",
+   "semantic_category": "通分",
+   "semantic_note": "既約分数2つを最小公倍数の分母にそろえる。分母は倍数関係を除外(通分の必然性)。",
+   "step_count": 1,
+   "operation": "分母をlcm(b,d)にそろえる",
+   "answer_formula": "lcm(b1, d1)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      11
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      3,
+      4,
+      5,
+      6,
+      8,
+      9,
+      10,
+      12
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      1,
+      11
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      3,
+      4,
+      5,
+      6,
+      8,
+      9,
+      10,
+      12
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "proper1",
+     "expr": "a1 < b1",
+     "why": "真分数"
+    },
+    {
+     "rule": "proper2",
+     "expr": "c1 < d1",
+     "why": "真分数"
+    },
+    {
+     "rule": "irreducible1",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "既約分数から出題"
+    },
+    {
+     "rule": "irreducible2",
+     "expr": "gcd(c1, d1) == 1",
+     "why": "既約分数から出題"
+    },
+    {
+     "rule": "unlike",
+     "expr": "b1 != d1",
+     "why": "異分母に限定"
+    },
+    {
+     "rule": "nontrivial",
+     "expr": "b1 % d1 != 0 and d1 % b1 != 0",
+     "why": "分母が倍数関係の自明ケースを除外"
+    },
+    {
+     "rule": "lcm_cap",
+     "expr": "lcm(b1, d1) <= 60",
+     "why": "共通分母を扱いやすく保つ"
+    }
+   ],
+   "sentence_templates": [
+    "次の分数を通分しなさい。{f1}、{f2}"
+   ],
+   "answer_template": "答え {g1}、{g2}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "na1": {
+     "formula": "a1 * (lcm(b1, d1) // b1)"
+    },
+    "nc1": {
+     "formula": "c1 * (lcm(b1, d1) // d1)"
+    },
+    "L1": {
+     "formula": "lcm(b1, d1)"
+    }
+   },
+   "fraction_display": {
+    "f1": [
+     "a1",
+     "b1"
+    ],
+    "f2": [
+     "c1",
+     "d1"
+    ],
+    "g1": [
+     "na1",
+     "L1"
+    ],
+    "g2": [
+     "nc1",
+     "L1"
+    ]
+   }
+  },
+  {
+   "pattern_id": "g05_div_to_frac_01",
+   "grade": "g05",
+   "unit_id": "g05_c06_u03",
+   "unit_name": "分数の性質",
+   "semantic_category": "わり算の商を分数で表す",
+   "semantic_note": "a÷b=a/b。既約・真分数に限定。ansは分子(正)を形式使用。",
+   "step_count": 1,
+   "operation": "a ÷ b = a/b",
+   "answer_formula": "a1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      3,
+      11
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "proper",
+     "expr": "a1 < b1",
+     "why": "真分数になる組"
+    },
+    {
+     "rule": "irreducible",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "既約で答えが一意"
+    }
+   ],
+   "sentence_templates": [
+    "次のわり算の商を分数で表しなさい。{a1}÷{b1}"
+   ],
+   "answer_template": "答え {f1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "fraction_display": {
+    "f1": [
+     "a1",
+     "b1"
+    ]
+   }
+  },
+  {
+   "pattern_id": "g05_frac_bai_01",
+   "grade": "g05",
+   "unit_id": "g05_c06_u03",
+   "unit_name": "分数の性質",
+   "semantic_category": "何倍か(分数倍)",
+   "semantic_note": "a Lはb Lの何倍(分数で)。仮分数も可。整数落ちは除外。約分は機械保証。",
+   "step_count": 1,
+   "operation": "a ÷ b = a/b(約分)",
+   "answer_formula": "reduce_num(a1, b1)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "liq": {
+     "from": "liquids"
+    },
+    "liq2": {
+     "from": "liquids(distinct)"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "distinct",
+     "expr": "a1 != b1",
+     "why": "同量を除外"
+    },
+    {
+     "rule": "not_int",
+     "expr": "a1 % b1 != 0",
+     "why": "整数倍を除外(分数で答える必然性)"
+    }
+   ],
+   "sentence_templates": [
+    "{liq}が{a1}L、{liq2}が{b1}Lあります。{liq}のかさは、{liq2}のかさの何倍ですか。分数で答えなさい。"
+   ],
+   "answer_template": "しき {a1}÷{b1} 答え {red1}倍",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "reduced_fraction_display": {
+    "red1": [
+     "a1",
+     "b1"
+    ]
+   }
+  },
+  {
+   "pattern_id": "g05_frac_add_unlike_01",
+   "grade": "g05",
+   "unit_id": "g05_c06_u04",
+   "unit_name": "分数のたし算とひき算",
+   "semantic_category": "異分母のたし算",
+   "semantic_note": "通分→加→約分→(仮分数なら)帯分数化。すべて整数演算+機械整形。",
+   "step_count": 1,
+   "operation": "a·(L/b) + c·(L/d) over L",
+   "answer_formula": "a1 * (lcm(b1, d1) // b1) + c1 * (lcm(b1, d1) // d1)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      3,
+      4,
+      5,
+      6,
+      8,
+      9,
+      10,
+      12
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      3,
+      4,
+      5,
+      6,
+      8,
+      9,
+      10,
+      12
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "proper1",
+     "expr": "a1 < b1",
+     "why": "真分数"
+    },
+    {
+     "rule": "proper2",
+     "expr": "c1 < d1",
+     "why": "真分数"
+    },
+    {
+     "rule": "irreducible1",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "既約から出題"
+    },
+    {
+     "rule": "irreducible2",
+     "expr": "gcd(c1, d1) == 1",
+     "why": "既約から出題"
+    },
+    {
+     "rule": "unlike",
+     "expr": "b1 != d1",
+     "why": "異分母に限定"
+    },
+    {
+     "rule": "lcm_cap",
+     "expr": "lcm(b1, d1) <= 60",
+     "why": "共通分母を扱いやすく保つ"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。{f1}+{f2}"
+   ],
+   "answer_template": "答え {res1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "n1": {
+     "formula": "a1 * (lcm(b1, d1) // b1) + c1 * (lcm(b1, d1) // d1)"
+    },
+    "L1": {
+     "formula": "lcm(b1, d1)"
+    }
+   },
+   "fraction_display": {
+    "f1": [
+     "a1",
+     "b1"
+    ],
+    "f2": [
+     "c1",
+     "d1"
+    ]
+   },
+   "reduced_mixed_display": {
+    "res1": [
+     "n1",
+     "L1"
+    ]
+   }
+  },
+  {
+   "pattern_id": "g05_frac_sub_unlike_01",
+   "grade": "g05",
+   "unit_id": "g05_c06_u04",
+   "unit_name": "分数のたし算とひき算",
+   "semantic_category": "異分母のひき算",
+   "semantic_note": "通分→減→約分。結果正の制約。",
+   "step_count": 1,
+   "operation": "a·(L/b) − c·(L/d) over L",
+   "answer_formula": "a1 * (lcm(b1, d1) // b1) - c1 * (lcm(b1, d1) // d1)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      3,
+      4,
+      5,
+      6,
+      8,
+      9,
+      10,
+      12
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      3,
+      4,
+      5,
+      6,
+      8,
+      9,
+      10,
+      12
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "proper1",
+     "expr": "a1 < b1",
+     "why": "真分数"
+    },
+    {
+     "rule": "proper2",
+     "expr": "c1 < d1",
+     "why": "真分数"
+    },
+    {
+     "rule": "irreducible1",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "既約から出題"
+    },
+    {
+     "rule": "irreducible2",
+     "expr": "gcd(c1, d1) == 1",
+     "why": "既約から出題"
+    },
+    {
+     "rule": "unlike",
+     "expr": "b1 != d1",
+     "why": "異分母に限定"
+    },
+    {
+     "rule": "positive",
+     "expr": "a1 * (lcm(b1, d1) // b1) - c1 * (lcm(b1, d1) // d1) > 0",
+     "why": "差が正"
+    },
+    {
+     "rule": "lcm_cap",
+     "expr": "lcm(b1, d1) <= 60",
+     "why": "共通分母を扱いやすく保つ"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。{f1}−{f2}"
+   ],
+   "answer_template": "答え {res1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "n1": {
+     "formula": "a1 * (lcm(b1, d1) // b1) - c1 * (lcm(b1, d1) // d1)"
+    },
+    "L1": {
+     "formula": "lcm(b1, d1)"
+    }
+   },
+   "fraction_display": {
+    "f1": [
+     "a1",
+     "b1"
+    ],
+    "f2": [
+     "c1",
+     "d1"
+    ]
+   },
+   "reduced_mixed_display": {
+    "res1": [
+     "n1",
+     "L1"
+    ]
+   }
+  },
+  {
+   "pattern_id": "g05_frac_mixed_add_01",
+   "grade": "g05",
+   "unit_id": "g05_c06_u05",
+   "unit_name": "いろいろな分数のたし算とひき算",
+   "semantic_category": "帯分数まじりのたし算",
+   "semantic_note": "w と a/b + c/d。分子を(w·b+a)に展開して同一機構で処理。fmt_mixed(v0.8)+約分(v0.9)。",
+   "step_count": 1,
+   "operation": "(w·b+a)·(L/b) + c·(L/d)",
+   "answer_formula": "(w1 * b1 + a1) * (lcm(b1, d1) // b1) + c1 * (lcm(b1, d1) // d1)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "w1": {
+     "type": "int",
+     "range": [
+      1,
+      3
+     ]
+    },
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      7
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      3,
+      4,
+      6,
+      8,
+      10,
+      12
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      1,
+      7
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      3,
+      4,
+      6,
+      8,
+      10,
+      12
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "proper1",
+     "expr": "a1 < b1",
+     "why": "帯分数の分数部は真分数"
+    },
+    {
+     "rule": "proper2",
+     "expr": "c1 < d1",
+     "why": "真分数"
+    },
+    {
+     "rule": "irreducible1",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "既約から出題"
+    },
+    {
+     "rule": "irreducible2",
+     "expr": "gcd(c1, d1) == 1",
+     "why": "既約から出題"
+    },
+    {
+     "rule": "unlike",
+     "expr": "b1 != d1",
+     "why": "異分母に限定"
+    },
+    {
+     "rule": "lcm_cap",
+     "expr": "lcm(b1, d1) <= 48",
+     "why": "共通分母を扱いやすく保つ"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。{mx1}+{f2}"
+   ],
+   "answer_template": "答え {res1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "n1": {
+     "formula": "(w1 * b1 + a1) * (lcm(b1, d1) // b1) + c1 * (lcm(b1, d1) // d1)"
+    },
+    "L1": {
+     "formula": "lcm(b1, d1)"
+    },
+    "wn1": {
+     "formula": "w1 * b1 + a1"
+    }
+   },
+   "fraction_display": {
+    "f2": [
+     "c1",
+     "d1"
+    ]
+   },
+   "reduced_mixed_display": {
+    "res1": [
+     "n1",
+     "L1"
+    ]
+   },
+   "mixed_display": {
+    "mx1": [
+     "wn1",
+     "b1"
+    ]
+   }
+  },
+  {
+   "pattern_id": "g05_frac_three_01",
+   "grade": "g05",
+   "unit_id": "g05_c06_u05",
+   "unit_name": "いろいろな分数のたし算とひき算",
+   "semantic_category": "3口の加減",
+   "semantic_note": "a/b + c/d − e/f。3分母のlcm。ステップ2。結果正。",
+   "step_count": 2,
+   "operation": "3口・lcm(lcm(b,d),f)",
+   "answer_formula": "a1 * (L1 // b1) + c1 * (L1 // d1) - e1 * (L1 // f1)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      5
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      2,
+      3,
+      4,
+      6
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      1,
+      5
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      2,
+      3,
+      4,
+      6
+     ]
+    },
+    "e1": {
+     "type": "int",
+     "range": [
+      1,
+      5
+     ]
+    },
+    "f1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      2,
+      3,
+      4,
+      6
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "proper1",
+     "expr": "a1 < b1",
+     "why": "真分数"
+    },
+    {
+     "rule": "proper2",
+     "expr": "c1 < d1",
+     "why": "真分数"
+    },
+    {
+     "rule": "proper3",
+     "expr": "e1 < f1",
+     "why": "真分数"
+    },
+    {
+     "rule": "irreducible1",
+     "expr": "gcd(a1, b1) == 1",
+     "why": "既約"
+    },
+    {
+     "rule": "irreducible2",
+     "expr": "gcd(c1, d1) == 1",
+     "why": "既約"
+    },
+    {
+     "rule": "irreducible3",
+     "expr": "gcd(e1, f1) == 1",
+     "why": "既約"
+    },
+    {
+     "rule": "unlike",
+     "expr": "b1 != d1 or d1 != f1",
+     "why": "少なくとも1組は異分母"
+    },
+    {
+     "rule": "positive",
+     "expr": "a1 * d1 * f1 + c1 * b1 * f1 - e1 * b1 * d1 > 0",
+     "why": "結果が正"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。{f_a}+{f_b}−{f_c}"
+   ],
+   "answer_template": "答え {res1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "L1": {
+     "formula": "lcm(lcm(b1, d1), f1)"
+    },
+    "n1": {
+     "formula": "a1 * (L1 // b1) + c1 * (L1 // d1) - e1 * (L1 // f1)"
+    }
+   },
+   "fraction_display": {
+    "f_a": [
+     "a1",
+     "b1"
+    ],
+    "f_b": [
+     "c1",
+     "d1"
+    ],
+    "f_c": [
+     "e1",
+     "f1"
+    ]
+   },
+   "reduced_mixed_display": {
+    "res1": [
+     "n1",
+     "L1"
+    ]
+   }
+  },
+  {
+   "pattern_id": "g05_heikin_calc_01",
+   "grade": "g05",
+   "unit_id": "g05_c07_u01",
+   "unit_name": "平均",
+   "semantic_category": "平均を求める(4値)",
+   "semantic_note": "合計÷個数。割り切れ制約で整数平均。",
+   "step_count": 1,
+   "operation": "(Σv) ÷ 4",
+   "answer_formula": "(v1 + v2 + v3 + v4) // 4",
+   "answer_unit_from": "unit",
+   "slots": {
+    "v1": {
+     "type": "int",
+     "range": [
+      60,
+      100
+     ]
+    },
+    "v2": {
+     "type": "int",
+     "range": [
+      60,
+      100
+     ]
+    },
+    "v3": {
+     "type": "int",
+     "range": [
+      60,
+      100
+     ]
+    },
+    "v4": {
+     "type": "int",
+     "range": [
+      60,
+      100
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(v1 + v2 + v3 + v4) % 4 == 0",
+     "why": "平均が整数"
+    },
+    {
+     "rule": "spread",
+     "expr": "max(v1, v2, v3, v4) - min(v1, v2, v3, v4) >= 6",
+     "why": "値にばらつきを持たせる"
+    }
+   ],
+   "sentence_templates": [
+    "次の4つのテストの点数の平均を求めなさい。{v1}点、{v2}点、{v3}点、{v4}点"
+   ],
+   "answer_template": "しき （{v1}+{v2}+{v3}+{v4}）÷4={ans} 答え {ans}点",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    4
+   ]
+  },
+  {
+   "pattern_id": "g05_heikin_word_01",
+   "grade": "g05",
+   "unit_id": "g05_c07_u01",
+   "unit_name": "平均",
+   "semantic_category": "全体÷日数=1日平均",
+   "semantic_note": "pページをd日→1日平均。",
+   "step_count": 1,
+   "operation": "p ÷ d",
+   "answer_formula": "p1 // d1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "p1": {
+     "type": "int",
+     "range": [
+      96,
+      400
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      6,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "p1 % d1 == 0",
+     "why": "平均が整数"
+    },
+    {
+     "rule": "q_range",
+     "expr": "14 <= p1 // d1 <= 45",
+     "why": "1日量を現実的に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "{p1}ページの本を{d1}日間で読み終えました。1日に平均何ページ読んだことになりますか。"
+   ],
+   "answer_template": "しき {p1}÷{d1}={ans} 答え {ans}ページ",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "g05_heikin_reverse_01",
+   "grade": "g05",
+   "unit_id": "g05_c07_u01",
+   "unit_name": "平均",
+   "semantic_category": "平均×期間=全体",
+   "semantic_note": "1日平均a g×d日→合計をkg_g複名数(v0.7既存整形)で。",
+   "step_count": 1,
+   "operation": "a × d",
+   "answer_formula": "a1 * d1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      250,
+      850
+     ],
+     "step": 50
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      10,
+      30
+     ],
+     "step": 5
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "big_enough",
+     "expr": "a1 * d1 >= 3000",
+     "why": "kgが立つ大きさにする"
+    }
+   ],
+   "sentence_templates": [
+    "ある家では、1日に平均{a1}gのお米を食べます。{d1}日間では、何kg何gのお米を食べることになりますか。ちょうどのときはkgだけで答えなさい。"
+   ],
+   "answer_template": "しき {a1}×{d1}={ans}(g) 答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ],
+   "answer_unit_system": "kg_g"
+  },
+  {
+   "pattern_id": "g05_unit_weight_01",
+   "grade": "g05",
+   "unit_id": "g05_c08_u01",
+   "unit_name": "単位量あたりの大きさ",
+   "semantic_category": "1mあたりの重さ",
+   "semantic_note": "全体÷長さ。",
+   "step_count": 1,
+   "operation": "w ÷ d",
+   "answer_formula": "w1 // d1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "w1": {
+     "type": "int",
+     "range": [
+      120,
+      720
+     ],
+     "step": 10
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      4,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "w1 % d1 == 0",
+     "why": "整数gで割り切れる"
+    },
+    {
+     "rule": "q_range",
+     "expr": "20 <= w1 // d1 <= 120",
+     "why": "単位量を現実的に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "{d1}mで{w1}gのはり金があります。このはり金1mあたりの重さは何gですか。"
+   ],
+   "answer_template": "しき {w1}÷{d1}={ans} 答え {ans}g",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "g05_unit_price_compare_01",
+   "grade": "g05",
+   "unit_id": "g05_c08_u01",
+   "unit_name": "単位量あたりの大きさ",
+   "semantic_category": "単価の比較(どちらが安い)",
+   "semantic_note": "2店の1さつあたりを比べる。comparison構造(v0.6既存)。勝者は条件式で機械決定。",
+   "step_count": 1,
+   "operation": "単価の求差比較",
+   "answer_formula": "abs(pa // na - pb // nb)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "na": {
+     "type": "int",
+     "range": [
+      4,
+      9
+     ]
+    },
+    "pa": {
+     "type": "int",
+     "range": [
+      300,
+      1000
+     ],
+     "step": 10
+    },
+    "nb": {
+     "type": "int",
+     "range": [
+      4,
+      9
+     ]
+    },
+    "pb": {
+     "type": "int",
+     "range": [
+      300,
+      1000
+     ],
+     "step": 10
+    },
+    "item": {
+     "from": "stationery[j].noun"
+    },
+    "cnt": {
+     "from": "stationery[j].counter"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "div_a",
+     "expr": "pa % na == 0",
+     "why": "A店の単価が整数"
+    },
+    {
+     "rule": "div_b",
+     "expr": "pb % nb == 0",
+     "why": "B店の単価が整数"
+    },
+    {
+     "rule": "distinct",
+     "expr": "pa // na != pb // nb",
+     "why": "引き分けを除外"
+    },
+    {
+     "rule": "close",
+     "expr": "abs(pa // na - pb // nb) <= 30",
+     "why": "比較の必然性(近い単価)"
+    },
+    {
+     "rule": "range_a",
+     "expr": "60 <= pa // na <= 160",
+     "why": "単価を現実的に保つ"
+    },
+    {
+     "rule": "range_b",
+     "expr": "60 <= pb // nb <= 160",
+     "why": "単価を現実的に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "A店では{item}{na}{cnt}を{pa}円、B店では{item}{nb}{cnt}を{pb}円で売っています。1{cnt}あたりのねだんで比べると、どちらの店の{item}のほうが安いといえますか。"
+   ],
+   "answer_template": "しき A店 {pa}÷{na}={ua}、B店 {pb}÷{nb}={ub} 答え {winner}のほうが安い",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "comparison",
+   "template_number_constants": [
+    1
+   ],
+   "computed_slots": {
+    "ua": {
+     "formula": "pa // na"
+    },
+    "ub": {
+     "formula": "pb // nb"
+    },
+    "winner": {
+     "formula": "'A店' if pa // na < pb // nb else 'B店'"
+    }
+   }
+  },
+  {
+   "pattern_id": "g05_density_01",
+   "grade": "g05",
+   "unit_id": "g05_c08_u01",
+   "unit_name": "単位量あたりの大きさ",
+   "semantic_category": "人口密度",
+   "semantic_note": "人口÷面積。密はg6のためallowed_extra。",
+   "step_count": 1,
+   "operation": "p ÷ s",
+   "answer_formula": "p1 // s1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "s1": {
+     "type": "int",
+     "range": [
+      20,
+      50
+     ],
+     "step": 2
+    },
+    "p1": {
+     "type": "int",
+     "range": [
+      4000,
+      30000
+     ],
+     "step": 40
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "p1 % s1 == 0",
+     "why": "密度が整数"
+    },
+    {
+     "rule": "q_range",
+     "expr": "150 <= p1 // s1 <= 700",
+     "why": "密度を現実的に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "ある町の面積は{s1}km²で、人口は{p1}人です。この町の人口密度を求めなさい。"
+   ],
+   "answer_template": "しき {p1}÷{s1}={ans} 答え 1km²あたり{ans}人",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ],
+    "allowed_extra": "密"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "g05_speed_calc_01",
+   "grade": "g05",
+   "unit_id": "g05_c09_u01",
+   "unit_name": "速さ",
+   "semantic_category": "時速を求める",
+   "semantic_note": "道のり÷時間。",
+   "step_count": 1,
+   "operation": "D ÷ t",
+   "answer_formula": "dist // t1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "dist": {
+     "type": "int",
+     "range": [
+      60,
+      320
+     ],
+     "step": 10
+    },
+    "t1": {
+     "type": "int",
+     "range": [
+      2,
+      4
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "dist % t1 == 0",
+     "why": "時速が整数"
+    },
+    {
+     "rule": "q_range",
+     "expr": "30 <= dist // t1 <= 90",
+     "why": "自動車の時速として現実的"
+    }
+   ],
+   "sentence_templates": [
+    "自動車で、{dist}kmの道のりを{t1}時間かかって走りました。この自動車の時速を求めなさい。"
+   ],
+   "answer_template": "しき {dist}÷{t1}={ans} 答え 時速{ans}km",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g05_speed_minute_01",
+   "grade": "g05",
+   "unit_id": "g05_c09_u01",
+   "unit_name": "速さ",
+   "semantic_category": "分速を求める",
+   "semantic_note": "道のり(m)÷分。",
+   "step_count": 1,
+   "operation": "D ÷ t",
+   "answer_formula": "dist // t1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "dist": {
+     "type": "int",
+     "range": [
+      400,
+      2400
+     ],
+     "step": 20
+    },
+    "t1": {
+     "type": "int",
+     "range": [
+      4,
+      12
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "dist % t1 == 0",
+     "why": "分速が整数"
+    },
+    {
+     "rule": "q_range",
+     "expr": "50 <= dist // t1 <= 300",
+     "why": "歩き〜自転車の分速として現実的"
+    }
+   ],
+   "sentence_templates": [
+    "{dist}mの道のりを{t1}分で歩きました。分速を求めなさい。"
+   ],
+   "answer_template": "しき {dist}÷{t1}={ans} 答え 分速{ans}m",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g05_speed_convert_01",
+   "grade": "g05",
+   "unit_id": "g05_c09_u01",
+   "unit_name": "速さ",
+   "semantic_category": "速さの単位換算",
+   "semantic_note": "分速→秒速(÷60)と時速(×60、km換算)。vは60と50/3の公倍数系choicesで整数保証。",
+   "step_count": 1,
+   "operation": "v÷60 / v×60÷1000",
+   "answer_formula": "v1 // 60",
+   "answer_unit_from": "unit",
+   "slots": {
+    "v1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      300,
+      600,
+      900,
+      1200,
+      1500,
+      1800
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "分速{v1}mで進む電車があります。この電車の秒速は何mですか。また、時速は何kmですか。"
+   ],
+   "answer_template": "しき {v1}÷60、{v1}×60 答え 秒速{sec}m、時速{hkm}km",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    60
+   ],
+   "computed_slots": {
+    "sec": {
+     "formula": "v1 // 60"
+    },
+    "hkm": {
+     "formula": "v1 * 60 // 1000"
+    }
+   }
+  },
+  {
+   "pattern_id": "g05_distance_01",
+   "grade": "g05",
+   "unit_id": "g05_c09_u02",
+   "unit_name": "速さの利用",
+   "semantic_category": "道のり=速さ×時間",
+   "semantic_note": "",
+   "step_count": 1,
+   "operation": "v × t",
+   "answer_formula": "v1 * t1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "v1": {
+     "type": "int",
+     "range": [
+      40,
+      80
+     ],
+     "step": 5
+    },
+    "t1": {
+     "type": "int",
+     "range": [
+      2,
+      4
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "時速{v1}kmで走る電車が、{t1}時間に進む道のりは何kmですか。"
+   ],
+   "answer_template": "しき {v1}×{t1}={ans} 答え {ans}km",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g05_time_01",
+   "grade": "g05",
+   "unit_id": "g05_c09_u02",
+   "unit_name": "速さの利用",
+   "semantic_category": "時間=道のり÷速さ",
+   "semantic_note": "",
+   "step_count": 1,
+   "operation": "D ÷ v",
+   "answer_formula": "dist // v1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "v1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      12,
+      14,
+      15,
+      16,
+      18
+     ]
+    },
+    "dist": {
+     "type": "int",
+     "range": [
+      24,
+      72
+     ],
+     "step": 2
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "dist % v1 == 0",
+     "why": "時間が整数"
+    },
+    {
+     "rule": "q_range",
+     "expr": "2 <= dist // v1 <= 4",
+     "why": "時間を現実的に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "{dist}kmの道のりを、自転車で時速{v1}kmで走ります。かかる時間は何時間ですか。"
+   ],
+   "answer_template": "しき {dist}÷{v1}={ans} 答え {ans}時間",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g05_speed_compare_01",
+   "grade": "g05",
+   "unit_id": "g05_c09_u01",
+   "unit_name": "速さ",
+   "semantic_category": "どちらが速いか(分速比較)",
+   "semantic_note": "2人の分速を求めて比較。comparison構造。",
+   "step_count": 1,
+   "operation": "分速の求差比較",
+   "answer_formula": "abs(la // ta - lb // tb)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "ta": {
+     "type": "int",
+     "range": [
+      4,
+      12
+     ]
+    },
+    "la": {
+     "type": "int",
+     "range": [
+      400,
+      2400
+     ],
+     "step": 20
+    },
+    "tb": {
+     "type": "int",
+     "range": [
+      4,
+      12
+     ]
+    },
+    "lb": {
+     "type": "int",
+     "range": [
+      400,
+      2400
+     ],
+     "step": 20
+    },
+    "actor_a": {
+     "from": "actors"
+    },
+    "actor_b": {
+     "from": "actors(distinct)"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "div_a",
+     "expr": "la % ta == 0",
+     "why": "Aの分速が整数"
+    },
+    {
+     "rule": "div_b",
+     "expr": "lb % tb == 0",
+     "why": "Bの分速が整数"
+    },
+    {
+     "rule": "distinct",
+     "expr": "la // ta != lb // tb",
+     "why": "引き分けを除外"
+    },
+    {
+     "rule": "close",
+     "expr": "abs(la // ta - lb // tb) <= 40",
+     "why": "比較の必然性"
+    },
+    {
+     "rule": "range_a",
+     "expr": "120 <= la // ta <= 260",
+     "why": "自転車の分速として現実的"
+    },
+    {
+     "rule": "range_b",
+     "expr": "120 <= lb // tb <= 260",
+     "why": "自転車の分速として現実的"
+    }
+   ],
+   "sentence_templates": [
+    "{actor_a}は自転車で{ta}分間に{la}m走り、{actor_b}は自転車で{tb}分間に{lb}m走りました。どちらのほうが速いですか。"
+   ],
+   "answer_template": "しき {actor_a} {la}÷{ta}={ua}、{actor_b} {lb}÷{tb}={ub} 答え {winner}のほうが速い",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "comparison",
+   "template_number_constants": [],
+   "computed_slots": {
+    "ua": {
+     "formula": "la // ta"
+    },
+    "ub": {
+     "formula": "lb // tb"
+    },
+    "winner": {
+     "formula": "actor_a if la // ta > lb // tb else actor_b"
+    }
+   }
+  },
+  {
+   "pattern_id": "g05_ratio_find_01",
+   "grade": "g05",
+   "unit_id": "g05_c11_u01",
+   "unit_name": "割合",
+   "semantic_category": "第1用法: 割合を求める",
+   "semantic_note": "割合=くらべる量÷もとにする量。p=c×1000÷m(千分率整数)。表示はdec3(0.6等)。",
+   "step_count": 1,
+   "operation": "p = c×1000 ÷ m",
+   "answer_formula": "(c1 * 1000) // m1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "m1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      200,
+      250,
+      400,
+      500,
+      800,
+      1000,
+      1250,
+      2000,
+      2500
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      30,
+      2000
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(c1 * 1000) % m1 == 0",
+     "why": "割合が千分率整数で確定"
+    },
+    {
+     "rule": "p_range",
+     "expr": "50 <= (c1 * 1000) // m1 <= 950",
+     "why": "割合を0.05〜0.95に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "ある小学校の児童数は{m1}人で、そのうち{c1}人がスポーツクラブに入っています。スポーツクラブに入っている人数は、児童数全体のどれだけの割合ですか。小数で答えなさい。"
+   ],
+   "answer_template": "しき {c1}÷{m1}={ans_disp} 答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ],
+    "allowed_extra": "割"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_unit_system": "dec3"
+  },
+  {
+   "pattern_id": "g05_compare_find_01",
+   "grade": "g05",
+   "unit_id": "g05_c11_u01",
+   "unit_name": "割合",
+   "semantic_category": "第2用法: くらべる量を求める",
+   "semantic_note": "くらべる量=もとにする量×割合。(m×p)%1000==0で整数確定。",
+   "step_count": 1,
+   "operation": "c = m × p ÷ 1000",
+   "answer_formula": "m1 * p1 // 1000",
+   "answer_unit_from": "unit",
+   "slots": {
+    "m1": {
+     "type": "int",
+     "range": [
+      500,
+      3000
+     ],
+     "step": 100
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(m1 * p1) % 1000 == 0",
+     "why": "くらべる量が整数で確定"
+    }
+   ],
+   "sentence_templates": [
+    "持っているお金が{m1}円あります。このうち、{p1_disp}の割合にあたるお金を使いました。使ったお金はいくらですか。"
+   ],
+   "answer_template": "しき {m1}×{p1_disp}={ans} 答え {ans}円",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ],
+    "allowed_extra": "割"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "quantity_slots": {
+    "p1": {
+     "unit_system": "dec3",
+     "choices": [
+      200,
+      250,
+      300,
+      400,
+      500,
+      600,
+      750,
+      800
+     ]
+    }
+   }
+  },
+  {
+   "pattern_id": "g05_base_find_01",
+   "grade": "g05",
+   "unit_id": "g05_c11_u02",
+   "unit_name": "百分率と歩合",
+   "semantic_category": "第3用法: もとにする量を求める",
+   "semantic_note": "もとにする量=くらべる量÷割合(逆算)。100%超(115%等)も含め「もと<くらべる」の直観破りを構造に含む。",
+   "step_count": 1,
+   "operation": "m = c×1000 ÷ p",
+   "answer_formula": "(c1 * 1000) // p1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "c1": {
+     "type": "int",
+     "range": [
+      20,
+      460
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(c1 * 1000) % p1 == 0",
+     "why": "もとにする量が整数で確定"
+    },
+    {
+     "rule": "m_range",
+     "expr": "40 <= (c1 * 1000) // p1 <= 400",
+     "why": "定員を現実的に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "バスに{c1}人が乗っています。これは、このバスの定員の{p1_disp}にあたります。バスの定員は何人ですか。"
+   ],
+   "answer_template": "しき {c1}÷{p_dec}={ans} 答え {ans}人",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ],
+    "allowed_extra": "割"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "p_dec": {
+     "formula": "(str(p1 // 1000) + '.' + str(p1 % 1000).zfill(3).rstrip('0')) if p1 % 1000 != 0 else str(p1 // 1000)",
+     "js_formatter": [
+      "dec3",
+      "p1"
+     ]
+    }
+   },
+   "quantity_slots": {
+    "p1": {
+     "unit_system": "percent_pm",
+     "choices": [
+      500,
+      600,
+      750,
+      800,
+      1150,
+      1200,
+      1250
+     ]
+    }
+   }
+  },
+  {
+   "pattern_id": "g05_base_find_discount_01",
+   "grade": "g05",
+   "unit_id": "g05_c11_u05",
+   "unit_name": "割合についての問題",
+   "semantic_category": "第3用法発展: 引き後からの逆算",
+   "semantic_note": "p%引きで買ったらc円→もとのねだん=c÷(1−p)。第3用法の最難関形を独立カテゴリで管理。",
+   "step_count": 2,
+   "operation": "m = c×1000 ÷ (1000−p)",
+   "answer_formula": "(c1 * 1000) // (1000 - p1)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "c1": {
+     "type": "int",
+     "range": [
+      120,
+      2400
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(c1 * 1000) % (1000 - p1) == 0",
+     "why": "もとのねだんが整数で確定"
+    },
+    {
+     "rule": "m_range",
+     "expr": "200 <= (c1 * 1000) // (1000 - p1) <= 3000",
+     "why": "ねだんを現実的に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "ある品物を{p1_disp}引きのねだんで買ったら、代金は{c1}円でした。この品物のもとのねだんはいくらですか。"
+   ],
+   "answer_template": "しき {c1}÷(1−{p_dec})={ans} 答え {ans}円",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ],
+    "allowed_extra": "割"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ],
+   "computed_slots": {
+    "p_dec": {
+     "formula": "(str(p1 // 1000) + '.' + str(p1 % 1000).zfill(3).rstrip('0')) if p1 % 1000 != 0 else str(p1 // 1000)",
+     "js_formatter": [
+      "dec3",
+      "p1"
+     ]
+    }
+   },
+   "quantity_slots": {
+    "p1": {
+     "unit_system": "percent_pm",
+     "choices": [
+      100,
+      200,
+      250,
+      300,
+      400
+     ]
+    }
+   }
+  },
+  {
+   "pattern_id": "g05_pct_convert_01",
+   "grade": "g05",
+   "unit_id": "g05_c11_u02",
+   "unit_name": "百分率と歩合",
+   "semantic_category": "小数→百分率",
+   "semantic_note": "千分率整数の表示替え。p_disp=dec3、答え=percent_pm。",
+   "step_count": 1,
+   "operation": "千分率→%表記",
+   "answer_formula": "p1",
+   "answer_unit_from": "unit",
+   "slots": {},
+   "value_constraints": [
+    {
+     "rule": "nontrivial",
+     "expr": "p1 % 1000 != 0",
+     "why": "1や2ちょうどを除外"
+    }
+   ],
+   "sentence_templates": [
+    "次の割合を百分率で表しなさい。{p1_disp}"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ],
+    "allowed_extra": "割"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "quantity_slots": {
+    "p1": {
+     "unit_system": "dec3",
+     "range": [
+      5,
+      1995
+     ],
+     "step": 5
+    }
+   },
+   "answer_unit_system": "percent_pm"
+  },
+  {
+   "pattern_id": "g05_buai_convert_01",
+   "grade": "g05",
+   "unit_id": "g05_c11_u02",
+   "unit_name": "百分率と歩合",
+   "semantic_category": "百分率→歩合",
+   "semantic_note": "p_disp=percent_pm、答え=buai_pm(割/分/厘)。厘=0.1%が整数第1位に対応。",
+   "step_count": 1,
+   "operation": "千分率→歩合表記",
+   "answer_formula": "p1",
+   "answer_unit_from": "unit",
+   "slots": {},
+   "value_constraints": [
+    {
+     "rule": "nontrivial",
+     "expr": "p1 % 1000 != 0",
+     "why": "10割ちょうどを除外"
+    },
+    {
+     "rule": "has_rin_sometimes",
+     "expr": "p1 >= 10",
+     "why": "0厘台のみを除外"
+    }
+   ],
+   "sentence_templates": [
+    "次の割合を歩合で表しなさい。{p1_disp}"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ],
+    "allowed_extra": "割厘"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "quantity_slots": {
+    "p1": {
+     "unit_system": "percent_pm",
+     "choices": [
+      125,
+      206,
+      340,
+      355,
+      402,
+      508,
+      630,
+      715,
+      856,
+      903,
+      950,
+      999,
+      45,
+      60,
+      380
+     ]
+    }
+   },
+   "answer_unit_system": "buai_pm"
+  },
+  {
+   "pattern_id": "g05_percent_of_01",
+   "grade": "g05",
+   "unit_id": "g05_c11_u02",
+   "unit_name": "百分率と歩合",
+   "semantic_category": "第1用法(百分率): 何%か",
+   "semantic_note": "c÷m を百分率で。100%超も許容(直観破り)。",
+   "step_count": 1,
+   "operation": "p = c×1000 ÷ m",
+   "answer_formula": "(c1 * 1000) // m1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "m1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      40,
+      50,
+      80,
+      200,
+      250,
+      400,
+      500
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      8,
+      800
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(c1 * 1000) % m1 == 0",
+     "why": "百分率が0.1%単位で確定"
+    },
+    {
+     "rule": "p_range",
+     "expr": "50 <= (c1 * 1000) // m1 <= 2500",
+     "why": "5%〜250%の範囲"
+    },
+    {
+     "rule": "clean",
+     "expr": "((c1 * 1000) // m1) % 10 == 0",
+     "why": "u02段階では整数%に限定"
+    }
+   ],
+   "sentence_templates": [
+    "{c1}gは、{m1}gの何%ですか。"
+   ],
+   "answer_template": "しき {c1}÷{m1} 答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ],
+    "allowed_extra": "割"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_unit_system": "percent_pm"
+  },
+  {
+   "pattern_id": "g05_zougen_01",
+   "grade": "g05",
+   "unit_id": "g05_c11_u05",
+   "unit_name": "割合についての問題",
+   "semantic_category": "増減の適用(2段)",
+   "semantic_note": "n人がp%増→今年の人数。第2用法の発展(1+p)。",
+   "step_count": 2,
+   "operation": "n×(1000+p)÷1000",
+   "answer_formula": "n1 + n1 * p1 // 1000",
+   "answer_unit_from": "unit",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      40,
+      400
+     ],
+     "step": 4
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(n1 * p1) % 1000 == 0",
+     "why": "増加分が整数で確定"
+    }
+   ],
+   "sentence_templates": [
+    "ある小学校の去年の児童数は{n1}人でした。今年は去年より{p1_disp}増えたそうです。今年の児童数は何人ですか。"
+   ],
+   "answer_template": "しき {n1}×(1+{p_dec})={ans} 答え {ans}人",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ],
+    "allowed_extra": "割"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ],
+   "computed_slots": {
+    "p_dec": {
+     "formula": "(str(p1 // 1000) + '.' + str(p1 % 1000).zfill(3).rstrip('0')) if p1 % 1000 != 0 else str(p1 // 1000)",
+     "js_formatter": [
+      "dec3",
+      "p1"
+     ]
+    }
+   },
+   "quantity_slots": {
+    "p1": {
+     "unit_system": "percent_pm",
+     "choices": [
+      100,
+      150,
+      200,
+      250,
+      300,
+      500
+     ]
+    }
+   }
+  },
+  {
+   "pattern_id": "g05_zougen_seq_01",
+   "grade": "g05",
+   "unit_id": "g05_c11_u05",
+   "unit_name": "割合についての問題",
+   "semantic_category": "連続増加(2段)",
+   "semantic_note": "n→p1%増→さらにp2%増。中間値も整数確定を制約で保証。",
+   "step_count": 2,
+   "operation": "n×(1000+pa)×(1000+pb)÷1000²",
+   "answer_formula": "(n1 + n1 * pa // 1000) + (n1 + n1 * pa // 1000) * pb // 1000",
+   "answer_unit_from": "unit",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      40,
+      400
+     ],
+     "step": 4
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "div_first",
+     "expr": "(n1 * pa) % 1000 == 0",
+     "why": "1段目が整数で確定"
+    },
+    {
+     "rule": "div_second",
+     "expr": "((n1 + n1 * pa // 1000) * pb) % 1000 == 0",
+     "why": "2段目が整数で確定"
+    }
+   ],
+   "sentence_templates": [
+    "あるクラブの去年の人数は{n1}人でした。今年は去年より{pa_disp}増え、来年はさらに今年より{pb_disp}増える予定です。来年の人数は何人になりますか。"
+   ],
+   "answer_template": "しき {n1}×(1+{pa_dec})×(1+{pb_dec})={ans} 答え {ans}人",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ],
+    "allowed_extra": "割"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ],
+   "computed_slots": {
+    "pa_dec": {
+     "formula": "(str(pa // 1000) + '.' + str(pa % 1000).zfill(3).rstrip('0')) if pa % 1000 != 0 else str(pa // 1000)",
+     "js_formatter": [
+      "dec3",
+      "pa"
+     ]
+    },
+    "pb_dec": {
+     "formula": "(str(pb // 1000) + '.' + str(pb % 1000).zfill(3).rstrip('0')) if pb % 1000 != 0 else str(pb // 1000)",
+     "js_formatter": [
+      "dec3",
+      "pb"
+     ]
+    }
+   },
+   "quantity_slots": {
+    "pa": {
+     "unit_system": "percent_pm",
+     "choices": [
+      100,
+      200,
+      250,
+      500
+     ]
+    },
+    "pb": {
+     "unit_system": "percent_pm",
+     "choices": [
+      100,
+      200,
+      250,
+      500
+     ]
+    }
+   }
+  },
+  {
+   "pattern_id": "g05_table_heikin_01",
+   "grade": "g05",
+   "unit_id": "g05_c07_u01",
+   "unit_name": "平均",
+   "semantic_category": "表から平均(table kind)",
+   "semantic_note": "4曜日の入館者数を表提示→平均。図(表)と本文が同一envで駆動。",
+   "step_count": 1,
+   "operation": "(Σv) ÷ 4",
+   "answer_formula": "(v1 + v2 + v3 + v4) // 4",
+   "answer_unit_from": "unit",
+   "slots": {
+    "v1": {
+     "type": "int",
+     "range": [
+      80,
+      220
+     ]
+    },
+    "v2": {
+     "type": "int",
+     "range": [
+      80,
+      220
+     ]
+    },
+    "v3": {
+     "type": "int",
+     "range": [
+      80,
+      220
+     ]
+    },
+    "v4": {
+     "type": "int",
+     "range": [
+      80,
+      220
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(v1 + v2 + v3 + v4) % 4 == 0",
+     "why": "平均が整数"
+    },
+    {
+     "rule": "spread",
+     "expr": "max(v1, v2, v3, v4) - min(v1, v2, v3, v4) >= 20",
+     "why": "ばらつきを持たせる"
+    }
+   ],
+   "sentence_templates": [
+    "右の表は、ある図書館の月曜日から木曜日までの入館者数を表しています。入館者数は1日平均何人ですか。"
+   ],
+   "answer_template": "しき （{v1}+{v2}+{v3}+{v4}）÷4={ans} 答え {ans}人",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1,
+    4
+   ],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "図書館の入館者数",
+    "col_header": [
+     "月曜日",
+     "火曜日",
+     "水曜日",
+     "木曜日"
+    ],
+    "rows": [
+     {
+      "label": "入館者数（人）",
+      "values": [
+       "{v1}",
+       "{v2}",
+       "{v3}",
+       "{v4}"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "pattern_id": "g05_table_unit_01",
+   "grade": "g05",
+   "unit_id": "g05_c08_u01",
+   "unit_name": "単位量あたりの大きさ",
+   "semantic_category": "こみぐあいの比較(table kind)",
+   "semantic_note": "2つの小屋の面積と羽数を表提示→1m²あたりで比較。comparison構造。",
+   "step_count": 1,
+   "operation": "密度の求差比較",
+   "answer_formula": "abs(ca // sa - cb // sb)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "sa": {
+     "type": "int",
+     "range": [
+      4,
+      12
+     ]
+    },
+    "ca": {
+     "type": "int",
+     "range": [
+      12,
+      60
+     ]
+    },
+    "sb": {
+     "type": "int",
+     "range": [
+      4,
+      12
+     ]
+    },
+    "cb": {
+     "type": "int",
+     "range": [
+      12,
+      60
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "div_a",
+     "expr": "ca % sa == 0",
+     "why": "Aの1m²あたりが整数"
+    },
+    {
+     "rule": "div_b",
+     "expr": "cb % sb == 0",
+     "why": "Bの1m²あたりが整数"
+    },
+    {
+     "rule": "distinct",
+     "expr": "ca // sa != cb // sb",
+     "why": "引き分けを除外"
+    },
+    {
+     "rule": "close",
+     "expr": "abs(ca // sa - cb // sb) <= 3",
+     "why": "比較の必然性"
+    },
+    {
+     "rule": "range_a",
+     "expr": "2 <= ca // sa <= 7",
+     "why": "こみぐあいを現実的に保つ"
+    },
+    {
+     "rule": "range_b",
+     "expr": "2 <= cb // sb <= 7",
+     "why": "こみぐあいを現実的に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "右の表は、A、Bの2つのにわとり小屋の面積と、そこにいるにわとりの数を表したものです。1m²あたりのにわとりの数で比べると、どちらの小屋のほうがこんでいますか。"
+   ],
+   "answer_template": "しき A {ca}÷{sa}={ua}、B {cb}÷{sb}={ub} 答え {winner}の小屋のほうがこんでいる",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "comparison",
+   "template_number_constants": [
+    2,
+    1
+   ],
+   "computed_slots": {
+    "ua": {
+     "formula": "ca // sa"
+    },
+    "ub": {
+     "formula": "cb // sb"
+    },
+    "winner": {
+     "formula": "'A' if ca // sa > cb // sb else 'B'"
+    }
+   },
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "小屋の面積とにわとりの数",
+    "col_header": [
+     "A",
+     "B"
+    ],
+    "rows": [
+     {
+      "label": "面積（m²）",
+      "values": [
+       "{sa}",
+       "{sb}"
+      ]
+     },
+     {
+      "label": "にわとりの数（羽）",
+      "values": [
+       "{ca}",
+       "{cb}"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "pattern_id": "g05_table_ratio_01",
+   "grade": "g05",
+   "unit_id": "g05_c11_u01",
+   "unit_name": "割合",
+   "semantic_category": "割合の比較(table kind)",
+   "semantic_note": "2つのバスの定員と乗客数を表提示→割合(こみぐあい)で比較。第1用法×comparison。",
+   "step_count": 1,
+   "operation": "割合の求差比較",
+   "answer_formula": "abs((ca * 1000) // ma - (cb * 1000) // mb)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "ma": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      40,
+      50,
+      80
+     ]
+    },
+    "ca": {
+     "type": "int",
+     "range": [
+      8,
+      100
+     ]
+    },
+    "mb": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      40,
+      50,
+      80
+     ]
+    },
+    "cb": {
+     "type": "int",
+     "range": [
+      8,
+      100
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "div_a",
+     "expr": "(ca * 1000) % ma == 0",
+     "why": "Aの割合が確定"
+    },
+    {
+     "rule": "div_b",
+     "expr": "(cb * 1000) % mb == 0",
+     "why": "Bの割合が確定"
+    },
+    {
+     "rule": "range_a",
+     "expr": "300 <= (ca * 1000) // ma <= 1000",
+     "why": "割合0.3〜1"
+    },
+    {
+     "rule": "range_b",
+     "expr": "300 <= (cb * 1000) // mb <= 1000",
+     "why": "割合0.3〜1"
+    },
+    {
+     "rule": "distinct",
+     "expr": "(ca * 1000) // ma != (cb * 1000) // mb",
+     "why": "引き分けを除外"
+    }
+   ],
+   "sentence_templates": [
+    "右の表は、A、Bの2台のバスの定員と乗客の数を表したものです。定員をもとにした乗客の数の割合で比べると、どちらのバスのほうがこんでいるといえますか。"
+   ],
+   "answer_template": "しき A {ca}÷{ma}={ua_disp}、B {cb}÷{mb}={ub_disp} 答え {winner}のバスのほうがこんでいる",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ],
+    "allowed_extra": "割"
+   },
+   "answer_structure": "comparison",
+   "template_number_constants": [
+    2
+   ],
+   "computed_slots": {
+    "ua": {
+     "formula": "(ca * 1000) // ma"
+    },
+    "ub": {
+     "formula": "(cb * 1000) // mb"
+    },
+    "winner": {
+     "formula": "'A' if (ca * 1000) // ma > (cb * 1000) // mb else 'B'"
+    }
+   },
+   "answer_unit_system": "dec3",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "バスの定員と乗客の数",
+    "col_header": [
+     "A",
+     "B"
+    ],
+    "rows": [
+     {
+      "label": "定員（人）",
+      "values": [
+       "{ma}",
+       "{mb}"
+      ]
+     },
+     {
+      "label": "乗客の数（人）",
+      "values": [
+       "{ca}",
+       "{cb}"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "pattern_id": "g05_kawarikata_table_01",
+   "grade": "g05",
+   "unit_id": "g05_c03_u01",
+   "unit_name": "2つの量の変わり方",
+   "semantic_category": "和一定の対応表(table kind)",
+   "semantic_note": "周長一定の長方形: たて+横=L/2。表は1〜4の対応値(computed)を同一envから埋め、問いはx。",
+   "step_count": 1,
+   "operation": "L/2 − x",
+   "answer_formula": "L1 // 2 - x1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "L1": {
+     "type": "int",
+     "range": [
+      12,
+      20
+     ],
+     "step": 2
+    },
+    "x1": {
+     "type": "int",
+     "range": [
+      5,
+      8
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "valid_x",
+     "expr": "x1 < L1 // 2",
+     "why": "横が正になる"
+    },
+    {
+     "rule": "beyond_table",
+     "expr": "x1 > 4",
+     "why": "表の先を問う(表の読み取り+規則の適用)"
+    }
+   ],
+   "sentence_templates": [
+    "まわりの長さが{L1}cmの長方形をつくります。右の表は、たての長さと横の長さの関係を表したものです。たての長さが{x1}cmのとき、横の長さは何cmですか。"
+   ],
+   "answer_template": "しき {L1}÷2−{x1}={ans} 答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2
+   ],
+   "computed_slots": {
+    "h1": {
+     "formula": "L1 // 2 - 1"
+    },
+    "h2": {
+     "formula": "L1 // 2 - 2"
+    },
+    "h3": {
+     "formula": "L1 // 2 - 3"
+    },
+    "h4": {
+     "formula": "L1 // 2 - 4"
+    }
+   },
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "たての長さと横の長さ",
+    "col_header": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "…"
+    ],
+    "rows": [
+     {
+      "label": "たて（cm）",
+      "values": [
+       "1",
+       "2",
+       "3",
+       "4",
+       "…"
+      ]
+     },
+     {
+      "label": "横（cm）",
+      "values": [
+       "{h1}",
+       "{h2}",
+       "{h3}",
+       "{h4}",
+       "…"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "pattern_id": "g05_rect_area_dec_01",
+   "grade": "g05",
+   "unit_id": "g05_c01_u02",
+   "unit_name": "小数×小数",
+   "semantic_category": "長方形の面積(小数辺・既存kind拡張)",
+   "semantic_note": "rect_area kind(v0.8実装済み)に小数辺: w/hをdec1表示文字列でスロット参照。図と本文が同一env。",
+   "step_count": 1,
+   "operation": "w × h(スケール100)",
+   "answer_formula": "w1 * h1",
+   "answer_unit_from": "unit",
+   "slots": {},
+   "value_constraints": [
+    {
+     "rule": "w_not_int",
+     "expr": "w1 % 10 != 0",
+     "why": "横を真に小数にする"
+    },
+    {
+     "rule": "h_not_int",
+     "expr": "h1 % 10 != 0",
+     "why": "たてを真に小数にする"
+    },
+    {
+     "rule": "distinct",
+     "expr": "w1 != h1",
+     "why": "正方形を除外"
+    }
+   ],
+   "sentence_templates": [
+    "たてが{h1_disp}cm、横が{w1_disp}cmの長方形の面積を求めなさい。"
+   ],
+   "answer_template": "しき {h1_disp}×{w1_disp}={ans_disp} 答え {ans_disp}cm²",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "quantity_slots": {
+    "w1": {
+     "unit_system": "dec1",
+     "range": [
+      21,
+      98
+     ]
+    },
+    "h1": {
+     "unit_system": "dec1",
+     "range": [
+      21,
+      98
+     ]
+    }
+   },
+   "answer_unit_system": "dec2",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "rect_area",
+    "w": "{w1_disp}",
+    "h": "{h1_disp}",
+    "unit": "cm",
+    "show_dims": true
+   }
+  },
+  {
+   "pattern_id": "g05_tri_angle_01",
+   "grade": "g05",
+   "unit_id": "g05_c04_u02",
+   "unit_name": "三角形の角",
+   "semantic_category": "三角形の内角(2known→1unknown)",
+   "semantic_note": "内角和180°。既知2角は図中のセクターに束縛表示、本文は問いのみ。angle_sum配置原則を継承。",
+   "step_count": 1,
+   "operation": "180 − a1 − a2",
+   "answer_formula": "180 - a1 - a2",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      25,
+      115
+     ]
+    },
+    "a2": {
+     "type": "int",
+     "range": [
+      25,
+      115
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "third_range",
+     "expr": "30 <= 180 - a1 - a2 <= 115",
+     "why": "求める角を鋭角〜鈍角手前に保つ"
+    },
+    {
+     "rule": "drawable",
+     "expr": "65 <= a1 + a2 <= 150",
+     "why": "頂点が描画域に収まる形に限定"
+    }
+   ],
+   "sentence_templates": [
+    "次の図の三角形で、あの角度は何度ですか。"
+   ],
+   "answer_template": "しき 180−{a1}−{a2}={ans} 答え {ans}°",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "tri_angle",
+    "a1": "{a1}",
+    "a2": "{a2}",
+    "label": "あ"
+   }
+  },
+  {
+   "pattern_id": "g05_tri_iso_angle_01",
+   "grade": "g05",
+   "unit_id": "g05_c04_u02",
+   "unit_name": "三角形の角",
+   "semantic_category": "二等辺三角形(頂角→底角)",
+   "semantic_note": "底角=(180−頂角)÷2。頂角を偶数に限定して整数保証。等辺はティックマークで明示。",
+   "step_count": 1,
+   "operation": "(180 − t) ÷ 2",
+   "answer_formula": "(180 - t1) // 2",
+   "answer_unit_from": "unit",
+   "slots": {
+    "t1": {
+     "type": "int",
+     "range": [
+      30,
+      120
+     ],
+     "step": 2
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の図の二等辺三角形は、頂角の大きさが{t1}°です。あの角度は何度ですか。"
+   ],
+   "answer_template": "しき (180−{t1})÷2={ans} 答え {ans}°",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ],
+    "allowed_extra": "頂"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "tri_angle_iso",
+    "apex": "{t1}",
+    "label": "あ"
+   }
+  },
+  {
+   "pattern_id": "g05_quad_angle_01",
+   "grade": "g05",
+   "unit_id": "g05_c04_u03",
+   "unit_name": "四角形と多角形の角",
+   "semantic_category": "四角形の内角(3known→1unknown)",
+   "semantic_note": "内角和360°。凸性・描画可能性は角レンジ制約で全域保証(65〜125°)。",
+   "step_count": 1,
+   "operation": "360 − a1 − a2 − a3",
+   "answer_formula": "360 - a1 - a2 - a3",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      65,
+      100
+     ]
+    },
+    "a2": {
+     "type": "int",
+     "range": [
+      65,
+      100
+     ]
+    },
+    "a3": {
+     "type": "int",
+     "range": [
+      65,
+      100
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "fourth_range",
+     "expr": "65 <= 360 - a1 - a2 - a3 <= 100",
+     "why": "求める角も同レンジ。最大角100°上限はラベル分離可能性の全域保証(隣接する鈍角既知ラベルと未知ラベルの衝突を配置シミュレーションで悉皆検証)"
+    }
+   ],
+   "sentence_templates": [
+    "次の図の四角形で、あの角度は何度ですか。"
+   ],
+   "answer_template": "しき 360−{a1}−{a2}−{a3}={ans} 答え {ans}°",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "quad_angle",
+    "a1": "{a1}",
+    "a2": "{a2}",
+    "a3": "{a3}",
+    "label": "あ"
+   }
+  },
+  {
+   "pattern_id": "g05_para_area_01",
+   "grade": "g05",
+   "unit_id": "g05_c10_u01",
+   "unit_name": "平行四辺形の面積",
+   "semantic_category": "平行四辺形の面積",
+   "semantic_note": "底辺×高さ。高さは内部点線+直角記号。傾きは図専用スロット(本文に出ない)。",
+   "step_count": 1,
+   "operation": "b × h",
+   "answer_formula": "b1 * h1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "b1": {
+     "type": "int",
+     "range": [
+      6,
+      16
+     ]
+    },
+    "h1": {
+     "type": "int",
+     "range": [
+      4,
+      12
+     ]
+    },
+    "s1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      60,
+      65,
+      70,
+      75
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "visible",
+     "expr": "h1 < b1",
+     "why": "横長に保ち高さ点線の視認性を確保"
+    },
+    {
+     "rule": "ratio",
+     "expr": "b1 <= 3 * h1",
+     "why": "比3:1以内(図の暴走防止)"
+    }
+   ],
+   "sentence_templates": [
+    "次の平行四辺形の面積を求めなさい。"
+   ],
+   "answer_template": "しき {b1}×{h1}={ans} 答え {ans}cm²",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "para_area",
+    "base": "{b1}",
+    "height": "{h1}",
+    "unit": "cm",
+    "slant": "{s1}",
+    "show_height": true
+   }
+  },
+  {
+   "pattern_id": "g05_para_height_01",
+   "grade": "g05",
+   "unit_id": "g05_c10_u01",
+   "unit_name": "平行四辺形の面積",
+   "semantic_category": "面積と底辺→高さ(逆算)",
+   "semantic_note": "h=S÷b。割り切れ制約。",
+   "step_count": 1,
+   "operation": "S ÷ b",
+   "answer_formula": "S1 // b1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "b1": {
+     "type": "int",
+     "range": [
+      8,
+      16
+     ]
+    },
+    "S1": {
+     "type": "int",
+     "range": [
+      40,
+      280
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "S1 % b1 == 0",
+     "why": "高さが整数"
+    },
+    {
+     "rule": "h_range",
+     "expr": "4 <= S1 // b1 <= 18",
+     "why": "高さを現実的に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "底辺の長さが{b1}cm、面積が{S1}cm²の平行四辺形の高さは何cmですか。"
+   ],
+   "answer_template": "しき {S1}÷{b1}={ans} 答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g05_tri_area_fig_01",
+   "grade": "g05",
+   "unit_id": "g05_c10_u02",
+   "unit_name": "三角形の面積",
+   "semantic_category": "三角形の面積",
+   "semantic_note": "底辺×高さ÷2。頂点位置は図専用スロット(鋭角域300〜700千分率)。v1は高さの足が底辺内。",
+   "step_count": 1,
+   "operation": "b × h ÷ 2",
+   "answer_formula": "b1 * h1 // 2",
+   "answer_unit_from": "unit",
+   "slots": {
+    "b1": {
+     "type": "int",
+     "range": [
+      6,
+      16
+     ]
+    },
+    "h1": {
+     "type": "int",
+     "range": [
+      4,
+      13
+     ]
+    },
+    "ar": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      300,
+      400,
+      500,
+      600,
+      700
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "even",
+     "expr": "(b1 * h1) % 2 == 0",
+     "why": "面積が整数"
+    },
+    {
+     "rule": "ratio1",
+     "expr": "5 * h1 <= 9 * b1",
+     "why": "高さ:底辺 1.8:1以内(高さラベルの水平余地をスキャン実測に基づき保証)"
+    },
+    {
+     "rule": "ratio2",
+     "expr": "2 * b1 <= 5 * h1",
+     "why": "底辺:高さ 2.5:1以内"
+    }
+   ],
+   "sentence_templates": [
+    "次の三角形の面積を求めなさい。"
+   ],
+   "answer_template": "しき {b1}×{h1}÷2={ans} 答え {ans}cm²",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "tri_area",
+    "base": "{b1}",
+    "height": "{h1}",
+    "unit": "cm",
+    "apex_ratio": "{ar}",
+    "show_height": true
+   }
+  },
+  {
+   "pattern_id": "g05_tri_height_01",
+   "grade": "g05",
+   "unit_id": "g05_c10_u02",
+   "unit_name": "三角形の面積",
+   "semantic_category": "面積と底辺→高さ(逆算)",
+   "semantic_note": "h=2S÷b。",
+   "step_count": 1,
+   "operation": "2S ÷ b",
+   "answer_formula": "2 * S1 // b1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "b1": {
+     "type": "int",
+     "range": [
+      6,
+      18
+     ]
+    },
+    "S1": {
+     "type": "int",
+     "range": [
+      12,
+      120
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(2 * S1) % b1 == 0",
+     "why": "高さが整数"
+    },
+    {
+     "rule": "h_range",
+     "expr": "3 <= 2 * S1 // b1 <= 18",
+     "why": "高さを現実的に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "底辺の長さが{b1}cm、面積が{S1}cm²の三角形の高さは何cmですか。"
+   ],
+   "answer_template": "しき {S1}×2÷{b1}={ans} 答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2
+   ]
+  },
+  {
+   "pattern_id": "g05_trap_area_fig_01",
+   "grade": "g05",
+   "unit_id": "g05_c10_u03",
+   "unit_name": "台形の面積",
+   "semantic_category": "台形の面積",
+   "semantic_note": "(上底+下底)×高さ÷2。上底<下底、オフセットは図専用スロット。",
+   "step_count": 1,
+   "operation": "(a+b) × h ÷ 2",
+   "answer_formula": "(a1 + b1) * h1 // 2",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      4,
+      14
+     ]
+    },
+    "h1": {
+     "type": "int",
+     "range": [
+      3,
+      10
+     ]
+    },
+    "or1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      200,
+      350,
+      500
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "order",
+     "expr": "a1 < b1",
+     "why": "上底<下底"
+    },
+    {
+     "rule": "ratio",
+     "expr": "b1 <= 3 * a1",
+     "why": "上底:下底 3:1以内"
+    },
+    {
+     "rule": "h_ratio",
+     "expr": "h1 <= 2 * b1",
+     "why": "高さ:下底 2:1以内"
+    },
+    {
+     "rule": "even",
+     "expr": "((a1 + b1) * h1) % 2 == 0",
+     "why": "面積が整数"
+    }
+   ],
+   "sentence_templates": [
+    "次の台形の面積を求めなさい。"
+   ],
+   "answer_template": "しき ({a1}+{b1})×{h1}÷2={ans} 答え {ans}cm²",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "trap_area",
+    "top": "{a1}",
+    "bottom": "{b1}",
+    "height": "{h1}",
+    "unit": "cm",
+    "offset_ratio": "{or1}"
+   }
+  },
+  {
+   "pattern_id": "g05_rhombus_area_01",
+   "grade": "g05",
+   "unit_id": "g05_c10_u04",
+   "unit_name": "ひし形の面積",
+   "semantic_category": "ひし形の面積(対角線)",
+   "semantic_note": "対角線×対角線÷2。対角線は点線。正方形ケース(d1==d2)は除外。",
+   "step_count": 1,
+   "operation": "d1 × d2 ÷ 2",
+   "answer_formula": "d1 * d2 // 2",
+   "answer_unit_from": "unit",
+   "slots": {
+    "d1": {
+     "type": "int",
+     "range": [
+      4,
+      16
+     ]
+    },
+    "d2": {
+     "type": "int",
+     "range": [
+      4,
+      16
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "distinct",
+     "expr": "d1 != d2",
+     "why": "正方形を除外"
+    },
+    {
+     "rule": "even",
+     "expr": "(d1 * d2) % 2 == 0",
+     "why": "面積が整数"
+    },
+    {
+     "rule": "ratio1",
+     "expr": "d2 <= 3 * d1",
+     "why": "比3:1以内"
+    },
+    {
+     "rule": "ratio2",
+     "expr": "d1 <= 3 * d2",
+     "why": "比3:1以内"
+    }
+   ],
+   "sentence_templates": [
+    "次のひし形の面積を求めなさい。"
+   ],
+   "answer_template": "しき {d1}×{d2}÷2={ans} 答え {ans}cm²",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "rhombus_area",
+    "diag_h": "{d1}",
+    "diag_v": "{d2}",
+    "unit": "cm"
+   }
+  },
+  {
+   "pattern_id": "g05_circle_circum_diam_01",
+   "grade": "g05",
+   "unit_id": "g05_c12_u02",
+   "unit_name": "円周",
+   "semantic_category": "円周(直径から)",
+   "semantic_note": "円周=直径×3.14。内部は d×314(スケール100)→dec2。",
+   "step_count": 1,
+   "operation": "d × 314(スケール100)",
+   "answer_formula": "d1 * 314",
+   "answer_unit_from": "unit",
+   "slots": {
+    "d1": {
+     "type": "int",
+     "range": [
+      3,
+      25
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の円の円周の長さを求めなさい。ただし、円周率は3.14とします。"
+   ],
+   "answer_template": "しき {d1}×3.14={ans_disp} 答え {ans_disp}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    3,
+    14
+   ],
+   "answer_unit_system": "dec2",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "circle",
+    "given": "diameter",
+    "value": "{d1}",
+    "unit": "cm"
+   }
+  },
+  {
+   "pattern_id": "g05_circle_circum_rad_01",
+   "grade": "g05",
+   "unit_id": "g05_c12_u02",
+   "unit_name": "円周",
+   "semantic_category": "円周(半径から)",
+   "semantic_note": "円周=半径×2×3.14。",
+   "step_count": 1,
+   "operation": "r × 2 × 314(スケール100)",
+   "answer_formula": "r1 * 2 * 314",
+   "answer_unit_from": "unit",
+   "slots": {
+    "r1": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の円の円周の長さを求めなさい。ただし、円周率は3.14とします。"
+   ],
+   "answer_template": "しき {r1}×2×3.14={ans_disp} 答え {ans_disp}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    3,
+    14
+   ],
+   "answer_unit_system": "dec2",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "circle",
+    "given": "radius",
+    "value": "{r1}",
+    "unit": "cm"
+   }
+  },
+  {
+   "pattern_id": "g05_circle_diam_from_circum_01",
+   "grade": "g05",
+   "unit_id": "g05_c12_u02",
+   "unit_name": "円周",
+   "semantic_category": "円周→直径(逆算)",
+   "semantic_note": "d=円周÷3.14。円周は直径から構成(computed・dec2表示)し割り切れを構造保証。",
+   "step_count": 1,
+   "operation": "C ÷ 3.14(構成的逆算)",
+   "answer_formula": "d1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "d1": {
+     "type": "int",
+     "range": [
+      4,
+      25
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "円周の長さが{c_len_disp}cmの円があります。この円の直径の長さは何cmですか。ただし、円周率は3.14とします。"
+   ],
+   "answer_template": "しき {c_len_disp}÷3.14={ans} 答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    3,
+    14
+   ],
+   "computed_slots": {
+    "c_len": {
+     "formula": "d1 * 314"
+    }
+   },
+   "answer_unit_system": "dec2"
+  },
+  {
+   "pattern_id": "g05_cuboid_vol_01",
+   "grade": "g05",
+   "unit_id": "g05_c02_u01",
+   "unit_name": "直方体と立方体の体積",
+   "semantic_category": "直方体の体積",
+   "semantic_note": "たて×横×高さ。辺比4:1以内を制約で保証(キャビネット投影の視認性)。",
+   "step_count": 1,
+   "operation": "d × w × h",
+   "answer_formula": "d1 * w1 * h1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "w1": {
+     "type": "int",
+     "range": [
+      3,
+      12
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      3,
+      12
+     ]
+    },
+    "h1": {
+     "type": "int",
+     "range": [
+      3,
+      12
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "ratio",
+     "expr": "max(w1, d1, h1) <= 4 * min(w1, d1, h1)",
+     "why": "辺比4:1以内"
+    }
+   ],
+   "sentence_templates": [
+    "次の直方体の体積は何cm³ですか。"
+   ],
+   "answer_template": "しき {d1}×{w1}×{h1}={ans} 答え {ans}cm³",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "cuboid",
+    "w": "{w1}",
+    "d": "{d1}",
+    "h": "{h1}",
+    "unit": "cm",
+    "cube": false
+   }
+  },
+  {
+   "pattern_id": "g05_cube_vol_01",
+   "grade": "g05",
+   "unit_id": "g05_c02_u01",
+   "unit_name": "直方体と立方体の体積",
+   "semantic_category": "立方体の体積",
+   "semantic_note": "1辺×1辺×1辺。",
+   "step_count": 1,
+   "operation": "a³",
+   "answer_formula": "a1 * a1 * a1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の立方体の体積は何cm³ですか。"
+   ],
+   "answer_template": "しき {a1}×{a1}×{a1}={ans} 答え {ans}cm³",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "cuboid",
+    "w": "{a1}",
+    "d": "{a1}",
+    "h": "{a1}",
+    "unit": "cm",
+    "cube": true
+   }
+  },
+  {
+   "pattern_id": "g05_cuboid_capacity_01",
+   "grade": "g05",
+   "unit_id": "g05_c02_u02",
+   "unit_name": "体積の単位と容積",
+   "semantic_category": "水そうの容積(cm³→L・2段)",
+   "semantic_note": "内のり体積→1000cm³=1L換算。choicesで(V%1000==0)を高確率化し制約で保証。",
+   "step_count": 2,
+   "operation": "d×w×h ÷ 1000",
+   "answer_formula": "w1 * d1 * h1 // 1000",
+   "answer_unit_from": "unit",
+   "slots": {
+    "w1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      20,
+      25,
+      30,
+      40,
+      50
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      20,
+      25,
+      40,
+      50
+     ]
+    },
+    "h1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      20,
+      25,
+      30
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "liter",
+     "expr": "(w1 * d1 * h1) % 1000 == 0",
+     "why": "Lで割り切れる"
+    },
+    {
+     "rule": "v_range",
+     "expr": "8000 <= w1 * d1 * h1 <= 60000",
+     "why": "容積8〜60Lの現実的な水そう"
+    }
+   ],
+   "sentence_templates": [
+    "右の図のような直方体の形をした水そうがあります。内のりは、たて{d1}cm、横{w1}cm、深さ{h1}cmです。この水そうの容積は何Lですか。"
+   ],
+   "answer_template": "しき {d1}×{w1}×{h1}÷1000={ans} 答え {ans}L",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1000
+   ],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "cuboid",
+    "w": "{w1}",
+    "d": "{d1}",
+    "h": "{h1}",
+    "unit": "cm",
+    "cube": false
+   }
+  },
+  {
+   "pattern_id": "g05_cuboid_depth_01",
+   "grade": "g05",
+   "unit_id": "g05_c02_u02",
+   "unit_name": "体積の単位と容積",
+   "semantic_category": "水量→水深(逆算・2段)",
+   "semantic_note": "深さ=V(L)×1000÷底面積。深さ<水そうの深さを制約で保証。",
+   "step_count": 2,
+   "operation": "VL×1000 ÷ (d×w)",
+   "answer_formula": "VL * 1000 // (w1 * d1)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "w1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      20,
+      25,
+      30,
+      40,
+      50
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      20,
+      25,
+      40,
+      50
+     ]
+    },
+    "h1": {
+     "type": "int",
+     "choice_int": true,
+     "choices": [
+      20,
+      25,
+      30
+     ]
+    },
+    "VL": {
+     "type": "int",
+     "range": [
+      8,
+      40
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(VL * 1000) % (w1 * d1) == 0",
+     "why": "深さが整数"
+    },
+    {
+     "rule": "depth_lt",
+     "expr": "VL * 1000 // (w1 * d1) < h1",
+     "why": "水面が水そうの深さ未満"
+    },
+    {
+     "rule": "depth_ge",
+     "expr": "VL * 1000 // (w1 * d1) >= 4",
+     "why": "深さを現実的に保つ"
+    }
+   ],
+   "sentence_templates": [
+    "右の図のような直方体の形をした水そうがあります。内のりは、たて{d1}cm、横{w1}cm、深さ{h1}cmです。この水そうに{VL}Lの水を入れると、水の深さは何cmになりますか。"
+   ],
+   "answer_template": "しき {VL}×1000÷({d1}×{w1})={ans} 答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1000
+   ],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "cuboid",
+    "w": "{w1}",
+    "d": "{d1}",
+    "h": "{h1}",
+    "unit": "cm",
+    "cube": false
+   }
+  },
+  {
+   "pattern_id": "g05_vol_unit_convert_01",
+   "grade": "g05",
+   "unit_id": "g05_c02_u02",
+   "unit_name": "体積の単位と容積",
+   "semantic_category": "体積の単位換算(m³→L)",
+   "semantic_note": "1m³=1000L。小数m³をスケール整数で処理。",
+   "step_count": 1,
+   "operation": "v(スケール10)×100 = v×1000 L",
+   "answer_formula": "v1 * 100",
+   "answer_unit_from": "unit",
+   "slots": {},
+   "value_constraints": [],
+   "sentence_templates": [
+    "{v1_disp}m³は何Lですか。"
+   ],
+   "answer_template": "しき {v1_disp}×1000={ans} 答え {ans}L",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1000
+   ],
+   "quantity_slots": {
+    "v1": {
+     "unit_system": "dec1",
+     "range": [
+      3,
+      95
+     ]
+    }
+   }
+  }
+ ],
+ "schema_changelog": {
+  "0.9": "gcd/lcm/reduce_num/reduce_den(整数Euclid・JS等価)、reduced_fraction_display/reduced_mixed_display、dec2/dec3/percent_pm/buai_pm、千分率整数による割合3用法体系、kind:table。既存3学年バンクへは非干渉(ゴールデン差分ゼロ確認済み)。computed_slots.js_formatter: JS側表示フォーマッタヒント([フォーマッタ名,参照スロット]。Pythonはformulaのみ読むため出力不変・加法的メタデータ)。",
+  "0.9+c_layer": "C層追補(生成器v0.9のまま・スキーマ機構変更なし): c04角3(内角和・二等辺)、c10面積6(平行四辺形・三角形・台形・ひし形+逆算2)、c12円周3(3.14=スケール整数314→dec2)、c02体積5(直方体・立方体・容積・水深逆算・単位換算)。図専用スロット(slant/apex_ratio/offset_ratio)は本文に出さず図の決定的構成にのみ使用(シード再現性維持)。制約強化(スキャン検収に基づく): quad_angleは全4内角≤100°(ラベル分離可能性を配置シミュレーションで全域保証)、tri_areaは高さ:底辺≤1.8(高さラベル余地の実測不合格域を排除)。"
+ }
+}

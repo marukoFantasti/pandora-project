@@ -1,0 +1,2087 @@
+{
+  "schema_version": "0.7.1",
+  "description": "小3パターンバンク セッション1: わり算族(等分除/包含除/倍/あまり3層/2ステップ)+□を使った式。",
+  "source_analysis": "標準的な小3算数カリキュラム（わり算の3つの意味・あまりの3類型・□を使った式・3けた加減・分配法則・小数/分数・複名数）の単元構成に基づく設計。実データは含めない。",
+  "shared_lexicon": {
+    "comment": "g02から actors を継承。わり算用に『割り切れる文脈』の object ペアを新設。ceil/floor は文脈が答えの単位を決めるため context_sets 方式。",
+    "actors": [
+      "たろうさん",
+      "はなこさん",
+      "ゆうたさん",
+      "さくらさん",
+      "けんとさん",
+      "みおさん"
+    ],
+    "div_object_pairs": [
+      {
+        "object": "色紙",
+        "counter": "まい",
+        "verb_use": "つかいました",
+        "verb_use_ta": "つかった"
+      },
+      {
+        "object": "えん筆",
+        "counter": "本",
+        "verb_use": "つかいました",
+        "verb_use_ta": "つかった"
+      },
+      {
+        "object": "りんご",
+        "counter": "こ",
+        "verb_use": "配りました",
+        "verb_use_ta": "配った"
+      },
+      {
+        "object": "画用紙",
+        "counter": "まい",
+        "verb_use": "つかいました",
+        "verb_use_ta": "つかった"
+      },
+      {
+        "object": "あめ",
+        "counter": "こ",
+        "verb_use": "配りました",
+        "verb_use_ta": "配った"
+      },
+      {
+        "object": "カード",
+        "counter": "まい",
+        "verb_use": "つかいました",
+        "verb_use_ta": "つかった"
+      }
+    ],
+    "ceil_contexts": [
+      {
+        "head": "子どもが{n1}人います。長いす1きゃくに{n2}人ずつすわります。",
+        "tail": "全員がすわるには、長いすは何きゃくいりますか。",
+        "ans_counter": "きゃく",
+        "why_plus1": "あまりの人がすわるために長いすがもう1きゃくいる"
+      },
+      {
+        "head": "ボールが{n1}こあります。1つの箱に{n2}こずつ入れます。",
+        "tail": "ボールを全部入れるには、箱は何ついりますか。",
+        "ans_counter": "つ",
+        "why_plus1": "あまりのボールを入れるために箱がもう1ついる"
+      },
+      {
+        "head": "本が{n1}さつあります。1回に{n2}さつずつ運びます。",
+        "tail": "全部運ぶには、何回かかりますか。",
+        "ans_counter": "回",
+        "why_plus1": "あまりの本を運ぶのにもう1回かかる"
+      }
+    ],
+    "floor_contexts": [
+      {
+        "head": "リボンが{n1}cmあります。{n2}cmずつ切っていきます。",
+        "tail": "{n2}cmのリボンは何本できますか。",
+        "ans_counter": "本",
+        "why_floor": "あまりでは{n2}cmのリボンが作れない"
+      },
+      {
+        "head": "いちごが{n1}こあります。ケーキ1こに{n2}こずつのせます。",
+        "tail": "いちごののったケーキは何こできますか。",
+        "ans_counter": "こ",
+        "why_floor": "あまりのいちごではケーキ1こ分にならない"
+      },
+      {
+        "head": "おり紙が{n1}まいあります。かざりを1こ作るのに{n2}まいつかいます。",
+        "tail": "かざりは何こ作れますか。",
+        "ans_counter": "こ",
+        "why_floor": "あまりのおり紙ではかざり1こが作れない"
+      }
+    ],
+    "bai_units": [
+      "cm",
+      "m",
+      "g",
+      "dL"
+    ],
+    "attribute_pairs": [
+      {
+        "pair": [
+          "赤い",
+          "青い"
+        ],
+        "type": "color"
+      },
+      {
+        "pair": [
+          "白い",
+          "黒い"
+        ],
+        "type": "color"
+      },
+      {
+        "pair": [
+          "青い",
+          "黄色い"
+        ],
+        "type": "color"
+      }
+    ],
+    "actor_pairs": [
+      [
+        "たろうさん",
+        "はなこさん"
+      ],
+      [
+        "ゆうたさん",
+        "さくらさん"
+      ],
+      [
+        "けんとさん",
+        "みおさん"
+      ]
+    ],
+    "frac_unit_pairs": [
+      {
+        "unit": "L",
+        "noun": "かさ"
+      },
+      {
+        "unit": "m",
+        "noun": "長さ"
+      }
+    ]
+  },
+  "patterns": [
+    {
+      "pattern_id": "g03_div_tobun_01",
+      "grade": "g03",
+      "unit_id": "g03_c05_u01",
+      "unit_name": "(2けたの数)÷(1けたの数)のわり算の問題",
+      "semantic_category": "等分除",
+      "semantic_note": "全体を等しい数ずつn人に分け、1人分を求める。『1人分は何◯』が定番の問い。包含除(g03_div_hogan_01)と対をなす。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "n1 ÷ n2",
+      "answer_formula": "n1 // n2",
+      "answer_unit_from": "counter",
+      "slots": {
+        "object": {
+          "from": "div_object_pairs[j].object"
+        },
+        "counter": {
+          "from": "div_object_pairs[j].counter"
+        },
+        "n1": {
+          "type": "int",
+          "range": [
+            4,
+            81
+          ]
+        },
+        "n2": {
+          "type": "int",
+          "range": [
+            2,
+            9
+          ]
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "divisible",
+          "expr": "n1 % n2 == 0",
+          "why": "割り切れる範囲のみ"
+        },
+        {
+          "rule": "quotient_in_kuku",
+          "expr": "2 <= n1 // n2 <= 9",
+          "why": "商が九九の範囲。商1は問いとして不自然"
+        }
+      ],
+      "sentence_templates": [
+        "{n1}{counter}の{object}を{n2}人で同じ数ずつ分けると、1人分は何{counter}になりますか。",
+        "{object}が{n1}{counter}あります。{n2}人で同じ数ずつ分けると、1人分は何{counter}になりますか。"
+      ],
+      "question_tail": "1人分は何{counter}",
+      "answer_template": "しき {n1}÷{n2}={ans} 答え {ans}{counter}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      },
+      "answer_structure": "single",
+      "template_number_constants": [
+        1
+      ]
+    },
+    {
+      "pattern_id": "g03_div_hogan_01",
+      "grade": "g03",
+      "unit_id": "g03_c05_u01",
+      "unit_name": "(2けたの数)÷(1けたの数)のわり算の問題",
+      "semantic_category": "包含除",
+      "semantic_note": "全体からn個ずつ取っていき、何回(何人)取れるかを求める。『何人に分けられますか』が定番。式は等分除と同じでも意味が異なる、というのがれいの核心。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "n1 ÷ n2",
+      "answer_formula": "n1 // n2",
+      "answer_unit_from": "fixed_人",
+      "slots": {
+        "object": {
+          "from": "div_object_pairs[j].object"
+        },
+        "counter": {
+          "from": "div_object_pairs[j].counter"
+        },
+        "n1": {
+          "type": "int",
+          "range": [
+            4,
+            81
+          ]
+        },
+        "n2": {
+          "type": "int",
+          "range": [
+            2,
+            9
+          ]
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "divisible",
+          "expr": "n1 % n2 == 0",
+          "why": "割り切れる範囲のみ"
+        },
+        {
+          "rule": "quotient_in_kuku",
+          "expr": "2 <= n1 // n2 <= 9",
+          "why": "商が九九の範囲"
+        }
+      ],
+      "sentence_templates": [
+        "{n1}{counter}の{object}を1人に{n2}{counter}ずつ分けると、何人に分けられますか。",
+        "{object}が{n1}{counter}あります。1人に{n2}{counter}ずつ分けると、何人に分けられますか。"
+      ],
+      "question_tail": "何人に分けられますか",
+      "answer_template": "しき {n1}÷{n2}={ans} 答え {ans}人",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      },
+      "answer_structure": "single",
+      "template_number_constants": [
+        1
+      ]
+    },
+    {
+      "pattern_id": "g03_div_bai_01",
+      "grade": "g03",
+      "unit_id": "g03_c05_u01",
+      "unit_name": "(2けたの数)÷(1けたの数)のわり算の問題",
+      "semantic_category": "倍(何倍)",
+      "semantic_note": "AはBの何倍か。わり算の第3の意味。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "n1 ÷ n2",
+      "answer_formula": "n1 // n2",
+      "answer_unit_from": "fixed_倍",
+      "slots": {
+        "unit": {
+          "choices": [
+            "cm",
+            "m",
+            "g",
+            "dL"
+          ]
+        },
+        "n1": {
+          "type": "int",
+          "range": [
+            4,
+            81
+          ]
+        },
+        "n2": {
+          "type": "int",
+          "range": [
+            2,
+            9
+          ]
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "divisible",
+          "expr": "n1 % n2 == 0",
+          "why": "倍は整数倍のみ(小3)"
+        },
+        {
+          "rule": "quotient_in_kuku",
+          "expr": "2 <= n1 // n2 <= 9",
+          "why": "商が九九の範囲"
+        }
+      ],
+      "sentence_templates": [
+        "{n1}{unit}は{n2}{unit}の何倍ですか。"
+      ],
+      "question_tail": "何倍ですか",
+      "answer_template": "しき {n1}÷{n2}={ans} 答え {ans}倍",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 1
+      },
+      "answer_structure": "single"
+    },
+    {
+      "pattern_id": "g03_div_amari_fukubun_01",
+      "grade": "g03",
+      "unit_id": "g03_c14_u01",
+      "unit_name": "あまりのあるわり算",
+      "semantic_category": "あまり(素・複文)",
+      "semantic_note": "あまり3層の第1層。包含除+あまりで、答えが『q人に配れて、rまいあまる。』の複文になる。answer_structure=compound_remainder。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "n1 ÷ n2 (あまりあり)",
+      "answer_formula": "n1 // n2",
+      "answer_unit_from": "fixed_人",
+      "slots": {
+        "object": {
+          "from": "div_object_pairs[j].object"
+        },
+        "counter": {
+          "from": "div_object_pairs[j].counter"
+        },
+        "n1": {
+          "type": "int",
+          "range": [
+            7,
+            89
+          ]
+        },
+        "n2": {
+          "type": "int",
+          "range": [
+            2,
+            9
+          ]
+        }
+      },
+      "computed_slots": {
+        "q": {
+          "formula": "n1 // n2",
+          "note": "商"
+        },
+        "rem": {
+          "formula": "n1 % n2",
+          "note": "あまり"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "has_remainder",
+          "expr": "n1 % n2 >= 1",
+          "why": "あまりが必ず出る"
+        },
+        {
+          "rule": "quotient_in_kuku",
+          "expr": "2 <= n1 // n2 <= 9",
+          "why": "商が九九の範囲(わる数×商が暗算可能)"
+        }
+      ],
+      "sentence_templates": [
+        "{n1}{counter}の{object}を1人に{n2}{counter}ずつ配ると、何人に配れて、何{counter}あまりますか。",
+        "{object}が{n1}{counter}あります。1人に{n2}{counter}ずつ配ると、何人に配れて、何{counter}あまりますか。"
+      ],
+      "question_tail": "何人に配れて、何{counter}あまりますか",
+      "answer_template": "しき {n1}÷{n2}={q}あまり{rem} 答え {q}人に配れて、{rem}{counter}あまる。",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      },
+      "answer_structure": "compound_remainder",
+      "template_number_constants": [
+        1
+      ]
+    },
+    {
+      "pattern_id": "g03_div_amari_ceil_01",
+      "grade": "g03",
+      "unit_id": "g03_c15_u01",
+      "unit_name": "あまりの考え方",
+      "semantic_category": "あまり(切り上げ)",
+      "semantic_note": "あまり3層の第2層。あまりの分を収容するために+1が必要(いす・箱・回)。文脈が+1の必然性を決めるため ceil_contexts 方式。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "n1 ÷ n2 → 商+1",
+      "answer_formula": "n1 // n2 + 1",
+      "answer_unit_from": "context",
+      "context_set": {
+        "from": "ceil_contexts",
+        "fields": [
+          "head",
+          "tail",
+          "ans_counter"
+        ],
+        "format_fields": [
+          "head",
+          "tail"
+        ]
+      },
+      "slots": {
+        "n1": {
+          "type": "int",
+          "range": [
+            7,
+            89
+          ]
+        },
+        "n2": {
+          "type": "int",
+          "range": [
+            2,
+            9
+          ]
+        }
+      },
+      "computed_slots": {
+        "q": {
+          "formula": "n1 // n2",
+          "note": "商"
+        },
+        "rem": {
+          "formula": "n1 % n2",
+          "note": "あまり"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "has_remainder",
+          "expr": "n1 % n2 >= 1",
+          "why": "あまりが出ないと切り上げの学習にならない"
+        },
+        {
+          "rule": "quotient_in_kuku",
+          "expr": "2 <= n1 // n2 <= 9",
+          "why": "商が九九の範囲"
+        }
+      ],
+      "sentence_templates": [
+        "{ctx_head}{ctx_tail}"
+      ],
+      "question_tail": "(文脈依存)",
+      "answer_template": "しき {n1}÷{n2}={q}あまり{rem} {q}+1={ans} 答え {ans}{ctx_ans_counter}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 3
+      },
+      "answer_structure": "remainder_ceil",
+      "template_number_constants": [
+        1
+      ]
+    },
+    {
+      "pattern_id": "g03_div_amari_floor_01",
+      "grade": "g03",
+      "unit_id": "g03_c15_u01",
+      "unit_name": "あまりの考え方",
+      "semantic_category": "あまり(切り捨て)",
+      "semantic_note": "あまり3層の第3層。あまりでは1単位分に満たないため商のまま(リボン・ケーキ)。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "n1 ÷ n2 → 商そのまま",
+      "answer_formula": "n1 // n2",
+      "answer_unit_from": "context",
+      "context_set": {
+        "from": "floor_contexts",
+        "fields": [
+          "head",
+          "tail",
+          "ans_counter"
+        ],
+        "format_fields": [
+          "head",
+          "tail"
+        ]
+      },
+      "slots": {
+        "n1": {
+          "type": "int",
+          "range": [
+            7,
+            89
+          ]
+        },
+        "n2": {
+          "type": "int",
+          "range": [
+            2,
+            9
+          ]
+        }
+      },
+      "computed_slots": {
+        "q": {
+          "formula": "n1 // n2",
+          "note": "商"
+        },
+        "rem": {
+          "formula": "n1 % n2",
+          "note": "あまり"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "has_remainder",
+          "expr": "n1 % n2 >= 1",
+          "why": "あまりが出ないと切り捨ての学習にならない"
+        },
+        {
+          "rule": "quotient_in_kuku",
+          "expr": "2 <= n1 // n2 <= 9",
+          "why": "商が九九の範囲"
+        }
+      ],
+      "sentence_templates": [
+        "{ctx_head}{ctx_tail}"
+      ],
+      "question_tail": "(文脈依存)",
+      "answer_template": "しき {n1}÷{n2}={q}あまり{rem} 答え {q}{ctx_ans_counter}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 3
+      },
+      "answer_structure": "remainder_floor",
+      "template_number_constants": [
+        1
+      ]
+    },
+    {
+      "pattern_id": "g03_div_2step_gappei_01",
+      "grade": "g03",
+      "unit_id": "g03_c06_u01",
+      "unit_name": "答えが九九にないわり算とわり算のり用",
+      "semantic_category": "2ステップ(合併→等分除)",
+      "semantic_note": "人数の合併が先、等分除が後。",
+      "inverse_thinking": false,
+      "step_count": 2,
+      "operation": "(a1 + a2) → n1 ÷ (a1+a2)",
+      "answer_formula": "n1 // (a1 + a2)",
+      "answer_unit_from": "counter",
+      "intermediate_formulas": [
+        "a1 + a2"
+      ],
+      "slots": {
+        "object": {
+          "from": "div_object_pairs[j].object"
+        },
+        "counter": {
+          "from": "div_object_pairs[j].counter"
+        },
+        "a1": {
+          "type": "int",
+          "range": [
+            2,
+            6
+          ]
+        },
+        "a2": {
+          "type": "int",
+          "range": [
+            2,
+            6
+          ]
+        },
+        "n1": {
+          "type": "int",
+          "range": [
+            8,
+            81
+          ]
+        }
+      },
+      "computed_slots": {
+        "psum": {
+          "formula": "a1 + a2",
+          "note": "人数合計(式1の答え)"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "sum_in_kuku",
+          "expr": "4 <= a1 + a2 <= 9",
+          "why": "わる数が九九の範囲"
+        },
+        {
+          "rule": "divisible",
+          "expr": "n1 % (a1 + a2) == 0",
+          "why": "あまりなし"
+        },
+        {
+          "rule": "quotient_in_kuku",
+          "expr": "2 <= n1 // (a1 + a2) <= 9",
+          "why": "商が九九の範囲"
+        }
+      ],
+      "sentence_templates": [
+        "おとな{a1}人と子ども{a2}人がいます。あわせた人数で{object}{n1}{counter}を同じ数ずつ分けると、1人分は何{counter}になりますか。"
+      ],
+      "question_tail": "1人分は何{counter}",
+      "answer_template": "しき {a1}+{a2}={psum} {n1}÷{psum}={ans} 答え {ans}{counter}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 3
+      },
+      "answer_structure": "two_step",
+      "template_number_constants": [
+        1
+      ]
+    },
+    {
+      "pattern_id": "g03_box_add_01",
+      "grade": "g03",
+      "unit_id": "g03_c28_u01",
+      "unit_name": "□を使った式",
+      "semantic_category": "□の式(たし算)",
+      "semantic_note": "n1+□=n3 型。増加量が未知。解法式は □=n3-n1 で、表示演算と解法演算が逆になる(inverse_thinking=true)。",
+      "inverse_thinking": true,
+      "step_count": 1,
+      "operation": "n1 + □ = n3 → □ = n3 - n1",
+      "answer_formula": "n3 - n1",
+      "answer_unit_from": "counter",
+      "slots": {
+        "object": {
+          "from": "div_object_pairs[j].object"
+        },
+        "counter": {
+          "from": "div_object_pairs[j].counter"
+        },
+        "n1": {
+          "type": "int",
+          "range": [
+            12,
+            79
+          ]
+        },
+        "n3": {
+          "type": "int",
+          "range": [
+            25,
+            98
+          ]
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "increase_positive",
+          "expr": "n3 - n1 >= 11",
+          "why": "増加量が2けたで単元の計算要求(2けたの加減)に一致"
+        },
+        {
+          "rule": "no_overflow",
+          "expr": "n3 <= 98",
+          "why": "2けた内"
+        }
+      ],
+      "sentence_templates": [
+        "{object}が{n1}{counter}ありました。何{counter}かもらったので、ぜんぶで{n3}{counter}になりました。もらった数を□{counter}として式をかき、□にあてはまる数をもとめなさい。"
+      ],
+      "question_tail": "□にあてはまる数",
+      "answer_template": "しき {n1}+□={n3} □={n3}-{n1}={ans} 答え {ans}{counter}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 3
+      },
+      "answer_structure": "box_equation"
+    },
+    {
+      "pattern_id": "g03_box_sub_01",
+      "grade": "g03",
+      "unit_id": "g03_c28_u01",
+      "unit_name": "□を使った式",
+      "semantic_category": "□の式(ひき算)",
+      "semantic_note": "n1-□=n3 型。減少量が未知。解法式は □=n1-n3。",
+      "inverse_thinking": true,
+      "step_count": 1,
+      "operation": "n1 - □ = n3 → □ = n1 - n3",
+      "answer_formula": "n1 - n3",
+      "answer_unit_from": "counter",
+      "slots": {
+        "object": {
+          "from": "div_object_pairs[j].object"
+        },
+        "counter": {
+          "from": "div_object_pairs[j].counter"
+        },
+        "verb_use_ta": {
+          "from": "div_object_pairs[j].verb_use_ta"
+        },
+        "n1": {
+          "type": "int",
+          "range": [
+            25,
+            98
+          ]
+        },
+        "n3": {
+          "type": "int",
+          "range": [
+            3,
+            79
+          ]
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "decrease_positive",
+          "expr": "n1 - n3 >= 11",
+          "why": "減少量が2けた"
+        },
+        {
+          "rule": "remain_positive",
+          "expr": "n3 >= 3",
+          "why": "のこりが自然な量"
+        }
+      ],
+      "sentence_templates": [
+        "{object}が{n1}{counter}ありました。何{counter}か{verb_use_ta}ので、のこりが{n3}{counter}になりました。{verb_use_ta}数を□{counter}として式をかき、□にあてはまる数をもとめなさい。"
+      ],
+      "question_tail": "□にあてはまる数",
+      "answer_template": "しき {n1}-□={n3} □={n1}-{n3}={ans} 答え {ans}{counter}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 3
+      },
+      "answer_structure": "box_equation"
+    },
+    {
+      "pattern_id": "g03_box_mult_01",
+      "grade": "g03",
+      "unit_id": "g03_c28_u01",
+      "unit_name": "□を使った式",
+      "semantic_category": "□の式(かけ算)",
+      "semantic_note": "n2×□=n3 型。いくつ分が未知。解法式は □=n3÷n2。",
+      "inverse_thinking": true,
+      "step_count": 1,
+      "operation": "n2 × □ = n3 → □ = n3 ÷ n2",
+      "answer_formula": "n3 // n2",
+      "answer_unit_from": "fixed_グループ",
+      "slots": {
+        "n2": {
+          "type": "int",
+          "range": [
+            2,
+            9
+          ]
+        },
+        "n3": {
+          "type": "int",
+          "range": [
+            4,
+            81
+          ]
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "divisible",
+          "expr": "n3 % n2 == 0",
+          "why": "□は整数"
+        },
+        {
+          "rule": "box_in_kuku",
+          "expr": "2 <= n3 // n2 <= 9",
+          "why": "□が九九の範囲"
+        }
+      ],
+      "sentence_templates": [
+        "1つのグループに{n2}人ずついます。ぜんぶで{n3}人いるとき、グループの数を□として式をかき、□にあてはまる数をもとめなさい。"
+      ],
+      "question_tail": "□にあてはまる数",
+      "answer_template": "しき {n2}×□={n3} □={n3}÷{n2}={ans} 答え {ans}グループ",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 3
+      },
+      "answer_structure": "box_equation",
+      "template_number_constants": [
+        1
+      ]
+    },
+    {
+      "pattern_id": "g03_box_div_01",
+      "grade": "g03",
+      "unit_id": "g03_c28_u01",
+      "unit_name": "□を使った式",
+      "semantic_category": "□の式(わり算)",
+      "semantic_note": "n1÷□=q 型(数値問題)。わる数が未知のとき □=わられる数÷商。文章題化は不自然になりやすいため数値形式で出題。",
+      "inverse_thinking": true,
+      "step_count": 1,
+      "operation": "n1 ÷ □ = q → □ = n1 ÷ q",
+      "answer_formula": "n1 // q",
+      "answer_unit_from": "none",
+      "slots": {
+        "n1": {
+          "type": "int",
+          "range": [
+            4,
+            81
+          ]
+        },
+        "q": {
+          "type": "int",
+          "range": [
+            2,
+            9
+          ]
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "divisible",
+          "expr": "n1 % q == 0",
+          "why": "□は整数"
+        },
+        {
+          "rule": "box_in_kuku",
+          "expr": "2 <= n1 // q <= 9",
+          "why": "□が九九の範囲"
+        },
+        {
+          "rule": "box_ne_quotient",
+          "expr": "n1 // q != q",
+          "why": "□と商が同値(16÷□=4, □=4)だと児童が混乱しやすい"
+        }
+      ],
+      "sentence_templates": [
+        "次の□にあてはまる数をもとめなさい。{n1}÷□={q}"
+      ],
+      "question_tail": "□にあてはまる数",
+      "answer_template": "□={n1}÷{q}={ans} 答え {ans}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      },
+      "answer_structure": "box_equation"
+    },
+    {
+      "pattern_id": "g03_addsub_gappei_3digit_01",
+      "grade": "g03",
+      "unit_id": "g03_c11_u01",
+      "unit_name": "たし算とひき算の暗算とり用",
+      "semantic_category": "合併(3けた)",
+      "semantic_note": "3けた同士の合併、くり上がりあり。1000ちょうど。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "n1 + n2",
+      "answer_formula": "n1 + n2",
+      "answer_unit_from": "fixed_人",
+      "slots": {
+        "n1": {
+          "type": "int",
+          "range": [
+            104,
+            879
+          ]
+        },
+        "n2": {
+          "type": "int",
+          "range": [
+            104,
+            879
+          ]
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "carry_required",
+          "expr": "(n1 % 10) + (n2 % 10) >= 10 or (n1 % 100) + (n2 % 100) >= 100",
+          "why": "くり上がりを発生させ単元の計算要求と一致"
+        },
+        {
+          "rule": "sum_max",
+          "expr": "n1 + n2 <= 1000",
+          "why": ""
+        }
+      ],
+      "sentence_templates": [
+        "動物園に、きのうは{n1}人、今日は{n2}人来ました。あわせて何人来ましたか。",
+        "図書館で、先週は{n1}人、今週は{n2}人が本をかりました。あわせて何人ですか。"
+      ],
+      "question_tail": "あわせて何人",
+      "answer_template": "しき {n1}+{n2}={ans} 答え {ans}人",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      },
+      "answer_structure": "single"
+    },
+    {
+      "pattern_id": "g03_addsub_kyuzan_3digit_01",
+      "grade": "g03",
+      "unit_id": "g03_c11_u01",
+      "unit_name": "たし算とひき算の暗算とり用",
+      "semantic_category": "求残(3けた)",
+      "semantic_note": "3けた−2〜3けたの求残、くり下がりあり。 検品修正(8/4): 動詞を語彙束縛(あめ・りんご=配りました)。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "n1 - n2",
+      "answer_formula": "n1 - n2",
+      "answer_unit_from": "counter",
+      "slots": {
+        "object": {
+          "from": "div_object_pairs[j].object"
+        },
+        "counter": {
+          "from": "div_object_pairs[j].counter"
+        },
+        "n1": {
+          "type": "int",
+          "range": [
+            105,
+            980
+          ]
+        },
+        "n2": {
+          "type": "int",
+          "range": [
+            96,
+            879
+          ]
+        },
+        "verb_use": {
+          "from": "div_object_pairs[j].verb_use"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "no_negative",
+          "expr": "n1 > n2",
+          "why": "在庫が負にならない"
+        },
+        {
+          "rule": "borrow_required",
+          "expr": "(n1 % 10) < (n2 % 10) or (n1 % 100) < (n2 % 100)",
+          "why": "くり下がりを発生させる"
+        },
+        {
+          "rule": "nonzero_remainder",
+          "expr": "n1 - n2 >= 1",
+          "why": "答え0は不自然"
+        }
+      ],
+      "sentence_templates": [
+        "{object}が{n1}{counter}ありました。{n2}{counter}{verb_use}。のこりは何{counter}ですか。"
+      ],
+      "question_tail": "のこりは何{counter}",
+      "answer_template": "しき {n1}-{n2}={ans} 答え {ans}{counter}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      },
+      "answer_structure": "single"
+    },
+    {
+      "pattern_id": "g03_addsub_kyusa_3digit_01",
+      "grade": "g03",
+      "unit_id": "g03_c11_u01",
+      "unit_name": "たし算とひき算の暗算とり用",
+      "semantic_category": "求差(3けた・複文)",
+      "semantic_note": "答えが複文(誰が+差)になる点が特徴。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "n1 - n2",
+      "answer_formula": "n1 - n2",
+      "answer_unit_from": "counter",
+      "slots": {
+        "actor_a": {
+          "from": "actor_pairs[i][0]"
+        },
+        "actor_b": {
+          "from": "actor_pairs[i][1]"
+        },
+        "n1": {
+          "type": "int",
+          "range": [
+            105,
+            489
+          ]
+        },
+        "n2": {
+          "type": "int",
+          "range": [
+            96,
+            479
+          ]
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "a_wins",
+          "expr": "n1 > n2",
+          "why": "actor_aが多い側に固定(答えの複文が一意)"
+        },
+        {
+          "rule": "borrow_required",
+          "expr": "(n1 % 10) < (n2 % 10) or (n1 % 100) < (n2 % 100)",
+          "why": "くり下がり"
+        },
+        {
+          "rule": "diff_meaningful",
+          "expr": "n1 - n2 >= 11",
+          "why": "差が2けた以上で比較の必然性"
+        }
+      ],
+      "sentence_templates": [
+        "{actor_a}は貝がらを{n1}こ、{actor_b}は{n2}こひろいました。どちらが何こ多くひろいましたか。"
+      ],
+      "question_tail": "どちらが何こ多く",
+      "answer_template": "しき {n1}-{n2}={ans} 答え {actor_a}が{ans}こ多くひろった。",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      },
+      "answer_structure": "compound_compare"
+    },
+    {
+      "pattern_id": "g03_mult_2step_add_01",
+      "grade": "g03",
+      "unit_id": "g03_c20_u01",
+      "unit_name": "1けたの数をかけるかけ算のり用",
+      "semantic_category": "2ステップ(かけ算→増加)",
+      "semantic_note": "たば×まい数+ばら。",
+      "inverse_thinking": false,
+      "step_count": 2,
+      "operation": "n2 × n3 → +n4",
+      "answer_formula": "n2 * n3 + n4",
+      "answer_unit_from": "fixed_まい",
+      "intermediate_formulas": [
+        "n2 * n3"
+      ],
+      "slots": {
+        "n2": {
+          "type": "int",
+          "range": [
+            12,
+            29
+          ]
+        },
+        "n3": {
+          "type": "int",
+          "range": [
+            3,
+            9
+          ]
+        },
+        "n4": {
+          "type": "int",
+          "range": [
+            2,
+            9
+          ]
+        }
+      },
+      "computed_slots": {
+        "t": {
+          "formula": "n2 * n3",
+          "note": "たばの合計(式1の答え)"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "total_range",
+          "expr": "40 <= n2 * n3 <= 250",
+          "why": "2けた×1けたの単元レベル"
+        }
+      ],
+      "sentence_templates": [
+        "1たば{n2}まいの色紙が{n3}たばと、ばらの色紙が{n4}まいあります。色紙はぜんぶで何まいありますか。"
+      ],
+      "question_tail": "ぜんぶで何まい",
+      "answer_template": "しき {n2}×{n3}={t} {t}+{n4}={ans} 答え {ans}まい",
+      "template_number_constants": [
+        1
+      ],
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 3
+      },
+      "answer_structure": "two_step"
+    },
+    {
+      "pattern_id": "g03_mult_2step_change_01",
+      "grade": "g03",
+      "unit_id": "g03_c20_u01",
+      "unit_name": "1けたの数をかけるかけ算のり用",
+      "semantic_category": "2ステップ(かけ算→おつり)",
+      "semantic_note": "代金を計算し、出した金額からひく。",
+      "inverse_thinking": false,
+      "step_count": 2,
+      "operation": "n2 × n3 → n5 - t",
+      "answer_formula": "n5 - n2 * n3",
+      "answer_unit_from": "fixed_円",
+      "intermediate_formulas": [
+        "n2 * n3"
+      ],
+      "slots": {
+        "n2": {
+          "type": "int",
+          "range": [
+            15,
+            145
+          ],
+          "step": 5
+        },
+        "n3": {
+          "type": "int",
+          "range": [
+            2,
+            9
+          ]
+        },
+        "n5": {
+          "type": "int",
+          "choices": [
+            500,
+            1000
+          ],
+          "choice_int": true
+        }
+      },
+      "computed_slots": {
+        "t": {
+          "formula": "n2 * n3",
+          "note": "代金(式1の答え)"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "change_positive",
+          "expr": "1 <= n5 - n2 * n3 <= 300",
+          "why": "おつりが正で、出した金額に近い"
+        }
+      ],
+      "sentence_templates": [
+        "1こ{n2}円のパンを{n3}こ買って、{n5}円を出しました。おつりは何円ですか。"
+      ],
+      "question_tail": "おつりは何円",
+      "answer_template": "しき {n2}×{n3}={t} {n5}-{t}={ans} 答え {ans}円",
+      "template_number_constants": [
+        1
+      ],
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 3
+      },
+      "answer_structure": "two_step"
+    },
+    {
+      "pattern_id": "g03_mult_distrib_sum_01",
+      "grade": "g03",
+      "unit_id": "g03_c31_u01",
+      "unit_name": "かけ算のり用",
+      "semantic_category": "分配法則(和×n)",
+      "semantic_note": "セット単価を先に作ると計算が楽になる、が単元の狙い。和がキリの良い数になるよう制約。",
+      "inverse_thinking": false,
+      "step_count": 2,
+      "operation": "(a + b) × n",
+      "answer_formula": "(a + b) * n",
+      "answer_unit_from": "fixed_円",
+      "intermediate_formulas": [
+        "a + b"
+      ],
+      "slots": {
+        "a": {
+          "type": "int",
+          "range": [
+            55,
+            445
+          ],
+          "step": 5
+        },
+        "b": {
+          "type": "int",
+          "range": [
+            55,
+            445
+          ],
+          "step": 5
+        },
+        "n": {
+          "type": "int",
+          "range": [
+            2,
+            9
+          ]
+        }
+      },
+      "computed_slots": {
+        "s": {
+          "formula": "a + b",
+          "note": "セット単価(式1の答え)"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "round_sum",
+          "expr": "(a + b) % 100 == 0",
+          "why": "和がキリの良い数で分配法則の旨みが出る"
+        },
+        {
+          "rule": "sum_range",
+          "expr": "200 <= a + b <= 600",
+          "why": ""
+        },
+        {
+          "rule": "distinct",
+          "expr": "a != b",
+          "why": "2品の価格が同じだと不自然"
+        }
+      ],
+      "sentence_templates": [
+        "1こ{a}円のパンと、1本{b}円のジュースを、それぞれ{n}つずつ買います。代金はぜんぶで何円ですか。"
+      ],
+      "question_tail": "代金はぜんぶで何円",
+      "answer_template": "しき {a}+{b}={s} {s}×{n}={ans} 答え {ans}円",
+      "template_number_constants": [
+        1
+      ],
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 3
+      },
+      "answer_structure": "two_step"
+    },
+    {
+      "pattern_id": "g03_mult_distrib_diff_01",
+      "grade": "g03",
+      "unit_id": "g03_c31_u01",
+      "unit_name": "かけ算のり用",
+      "semantic_category": "分配法則(差×n)",
+      "semantic_note": "差を先に作る型。",
+      "inverse_thinking": false,
+      "step_count": 2,
+      "operation": "(a - b) × n",
+      "answer_formula": "(a - b) * n",
+      "answer_unit_from": "fixed_円",
+      "intermediate_formulas": [
+        "a - b"
+      ],
+      "slots": {
+        "a": {
+          "type": "int",
+          "range": [
+            65,
+            445
+          ],
+          "step": 5
+        },
+        "b": {
+          "type": "int",
+          "range": [
+            55,
+            435
+          ],
+          "step": 5
+        },
+        "n": {
+          "type": "int",
+          "range": [
+            2,
+            9
+          ]
+        }
+      },
+      "computed_slots": {
+        "d": {
+          "formula": "a - b",
+          "note": "1こあたりの差(式1の答え)"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "a_wins",
+          "expr": "a > b",
+          "why": "差が正"
+        },
+        {
+          "rule": "round_diff",
+          "expr": "(a - b) % 10 == 0",
+          "why": "差がキリの良い数"
+        },
+        {
+          "rule": "diff_range",
+          "expr": "10 <= a - b <= 90",
+          "why": "差×nが暗算レベル"
+        }
+      ],
+      "sentence_templates": [
+        "1こ{a}円のケーキと、1こ{b}円のプリンがあります。それぞれ{n}こずつ買うと、代金のちがいは何円ですか。"
+      ],
+      "question_tail": "代金のちがいは何円",
+      "answer_template": "しき {a}-{b}={d} {d}×{n}={ans} 答え {ans}円",
+      "template_number_constants": [
+        1
+      ],
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 3
+      },
+      "answer_structure": "two_step"
+    },
+    {
+      "pattern_id": "g03_meas_dist_gappei_01",
+      "grade": "g03",
+      "unit_id": "g03_c21_u01",
+      "unit_name": "長い長さ",
+      "semantic_category": "合併(道のり km/m)",
+      "semantic_note": "道のり文脈(家→学校800m等)。m単位の内部値を合算し1km超で複名数化。100m単位でmの繰り上がり計算は不要。 オペランドは1km未満(m単位表示)に制限し、m単位で合算→複名数へ換算の2段書き(教科書流)。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "q1 + q2",
+      "answer_formula": "q1 + q2",
+      "answer_structure": "single",
+      "answer_unit_system": "km_m",
+      "quantity_slots": {
+        "q1": {
+          "unit_system": "km_m",
+          "base_range": [
+            300,
+            900
+          ],
+          "step": 100,
+          "role": "家→学校(m)"
+        },
+        "q2": {
+          "unit_system": "km_m",
+          "base_range": [
+            300,
+            900
+          ],
+          "step": 100,
+          "role": "学校→駅(m)"
+        }
+      },
+      "slots": {},
+      "value_constraints": [
+        {
+          "rule": "sum_over_1km",
+          "expr": "q1 + q2 >= 1100",
+          "why": "答えがkmを含み複名数の必然性がある"
+        },
+        {
+          "rule": "ans_has_m",
+          "expr": "(q1 + q2) % 1000 > 0",
+          "why": "『何km何m』の問いと答えの形式一致"
+        }
+      ],
+      "sentence_templates": [
+        "家から学校までの道のりは{q1_disp}、学校から駅までの道のりは{q2_disp}です。家から学校の前を通って駅まで行くと、道のりは何km何mになりますか。"
+      ],
+      "answer_template": "しき {q1_disp}+{q2_disp}={ans}m {ans}m={ans_disp} 答え {ans_disp}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 3
+      },
+      "question_tail": "何km何m"
+    },
+    {
+      "pattern_id": "g03_meas_weight_gappei_01",
+      "grade": "g03",
+      "unit_id": "g03_c32_u01",
+      "unit_name": "重さ",
+      "semantic_category": "合併(重さ kg/g)",
+      "semantic_note": "かご+中身の全体重量。g単位の内部値。easy=gの繰り上がり無し(g02のmm繰り上がり無し設計を踏襲)。 検品修正(8/4): 複名数オペランドは変換行を先行させ式中の混在を解消(道のり方式と統一)。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "q1 + q2",
+      "answer_formula": "q1 + q2",
+      "answer_structure": "single",
+      "answer_unit_system": "kg_g",
+      "quantity_slots": {
+        "q1": {
+          "unit_system": "kg_g",
+          "base_range": [
+            200,
+            900
+          ],
+          "step": 50,
+          "role": "かご(g)"
+        },
+        "q2": {
+          "unit_system": "kg_g",
+          "base_range": [
+            1200,
+            2800
+          ],
+          "step": 100,
+          "role": "みかん(g)"
+        }
+      },
+      "slots": {},
+      "value_constraints": [
+        {
+          "rule": "no_g_carry",
+          "expr": "(q1 % 1000) + (q2 % 1000) <= 999",
+          "why": "easy難度: gの繰り上がり無し"
+        },
+        {
+          "rule": "ans_has_g",
+          "expr": "(q1 + q2) % 1000 > 0",
+          "why": "『何kg何g』の形式一致"
+        }
+      ],
+      "sentence_templates": [
+        "重さ{q1_disp}のかごに、みかんを{q2_disp}入れました。ぜんたいの重さは何kg何gになりますか。"
+      ],
+      "answer_template": "しき {q2_disp}={q2}g {q1_disp}+{q2}g={ans}g {ans}g={ans_disp} 答え {ans_disp}",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      },
+      "question_tail": "何kg何g"
+    },
+    {
+      "pattern_id": "g03_dec_add_01",
+      "grade": "g03",
+      "unit_id": "g03_c24_u01",
+      "unit_name": "小数のたし算とひき算",
+      "semantic_category": "合併(小数)",
+      "semantic_note": "内部表現は1/10単位の整数。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "q1 + q2",
+      "answer_formula": "q1 + q2",
+      "answer_structure": "single",
+      "answer_unit_system": "dec1",
+      "quantity_slots": {
+        "q1": {
+          "unit_system": "dec1",
+          "base_range": [
+            3,
+            49
+          ],
+          "role": "やかんの水(0.1L単位)"
+        },
+        "q2": {
+          "unit_system": "dec1",
+          "base_range": [
+            3,
+            49
+          ],
+          "role": "ポットの水(0.1L単位)"
+        }
+      },
+      "slots": {},
+      "value_constraints": [
+        {
+          "rule": "both_decimal",
+          "expr": "(q1 % 10) > 0 and (q2 % 10) > 0",
+          "why": "両方に小数部があり小数計算の必然性"
+        },
+        {
+          "rule": "ans_decimal",
+          "expr": "(q1 + q2) % 10 > 0",
+          "why": "答えも小数(形式一致)"
+        }
+      ],
+      "sentence_templates": [
+        "水がやかんに{q1_disp}L、ポットに{q2_disp}L入っています。あわせて何Lありますか。"
+      ],
+      "answer_template": "しき {q1_disp}+{q2_disp}={ans_disp} 答え {ans_disp}L",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      },
+      "question_tail": "あわせて何L"
+    },
+    {
+      "pattern_id": "g03_dec_kyusa_01",
+      "grade": "g03",
+      "unit_id": "g03_c24_u01",
+      "unit_name": "小数のたし算とひき算",
+      "semantic_category": "求差(小数・複文)",
+      "semantic_note": "長い方をattr_aに固定し複文で答える。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "q1 - q2",
+      "answer_formula": "q1 - q2",
+      "answer_structure": "compound_compare",
+      "answer_unit_system": "dec1",
+      "quantity_slots": {
+        "q1": {
+          "unit_system": "dec1",
+          "base_range": [
+            35,
+            149
+          ],
+          "role": "長い方のテープ(0.1m単位)"
+        },
+        "q2": {
+          "unit_system": "dec1",
+          "base_range": [
+            21,
+            139
+          ],
+          "role": "短い方のテープ(0.1m単位)"
+        }
+      },
+      "slots": {
+        "attr_a": {
+          "from": "attribute_pairs[k][0]"
+        },
+        "attr_b": {
+          "from": "attribute_pairs[k][1]"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "a_longer",
+          "expr": "q1 > q2",
+          "why": "attr_aが長い側(答えの複文が一意)"
+        },
+        {
+          "rule": "both_decimal",
+          "expr": "(q1 % 10) > 0 and (q2 % 10) > 0",
+          "why": "両方に小数部"
+        },
+        {
+          "rule": "ans_decimal",
+          "expr": "(q1 - q2) % 10 > 0",
+          "why": "答えも小数"
+        },
+        {
+          "rule": "diff_meaningful",
+          "expr": "q1 - q2 >= 5",
+          "why": "差が0.5m以上で比較の必然性"
+        }
+      ],
+      "sentence_templates": [
+        "{attr_a}テープは{q1_disp}m、{attr_b}テープは{q2_disp}mです。どちらが何m長いですか。"
+      ],
+      "answer_template": "しき {q1_disp}-{q2_disp}={ans_disp} 答え {attr_a}テープが{ans_disp}m長い。",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      },
+      "question_tail": "どちらが何m長い"
+    },
+    {
+      "pattern_id": "g03_frac_represent_01",
+      "grade": "g03",
+      "unit_id": "g03_c26_u01",
+      "unit_name": "分数のしくみと大きさ",
+      "semantic_category": "分数の表現",
+      "semantic_note": "単位分数のいくつ分という分数の定義そのもの。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "num/den",
+      "answer_formula": "num",
+      "answer_structure": "single",
+      "fraction_display": {
+        "ans_frac": [
+          "num",
+          "den"
+        ]
+      },
+      "slots": {
+        "den": {
+          "type": "int",
+          "range": [
+            3,
+            9
+          ]
+        },
+        "num": {
+          "type": "int",
+          "range": [
+            1,
+            8
+          ]
+        },
+        "unit": {
+          "from": "frac_unit_pairs[j].unit"
+        },
+        "noun": {
+          "from": "frac_unit_pairs[j].noun"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "proper",
+          "expr": "num < den",
+          "why": "真分数の表現"
+        }
+      ],
+      "sentence_templates": [
+        "1{unit}を{den}等分した{num}こ分の{noun}は何{unit}ですか。"
+      ],
+      "answer_template": "答え {ans_frac}{unit}",
+      "template_number_constants": [
+        1
+      ],
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 1
+      },
+      "question_tail": "何{unit}"
+    },
+    {
+      "pattern_id": "g03_frac_add_01",
+      "grade": "g03",
+      "unit_id": "g03_c27_u01",
+      "unit_name": "分数のたし算とひき算",
+      "semantic_category": "合併(同分母分数)",
+      "semantic_note": "同分母の加法。分子の整数演算に還元。和が分母と等しいときは1。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "num1/den + num2/den",
+      "answer_formula": "num1 + num2",
+      "answer_structure": "single",
+      "fraction_display": {
+        "f1_disp": [
+          "num1",
+          "den"
+        ],
+        "f2_disp": [
+          "num2",
+          "den"
+        ],
+        "ans_frac": [
+          "ans",
+          "den"
+        ]
+      },
+      "slots": {
+        "den": {
+          "type": "int",
+          "range": [
+            4,
+            10
+          ]
+        },
+        "num1": {
+          "type": "int",
+          "range": [
+            1,
+            9
+          ]
+        },
+        "num2": {
+          "type": "int",
+          "range": [
+            1,
+            9
+          ]
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "operands_proper",
+          "expr": "num1 < den and num2 < den",
+          "why": "被加数・加数は真分数"
+        },
+        {
+          "rule": "sum_le_1",
+          "expr": "num1 + num2 <= den",
+          "why": "小3は和が1以下(和=分母のとき答え1)"
+        }
+      ],
+      "sentence_templates": [
+        "リボンを{f1_disp}mと{f2_disp}mつかいました。あわせて何mつかいましたか。"
+      ],
+      "answer_template": "しき {f1_disp}+{f2_disp}={ans_frac} 答え {ans_frac}m",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      },
+      "question_tail": "あわせて何m"
+    },
+    {
+      "pattern_id": "g03_frac_sub_01",
+      "grade": "g03",
+      "unit_id": "g03_c27_u01",
+      "unit_name": "分数のたし算とひき算",
+      "semantic_category": "求残(同分母分数)",
+      "semantic_note": "同分母の減法。1からひく型(1-num2/den)はセッション3候補としてnotesに残す。",
+      "inverse_thinking": false,
+      "step_count": 1,
+      "operation": "num1/den - num2/den",
+      "answer_formula": "num1 - num2",
+      "answer_structure": "single",
+      "fraction_display": {
+        "f1_disp": [
+          "num1",
+          "den"
+        ],
+        "f2_disp": [
+          "num2",
+          "den"
+        ],
+        "ans_frac": [
+          "ans",
+          "den"
+        ]
+      },
+      "slots": {
+        "den": {
+          "type": "int",
+          "range": [
+            4,
+            10
+          ]
+        },
+        "num1": {
+          "type": "int",
+          "range": [
+            2,
+            9
+          ]
+        },
+        "num2": {
+          "type": "int",
+          "range": [
+            1,
+            8
+          ]
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "operands_proper",
+          "expr": "num1 < den and num2 < den",
+          "why": "真分数"
+        },
+        {
+          "rule": "positive_remainder",
+          "expr": "num1 > num2",
+          "why": "のこりが正"
+        }
+      ],
+      "sentence_templates": [
+        "ジュースが{f1_disp}Lあります。{f2_disp}L飲みました。のこりは何Lですか。"
+      ],
+      "answer_template": "しき {f1_disp}-{f2_disp}={ans_frac} 答え {ans_frac}L",
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 2
+      },
+      "question_tail": "のこりは何L"
+    },
+    {
+      "pattern_id": "g03_div_amari_ceil_2step_01",
+      "grade": "g03",
+      "unit_id": "g03_c15_u01",
+      "unit_name": "あまりの考え方",
+      "semantic_category": "2ステップ(かけ算→あまり切り上げ)",
+      "semantic_note": "総数をかけ算で求めてから切り上げわり算。",
+      "inverse_thinking": false,
+      "step_count": 2,
+      "operation": "n_a × n_b → ÷n2 切り上げ",
+      "answer_formula": "(n_a * n_b) // n2 + 1",
+      "answer_unit_from": "context",
+      "intermediate_formulas": [
+        "n_a * n_b"
+      ],
+      "context_set": {
+        "from": "ceil_contexts",
+        "fields": [
+          "tail",
+          "ans_counter"
+        ],
+        "format_fields": [
+          "tail"
+        ]
+      },
+      "slots": {
+        "n_a": {
+          "type": "int",
+          "range": [
+            3,
+            9
+          ]
+        },
+        "n_b": {
+          "type": "int",
+          "range": [
+            3,
+            9
+          ]
+        },
+        "n2": {
+          "type": "int",
+          "range": [
+            2,
+            9
+          ]
+        }
+      },
+      "computed_slots": {
+        "t": {
+          "formula": "n_a * n_b",
+          "note": "総数(式1の答え)"
+        },
+        "q": {
+          "formula": "(n_a * n_b) // n2",
+          "note": "商"
+        },
+        "rem": {
+          "formula": "(n_a * n_b) % n2",
+          "note": "あまり"
+        }
+      },
+      "value_constraints": [
+        {
+          "rule": "total_range",
+          "expr": "12 <= n_a * n_b <= 81",
+          "why": "総数が2けた"
+        },
+        {
+          "rule": "has_remainder",
+          "expr": "(n_a * n_b) % n2 >= 1",
+          "why": "あまりが出る"
+        },
+        {
+          "rule": "quotient_in_kuku",
+          "expr": "2 <= (n_a * n_b) // n2 <= 9",
+          "why": "商が九九の範囲"
+        }
+      ],
+      "sentence_templates": [
+        "子どもが1れつに{n_a}人ずつ、{n_b}れつにならんでいます。この子ども全員が、長いす1きゃくに{n2}人ずつすわります。全員がすわるには、長いすは何きゃくいりますか。"
+      ],
+      "question_tail": "長いすは何きゃく",
+      "answer_template": "しき {n_a}×{n_b}={t} {t}÷{n2}={q}あまり{rem} {q}+1={ans} 答え {ans}きゃく",
+      "template_number_constants": [
+        1
+      ],
+      "kanji_policy": {
+        "allowed_grades": [
+          "g01",
+          "g02",
+          "g03"
+        ],
+        "check_against": "kyoiku_kanji_g1to3.json"
+      },
+      "layout": {
+        "max_sub_questions": 1,
+        "estimated_lines": 4
+      },
+      "answer_structure": "two_step_remainder_ceil"
+    }
+  ],
+  "schema_changelog": {
+    "0.7": [
+      "context_set 機構を新設: レキシコンの文脈セット(head/tail/ans_counter)を選び、head/tail はスロット値で事前フォーマットして ctx_* スロットとして注入。あまり切り上げ/切り捨てのように『文脈が答えの単位と演算後処理を決める』パターン用。",
+      "answer_structure に compound_remainder / remainder_ceil / remainder_floor / box_equation / two_step を追加。",
+      "kanji_policy.check_against を kyoiku_kanji_g1to3.json (fnshr/kyo-kan MEXT2017, CC0) に変更。g03配当200字を追加。",
+      "answer_formula で // と % を解禁(あまり計算)。条件式は不使用(切り上げは常に+1が成立するよう has_remainder 制約で保証)。",
+      "セッション2追加: fraction_display 機構(分子/分母スロット→整形文字列。fmt_fraction: 分子=分母で1、0で0)。",
+      "FORMATTERS に de追加(1/10単位整数→小数表示。小数部0なら整数表示)。",
+      "answer_structure に compound_compare / two_step_remainder_ceil を追加。",
+      "choices+choice_int スロット(整数の選択肢: おつり問題の500/1000円)対応。"
+    ],
+    "0.7.1": [
+      "検品修正(2026-08-04, まるこ+Fable): ①あまり切り上げ2ステップの語順を教科書順に(子どもが1れつに〜)",
+      "②求残(3けた)の動詞を語彙束縛(div_object_pairsにverb_use追加。あめ・りんご=配りました)",
+      "③どう物園→動物園(動は3年配当、交ぜ書き解消)",
+      "④重さの式: 複名数オペランドは変換行を先行(2kg300g=2300g)し式中の混在を解消",
+      "⑤□の式(わり算)に box_ne_quotient 制約追加",
+      "判定: 分配法則(和)の『それぞれ{n}つずつ』は混在助数詞(こ+本)への中立助数詞として正当、変更なし"
+    ]
+  },
+  "file_note": "残タスク(セッション3候補): 大きな数(数直線・図依存のためSVG連携で扱う)、小数のしくみ(数直線依存)、グラフ(図依存)、円と球/三角形(作図・図依存)、分数の1-m/n型、時間の計算、□の式の文章題化(わり算型)。図依存系はPandora本体のSVG生成パターン(確立済み)との連携設計が必要。"
+}
