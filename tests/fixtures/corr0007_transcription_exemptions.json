@@ -9,7 +9,8 @@
   "COMPOUND_UNIT_PRESERVE": "複合単位の非演算位保存は正解の構成要素(m/cm・L/dL・時/分など演算しない位が本文値のまま残る)。",
   "NOTATION_CONVERT": "表記変換は数値保存が定義(歩合・縮尺など、数値を保ったまま表記を変える操作)。",
   "COORD_DENOM": "既約分数の分母/座標値＝本文座標そのもの(交点・軸の座標が答えの構成要素。比の値と同構造)。",
-  "HOLD_REDESIGN": "保留・再設計待ち(制約が重い/値域再設計で解消予定。解消時に登録解除する暫定例外)。"
+  "HOLD_REDESIGN": "保留・再設計待ち(制約が重い/値域再設計で解消予定。解消時に登録解除する暫定例外)。",
+  "SELECTION_ANSWER": "答＝本文の提示値そのものを選ぶ/同定するのが学習内容(かずの大小比較・値の弁別)。jhs_c07_jiku_01と同性質。"
  },
  "exemptions": [
   {
@@ -325,6 +326,10 @@
    "pattern_id": "g06_graph_prop_read_01",
    "code": "HOLD_REDESIGN",
    "provisional": true
+  },
+  {
+   "pattern_id": "g01_kurabe_01",
+   "code": "SELECTION_ANSWER"
   }
  ]
 }

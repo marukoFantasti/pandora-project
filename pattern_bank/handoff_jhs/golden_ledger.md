@@ -57,3 +57,14 @@
 | jhs_c05 | 3a8a488e | a571bf63 | 3 |
 | jhs_c15 | 79d3ad90 | a1e38dba | 3 |
 | jhs_c18 | 5bda8385 | 5bda8385 | 1(★md5不変=g04同型・退化ケース3本golden未出現) |
+
+### 2026-08-12 g01配線(基準md5 20本目・配信OFF・統一遡及フェーズ④Part B)
+- g01(小1・加法/減法12パターン)を配置。まるこ検収済み(2026-08-12)。
+- **配信OFF**: pandora_main.html の BANK_FILES に登録(fetchして本番配信・パリティ/関門で網羅)しつつ、
+  DEPLOY_EXCLUDE_UNIT_PREFIXES=['g01_'] で PATTERN_UNIT_INDEX/allPatterns から除外→⚡自動点灯・経路A不可視。
+  除外リスト空なら現挙動バイト不変(既存19バンクのindex/allPatterns一致を実証)。需要時は接頭辞1行削除で解除。
+- 基準md5 20本目: g01 = ce14a1aa (golden PASS)。パリティ +12パターン×40(g01含め全224×40=8960サンプル一致)。
+- 恒等検算: tests/pattern_bank_g01_identity.js 全12パターン合格(36000本)。かな検査 漢字0(2400本)。
+  corr-0007「こたえ」マーカー動作確認(答え="こたえ N"→tail正)。
+- 例外: g01_kurabe_01 を SELECTION_ANSWER(新設・答＝提示値の選択が学習内容=大小比較)で登録。jhs_c07_jiku_01と同性質。
+- 20本目の基準md5一覧に g01 ce14a1aa を追加(他19本は前掲の新基準)。

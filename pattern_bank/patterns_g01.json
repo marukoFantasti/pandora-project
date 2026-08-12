@@ -1,0 +1,326 @@
+{
+ "schema_version": "1.0",
+ "grade": "g01",
+ "description": "g01薄層バンク(統一遡及⑥・2026-08-12裁可) 12パターン・図なし: くりあがりなし/ありのたしざん・くりさがりなし/ありのひきざん・3つのかず・10といくつ(合成/分解)・□のかず・文章題3種(あわせて/のこり/ちがい=三点セット最小適用)・かずくらべ(転記例外の設計上適用)。全かな+算用数字・分かち書き・「〜しましょう」調・こたえマーカー(かな)。唯一のネイティブ誕生学年=現行文化フルセット(転記排除の同値変形・構成保証・rationale同時記述)のリファレンス実装。図が本体の系(かぞえ・くらべ図・とけい)は低学年図kindとセットで第2波。配信は需要が出るまでOFF可。",
+ "answer_structures": [
+  "single"
+ ],
+ "shared_lexicon": {
+  "count_items": [
+   {"item": "りんご"},
+   {"item": "あめ"},
+   {"item": "おはじき"}
+  ]
+ },
+ "patterns": [
+  {
+   "pattern_id": "g01_add_nocarry_01",
+   "grade": "g01",
+   "unit_id": "g01_c01_u01",
+   "unit_name": "たしざん(1)",
+   "semantic_category": "くりあがりのないたしざん",
+   "semantic_note": "和≦9。a,b≧1で答＝本文値の一致が構造的に不可能(a+b>a∧a+b>b)=転記自動安全。",
+   "step_count": 1,
+   "operation": "a＋b(≦9)",
+   "answer_formula": "a1 + b1",
+   "slots": {
+    "a1": {"type": "int", "range": [1, 8]},
+    "b1": {"type": "int", "range": [1, 8]}
+   },
+   "value_constraints": [
+    {"rule": "no_carry", "expr": "a1 + b1 <= 9", "why": "くりあがりなしの領分(くりあがりは別パターン=1手筋1パターン)"}
+   ],
+   "sentence_templates": [
+    "つぎの けいさんを しましょう。\n{a1}+{b1}"
+   ],
+   "answer_template": "こたえ {ans}",
+   "kanji_policy": {"allowed_grades": ["g01"]},
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g01_add_carry_01",
+   "grade": "g01",
+   "unit_id": "g01_c01_u02",
+   "unit_name": "たしざん(2)",
+   "semantic_category": "くりあがりのあるたしざん",
+   "semantic_note": "和∈[11,18]。10のまとまりをつくる手筋。和>9≧a,bで転記自動安全。和＝10は合成(10といくつ)の領分のため除外。",
+   "step_count": 1,
+   "operation": "a＋b(11〜18)",
+   "answer_formula": "a1 + b1",
+   "slots": {
+    "a1": {"type": "int", "range": [2, 9]},
+    "b1": {"type": "int", "range": [2, 9]}
+   },
+   "value_constraints": [
+    {"rule": "carry", "expr": "a1 + b1 >= 11", "why": "くりあがりの発生保証(和＝10は10の合成の領分として除外)"}
+   ],
+   "sentence_templates": [
+    "つぎの けいさんを しましょう。\n{a1}+{b1}"
+   ],
+   "answer_template": "こたえ {ans}",
+   "kanji_policy": {"allowed_grades": ["g01"]},
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g01_sub_noborrow_01",
+   "grade": "g01",
+   "unit_id": "g01_c02_u01",
+   "unit_name": "ひきざん(1)",
+   "semantic_category": "くりさがりのないひきざん",
+   "semantic_note": "9以下どうし。a＝2bで答＝bの転記退化(6−3＝3型)を排除(g04 box系と同一手筋の1年生初適用)。",
+   "step_count": 1,
+   "operation": "a−b(a≦9)",
+   "answer_formula": "a1 - b1",
+   "slots": {
+    "a1": {"type": "int", "range": [3, 9]},
+    "b1": {"type": "int", "range": [1, 8]}
+   },
+   "value_constraints": [
+    {"rule": "positive", "expr": "a1 - b1 >= 1", "why": "答が正(0はかずの構成の別領分)"},
+    {"rule": "no_transcribe", "expr": "a1 != 2 * b1", "why": "転記型リーク排除(a＝2bだと答＝bで本文値の写し)"}
+   ],
+   "sentence_templates": [
+    "つぎの けいさんを しましょう。\n{a1}-{b1}"
+   ],
+   "answer_template": "こたえ {ans}",
+   "kanji_policy": {"allowed_grades": ["g01"]},
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g01_sub_borrow_01",
+   "grade": "g01",
+   "unit_id": "g01_c02_u02",
+   "unit_name": "ひきざん(2)",
+   "semantic_category": "くりさがりのあるひきざん",
+   "semantic_note": "被減数11〜18・真のくりさがり(一の位<減数)を構成保証。a≠2bの転記排除(12−6＝6型)。",
+   "step_count": 1,
+   "operation": "a−b(くりさがり)",
+   "answer_formula": "a1 - b1",
+   "slots": {
+    "a1": {"type": "int", "range": [11, 18]},
+    "b1": {"type": "int", "range": [2, 9]}
+   },
+   "value_constraints": [
+    {"rule": "borrow", "expr": "a1 % 10 <= b1 - 1", "why": "真のくりさがりの発生保証(一の位<減数)"},
+    {"rule": "no_transcribe", "expr": "a1 != 2 * b1", "why": "転記型リーク排除(a＝2bだと答＝b)"}
+   ],
+   "sentence_templates": [
+    "つぎの けいさんを しましょう。\n{a1}-{b1}"
+   ],
+   "answer_template": "こたえ {ans}",
+   "kanji_policy": {"allowed_grades": ["g01"]},
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g01_threenum_01",
+   "grade": "g01",
+   "unit_id": "g01_c03_u01",
+   "unit_name": "3つの かずの けいさん",
+   "semantic_category": "3つのかず(たして ひく)",
+   "semantic_note": "a＋b−cの1符号形固定(加減の他順は第2波)。転記排除3本: b≠c(答＝a)・a≠c(答＝b)・a＋b≠2c(答＝c)=同値変形群のフルセット初等適用。",
+   "step_count": 2,
+   "operation": "a＋b−c",
+   "answer_formula": "a1 + b1 - c1",
+   "slots": {
+    "a1": {"type": "int", "range": [2, 6]},
+    "b1": {"type": "int", "range": [2, 6]},
+    "c1": {"type": "int", "range": [1, 8]}
+   },
+   "value_constraints": [
+    {"rule": "mid_cap", "expr": "a1 + b1 <= 10", "why": "中間値≦10(1年生の暗算域)"},
+    {"rule": "positive", "expr": "a1 + b1 - c1 >= 1", "why": "答が正"},
+    {"rule": "no_transcribe_a", "expr": "b1 != c1", "why": "転記型リーク排除(b＝cだと答＝a)"},
+    {"rule": "no_transcribe_b", "expr": "a1 != c1", "why": "転記型リーク排除(a＝cだと答＝b)"},
+    {"rule": "no_transcribe_c", "expr": "a1 + b1 != 2 * c1", "why": "転記型リーク排除(a＋b＝2cだと答＝c)"}
+   ],
+   "sentence_templates": [
+    "つぎの けいさんを しましょう。\n{a1}+{b1}-{c1}"
+   ],
+   "answer_template": "こたえ {ans}",
+   "kanji_policy": {"allowed_grades": ["g01"]},
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g01_compose_01",
+   "grade": "g01",
+   "unit_id": "g01_c04_u01",
+   "unit_name": "20までの かず",
+   "semantic_category": "10といくつ(合成)",
+   "semantic_note": "10＋k。答(10＋k)はトークンとしてk・10と別値のため転記自動安全(小数対応トークンの恩恵)。",
+   "step_count": 1,
+   "operation": "10＋k",
+   "answer_formula": "10 + k1",
+   "slots": {
+    "k1": {"type": "int", "range": [1, 9]}
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "10と {k1}で いくつですか。"
+   ],
+   "answer_template": "こたえ {ans}",
+   "kanji_policy": {"allowed_grades": ["g01"]},
+   "answer_structure": "single",
+   "template_number_constants": [10]
+  },
+  {
+   "pattern_id": "g01_decompose_01",
+   "grade": "g01",
+   "unit_id": "g01_c04_u02",
+   "unit_name": "20までの かず",
+   "semantic_category": "10といくつ(分解)",
+   "semantic_note": "n＝10＋□。n∈[11,19]で答(n−10)はn・10と別トークン=転記自動安全。",
+   "step_count": 1,
+   "operation": "n−10",
+   "answer_formula": "n1 - 10",
+   "slots": {
+    "n1": {"type": "int", "range": [11, 19]}
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{n1}は 10と いくつですか。"
+   ],
+   "answer_template": "こたえ {ans}",
+   "kanji_policy": {"allowed_grades": ["g01"]},
+   "answer_structure": "single",
+   "template_number_constants": [10]
+  },
+  {
+   "pattern_id": "g01_box_add_01",
+   "grade": "g01",
+   "unit_id": "g01_c05_u01",
+   "unit_name": "□の かず",
+   "semantic_category": "□にはいるかず(たしざん)",
+   "semantic_note": "a＋□＝b。b≠2a(答＝a退化)=g04_box_add_01と同一制約を誕生日から装備(統一規約リファレンス実装の要)。",
+   "step_count": 1,
+   "operation": "a＋□＝b → □＝b−a",
+   "answer_formula": "b1 - a1",
+   "inverse_thinking": true,
+   "slots": {
+    "a1": {"type": "int", "range": [2, 9]},
+    "b1": {"type": "int", "range": [6, 18]}
+   },
+   "value_constraints": [
+    {"rule": "box_floor", "expr": "b1 - a1 >= 1", "why": "□が正"},
+    {"rule": "box_cap", "expr": "b1 - a1 <= 9", "why": "□が1けた(1年生域)"},
+    {"rule": "no_transcribe", "expr": "b1 != 2 * a1", "why": "転記型リーク排除(b＝2aだと□＝aで本文値の写し。g04box_addと同一)"}
+   ],
+   "sentence_templates": [
+    "□に はいる かずを かきましょう。\n{a1}+□={b1}"
+   ],
+   "answer_template": "こたえ {ans}",
+   "kanji_policy": {"allowed_grades": ["g01"]},
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g01_bunsho_awasete_01",
+   "grade": "g01",
+   "unit_id": "g01_c06_u01",
+   "unit_name": "たしざんの もんだい",
+   "semantic_category": "文章題(あわせて)",
+   "semantic_note": "求和。助数詞は音変化のない「こ」に統一(ほん/ぼん/ぽん問題の構造回避=かな正準の設計規約)。和>各項で転記自動安全。三点セット最小適用(成立性=個数域・恒等=和の再計算)。",
+   "step_count": 1,
+   "operation": "a＋b",
+   "answer_formula": "a1 + b1",
+   "slots": {
+    "it1": {"from": "count_items[j].item"},
+    "a1": {"type": "int", "range": [3, 9]},
+    "b1": {"type": "int", "range": [3, 9]}
+   },
+   "value_constraints": [
+    {"rule": "sum_cap", "expr": "a1 + b1 <= 15", "why": "1年生域の成立性"}
+   ],
+   "sentence_templates": [
+    "あかい {it1}が {a1}こ、しろい {it1}が {b1}こ あります。あわせて なんこ ありますか。"
+   ],
+   "answer_template": "こたえ {ans}こ",
+   "kanji_policy": {"allowed_grades": ["g01"]},
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g01_bunsho_nokori_01",
+   "grade": "g01",
+   "unit_id": "g01_c06_u02",
+   "unit_name": "ひきざんの もんだい",
+   "semantic_category": "文章題(のこり)",
+   "semantic_note": "求残。a≠2b(のこり＝たべた数の一致)排除。",
+   "step_count": 1,
+   "operation": "a−b",
+   "answer_formula": "a1 - b1",
+   "slots": {
+    "it1": {"from": "count_items[j].item"},
+    "a1": {"type": "int", "range": [5, 15]},
+    "b1": {"type": "int", "range": [2, 9]}
+   },
+   "value_constraints": [
+    {"rule": "positive", "expr": "a1 - b1 >= 1", "why": "のこりが正(成立性)"},
+    {"rule": "no_transcribe", "expr": "a1 != 2 * b1", "why": "転記型リーク排除(のこり＝たべた数)"}
+   ],
+   "sentence_templates": [
+    "{it1}が {a1}こ あります。{b1}こ たべました。のこりは なんこですか。"
+   ],
+   "answer_template": "こたえ {ans}こ",
+   "kanji_policy": {"allowed_grades": ["g01"]},
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g01_bunsho_chigai_01",
+   "grade": "g01",
+   "unit_id": "g01_c06_u03",
+   "unit_name": "ひきざんの もんだい",
+   "semantic_category": "文章題(ちがい)",
+   "semantic_note": "求差。a>b構成+a≠2b(ちがい＝少ない方の一致)排除。「どちらが なんこ おおい」連問形は第2波(答2欄)。",
+   "step_count": 1,
+   "operation": "a−b(a>b)",
+   "answer_formula": "a1 - b1",
+   "slots": {
+    "it1": {"from": "count_items[j].item"},
+    "a1": {"type": "int", "range": [5, 15]},
+    "b1": {"type": "int", "range": [2, 9]}
+   },
+   "value_constraints": [
+    {"rule": "order", "expr": "a1 >= b1 + 1", "why": "あか>あお固定(符号形テンプレ固定の求差版)"},
+    {"rule": "no_transcribe", "expr": "a1 != 2 * b1", "why": "転記型リーク排除(ちがい＝あおの個数)"}
+   ],
+   "sentence_templates": [
+    "あかい {it1}が {a1}こ、あおい {it1}が {b1}こ あります。ちがいは なんこですか。"
+   ],
+   "answer_template": "こたえ {ans}こ",
+   "kanji_policy": {"allowed_grades": ["g01"]},
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g01_kurabe_01",
+   "grade": "g01",
+   "unit_id": "g01_c04_u03",
+   "unit_name": "かずの おおきさ",
+   "semantic_category": "かずくらべ(どちらがおおきい)",
+   "semantic_note": "答＝本文値そのもの(選択)が学習内容=転記検査の設計上例外(jhs_c07_jiku_01と同族・要例外登録)。a≠bで弁別を実質化(jiku_01のp≠qと同型)。",
+   "step_count": 1,
+   "operation": "max(a，b)",
+   "answer_formula": "max(a1, b1)",
+   "slots": {
+    "a1": {"type": "int", "range": [6, 20]},
+    "b1": {"type": "int", "range": [6, 20]}
+   },
+   "value_constraints": [
+    {"rule": "discriminate", "expr": "a1 != b1", "why": "弁別の実質化(同数だと比較が成立しない)"}
+   ],
+   "sentence_templates": [
+    "{a1}と {b1}では、どちらが おおきいですか。"
+   ],
+   "answer_template": "こたえ {ans}",
+   "kanji_policy": {"allowed_grades": ["g01"]},
+   "answer_structure": "single",
+   "template_number_constants": []
+  }
+ ]
+}

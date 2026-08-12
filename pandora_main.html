@@ -1386,6 +1386,13 @@ var PATTERN_UNIT_INDEX = {};
 var PATTERN_BANK_LOAD_FAILED = false;
 // 単元選択UIで⚡マークを付けた（＝パターンバンク対応）unit_idの集合。requirement4の判定に使う。
 var MARKED_UNITS = {};
+// 配信OFF（加法）: BANK_FILESに載せてfetchしつつ、unit_id接頭辞が一致するパターンを
+// PATTERN_UNIT_INDEX/allPatternsから除外し⚡自動点灯・経路Aから外す。空配列なら現挙動バイト不変。
+// 需要が出たら該当接頭辞を1行削るだけで解除（例: g01 '加法'）。
+var DEPLOY_EXCLUDE_UNIT_PREFIXES = ['g01_'];
+function isDeployExcludedUnit(uid){
+  return DEPLOY_EXCLUDE_UNIT_PREFIXES.some(function(pre){ return typeof uid === 'string' && uid.indexOf(pre) === 0; });
+}
 function loadPatternBank(){
   if (PATTERN_BANK) return Promise.resolve(PATTERN_BANK);
   if (PATTERN_BANK_PROMISE) return PATTERN_BANK_PROMISE;
@@ -1394,7 +1401,8 @@ function loadPatternBank(){
   // 載せないことで実現する(ハードコード章リスト不要)。
   var BANK_FILES = ['pattern_bank/patterns_g02.json', 'pattern_bank/patterns_g03.json', 'pattern_bank/patterns_g04.json', 'pattern_bank/patterns_g05.json', 'pattern_bank/patterns_g06.json',
     'pattern_bank/patterns_jhs_c01.json', 'pattern_bank/patterns_jhs_c02.json', 'pattern_bank/patterns_jhs_c03.json', 'pattern_bank/patterns_jhs_c04.json', 'pattern_bank/patterns_jhs_c05.json',
-    'pattern_bank/patterns_jhs_c06.json', 'pattern_bank/patterns_jhs_c07.json', 'pattern_bank/patterns_jhs_c08.json', 'pattern_bank/patterns_jhs_c09.json', 'pattern_bank/patterns_jhs_c10.json', 'pattern_bank/patterns_jhs_c15.json', 'pattern_bank/patterns_jhs_c16.json', 'pattern_bank/patterns_jhs_c17.json', 'pattern_bank/patterns_jhs_c18.json'];
+    'pattern_bank/patterns_jhs_c06.json', 'pattern_bank/patterns_jhs_c07.json', 'pattern_bank/patterns_jhs_c08.json', 'pattern_bank/patterns_jhs_c09.json', 'pattern_bank/patterns_jhs_c10.json', 'pattern_bank/patterns_jhs_c15.json', 'pattern_bank/patterns_jhs_c16.json', 'pattern_bank/patterns_jhs_c17.json', 'pattern_bank/patterns_jhs_c18.json',
+    'pattern_bank/patterns_g01.json'];
   PATTERN_BANK_PROMISE = Promise.all(BANK_FILES.map(function(f){
     // 1つのバンク読み込み失敗が他方を巻き込まないよう、個別にcatchしてnull化する
     // （例: g03未デプロイでもg02経路Aは生きる）。
@@ -1413,6 +1421,7 @@ function loadPatternBank(){
       if (!item.bank) return;
       var lex = item.bank.shared_lexicon;
       (item.bank.patterns||[]).forEach(function(p){
+        if (isDeployExcludedUnit(p.unit_id)) return;   // 配信OFF: fetch済みだが索引化せず⚡・経路Aから除外
         allPatterns.push(p);
         addEntry(p.unit_id, { pattern: p, unitId: null, lex: lex });
         Object.keys(p.unit_range_overrides||{}).forEach(function(uid){ addEntry(uid, { pattern: p, unitId: uid, lex: lex }); });

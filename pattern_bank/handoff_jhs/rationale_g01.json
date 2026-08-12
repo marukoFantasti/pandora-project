@@ -1,0 +1,280 @@
+{
+  "_meta": {
+    "schema": "rationale_schema_spec.md v1.0",
+    "scope": "g01薄層バンク(12パターン・統一遡及⑥)",
+    "note": "唯一のネイティブ誕生学年。現行文化フルセット(転記排除同値変形・構成保証・rationale同時記述・corr-0007関門適合)で誕生する統一規約のリファレンス実装。共通設計判断: _shared.g01_kana_canon(かな文言正準=裁可対象)。"
+  },
+  "_shared": {
+    "g01_kana_canon": {
+      "representation": "【かな文言正準(裁可対象一式)】①文体=計算系「〜しましょう」・文章題「敬体疑問+句点終止」(〜ますか。/〜ですか。)。**境界確定(2026-08-12・g02実態調査による)**: 命令形「しなさい/求めなさい」への切替はg02から(計算系)、文章題の敬体疑問は全学年連続でg01も同形=正準の連続性が成立。②分かち書き=文節区切りに全角スペース(「つぎの けいさんを しましょう。」)。③表記=全ひらがな+算用数字(漢字ゼロ・kanji_policyはallowed_grades[g01]で機械保証)。④答えマーカー=「こたえ」(かな)。⑤助数詞=音変化のない「こ」に統一(ほん/ぼん/ぽん・ひき/びき/ぴきの音変化はテンプレ固定文化と衝突するため構造回避=かな正準の設計規約)。⑥数域=既習順に単元割(和≦9→くりあがり→20まで)。",
+      "constructive_guarantees": "転記排除の同値変形群を誕生日から全装備: a≠2b(ひきざん系・のこり・ちがい=答＝減数の退化)・b≠2a(□たしざん=g04box_addと同一)・3つのかずは3本併置(b≠c/a≠c/a＋b≠2c=答が各本文値と一致する全経路の閉鎖)。くりあがり/くりさがりは発生を制約で構成保証(和≧11・一の位<減数)。たしざん系は和>各項で転記が構造的に不可能(制約不要の自動安全)。",
+      "transcription_exemption": "g01_kurabe_01は答＝本文値の選択が学習内容そのもの(かずの大小比較)=転記検査の設計上例外。a≠b制約で弁別を実質化(jhs_c07_jiku_01のp≠qと同型)。corr0007_transcription_exemptions.jsonへ登録要(理由: 比較の選択答)。",
+      "harness_note": "corr-0007の答えマーカー検出は「答え」固定実装のため、(答え|こたえ)への拡張が配線前提(加法・既存出力不変)。ローカルストレスは拡張版で12パターン全緑・例外1件のみを実証済み(関門モード適合)。",
+      "exclusions_global": "図が本体の系(かぞえましょう・ながさ/かさくらべ図・とけい)は低学年図kind(統一遡及⑤: 数直線・時計盤・テープ図・おはじき配列)の実装とセットで第2波。0を含む計算(a−b＝0・0＋a)は「0のたしざんひきざん」として独立パターン化が要るため第2波。「どちらが なんこ おおい」連問(答2欄)・3つのかず他符号形(a−b＋c等)・20超のかずも第2波。",
+      "directives": [
+        {
+          "text": "統一規約を作るなら小1も作っておくべき(規約は境界で試す)",
+          "by": "marko",
+          "date": "2026-08-12"
+        },
+        {
+          "text": "g01薄層方針裁可(図なし10〜12・需要が出るまで配信OFF可・ひらがな正準裁可一式が主作業)",
+          "by": "marko",
+          "date": "2026-08-12"
+        },
+        {
+          "text": "g01の需要はまだない(需要と独立の規約検証・ゴールド標本目的で作る)",
+          "by": "marko",
+          "date": "2026-08-12"
+        },
+        {
+          "text": "g02文体調査(全文章題が敬体疑問・命令形は式問題のみ)を受けg01文体境界を確定",
+          "by": "marko",
+          "date": "2026-08-12"
+        }
+      ]
+    }
+  },
+  "rationales": {
+    "g01_add_nocarry_01": {
+      "brief": {
+        "grade": "g01",
+        "unit_id": "g01_c01_u01",
+        "unit_name": "たしざん(1)",
+        "semantic_territory": "くりあがりなし加法",
+        "number_domain": "和≦9",
+        "answer_structure": "single",
+        "figure": "なし",
+        "step_count": 1,
+        "directives_ref": "_shared.g01_kana_canon.directives"
+      },
+      "source_features": "加法の基底。1位数どうし・繰り上がりなし。",
+      "representation": "_shared正準準拠。「+」記号は算用数字と同格の既習記号。",
+      "constructive_guarantees": "和≦9制約(くりあがりは別パターン=1手筋1パターン文化)。和>各項で転記自動安全。",
+      "semantic_position": "g01の起点。add_carryと手筋で対。",
+      "exclusions": "0を含む加法は第2波(_shared参照)。3口はthreenumの領分。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "g01_add_carry_01": {
+      "brief": {
+        "grade": "g01",
+        "unit_id": "g01_c01_u02",
+        "unit_name": "たしざん(2)",
+        "semantic_territory": "くりあがり加法",
+        "number_domain": "和11〜18",
+        "answer_structure": "single",
+        "figure": "なし",
+        "step_count": 1,
+        "directives_ref": "_shared.g01_kana_canon.directives"
+      },
+      "source_features": "10のまとまりをつくる手筋。1年算数の山場。",
+      "representation": "_shared準拠。",
+      "constructive_guarantees": "和≧11でくりあがり発生を構成保証。和＝10は合成(compose)の領分として境界除外。",
+      "semantic_position": "nocarryの発展。sub_borrowと逆演算の対。",
+      "exclusions": "和＝10(10の合成)・3口くりあがりは第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "g01_sub_noborrow_01": {
+      "brief": {
+        "grade": "g01",
+        "unit_id": "g01_c02_u01",
+        "unit_name": "ひきざん(1)",
+        "semantic_territory": "くりさがりなし減法",
+        "number_domain": "9以下・差≧1",
+        "answer_structure": "single",
+        "figure": "なし",
+        "step_count": 1,
+        "directives_ref": "_shared.g01_kana_canon.directives"
+      },
+      "source_features": "減法の基底。",
+      "representation": "_shared準拠。",
+      "constructive_guarantees": "a≠2b転記排除(6−3＝3型で答＝減数)。差≧1(0は第2波)。",
+      "semantic_position": "加法との逆演算関係の入口。",
+      "exclusions": "差0・0をひく計算は第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "g01_sub_borrow_01": {
+      "brief": {
+        "grade": "g01",
+        "unit_id": "g01_c02_u02",
+        "unit_name": "ひきざん(2)",
+        "semantic_territory": "くりさがり減法",
+        "number_domain": "被減数11〜18・差1〜9",
+        "answer_structure": "single",
+        "figure": "なし",
+        "step_count": 1,
+        "directives_ref": "_shared.g01_kana_canon.directives"
+      },
+      "source_features": "10からひく手筋(減加法)。",
+      "representation": "_shared準拠。",
+      "constructive_guarantees": "一の位<減数で真のくりさがりを構成保証(11−1型の見かけ倒し排除)+a≠2b転記排除(12−6型)。",
+      "semantic_position": "add_carryの逆。g01計算系の完成点。",
+      "exclusions": "被減数19〜20は既習数域の端で第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "g01_threenum_01": {
+      "brief": {
+        "grade": "g01",
+        "unit_id": "g01_c03_u01",
+        "unit_name": "3つの かずの けいさん",
+        "semantic_territory": "3口混合(＋−)",
+        "number_domain": "中間≦10・答≧1",
+        "answer_structure": "single",
+        "figure": "なし",
+        "step_count": 2,
+        "directives_ref": "_shared.g01_kana_canon.directives"
+      },
+      "source_features": "左から順に計算する規則の獲得。",
+      "representation": "a＋b−cの1符号形固定(符号形テンプレ固定文化のg01初適用)。",
+      "constructive_guarantees": "転記排除3本併置(b≠c/a≠c/a＋b≠2c)=答が3つの本文値のどれとも一致しない全経路閉鎖。同値変形群のフルセット実演としてリファレンス価値が最大のパターン。",
+      "semantic_position": "計算系の統合点。",
+      "exclusions": "a−b＋c・a−b−c等の他符号形は第2波(1符号形1パターン)。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "g01_compose_01": {
+      "brief": {
+        "grade": "g01",
+        "unit_id": "g01_c04_u01",
+        "unit_name": "20までの かず",
+        "semantic_territory": "10といくつ(合成)",
+        "number_domain": "11〜19",
+        "answer_structure": "single",
+        "figure": "なし",
+        "step_count": 1,
+        "directives_ref": "_shared.g01_kana_canon.directives"
+      },
+      "source_features": "位取りの萌芽(10のまとまり+ばら)。",
+      "representation": "「10と {k}で」の定型句。定数10はTNC登録。",
+      "constructive_guarantees": "答(10＋k)はk・10と別トークン=転記自動安全(小数対応トークン仕様の恩恵を整数でも受ける例)。",
+      "semantic_position": "decomposeと双方向の対。add_carryの手筋の土台。",
+      "exclusions": "「10が2つと3」型(g02の位取りの領分)。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "g01_decompose_01": {
+      "brief": {
+        "grade": "g01",
+        "unit_id": "g01_c04_u02",
+        "unit_name": "20までの かず",
+        "semantic_territory": "10といくつ(分解)",
+        "number_domain": "11〜19",
+        "answer_structure": "single",
+        "figure": "なし",
+        "step_count": 1,
+        "directives_ref": "_shared.g01_kana_canon.directives"
+      },
+      "source_features": "合成の逆向き。",
+      "representation": "_shared準拠。",
+      "constructive_guarantees": "n∈[11,19]で答(n−10)はn・10と別トークン=転記自動安全。",
+      "semantic_position": "composeの逆。inverse_thinkingの最小形。",
+      "exclusions": "n＝20(答10が定数10と一致)は域から構造排除。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "g01_box_add_01": {
+      "brief": {
+        "grade": "g01",
+        "unit_id": "g01_c05_u01",
+        "unit_name": "□の かず",
+        "semantic_territory": "□にはいるかず(加法)",
+        "number_domain": "□1〜9",
+        "answer_structure": "single",
+        "figure": "なし",
+        "step_count": 1,
+        "directives_ref": "_shared.g01_kana_canon.directives"
+      },
+      "source_features": "逆思考(inverse_thinking)の入口。",
+      "representation": "a＋□＝b固定(□＋a＝bはg04と分担・第2波)。",
+      "constructive_guarantees": "b≠2a=**g04_box_add_01と同一制約を誕生日から装備**(g04では監査で後付けした制約。統一規約が新学年に最初から効く実証=リファレンス実装の要)。",
+      "semantic_position": "g04□系・jhs方程式への系譜の起点。",
+      "exclusions": "□−a＝b・a−□＝b(ひきざん□)は第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "g01_bunsho_awasete_01": {
+      "brief": {
+        "grade": "g01",
+        "unit_id": "g01_c06_u01",
+        "unit_name": "たしざんの もんだい",
+        "semantic_territory": "文章題(求和)",
+        "number_domain": "和≦15",
+        "answer_structure": "single",
+        "figure": "なし",
+        "step_count": 1,
+        "directives_ref": "_shared.g01_kana_canon.directives"
+      },
+      "source_features": "「あわせて」の演算決定。",
+      "representation": "助数詞「こ」統一(_shared正準⑤)+count_itemsレキシコン(全かな3種)。",
+      "constructive_guarantees": "三点セット最小適用: 成立性(個数域≦15)+恒等(和の再計算)。可除性は加法ゆえ不要。和>各項で転記自動安全。",
+      "semantic_position": "文章題3種(あわせて/のこり/ちがい)の求和担当。",
+      "exclusions": "「ふえるといくつ」(増加)は求和と場面が異なり第2波で独立パターン化。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "g01_bunsho_nokori_01": {
+      "brief": {
+        "grade": "g01",
+        "unit_id": "g01_c06_u02",
+        "unit_name": "ひきざんの もんだい",
+        "semantic_territory": "文章題(求残)",
+        "number_domain": "のこり1〜13",
+        "answer_structure": "single",
+        "figure": "なし",
+        "step_count": 1,
+        "directives_ref": "_shared.g01_kana_canon.directives"
+      },
+      "source_features": "「のこりは」の演算決定。",
+      "representation": "_shared準拠。",
+      "constructive_guarantees": "のこり≧1(成立性)+a≠2b(のこり＝たべた数の転記退化)。",
+      "semantic_position": "求残担当。",
+      "exclusions": "「なんこ たりない」(求補)は第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "g01_bunsho_chigai_01": {
+      "brief": {
+        "grade": "g01",
+        "unit_id": "g01_c06_u03",
+        "unit_name": "ひきざんの もんだい",
+        "semantic_territory": "文章題(求差)",
+        "number_domain": "ちがい1〜13",
+        "answer_structure": "single",
+        "figure": "なし",
+        "step_count": 1,
+        "directives_ref": "_shared.g01_kana_canon.directives"
+      },
+      "source_features": "「ちがいは」の演算決定(求残との弁別)。",
+      "representation": "あか>あお固定(符号形テンプレ固定の求差版)。",
+      "constructive_guarantees": "a>b構成+a≠2b(ちがい＝少ない方の転記退化)。",
+      "semantic_position": "求差担当。文章題3種の完備点。",
+      "exclusions": "「どちらが なんこ おおい」連問(答2欄)は第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    },
+    "g01_kurabe_01": {
+      "brief": {
+        "grade": "g01",
+        "unit_id": "g01_c04_u03",
+        "unit_name": "かずの おおきさ",
+        "semantic_territory": "かずくらべ",
+        "number_domain": "6〜20",
+        "answer_structure": "single",
+        "figure": "なし",
+        "step_count": 1,
+        "directives_ref": "_shared.g01_kana_canon.directives"
+      },
+      "source_features": "数の大小関係。答は与えられた2数からの選択。",
+      "representation": "max選択。",
+      "constructive_guarantees": "a≠b(弁別実質化)。**転記検査の設計上例外**(_shared.transcription_exemption・例外登録要)。例外機構の低学年初適用として、例外リスト方式が全学年で同一に機能する実証を兼ねる。",
+      "semantic_position": "かずの系列理解。図あり比較(ながさ・かさ)は第2波(低学年図kind)。",
+      "exclusions": "3数比較・「ちいさい ほうは」鏡像は第2波。",
+      "figure_notes": null,
+      "pedagogy": []
+    }
+  }
+}
