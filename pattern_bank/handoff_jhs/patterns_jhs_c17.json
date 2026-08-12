@@ -60,13 +60,18 @@
     },
     {
      "rule": "b_floor",
-     "expr": "(sqrt_coef(p1 * p1 + 4 * q1) - p1) // 2 >= 1",
-     "why": "正の解≧1"
+     "expr": "(sqrt_coef(p1 * p1 + 4 * q1) - p1) // 2 >= 2",
+     "why": "正の解≧1→≧2へ強化(解±1排除・片解1のとき他解＝定数項の転記退化・corr-0007トリアージ裁可 2026-08-12)"
     },
     {
      "rule": "a_cap",
      "expr": "(sqrt_coef(p1 * p1 + 4 * q1) + p1) // 2 <= 12",
      "why": "解の絶対値を暗算域に保つ"
+    },
+    {
+     "rule": "no_transcribe_p",
+     "expr": "(sqrt_coef(p1 * p1 + 4 * q1) - p1) // 2 != p1",
+     "why": "転記型リーク排除(正解＝pの一致⟺a＝2b・追加検出)"
     }
    ],
    "sentence_templates": [
@@ -147,8 +152,8 @@
     },
     {
      "rule": "b_floor",
-     "expr": "(d1 - sqrt_coef(d1 * d1 - 4 * q1)) // 2 >= 1",
-     "why": "b≧1(b＝0はq＝0退化)"
+     "expr": "(d1 - sqrt_coef(d1 * d1 - 4 * q1)) // 2 >= 2",
+     "why": "b≧1(b＝0はq＝0退化)→≧2へ強化(解±1排除・片解1のとき他解＝定数項の転記退化・corr-0007トリアージ裁可 2026-08-12)"
     }
    ],
    "sentence_templates": [
@@ -449,6 +454,11 @@
      "rule": "a_cap_lo",
      "expr": "s1 - q1 // s1 <= 12",
      "why": "a≧−12(正の量の不等式で表現)"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "q1 // s1 != 2 * s1",
+     "why": "転記型リーク排除(q/s＝2sで|a|＝s・corr-0007トリアージ裁可 2026-08-12)"
     }
    ],
    "sentence_templates": [

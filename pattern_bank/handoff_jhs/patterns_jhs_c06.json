@@ -315,6 +315,11 @@
      "rule": "no_transcribe_q",
      "expr": "r1 != q1",
      "why": "転記型リーク排除(r＝qだと答＝−pで本文値の写し)"
+    },
+    {
+     "rule": "no_transcribe_sq",
+     "expr": "p1 * q1 != r1 * r1",
+     "why": "転記型リーク排除(pq＝r²で答＝−r・同上)"
     }
    ],
    "sentence_templates": [
@@ -596,6 +601,16 @@
      "rule": "no_mirror_interval",
      "expr": "a1 != p1 * q1",
      "why": "a＝pqだとy域端点＝(p,q)となりx域の写しに見える退化(y域＝x域一致)の排除"
+    },
+    {
+     "rule": "no_transcribe_p",
+     "expr": "a1 != p1 * p1",
+     "why": "転記型リーク排除(a＝p²で端点＝変域端・corr-0007トリアージ裁可 2026-08-12)"
+    },
+    {
+     "rule": "no_transcribe_q",
+     "expr": "a1 != q1 * q1",
+     "why": "同(a＝q²)"
     }
    ],
    "sentence_templates": [
@@ -663,6 +678,16 @@
      "rule": "end_cap",
      "expr": "a1 * q1 <= 40",
      "why": "端点の暗算域"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "a1 * p1 != q1",
+     "why": "転記型リーク排除(端点aq…apが変域端qと一致)"
+    },
+    {
+     "rule": "no_transcribe_p1",
+     "expr": "p1 != 1",
+     "why": "転記型リーク排除(x＝1端点で端点＝係数aの構造一致)"
     }
    ],
    "sentence_templates": [
@@ -889,6 +914,11 @@
      "rule": "no_transcribe_v",
      "expr": "(v1 * t1) // u1 != v1",
      "why": "転記型リーク排除(答＝毎分vの一致を排除)"
+    },
+    {
+     "rule": "no_transcribe_sq",
+     "expr": "v1 * t1 != u1 * u1",
+     "why": "転記型リーク排除(vt＝u²で答＝u・トリアージ自己検出穴の修正)"
     }
    ],
    "sentence_templates": [

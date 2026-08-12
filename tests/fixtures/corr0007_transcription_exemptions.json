@@ -1,17 +1,330 @@
 {
- "_comment": "corr-0007 転記検査(表示答え∈本文スロット値)の正当な例外リスト。将来の統一corr-0007ハーネスが参照する。以後の例外はここに pattern_id+理由 を追記して恒久化する。",
+ "_comment": "corr-0007 転記検査(表示答えの数値∈本文の数値)の正当な例外リスト。理由コード体系(reason_codes)で登録。同コードの新規追加は既裁可運用(コード新設のみ裁可要)。provisional=true は暫定(再設計で解消時に登録解除)。統一遡及フェーズ③・トリアージ裁可2026-08-12。",
+ "reason_codes": {
+  "FRAC_PRESERVE": "分数の分母分子保存は正解の構成要素(同値変形・帯分数化・通分で分母/分子を保存するのが学習内容)。",
+  "RATIO_PRESERVE": "比の表現・比の値は本文値の写し/保存が正解(a:b や比の値の分母分子が本文値そのもの)。",
+  "PROB_IRREDUCIBLE": "確率の既約分数は場合の数・目の値など本文値由来が本質(分母分子が標本空間・事象の数)。",
+  "ROOT_PRESERVE": "根号の被開方数・簡約係数の保存は正解の構成要素(√の中身や係数が本文値そのもの)。",
+  "FORMULA_TRANSCRIBE": "立式・式答は本文値を式に写すことが学習内容(導出成分は既存制約で保護済み)。",
+  "COMPOUND_UNIT_PRESERVE": "複合単位の非演算位保存は正解の構成要素(m/cm・L/dL・時/分など演算しない位が本文値のまま残る)。",
+  "NOTATION_CONVERT": "表記変換は数値保存が定義(歩合・縮尺など、数値を保ったまま表記を変える操作)。",
+  "COORD_DENOM": "既約分数の分母/座標値＝本文座標そのもの(交点・軸の座標が答えの構成要素。比の値と同構造)。",
+  "HOLD_REDESIGN": "保留・再設計待ち(制約が重い/値域再設計で解消予定。解消時に登録解除する暫定例外)。"
+ },
  "exemptions": [
   {
    "pattern_id": "jhs_c07_jiku_01",
+   "code": "COORD_DENOM",
    "reason": "答＝本文のy座標が学習内容そのもの(座標の弁別・軸に平行な直線の式)。転記ではなく座標概念の完備点。rationale _shared.transcription_exemption 参照。"
   },
   {
    "pattern_id": "g04_frac_convert_01",
+   "code": "FRAC_PRESERVE",
    "reason": "帯分数化で分母を保存するのが正解そのもの(分母保存=同値変形の学習内容)。表示答えの分母が本文の分母と一致するのは構造的必然。"
   },
   {
    "pattern_id": "g04_frac_addsub_01",
+   "code": "FRAC_PRESERVE",
    "reason": "同分母分数の加減で分母を保存するのが正解そのもの。表示答えの分母が本文分母と一致するのは構造的必然。"
+  },
+  {
+   "pattern_id": "g03_frac_represent_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g03_frac_sub_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g03_frac_add_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g05_div_to_frac_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g05_frac_bai_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g05_frac_add_unlike_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g05_frac_sub_unlike_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g05_frac_mixed_add_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g05_frac_three_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g05_tsubun_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g06_frac_div_int_word_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g06_frac_x_int_word_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g06_frac_div_int_calc_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g06_frac_div_frac_word_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g06_frac_x_int_calc_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g06_frac_mixed_div_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g06_frac_x_frac_word_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g06_frac_div_frac_calc_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g06_frac_x_frac_calc_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g06_frac_three_ops_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g06_frac_mixed_x_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g06_frac_dec_x_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g06_frac_dec_div_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g06_frac_bai_frac_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "jhs_c01_frac_mul_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "jhs_c01_frac_div_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "jhs_c01_frac_add_01",
+   "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g06_hi_arawasu_01",
+   "code": "RATIO_PRESERVE"
+  },
+  {
+   "pattern_id": "g06_hi_atai_01",
+   "code": "RATIO_PRESERVE"
+  },
+  {
+   "pattern_id": "g06_hi_kantan_frac_01",
+   "code": "RATIO_PRESERVE"
+  },
+  {
+   "pattern_id": "g06_hi_whole_01",
+   "code": "RATIO_PRESERVE"
+  },
+  {
+   "pattern_id": "jhs_c10_ball_01",
+   "code": "PROB_IRREDUCIBLE"
+  },
+  {
+   "pattern_id": "jhs_c10_dice_01",
+   "code": "PROB_IRREDUCIBLE"
+  },
+  {
+   "pattern_id": "jhs_c10_dice_02",
+   "code": "PROB_IRREDUCIBLE"
+  },
+  {
+   "pattern_id": "jhs_c10_coin_01",
+   "code": "PROB_IRREDUCIBLE"
+  },
+  {
+   "pattern_id": "jhs_c16_add_01",
+   "code": "ROOT_PRESERVE"
+  },
+  {
+   "pattern_id": "jhs_c16_dist_01",
+   "code": "ROOT_PRESERVE"
+  },
+  {
+   "pattern_id": "jhs_c16_mixadd_01",
+   "code": "ROOT_PRESERVE"
+  },
+  {
+   "pattern_id": "jhs_c16_mul_01",
+   "code": "ROOT_PRESERVE"
+  },
+  {
+   "pattern_id": "jhs_c17_sq_01",
+   "code": "ROOT_PRESERVE"
+  },
+  {
+   "pattern_id": "jhs_c17_sq_02",
+   "code": "ROOT_PRESERVE"
+  },
+  {
+   "pattern_id": "jhs_c17_formula_01",
+   "code": "ROOT_PRESERVE"
+  },
+  {
+   "pattern_id": "g06_moji_shiki_01",
+   "code": "FORMULA_TRANSCRIBE"
+  },
+  {
+   "pattern_id": "g06_prop_shiki_01",
+   "code": "FORMULA_TRANSCRIBE"
+  },
+  {
+   "pattern_id": "g06_inv_shiki_01",
+   "code": "FORMULA_TRANSCRIBE"
+  },
+  {
+   "pattern_id": "jhs_c03_eq_01",
+   "code": "FORMULA_TRANSCRIBE"
+  },
+  {
+   "pattern_id": "jhs_c03_exp_01",
+   "code": "FORMULA_TRANSCRIBE"
+  },
+  {
+   "pattern_id": "jhs_c03_ineq_01",
+   "code": "FORMULA_TRANSCRIBE"
+  },
+  {
+   "pattern_id": "jhs_c03_rel_01",
+   "code": "FORMULA_TRANSCRIBE"
+  },
+  {
+   "pattern_id": "jhs_c03_exp_02",
+   "code": "FORMULA_TRANSCRIBE"
+  },
+  {
+   "pattern_id": "jhs_c02_form_01",
+   "code": "FORMULA_TRANSCRIBE"
+  },
+  {
+   "pattern_id": "jhs_c02_form_02",
+   "code": "FORMULA_TRANSCRIBE"
+  },
+  {
+   "pattern_id": "jhs_c07_katamuki_01",
+   "code": "FORMULA_TRANSCRIBE"
+  },
+  {
+   "pattern_id": "jhs_c07_heikou_01",
+   "code": "FORMULA_TRANSCRIBE"
+  },
+  {
+   "pattern_id": "jhs_c07_tsuten_01",
+   "code": "FORMULA_TRANSCRIBE"
+  },
+  {
+   "pattern_id": "jhs_c08_chusui_01",
+   "code": "FORMULA_TRANSCRIBE"
+  },
+  {
+   "pattern_id": "jhs_c08_dankai_01",
+   "code": "FORMULA_TRANSCRIBE"
+  },
+  {
+   "pattern_id": "jhs_c08_haisui_01",
+   "code": "FORMULA_TRANSCRIBE"
+  },
+  {
+   "pattern_id": "jhs_c15_fac_01",
+   "code": "FORMULA_TRANSCRIBE"
+  },
+  {
+   "pattern_id": "g02_meas_kasa_kyuzan_01",
+   "code": "COMPOUND_UNIT_PRESERVE"
+  },
+  {
+   "pattern_id": "g02_meas_kasa_gappei_01",
+   "code": "COMPOUND_UNIT_PRESERVE"
+  },
+  {
+   "pattern_id": "g02_meas_len_gappei_01",
+   "code": "COMPOUND_UNIT_PRESERVE"
+  },
+  {
+   "pattern_id": "g02_meas_len_kyusa_01",
+   "code": "COMPOUND_UNIT_PRESERVE"
+  },
+  {
+   "pattern_id": "g02_meas_longlen_gappei_01",
+   "code": "COMPOUND_UNIT_PRESERVE"
+  },
+  {
+   "pattern_id": "g03_meas_weight_gappei_01",
+   "code": "COMPOUND_UNIT_PRESERVE"
+  },
+  {
+   "pattern_id": "g05_buai_convert_01",
+   "code": "NOTATION_CONVERT"
+  },
+  {
+   "pattern_id": "g06_shukuzu_arawasu_01",
+   "code": "NOTATION_CONVERT"
+  },
+  {
+   "pattern_id": "g06_shukuzu_to_real_01",
+   "code": "NOTATION_CONVERT"
+  },
+  {
+   "pattern_id": "jhs_c06_kouten_01",
+   "code": "COORD_DENOM"
+  },
+  {
+   "pattern_id": "g05_lcm_word_clock_01",
+   "code": "COMPOUND_UNIT_PRESERVE"
+  },
+  {
+   "pattern_id": "g02_time_after_01",
+   "code": "COMPOUND_UNIT_PRESERVE"
+  },
+  {
+   "pattern_id": "jhs_c07_niten_01",
+   "code": "HOLD_REDESIGN",
+   "provisional": true
+  },
+  {
+   "pattern_id": "g05_heikin_reverse_01",
+   "code": "HOLD_REDESIGN",
+   "provisional": true
+  },
+  {
+   "pattern_id": "g06_graph_prop_read_01",
+   "code": "HOLD_REDESIGN",
+   "provisional": true
   }
  ]
 }

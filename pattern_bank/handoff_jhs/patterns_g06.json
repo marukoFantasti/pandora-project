@@ -320,6 +320,11 @@
      "rule": "b_gt_a",
      "expr": "b1 > a1 + 2",
      "why": "x=b-aを正かつ非自明(x>2)に保つ"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "b1 != 2 * a1",
+     "why": "転記型リーク排除(b＝2aで答＝a)"
     }
    ],
    "sentence_templates": [
@@ -421,6 +426,11 @@
      "rule": "x_nontrivial",
      "expr": "b1 // a1 > 3",
      "why": "x=1〜3の自明解を除外"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "b1 != a1 * a1",
+     "why": "転記型リーク排除(b＝a²で答＝a)"
     }
    ],
    "sentence_templates": [
@@ -534,6 +544,16 @@
      "rule": "x_nontrivial",
      "expr": "(b1 - c1) // a1 > 2",
      "why": "自明解を除外"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "b1 - c1 != a1 * a1",
+     "why": "転記型リーク排除(n−c＝a²)"
+    },
+    {
+     "rule": "no_transcribe_2",
+     "expr": "b1 - c1 != a1 * c1",
+     "why": "転記型リーク排除(b−c＝acで答＝c・追加検出)"
     }
    ],
    "sentence_templates": [
@@ -597,6 +617,11 @@
      "rule": "b_gt_c",
      "expr": "b1 > c1 + 50",
      "why": "x=b-cを正かつ実売価らしく保つ"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "b1 != 2 * c1",
+     "why": "同上"
     }
    ],
    "sentence_templates": [
@@ -2141,6 +2166,11 @@
      "rule": "divisible",
      "expr": "(v1 * a1) % b1 == 0",
      "why": "道のりを整数kmに保つ(割り切れの構成的保証)"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "v1 * a1 // b1 != b1",
+     "why": "転記型リーク排除(v＝bで道のり＝分母)"
     }
    ],
    "fraction_display": {
@@ -2826,6 +2856,16 @@
      "rule": "distinct",
      "expr": "p1 != q1",
      "why": "1:1を除外"
+    },
+    {
+     "rule": "no_transcribe_a",
+     "expr": "g1 * p1 != q1",
+     "why": "転記型リーク排除(本文gp＝答q)"
+    },
+    {
+     "rule": "no_transcribe_b",
+     "expr": "g1 * q1 != p1",
+     "why": "同(対称)"
     }
    ],
    "computed_slots": {
@@ -3453,6 +3493,11 @@
      "rule": "x_nontrivial",
      "expr": "w1 // k1 > 2",
      "why": "x=1,2の自明解を除外"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "w1 != k1 * k1",
+     "why": "転記型リーク排除(y＝a²)"
     }
    ],
    "sentence_templates": [
@@ -3563,6 +3608,11 @@
      "rule": "y_nontrivial",
      "expr": "s1 // v1 > 2",
      "why": "自明解を除外"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "s1 != v1 * v1",
+     "why": "同上"
     }
    ],
    "sentence_templates": [
@@ -3624,6 +3674,11 @@
      "rule": "x_nontrivial",
      "expr": "s1 // w1 > 2",
      "why": "自明解を除外"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "s1 != w1 * w1",
+     "why": "転記型リーク排除(k＝b²)"
     }
    ],
    "sentence_templates": [
@@ -4364,6 +4419,11 @@
      "rule": "h_range",
      "expr": "2 <= v1 // s1 <= 12",
      "why": "立体としてあり得る高さに保つ"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "v1 != s1 * s1",
+     "why": "転記型リーク排除(V＝S²で高さ＝底面積)"
     }
    ],
    "sentence_templates": [

@@ -1,0 +1,171 @@
+{
+ "_comment": "corr-0007 バッチ2で制約実装予定の暫定pending(未処理の転記退化バグ)。例外(legitimate)とは別管理。関門は非例外かつ非pendingの残差でのみFAILする。triage_ref=triage_corr0007_all.md §B該当行の制約案。バッチ2配線で制約が入り検出0になったら該当エントリを削除(消し込み)。空になったら本ファイルと機構を撤去(恒常在庫を作らない)。",
+ "approved": "まるこ裁可 2026-08-12 (統一遡及フェーズ③・オプション1)",
+ "pending": [
+  {
+   "pattern_id": "jhs_c01_asub_01",
+   "triage_section": "B/a=2b族",
+   "triage_ref": "a1 ≠ 2·b1"
+  },
+  {
+   "pattern_id": "jhs_c01_asub_02",
+   "triage_section": "B/a=2b族",
+   "triage_ref": "b1 ≠ 2·a1"
+  },
+  {
+   "pattern_id": "jhs_c01_asub_04",
+   "triage_section": "B/a=2b族",
+   "triage_ref": "a1 ≠ 2·b1"
+  },
+  {
+   "pattern_id": "jhs_c02_like_02",
+   "triage_section": "B/a=2b族",
+   "triage_ref": "a1 ≠ 2·b1"
+  },
+  {
+   "pattern_id": "jhs_c01_div_01",
+   "triage_section": "B/平方族",
+   "triage_ref": "|a1| ≠ b1²"
+  },
+  {
+   "pattern_id": "jhs_c01_div_02",
+   "triage_section": "B/平方族",
+   "triage_ref": "|a1| ≠ b1²"
+  },
+  {
+   "pattern_id": "jhs_c02_mono_div_01",
+   "triage_section": "B/平方族",
+   "triage_ref": "a1 ≠ b1²"
+  },
+  {
+   "pattern_id": "jhs_c01_tri_01",
+   "triage_section": "B/jhs計算系",
+   "triage_ref": "a1 ≠ b1(先頭2項同値の排除)"
+  },
+  {
+   "pattern_id": "jhs_c01_mix_01",
+   "triage_section": "B/jhs計算系",
+   "triage_ref": "答 ∉ 本文スロット(式は配線時確定)"
+  },
+  {
+   "pattern_id": "jhs_c01_mix_02",
+   "triage_section": "B/jhs計算系",
+   "triage_ref": "答 ∉ 本文スロット(式は配線時確定)"
+  },
+  {
+   "pattern_id": "jhs_c01_paren_div_01",
+   "triage_section": "B/jhs計算系",
+   "triage_ref": "答 ∉ 本文スロット(式は配線時確定)"
+  },
+  {
+   "pattern_id": "jhs_c01_paren_mul_01",
+   "triage_section": "B/jhs計算系",
+   "triage_ref": "答 ∉ 本文スロット(式は配線時確定)"
+  },
+  {
+   "pattern_id": "jhs_c01_pow_01",
+   "triage_section": "B/jhs計算系",
+   "triage_ref": "a1 ≠ b1²＋b1"
+  },
+  {
+   "pattern_id": "jhs_c01_pow_02",
+   "triage_section": "B/jhs計算系",
+   "triage_ref": "a1 ≠ b1²−b1"
+  },
+  {
+   "pattern_id": "jhs_c01_frac_mix_01",
+   "triage_section": "B/jhs計算系",
+   "triage_ref": "a−(b/c)·d ≠ d"
+  },
+  {
+   "pattern_id": "jhs_c02_subst_01",
+   "triage_section": "B/jhs計算系",
+   "triage_ref": "答 ∉ {係数,定数}"
+  },
+  {
+   "pattern_id": "jhs_c02_dist_01",
+   "triage_section": "B/jhs計算系",
+   "triage_ref": "展開後係数 ∉ 本文係数"
+  },
+  {
+   "pattern_id": "jhs_c02_dist_02",
+   "triage_section": "B/jhs計算系",
+   "triage_ref": "展開後係数 ∉ 本文係数"
+  },
+  {
+   "pattern_id": "jhs_c02_paren_01",
+   "triage_section": "B/jhs計算系",
+   "triage_ref": "展開後係数 ∉ 本文係数"
+  },
+  {
+   "pattern_id": "jhs_c02_ab_subst_01",
+   "triage_section": "B/jhs計算系",
+   "triage_ref": "展開後係数 ∉ 本文係数"
+  },
+  {
+   "pattern_id": "jhs_c04_move_01",
+   "triage_section": "B/方程式",
+   "triage_ref": "解 ∉ {係数4種}"
+  },
+  {
+   "pattern_id": "jhs_c04_move_02",
+   "triage_section": "B/方程式",
+   "triage_ref": "解 ∉ {係数4種}"
+  },
+  {
+   "pattern_id": "jhs_c04_paren_01",
+   "triage_section": "B/方程式",
+   "triage_ref": "|解| ∉ 係数"
+  },
+  {
+   "pattern_id": "jhs_c04_renritsu_01",
+   "triage_section": "B/方程式",
+   "triage_ref": "x,y ∉ {s1,s2}"
+  },
+  {
+   "pattern_id": "jhs_c04_ratio_01",
+   "triage_section": "B/方程式",
+   "triage_ref": "x ∉ {a,b,c}"
+  },
+  {
+   "pattern_id": "jhs_c04_coeff_back_01",
+   "triage_section": "B/方程式",
+   "triage_ref": "|a| ∉ {b,c,s}"
+  },
+  {
+   "pattern_id": "jhs_c05_kafusoku_01",
+   "triage_section": "B/方程式",
+   "triage_ref": "答 ∉ {配布数,余不足}"
+  },
+  {
+   "pattern_id": "jhs_c05_nenrei_01",
+   "triage_section": "B/方程式",
+   "triage_ref": "f1 ≠ 3·c1(f−2c＝c⟺f＝3c)"
+  },
+  {
+   "pattern_id": "jhs_c15_exp_01",
+   "triage_section": "B/展開因数分解",
+   "triage_ref": "a＋b ∉ {a,b} ∧ ab ∉ {a,b}"
+  },
+  {
+   "pattern_id": "jhs_c15_exp_02",
+   "triage_section": "B/展開因数分解",
+   "triage_ref": "b−a ∉ {a,b} ∧ ab ∉ {a,b}"
+  },
+  {
+   "pattern_id": "jhs_c15_fac_02",
+   "triage_section": "B/展開因数分解",
+   "triage_ref": "exp系と同型の排除"
+  },
+  {
+   "pattern_id": "jhs_c18_table_01",
+   "triage_section": "B/変域関数",
+   "triage_ref": "a ≠ 表のx写し値"
+  },
+  {
+   "pattern_id": "jhs_c05_kafusoku_02",
+   "triage_section": "ADDL",
+   "triage_ref": "§5新出(固定シード)・triage未収載。バッチ2でトリアージ→制約案確定"
+  }
+ ]
+}

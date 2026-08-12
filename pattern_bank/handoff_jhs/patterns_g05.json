@@ -806,6 +806,11 @@
      "rule": "change_pos",
      "expr": "m1 - n1 * d1 // 10 > 0",
      "why": "おつりが正になる"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "m1 - n1 * d1 // 10 != n1",
+     "why": "転記型リーク排除(おつり＝単価・追加検出)"
     }
    ],
    "sentence_templates": [
@@ -1208,6 +1213,21 @@
      "rule": "not_on_hour",
      "expr": "(t0 + lcm(a1, b1)) % 60 != 0",
      "why": "「何時何分」の問いと表示を整合させる"
+    },
+    {
+     "rule": "no_transcribe_a",
+     "expr": "(t0 + lcm(a1, b1)) % 60 != a1",
+     "why": "紛れ排除(答時刻の分＝周期a)"
+    },
+    {
+     "rule": "no_transcribe_b",
+     "expr": "(t0 + lcm(a1, b1)) % 60 != b1",
+     "why": "同(周期b)"
+    },
+    {
+     "rule": "quality_no_lap",
+     "expr": "lcm(a1, b1) != 60",
+     "why": "品質制約(周回一致で答分＝出発分の写しに見える)"
     }
    ],
    "sentence_templates": [
@@ -1429,6 +1449,11 @@
      "rule": "not_int",
      "expr": "num1 % den1 != 0",
      "why": "整数落ちを除外(真分数なので自明だが明示)"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "den1 // gcd(num1, den1) != num1",
+     "why": "転記型リーク排除(約分後の分母＝元の分子・4/16→1/4型)"
     }
    ],
    "sentence_templates": [
@@ -2319,6 +2344,26 @@
      "rule": "spread",
      "expr": "max(v1, v2, v3, v4) - min(v1, v2, v3, v4) >= 6",
      "why": "値にばらつきを持たせる"
+    },
+    {
+     "rule": "no_transcribe_1",
+     "expr": "(v1 + v2 + v3 + v4) // 4 != v1",
+     "why": "転記型リーク排除(平均＝データ値)"
+    },
+    {
+     "rule": "no_transcribe_2",
+     "expr": "(v1 + v2 + v3 + v4) // 4 != v2",
+     "why": "同"
+    },
+    {
+     "rule": "no_transcribe_3",
+     "expr": "(v1 + v2 + v3 + v4) // 4 != v3",
+     "why": "同"
+    },
+    {
+     "rule": "no_transcribe_4",
+     "expr": "(v1 + v2 + v3 + v4) // 4 != v4",
+     "why": "同"
     }
    ],
    "sentence_templates": [
@@ -3211,6 +3256,11 @@
      "rule": "m_range",
      "expr": "40 <= (c1 * 1000) // p1 <= 400",
      "why": "定員を現実的に保つ"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "(c1 * 1000) // p1 != p1 // 10",
+     "why": "転記型リーク排除(定員＝百分率値・n＝r²/100型)"
     }
    ],
    "sentence_templates": [
@@ -3484,6 +3534,11 @@
      "rule": "clean",
      "expr": "((c1 * 1000) // m1) % 10 == 0",
      "why": "u02段階では整数%に限定"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "(c1 * 1000) // m1 != m1 * 10",
+     "why": "転記型リーク排除(表示％＝もとの量mの一致⟺ans千分率＝10m・スケール修正済)"
     }
    ],
    "sentence_templates": [
@@ -4049,6 +4104,11 @@
      "rule": "beyond_table",
      "expr": "x1 > 4",
      "why": "表の先を問う(表の読み取り+規則の適用)"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "L1 != 4 * x1",
+     "why": "転記型リーク排除(周＝4xで答＝x)"
     }
    ],
    "sentence_templates": [
@@ -4270,7 +4330,13 @@
      "step": 2
     }
    },
-   "value_constraints": [],
+   "value_constraints": [
+    {
+     "rule": "no_transcribe",
+     "expr": "t1 != 60",
+     "why": "紛れ排除(頂角60°で底角＝頂角の正三角形退化)"
+    }
+   ],
    "sentence_templates": [
     "次の図の二等辺三角形は、頂角の大きさが{t1}°です。あの角度は何度ですか。"
    ],
@@ -4470,6 +4536,11 @@
      "rule": "h_range",
      "expr": "4 <= S1 // b1 <= 18",
      "why": "高さを現実的に保つ"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "S1 != b1 * b1",
+     "why": "転記型リーク排除(S＝b²で高さ＝底辺)"
     }
    ],
    "sentence_templates": [
@@ -4605,6 +4676,11 @@
      "rule": "h_range",
      "expr": "3 <= 2 * S1 // b1 <= 18",
      "why": "高さを現実的に保つ"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "2 * S1 != b1 * b1",
+     "why": "転記型リーク排除(2S＝b²)"
     }
    ],
    "sentence_templates": [
@@ -5094,6 +5170,21 @@
      "rule": "v_range",
      "expr": "8000 <= w1 * d1 * h1 <= 60000",
      "why": "容積8〜60Lの現実的な水そう"
+    },
+    {
+     "rule": "no_transcribe_w",
+     "expr": "w1 * d1 * h1 // 1000 != w1",
+     "why": "転記型リーク排除(容積L＝辺長)"
+    },
+    {
+     "rule": "no_transcribe_d",
+     "expr": "w1 * d1 * h1 // 1000 != d1",
+     "why": "同"
+    },
+    {
+     "rule": "no_transcribe_h",
+     "expr": "w1 * d1 * h1 // 1000 != h1",
+     "why": "同"
     }
    ],
    "sentence_templates": [
@@ -5188,6 +5279,21 @@
      "rule": "depth_ge",
      "expr": "VL * 1000 // (w1 * d1) >= 4",
      "why": "深さを現実的に保つ"
+    },
+    {
+     "rule": "no_transcribe_v",
+     "expr": "VL * 1000 // (w1 * d1) != VL",
+     "why": "転記型リーク排除(深さ＝容積L値)"
+    },
+    {
+     "rule": "no_transcribe_w",
+     "expr": "VL * 1000 // (w1 * d1) != w1",
+     "why": "同(深さ＝たて)"
+    },
+    {
+     "rule": "no_transcribe_d",
+     "expr": "VL * 1000 // (w1 * d1) != d1",
+     "why": "同(深さ＝よこ)"
     }
    ],
    "sentence_templates": [

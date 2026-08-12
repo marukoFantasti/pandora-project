@@ -369,6 +369,41 @@
      "rule": "hi_cap",
      "expr": "a1 * q1 - b1 <= 20",
      "why": "端点キャップ"
+    },
+    {
+     "rule": "nt_lo_p",
+     "expr": "b1 - a1 * p1 != p1",
+     "why": "転記型リーク排除(|下端|＝変域端p)"
+    },
+    {
+     "rule": "nt_lo_q",
+     "expr": "b1 - a1 * p1 != q1",
+     "why": "同(q)"
+    },
+    {
+     "rule": "nt_hi_p",
+     "expr": "a1 * q1 - b1 != p1",
+     "why": "同(上端＝p)"
+    },
+    {
+     "rule": "nt_hi_q",
+     "expr": "a1 * q1 - b1 != q1",
+     "why": "同(上端＝q)"
+    },
+    {
+     "rule": "nt_lo_a",
+     "expr": "b1 - a1 * p1 != a1",
+     "why": "転記型リーク排除(|下端|＝係数)"
+    },
+    {
+     "rule": "nt_hi_a",
+     "expr": "a1 * q1 - b1 != a1",
+     "why": "同(上端＝係数)"
+    },
+    {
+     "rule": "nt_hi_b",
+     "expr": "a1 * q1 - b1 != b1",
+     "why": "同(上端＝切片)"
     }
    ],
    "sentence_templates": [
@@ -461,6 +496,41 @@
      "rule": "lo_cap",
      "expr": "a1 * q1 - c1 <= 12",
      "why": "端点絶対値キャップ"
+    },
+    {
+     "rule": "nt_hi_p",
+     "expr": "c1 - a1 * p1 != p1",
+     "why": "転記型リーク排除(上端＝変域端p)"
+    },
+    {
+     "rule": "nt_hi_q",
+     "expr": "c1 - a1 * p1 != q1",
+     "why": "同(q)"
+    },
+    {
+     "rule": "nt_lo_p",
+     "expr": "a1 * q1 - c1 != p1",
+     "why": "同(|下端|＝p)"
+    },
+    {
+     "rule": "nt_lo_q",
+     "expr": "a1 * q1 - c1 != q1",
+     "why": "同(q)"
+    },
+    {
+     "rule": "nt_hi_a",
+     "expr": "c1 - a1 * p1 != a1",
+     "why": "転記型リーク排除(上端＝係数)"
+    },
+    {
+     "rule": "nt_lo_a",
+     "expr": "a1 * q1 - c1 != a1",
+     "why": "同(|下端|＝係数)"
+    },
+    {
+     "rule": "nt_lo_c",
+     "expr": "a1 * q1 - c1 != c1",
+     "why": "同(|下端|＝切片)"
     }
    ],
    "sentence_templates": [
@@ -684,6 +754,26 @@
      "rule": "no_confuse_t",
      "expr": "a1 * s1 - t1 != t1",
      "why": "紛れ排除(c1＝tだと本文値と答y座標が一致)"
+    },
+    {
+     "rule": "nt_s_a1",
+     "expr": "s1 != a1",
+     "why": "転記型リーク排除(交点x＝本文傾き)"
+    },
+    {
+     "rule": "nt_s_a2",
+     "expr": "s1 != a2",
+     "why": "同"
+    },
+    {
+     "rule": "nt_t_a1",
+     "expr": "t1 != a1",
+     "why": "同(交点y)"
+    },
+    {
+     "rule": "nt_t_a2",
+     "expr": "t1 != a2",
+     "why": "同"
     }
    ],
    "sentence_templates": [

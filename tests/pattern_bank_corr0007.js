@@ -4,8 +4,11 @@
 //   - 照合範囲: 最後の「答え」以降のみ(「しき」部は本文の数の再掲=学習内容のため対象外)
 //   - 例外: tests/fixtures/corr0007_transcription_exemptions.json(理由つき)
 // 2段モード:
-//   report(既定): 検出一覧を出力・即FAILしない(初回悉皆・トリアージ用)
-//   gate(--gate): 例外登録済み以外の検出0を要求。非空検出でFAIL(exit 1)
+//   report(既定・可変シード): 検出一覧を出力・即FAILしない(新出発見・トリアージ用)
+//   gate(--gate・固定シード3種×300本): v2.1本実装。非例外かつ非pendingの残差>0でFAIL(exit 1)
+//     - 例外(exemptions): legitimate(正解の構成要素)。理由コード制。
+//     - pending(batch2_pending): 未処理の転記退化バグでバッチ2で制約実装予定の暫定猶予。
+//       制約が入り検出0になったら消し込み(gateが提示)。空になったら機構撤去(gateが促す)。
 //
 // 実行:  node tests/pattern_bank_corr0007.js [samplesPerPattern] [--gate] [bankGlob]
 'use strict';
@@ -21,6 +24,10 @@ const N = Number(args.find(a => /^\d+$/.test(a)) || 200);
 const glob = args.find(a => !/^\d+$/.test(a) && a !== '--gate' && a !== '--json');
 
 const exempt = new Set(JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'corr0007_transcription_exemptions.json'), 'utf-8')).exemptions.map(e => e.pattern_id));
+// バッチ2で制約実装予定の暫定pending(未処理の転記退化)。例外(legitimate)とは別管理。空/不在なら空集合。
+const PENDING_PATH = path.join(__dirname, 'fixtures', 'corr0007_batch2_pending.json');
+const pendingList = fs.existsSync(PENDING_PATH) ? (JSON.parse(fs.readFileSync(PENDING_PATH, 'utf-8')).pending || []) : [];
+const pending = new Set(pendingList.map(e => e.pattern_id));
 
 const TOKEN = /\d+(?:\.\d+)?/g;                                   // 小数対応・両言語同一
 function nums(s) { return new Set((String(s).match(TOKEN) || [])); }
@@ -50,11 +57,52 @@ function provenanceOf(p) {
   return { slotNames, literal };
 }
 
+// 決定的PRNG(mulberry32)。関門モードは Math.random をこれに差し替えて固定シード化する。
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const GATE_SEEDS = [20260715, 20260812, 20260814];               // 固定シード3種(golden系20260715+裁可日+1)
+
+// 1パターンをN本走査。由来判定つき。呼び出し側で Math.random を固定/可変にする。
+function scanPattern(p, lex, prov, n) {
+  let hits = 0, residualHits = 0, example = null;
+  const tokOrigin = {};                                          // 値 -> {sawSlot, sawConst}
+  for (let i = 0; i < n; i++) {
+    let r; try { r = P.makeProblem(p, null, lex); } catch (e) { continue; }
+    const aNums = nums(answerTail(r.answer)), pNums = nums(r.problem);
+    const inter = [...aNums].filter(x => pNums.has(x));
+    if (!inter.length) continue;
+    hits++;
+    // 由来=文テンプレのプレースホルダに実際に代入された値の数値トークンのみ(env全体やanswer側dispは混ぜない)
+    const slotVals = new Set();
+    prov.slotNames.forEach(nm => { const v = r.env[nm]; if (v === undefined || v === null) return; (String(v).match(TOKEN) || []).forEach(t => slotVals.add(t)); });
+    let residualThis = 0;
+    for (const t of inter) {
+      const inSlot = slotVals.has(t), inConst = prov.literal.has(t);
+      const o = tokOrigin[t] || (tokOrigin[t] = { sawSlot: false, sawConst: false });
+      if (inSlot) o.sawSlot = true;
+      if (inConst && !inSlot) o.sawConst = true;
+      // v2.1: constant単独(inConst && !inSlot)のみ照合除外。slot/both/不明は残す(保守=バグ見逃し回避)
+      if (!(inConst && !inSlot)) residualThis++;
+    }
+    if (residualThis > 0) residualHits++;
+    if (!example) example = { problem: r.problem.replace(/\n/g, ' '), answer: r.answer, shared: inter };
+  }
+  return { hits, residualHits, tokOrigin, example };
+}
+
 const bankFiles = fs.readdirSync(path.join(ROOT, 'pattern_bank'))
   .filter(f => /^patterns_(g\d\d|jhs_c\d\d)\.json$/.test(f) && (!glob || f.indexOf(glob) >= 0)).sort();
 
-const detections = [];       // {grade, pid, hits, rate, example, exempt}
+const detections = [];       // {grade, pid, hits, rate, v2.1..., origin, example, exempt}
 let totalPat = 0;
+const GATE_N = 300;
+const realRandom = Math.random;
 for (const bf of bankFiles) {
   const grade = bf.replace(/^patterns_/, '').replace(/\.json$/, '');
   const bank = JSON.parse(fs.readFileSync(path.join(ROOT, 'pattern_bank', bf), 'utf-8'));
@@ -62,39 +110,33 @@ for (const bf of bankFiles) {
   for (const p of bank.patterns) {
     totalPat++;
     const prov = provenanceOf(p);
-    let hits = 0, example = null, residualHits = 0;               // residualHits: v2.1(constant単独除外)適用後も残る標本数
-    const tokOrigin = {};                                         // 値 -> {sawSlot, sawConst}
-    for (let i = 0; i < N; i++) {
-      let r; try { r = P.makeProblem(p, null, lex); } catch (e) { continue; }
-      const aNums = nums(answerTail(r.answer)), pNums = nums(r.problem);
-      const inter = [...aNums].filter(x => pNums.has(x));
-      if (!inter.length) continue;
-      hits++;
-      // 問題側で実際に置換された {slot} 値から数値トークンを抽出(複合表示 f1_disp="1/4" → 1,4 も拾う)
-      const slotVals = new Set();
-      prov.slotNames.forEach(nm => { const v = r.env[nm]; if (v === undefined || v === null) return; (String(v).match(TOKEN) || []).forEach(t => slotVals.add(t)); });
-      let residualThis = 0;
-      for (const t of inter) {
-        const inSlot = slotVals.has(t), inConst = prov.literal.has(t);
-        const o = tokOrigin[t] || (tokOrigin[t] = { sawSlot: false, sawConst: false });
-        if (inSlot) o.sawSlot = true;
-        if (inConst && !inSlot) o.sawConst = true;                 // 定数「のみ」由来
-        // v2.1: constant単独(inConst && !inSlot)のみ除外。slot/both/不明はすべて残す(保守=バグ見逃し回避)
-        if (!(inConst && !inSlot)) residualThis++;
+    let hits = 0, residualHits = 0, sampled = 0, example = null;
+    const tokOrigin = {};
+    if (gateMode) {
+      // 関門: 固定シード3種×300本(決定的)。v2.1残差(residual)を検出信号とする。
+      for (const seed of GATE_SEEDS) {
+        Math.random = mulberry32(seed);
+        const s = scanPattern(p, lex, prov, GATE_N);
+        Math.random = realRandom;
+        hits += s.hits; residualHits += s.residualHits; sampled += GATE_N;
+        for (const t of Object.keys(s.tokOrigin)) { const o = tokOrigin[t] || (tokOrigin[t] = { sawSlot: false, sawConst: false }); if (s.tokOrigin[t].sawSlot) o.sawSlot = true; if (s.tokOrigin[t].sawConst) o.sawConst = true; }
+        if (!example) example = s.example;
       }
-      if (residualThis > 0) residualHits++;
-      if (!example) example = { problem: r.problem.replace(/\n/g, ' '), answer: r.answer, shared: inter };
+    } else {
+      // レポート: 可変シード(実Math.random)×N本。新出発見のための悉皆探索。
+      const s = scanPattern(p, lex, prov, N);
+      hits = s.hits; residualHits = s.residualHits; sampled = N; tokOrigin2(tokOrigin, s.tokOrigin); example = s.example;
     }
     if (hits > 0) {
       const origin = {};
-      // slot(置換値由来)/constant(定数単独)/both。不明(どちらのフラグも立たず)は保守的に slot 扱い
       Object.keys(tokOrigin).forEach(t => { const o = tokOrigin[t]; origin[t] = (o.sawSlot && o.sawConst) ? 'both' : o.sawConst ? 'constant' : 'slot'; });
-      detections.push({ grade, pid: p.pattern_id, hits, rate: hits + '/' + N,
-        v2_1_residual: residualHits, v2_1_residual_rate: residualHits + '/' + N,
+      detections.push({ grade, pid: p.pattern_id, hits, rate: hits + '/' + sampled,
+        v2_1_residual: residualHits, v2_1_residual_rate: residualHits + '/' + sampled,
         tokens: Object.keys(origin), origin, example, exempt: exempt.has(p.pattern_id) });
     }
   }
 }
+function tokOrigin2(dst, src) { for (const t of Object.keys(src)) { const o = dst[t] || (dst[t] = { sawSlot: false, sawConst: false }); if (src[t].sawSlot) o.sawSlot = true; if (src[t].sawConst) o.sawConst = true; } }
 
 // 出力
 const byGrade = {};
@@ -146,9 +188,30 @@ if (jsonOut) {
   console.log('全件リスト出力: ' + path.relative(ROOT, outPath));
 }
 if (gateMode) {
-  console.log(nonExempt.length === 0 ? 'corr-0007 GATE: 非例外検出0 ✅' : 'corr-0007 GATE: ❌ 非例外検出 ' + nonExempt.length + '(' + nonExempt.map(d => d.pid).join(',') + ')');
-  process.exit(nonExempt.length === 0 ? 0 : 1);
+  // 関門判定=v2.1本実装: 非例外かつ非pendingかつ v2.1残差>0 のパターンが FAIL(constant単独は除外済)
+  const resid = nonExempt.filter(d => d.v2_1_residual > 0);
+  const fail = resid.filter(d => !pending.has(d.pid));           // pending(バッチ2予定)はFAIL対象外
+  const pendingHit = resid.filter(d => pending.has(d.pid));      // pendingで実際に残差あり=想定どおり
+  const detectedIds = new Set(detections.filter(d => d.v2_1_residual > 0).map(d => d.pid));
+  const staleP = pendingList.filter(e => !detectedIds.has(e.pattern_id));  // pendingだが検出0=制約済み→消し込め
+  console.log('\ncorr-0007 GATE [固定シード ' + GATE_SEEDS.join('/') + ' ×' + GATE_N + '本 / v2.1本実装]');
+  console.log('  例外(legitimate) ' + detections.filter(d => d.exempt).length + '件 / pending(バッチ2予定) ' + pending.size + '件');
+  // 恒常在庫防止: pendingが空になったら機構撤去を促す存在チェック
+  if (pendingList.length === 0 && fs.existsSync(PENDING_PATH)) {
+    console.log('  ⚠️ pending空: 恒常在庫防止のため ' + path.relative(ROOT, PENDING_PATH) + ' と本機構を撤去せよ(以後pendingを常設在庫化しない)。');
+  }
+  // 消し込み補助: バッチ2で制約が入り検出0になったpendingエントリを提示
+  if (staleP.length) {
+    console.log('  🧹 消し込み可(pendingだが検出0=制約済み・リストから削除せよ): ' + staleP.map(e => e.pattern_id).join(', '));
+  }
+  if (fail.length === 0) {
+    console.log('  非例外・非pendingの v2.1残差0 ✅' + (pendingHit.length ? ' (pending ' + pendingHit.length + '件は残差ありだが裁可済み猶予)' : ''));
+  } else {
+    console.log('  ❌ 非例外・非pending v2.1残差 ' + fail.length + 'パターン:');
+    fail.forEach(d => console.log('    ' + d.grade + ' ' + d.pid + ' 残' + d.v2_1_residual_rate + ' origin=' + JSON.stringify(d.origin)));
+  }
+  process.exit(fail.length === 0 ? 0 : 1);
 } else {
-  console.log('REPORTモード: 検出一覧のみ(即FAILしない)。トリアージ→制約追加/例外登録の後 --gate で関門化。');
+  console.log('REPORTモード(可変シード): 検出一覧のみ(即FAILしない)。新出はトリアージへ。関門は固定シードで --gate 実行。');
   process.exit(0);
 }
