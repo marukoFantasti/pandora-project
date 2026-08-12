@@ -219,6 +219,15 @@ def xy_graph_v2_clip(xmin, xmax, ymin, ymax, an, ad, bn, bd):
         if p not in seen: seen.add(p); pts.append(list(p))
     pts.sort(key=lambda p: (p[0], p[1]))
     return {"ends": [pts[0], pts[1]]}              # レンダラ側でサンプル残数≧2をassert
+# point label_pos の配置px(方位宣言=決定的配置)。斜め8px・直交10px・y +4(ベースライン補正)。JS v2LabelPos と同一。
+_V2_LABEL_DIRS = {
+    "ne": (8, -8), "nw": (-8, -8), "se": (8, 8), "sw": (-8, 8),
+    "n": (0, -10), "s": (0, 10), "e": (10, 0), "w": (-10, 0),
+}
+def xy_graph_v2_labelpos(xmin, xmax, ymin, ymax, xnum, xden, ynum, yden, dir):
+    px = xy_graph_v2_px(xmin, xmax, ymin, ymax, xnum, xden, ynum, yden)
+    dx, dy = _V2_LABEL_DIRS.get(dir, _V2_LABEL_DIRS["ne"])
+    return [px[0] + dx, px[1] + dy + 4]
 
 def dot_plot_geom(mn, mx, values):
     U = min(280 // (mx - mn), 26); count = {}; dots = []
@@ -258,6 +267,8 @@ GEOMS = {
     ]),
     # §4-3 lineクリップ: y=-2x+1 の view(-6..6,-6..6) 2端点
     "xy_graph_v2_clip": (xy_graph_v2_clip, [(-6, 6, -6, 6, -2, 1, 1, 1)]),
+    # label_pos 配置(検収#2): 点(2,3) の "e"(直交10px) と "se"(斜め8px)
+    "xy_graph_v2_labelpos": (xy_graph_v2_labelpos, [(-6, 6, -6, 6, 2, 1, 3, 1, "e"), (-6, 6, -6, 6, 2, 1, 3, 1, "se")]),
 }
 
 def make_vectors():

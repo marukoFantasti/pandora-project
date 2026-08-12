@@ -810,6 +810,13 @@
   var V2_W = 240, V2_H = 240;                 // プロット幅/高px(xmin→xmax / ymin→ymax)
   var V2_ARROW = 6, V2_TICK = 4, V2_HYP_SAMPLES = 64;   // 矢印px・目盛px・双曲線サンプル数/枝
   var V2_PT_DX = 8, V2_PT_DY = 8, V2_FLIP_MARGIN = 1;   // 点ラベルオフセットpx・反転マージン(view単位)
+  // label_pos(設計側が幾何を知って方位宣言・レンダラは決定的配置のみ)。斜め方位=8px・直交方位=10px。
+  // dx/dy=px(y下向き)、anc=text-anchor(right系=start / left系=end / 縦=middle)。未宣言時は既存(ne+端反転)。
+  var V2_LABEL_DIRS = {
+    ne: { dx: 8, dy: -8, anc: 'start' }, nw: { dx: -8, dy: -8, anc: 'end' }, se: { dx: 8, dy: 8, anc: 'start' }, sw: { dx: -8, dy: 8, anc: 'end' },
+    n: { dx: 0, dy: -10, anc: 'middle' }, s: { dx: 0, dy: 10, anc: 'middle' }, e: { dx: 10, dy: 0, anc: 'start' }, w: { dx: -10, dy: 0, anc: 'end' }
+  };
+  function v2LabelPos(px, dir) { var D = V2_LABEL_DIRS[dir] || V2_LABEL_DIRS.ne; return [px[0] + D.dx, px[1] + D.dy + 4]; }   // +4=textElと同じベースライン補正
   // 有理数[num,den]→プロット局所px。非等方(x,y独立)・決定的丸め1回(round-half-up=floor(v+0.5))。
   function v2px(v, xn, xd, yn, yd) {
     var px = Math.floor((xn - v.xmin * xd) * V2_W / (xd * (v.xmax - v.xmin)) + 0.5);
@@ -861,7 +868,7 @@
     lay.parts.push('<path d="M' + yT[0].toFixed(1) + ',' + yT[1].toFixed(1) + ' l-' + (V2_ARROW * 0.6).toFixed(1) + ',' + V2_ARROW + ' h' + (V2_ARROW * 1.2).toFixed(1) + ' z" fill="' + C_STROKE + '"/>');
     // 軸ラベル(任意テキスト・全角括弧単位そのまま)
     var axl = fp.axis_labels || {};
-    lay.parts.push(textEl(xR[0] + 12, xR[1] + 3, axl.x || 'x', 12, '#333'));
+    lay.parts.push(textEl(xR[0] + 20, xR[1] + 3, axl.x || 'x', 12, '#333'));   // 軸端+20px(検収調整: 最終目盛数値との近接回避で+8px外側へ)
     lay.parts.push(textEl(yT[0] + 2, yT[1] - 12, axl.y || 'y', 12, '#333'));
     // 目盛数値(0はO表記に譲る)
     for (var tx = v.xmin; tx <= v.xmax + 1e-9; tx += v.tick_x) { if (tx === 0) continue; var tp = Pn(tx, 1, 0, 1); lay.parts.push(lineEl([tp[0], ori[1] - V2_TICK / 2], [tp[0], ori[1] + V2_TICK / 2], C_STROKE, 1)); lay.parts.push(textEl(tp[0], ori[1] + 12, String(tx), 10, '#555')); }
@@ -906,11 +913,17 @@
         if (guides === 'y' || guides === 'both') lay.parts.push(lineEl(pp, [ori[0], pp[1]], C_TARGET, 1, '4,3'));
         lay.parts.push('<circle cx="' + pp[0].toFixed(1) + '" cy="' + pp[1].toFixed(1) + '" r="3.5" fill="' + C_TARGET + '"/>');
         if (el.label || el.show_coords) {
-          var flip = (xr >= v.xmax - V2_FLIP_MARGIN) || (yr >= v.ymax - V2_FLIP_MARGIN);   // 右端/上端近傍で左下反転
-          var lx = pp[0] + (flip ? -V2_PT_DX - 10 : V2_PT_DX + 4), ly = pp[1] + (flip ? V2_PT_DY + 8 : -V2_PT_DY);
           var txt = el.show_coords ? ('(' + v2ratStr(el.x) + '，' + v2ratStr(el.y) + ')') : el.label;
-          lay.parts.push(textEl(lx, ly, txt, 12, '#333'));
-          lay.pts.push([lx - 14, ly], [lx + 14, ly]);
+          if (el.label_pos) {   // 方位宣言=決定的配置(端反転なし)。設計側が幾何を知って宣言
+            var D = V2_LABEL_DIRS[el.label_pos] || V2_LABEL_DIRS.ne, lp = v2LabelPos(pp, el.label_pos);
+            lay.parts.push('<text x="' + lp[0].toFixed(1) + '" y="' + lp[1].toFixed(1) + '" text-anchor="' + D.anc + '" font-size="12" paint-order="stroke" stroke="#fff" stroke-width="3" fill="#333">' + esc(txt) + '</text>');
+            lay.pts.push([lp[0] - (D.anc === 'middle' ? 14 : (D.anc === 'end' ? 26 : 0)), lp[1]], [lp[0] + (D.anc === 'middle' ? 14 : (D.anc === 'start' ? 26 : 0)), lp[1]]);
+          } else {   // 既存: ne既定+右端/上端近傍で左下反転(label_pos未宣言時=バイト不変)
+            var flip = (xr >= v.xmax - V2_FLIP_MARGIN) || (yr >= v.ymax - V2_FLIP_MARGIN);
+            var lx = pp[0] + (flip ? -V2_PT_DX - 10 : V2_PT_DX + 4), ly = pp[1] + (flip ? V2_PT_DY + 8 : -V2_PT_DY);
+            lay.parts.push(textEl(lx, ly, txt, 12, '#333'));
+            lay.pts.push([lx - 14, ly], [lx + 14, ly]);
+          }
         }
       } else if (el.type === 'curve_label') {
         var cp = Pr(el.x, el.y);
@@ -1008,6 +1021,10 @@
     },
     xy_graph_v2_clip: function (xmin, xmax, ymin, ymax, an, ad, bn, bd) {
       return { ends: v2clip({ xmin: xmin, xmax: xmax, ymin: ymin, ymax: ymax }, an, ad, bn, bd) };
+    },
+    // point label_pos の配置px(方位宣言時の決定的配置。fig_geometry_reference.py と ±0.5px照合)
+    xy_graph_v2_labelpos: function (xmin, xmax, ymin, ymax, xnum, xden, ynum, yden, dir) {
+      return v2LabelPos(v2px({ xmin: xmin, xmax: xmax, ymin: ymin, ymax: ymax }, xnum, xden, ynum, yden), dir);
     }
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = FigureBuilder;
