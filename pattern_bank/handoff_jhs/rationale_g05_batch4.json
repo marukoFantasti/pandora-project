@@ -1,0 +1,194 @@
+{
+ "_meta": {
+  "schema": "rationale_g05_gold.json準拠(brief+rationale7区画)",
+  "scope": "rationale遡及 第4バッチ: g05割合系9件(統一遡及③・2026-08-12)",
+  "status": "AI下書き(Fable)・まるこ検収待ち。推定は文中明示。",
+  "audit_findings": "規約差分棚卸し: (1) 千分率整数(gold base_findのdirective・2026-06裁可)が9件全域の内部表現として一貫適用=体系裁可が末端まで貫通している好例。(2) p_dec(式中小数のcomputed文字列+js_formatterヒント)が3件で共通=goldに記述済みの二重整形機構。(3) percent_of_01は2026-08-12バッチ1で転記制約(スケール修正込み)追加済み。差分なし。"
+ },
+ "g05_ratio_find_01": {
+  "brief": {
+   "semantic_territory": "割合・第1用法(割合を求める)",
+   "number_domain": "千分率整数(0.05〜0.95・小数答)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {"text": "割合(くらべる量・もとにする量・割合)は新しい意味カテゴリ体系として設計、第3用法の難しさを構造に反映すること", "by": "marko", "date": "2026-06"},
+    {"text": "割合の内部表現は千分率整数(厘まで)で承認", "by": "marko", "date": "2026-06"}
+   ]
+  },
+  "rationale": {
+   "source_features": "3用法の第1(割合=くらべる量÷もとにする量)。小数で答えさせるのが百分率導入前の段階指定。",
+   "representation": "p=c×1000÷mの千分率整数(gold base_findと同一の内部表現)。表示はdec3(0.6・0.35等)。もとにする量mはchoices(200,250,...,2500)——1000との整除相性がよい数で受理率を確保。",
+   "constructive_guarantees": "千分率での割り切れ+割合域[0.05,0.95](第1用法段階では1未満に限定し「部分÷全体」の直観を保つ。100%超の直観破りはbase_find(gold)とpercent_ofが担う段階配置)。",
+   "semantic_position": "3カテゴリ体系(ratio_find第1/compare_find第2/base_find第3=gold)の第1位。難度勾配の起点。",
+   "exclusions": "百分率答は単元進行上u02(percent_of)へ。くらべる量>もとにする量は本形では除外(上記)。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_compare_find_01": {
+  "brief": {
+   "semantic_territory": "割合・第2用法(くらべる量を求める)",
+   "number_domain": "整数円(割合はdec3 choices)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {"text": "割合3用法は意味カテゴリ体系として設計・第3用法の難しさを構造に反映", "by": "marko", "date": "2026-06"}
+   ]
+  },
+  "rationale": {
+   "source_features": "第2用法(くらべる量=もと×割合)。順方向の乗法で3用法中もっとも素直な向き。",
+   "representation": "割合pはdec3のquantityでchoices(0.2〜0.8)。所持金はstep100の丸め。",
+   "constructive_guarantees": "(m×p)%1000=0で使った金額の整数確定。choicesとstep100の組合せでほぼ常時受理(0.25×step100は1/4で割り切れ等)。",
+   "semantic_position": "3カテゴリの第2位。zougen(1+pの発展形)の基底。",
+   "exclusions": "残額を問う形(m−c)は2段になりzougen系の領分。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_table_ratio_01": {
+  "brief": {
+   "semantic_territory": "割合の比較(表参照・こみぐあい)",
+   "number_domain": "千分率整数(0.3〜1.0・差の求差)",
+   "answer_structure": "comparison",
+   "figure": "table",
+   "step_count": 1,
+   "directives": [
+    {"text": "table kindはv0.9スコープに含める(B層)", "by": "marko", "date": "2026-06"}
+   ]
+  },
+  "rationale": {
+   "source_features": "2台のバスの定員・乗客数を表で与え、割合(乗車率)でこみぐあいを比較。第1用法×comparisonの合成で、「定員が違うから人数では比べられない」という割合の存在理由が問いになる。",
+   "representation": "comparison設計はgold unit_price_compareの写像(winner機械決定・求差ans)。定員はchoices(40,50,80)で千分率整除の相性を確保。",
+   "constructive_guarantees": "両者の割合確定(2本の可除性)+割合域[0.3,1.0](空気輸送も鮨詰め超過も除外)+引き分け除外+接戦制約。",
+   "semantic_position": "table3兄弟の割合担当(heikin=gold/unit/ratio)+comparison族の割合版。単位量のこみぐあい(table_unit)と「同じ比較を単位量で解くか割合で解くか」の対をなす——単元横断の視点が立つ配置。",
+   "exclusions": "百分率表示での比較は表示層だけの差で冗長。3台比較は答欄構造が別。",
+   "figure_notes": "table流用(2行2列)。table_unitと同一構図でセル意味(面積・羽数→定員・乗客)のみ差し替え。",
+   "pedagogy": []
+  }
+ },
+ "g05_pct_convert_01": {
+  "brief": {
+   "semantic_territory": "小数↔百分率の表示替え",
+   "number_domain": "千分率整数(0.005〜1.995・step5)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {"text": "割合の内部表現は千分率整数(厘まで)で承認", "by": "marko", "date": "2026-06"}
+   ]
+  },
+  "rationale": {
+   "source_features": "百分率導入の表示替え練習。0.35→35%の機械変換だが、0.5%(0.005)や150%(1.5)の端も踏ませる。",
+   "representation": "**同一の内部値p1に入口整形(dec3)と出口整形(percent_pm)を当てるだけ**の純表示替えパターン——千分率整数表現の設計意図(表示層の分離)が最も裸で見える。step5で0.1%単位の端数(35.5%等)も出る。",
+   "constructive_guarantees": "整数ちょうど(1.0・2.0)除外のみ。値の変換は恒等(内部値不変)なので棄却がほぼない。",
+   "semantic_position": "u02(百分率)の入口。buai_convert(歩合)と表示替えの対。",
+   "exclusions": "逆向き(%→小数)は同一機構の鏡像で情報量が薄く、percent_of等の文脈内で自然に踏むため独立化しない(推定)。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_buai_convert_01": {
+  "brief": {
+   "semantic_territory": "百分率↔歩合の表示替え",
+   "number_domain": "千分率整数(厘位あり・choices)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {"text": "割合の内部表現は千分率整数(厘まで)で承認", "by": "marko", "date": "2026-06"}
+   ]
+  },
+  "rationale": {
+   "source_features": "歩合(割・分・厘)の表記法。打率等の生活語彙と接続する日本固有の表示系。",
+   "representation": "入口percent_pm(12.5%)→出口buai_pm(1割2分5厘)。**厘=0.1%が千分率整数の第1位にちょうど対応**——「厘まで」の内部表現裁可(2026-06)はこのパターンが成立条件だったことが逆算できる。choicesは分・厘の埋まり方が多様になる15値の手選定(999=9割9分9厘の端も含む)。",
+   "constructive_guarantees": "10割ちょうど除外+p≧10(全桁0厘の自明を除外)。",
+   "semantic_position": "pct_convertの姉妹。転記検査は例外登録(NOTATION_CONVERT: 表記変換は数値保存が定義・6%→6分)。",
+   "exclusions": "歩合での計算(3割引の計算)は百分率側に統一(discount系)し、歩合は表記のみの扱い(教科書準拠・推定)。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_percent_of_01": {
+  "brief": {
+   "semantic_territory": "何%か(百分率で割合を求める)",
+   "number_domain": "千分率整数(5%〜250%・整数%限定)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {"text": "corr-0007トリアージ3点裁可(B制約の型カタログ・同型の機械展開はFable一任)", "by": "marko", "date": "2026-08-12"}
+   ]
+  },
+  "rationale": {
+   "source_features": "第1用法の百分率版。100%超(250%まで)を許容し「くらべる量>もと」の直観破りをここで踏ませる(ratio_findが1未満に限定した分担の相方)。",
+   "representation": "千分率整数をpercent_pm表示。整数%限定(ans%10=0)はu02段階の難度指定で、0.1%刻みはpct_convert側が担う。",
+   "constructive_guarantees": "可除性+%域[5,250]。**2026-08-12追加**: 表示%≠もとの量m(ans千分率≠10m)——16gは40gの何%→40%型の一致。初版制約がスケール取り違え(千分率400 vs 表示40)で素通りし、検証3巡目で修正した経緯つき(スケール整数の制約は表示スケールで書く、という教訓の出所)。",
+   "semantic_position": "ratio_find(小数答)→本件(百分率答)の表示進行。base_find(gold・逆算)の順方向。",
+   "exclusions": "0.1%刻み答は本形の整数%限定と相互排他(第2波で刻み拡張可)。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_base_find_discount_01": {
+  "brief": {
+   "semantic_territory": "割合・第3用法の発展(引き後からもとを逆算)",
+   "number_domain": "整数円(引率10〜40%)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 2,
+   "directives": [
+    {"text": "割合3用法は意味カテゴリ体系として設計・第3用法の難しさを構造に反映", "by": "marko", "date": "2026-06"}
+   ]
+  },
+  "rationale": {
+   "source_features": "p%引きの代金からもとのねだんを逆算。(1−p)を作ってから割る2段で、gold base_findの記述「発展形base_find_discountへ接続」の当該終点。3用法体系の最難関。",
+   "representation": "m=c×1000÷(1000−p)の千分率整数演算。しき欄「c÷(1−{p_dec})」のp_decは**computed文字列(Python)+js_formatterヒント(dec3)の二重整形**——式中に小数を出すためのgold記載機構の使用例。",
+   "constructive_guarantees": "(1000−p)での割り切れ+もとのねだん域[200,3000]。引率choices(10〜40%)は(1000−p)が900,800,750,700,600と整除相性のよい値になる選定。",
+   "semantic_position": "3用法体系の頂点(第3用法×引き算合成)。jhs方程式文章題(c05)の算数側最難到達点。",
+   "exclusions": "「何%引きか」の逆問いは割合を求める第1用法系に還元されるため別配置不要。増し(p%増しで買った)は非現実文脈で不採用。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_zougen_01": {
+  "brief": {
+   "semantic_territory": "増加(p%増えた後の量)",
+   "number_domain": "整数人(増率10〜50%)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 2,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "「去年よりp%増えた」の今年を求める。(1+p)倍の理解が主眼で、しき欄「n×(1+{p_dec})」がその式形を明示する。",
+   "representation": "answer_formulaはn+n·p/1000の加算分解(1000+pの合成乗算でなく)——増加分を先に整数確定させる形で、(n×p)%1000=0の1本に可除性を集約。n1はstep4(choicesの増率10/25/50%等との整除相性)。",
+   "constructive_guarantees": "増加分の整数確定のみ。答え>nが構造保証(増加)で転記筋なし。",
+   "semantic_position": "compare_find(第2用法)の発展形。discount(1−p)と符号の対。zougen_seq(2段)の部品。",
+   "exclusions": "減少版(p%減った)はdiscountが価格文脈で担うため人数文脈では不採用(1−pの重複回避・推定)。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_zougen_seq_01": {
+  "brief": {
+   "semantic_territory": "連続増加(p1%増→さらにp2%増)",
+   "number_domain": "整数人(2段とも整数確定)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 2,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "2年連続の増加。「増加率は足せない」(10%増→10%増≠20%増)という割合の乗法性が主眼の発展位。",
+   "representation": "1段目の結果(中間人数)を再帰的に同じ式形へ入れる素直な直列。pa_dec/pb_decの二重整形×2。",
+   "constructive_guarantees": "**中間値の整数確定も制約で保証**(div_first+div_second)——1段目が割り切れても2段目が割れないと中間の人数が非整数になる合成問題を、2本の可除性で両段とも閉じた設計。choices(10,20,25,50%)×step4は2段連続整除の受理率を経験的に確保した組(推定)。",
+   "semantic_position": "割合クラスタの終点(合成の深さ最大)。jhs c03/c05の複利風文章題の算数側先祖。",
+   "exclusions": "増→減の混合(p%増えてq%減る)は「もとに戻らない」誤概念指導の別形で、答えの直観が壊れやすく人間検収系寄り(不採用・推定)。3段連続は数値が現実域を出る。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ }
+}

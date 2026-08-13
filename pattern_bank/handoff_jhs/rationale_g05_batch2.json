@@ -1,0 +1,263 @@
+{
+ "_meta": {
+  "schema": "rationale_g05_gold.json準拠(brief+rationale7区画)",
+  "scope": "rationale遡及 第2バッチ: g05小数計算系13件(統一遡及③・2026-08-12)",
+  "status": "AI下書き(Fable)・まるこ検収待ち。第1バッチ検収済みの型を踏襲。推定は文中明示。",
+  "audit_findings": "規約差分棚卸し: (1) 本クラスタはquantity_slots(スケール整数)の主戦場で、内部整数演算・浮動小数不使用の規約に全13件適合。(2) 「〜を真に小数にする」(x%10≠0)の排除制約が全パターンに一貫=退化排除文化の先行形。(3) dec_riyou_01は2026-08-12トリアージで転記制約追加済み。差分なし。"
+ },
+ "g05_dec_shift_up_01": {
+  "brief": {
+   "semantic_territory": "小数の位取りシフト(×10/100/1000)",
+   "number_domain": "dec2(スケール100整数)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "小数のしくみ単元の導入。10倍で小数点が右へ動くことの機械的確認。",
+   "representation": "内部はスケール100整数で、×10/×100/×1000は整数乗算そのもの——位取りシフトが「スケール整数に何も起きない」演算として実装される、スケール表現の利点が最も純粋に出るパターン。末尾ゼロ省略(12.30→12.3)はdec2整形が担う。",
+   "constructive_guarantees": "被乗数の整数落ち除外(a%100≠0)で「小数を扱った」実感を保証。制約はこれ1本で棄却が軽い。",
+   "semantic_position": "小数計算系列(シフト→×→÷)の起点。shift_down(逆向き)と対。",
+   "exclusions": "×10000以上は5年の位の範囲外周。答えが整数化するケースは真に小数制約が同時に防ぐ(1.30×10=13は出る——これは正しい仕様で、13.0でなく13と書けるかも学習内容)。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_dec_shift_down_01": {
+  "brief": {
+   "semantic_territory": "小数の位取りシフト(1/10・1/100)",
+   "number_domain": "dec3(スケール1000整数・step100)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "シフトの下方向。1/100で第3位まで降りるため、上方向より1桁深い位の理解を要求。",
+   "representation": "内部はスケール1000整数(dec1相当値×100をstep100レンジで持つ)。1/10・1/100は整数除算だが、step100の値域設計により**割り切れが構造保証**される(range+stepで可除性を範囲レベルに畳み込み、制約を消した設計)。",
+   "constructive_guarantees": "割り切れ制約が不要(上記)。整数落ち除外(a%1000≠0)のみ。",
+   "semantic_position": "shift_upの鏡像。dec3スケールの数少ない使用例(推定: 第3位はこのパターンのために導入され、他は dec1/dec2 で足りた)。",
+   "exclusions": "1/1000は答えが第4位に達し5年表示範囲を超える。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_int_x_dec_calc_01": {
+  "brief": {
+   "semantic_territory": "整数×小数の純計算",
+   "number_domain": "整数×dec1→dec1",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "小数乗法の導入(乗数が小数)。筆算の位取り決定が学習目標。",
+   "representation": "積はn×d(スケール10整数)のままdec1整形——スケールが乗算で保存される(10×1=10)ため変換が不要。",
+   "constructive_guarantees": "乗数の整数落ち除外(d%10≠0)。n[12,39]×d[1.1,4.9]で積が2桁台に収まり筆算1枚に載る。",
+   "semantic_position": "計算系列(整数×小数→小数×小数→整数÷小数→小数÷小数)の1番目。gold(int_div_dec_calc)の系列記述と接続。",
+   "exclusions": "乗数が1未満(積<被乗数の直観破り)はdec_x_dec側に委ね、本形は1超に限定(推定: 段階配置)。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_int_x_dec_word_01": {
+  "brief": {
+   "semantic_territory": "整数×小数の文章題(単価×長さ)",
+   "number_domain": "整数円×dec1 m→整数円",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "1mあたりn円をd m買う代金。小数量に単価を掛ける場面の代表。",
+   "representation": "積のスケール解消(n×d÷10)で答えを整数円に落とす。length_goodsレキシコンのj束縛で品目と単位(m等)の対応を保証。",
+   "constructive_guarantees": "整数円制約((n×d)%10=0)——金額に銭を出さない現実性が可除性制約の形を取る。単価はstep10で丸めた現実価格。",
+   "semantic_position": "int_x_dec_calcの文脈版。calc/wordの対は本クラスタの基本配置(4演算×2)。",
+   "exclusions": "おつりまで問う2段はdec_riyou_01の領分(1手筋1パターン)。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_dec_x_dec_calc_01": {
+  "brief": {
+   "semantic_territory": "小数×小数の純計算",
+   "number_domain": "dec1×dec1→dec2",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "小数どうしの乗法。積の小数点位置(桁数の和)が学習目標。",
+   "representation": "スケール10×10→100の積をdec2整形——「小数第1位どうしの積は第2位」という学習内容がスケール算(10×10=100)と同型になる、表現と教材の一致点。末尾ゼロ省略(12.00→12)も整形側。",
+   "constructive_guarantees": "両因子の整数落ち除外。積のレンジは因子レンジ([1.1,9.9]²)が自然に抑える(制約なし)。",
+   "semantic_position": "計算系列の2番目。rect_area_dec(図形文脈)・dec_x_dec_word(量文脈)の計算基底。",
+   "exclusions": "積が末尾ゼロで整数化するケース(2.5×4.0系)は乗数整数落ち除外が半分防ぐが、2.5×0.4=1.00型は残る——これは仕様(末尾ゼロ省略の学習)であり除外しない。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_dec_x_dec_word_01": {
+  "brief": {
+   "semantic_territory": "小数×小数の文章題(単位量×かさ)",
+   "number_domain": "dec1×dec1→dec2 kg",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "1Lあたりa kgのb L分の重さ。単位量あたり(c08)の前史を小数乗法で先取りする定番文脈。",
+   "representation": "液体レキシコン。a[1.1,2.9](比重らしい値域)×b[1.1,4.9](かさ)の現実性設計。",
+   "constructive_guarantees": "両因子の整数落ち除外のみ。比重域の絞りが答え(重さ)の現実性を自動確保。",
+   "semantic_position": "dec_x_dec_calcの文脈版。単位量あたり単元(unit_weight等)への概念的接続点。",
+   "exclusions": "「1Lあたりを求める」逆向きはdec_div_dec_wordの領分。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_rect_area_dec_01": {
+  "brief": {
+   "semantic_territory": "小数辺の長方形の面積",
+   "number_domain": "dec1辺→dec2 cm²",
+   "answer_structure": "single",
+   "figure": "rect_area",
+   "step_count": 1,
+   "directives": [
+    {"text": "angle_sumで確立した配置原則——ラベルは自要素束縛、可動は半径・フォントのみ、全域機械スキャン——に従うこと。図と本文は同一envから駆動", "by": "marko", "date": "2026-06"}
+   ]
+  },
+  "rationale": {
+   "source_features": "既習の面積公式を小数辺に拡張。「小数×小数が面積で意味を持つ」ことの図的裏づけ。",
+   "representation": "rect_area kind(v0.8実装済み)に小数辺: 寸法ラベルはdec1表示文字列のスロット参照(w1_disp/h1_disp)で、図と本文が同一envから駆動され食い違いが構造的に不能。",
+   "constructive_guarantees": "両辺の整数落ち除外+正方形除外(w≠h・長方形の定義を保つ)。辺[2.1,9.8]で図のアスペクト比が極端にならない(推定: rect_areaレンダラの寸法適応範囲に合わせた値域)。",
+   "semantic_position": "dec_x_dec_calcの図形文脈版。g04のrect_area(整数辺)の小数拡張で、同一kindの学年間再利用の例。",
+   "exclusions": "面積から辺の逆算(dec除法)はpara_height等の図形逆算群と同じ第2波側の配置(5年当時のスコープ判断・推定)。",
+   "figure_notes": "rect_area流用(show_dims)。寸法文字列はdisp参照のみで数値直書きなし。アスペクト極端化は値域で防止(builderを歪めずバンク値域で表現する原則の適用)。",
+   "pedagogy": []
+  }
+ },
+ "g05_int_div_dec_word_01": {
+  "brief": {
+   "semantic_territory": "整数÷小数の文章題(代金÷長さ)",
+   "number_domain": "整数円÷dec1 m→整数円",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {"text": "異分母分数でgcd/lcmヘルパが要るはず。整数演算実装+シード非依存の等価性ベクター必須(v0.8の縛りと同じ)", "by": "marko", "date": "2026-06"}
+   ]
+  },
+  "rationale": {
+   "source_features": "d m買ってn円→1mのねだん。除数が小数の除法を「単価を求める」場面で意味づける。gold(int_div_dec_calc)の文脈版。",
+   "representation": "n×10÷dの内部整数演算(goldと同一)。除数dはchoices(12,15,16,24,25,32,35,45,48)——goldの「レンジ乱択だと棄却過多、choicesで受理率確保」の判断をそのまま踏襲。",
+   "constructive_guarantees": "割り切れ((n×10)%d=0)+単価域40〜400円の現実性。除数の整数落ち除外。",
+   "semantic_position": "goldの対(calc/word)。dec_riyou(2段)の部品。",
+   "exclusions": "商が小数になる形はdec_div_dec側(答えの型で系列分担)。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_dec_div_dec_calc_01": {
+  "brief": {
+   "semantic_territory": "小数÷小数の純計算",
+   "number_domain": "dec1÷dec1→dec2",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {"text": "gcd/lcmは整数演算実装+シード非依存の等価性ベクター必須", "by": "marko", "date": "2026-06"}
+   ]
+  },
+  "rationale": {
+   "source_features": "計算系列の最終形。除数・被除数とも小数で、10倍して整数除法へ帰着する手続きの完成。",
+   "representation": "a×100÷bの内部整数演算で商をスケール100(dec2)に確定。除数choicesはgold系列と同じ受理率設計(素な除数を避けた合成数列)。",
+   "constructive_guarantees": "(a×100)%b=0で商の有限確定+商域[1.05,9.95]+**商の整数落ち除外**((商)%100≠0)——被除数・除数だけでなく商まで「真に小数」を要求する三重の退化排除で、単元の趣旨(小数の商)を全域保証。",
+   "semantic_position": "計算系列の4番目(終点)。goldの記述「小数÷小数がスケール100へ拡張する布石」の回収先。",
+   "exclusions": "あまりのある小数除法(商を四捨五入)は丸め正準の裁可が要る別形(c09と同じ保留系)。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_dec_div_dec_word_01": {
+  "brief": {
+   "semantic_territory": "小数÷小数の文章題(重さ÷長さ)",
+   "number_domain": "dec1÷dec1→dec2 kg",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "b mでa kg→1mの重さ。単位量を求める除法の場面化。",
+   "representation": "dec_div_dec_calcと同一機構+heavy_objectsレキシコン(パイプ・ホース等、mあたりkgが立つ物)。",
+   "constructive_guarantees": "割り切れ+単位量域[1.05,4.95]kg/mの現実性(重すぎる棒を除外)。",
+   "semantic_position": "calc版の文脈対。unit_weight(単位量あたり単元)と場面が重なるが、あちらは整数、こちらは小数商で数域分担。",
+   "exclusions": "商整数落ち除外はcalc版と違い置いていない——単位量が整数kgに落ちても文章題としては自然なため(推定: calc版は「小数の商」の練習、word版は「場面の解決」で趣旨が異なる)。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_dec_riyou_01": {
+  "brief": {
+   "semantic_territory": "小数乗法の利用(おつり)",
+   "number_domain": "整数円(代金整数保証)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 2,
+   "directives": [
+    {"text": "corr-0007トリアージ3点裁可(B制約の型カタログ・同型の機械展開はFable一任)", "by": "marko", "date": "2026-08-12"}
+   ]
+  },
+  "rationale": {
+   "source_features": "単価×小数量→出したお金からおつり。乗法を部品にした2段構成で、単元の利用位。",
+   "representation": "しき欄が「{n1}×{d1_disp}、{m1}−(代金)」の2式列挙——中間値(代金)を答えテンプレに数値で出さず手続き名で参照する型(推定: 中間値のverify照合を避ける設計)。出したお金はchoices(500,1000)の現実丸め。",
+   "constructive_guarantees": "整数円+おつり正(成立性)。**2026-08-12追加**: おつり≠単価(m−nd/10≠n)——固定シード外の可変シード探索で新出した転記筋(500円出して単価200円・おつり200円型)の排除。",
+   "semantic_position": "int_x_dec_wordの2段拡張。クラスタ唯一のstep_count2。",
+   "exclusions": "「あと何円足りないか」(不足側)は答えの符号場面が変わる別形。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_dec_bai_ratio_01": {
+  "brief": {
+   "semantic_territory": "何倍か(小数倍)",
+   "number_domain": "dec1÷dec1→dec2倍(1.05〜3.95)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "「aはbの何倍」を小数で答える。割合(第1用法)の前史として、倍が整数でない場面に慣れる単元。",
+   "representation": "frac_bai_01(分数倍)と同一の問い文で答えの数域だけ違う——分数と小数の「倍」が同じ概念であることを問い文の同一性で示す配置(推定)。",
+   "constructive_guarantees": "dec2割り切れ+倍域[1.05,3.95]+**倍の整数落ち除外**——「2倍ちょうど」なら4年既習で、小数倍の必然性を三重に保証。",
+   "semantic_position": "割合3用法体系(gold base_findのdirective参照)の第1用法前史。dec_bai_apply(第2用法前史)と対。",
+   "exclusions": "1未満の倍(0.6倍)は「割合」単元本体の領分(推定: 倍>1が「倍」の語感に合う段階配置)。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_dec_bai_apply_01": {
+  "brief": {
+   "semantic_territory": "小数倍の適用(k倍の長さ)",
+   "number_domain": "整数×dec1→dec1",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "「白のk倍が赤」から赤を求める。倍を掛け算として使う側で、ratio(倍を求める)の逆向き。",
+   "representation": "基準量bは整数(4〜12)・倍kがdec1——「基準は切りのよい量、倍が端数」という場面の自然な役割分担。",
+   "constructive_guarantees": "倍の整数落ち除外のみ。積はb×kのdec1でスケール保存。",
+   "semantic_position": "第2用法(くらべる量=もと×割合)の前史。ratio版と「求める向き」の対。gold base_find(第3用法=逆算)が最難という3用法の難度勾配は、この前史ペアから既に設計されている。",
+   "exclusions": "第3用法前史(kとくらべる量からもとを逆算)は小数除法との合成になり、割合単元本体まで持ち越し(base_find系)。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ }
+}

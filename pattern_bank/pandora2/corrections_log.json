@@ -153,5 +153,15 @@
   "instruction": "3バンクに解消制約を配線し、HOLD_REDESIGN例外3件と理由コード自体を撤去して例外リストを全て恒久正当のみに純化(暫定在庫ゼロ)。",
   "resolution": "g05((a1*d1)%1000!=a1)・g06(k1!=1)・c07(nt_y2b2)を制約追加のみで配線(verify fail0・構造diff実証)。例外78→75件・理由コード10→9種・provisional 0。固定シード関門で全学年20バンク緑。niten_01は例外解除しても残差0で通過。",
   "generalization": "暫定例外(再設計待ち)は解消制約が入り次第、例外と理由コードごと撤去して『例外は全て恒久正当』の状態を保つ(暫定在庫を残さない)。転記検査の生検出が残っても、共有値がテンプレのリテラル定数(『2点』等)のみなら v2.1(定数単独除外)で正しく0になるため、重い制約を足さずC保留を閉じられる=由来判定が過剰制約を防ぐ。"
+ },
+ {
+  "id": "corr-0015",
+  "date": "2026-08-13",
+  "by": "marko",
+  "scope": "g05 rationale完全版(70/70)の配置とfigure_notes正準の周知(統一遡及③ g05完了)",
+  "observed": "g05 rationaleはゴールド8件のみで62件が欠。訓練データpairs_designも8止まり。またfigure_notesの流儀が不統一(図なしにnull使用の章とゴールド流儀=図なし理由文字列の章が混在)。",
+  "instruction": "g05全70の完全版を正準として配置(訓練パイプラインが読む rationale_g05_gold.json を置換)。figure_notes正準=ゴールド流儀(図あり=設計記録・図なし=「図なし」で始まる理由文・null不使用)を裁可し schema_spec に明記。整合ハーネスを新設。jhs各章/g01のnullは次回統一で可(一括改修不要・md5非依存)。",
+  "resolution": "pandora2/rationale_g05_gold.json を full 70版で置換(ファイル名維持でパイプライン無改修)。make_training_pairs.py は _meta等の_接頭辞キーを読み飛ばすよう1行修正→pairs_design 8→70完走・validate/hygiene通過。tests/rationale_integrity.js 新設(バンクとのID完全一致+figure_params有無とfigure_notes内容の悉皆・遡及学年は明示引数で流用・既定は正準化済みg05のみ)。rationale_schema_spec.md にfigure_notes正準を追記。バンクmd5/golden非依存。",
+  "generalization": "rationale等の設計記録を差し替える時は、訓練パイプラインがハードコードで読む正準ファイル名を維持したまま内容を置換し、パイプライン側は予約キー(_接頭辞)を読み飛ばして無改修で吸収する。figure_notesは常に文字列必須(図なしは『図なし』始まりの理由文・null不使用)を正準とし、専用整合ハーネスで悉皆検査する。全学年一括改修は避け、md5非依存の記録系は『次に触るとき統一』で段階移行し、正準化済み学年だけを既定の関門対象にする。"
  }
 ]

@@ -1,0 +1,255 @@
+{
+ "_meta": {
+  "schema": "rationale_g05_gold.json準拠(brief+rationale7区画)",
+  "scope": "rationale遡及 第1バッチ: g05整数論→分数クラスタ12件(統一遡及③・2026-08-12)",
+  "status": "AI下書き(Fable)・まるこ検収待ち。根拠はパターン定義(semantic_note・制約why)+corrections履歴+2026-08-12トリアージ記録。推定を含む箇所は文中に明示。",
+  "audit_findings": "規約差分棚卸し(同時実施)の発見: (1) g05_lcm_calc_01は「また、〜」の連問形(1テンプレ2問)。B層以降の1問1答文化との差分だが、md5固定の本番資産のため変更せず記録のみ(分割は第2波候補)。(2) 転記排除は2026-08-12トリアージで4件に遡及追加済み(yakubun/lcm_clock/frac系は例外登録)。他の8件は規約適合。"
+ },
+ "g05_evenodd_01": {
+  "brief": {
+   "semantic_territory": "偶数・奇数の判定",
+   "number_domain": "整数(11〜499)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "整数の性質単元の導入。判定根拠は一の位だけで足りるため、数自体は3桁まで大きくして「大きさと偶奇は無関係」を体感させるのが実物の型。",
+   "representation": "答えは分類語(偶数/奇数)の文字列で、computed_slotsの条件式('偶数' if n%2==0 else '奇数')が機械決定する。ansは判定対象n1を形式使用(answer_formulaの正値要件を満たすための便宜であり採点値ではない)。corr-0007では答え部に数字が出ないため構造的にクリーン(v2.1初期調査で偽陽性代表例として引用された経緯があるのはenv.ans基準時代の話)。",
+   "constructive_guarantees": "制約ゼロ。n1レンジ下限11で1桁の自明感を避け、上限499で読み上げ可能な大きさに保つ。パリティは全域で定義されるため棄却が発生しない。",
+   "semantic_position": "整数の性質系列(偶奇→倍数→約数)の起点。分類語答えはunit_price_compare(comparison)と並ぶ非数値答の代表で、答えテンプレの文字列computed機構を最小構成で使う見本。",
+   "exclusions": "「偶数をすべて選べ」の複数選択形は答欄仕様が別になるため不採用。0・負数は5年の偶奇定義の範囲外。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_lcm_calc_01": {
+  "brief": {
+   "semantic_territory": "最小公倍数と公倍数列挙",
+   "number_domain": "整数(lcm≦120)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {"text": "異分母分数でgcd/lcmヘルパが要るはず。整数演算実装+シード非依存の等価性ベクター必須(v0.8の縛りと同じ)", "by": "marko", "date": "2026-06"}
+   ]
+  },
+  "rationale": {
+   "source_features": "倍数単元の主形。実物は「最小公倍数を求め、公倍数を小さい順に3つ」の連問が定番で、公倍数=lcmの倍数という構造理解まで一気に問う。",
+   "representation": "lcmはSAFEヘルパ(整数演算・JS移植同一手順)。公倍数2つ目3つ目はcomputed(2·lcm, 3·lcm)で、「公倍数はlcmの倍数」という数学的事実がそのまま機構になっている(本文には出さず答えのみで使用)。",
+   "constructive_guarantees": "倍数関係の除外(b%a≠0∧a%b≠0)で「大きい方がそのままlcm」の暗算即答を防ぎ、素因数の合成を実際にやる組だけを出題。lcm≦120で3倍(≦360)まで扱いやすい大きさ。a≠bで同数退化を除外。",
+   "semantic_position": "gcd_calc_01と対をなす計算位。lcm_word系(clock/tile)の土台。gold見本gcd_word_divide_01のdirective(gcd/lcmヘルパ)の適用第1群。",
+   "exclusions": "3数のlcmは5年の範囲外周(6年・発展)。素数判定は別単元。**棚卸し記録: 本パターンは「また、〜」の連問形(1テンプレ2問)で、B層以降の1問1答文化との差分。md5固定資産のため変更せず、分割版は第2波候補として記録(推定: v0.9設計時は実物形式の忠実再現を優先した)。**",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_gcd_calc_01": {
+  "brief": {
+   "semantic_territory": "最大公約数",
+   "number_domain": "整数(12〜72・gcd≧4)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {"text": "gcd/lcmは整数演算実装+シード非依存の等価性ベクター必須", "by": "marko", "date": "2026-06"}
+   ]
+  },
+  "rationale": {
+   "source_features": "約数単元の主形。約数の列挙から共通部分を取る手続きの到達点。",
+   "representation": "gcdはSAFEのEuclid反復ヘルパ。答えは裸の整数。",
+   "constructive_guarantees": "gcd≧4で公約数が複数(1,2,と少なくとももう1つ)ある組に限定し、探索の意味を保つ。約数関係の除外(b%a≠0∧a%b≠0)で「小さい方がそのまま答え」を防ぐ——gcd_word_divide_01(gold)と同一の設計原理を計算系でも敷く。",
+   "semantic_position": "lcm_calc_01と対。文章題側(gcd_word_divide_01=gold)の計算基底。",
+   "exclusions": "互いに素な組(gcd=1)はgcd≧4で自動排除(「公約数は1だけ」は概念確認の別形)。3数のgcdは範囲外周。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_lcm_word_clock_01": {
+  "brief": {
+   "semantic_territory": "周期の一致(バス同時発車)",
+   "number_domain": "整数分(lcm≦60)+時刻表示",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {"text": "スコープは文章題+純計算単元。できる領域は全部経路Aへ", "by": "marko", "date": "2026-06"},
+    {"text": "corr-0007トリアージ3点裁可(A例外・B制約型カタログ・C保留→本件は例外+品質制約の複合で解消)", "by": "marko", "date": "2026-08-12"}
+   ]
+  },
+  "rationale": {
+   "source_features": "公倍数の利用の定番文脈(a分ごと/b分ごとの同時発車)。答えが「次に同時に発車する時刻」なので、lcm計算に時刻演算が乗る2層構造。",
+   "representation": "時刻はclock整形(v0.7既存)にt0+lcmを渡す合成。周期はchoices(4,6,8,9,10,12,15)でlcmが60以内に収まりやすい組に誘導。行き先レキシコンはdistinct束縛で2系統を保証。",
+   "constructive_guarantees": "not_on_hour((t0+lcm)%60≠0)で「何時何分」の問い文と表示の整合を保証(ちょうどの時刻だと「何分」が空になり文が破綻)。倍数関係除外・lcm≦60は計算系と同じ原理。**2026-08-12追加**: 分≠周期a,b(紛れ排除)+lcm≠60(周回一致で答分＝出発分の写しに見える品質制約)。",
+   "semantic_position": "lcm文章題の時刻版。tile版(空間)と対で「時間の周期/空間の敷き詰め」の2文脈を覆う。",
+   "exclusions": "3系統の同時発車は3数lcmで範囲外周。**転記検査は例外登録(COMPOUND_UNIT_PRESERVE)**: 1時間以内の一致では答時刻の「時」が出発時刻の「時」を保存するのが時刻演算の構造(複合単位の非演算位保存)。当初C保留→時刻2件を既裁可コードへ編入して解消(2026-08-12)。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_lcm_word_tile_01": {
+  "brief": {
+   "semantic_territory": "しきつめ(最小の正方形)",
+   "number_domain": "整数cm(lcm≦90)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {"text": "スコープは文章題+純計算単元。できる領域は全部経路Aへ", "by": "marko", "date": "2026-06"}
+   ]
+  },
+  "rationale": {
+   "source_features": "公倍数の利用のもう一つの定番(長方形の紙で最小の正方形を作る)。1辺=lcm(たて,横)という空間的解釈。",
+   "representation": "図なし文章版(「同じ向きにすきまなく」の文言で敷き詰め方を一意化し、図なしでも状況が立つ)。しき欄は「(aとbの最小公倍数)」という手続き名の表示で、数式でない解法メモの型。",
+   "constructive_guarantees": "gcd>1(公約数を持つ組)の限定は、lcm=a·bの単純積で終わらない「計算のうまみ」の確保(推定: 素な組だと積を計算するだけになり公倍数の探索が消える)。たて<横の固定で対称重複を除外。lcm≦90で1辺が現実的な紙の大きさ。",
+   "semantic_position": "clock版と対(時間/空間)。gcd側の対応物は「あまりなく分ける」(gold)で、利用単元はlcm×2+gcd×1の3点構成。",
+   "exclusions": "図あり版(長方形タイルの敷き詰め図)は低学年図kindと同じ図実装待ちの第2波候補。最小でなく「n番目に小さい正方形」は倍数列挙の別形。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_yakubun_01": {
+  "brief": {
+   "semantic_territory": "約分",
+   "number_domain": "真分数(可約・整数落ちなし)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {"text": "corr-0007トリアージ3点裁可(B制約の型カタログ・同型の機械展開はFable一任)", "by": "marko", "date": "2026-08-12"}
+   ]
+  },
+  "rationale": {
+   "source_features": "約分単元の主形。gcdで割り切る手続きの分数への適用。",
+   "representation": "表示はreduced_fraction_display(v0.9)による機械約分で、raw表示(元)とred表示(既約)の2整形。手計算のgcd除算が表示機構に1対1対応。",
+   "constructive_guarantees": "gcd>1で「約分できる」を保証(既約を出したら問題が成立しない)。真分数限定+整数落ち除外(num%den≠0は真分数なら自明だが明示の二重化)。**2026-08-12追加**: 約分後の分母≠元の分子(den/gcd≠num)——4/16→1/4型で答えの分母が本文の分子と一致する転記筋の排除(平方族b=a²の分数版)。",
+   "semantic_position": "分数の性質系列(約分→通分→加減)の起点。frac_add系の前提技能。",
+   "exclusions": "仮分数の約分は帯分数化との合成になるため別形(frac_bai側が仮分数を扱う)。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_tsubun_01": {
+  "brief": {
+   "semantic_territory": "通分",
+   "number_domain": "既約真分数2つ(分母choices 3〜12)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {"text": "gcd/lcmは整数演算実装+シード非依存の等価性ベクター必須", "by": "marko", "date": "2026-06"}
+   ]
+  },
+  "rationale": {
+   "source_features": "通分単元の主形。共通分母=lcmの発見と分子の対応倍。",
+   "representation": "通分後の分子はcomputed(a·(L/b), c·(L/d))で、「分母を何倍したかだけ分子も倍する」の手続きがそのまま式になっている。答えは通分後の2分数の並記。",
+   "constructive_guarantees": "既約から出題(gcd(a,b)=1)して通分の必然性を保証——約分しろと通分しろが混ざる曖昧さを排除(gold frac_add_unlike_01と同一原理の前段適用)。分母の倍数関係除外で「大きい方に揃えるだけ」の自明ケースを防ぐ。異分母限定。",
+   "semantic_position": "yakubun(逆向き操作)とfrac_add系(この技能の使用先)の中間。転記検査は例外登録(FRAC_PRESERVE: 通分は分子・分母の由来値が答えに構造保存される操作そのもの)。",
+   "exclusions": "3分数の通分はfrac_three_01が加減込みで扱うため単独形は不採用。分母choicesを12以下に限定(素数の大分母はlcmが暴走)。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_div_to_frac_01": {
+  "brief": {
+   "semantic_territory": "商を分数で表す(a÷b＝a/b)",
+   "number_domain": "既約真分数",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "分数の性質単元の入口。わり算と分数の同一視(商分数)という概念の定義そのものを問う。",
+   "representation": "答えはa/bの分数表示(f1整形)。ansは分子a1の形式使用。",
+   "constructive_guarantees": "既約限定(gcd=1)で答えの一意性を保証——可約だと「4/6も2/3も正解」の採点分岐が生じる。真分数限定で帯分数化の合成を避ける(概念確認に純化)。",
+   "semantic_position": "frac_bai_01(倍の文脈版)の計算基底。転記検査は例外登録(FRAC_PRESERVE): a÷b=a/bは本文値が答えにそのまま現れることが定義であり、検査対象外の最純粋例。",
+   "exclusions": "仮分数になる組(a>b)はfrac_bai側の領分。整数商(b|a)はわり算単元の既習で除外。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_frac_bai_01": {
+  "brief": {
+   "semantic_territory": "何倍か(分数倍)",
+   "number_domain": "分数(仮分数可・既約表示・整数落ちなし)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "「aはbの何倍」を分数で答える。倍=商の分数化で、整数倍で割り切れない場面に分数を拡張する動機づけの単元。",
+   "representation": "しき欄(a÷b)+答え欄(約分済み分数+「倍」)。約分はreduced表示に一任。液体レキシコンをdistinct束縛で2種保証(同一液体の比較は不自然)。",
+   "constructive_guarantees": "整数倍除外(a%b≠0)で「分数で答える必然性」を保証。同量除外(a≠b・1倍の退化)。仮分数を許すのがdiv_to_fracとの違いで、a>bの「大きい方が何倍」も出る。",
+   "semantic_position": "div_to_frac_01(概念定義)の文脈適用版。6年のg06_frac_bai_frac_01(分数÷分数の倍)への接続点。転記検査は例外登録(FRAC_PRESERVE)。",
+   "exclusions": "帯分数表示は「何倍」文脈では仮分数のまま読む実物慣行に合わせ不採用(推定: display_canonの倍=仮分数規約はこのパターン群の観察から後に一般化された)。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_frac_sub_unlike_01": {
+  "brief": {
+   "semantic_territory": "異分母分数のひき算",
+   "number_domain": "分数(既約・真分数・結果正)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {"text": "gcd/lcmは整数演算実装+シード非依存の等価性ベクター必須", "by": "marko", "date": "2026-06"}
+   ]
+  },
+  "rationale": {
+   "source_features": "通分→減→約分の全工程。加法(gold)の対パターンで、結果正の制約が1本増えるのが唯一の差。",
+   "representation": "gold frac_add_unlike_01と同一機構(分子をcomputedで通分合成し、表示はreduced_mixed_displayに一任)。演算だけが減算。",
+   "constructive_guarantees": "既約から出題+異分母限定+lcm上限(加法goldと共通)。結果正(通分後分子の差>0)が減算固有の追加で、負の分数は5年の範囲外。",
+   "semantic_position": "frac_add_unlike_01(gold)の鏡像。mixed_add(帯分数)→three(3口)へ続く系列の2番手。",
+   "exclusions": "結果0(同値分数の差)は結果正制約が同時排除。帯分数の減算(繰り下がり)は6年側の難度。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_frac_mixed_add_01": {
+  "brief": {
+   "semantic_territory": "帯分数のたし算",
+   "number_domain": "帯分数+真分数(既約・分母choices)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {"text": "gcd/lcmは整数演算実装+シード非依存の等価性ベクター必須", "by": "marko", "date": "2026-06"}
+   ]
+  },
+  "rationale": {
+   "source_features": "帯分数を含む加法。仮分数化→通分→加算→帯分数化の全工程で、整形の往復が学習内容。",
+   "representation": "帯分数w a/bは分子(w·b+a)に展開して通常の分数加算と同一機構で処理(wn1=w·b+a)。入口の帯分数表示はfmt_mixed(v0.8)、出口はreduced_mixed_display(v0.9)——「機構は1本・表示で往復」の設計。",
+   "constructive_guarantees": "帯分数の分数部も真分数・既約(帯分数の正準形)。整数部w≦3で仮分数化後の分子の暴走を防ぐ。分母choicesは(3,4,6,8,10,12)で偶数系に寄せlcmを小さく保つ(推定: 受理率確保)。",
+   "semantic_position": "add_unlike(gold)の帯分数拡張。display_canonの「量の答は帯分数」規約の主戦場。",
+   "exclusions": "両項とも帯分数は分子が3桁化しやすく暗算域を超えるため片側のみ。減算版(繰り下がり)は別難度で第2波。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_frac_three_01": {
+  "brief": {
+   "semantic_territory": "分数の3口加減",
+   "number_domain": "分数(分母choices 2〜6・3分母lcm)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 2,
+   "directives": [
+    {"text": "gcd/lcmは整数演算実装+シード非依存の等価性ベクター必須", "by": "marko", "date": "2026-06"}
+   ]
+  },
+  "rationale": {
+   "source_features": "a/b+c/d−e/f。3つの分母を一括通分する応用位で、単元の仕上げ。",
+   "representation": "共通分母はlcmの入れ子(lcm(lcm(b,d),f))——2引数ヘルパの合成で3数lcmを表現し、ヘルパ追加なしで済ませた設計。",
+   "constructive_guarantees": "分母choicesを(2,3,4,6)に絞りlcm≦12を実質保証(3分母だと通分係数が3系統になるため、2分母系列より強く絞る)。全項真分数・既約。結果正。",
+   "semantic_position": "分数加減系列の終点。step_count2は本クラスタで唯一(通分と加減の2段を明示)。",
+   "exclusions": "符号順の他形(a−b+c等)は1符号形固定の原理で不採用(推定: B層で明文化された符号形テンプレ固定文化の先行事例)。帯分数込み3口は暗算域超過。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ }
+}

@@ -1,0 +1,311 @@
+{
+ "_meta": {
+  "schema": "rationale_g05_gold.json準拠(brief+rationale7区画)",
+  "scope": "rationale遡及 第5バッチ(最終): g05図形系15件(統一遡及③・2026-08-12)。これでg05完走70/70",
+  "status": "AI下書き(Fable)・まるこ検収待ち。推定は文中明示。",
+  "audit_findings": "規約差分棚卸し: (1) angle_sum配置原則(gold quad_angleのdirective)が図あり全件に貫通——図専用スロット(slant/apex_ratio/offset)を本文に出さない・ラベル自要素束縛・可動最小・アスペクト比制約による図の暴走防止。(2) 図の視認性制約(ratio1のスキャン実測由来など)は描画可能性悉皆の先行形。(3) para_height/tri_height/cuboid_capacity/depthは2026-08-12トリアージで転記制約追加済み。(4) 円周系は314スケール100の内部整数——テンプレ定数3.14はv2.1由来判定で定数扱い(circle_area系の検出消滅の根拠)。差分なし。"
+ },
+ "g05_tri_angle_01": {
+  "brief": {
+   "semantic_territory": "三角形の内角(2角既知)",
+   "number_domain": "整数度(求角30〜115°)",
+   "answer_structure": "single",
+   "figure": "tri_angle",
+   "step_count": 1,
+   "directives": [
+    {"text": "angle_sumで確立した配置原則——ラベルは自要素束縛、可動は半径・フォントのみ、全域機械スキャン——に従うこと", "by": "marko", "date": "2026-06"}
+   ]
+  },
+  "rationale": {
+   "source_features": "内角和180°の適用基本形。既知2角と求角「あ」の三角形図。",
+   "representation": "既知角は図中のセクター(角弧+数値)に束縛表示し、本文は問いのみ——「図が情報を持ち本文が問う」分業の代表例。求角ラベル「あ」は仮名記号の正準。",
+   "constructive_guarantees": "求角域[30,115](鋭角〜鈍角手前で「あ」セクターが描ける)+**drawable制約(65≦a1+a2≦150)**——頂点が描画域に収まる形状限定で、図形パターンの描画可能性を値域制約で保証する原則(builderを歪めずバンク側で締める)の適用。",
+   "semantic_position": "角度系の5年基底。quad_angle(gold・四角形360°)の三角形版で、goldのdirective(angle_sum原則)の出所に最も近い設計。",
+   "exclusions": "外角・対頂角の合成はjhs側。3角とも未知(比配分)は範囲外周。",
+   "figure_notes": "tri_angle kind。既知角セクターは自要素束縛・可動はフォントのみ(angle_sum原則)。drawable制約が図契約の代わりを本数値域で果たす。",
+   "pedagogy": []
+  }
+ },
+ "g05_tri_iso_angle_01": {
+  "brief": {
+   "semantic_territory": "二等辺三角形の底角",
+   "number_domain": "整数度(頂角偶数30〜120°)",
+   "answer_structure": "single",
+   "figure": "tri_angle_iso",
+   "step_count": 1,
+   "directives": [
+    {"text": "corr-0007トリアージ3点裁可(B制約)", "by": "marko", "date": "2026-08-12"}
+   ]
+  },
+  "rationale": {
+   "source_features": "(180−頂角)÷2。二等辺の性質(底角相等)と内角和の合成。",
+   "representation": "頂角は本文と図の両方に出す(等辺のティックマークが「二等辺」を図で明示し、本文の語と二重化)。頂=g6配当のためallowed_extra(最小宣言のg05例)。",
+   "constructive_guarantees": "頂角step2で÷2の整数を構成保証(可除性制約を偶数域に畳んだshift_down型の手筋)。**2026-08-12追加**: 頂角≠60(正三角形退化で底角＝頂角の転記一致——性質の異なる図形になる点でも排除が正しい)。",
+   "semantic_position": "tri_angleの特殊化。逆向き(底角から頂角)は式が180−2aで別形(第2波)。",
+   "exclusions": "頂角の側を問う逆形・直角二等辺(45°固定で生成の意味なし)。",
+   "figure_notes": "tri_angle_iso kind。等辺ティックマーク2本が自要素束縛。頂角セクター+底角「あ」。",
+   "pedagogy": []
+  }
+ },
+ "g05_para_area_01": {
+  "brief": {
+   "semantic_territory": "平行四辺形の面積",
+   "number_domain": "整数cm(底6〜16・高4〜12)",
+   "answer_structure": "single",
+   "figure": "para_area",
+   "step_count": 1,
+   "directives": [
+    {"text": "angle_sum配置原則に従うこと", "by": "marko", "date": "2026-06"}
+   ]
+  },
+  "rationale": {
+   "source_features": "底辺×高さ。「高さは斜辺でなく垂線」の理解が主眼で、図の内部点線+直角記号がそれを担う。",
+   "representation": "**傾きs1(60〜75°)は図専用スロット**——本文に出ない図形状パラメータで、同一底辺・高さでも見た目が変わる(図の多様性と情報の分離)。この「図専用スロット」はB層のlattice座標等に継承された型の初出群。",
+   "constructive_guarantees": "h<b(横長で高さ点線の視認性)+比3:1以内(図の暴走防止)。面積は積で整数自動。",
+   "semantic_position": "面積公式系列(平行四辺形→三角形→台形→ひし形)の第1位。para_height(逆算)と対。",
+   "exclusions": "高さが図形外に出る形(鈍角の強い平行四辺形)は視認性制約が同時排除(第2波の発展図)。",
+   "figure_notes": "para_area kind(show_height)。寸法ラベル自要素束縛・傾き図専用スロット・比制約で暴走防止。",
+   "pedagogy": []
+  }
+ },
+ "g05_para_height_01": {
+  "brief": {
+   "semantic_territory": "平行四辺形の高さ(逆算)",
+   "number_domain": "整数cm(高4〜18)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {"text": "corr-0007トリアージ3点裁可(B制約)", "by": "marko", "date": "2026-08-12"}
+   ]
+  },
+  "rationale": {
+   "source_features": "S÷bの逆算。公式を変形して使う位で、図なし文章形。",
+   "representation": "図なし(逆算は数量関係が主眼で、図があると測って答える誤方略を誘発する——面積系の順算=図あり/逆算=図なしの分担・推定)。",
+   "constructive_guarantees": "割り切れ+高さ域[4,18]。**2026-08-12追加**: S≠b²(高さ＝底辺の転記一致・平方族)。",
+   "semantic_position": "para_area(順)の逆。tri_height(三角形の逆算)と平方族制約を共有。",
+   "exclusions": "底辺を求める形はS÷hで同型につき冗長(高さ側に固定)。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_tri_area_fig_01": {
+  "brief": {
+   "semantic_territory": "三角形の面積",
+   "number_domain": "整数cm²(偶数積保証)",
+   "answer_structure": "single",
+   "figure": "tri_area",
+   "step_count": 1,
+   "directives": [
+    {"text": "angle_sum配置原則に従うこと", "by": "marko", "date": "2026-06"}
+   ]
+  },
+  "rationale": {
+   "source_features": "底辺×高さ÷2。÷2の意味(平行四辺形の半分)を既習として公式適用。",
+   "representation": "頂点位置apex_ratio(300〜700千分率)が図専用スロット——高さの足が底辺の内側に収まる鋭角域に限定し、同一寸法でも形が変わる。",
+   "constructive_guarantees": "偶数積((b·h)%2=0)で面積整数。**比制約2本のratio1のwhyに「スキャン実測に基づき保証」**——高さラベルの水平余地を全域機械スキャンで実測して1.8:1を決めた記録で、描画可能性悉皆(B層で正式化)の先行形として棚卸し価値が高い。",
+   "semantic_position": "面積系列第2位。tri_height(逆算)と対。",
+   "exclusions": "鈍角三角形(高さの足が外)はv1スコープ外(semantic_note明記)——図の高さ表示が延長線を要し別kind級。",
+   "figure_notes": "tri_area kind(show_height)。apex_ratio図専用・比制約はスキャン実測由来(ラベル余地の数値根拠あり)。",
+   "pedagogy": []
+  }
+ },
+ "g05_tri_height_01": {
+  "brief": {
+   "semantic_territory": "三角形の高さ(逆算)",
+   "number_domain": "整数cm(高3〜18)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {"text": "corr-0007トリアージ3点裁可(B制約)", "by": "marko", "date": "2026-08-12"}
+   ]
+  },
+  "rationale": {
+   "source_features": "h=2S÷b。「×2してから割る」の式変形が主眼。しき欄は{S1}×2÷{b1}と手順順で表記(公式の逆読み順)。",
+   "representation": "図なし(para_heightと同じ順算/逆算分担)。",
+   "constructive_guarantees": "(2S)%b=0+高さ域。**2026-08-12追加**: 2S≠b²(平方族)。",
+   "semantic_position": "tri_area_figの逆。逆算ペア(para/tri)で「どの公式も逆から使える」を2例示す配置。",
+   "exclusions": "底辺側の逆算は冗長(para_heightと同判断)。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_trap_area_fig_01": {
+  "brief": {
+   "semantic_territory": "台形の面積",
+   "number_domain": "整数cm²(偶数積保証)",
+   "answer_structure": "single",
+   "figure": "trap_area",
+   "step_count": 1,
+   "directives": [
+    {"text": "angle_sum配置原則に従うこと", "by": "marko", "date": "2026-06"}
+   ]
+  },
+  "rationale": {
+   "source_features": "(上底+下底)×高さ÷2。3量を読む公式の最長形で、しき欄のかっこ表記が学習対象。",
+   "representation": "上底オフセットor1(200/350/500千分率)が図専用スロット(左寄り・中央・右寄りの台形)。",
+   "constructive_guarantees": "上底<下底(台形の向き正準)+比制約2本(上底:下底3:1・高さ:下底2:1)+偶数積。",
+   "semantic_position": "面積系列第3位(3量公式)。",
+   "exclusions": "平行四辺形化(a=b)はorder制約が排除。等脚指定は5年で扱わない。",
+   "figure_notes": "trap_area kind。オフセット図専用・4寸法ラベル(上底・下底・高さ)自要素束縛。",
+   "pedagogy": []
+  }
+ },
+ "g05_rhombus_area_01": {
+  "brief": {
+   "semantic_territory": "ひし形の面積(対角線)",
+   "number_domain": "整数cm²(偶数積保証)",
+   "answer_structure": "single",
+   "figure": "rhombus_area",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "対角線×対角線÷2。辺でなく対角線を使う唯一の公式で、図の点線対角線が「どこを測るか」を示す。",
+   "representation": "対角線2本は図中点線。水平・垂直の対角線指定(diag_h/diag_v)で軸平行に固定し描画を単純化。",
+   "constructive_guarantees": "d1≠d2(正方形除外——正方形は「1辺×1辺」の既習公式と競合し、ひし形公式の必然性が消える)+偶数積+比3:1以内両向き。",
+   "semantic_position": "面積系列第4位(終点)。対角線公式はjhsの座標幾何(c06格子点系)への遠い伏線。",
+   "exclusions": "たこ形(対角線直交の一般形)は発展。対角線が斜めの回転ひし形は描画正準(軸平行)の外。",
+   "figure_notes": "rhombus_area kind。対角線点線・寸法は対角線に束縛。軸平行固定で回転自由度なし(可動最小原則)。",
+   "pedagogy": []
+  }
+ },
+ "g05_circle_circum_diam_01": {
+  "brief": {
+   "semantic_territory": "円周(直径から)",
+   "number_domain": "dec2(内部=直径×314)",
+   "answer_structure": "single",
+   "figure": "circle",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "円周=直径×3.14。円周率の初適用。",
+   "representation": "**内部はd×314のスケール100整数**——円周率3.14を「314(スケール100)」として持ち、小数乗算を整数化する千分率と同族の手筋。テンプレの「3.14」は定数(v2.1由来判定で定数扱いとなり、答えに3.14が現れるケースの検出が正しく消えた実績の根拠)。",
+   "constructive_guarantees": "制約ゼロ(積は値域が抑える・314倍は常に有限小数)。",
+   "semantic_position": "円周系の基底。rad版(×2の1段追加)・diam_from_circum(gold・逆算)の3点構成。",
+   "exclusions": "円周率πでの表現はjhs。半円+直径の周(合成)は第2波。",
+   "figure_notes": "circle kind(given=diameter)。直径線+寸法ラベル。半径版と同一kindのパラメータ分岐。",
+   "pedagogy": []
+  }
+ },
+ "g05_circle_circum_rad_01": {
+  "brief": {
+   "semantic_territory": "円周(半径から)",
+   "number_domain": "dec2(内部=半径×2×314)",
+   "answer_structure": "single",
+   "figure": "circle",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "半径×2×3.14。「まず直径にする」1段が増える形。",
+   "representation": "diam版と同一kind・同一内部表現。しき欄が{r1}×2×3.14と3因子で、×2の位置が学習対象。",
+   "constructive_guarantees": "制約ゼロ。半径域[2,12]で円周75.36cm以下の現実域。",
+   "semantic_position": "diam版の1段追加。gold(diam_from_circum)の逆算と合わせ、円周の3方向(直径から/半径から/円周から)完備。",
+   "exclusions": "面積(πr²)は6年(g06_circle_area系)。",
+   "figure_notes": "circle kind(given=radius)。半径線は中心から。",
+   "pedagogy": []
+  }
+ },
+ "g05_cuboid_vol_01": {
+  "brief": {
+   "semantic_territory": "直方体の体積",
+   "number_domain": "整数cm³(辺3〜12)",
+   "answer_structure": "single",
+   "figure": "cuboid",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "たて×横×高さ。体積の導入で、3因子積の初出。",
+   "representation": "cuboid kind(キャビネット投影)。3辺ラベル自要素束縛。",
+   "constructive_guarantees": "**辺比4:1以内(max≦4·min)**——キャビネット投影で極端な棒状・板状になると奥行き線が潰れる、投影法固有の視認性制約。",
+   "semantic_position": "体積系の基底。cube(特殊化)・capacity/depth(容積応用)の親。",
+   "exclusions": "複合立体(L字)は6年。展開図との往復は別単元。",
+   "figure_notes": "cuboid kind(cube=false)。辺比制約が投影視認性を担保(スキャン原則の立体版)。",
+   "pedagogy": []
+  }
+ },
+ "g05_cube_vol_01": {
+  "brief": {
+   "semantic_territory": "立方体の体積",
+   "number_domain": "整数cm³(1辺2〜12)",
+   "answer_structure": "single",
+   "figure": "cuboid",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "1辺³。同数3回の積で、しき欄{a1}×{a1}×{a1}の反復が立方の意味を示す。",
+   "representation": "cuboid kindのcube=trueフラグ流用(1辺ラベルのみ表示)——専用kindを作らないパラメータ分岐の例。",
+   "constructive_guarantees": "制約ゼロ(立方体は形状自由度がなく比制約も不要)。",
+   "semantic_position": "cuboid_volの特殊化。jhs c18(2乗)・累乗概念の遠い先祖。",
+   "exclusions": "1辺1cm(体積1の自明)はレンジ下限2で排除。",
+   "figure_notes": "cuboid kind(cube=true)。ラベル1本のみ。",
+   "pedagogy": []
+  }
+ },
+ "g05_cuboid_capacity_01": {
+  "brief": {
+   "semantic_territory": "容積(cm³→L)",
+   "number_domain": "整数L(8〜60L)",
+   "answer_structure": "single",
+   "figure": "cuboid",
+   "step_count": 2,
+   "directives": [
+    {"text": "corr-0007トリアージ3点裁可(B制約)", "by": "marko", "date": "2026-08-12"}
+   ]
+  },
+  "rationale": {
+   "source_features": "内のり寸法から容積L。1000cm³=1Lの単位換算が乗る2段。",
+   "representation": "辺はchoices(20,25,30,40,50系)——**3辺積が1000で割り切れる組を高確率化するchoices設計+制約での確定保証**の二段構え(受理率と保証の分担)。",
+   "constructive_guarantees": "L割り切れ+容積域[8,60]L(水そうの現実)。**2026-08-12追加**: 容積L∉{3辺}(40×30×25→30Lで答＝よこの転記一致)の3本。",
+   "semantic_position": "体積の実用化(容積)。depth(逆算)と対。",
+   "exclusions": "厚みのある容器(外のり−厚み)は2段換算が増える発展。dL・mL換算は数値が暴れるためL固定。",
+   "figure_notes": "cuboid kind流用(水そう文脈は本文が担い、図は同一)。",
+   "pedagogy": []
+  }
+ },
+ "g05_cuboid_depth_01": {
+  "brief": {
+   "semantic_territory": "水の深さ(容積から逆算)",
+   "number_domain": "整数cm(深さ4〜h未満)",
+   "answer_structure": "single",
+   "figure": "cuboid",
+   "step_count": 2,
+   "directives": [
+    {"text": "corr-0007トリアージ3点裁可(B制約)", "by": "marko", "date": "2026-08-12"}
+   ]
+  },
+  "rationale": {
+   "source_features": "VL×1000÷底面積。L→cm³の逆換算+除算の2段逆算で、体積クラスタの最難位。",
+   "representation": "水そうの深さh1は「水面がそれ未満」の成立性にのみ使うスロット(答えに直接関与しない拘束条件役)——jhs c08の攪乱値設計の先行形とは逆に、こちらは物理的成立性を担う。",
+   "constructive_guarantees": "割り切れ+**depth_lt(水面<水そうの深さ)**——「あふれない」物理成立性の制約化(三点セットの成立性項の図形版)。**2026-08-12追加**: 深さ∉{VL,w,d,h}の4本(12L→深さ12cm型の一致)。",
+   "semantic_position": "capacity(順)の逆算。jhs c08 chusui系(水そう注水)の算数側先祖。",
+   "exclusions": "「あと何L入るか」(残容量)は2段+差でc05型。傾けた水そうは中学発展。",
+   "figure_notes": "cuboid kind流用。水位線の描画はv1スコープ外(本文の言葉が担う)——水位つき図は第2波の図kind候補。",
+   "pedagogy": []
+  }
+ },
+ "g05_vol_unit_convert_01": {
+  "brief": {
+   "semantic_territory": "体積の単位換算(m³→L)",
+   "number_domain": "dec1 m³→整数L",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "1m³=1000L。大きな体積単位の換算で、位取り(×1000)の適用。",
+   "representation": "小数m³はdec1のquantityで、×1000は内部スケール整数のv×100(スケール10込みで1000倍)——換算とスケール解消が一体化した最小実装。",
+   "constructive_guarantees": "制約ゼロ(換算は全域で定義)。",
+   "semantic_position": "体積クラスタの単位系整備位。capacityのcm³→Lと合わせ、L系換算の2スケール(1000cm³/1m³)を覆う。",
+   "exclusions": "多段換算(m³→cm³→L)は位取りの桁が6桁動き5年の暗算域を超える。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ }
+}

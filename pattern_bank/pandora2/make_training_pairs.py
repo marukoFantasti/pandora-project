@@ -34,7 +34,8 @@ def validate_gold(gold, bank_ids):
 
 def main():
     bank = json.load(open(sys.argv[1] if len(sys.argv) > 1 else "patterns_g05_c.json", encoding="utf-8"))
-    gold = json.load(open("rationale_g05_gold.json", encoding="utf-8"))
+    # rationale_g05_gold.json は g05全70パターン完全版(_metaつき)。_meta等の予約キー(_接頭辞)は処理対象外。
+    gold = {k: v for k, v in json.load(open("rationale_g05_gold.json", encoding="utf-8")).items() if not k.startswith("_")}
     corrections = json.load(open("corrections_log.json", encoding="utf-8"))
     patterns = {p["pattern_id"]: p for p in bank["patterns"]}
     validate_gold(gold, set(patterns))

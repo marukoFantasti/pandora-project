@@ -1,0 +1,264 @@
+{
+ "_meta": {
+  "schema": "rationale_g05_gold.json準拠(brief+rationale7区画)",
+  "scope": "rationale遡及 第3バッチ: g05平均・単位量・速さ・変わり方13件(統一遡及③・2026-08-12)",
+  "status": "AI下書き(Fable)・まるこ検収待ち。推定は文中明示。",
+  "audit_findings": "規約差分棚卸し: (1) comparison構造2件(table_unit/speed_compare)はgold unit_price_compareと同一設計(winner機械決定・求差ans・接戦制約)で規約適合。(2) speed_convert_01は連問形(「また、〜」)=第1バッチlcm_calcと同じ差分(記録のみ・分割は第2波候補)。(3) distance_01/time_01はsemantic_note空欄=メタデータ薄層(本rationaleが実質の初記述)。(4) heikin_calc/reverse・kawarikataは2026-08-12トリアージで転記制約追加済み。"
+ },
+ "g05_heikin_calc_01": {
+  "brief": {
+   "semantic_territory": "平均(4値の計算)",
+   "number_domain": "整数(点数域60〜100)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {"text": "corr-0007トリアージ3点裁可(B制約の型カタログ・同型の機械展開はFable一任)", "by": "marko", "date": "2026-08-12"}
+   ]
+  },
+  "rationale": {
+   "source_features": "平均単元の計算基底(合計÷個数)。4値はテストの点数文脈で、点数域[60,100]が場面の現実性を担う。",
+   "representation": "4値を独立スロットで持ち、合計・平均はanswer_formula内で合成(computedを使わない最小構成)。",
+   "constructive_guarantees": "割り切れ(Σ%4=0)+ばらつき(max−min≧6)で「全部ほぼ同じ値の平均」の退化を排除——table_heikin(gold)のmax−min≧20と同じ原理を点数域に合わせて緩めた値。**2026-08-12追加**: 平均∉{v1..v4}(平均がデータのどれかと一致すると写しで正解できる転記筋)の4本。",
+   "semantic_position": "平均系列の起点。word(文脈)・reverse(逆算)・table_heikin(gold・表参照)の4点構成。",
+   "exclusions": "5値以上は筆算の合計が3桁半ばを超え計算負荷が主眼を食う。0点を含む平均(データに0)は「0も個数に入れる」の概念問題で別形。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_heikin_word_01": {
+  "brief": {
+   "semantic_territory": "平均(1日あたり)",
+   "number_domain": "整数(1日14〜45ページ)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "総量÷期間で1日平均。均等でない日々の読書を「ならす」という平均の意味が文脈に乗る。",
+   "representation": "本のページ数×日数の単文脈。しき欄1本。",
+   "constructive_guarantees": "割り切れ+1日量[14,45]の現実性(1日100ページ級の不自然を排除)。",
+   "semantic_position": "heikin_calc(データ列)との対で「与えられ方」の2形(個別値/総量)を覆う。reverse(平均×期間→総量)の逆向き。",
+   "exclusions": "「残りを何日で」の複合はc05型の2段で範囲外周。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_heikin_reverse_01": {
+  "brief": {
+   "semantic_territory": "平均の逆算(平均×日数→総量)",
+   "number_domain": "整数g→kg_g複名数",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {"text": "corr-0007トリアージ3点裁可(C保留→バッチ3で制約解消)", "by": "marko", "date": "2026-08-12"}
+   ]
+  },
+  "rationale": {
+   "source_features": "平均から総量を復元する逆向き思考+単位換算(g→kg g)の合成。実物の平均単元後半の定番。",
+   "representation": "答えはkg_g複名数(v0.7既存整形)で「ちょうどのときはkgだけ」の指定文言が整形の分岐(端数0)と対応。スロットはstep50×step5の丸めで現実的な米消費量。",
+   "constructive_guarantees": "総量≧3000g(kgが立つ=複名数の意味が出る)。**2026-08-12追加(C保留解消)**: (a·d)%1000≠a——d＝25日×a∈{250,500,750}系でa(d−1)≡0 mod1000となり総量のg部が1日量そのものになる転記筋を排除。当初は複合単位保存(例外)と誤分類しかけたが、g部＝aは「保存」でなく計算結果の偶然一致なので制約が正解だった判断過程も記録。",
+   "semantic_position": "heikin_word の逆向き。複名数答はg05でここと時刻系のみ。",
+   "exclusions": "「平均を◯gにするにはあと何日」型は不定方程式風で範囲外周。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_unit_weight_01": {
+  "brief": {
+   "semantic_territory": "単位量あたり(1mの重さ)",
+   "number_domain": "整数g(20〜120g/m)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "単位量あたり単元の導入計算。全体÷長さで「1あたり」を作る操作の最小形。",
+   "representation": "はり金の単文脈(mあたりgが自然に立つ物)。",
+   "constructive_guarantees": "割り切れ+単位量域[20,120]g/m(はり金の現実比重)。",
+   "semantic_position": "単元の計算基底。compare(gold)・density・table_unitへの入口。dec_div_dec_word(小数商)と場面が重なるが整数商で数域分担(第2バッチ側rationale参照)。",
+   "exclusions": "逆向き(1mあたり×長さ→全体)は乗法既習の復習になるため不採用(推定: 単元の新規性=「割って作る」に集中)。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_density_01": {
+  "brief": {
+   "semantic_territory": "人口密度",
+   "number_domain": "整数(150〜700人/km²)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "単位量あたりの社会的適用の代表(人口÷面積)。「人口密度」という語の導入を兼ねる。",
+   "representation": "答えテンプレが「1km²あたり{ans}人」と単位量の読み下しを明示(裸の数でなく意味つき)。漢字方針: 密はg6配当のためallowed_extra宣言(最小宣言方針のg05適用例)。",
+   "constructive_guarantees": "割り切れ(p1のstep40×s1のstep2で受理率を確保しつつ)+密度域[150,700]の現実性(過疎でも過密でもない町)。",
+   "semantic_position": "unit_weightの社会文脈版。単位量の「こみぐあい」系はtable_unit(にわとり小屋)と本件(町)の2文脈。",
+   "exclusions": "四捨五入つき密度(割り切れない実データ風)は丸め正準の裁可待ち系。県レベルの実データ引用はD4'(実名回避)により構造不採用。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_table_unit_01": {
+  "brief": {
+   "semantic_territory": "こみぐあいの比較(表参照)",
+   "number_domain": "整数(2〜7羽/m²・差≦3)",
+   "answer_structure": "comparison",
+   "figure": "table",
+   "step_count": 1,
+   "directives": [
+    {"text": "table kindはv0.9スコープに含める(B層)", "by": "marko", "date": "2026-06"}
+   ]
+  },
+  "rationale": {
+   "source_features": "2つの小屋の面積・羽数を表で与え、1m²あたりで「こんでいる」方を判定。単位量あたりの存在理由(直接比較できない2量の比較)がそのまま問いになる単元の中核。",
+   "representation": "gold unit_price_compare_01と同一のcomparison設計: 勝者はcomputedの条件式('A'/'B')で機械決定・ansは求差abs(ua−ub)の形式解・表セルはスロット参照で本文と同一env駆動。",
+   "constructive_guarantees": "両者整数(2本の可除性)+引き分け除外+**接戦制約(差≦3)**——「見ただけで分からない」比較の必然性を数値設計で作るgoldの原理をこみぐあい域[2,7]で適用。",
+   "semantic_position": "table3兄弟(heikin=gold/unit/ratio)の単位量担当。comparison族(gold・speed_compare)の表参照版。",
+   "exclusions": "3小屋比較は答欄構造が別。「どちらがすいているか」の逆問いは勝者条件の反転だけで冗長。",
+   "figure_notes": "table流用(2行2列+ラベル)。セル束縛・可動はフォントのみのangle_sum原則写像(gold table_heikinのfigure_notesと共通)。",
+   "pedagogy": []
+  }
+ },
+ "g05_speed_calc_01": {
+  "brief": {
+   "semantic_territory": "速さを求める(時速)",
+   "number_domain": "整数(時速30〜90km)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "速さ単元の第1式(速さ=道のり÷時間)。自動車の時速という最も体感的な文脈。",
+   "representation": "答えテンプレ「時速{ans}km」で速さの単位表記(時速◯km)を正準化。",
+   "constructive_guarantees": "割り切れ+時速域[30,90]の現実性(自動車)。時間[2,4]で暗算域。",
+   "semantic_position": "速さ3公式の起点。minute(分速)・convert(換算)・compare(比較)・distance/time(残り2公式)の6点構成の頭。",
+   "exclusions": "小数時速・分数時間は5年では扱わない(6年の分数時間へ)。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_speed_minute_01": {
+  "brief": {
+   "semantic_territory": "速さを求める(分速)",
+   "number_domain": "整数(分速50〜300m)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "分速版。徒歩〜自転車の身体スケール。",
+   "representation": "calc版と同一構造で単位系のみ分速m。",
+   "constructive_guarantees": "割り切れ+分速域[50,300](歩き〜自転車)。",
+   "semantic_position": "calc(時速)との対で2単位系を覆い、convert(換算)の素地を作る。jhs c05/c08の分速文章題(追いつき等)の遠い基底。",
+   "exclusions": "秒速を求める形はconvertが担う(3単位系を1問で回すため)。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_speed_convert_01": {
+  "brief": {
+   "semantic_territory": "速さの単位換算(分速→秒速・時速)",
+   "number_domain": "整数(choices 300〜1800m/分)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "分速を挟んで÷60(秒速)と×60(時速km)の両方向へ換算。単位の乗除関係の理解が主眼で、電車(速い乗り物)が3単位系すべてで自然な数になる文脈。",
+   "representation": "秒速・時速はcomputed(v/60, v·60/1000)。しき欄は2式列挙。",
+   "constructive_guarantees": "vはchoices(300,600,...,1800)=**60と1000/60系の公倍数構造で両換算の整数性を値域レベルで保証**(制約ゼロ)——shift_downのstep畳み込みと同じ「制約を範囲に消す」手筋。",
+   "semantic_position": "speed系列の換算位。**棚卸し記録: 連問形(「また、〜」)の2例目**(lcm_calcと同じ差分・記録のみ・分割は第2波候補)。",
+   "exclusions": "km/時→m/秒の直接換算(2段換算)は6年側。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_speed_compare_01": {
+  "brief": {
+   "semantic_territory": "速さの比較(どちらが速いか)",
+   "number_domain": "整数分速(差≦40)",
+   "answer_structure": "comparison",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "2人の道のり・時間から分速を各自求めて比較。gold unit_price_compareのdirective「速さのどちらが速いか(c09)と同型」の当該パターン。",
+   "representation": "comparison設計(winner機械決定・求差ans)はgoldと同一。actorsレキシコンdistinct束縛で2人を保証。",
+   "constructive_guarantees": "両者整数分速+引き分け除外+接戦(差≦40m/分)——分速域では40がgoldの単価差30に相当する「見ただけで分からない」帯。",
+   "semantic_position": "comparison族の速さ担当(gold=単価/table_unit=密度/本件=速さの3点で族が完成)。",
+   "exclusions": "時間も道のりも違う3人比較は答欄構造が別。同一人物の行き帰り比較は出会い・往復系(jhs)の前史すぎる。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_distance_01": {
+  "brief": {
+   "semantic_territory": "道のりを求める(速さ×時間)",
+   "number_domain": "整数(80〜320km)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "速さ第2式。乗法なので可除性が不要になり制約ゼロの最軽量パターン。",
+   "representation": "時速step5×時間[2,4]。**棚卸し記録: semantic_note空欄だったパターン(メタデータ薄層)で、本rationaleが実質の初記述**——v0.9量産期の計算系は制約が自明なものほど注記が省かれた傾向(推定)。",
+   "constructive_guarantees": "制約ゼロ(積は値域が自然に抑える)。転記筋も構造なし(積>各因子)。",
+   "semantic_position": "3公式の第2位。time_01と逆演算の対。",
+   "exclusions": "途中休憩つき(2区間)はjhs文章題側の前史すぎる。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_time_01": {
+  "brief": {
+   "semantic_territory": "時間を求める(道のり÷速さ)",
+   "number_domain": "整数時間(2〜4)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "速さ第3式。3公式の中で最も誤答が多い向き(何で何を割るか)で、単独パターン化に意味がある。",
+   "representation": "自転車の時速choices(12,14,15,16,18)——時速域で割り切れ受理率を確保する合成数寄りの選定(int_div_dec系のchoices手筋と同族)。semantic_note空欄(distance_01と同時期の薄層・棚卸し記録)。",
+   "constructive_guarantees": "割り切れ+時間域[2,4](サイクリングの現実)。",
+   "semantic_position": "3公式の第3位(完結)。jhs c05_hayasa系(方程式で解く速さ)の算数側基底。",
+   "exclusions": "「何時間何分」の複名数答は割り切れない設定が要り、fmt_minsec(v1.1候補)待ちの系。",
+   "figure_notes": null,
+   "pedagogy": []
+  }
+ },
+ "g05_kawarikata_table_01": {
+  "brief": {
+   "semantic_territory": "ともなって変わる2量(周長一定の長方形)",
+   "number_domain": "整数(たて+横＝L/2)",
+   "answer_structure": "single",
+   "figure": "table",
+   "step_count": 1,
+   "directives": [
+    {"text": "table kindはv0.9スコープに含める(B層)", "by": "marko", "date": "2026-06"},
+    {"text": "corr-0007トリアージ3点裁可(B制約)", "by": "marko", "date": "2026-08-12"}
+   ]
+  },
+  "rationale": {
+   "source_features": "周長一定でたてを変えると横が決まる関係を表で観察→表の先を問う。関数概念(6年比例・jhs関数)への最初の橋。",
+   "representation": "表のたて1〜4に対する横をcomputed(L/2−k)で埋め、同一env駆動。周長はstep2で「÷2」が常に整数。",
+   "constructive_guarantees": "x>4(**表の先を問う**——表の読み取りだけで終わらせず規則の外挿を要求する、この単元の設計核)+横が正(成立性)。**2026-08-12追加**: L≠4x(周＝4xだと答＝xの正方形点で転記一致)。",
+   "semantic_position": "対応表系の5年担当(c06/c07/c18の対応表3兄弟の算数側先祖)。表+外挿の構図はjhs taiouの穴埋めと相似。",
+   "exclusions": "和一定でなく差一定・積一定(反比例の先取り)は6年〜jhsの領分。式に表す問い(y＝10−x)は文字式が6年のため値問いに固定。",
+   "figure_notes": "table流用(たて行1〜4定数・横行computed)。対応表の「x行定数・y行スロット」構図はjhs対応表3兄弟へ継承された型の初出。",
+   "pedagogy": []
+  }
+ }
+}
