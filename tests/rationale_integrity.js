@@ -13,7 +13,19 @@ const PB = path.join(ROOT, 'pattern_bank');
 
 // figure_notes正準(ゴールド流儀・null不使用)へ統一済みの学年。既定でここだけ検証する。
 // 他学年(jhs各章/g01/g04/g03/g02)は旧null流儀のまま順次統一(§4・一括改修不要)。統一時にここへ追加。
-const CANONICAL_GRADES = ['g02', 'g03', 'g04', 'g05'];
+const CANONICAL_GRADES = ['g02', 'g03', 'g04', 'g05', 'jhs'];
+
+// grade -> バンクpattern配列。'jhs'は14章バンクを集約(rationale_jhs.json 1本と突合)。
+function bankPatterns(grade) {
+  if (grade === 'jhs') {
+    const chs = fs.readdirSync(PB).filter(f => /^patterns_jhs_c\d\d\.json$/.test(f)).sort();
+    let ps = [];
+    for (const f of chs) ps = ps.concat(JSON.parse(fs.readFileSync(path.join(PB, f), 'utf-8')).patterns);
+    return ps;
+  }
+  const bp = path.join(PB, 'patterns_' + grade + '.json');
+  return fs.existsSync(bp) ? JSON.parse(fs.readFileSync(bp, 'utf-8')).patterns : null;
+}
 
 // grade -> rationaleファイル候補(既存配置慣行。先に見つかった正準を使う)
 function resolveRationale(grade) {
@@ -36,14 +48,13 @@ function parseEntries(rn) {
 const grades = process.argv.slice(2).length ? process.argv.slice(2) : CANONICAL_GRADES;
 let bad = 0;
 for (const grade of grades) {
-  const bankPath = path.join(PB, 'patterns_' + grade + '.json');
+  const pats = bankPatterns(grade);
   const rnPath = resolveRationale(grade);
-  if (!fs.existsSync(bankPath)) { console.log('❌ ' + grade + ': バンク不在'); bad++; continue; }
+  if (!pats) { console.log('❌ ' + grade + ': バンク不在'); bad++; continue; }
   if (!rnPath) { console.log('⚠️ ' + grade + ': rationale未配置(スキップ)'); continue; }
-  const bank = JSON.parse(fs.readFileSync(bankPath, 'utf-8'));
   const rnEntries = parseEntries(JSON.parse(fs.readFileSync(rnPath, 'utf-8')));
-  const bankIds = bank.patterns.map(p => p.pattern_id);
-  const hasFig = {}; bank.patterns.forEach(p => hasFig[p.pattern_id] = !!p.figure_params);
+  const bankIds = pats.map(p => p.pattern_id);
+  const hasFig = {}; pats.forEach(p => hasFig[p.pattern_id] = !!p.figure_params);
   const rn = rnEntries;
   const rnIds = Object.keys(rn);
   const bankSet = new Set(bankIds), rnSet = new Set(rnIds);

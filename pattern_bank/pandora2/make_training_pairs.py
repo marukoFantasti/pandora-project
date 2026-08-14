@@ -44,6 +44,37 @@ GRADES = [
 def load_gold(rnpath):
     return {k: v for k, v in json.load(open(rnpath, encoding="utf-8")).items() if not k.startswith("_")}
 
+JHS_CHAPTERS = ["c01","c02","c03","c04","c05","c06","c07","c08","c09","c10","c15","c16","c17","c18"]
+
+def resolve_directives_ref(brief, shared):
+    # jhs brief は directives_ref(_shared参照)。訓練ペア用に実directivesへ解決(格納ファイルは参照のまま保全)。
+    if "directives" in brief:
+        return brief
+    ref = brief.get("directives_ref")
+    b = {k: v for k, v in brief.items() if k != "directives_ref"}
+    cur = shared
+    if ref:
+        for p in ref.replace("_shared.", "").split("."):
+            cur = cur.get(p) if isinstance(cur, dict) else None
+    b["directives"] = cur if isinstance(cur, list) else []
+    return b
+
+def load_jhs():
+    # rationale_jhs.json(132・ネスト形・_shared付) + 14章バンク集約。directives_refを解決してg05系と同形に。
+    raw = json.load(open("rationale_jhs.json", encoding="utf-8"))
+    shared = raw.get("_shared", {})
+    gold = {}
+    for k, v in raw.items():
+        if k.startswith("_"):
+            continue
+        gold[k] = {"brief": resolve_directives_ref(v["brief"], shared), "rationale": v["rationale"]}
+    patterns = {}
+    for c in JHS_CHAPTERS:
+        bank = json.load(open("../patterns_jhs_%s.json" % c, encoding="utf-8"))
+        for p in bank["patterns"]:
+            patterns[p["pattern_id"]] = p
+    return gold, patterns
+
 def main():
     corrections = json.load(open("corrections_log.json", encoding="utf-8"))
     for c in corrections:
@@ -59,6 +90,10 @@ def main():
         patterns = {p["pattern_id"]: p for p in bank["patterns"]}
         validate_gold(gold, set(patterns))
         grades.append((grade, gold, patterns))
+    # jhs(14章バンク集約 + rationale_jhs.json・directives_ref解決)
+    jhs_gold, jhs_patterns = load_jhs()
+    validate_gold(jhs_gold, set(jhs_patterns))
+    grades.append(("jhs", jhs_gold, jhs_patterns))
 
     # ① 設計ペア: brief(+人間directives) と rationale → pattern (全学年)
     with open("pairs_design.jsonl", "w", encoding="utf-8") as f:
