@@ -1,0 +1,310 @@
+{
+ "g03_div_tobun_01": {
+  "brief": {
+   "semantic_territory": "等分除(2けた÷1けた・1人分を求める)",
+   "number_domain": "整数",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "div_object_pairsは『わり算文脈で自然な物』(割り切れる・配れる・数えられる)に限定。テーマ語彙の適用はレキシコンセット単位のホワイトリスト管理とし、無差別流し込みを禁止",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "小3わり算導入単元の第1形。『全体をn人で同じ数ずつ分けると1人分は』が定番の問いで、包含除と対にして『同じ式でも意味が違う』ことを教えるのが単元構成の核。",
+   "representation": "整数のみ。object/counterはdiv_object_pairsの同一インデックスj共有で対束縛し、『りんごを何まい』型の助数詞不整合を構造的に排除。動詞束縛(verb_use)も同セットが供給源。",
+   "constructive_guarantees": "n1%n2==0(割り切れ)+商2〜9(quotient_in_kuku)。除数2〜9×商2〜9の全72組が受理域に常在するため棄却は軽く、九九逆算で解ける範囲に厳密に収まる。",
+   "semantic_position": "わり算3意味体系(等分除/包含除/倍)の第1位。c14/c15のあまり3層と2ステップ(div_2step_gappei)がこの上に積まれる、g03わり算系列全体の土台。",
+   "exclusions": "商1(『1人分は何こ』の問いとして不自然)を商下限2で排除。n1==n2²(商=除数となる転記型リーク)を除外。",
+   "figure_notes": "図なし(テキスト完結の文章題のため。等分のおはじき配列など図解型は低学年図kind(第2波在庫)の領分で、本パターンとは別立て)。",
+   "pedagogy": []
+  }
+ },
+ "g03_div_hogan_01": {
+  "brief": {
+   "semantic_territory": "包含除(2けた÷1けた・何人に分けられるか)",
+   "number_domain": "整数",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『1人にn個ずつ分けると何人に分けられるか』。式は等分除と同一でも意味が異なる——この対比自体が単元の学習内容であり、等分除と独立パターンにして出題比率を個別に持てる構成が体系の要請。",
+   "representation": "整数のみ。等分除と同じdiv_object_pairs対束縛。答えの単位は文脈から『人』に固定(fixed_人)で、counterスロットと答え単位が分離する包含除特有の構造をanswer_unit_fromが担う。",
+   "constructive_guarantees": "等分除と同一の割り切れ+商九九制約。同一の数値設計で意味だけが違う対を成すため、等分除との難度差が数値要因で生じないことが構造的に保証される。",
+   "semantic_position": "わり算3意味体系の第2位。あまり系(div_amari_fukubun)は本パターンの包含除文脈にあまりを乗せた発展形で、直系の親。",
+   "exclusions": "商1を排除。n1==n2²(商=除数)を除外——g04のdiv_bai監査で確立した転記型の族カタログ適用。",
+   "figure_notes": "図なし(等分除と同じくテキスト完結。図解型は低学年図kindの領分)。",
+   "pedagogy": []
+  }
+ },
+ "g03_div_bai_01": {
+  "brief": {
+   "semantic_territory": "倍(AはBの何倍か)",
+   "number_domain": "整数",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "わり算の第3の意味。量の文脈を持たない裸の比較文『{n1}cmは{n2}cmの何倍ですか』が実物の形式で、物語スロットを持たない最小構成が正しい写し。",
+   "representation": "整数のみ。単位はbai_units(cm/m/g/dL)のchoicesで、同一単位が両辺に入る同型比較のみを生成。倍は無次元なので答え単位はfixed_倍。",
+   "constructive_guarantees": "n1%n2==0(小3の倍は整数倍のみ)+商2〜9。1倍(自明)は商下限で構造的に出ない。",
+   "semantic_position": "わり算3意味体系の第3位。g05の割合3用法(ratio/compare/base)へ続く『倍→割合』系譜の始点で、体系上の接続価値が大きい。",
+   "exclusions": "n1==n2²(商=除数の転記型)を除外。異単位比較(cmとmの混在)はchoicesの単一選択で構造的に生じない。",
+   "figure_notes": "図なし(裸の比較文でテープ図等を要さない形式が実物準拠。テープ図による倍の可視化は低学年図kindの候補)。",
+   "pedagogy": []
+  }
+ },
+ "g03_div_amari_fukubun_01": {
+  "brief": {
+   "semantic_territory": "あまりのあるわり算(素・複文答え)",
+   "number_domain": "整数",
+   "answer_structure": "compound_remainder",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "あまり3層の第1層。包含除文脈にあまりを乗せ、答えが『q人に配れて、rまいあまる。』の複文になる。c14実物の主形で、複文をそのまま答え形式にするのが写しとして正しい。",
+   "representation": "整数のみ。商qとあまりremをcomputed_slotsで保持し、しき行『{n1}÷{n2}={q}あまり{rem}』と答え複文が同一envから駆動される。answer_formulaは//と%解禁(v0.7)の適用第1号群。",
+   "constructive_guarantees": "has_remainder(n1%n2>=1)であまりの存在を保証。商2〜9でわる数×商が暗算可能な範囲に固定。あまりは剰余の定義により1〜n2-1に自動的に収まり、追加制約不要。",
+   "semantic_position": "あまり3層(素→切り上げ→切り捨て)の第1層。第2・3層は本パターンの複文を文脈による後処理判断に置き換えた発展形。answer_structure=compound_remainderはv0.7新設。",
+   "exclusions": "q==n2(商=除数の転記型・g04div_intと同族)を除外。割り切れる組はhas_remainderが排除。",
+   "figure_notes": "図なし(配る場面の図解は低学年図kindの領分。本パターンは複文答えの形式習得が主眼でテキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_div_amari_ceil_01": {
+  "brief": {
+   "semantic_territory": "あまりの考え方(切り上げ・+1の必然)",
+   "number_domain": "整数",
+   "answer_structure": "remainder_ceil",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "context_set機構(文脈が答えの単位と演算後処理を決める)をv0.7で新設。answer_formulaの条件式は不使用とし、切り上げは常に+1が成立するようhas_remainder制約で保証する",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "『全員がすわるには長いすは何きゃく』——あまりの人を収容するために+1が要る。+1の必然性は数値でなく文脈(いす・箱・回)が決める、というのが単元の学習内容そのもの。",
+   "representation": "context_set機構の発祥パターン。ceil_contextsの各文脈がhead/tail/ans_counterに加えwhy_plus1(+1の理由文)を内蔵し、文脈と後処理の対応がレキシコン側で閉じる。answer_formulaはq+1の無条件式で、条件分岐をコードに持たない。",
+   "constructive_guarantees": "has_remainder(n1%n2>=1)により+1が常に正しいことを制約側で保証——『条件式不使用』の設計はこの制約との合わせ技で初めて成立する。商2〜9で暗算範囲。",
+   "semantic_position": "あまり3層の第2層。2ステップ版(div_amari_ceil_2step)が直系の発展形で、同じceil_contextsを共有する。文脈セット方式はg05の単位量文脈系へ続く原型。",
+   "exclusions": "q+1==n2(切り上げ商=除数の紛れ)を除外。あまりゼロ(切り上げ不要=学習にならない)はhas_remainderが排除。",
+   "figure_notes": "図なし(文脈の読み取りが学習内容で、図があると+1判断が図の数え上げに置換されてしまう。意図的にテキストのみ)。",
+   "pedagogy": []
+  }
+ },
+ "g03_div_amari_floor_01": {
+  "brief": {
+   "semantic_territory": "あまりの考え方(切り捨て・商のまま)",
+   "number_domain": "整数",
+   "answer_structure": "remainder_floor",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『{n2}cmのリボンは何本できますか』——あまりでは1単位分に満たないため商のまま。切り上げと対をなす判断で、両者を独立パターンにして混合出題可能にするのが3層構造の狙い。",
+   "representation": "floor_contexts(リボン・ケーキ・かざり)のcontext_set。各文脈がwhy_floor(切り捨ての理由文)を内蔵し、ceil側と完全対称の機構構成。answer_formulaは商そのままで後処理なし。",
+   "constructive_guarantees": "has_remainderであまりの存在を保証——あまりゼロだと切り捨て判断が消滅し素のわり算に退化するため、この制約が学習内容の存在保証そのもの。商2〜9で暗算範囲。",
+   "semantic_position": "あまり3層の第3層。ceil側と対で『同じ計算・逆の後処理』を文脈が決めることを教える。切り上げ/切り捨ての対比はg04のがい数(四捨五入)へ続く判断系譜の始点。",
+   "exclusions": "q==n2(商=除数・g04div_intと同一の転記型)を除外。",
+   "figure_notes": "図なし(ceil側と同じ理由。切り捨て判断の文脈読解が主眼で、図の数え上げに置換させない)。",
+   "pedagogy": []
+  }
+ },
+ "g03_div_2step_gappei_01": {
+  "brief": {
+   "semantic_territory": "2ステップ(人数の合併→等分除)",
+   "number_domain": "整数",
+   "answer_structure": "two_step",
+   "figure": null,
+   "step_count": 2,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『おとなa1人と子どもa2人、あわせた人数で分ける』。わる数を先に作る2段構成が『答えが九九にないわり算とわり算のり用』単元の応用位で、しき2行の書式が実物準拠。",
+   "representation": "整数のみ。中間値psum=a1+a2をcomputed_slotsで保持し、しき行2本『{a1}+{a2}={psum} {n1}÷{psum}={ans}』を同一envで駆動。intermediate_formulasに式1を登録し中間値の出所を追跡。",
+   "constructive_guarantees": "sum_in_kuku(4<=a1+a2<=9)でわる数を九九範囲に固定し、divisible+商2〜9で第2段も暗算域。a1,a2のレンジ2〜6は和の受理域(4〜9)と噛み合わせて棄却を抑える設計。",
+   "semantic_position": "わり算系列の応用位・g03初の2ステップ。mult_2step系(かけ算→加減)と合わせ、two_step構造(v0.7新設)の四天王を構成する。",
+   "exclusions": "答==a1、答==a2(答えが本文の人数と一致する転記型)を2本の制約で個別排除。",
+   "figure_notes": "図なし(2段の式操作が主眼のテキスト完結型)。",
+   "pedagogy": []
+  }
+ },
+ "g03_box_add_01": {
+  "brief": {
+   "semantic_territory": "□を使った式(たし算・n1+□=n3)",
+   "number_domain": "整数",
+   "answer_structure": "box_equation",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『何こかもらったのでぜんぶで』の増加量未知。□の式を立ててから逆算で解く2文構成(式をかき、□をもとめなさい)が実物形式で、立式と解法の両方を答えに含める。",
+   "representation": "整数のみ。inverse_thinking=true——表示演算(+)と解法演算(-)が逆になる初の学年内族で、答えテンプレが『しき {n1}+□={n3} □={n3}-{n1}={ans}』と立式→変形→解を1行に収める。",
+   "constructive_guarantees": "increase_positive(n3-n1>=11)で増加量を2けたに固定し、単元の計算要求(2けたの加減)と一致させる。n3<=98で2けた内に封じ桁あふれを排除。",
+   "semantic_position": "□4演算族(add/sub/mult/div)の加法位。g04box_add・jhs方程式(c04)へ続く逆思考系譜の学年内始点で、方程式概念の前駆。answer_structure=box_equationはv0.7新設。",
+   "exclusions": "n3==2*n1(□=既知数n1となる転記型・g04box_addと同一)を除外。",
+   "figure_notes": "図なし(□の式の記号操作が主眼。テープ図による可視化は低学年図kindの候補として第2波へ)。",
+   "pedagogy": []
+  }
+ },
+ "g03_box_sub_01": {
+  "brief": {
+   "semantic_territory": "□を使った式(ひき算・n1-□=n3)",
+   "number_domain": "整数",
+   "answer_structure": "box_equation",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "転記排除の族カタログ監査(統一遡及②)で追加検出された制約(□=のこり型)を反映済み",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "『何こかつかったので、のこりが』の減少量未知。加法版と対で、□の位置(中央)が同じでも解法式が□=n1-n3と別形になる点が学習の山。",
+   "representation": "整数のみ。動詞はverb_use_ta(つかった/配った)の語彙束縛で物との組を保証——『りんごをつかった』級の語感崩れを構造排除。inverse_thinking=true。",
+   "constructive_guarantees": "decrease_positive(n1-n3>=11)で減少量2けた。remain_positive(n3>=3)でのこりが自然な量に留まり、『のこり1こ』級の不自然を回避。",
+   "semantic_position": "□4演算族の減法位。加法位と『□の位置は同じ・解法が違う』対を成す。",
+   "exclusions": "n1==2*n3(□=のこりと一致する転記型・統一遡及②の監査で追加検出)を除外。",
+   "figure_notes": "図なし(加法位と同じ理由)。",
+   "pedagogy": []
+  }
+ },
+ "g03_box_mult_01": {
+  "brief": {
+   "semantic_territory": "□を使った式(かけ算・n2×□=n3)",
+   "number_domain": "整数",
+   "answer_structure": "box_equation",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『1グループn2人ずつ・ぜんぶでn3人』のいくつ分未知。かけ算の□はわり算で解く——乗除の逆関係を□の式で踏む位置で、等分除・包含除の学習と接続する。",
+   "representation": "整数のみ。グループ文脈は単一テンプレ固定(物レキシコン不要の最小構成)。解法式□={n3}÷{n2}を答えテンプレに明示。",
+   "constructive_guarantees": "divisible+box_in_kuku(□が2〜9)で九九逆算の範囲に厳密固定。",
+   "semantic_position": "□4演算族の乗法位。わり算位(box_div)と『乗除は互いの逆』の対を成す。g04box_multと同族。",
+   "exclusions": "n3==n2²(□=既知数n2となる転記型・g04box_multと同一)を除外。",
+   "figure_notes": "図なし(記号操作が主眼)。",
+   "pedagogy": []
+  }
+ },
+ "g03_box_div_01": {
+  "brief": {
+   "semantic_territory": "□を使った式(わり算・n1÷□=q・数値形式)",
+   "number_domain": "整数",
+   "answer_structure": "box_equation",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "検品修正⑤(2026-08-04): box_ne_quotient制約を追加(16÷□=4,□=4型は児童が混乱しやすい)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "わる数未知のn1÷□=q。この型の文章題化は『何人かで分けたら』等の不自然な文になりやすく、実物も数値形式が主のため、意図的に数値問題として設計——□4演算族で唯一の非文章題。",
+   "representation": "整数のみ・物レキシコンなしの最小構成。answer_unit_from=noneで単位なし解答。解法式□={n1}÷{q}を明示し『わる数=わられる数÷商』の関係を書式で教える。",
+   "constructive_guarantees": "divisible+box_in_kuku(□が2〜9)。□とqが対称役(n1=□×q)のため数値設計は乗法位と同型で、受理率も同等。",
+   "semantic_position": "□4演算族のわり算位・族の完結。『わり算の□はわり算で解く(ただし立ち位置が変わる)』という族内で最も間違えやすい位置。",
+   "exclusions": "box_ne_quotient(□==q)を除外——16÷□=4,□=4のように□と商が同値だと逆算の手応えが消え児童が混乱する(検品修正⑤で追加)。転記排除と認知配慮の二重の性格を持つ制約。",
+   "figure_notes": "図なし(数値形式の設計判断による。文章題化の不自然さ回避が理由で、図の出番が構造的にない)。",
+   "pedagogy": []
+  }
+ },
+ "g03_addsub_gappei_3digit_01": {
+  "brief": {
+   "semantic_territory": "合併(3けた+3けた・くり上がり)",
+   "number_domain": "整数(3けた)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "検品修正③(2026-08-04): どう物園→動物園(動は3年配当・交ぜ書き解消)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "3けた同士の合併・くり上がりあり。来場者数・利用者数という『大きい人数が自然な文脈』を定型文2種(動物園/図書館)に固定し、3けたの数が物量として不自然にならない場面選定が要点。",
+   "representation": "整数のみ・fixed_人。文テンプレ2種のみで物レキシコン不使用——3けたが自然な文脈は限られるため、汎用スロット化せず場面を固定する方が品質が安定する。",
+   "constructive_guarantees": "carry_required(一の位または下2けたでくり上がり)で単元の計算要求と一致。sum_max(和<=1000)で1000ちょうどを上限に4けた暴走を防ぐ。",
+   "semantic_position": "c11(暗算とり用)の合併位。求残・求差と3形で3けた加減の意味カテゴリを覆う。",
+   "exclusions": "くり上がりなしの組(単元要求を満たさない)をcarry_requiredが排除。",
+   "figure_notes": "図なし(純粋な計算文章題)。",
+   "pedagogy": []
+  }
+ },
+ "g03_addsub_kyuzan_3digit_01": {
+  "brief": {
+   "semantic_territory": "求残(3けた・くり下がり)",
+   "number_domain": "整数(3けた)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "検品修正②(2026-08-04): 動詞を語彙束縛(div_object_pairsにverb_use追加。あめ・りんご=配りました)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "3けた−2〜3けたの求残・くり下がりあり。『ありました→つかいました→のこりは』の求残3文構成が実物の定型。",
+   "representation": "整数のみ。動詞verb_useを物と対束縛(検品修正②)——『色紙を配りました』でなく『つかいました』、『りんごをつかいました』でなく『配りました』と、物ごとの自然な消費動詞をレキシコン側で固定。",
+   "constructive_guarantees": "borrow_required(一の位または下2けたでくり下がり)で単元要求と一致。no_negative+nonzero_remainderで在庫負と答え0を排除。",
+   "semantic_position": "c11の求残位。g02の2けた求残(borrow)の3けた拡張で、系譜が直結。",
+   "exclusions": "n1==2*n2(差=引く数となる転記型)を除外。答え0(不自然)をnonzero_remainderが排除。",
+   "figure_notes": "図なし(純粋な計算文章題)。",
+   "pedagogy": []
+  }
+ },
+ "g03_addsub_kyusa_3digit_01": {
+  "brief": {
+   "semantic_territory": "求差(3けた・複文答え)",
+   "number_domain": "整数(3けた)",
+   "answer_structure": "compound_compare",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "転記排除の族カタログ監査(統一遡及②)で対称2本(差=小さい方・abs対称)を追加検出・反映済み",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "『どちらが何こ多く』——答えが『{actor_a}が{ans}こ多くひろった。』の複文(誰が+差)になるのが特徴で、compound_compare(v0.7新設)の代表形。",
+   "representation": "整数のみ。actor_pairsの対束縛で人物2名を供給。a_wins(n1>n2)でactor_aを多い側に固定し、答え複文の主語をテンプレ直書きで一意化——computed分岐なしで複文が決定する最小設計。",
+   "constructive_guarantees": "borrow_requiredでくり下がり保証。diff_meaningful(差>=11)で『見ただけで分かる差』を排除し、計算による比較の必然性を数値側で作る。",
+   "semantic_position": "c11の求差位。g05のcomparison族(単位量・速さ)へ続く比較系譜の先行形で、dec_kyusa(小数版)と同構造。",
+   "exclusions": "n1==2*n2とn2==2*n1の対称2本(差=小さい方となる転記型・統一遡及②の監査で追加検出)を除外。引き分けはa_winsが構造排除。",
+   "figure_notes": "図なし(比較の複文答えが主眼のテキスト完結型)。",
+   "pedagogy": []
+  }
+ }
+}

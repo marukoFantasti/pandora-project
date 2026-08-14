@@ -1,0 +1,216 @@
+{
+ "g02_meas_len_gappei_01": {
+  "brief": {
+   "semantic_territory": "合併(長さ・cm/mm複名数)",
+   "number_domain": "複名数cm_mm(mm単位の内部整数)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "quantity_slots(v0.5): 複名数は最小単位の整数で内部表現し、制約式も最小単位整数で記述(繰り上がり有無=難易度が整数演算で書ける)。表示整形はunit_system別整形関数がジェネレータ側で担当",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "2本のテープの合併。小2の長さ計算はcm/mmの複名数が主戦場で、mmの繰り上がり有無が難度の分水嶺——easyはくり上がりなしが実物の階梯。",
+   "representation": "quantity_slots(cm_mm)の発祥適用群——mm内部整数+表示整形の分離アーキテクチャはここで確立し、g03のkm_m/kg_g・dec1、g05の千分率・314スケールまで続くスケール整数文化の源流。テープ識別はattribute_pairs束縛。『2本の』はtemplate_number_constants宣言(欠陥7=数値照合の許可制)。",
+   "constructive_guarantees": "no_mm_carry(mm和<=9)でeasy難度を宣言的に保証。both_have_mm(両方に端数)で複名数計算の必然性、ans_has_mmで問いと答えの形式一致——必然性・形式一致・難度の3点を制約で書き切る複名数設計の雛形。sum_max(<=199=19cm台)で小2の物差し感覚に収める。",
+   "semantic_position": "複名数族(cm_mm/L_dL/m_cm/h_min)の第1位。longlen_gappei(m_cm)はunit_system差し替えクローンで、族の水平展開の親。",
+   "exclusions": "mm繰り上がりの出る組(easy違反)をno_mm_carryが排除。端数なしオペランド(単名数に退化)をboth_have_mmが排除。",
+   "figure_notes": "図なし(テープ・物差しの図示は図依存スコープ外。複名数の計算手続きが主眼)。",
+   "pedagogy": []
+  }
+ },
+ "g02_meas_len_kyusa_01": {
+  "brief": {
+   "semantic_territory": "求差(長さ・cm/mm複名数・二部構成答え)",
+   "number_domain": "複名数cm_mm(mm単位の内部整数)",
+   "answer_structure": "comparison",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "lexicon_filters(include_types: color)——大小属性は実際の長短と矛盾しうるため比較問題では禁止",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "『どちらがどれだけ長いですか』——テープの測り比べ。二部構成答え(どちら+差)が実物形式で、加減のcomparison構造を量スロットで再利用する。",
+   "representation": "comparison構造(winner_attr/big/small機械導出)の量的再利用——belongs_to宣言でq1/q2を属性に帰属させ、勝者導出を数値から機械決定。属性はcolorのみに限定(lexicon_filters)——『大きいテープが短い』の意味矛盾を語彙フィルタで構造排除する、フィルタ機構の代表適用。",
+   "constructive_guarantees": "no_mm_borrow(easy: mm繰り下がりなし)+meaningful_gap(差>=11=1cm以上で測り比べの意味)+both_have_mm。比較の必然性と難度を同時制御。",
+   "semantic_position": "複名数族の求差位・comparison構造の第2適用。g03のdec_kyusa(小数・複文)へ続く量的比較の系譜。",
+   "exclusions": "q1==q2(比較不成立)を除外。size属性対(実長と矛盾しうる)をlexicon_filtersが構造排除。",
+   "figure_notes": "図なし(テープ図示は図依存スコープ外)。",
+   "pedagogy": []
+  }
+ },
+ "g02_meas_kasa_gappei_01": {
+  "brief": {
+   "semantic_territory": "合併(かさ・L/dL複名数)",
+   "number_domain": "複名数L_dL(dL単位の内部整数)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "やかんと水とうの水の合併。かさ単元はL/dLの複名数で、長さ(cm/mm)と同じ10進の位取りを別量で反復するのが単元系列の構成。",
+   "representation": "quantity_slots(L_dL)——cm_mmと同一の内部整数+整形分離アーキテクチャの量横断適用。容器はテンプレ直書き(やかん/水とう)の固定文脈で、レキシコン不要の最小構成。",
+   "constructive_guarantees": "no_dl_carry(easy)+both_have_dl(必然性)+ans_has_dl(形式一致)——len_gappeiの3点制約の完全な写像で、複名数設計の雛形が量をまたいで再現可能なことの実証。",
+   "semantic_position": "複名数族のかさ位。kasa_kyuzan(求残)と単元内で対を成す。",
+   "exclusions": "dL繰り上がり(easy違反)・端数なしオペランドを制約2本が排除。",
+   "figure_notes": "図なし(ますの目盛り図は図依存スコープ外)。",
+   "pedagogy": []
+  }
+ },
+ "g02_time_conv_min_to_hmin_01": {
+  "brief": {
+   "semantic_territory": "時間の単位換算(分→何時間何分)",
+   "number_domain": "時間h_min(分単位の内部整数・60進)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "時計読み取り問題(図依存)とアレイ図はSVG連携課題として対象外(v0.5)。図不要で文章完結する時間問題のみ採録",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "『85分は何時間何分ですか』——60進法の換算。時こく単元の大半は時計の図に依存するが、換算だけは文章完結する——スコープ境界(図依存を切る)を単元内で精密に引いた採録判断が本パターンの存在理由。",
+   "representation": "h_min unit_system(60進の複名数)——10進(cm_mm等)と異なる基数の複名数を同一のquantity_slots機構で扱う汎化の実証。answer_formulaはq1の恒等式で、学習内容の全体が表示整形(60進分解)に宿る——env.ansと表示答えの乖離が構造化された例で、corr-0007表示答え基準の必然性を示すもう一つの標本。",
+   "constructive_guarantees": "not_exact_hour(q1%60!=0)で『何時間何分』の問い形式と答えの一致を保証——ちょうど◯時間は別テンプレの領分と明示し、形式不一致を構造排除。レンジ61〜179で1〜2時間台に限定。",
+   "semantic_position": "時間族(換算順/換算逆/時刻計算)の第1位。逆方向クローン(hmin_to_min)と対。",
+   "exclusions": "ちょうど◯時間(形式不一致)をnot_exact_hourが排除。60分以下(換算不要)・180分以上(小2の実感外)をレンジが排除。",
+   "figure_notes": "図なし(時計文字盤の読み取りは図依存として意図的にスコープ外——本パターンは図を要さない換算のみを扱う設計判断そのものが採録理由)。",
+   "pedagogy": []
+  }
+ },
+ "g02_time_after_01": {
+  "brief": {
+   "semantic_territory": "時刻の計算(時刻+経過時間・分繰り上がり)",
+   "number_domain": "時刻clock+経過raw_min(0時からの分の内部整数)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『8時50分に家を出て25分あるいて』——時刻+経過時間→時刻。分→時の60進繰り上がりを必ず含み、午前内で完結するのがeasyの実物階梯(午前/午後またぎはmedium別パターンと明示)。",
+   "representation": "clock unit_system(0時からの分の内部整数)——時刻と時間(長さ)を同じ整数軸で扱い、加算後の表示整形が時刻表記を担う。出発時刻はstep5・経過はchoices(15〜50の5分刻み)——時計の目盛り感覚を刻みで写す。",
+   "constructive_guarantees": "minute_carry((出発の分)+経過>=60)で繰り上がりを必ず含め単元要求と一致。stay_am(和<720)で午前内完結を宣言的に保証——難度境界(午前またぎ)を制約1本で封じる。",
+   "semantic_position": "時間族の時刻計算位・族の最難度。g03の時間の計算(スコープ外・file_note記録)への拡張受け口。",
+   "exclusions": "繰り上がりなしの組をminute_carryが排除。正午またぎをstay_amが排除。",
+   "figure_notes": "図なし(時計図は図依存スコープ外。時刻の数直線的な計算のみ採録)。",
+   "pedagogy": []
+  }
+ },
+ "g02_addsub_3ko_gappei_01": {
+  "brief": {
+   "semantic_territory": "合併(3口・くり上がり)",
+   "number_domain": "整数(2けた)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "3人の持ち数を合わせる3口加算。『3人あわせて』の3はtemplate_number_constants宣言——本文定数の許可制(欠陥7)の適用例。",
+   "representation": "actors(distinct)の重複なし3人サンプリング(v0.6新設のactor_c対応)——人物レキシコンの多人数化はここが発祥。式は1本(n1+n2+n3)で、2ステップと違い中間値を書かないのが3口単元の書式。",
+   "constructive_guarantees": "some_carry(一の位の和>=10)でくり上がりを含め単元要求と一致。sum_max(<=99)で2けた内。",
+   "semantic_position": "3口族(合併/増減混合)の合併位。g03のaddsub系3けたへ桁進行する前の多口経験。",
+   "exclusions": "くり上がりなしをsome_carryが排除。人物重複をdistinctサンプリングが構造排除。",
+   "figure_notes": "図なし(純粋な計算文章題)。",
+   "pedagogy": []
+  }
+ },
+ "g02_addsub_zogen_bus_01": {
+  "brief": {
+   "semantic_territory": "増減混合(3口・バスの乗り降り)",
+   "number_domain": "整数(2けた)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "転記排除は多値衝突型(答=おりた数/のった数/はじめの数)を3本で個別に張る。増減同数(n_off==n_on)は答=はじめの数の転記になるため意味制約と転記制約の二重の役で除外",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "『バスていでn人おりて、n人のってきました』——減ってから増える小2の3口定番文脈。左から順に計算する型で、式1本に増減を混ぜて書くのが単元の学習内容。",
+   "representation": "整数のみ・バス文脈の単一テンプレ固定。intermediate_formulasでmid(降車後)を検算可能に保持しつつ、書式は1本式——3口単元の『順に計算』の写し。",
+   "constructive_guarantees": "mid_positive(途中経過>=1)——最終答えだけでなく中間状態の非負も保証する、多段状態の欠陥8対策の発展形。",
+   "semantic_position": "3口族の増減混合位・v0.6クローン群の一。じゅんに計算する思考はg03の2ステップ書式(式2本)への橋渡し。",
+   "exclusions": "n_off==n_on(増減の意味消失かつ答=はじめの数の転記)、答==n_off、答==n_onの計3系を除外——1本式に数値4つが並ぶ本パターンは転記衝突面が最大で、族カタログ全部乗せの代表例。",
+   "figure_notes": "図なし(乗降の場面図は不要。順次計算の手続きが主眼)。",
+   "pedagogy": []
+  }
+ },
+ "g02_meas_longlen_gappei_01": {
+  "brief": {
+   "semantic_territory": "合併(長い長さ・m/cm複名数)",
+   "number_domain": "複名数m_cm(cm単位の内部整数)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "リボン2本の合併・m/cm。cm/mm(c14)で確立した複名数計算を上位単位で反復する単元(c44)で、構造は同一・スケールだけが進む。",
+   "representation": "len_gappeiのunit_system差し替えクローン(v0.6)——cm_mm→m_cmの置換と基数100(cm部は2桁)への制約書き換えのみで単元を増設する、クローン量産方式の実証第1号。パターン設計の再利用性がアーキテクチャの主張そのもの。",
+   "constructive_guarantees": "no_cm_carry(cm和<=99・基数100版のeasy)+both_have_cm+ans_has_cm——親の3点制約を基数だけ変えて完全継承。sum_max(<=599=5m台)は『教室の長さ感覚』の実感上限。",
+   "semantic_position": "複名数族のm_cm位・クローン系譜の代表。g03のkm_m(道のり)が次の上位単位で、cm/mm→m/cm→km/mの3段スケール進行が学年をまたいで完成する。",
+   "exclusions": "cm繰り上がり(easy違反)・端数なしオペランドを制約が排除。",
+   "figure_notes": "図なし(親パターンと同じ理由)。",
+   "pedagogy": []
+  }
+ },
+ "g02_meas_kasa_kyuzan_01": {
+  "brief": {
+   "semantic_territory": "求残(かさ・複名数−単名数)",
+   "number_domain": "複名数L_dL(dL単位の内部整数)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『ポットのお茶からn dLのみました』——複名数から単名数(dLのみ)を引く求残。減数を単名数に限定するのが小2の実物階梯で、複名数同士の減法は上の学年の領分。",
+   "representation": "q2を単名数(dLのみ・レンジ2〜9)に設計——quantity_slots機構で『複名数−単名数』の型を減数のレンジ制限だけで表現する省制約設計。v0.6クローン群の一。",
+   "constructive_guarantees": "no_dl_borrow((q1のdL部)>q2)——easy難度(繰り下がりなし)とのこりのdL正を1本の制約で同時保証する合わせ技。q1_has_dlで複名数の必然性。",
+   "semantic_position": "複名数族の求残位。合併(kasa_gappei)と単元内の加減対を成し、g03の重さ(kg_g)の求残系への受け口。",
+   "exclusions": "dL繰り下がりの組とのこりdL=0をno_dl_borrowが一括排除。q1の端数なしをq1_has_dlが排除。",
+   "figure_notes": "図なし(ますの図は図依存スコープ外)。",
+   "pedagogy": []
+  }
+ },
+ "g02_time_conv_hmin_to_min_01": {
+  "brief": {
+   "semantic_territory": "時間の単位換算(何時間何分→分)",
+   "number_domain": "時間h_min(分単位の内部整数・60進)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『1時間25分は何分ですか』——換算の逆方向。順方向(分→時分)と対で出すのが単元構成で、双方向の往復が60進の定着を作る。",
+   "representation": "conv_min_to_hminの逆方向クローン(v0.6)——内部値q1は同じ分整数のまま、問題文表示(q1_disp=複名数)と答え表示(raw_min=分)を入れ替えるだけで逆方向が成立する。内部表現と表示の分離アーキテクチャだからこそクローンが1箇所の差し替えで済む、という設計主張の縮図。",
+   "constructive_guarantees": "not_exact_hour(q1%60!=0)——順方向と同一制約だが役割が逆で、ここでは問題文の複名数表示(『1時間20分』)の成立を保証する。同じ制約式が方向によって別の形式保証を担う対称性。",
+   "semantic_position": "時間族の換算逆位・順方向との双方向対。v0.6クローン群の一。",
+   "exclusions": "ちょうど◯時間(問題文が単名数に退化)をnot_exact_hourが排除。",
+   "figure_notes": "図なし(順方向と同じ理由。図を要さない換算のみの採録)。",
+   "pedagogy": []
+  }
+ }
+}

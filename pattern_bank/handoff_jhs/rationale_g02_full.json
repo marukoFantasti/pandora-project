@@ -1,0 +1,467 @@
+{
+ "_meta": {
+  "schema": "rationale_g05_gold.json準拠",
+  "scope": "g02全21パターン完全版(遡及・統一遡及③ g02完了 2026-08-14)",
+  "note": "figure_notes正準=ゴールド流儀(null不使用)。",
+  "order": "バンク順"
+ },
+ "g02_addsub_gappei_2digit_carry_01": {
+  "brief": {
+   "semantic_territory": "合併(2けた・くり上がり)",
+   "number_domain": "整数(2けた・c26オーバーライドで3けた)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "動詞はテンプレート(文型)に直接埋め込む。『〜は〜を』文型=他動詞固定・『〜が』文型=存在動詞固定。objectペア側のverbは求残の操作動詞のみに使う(template_design_note)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "『あわせて』の合併——別々に存在する2量を合わせる、時間的順序なし。増加(時間軸あり)との区別が小2加減の意味カテゴリ体系の出発点で、バンク全体の第1号パターン。",
+   "representation": "整数のみ。actor対とobject/counter対束縛——助数詞不整合の構造排除はこのパターンで確立し全学年へ継承された祖形。動詞の文型埋め込み規約(template_design_note)もここが発祥。",
+   "constructive_guarantees": "carry_required(一の位の和>=10)で単元の計算要求と数値を一致させる——『欠陥3対策』の第1号適用。sum_max(<=99)で2けた内。c26オーバーライドではconstraints_replaceでsum_maxを459に差し替え、同一パターンを3けた単元で再利用。",
+   "semantic_position": "加減5意味カテゴリ(合併/増加/求残/求差/求補)の第1位・バンク全体の始祖。unit_range_overrides+lexicon_filters(3けたはおり紙・カード限定=数量が自然な物のみ)の単元再利用機構の実証第1号でもある。",
+   "exclusions": "n1==n2(同数の合併は求差型と紛らわしい)を除外。くり上がりなしの組をcarry_requiredが排除。",
+   "figure_notes": "図なし(純粋な計算文章題。ブロック図・テープ図は図依存としてスコープ外の設計判断がv0.5 changelogに記録)。",
+   "pedagogy": []
+  }
+ },
+ "g02_addsub_kyuzan_2digit_borrow_01": {
+  "brief": {
+   "semantic_territory": "求残(2けた・くり下がり)",
+   "number_domain": "整数(2けた・c26オーバーライドで3けた)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "no_transcribe(n1=2n2で答=n2)はcorr-0007トリアージで裁可(2026-08-12)。転記型リーク排除の族カタログ適用",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "『ありました→つかいました→のこりは』の求残3文構成。時間的順序(はじめ→操作→のこり)の存在が求補との区別点で、意味カテゴリ体系の骨格を成す。",
+   "representation": "整数のみ。操作動詞verb_useをobjectと対束縛——『いちごをつかいました』でなく『食べました』と、物ごとの自然な消費動詞をレキシコンが供給する仕組みの発祥。",
+   "constructive_guarantees": "borrow_required(一の位でくり下がり)で単元要求と一致。no_negative(欠陥8=在庫負の構造排除)+nonzero_remainder(答え0は問いとして不自然)。",
+   "semantic_position": "5意味カテゴリの求残位。g03の3けた求残・かさ求残(単名数減)への系譜の起点。c26オーバーライドで3けた版も供給。",
+   "exclusions": "n1==2*n2(答=引く数となる転記型・corr-0007トリアージ裁可2026-08-12)を除外。答え0をnonzero_remainderが排除。",
+   "figure_notes": "図なし(純粋な計算文章題)。",
+   "pedagogy": []
+  }
+ },
+ "g02_addsub_zoka_2digit_carry_01": {
+  "brief": {
+   "semantic_territory": "増加(2けた・くり上がり)",
+   "number_domain": "整数(2けた・c26オーバーライドで3けた)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『もらいました→ぜんぶで』——ある量に後から加わる。式は合併と同じn1+n2でも、時間軸の有無で意味カテゴリが分かれる。この『同じ式・違う意味』の対はg03わり算(等分除/包含除)の対構造の先行形。",
+   "representation": "整数のみ。テンプレは『もらう』『あとから入れる』の時間軸文型2種で、合併の並列文型と構造的に区別される。",
+   "constructive_guarantees": "carry_required+sum_maxで合併と同一の数値設計——意味だけが違う対の難度統制。c26オーバーライド(3けた)も同様に共有。",
+   "semantic_position": "5意味カテゴリの増加位。逆思考版(zoka_inverse)が直系の発展形で、順方向をここで確立してから逆転させる二段構えの前段。",
+   "exclusions": "くり上がりなしをcarry_requiredが排除。合併と違いn1==n2は許容(増加では紛れを生まない)——除外設計も意味カテゴリ単位で個別、の実例。",
+   "figure_notes": "図なし(純粋な計算文章題)。",
+   "pedagogy": []
+  }
+ },
+ "g02_addsub_kyusa_2digit_borrow_01": {
+  "brief": {
+   "semantic_territory": "求差(2けた・くり下がり・二部構成答え)",
+   "number_domain": "整数(2けた・c26オーバーライドで3けた)",
+   "answer_structure": "comparison",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "computed_slots(winner等)はコードで機械導出し、AIにも乱数にも触らせない(v0.2確立)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "『どちらが何{counter}多いですか』——取り去る操作が無いのに減法になる点が児童の難所で、二段の問い(誰が+差)が実物形式。answer_structure=comparisonの発祥パターン。",
+   "representation": "winner/big/smallをcomputed_slotsで機械導出——『答えの分岐をAI・乱数に触らせない』原則の第1号実装で、g05のcomparison族(単位量・速さ)の勝者機械決定の直系の祖。abs(n1-n2)で正値保証の形式解。",
+   "constructive_guarantees": "borrow_required(大きい方基準)+meaningful_gap(差>=3——差1〜2は式を立てず目視で見えてしまい単元のねらいから外れる)。比較の必然性を数値側で作る設計の起点。",
+   "semantic_position": "5意味カテゴリの求差位。g03の求差複文(compound_compare)・g05のcomparison族へ続く比較系譜の根。c26オーバーライドで3けた版も供給。",
+   "exclusions": "n1==n2(比較不成立)を除外。n1==2*n2とn2==2*n1の対称2本(差=小さい方の転記型)を除外。",
+   "figure_notes": "図なし(比較の二部構成答えが主眼のテキスト完結型)。",
+   "pedagogy": []
+  }
+ },
+ "g02_addsub_kyuho_2digit_01": {
+  "brief": {
+   "semantic_territory": "求補(全体と一方の部分から他方を求める)",
+   "number_domain": "整数(2けた・c26オーバーライドで3けた)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『赤い◯と青い◯があわせてn1こ。赤はn2こ。青は何こ』——取り去る時間的操作が無いのに減法。求残との区別点は操作の不在で、部分-全体の静的構造を属性対で表すのが実物形式。",
+   "representation": "整数のみ。部分の識別はattribute_pairs(赤い/青いの対束縛・v0.2で新設)——属性対レキシコンの発祥適用で、g03の小数求差のテープ識別へ継承。スロットにrole宣言(whole/part)を持ち、数値の意味役割を機械可読化。",
+   "constructive_guarantees": "part_lt_whole(部分<全体・欠陥8の構造排除)+borrow_required+both_parts_nonzero(もう一方の部分0は問い不成立)。",
+   "semantic_position": "5意味カテゴリの求補位・カテゴリ体系の完結。合併の逆算という論理関係にあり、jhs方程式の『部分を文字にする』思考の遠い前駆。",
+   "exclusions": "n1==2*n2(全体=2部分で答=既知部分となる転記型)を除外。部分0をboth_parts_nonzeroが排除。",
+   "figure_notes": "図なし(部分-全体のテープ図は図依存としてスコープ外。属性対の言語表現で構造を代替)。",
+   "pedagogy": []
+  }
+ },
+ "g02_addsub_zoka_inverse_01": {
+  "brief": {
+   "semantic_territory": "増加の逆思考(はじめの数を求める)",
+   "number_domain": "整数(2けた)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "no_transcribe(全体=2倍で答=もらった数)は転記排除の族カタログ監査で追加検出(2026-08-12)・反映済み",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "『何こかもっていました→もらった→ぜんぶで』から、はじめの数を逆算。状況は増加なのに計算はひき算——表層の動詞と演算が逆転する型で、テープ図単元(図をつかった考え方①)に配置される実物構成の写し。",
+   "representation": "inverse_thinking=trueの発祥パターン(v0.2)。スロット名をn_after/n_added(結果/増分)と役割で命名し、順方向のn1/n2と混同しない設計。g03の□の式4種・jhs方程式へ続く逆思考系譜の根。",
+   "constructive_guarantees": "initial_positive(はじめの数>=2——0・1は不自然)+borrow_requiredで単元要求と一致。逆算だが構成は順方向乱択+棄却で足りる(答=n_after-n_addedが常に閉じる)ため、g05型の構成的逆算は不要。",
+   "semantic_position": "逆思考系譜の学年始点。順方向(zoka)を確立した上での逆転として単元も分離配置(c45)——順逆を別単元で出す教科書構成に忠実。",
+   "exclusions": "n_after==2*n_added(答=もらった数となる転記型・2026-08-12追加検出)を除外。はじめの数0・1をinitial_positiveが排除。",
+   "figure_notes": "図なし(テープ図単元だが、テープ図の描画は図依存スコープ外。逆思考の立式自体はテキストで完結する形のみ採録)。",
+   "pedagogy": []
+  }
+ },
+ "g02_addsub_2step_gosei_kyuzan_01": {
+  "brief": {
+   "semantic_territory": "2ステップ(合併→求残)",
+   "number_domain": "整数(2けた)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 2,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『2人がつかった分を合わせてから全体より引く』。テープ図で構造化する単元(図をつかった考え方②)の中核で、しき2本の書式が実物準拠。",
+   "representation": "step_count=2の発祥パターン(v0.3)。中間値midをcomputed_slotsで機械導出し、intermediate_formulasで途中式の検算可能性を確保、answer_formulaは最終答えのみを指す——多段式の三点分業(中間値/途中式/最終答え)はここで確立し全学年のtwo_step系へ継承。なおanswer_structureは当時の語彙でsingleのまま(two_step構造名はv0.7新設でg03から)——構造名の考古学的地層が残る。",
+   "constructive_guarantees": "mid_two_digit(和>=10で暗算一発で消えない)+remainder_positive(のこり>=2)+distinct_uses(同数だと合成の必然性が薄れる)。",
+   "semantic_position": "多段思考の学年始点。g03のdiv_2step_gappei(合併→等分除)は本パターンの演算置換形で、直系の子。",
+   "exclusions": "答==n1、答==n2(残=使用量となる転記型)を2本で個別除外。のこり0・1をremainder_positiveが排除。",
+   "figure_notes": "図なし(テープ図単元だがテープ図描画はスコープ外。式2本の手続きが主眼)。",
+   "pedagogy": []
+  }
+ },
+ "g02_mult_1atari_kuku_01": {
+  "brief": {
+   "semantic_territory": "1あたり×いくつ分(九九・だん章横断)",
+   "number_domain": "整数(九九)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "かけ算の順序規約: かけられる数=1あたり量。answer_templateの{n_per}×{n_count}固定で構造保証(v0.4確立)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "『1さらにnこずつ・さらがnまい』——かけ算の意味の土台。学校算数の順序規約(1あたり量が先)は採点実務に直結するため、生成側で構造保証しなければならない。",
+   "representation": "container_sets(入れ物+中身+助数詞+動詞の整合束・v0.4新設)の発祥適用——『1{cont_counter}の{container}に』の文型が非文合成を構造排除。順序はテンプレ固定で乱数もAIも介在しない。",
+   "constructive_guarantees": "kuku_range(両因数<=9)。単一パターンをunit_range_overridesでだん章4つ(2・5/3・4/6・7/8・9・1のだん)へ配分——n_perのchoices差し替えだけで章別出題を実現する、オーバーライド機構の最大活用例。",
+   "semantic_position": "かけ算4パターンの土台位。g03の乗法系(2step・分配法則)・わり算(九九逆算)の全てがこの九九基盤の上に立つ。",
+   "exclusions": "九九範囲外をkuku_rangeが排除。1のだんはc35のchoicesにのみ含め、既定レンジ(2〜9)からは除外——『1こずつ』の自明形を通常出題から外す設計。",
+   "figure_notes": "図なし(アレイ図はSVG連携課題として対象外の設計判断がv0.5 changelogに記録。文章のみで意味構造を問える形を採録)。",
+   "pedagogy": []
+  }
+ },
+ "g02_mult_bai_01": {
+  "brief": {
+   "semantic_territory": "倍(基準量×何倍)",
+   "number_domain": "整数(九九前半)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『BはAのnばいもっています』——基準量の何倍かを求める乗法の第2の意味。人物対で基準と対象を分けるのが実物形式。",
+   "representation": "整数のみ。n_base(かけられる数=基準量)×n_times(倍)の役割命名で順序規約を継承。倍は2〜4に限定——小2の『ばい』は具体物で数えられる範囲が実感の限界。",
+   "constructive_guarantees": "kuku_range(積<=36)で九九前半に収める——倍概念の導入期は積の暴走より意味の定着を優先する数値設計。",
+   "semantic_position": "かけ算4パターンの倍位。g03のdiv_bai(何倍かを÷で求める)と順逆の対を成し、『倍→わり算→割合』の学年縦断系譜の始点。",
+   "exclusions": "n_times=1(1倍=自明)を下限2で排除。積37以上(九九後半)をkuku_rangeが排除。",
+   "figure_notes": "図なし(テープ図による倍の可視化は図依存スコープ外)。",
+   "pedagogy": []
+  }
+ },
+ "g02_mult_2step_add_01": {
+  "brief": {
+   "semantic_territory": "2ステップ(かけ算→増加・まとまり+ばら)",
+   "number_domain": "整数(九九+1けた)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 2,
+   "directives": [
+    {
+     "text": "lexicon_filters(exclude_if exist=います)で『ほかに人があります』の非文を構造回避。有生物は専用文型でのみ使う",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "『1はこにnこずつ×nはこ、ほかにばらがnこ』——まとまり×いくつ分にばらを足す、各だん章のmedium定番。",
+   "representation": "container_setsを1atariと共有し、midをcomputed導出。lexicon_filtersのexclude_if(exist=います)で有生物containerを除外——『ほかに人があります』級の非文を語彙フィルタで構造回避する機構の発祥適用。",
+   "constructive_guarantees": "extra_lt_per(ばら<1あたり量)——ばらが1あたり量以上あると『もう1つの入れ物』が成立してしまう意味的妥当性の制約で、g03のremainder系(あまり<わる数)と同型の思想。unit_range_overridesでだん章3つへ配分。",
+   "semantic_position": "乗加の2ステップ位。g03のmult_2step_add(たば+ばら)は本パターンの学年進行形で、ほぼ同一構造の縦断対。",
+   "exclusions": "ばら>=1あたり量をextra_lt_perが排除。合計100以上をtotal_maxが排除。",
+   "figure_notes": "図なし(2段の式操作が主眼)。",
+   "pedagogy": []
+  }
+ },
+ "g02_mult_2step_sub_01": {
+  "brief": {
+   "semantic_territory": "2ステップ(全体−かけ算・はんに入らない子)",
+   "number_domain": "整数(九九+2けた)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 2,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『n人ずつのはんをnつ作った。はんに入っていない子は』——全体からまとまり×いくつ分を引く。減で締める乗法2ステップの対形。",
+   "representation": "整数のみ・人数文脈の単一テンプレ固定。mid=n_per*n_countをcomputed導出ししき2本を駆動。",
+   "constructive_guarantees": "remainder_lt_per(のこり<1グループ人数)——のこりが1グループ分以上あると『もう1つ作れる』ため状況として不自然、というextra_lt_perと対称の意味的妥当性制約。制約のwhyに『わり算あまりの素地にもなる』と明記され、g03あまり3層への接続が設計時から意図されている。",
+   "semantic_position": "乗減の2ステップ位。g03のmult_2step_change(代金→おつり)・div_amari系への二重の前駆。",
+   "exclusions": "答==n_count、答==n_per(答=れつ数/1れつ人数となる転記型)を2本で個別除外。のこり0をremainder_positiveが排除。",
+   "figure_notes": "図なし(2段の式操作が主眼)。",
+   "pedagogy": []
+  }
+ },
+ "g02_meas_len_gappei_01": {
+  "brief": {
+   "semantic_territory": "合併(長さ・cm/mm複名数)",
+   "number_domain": "複名数cm_mm(mm単位の内部整数)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "quantity_slots(v0.5): 複名数は最小単位の整数で内部表現し、制約式も最小単位整数で記述(繰り上がり有無=難易度が整数演算で書ける)。表示整形はunit_system別整形関数がジェネレータ側で担当",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "2本のテープの合併。小2の長さ計算はcm/mmの複名数が主戦場で、mmの繰り上がり有無が難度の分水嶺——easyはくり上がりなしが実物の階梯。",
+   "representation": "quantity_slots(cm_mm)の発祥適用群——mm内部整数+表示整形の分離アーキテクチャはここで確立し、g03のkm_m/kg_g・dec1、g05の千分率・314スケールまで続くスケール整数文化の源流。テープ識別はattribute_pairs束縛。『2本の』はtemplate_number_constants宣言(欠陥7=数値照合の許可制)。",
+   "constructive_guarantees": "no_mm_carry(mm和<=9)でeasy難度を宣言的に保証。both_have_mm(両方に端数)で複名数計算の必然性、ans_has_mmで問いと答えの形式一致——必然性・形式一致・難度の3点を制約で書き切る複名数設計の雛形。sum_max(<=199=19cm台)で小2の物差し感覚に収める。",
+   "semantic_position": "複名数族(cm_mm/L_dL/m_cm/h_min)の第1位。longlen_gappei(m_cm)はunit_system差し替えクローンで、族の水平展開の親。",
+   "exclusions": "mm繰り上がりの出る組(easy違反)をno_mm_carryが排除。端数なしオペランド(単名数に退化)をboth_have_mmが排除。",
+   "figure_notes": "図なし(テープ・物差しの図示は図依存スコープ外。複名数の計算手続きが主眼)。",
+   "pedagogy": []
+  }
+ },
+ "g02_meas_len_kyusa_01": {
+  "brief": {
+   "semantic_territory": "求差(長さ・cm/mm複名数・二部構成答え)",
+   "number_domain": "複名数cm_mm(mm単位の内部整数)",
+   "answer_structure": "comparison",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "lexicon_filters(include_types: color)——大小属性は実際の長短と矛盾しうるため比較問題では禁止",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "『どちらがどれだけ長いですか』——テープの測り比べ。二部構成答え(どちら+差)が実物形式で、加減のcomparison構造を量スロットで再利用する。",
+   "representation": "comparison構造(winner_attr/big/small機械導出)の量的再利用——belongs_to宣言でq1/q2を属性に帰属させ、勝者導出を数値から機械決定。属性はcolorのみに限定(lexicon_filters)——『大きいテープが短い』の意味矛盾を語彙フィルタで構造排除する、フィルタ機構の代表適用。",
+   "constructive_guarantees": "no_mm_borrow(easy: mm繰り下がりなし)+meaningful_gap(差>=11=1cm以上で測り比べの意味)+both_have_mm。比較の必然性と難度を同時制御。",
+   "semantic_position": "複名数族の求差位・comparison構造の第2適用。g03のdec_kyusa(小数・複文)へ続く量的比較の系譜。",
+   "exclusions": "q1==q2(比較不成立)を除外。size属性対(実長と矛盾しうる)をlexicon_filtersが構造排除。",
+   "figure_notes": "図なし(テープ図示は図依存スコープ外)。",
+   "pedagogy": []
+  }
+ },
+ "g02_meas_kasa_gappei_01": {
+  "brief": {
+   "semantic_territory": "合併(かさ・L/dL複名数)",
+   "number_domain": "複名数L_dL(dL単位の内部整数)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "やかんと水とうの水の合併。かさ単元はL/dLの複名数で、長さ(cm/mm)と同じ10進の位取りを別量で反復するのが単元系列の構成。",
+   "representation": "quantity_slots(L_dL)——cm_mmと同一の内部整数+整形分離アーキテクチャの量横断適用。容器はテンプレ直書き(やかん/水とう)の固定文脈で、レキシコン不要の最小構成。",
+   "constructive_guarantees": "no_dl_carry(easy)+both_have_dl(必然性)+ans_has_dl(形式一致)——len_gappeiの3点制約の完全な写像で、複名数設計の雛形が量をまたいで再現可能なことの実証。",
+   "semantic_position": "複名数族のかさ位。kasa_kyuzan(求残)と単元内で対を成す。",
+   "exclusions": "dL繰り上がり(easy違反)・端数なしオペランドを制約2本が排除。",
+   "figure_notes": "図なし(ますの目盛り図は図依存スコープ外)。",
+   "pedagogy": []
+  }
+ },
+ "g02_time_conv_min_to_hmin_01": {
+  "brief": {
+   "semantic_territory": "時間の単位換算(分→何時間何分)",
+   "number_domain": "時間h_min(分単位の内部整数・60進)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "時計読み取り問題(図依存)とアレイ図はSVG連携課題として対象外(v0.5)。図不要で文章完結する時間問題のみ採録",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "『85分は何時間何分ですか』——60進法の換算。時こく単元の大半は時計の図に依存するが、換算だけは文章完結する——スコープ境界(図依存を切る)を単元内で精密に引いた採録判断が本パターンの存在理由。",
+   "representation": "h_min unit_system(60進の複名数)——10進(cm_mm等)と異なる基数の複名数を同一のquantity_slots機構で扱う汎化の実証。answer_formulaはq1の恒等式で、学習内容の全体が表示整形(60進分解)に宿る——env.ansと表示答えの乖離が構造化された例で、corr-0007表示答え基準の必然性を示すもう一つの標本。",
+   "constructive_guarantees": "not_exact_hour(q1%60!=0)で『何時間何分』の問い形式と答えの一致を保証——ちょうど◯時間は別テンプレの領分と明示し、形式不一致を構造排除。レンジ61〜179で1〜2時間台に限定。",
+   "semantic_position": "時間族(換算順/換算逆/時刻計算)の第1位。逆方向クローン(hmin_to_min)と対。",
+   "exclusions": "ちょうど◯時間(形式不一致)をnot_exact_hourが排除。60分以下(換算不要)・180分以上(小2の実感外)をレンジが排除。",
+   "figure_notes": "図なし(時計文字盤の読み取りは図依存として意図的にスコープ外——本パターンは図を要さない換算のみを扱う設計判断そのものが採録理由)。",
+   "pedagogy": []
+  }
+ },
+ "g02_time_after_01": {
+  "brief": {
+   "semantic_territory": "時刻の計算(時刻+経過時間・分繰り上がり)",
+   "number_domain": "時刻clock+経過raw_min(0時からの分の内部整数)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『8時50分に家を出て25分あるいて』——時刻+経過時間→時刻。分→時の60進繰り上がりを必ず含み、午前内で完結するのがeasyの実物階梯(午前/午後またぎはmedium別パターンと明示)。",
+   "representation": "clock unit_system(0時からの分の内部整数)——時刻と時間(長さ)を同じ整数軸で扱い、加算後の表示整形が時刻表記を担う。出発時刻はstep5・経過はchoices(15〜50の5分刻み)——時計の目盛り感覚を刻みで写す。",
+   "constructive_guarantees": "minute_carry((出発の分)+経過>=60)で繰り上がりを必ず含め単元要求と一致。stay_am(和<720)で午前内完結を宣言的に保証——難度境界(午前またぎ)を制約1本で封じる。",
+   "semantic_position": "時間族の時刻計算位・族の最難度。g03の時間の計算(スコープ外・file_note記録)への拡張受け口。",
+   "exclusions": "繰り上がりなしの組をminute_carryが排除。正午またぎをstay_amが排除。",
+   "figure_notes": "図なし(時計図は図依存スコープ外。時刻の数直線的な計算のみ採録)。",
+   "pedagogy": []
+  }
+ },
+ "g02_addsub_3ko_gappei_01": {
+  "brief": {
+   "semantic_territory": "合併(3口・くり上がり)",
+   "number_domain": "整数(2けた)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "3人の持ち数を合わせる3口加算。『3人あわせて』の3はtemplate_number_constants宣言——本文定数の許可制(欠陥7)の適用例。",
+   "representation": "actors(distinct)の重複なし3人サンプリング(v0.6新設のactor_c対応)——人物レキシコンの多人数化はここが発祥。式は1本(n1+n2+n3)で、2ステップと違い中間値を書かないのが3口単元の書式。",
+   "constructive_guarantees": "some_carry(一の位の和>=10)でくり上がりを含め単元要求と一致。sum_max(<=99)で2けた内。",
+   "semantic_position": "3口族(合併/増減混合)の合併位。g03のaddsub系3けたへ桁進行する前の多口経験。",
+   "exclusions": "くり上がりなしをsome_carryが排除。人物重複をdistinctサンプリングが構造排除。",
+   "figure_notes": "図なし(純粋な計算文章題)。",
+   "pedagogy": []
+  }
+ },
+ "g02_addsub_zogen_bus_01": {
+  "brief": {
+   "semantic_territory": "増減混合(3口・バスの乗り降り)",
+   "number_domain": "整数(2けた)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "転記排除は多値衝突型(答=おりた数/のった数/はじめの数)を3本で個別に張る。増減同数(n_off==n_on)は答=はじめの数の転記になるため意味制約と転記制約の二重の役で除外",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "『バスていでn人おりて、n人のってきました』——減ってから増える小2の3口定番文脈。左から順に計算する型で、式1本に増減を混ぜて書くのが単元の学習内容。",
+   "representation": "整数のみ・バス文脈の単一テンプレ固定。intermediate_formulasでmid(降車後)を検算可能に保持しつつ、書式は1本式——3口単元の『順に計算』の写し。",
+   "constructive_guarantees": "mid_positive(途中経過>=1)——最終答えだけでなく中間状態の非負も保証する、多段状態の欠陥8対策の発展形。",
+   "semantic_position": "3口族の増減混合位・v0.6クローン群の一。じゅんに計算する思考はg03の2ステップ書式(式2本)への橋渡し。",
+   "exclusions": "n_off==n_on(増減の意味消失かつ答=はじめの数の転記)、答==n_off、答==n_onの計3系を除外——1本式に数値4つが並ぶ本パターンは転記衝突面が最大で、族カタログ全部乗せの代表例。",
+   "figure_notes": "図なし(乗降の場面図は不要。順次計算の手続きが主眼)。",
+   "pedagogy": []
+  }
+ },
+ "g02_meas_longlen_gappei_01": {
+  "brief": {
+   "semantic_territory": "合併(長い長さ・m/cm複名数)",
+   "number_domain": "複名数m_cm(cm単位の内部整数)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "リボン2本の合併・m/cm。cm/mm(c14)で確立した複名数計算を上位単位で反復する単元(c44)で、構造は同一・スケールだけが進む。",
+   "representation": "len_gappeiのunit_system差し替えクローン(v0.6)——cm_mm→m_cmの置換と基数100(cm部は2桁)への制約書き換えのみで単元を増設する、クローン量産方式の実証第1号。パターン設計の再利用性がアーキテクチャの主張そのもの。",
+   "constructive_guarantees": "no_cm_carry(cm和<=99・基数100版のeasy)+both_have_cm+ans_has_cm——親の3点制約を基数だけ変えて完全継承。sum_max(<=599=5m台)は『教室の長さ感覚』の実感上限。",
+   "semantic_position": "複名数族のm_cm位・クローン系譜の代表。g03のkm_m(道のり)が次の上位単位で、cm/mm→m/cm→km/mの3段スケール進行が学年をまたいで完成する。",
+   "exclusions": "cm繰り上がり(easy違反)・端数なしオペランドを制約が排除。",
+   "figure_notes": "図なし(親パターンと同じ理由)。",
+   "pedagogy": []
+  }
+ },
+ "g02_meas_kasa_kyuzan_01": {
+  "brief": {
+   "semantic_territory": "求残(かさ・複名数−単名数)",
+   "number_domain": "複名数L_dL(dL単位の内部整数)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『ポットのお茶からn dLのみました』——複名数から単名数(dLのみ)を引く求残。減数を単名数に限定するのが小2の実物階梯で、複名数同士の減法は上の学年の領分。",
+   "representation": "q2を単名数(dLのみ・レンジ2〜9)に設計——quantity_slots機構で『複名数−単名数』の型を減数のレンジ制限だけで表現する省制約設計。v0.6クローン群の一。",
+   "constructive_guarantees": "no_dl_borrow((q1のdL部)>q2)——easy難度(繰り下がりなし)とのこりのdL正を1本の制約で同時保証する合わせ技。q1_has_dlで複名数の必然性。",
+   "semantic_position": "複名数族の求残位。合併(kasa_gappei)と単元内の加減対を成し、g03の重さ(kg_g)の求残系への受け口。",
+   "exclusions": "dL繰り下がりの組とのこりdL=0をno_dl_borrowが一括排除。q1の端数なしをq1_has_dlが排除。",
+   "figure_notes": "図なし(ますの図は図依存スコープ外)。",
+   "pedagogy": []
+  }
+ },
+ "g02_time_conv_hmin_to_min_01": {
+  "brief": {
+   "semantic_territory": "時間の単位換算(何時間何分→分)",
+   "number_domain": "時間h_min(分単位の内部整数・60進)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『1時間25分は何分ですか』——換算の逆方向。順方向(分→時分)と対で出すのが単元構成で、双方向の往復が60進の定着を作る。",
+   "representation": "conv_min_to_hminの逆方向クローン(v0.6)——内部値q1は同じ分整数のまま、問題文表示(q1_disp=複名数)と答え表示(raw_min=分)を入れ替えるだけで逆方向が成立する。内部表現と表示の分離アーキテクチャだからこそクローンが1箇所の差し替えで済む、という設計主張の縮図。",
+   "constructive_guarantees": "not_exact_hour(q1%60!=0)——順方向と同一制約だが役割が逆で、ここでは問題文の複名数表示(『1時間20分』)の成立を保証する。同じ制約式が方向によって別の形式保証を担う対称性。",
+   "semantic_position": "時間族の換算逆位・順方向との双方向対。v0.6クローン群の一。",
+   "exclusions": "ちょうど◯時間(問題文が単名数に退化)をnot_exact_hourが排除。",
+   "figure_notes": "図なし(順方向と同じ理由。図を要さない換算のみの採録)。",
+   "pedagogy": []
+  }
+ }
+}

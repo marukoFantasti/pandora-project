@@ -1,0 +1,247 @@
+{
+ "g02_addsub_gappei_2digit_carry_01": {
+  "brief": {
+   "semantic_territory": "合併(2けた・くり上がり)",
+   "number_domain": "整数(2けた・c26オーバーライドで3けた)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "動詞はテンプレート(文型)に直接埋め込む。『〜は〜を』文型=他動詞固定・『〜が』文型=存在動詞固定。objectペア側のverbは求残の操作動詞のみに使う(template_design_note)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "『あわせて』の合併——別々に存在する2量を合わせる、時間的順序なし。増加(時間軸あり)との区別が小2加減の意味カテゴリ体系の出発点で、バンク全体の第1号パターン。",
+   "representation": "整数のみ。actor対とobject/counter対束縛——助数詞不整合の構造排除はこのパターンで確立し全学年へ継承された祖形。動詞の文型埋め込み規約(template_design_note)もここが発祥。",
+   "constructive_guarantees": "carry_required(一の位の和>=10)で単元の計算要求と数値を一致させる——『欠陥3対策』の第1号適用。sum_max(<=99)で2けた内。c26オーバーライドではconstraints_replaceでsum_maxを459に差し替え、同一パターンを3けた単元で再利用。",
+   "semantic_position": "加減5意味カテゴリ(合併/増加/求残/求差/求補)の第1位・バンク全体の始祖。unit_range_overrides+lexicon_filters(3けたはおり紙・カード限定=数量が自然な物のみ)の単元再利用機構の実証第1号でもある。",
+   "exclusions": "n1==n2(同数の合併は求差型と紛らわしい)を除外。くり上がりなしの組をcarry_requiredが排除。",
+   "figure_notes": "図なし(純粋な計算文章題。ブロック図・テープ図は図依存としてスコープ外の設計判断がv0.5 changelogに記録)。",
+   "pedagogy": []
+  }
+ },
+ "g02_addsub_kyuzan_2digit_borrow_01": {
+  "brief": {
+   "semantic_territory": "求残(2けた・くり下がり)",
+   "number_domain": "整数(2けた・c26オーバーライドで3けた)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "no_transcribe(n1=2n2で答=n2)はcorr-0007トリアージで裁可(2026-08-12)。転記型リーク排除の族カタログ適用",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "『ありました→つかいました→のこりは』の求残3文構成。時間的順序(はじめ→操作→のこり)の存在が求補との区別点で、意味カテゴリ体系の骨格を成す。",
+   "representation": "整数のみ。操作動詞verb_useをobjectと対束縛——『いちごをつかいました』でなく『食べました』と、物ごとの自然な消費動詞をレキシコンが供給する仕組みの発祥。",
+   "constructive_guarantees": "borrow_required(一の位でくり下がり)で単元要求と一致。no_negative(欠陥8=在庫負の構造排除)+nonzero_remainder(答え0は問いとして不自然)。",
+   "semantic_position": "5意味カテゴリの求残位。g03の3けた求残・かさ求残(単名数減)への系譜の起点。c26オーバーライドで3けた版も供給。",
+   "exclusions": "n1==2*n2(答=引く数となる転記型・corr-0007トリアージ裁可2026-08-12)を除外。答え0をnonzero_remainderが排除。",
+   "figure_notes": "図なし(純粋な計算文章題)。",
+   "pedagogy": []
+  }
+ },
+ "g02_addsub_zoka_2digit_carry_01": {
+  "brief": {
+   "semantic_territory": "増加(2けた・くり上がり)",
+   "number_domain": "整数(2けた・c26オーバーライドで3けた)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『もらいました→ぜんぶで』——ある量に後から加わる。式は合併と同じn1+n2でも、時間軸の有無で意味カテゴリが分かれる。この『同じ式・違う意味』の対はg03わり算(等分除/包含除)の対構造の先行形。",
+   "representation": "整数のみ。テンプレは『もらう』『あとから入れる』の時間軸文型2種で、合併の並列文型と構造的に区別される。",
+   "constructive_guarantees": "carry_required+sum_maxで合併と同一の数値設計——意味だけが違う対の難度統制。c26オーバーライド(3けた)も同様に共有。",
+   "semantic_position": "5意味カテゴリの増加位。逆思考版(zoka_inverse)が直系の発展形で、順方向をここで確立してから逆転させる二段構えの前段。",
+   "exclusions": "くり上がりなしをcarry_requiredが排除。合併と違いn1==n2は許容(増加では紛れを生まない)——除外設計も意味カテゴリ単位で個別、の実例。",
+   "figure_notes": "図なし(純粋な計算文章題)。",
+   "pedagogy": []
+  }
+ },
+ "g02_addsub_kyusa_2digit_borrow_01": {
+  "brief": {
+   "semantic_territory": "求差(2けた・くり下がり・二部構成答え)",
+   "number_domain": "整数(2けた・c26オーバーライドで3けた)",
+   "answer_structure": "comparison",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "computed_slots(winner等)はコードで機械導出し、AIにも乱数にも触らせない(v0.2確立)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "『どちらが何{counter}多いですか』——取り去る操作が無いのに減法になる点が児童の難所で、二段の問い(誰が+差)が実物形式。answer_structure=comparisonの発祥パターン。",
+   "representation": "winner/big/smallをcomputed_slotsで機械導出——『答えの分岐をAI・乱数に触らせない』原則の第1号実装で、g05のcomparison族(単位量・速さ)の勝者機械決定の直系の祖。abs(n1-n2)で正値保証の形式解。",
+   "constructive_guarantees": "borrow_required(大きい方基準)+meaningful_gap(差>=3——差1〜2は式を立てず目視で見えてしまい単元のねらいから外れる)。比較の必然性を数値側で作る設計の起点。",
+   "semantic_position": "5意味カテゴリの求差位。g03の求差複文(compound_compare)・g05のcomparison族へ続く比較系譜の根。c26オーバーライドで3けた版も供給。",
+   "exclusions": "n1==n2(比較不成立)を除外。n1==2*n2とn2==2*n1の対称2本(差=小さい方の転記型)を除外。",
+   "figure_notes": "図なし(比較の二部構成答えが主眼のテキスト完結型)。",
+   "pedagogy": []
+  }
+ },
+ "g02_addsub_kyuho_2digit_01": {
+  "brief": {
+   "semantic_territory": "求補(全体と一方の部分から他方を求める)",
+   "number_domain": "整数(2けた・c26オーバーライドで3けた)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『赤い◯と青い◯があわせてn1こ。赤はn2こ。青は何こ』——取り去る時間的操作が無いのに減法。求残との区別点は操作の不在で、部分-全体の静的構造を属性対で表すのが実物形式。",
+   "representation": "整数のみ。部分の識別はattribute_pairs(赤い/青いの対束縛・v0.2で新設)——属性対レキシコンの発祥適用で、g03の小数求差のテープ識別へ継承。スロットにrole宣言(whole/part)を持ち、数値の意味役割を機械可読化。",
+   "constructive_guarantees": "part_lt_whole(部分<全体・欠陥8の構造排除)+borrow_required+both_parts_nonzero(もう一方の部分0は問い不成立)。",
+   "semantic_position": "5意味カテゴリの求補位・カテゴリ体系の完結。合併の逆算という論理関係にあり、jhs方程式の『部分を文字にする』思考の遠い前駆。",
+   "exclusions": "n1==2*n2(全体=2部分で答=既知部分となる転記型)を除外。部分0をboth_parts_nonzeroが排除。",
+   "figure_notes": "図なし(部分-全体のテープ図は図依存としてスコープ外。属性対の言語表現で構造を代替)。",
+   "pedagogy": []
+  }
+ },
+ "g02_addsub_zoka_inverse_01": {
+  "brief": {
+   "semantic_territory": "増加の逆思考(はじめの数を求める)",
+   "number_domain": "整数(2けた)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "no_transcribe(全体=2倍で答=もらった数)は転記排除の族カタログ監査で追加検出(2026-08-12)・反映済み",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "『何こかもっていました→もらった→ぜんぶで』から、はじめの数を逆算。状況は増加なのに計算はひき算——表層の動詞と演算が逆転する型で、テープ図単元(図をつかった考え方①)に配置される実物構成の写し。",
+   "representation": "inverse_thinking=trueの発祥パターン(v0.2)。スロット名をn_after/n_added(結果/増分)と役割で命名し、順方向のn1/n2と混同しない設計。g03の□の式4種・jhs方程式へ続く逆思考系譜の根。",
+   "constructive_guarantees": "initial_positive(はじめの数>=2——0・1は不自然)+borrow_requiredで単元要求と一致。逆算だが構成は順方向乱択+棄却で足りる(答=n_after-n_addedが常に閉じる)ため、g05型の構成的逆算は不要。",
+   "semantic_position": "逆思考系譜の学年始点。順方向(zoka)を確立した上での逆転として単元も分離配置(c45)——順逆を別単元で出す教科書構成に忠実。",
+   "exclusions": "n_after==2*n_added(答=もらった数となる転記型・2026-08-12追加検出)を除外。はじめの数0・1をinitial_positiveが排除。",
+   "figure_notes": "図なし(テープ図単元だが、テープ図の描画は図依存スコープ外。逆思考の立式自体はテキストで完結する形のみ採録)。",
+   "pedagogy": []
+  }
+ },
+ "g02_addsub_2step_gosei_kyuzan_01": {
+  "brief": {
+   "semantic_territory": "2ステップ(合併→求残)",
+   "number_domain": "整数(2けた)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 2,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『2人がつかった分を合わせてから全体より引く』。テープ図で構造化する単元(図をつかった考え方②)の中核で、しき2本の書式が実物準拠。",
+   "representation": "step_count=2の発祥パターン(v0.3)。中間値midをcomputed_slotsで機械導出し、intermediate_formulasで途中式の検算可能性を確保、answer_formulaは最終答えのみを指す——多段式の三点分業(中間値/途中式/最終答え)はここで確立し全学年のtwo_step系へ継承。なおanswer_structureは当時の語彙でsingleのまま(two_step構造名はv0.7新設でg03から)——構造名の考古学的地層が残る。",
+   "constructive_guarantees": "mid_two_digit(和>=10で暗算一発で消えない)+remainder_positive(のこり>=2)+distinct_uses(同数だと合成の必然性が薄れる)。",
+   "semantic_position": "多段思考の学年始点。g03のdiv_2step_gappei(合併→等分除)は本パターンの演算置換形で、直系の子。",
+   "exclusions": "答==n1、答==n2(残=使用量となる転記型)を2本で個別除外。のこり0・1をremainder_positiveが排除。",
+   "figure_notes": "図なし(テープ図単元だがテープ図描画はスコープ外。式2本の手続きが主眼)。",
+   "pedagogy": []
+  }
+ },
+ "g02_mult_1atari_kuku_01": {
+  "brief": {
+   "semantic_territory": "1あたり×いくつ分(九九・だん章横断)",
+   "number_domain": "整数(九九)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "かけ算の順序規約: かけられる数=1あたり量。answer_templateの{n_per}×{n_count}固定で構造保証(v0.4確立)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "『1さらにnこずつ・さらがnまい』——かけ算の意味の土台。学校算数の順序規約(1あたり量が先)は採点実務に直結するため、生成側で構造保証しなければならない。",
+   "representation": "container_sets(入れ物+中身+助数詞+動詞の整合束・v0.4新設)の発祥適用——『1{cont_counter}の{container}に』の文型が非文合成を構造排除。順序はテンプレ固定で乱数もAIも介在しない。",
+   "constructive_guarantees": "kuku_range(両因数<=9)。単一パターンをunit_range_overridesでだん章4つ(2・5/3・4/6・7/8・9・1のだん)へ配分——n_perのchoices差し替えだけで章別出題を実現する、オーバーライド機構の最大活用例。",
+   "semantic_position": "かけ算4パターンの土台位。g03の乗法系(2step・分配法則)・わり算(九九逆算)の全てがこの九九基盤の上に立つ。",
+   "exclusions": "九九範囲外をkuku_rangeが排除。1のだんはc35のchoicesにのみ含め、既定レンジ(2〜9)からは除外——『1こずつ』の自明形を通常出題から外す設計。",
+   "figure_notes": "図なし(アレイ図はSVG連携課題として対象外の設計判断がv0.5 changelogに記録。文章のみで意味構造を問える形を採録)。",
+   "pedagogy": []
+  }
+ },
+ "g02_mult_bai_01": {
+  "brief": {
+   "semantic_territory": "倍(基準量×何倍)",
+   "number_domain": "整数(九九前半)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『BはAのnばいもっています』——基準量の何倍かを求める乗法の第2の意味。人物対で基準と対象を分けるのが実物形式。",
+   "representation": "整数のみ。n_base(かけられる数=基準量)×n_times(倍)の役割命名で順序規約を継承。倍は2〜4に限定——小2の『ばい』は具体物で数えられる範囲が実感の限界。",
+   "constructive_guarantees": "kuku_range(積<=36)で九九前半に収める——倍概念の導入期は積の暴走より意味の定着を優先する数値設計。",
+   "semantic_position": "かけ算4パターンの倍位。g03のdiv_bai(何倍かを÷で求める)と順逆の対を成し、『倍→わり算→割合』の学年縦断系譜の始点。",
+   "exclusions": "n_times=1(1倍=自明)を下限2で排除。積37以上(九九後半)をkuku_rangeが排除。",
+   "figure_notes": "図なし(テープ図による倍の可視化は図依存スコープ外)。",
+   "pedagogy": []
+  }
+ },
+ "g02_mult_2step_add_01": {
+  "brief": {
+   "semantic_territory": "2ステップ(かけ算→増加・まとまり+ばら)",
+   "number_domain": "整数(九九+1けた)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 2,
+   "directives": [
+    {
+     "text": "lexicon_filters(exclude_if exist=います)で『ほかに人があります』の非文を構造回避。有生物は専用文型でのみ使う",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "『1はこにnこずつ×nはこ、ほかにばらがnこ』——まとまり×いくつ分にばらを足す、各だん章のmedium定番。",
+   "representation": "container_setsを1atariと共有し、midをcomputed導出。lexicon_filtersのexclude_if(exist=います)で有生物containerを除外——『ほかに人があります』級の非文を語彙フィルタで構造回避する機構の発祥適用。",
+   "constructive_guarantees": "extra_lt_per(ばら<1あたり量)——ばらが1あたり量以上あると『もう1つの入れ物』が成立してしまう意味的妥当性の制約で、g03のremainder系(あまり<わる数)と同型の思想。unit_range_overridesでだん章3つへ配分。",
+   "semantic_position": "乗加の2ステップ位。g03のmult_2step_add(たば+ばら)は本パターンの学年進行形で、ほぼ同一構造の縦断対。",
+   "exclusions": "ばら>=1あたり量をextra_lt_perが排除。合計100以上をtotal_maxが排除。",
+   "figure_notes": "図なし(2段の式操作が主眼)。",
+   "pedagogy": []
+  }
+ },
+ "g02_mult_2step_sub_01": {
+  "brief": {
+   "semantic_territory": "2ステップ(全体−かけ算・はんに入らない子)",
+   "number_domain": "整数(九九+2けた)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 2,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『n人ずつのはんをnつ作った。はんに入っていない子は』——全体からまとまり×いくつ分を引く。減で締める乗法2ステップの対形。",
+   "representation": "整数のみ・人数文脈の単一テンプレ固定。mid=n_per*n_countをcomputed導出ししき2本を駆動。",
+   "constructive_guarantees": "remainder_lt_per(のこり<1グループ人数)——のこりが1グループ分以上あると『もう1つ作れる』ため状況として不自然、というextra_lt_perと対称の意味的妥当性制約。制約のwhyに『わり算あまりの素地にもなる』と明記され、g03あまり3層への接続が設計時から意図されている。",
+   "semantic_position": "乗減の2ステップ位。g03のmult_2step_change(代金→おつり)・div_amari系への二重の前駆。",
+   "exclusions": "答==n_count、答==n_per(答=れつ数/1れつ人数となる転記型)を2本で個別除外。のこり0をremainder_positiveが排除。",
+   "figure_notes": "図なし(2段の式操作が主眼)。",
+   "pedagogy": []
+  }
+ }
+}

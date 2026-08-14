@@ -13,7 +13,7 @@ const PB = path.join(ROOT, 'pattern_bank');
 
 // figure_notes正準(ゴールド流儀・null不使用)へ統一済みの学年。既定でここだけ検証する。
 // 他学年(jhs各章/g01/g04/g03/g02)は旧null流儀のまま順次統一(§4・一括改修不要)。統一時にここへ追加。
-const CANONICAL_GRADES = ['g05'];
+const CANONICAL_GRADES = ['g02', 'g03', 'g04', 'g05'];
 
 // grade -> rationaleファイル候補(既存配置慣行。先に見つかった正準を使う)
 function resolveRationale(grade) {

@@ -1,0 +1,506 @@
+{
+ "_meta": {
+  "schema": "rationale_g05_gold.json準拠",
+  "scope": "g04全24パターン完全版(遡及・統一遡及③ g04完了 2026-08-12)",
+  "note": "figure_notes正準=ゴールド流儀(null不使用)。",
+  "order": "バンク順"
+ },
+ "g04_bignum_calc_01": {
+  "brief": {
+   "semantic_territory": "大きい数の加法(単位語つき)",
+   "number_domain": "整数係数2〜89+単位語(万・億)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "「8億+10億」型。兆までの数を単位語(万・億)ごと計算する感覚——大きい数を「係数×単位」で扱う抽象化の入口。",
+   "representation": "単位語はbig_unitsレキシコン束縛で本文・しき・答えに一貫(unit3回出現が同一束縛)。内部は係数の整数加算のみ——**単位語を固定し係数演算に還元する設計は、g05の千分率・スケール整数と同じ「表示と演算の分離」思想のレキシコン版**。",
+   "constructive_guarantees": "和≦99(位上がりで単位が変わる99万+1万=100万型を除外——単位繰り上がりは別難度)。",
+   "semantic_position": "大数クラスタの計算位。corr-0007初期調査で「しき部分の数値再掲」の代表例として引用された(v2の答え部限定仕様の確定に寄与した)パターン。",
+   "exclusions": "異単位混在(3億+500万)は換算が乗る別難度。減法は同型変奏(推定: 加法のみで単元趣旨は足りる判断)。",
+   "figure_notes": "図なし(純計算)。",
+   "pedagogy": []
+  }
+ },
+ "g04_div_1digit_01": {
+  "brief": {
+   "semantic_territory": "÷1けた(あまりあり・商2けた)",
+   "number_domain": "整数(23〜97÷3〜8)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "わり算の筆算(1けたで割る)。あまりの検算(除数×商+あまり)まで含む単元の計算基底。",
+   "representation": "商=//・あまり=%のcomputed分解——「{ans}あまり{r}」の複合表示を2つの整数で構成する型の初出級。",
+   "constructive_guarantees": "あまり≧1(あまり「のある」わり算の保証・割り切れは別単元)+商域[10,30](筆算2けたの学習範囲)。",
+   "semantic_position": "わり算3兄弟(÷1けた/÷2けた商1けた/÷2けた商2けた)の第1位。",
+   "exclusions": "割り切れる形はdiv_riyou(文章題)が担う。商に0が立つ形(408÷4)は筆算の特殊指導で第2波。",
+   "figure_notes": "図なし(純計算)。",
+   "pedagogy": []
+  }
+ },
+ "g04_div_2digit_01": {
+  "brief": {
+   "semantic_territory": "÷2けた(商1けた)",
+   "number_domain": "整数(40〜290÷12〜39)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "2けたで割る筆算の導入。「商の見当をつける」(仮商→修正)が学習の核で、商1けた限定がその段階指定。",
+   "representation": "div_1digitと同一機構・値域のみ差。",
+   "constructive_guarantees": "商域[2,9]=商1けた(見当づけ学習の範囲指定が制約そのもの)。あまり≧1。",
+   "semantic_position": "わり算3兄弟の第2位。div_int_01(商2けた)への段差。",
+   "exclusions": "見当が大きく外れる組(88÷11=8ちょうど近辺)の特別扱いはしない——仮商修正の頻度は値域の自然分布に任せる(推定)。",
+   "figure_notes": "図なし(純計算)。",
+   "pedagogy": []
+  }
+ },
+ "g04_dec_addsub_01": {
+  "brief": {
+   "semantic_territory": "小数の加法(合併文章題)",
+   "number_domain": "dec1(1.2〜8.9)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "1/10位までの小数のたし算を合併場面で。小数を「量」として扱う4年の導入。",
+   "representation": "**quantity_slots(dec1=0.1単位のスケール整数)の初出学年**——内部整数・表示dec1の二層は、g05千分率・314スケールへ全面展開された表現の原型(棚卸し記録)。dec_containersレキシコンで容器・単位(L/m)を束縛。",
+   "constructive_guarantees": "両項とも小数第1位あり(q%10>0×2)——「小数の」計算であることの全域保証(g05の整数落ち除外文化の先行形)。",
+   "semantic_position": "小数クラスタ(addsub→mult→div_simple→div)の起点。",
+   "exclusions": "減法は同型変奏(推定: 繰り下がりの筆算差はあるが単元趣旨は加法で足りる判断)。第2位までの小数はg05領分。",
+   "figure_notes": "図なし(合併文脈は文で立つ)。",
+   "pedagogy": []
+  }
+ },
+ "g04_dec_mult_01": {
+  "brief": {
+   "semantic_territory": "小数×整数(文章題)",
+   "number_domain": "dec1×整数2〜8",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "1本1.2Lが4本、の累加場面。小数×整数の意味づけ(整数倍の累加)を文章で。",
+   "representation": "スケール整数×整数でスケール保存(dec1のまま)。mult_counter(本・ふくろ等)の束縛で「1{mc}あたり」が品目と整合。",
+   "constructive_guarantees": "被乗数の小数第1位あり。積の暴走は値域([1.2,4.8]×[2,8])が自然に抑える。",
+   "semantic_position": "小数クラスタ第2位。g05_int_x_dec(乗数が小数)との対比で「どちらが小数か」の学年分担(4年=被乗数/5年=乗数)が見える配置。",
+   "exclusions": "純計算版は文章版に吸収(推定: 4年の小数×整数は意味づけが主眼で、計算練習はdec_div_simpleが担う非対称)。",
+   "figure_notes": "図なし(累加文脈は文で立つ)。",
+   "pedagogy": []
+  }
+ },
+ "g04_dec_div_01": {
+  "brief": {
+   "semantic_territory": "小数÷整数(等分文章題)",
+   "number_domain": "dec1÷整数2〜6(商小数)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "液体を等分する場面の小数除法。",
+   "representation": "**dec_containersの多役束縛の最重装備例**(dv_counter/vessel/qword/verb/perの5役)——「3つのびんに同じかさずつ分けます。1つ分は…」の文法整合(数え方・容器・量詞・動詞・単位あたり表現)を全てレキシコン側で解決する設計(棚卸し記録: テンプレ分岐を作らずレキシコンに畳む文化の到達例)。",
+   "constructive_guarantees": "割り切れ+商の小数性(simple版と共通)。",
+   "semantic_position": "小数クラスタ終点。g05_dec_div_dec(除数も小数)への段差。",
+   "exclusions": "「何人に分けられるか」(包含除)は商が整数になる場面で本形(等分除・商小数)と相互排他。",
+   "figure_notes": "図なし(等分文脈は文で立つ)。",
+   "pedagogy": []
+  }
+ },
+ "g04_order_01": {
+  "brief": {
+   "semantic_territory": "計算の順序(かっこ先行)",
+   "number_domain": "整数(かっこ内和が10の倍数)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 2,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "(a+b)×c。かっこを先に計算する規則の確認。",
+   "representation": "しき欄が「{n1}+{n2}={mid} {mid}×{n3}={ans}」の**中間値明示2段**——途中式を答えテンプレに数値で出すv0.8期の形式(棚卸し記録: g05以降は手続き名参照へ移行した差分。md5固定資産のため変更せず)。かっこは全角（ ）正準。",
+   "constructive_guarantees": "かっこ内和が10の倍数(順序を守ると計算が楽になる、という規則の動機づけを数値設計で担保)。",
+   "semantic_position": "計算のきまりクラスタ(order→dist_law→mult_trick)の起点。jhs c01の四則混合の遠い基底。",
+   "exclusions": "かっこなし混合(a+b×c)の順序判断は「かっこ先行」と別規則で独立パターン化が要る(第2波)。",
+   "figure_notes": "図なし(純計算)。",
+   "pedagogy": []
+  }
+ },
+ "g04_box_add_01": {
+  "brief": {
+   "semantic_territory": "□を使った式(たし算)",
+   "number_domain": "整数(□11〜)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "corr-0007トリアージ裁可(g04監査第1号・制約4件+例外2件)",
+     "by": "marko",
+     "date": "2026-08-12"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "□+a=b。未知数の逆算(inverse_thinking)で、表示式と解法式が別になる初めての形。",
+   "representation": "inverse_thinkingフラグ+しき欄「□={b}-{a}={ans}」が解法式を明示——表示式(□+a=b)と解法式(b−a)の分離を答えテンプレで教える型。",
+   "constructive_guarantees": "□≧11(2けた程度)。**2026-08-12追加**: b≠2a(□+32=64→□=32型の写し・監査第1号の検出2/200)。**g01_box_add_01が本制約を誕生日から装備した親パターン**という統一規約の系譜的起点。",
+   "semantic_position": "□クラスタ(add/mult)の第1位。g01_box(1けた)→本件(2けた)→g06_moji_gyaku(文字x)→jhs c04(方程式)の未知数系譜の4年担当。",
+   "exclusions": "□−a=b・a−□=b(ひき算□)は解法式の向きが3種に割れ、第2波で独立パターン化。",
+   "figure_notes": "図なし(数式のみ)。",
+   "pedagogy": []
+  }
+ },
+ "g04_box_mult_01": {
+  "brief": {
+   "semantic_territory": "□を使った式(かけ算)",
+   "number_domain": "整数(□2〜9・九九域)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "corr-0007トリアージ裁可(g04監査第1号)",
+     "by": "marko",
+     "date": "2026-08-12"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "□×a=b。乗法の逆算で、□は九九の範囲。",
+   "representation": "box_addと同型・演算のみ乗法。",
+   "constructive_guarantees": "割り切れ+□∈[2,9]。**2026-08-12追加**: b≠a²(□×7=49→□=7型・監査第1号の最高率19/200=9.5%——このバンクに実在した転記退化の最大例で、平方族の型カタログ化を決定づけた検出)。",
+   "semantic_position": "□クラスタ第2位。g03_box_mult(同型・監査で同制約追加)との学年重複は数域の差(九九域/2けた域)で分担。",
+   "exclusions": "a×□=b(交換形)は可換で情報同一。",
+   "figure_notes": "図なし(数式のみ)。",
+   "pedagogy": []
+  }
+ },
+ "g04_gaisu_round_01": {
+  "brief": {
+   "semantic_territory": "四捨五入(位指定)",
+   "number_domain": "整数(1200〜98999・百/千の位)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "指定位での四捨五入。がい数の中核操作。",
+   "representation": "round_half_up(整数演算ヘルパ)で境界(5ちょうど)も決定的——浮動小数の丸め非決定性を構造回避した実装(estimateと同ヘルパ・棚卸し記録の源流)。位の名前はcomputedの条件式('百'/'千')で機械決定。",
+   "constructive_guarantees": "n%place≠0(丸めて値が変わる=学習上意味がある)+結果正。",
+   "semantic_position": "がい数クラスタの基底。range(逆向き)・estimate(利用)の親。",
+   "exclusions": "上から◯けた指定(有効数字型)は位指定と丸め位置の決め方が別ロジック(第2波)。一万の位はplace choicesの拡張で足りるが4年前半域を超える(推定)。",
+   "figure_notes": "図なし(数値のみ)。",
+   "pedagogy": []
+  }
+ },
+ "g04_gaisu_range_01": {
+  "brief": {
+   "semantic_territory": "がい数のもとの範囲(以上・未満)",
+   "number_domain": "整数(千の位・3000〜89000)",
+   "answer_structure": "round_range",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "「四捨五入して◯になる整数の範囲」。丸めの逆像を考える、がい数単元の思考位。",
+   "representation": "**answer_structure=round_range(以上/未満の範囲答)——単一値でない答構造のA層初出**(棚卸し記録)。下限・上限はround_range_lower/upper_exclヘルパで機械導出し、「以上」「未満」の語は答えテンプレ固定(境界の含む/含まないを言葉で正確に)。",
+   "constructive_guarantees": "targetはstep1000で千の倍数を構成保証(丸め先として適格)。下限正。",
+   "semantic_position": "roundの逆向き。jhs c09の階級境界(以上/未満)表現の遠い先祖。",
+   "exclusions": "百の位版は数が小さく範囲の幅(±50)が直観で出てしまう(千の位の±500が思考を要する適正難度・推定)。",
+   "figure_notes": "図なし(数値のみ)。",
+   "pedagogy": []
+  }
+ },
+ "g04_frac_convert_01": {
+  "brief": {
+   "semantic_territory": "仮分数→帯分数",
+   "number_domain": "分数(分母3〜8・整数落ちなし)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "corr-0007トリアージ裁可(g04監査第1号・frac系2件は例外登録)",
+     "by": "marko",
+     "date": "2026-08-12"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "仮分数の帯分数化(分子÷分母の商と余り)。わり算とのつながりが主眼。",
+   "representation": "mixed_display整形(g03分数表記と一貫・棚卸し確認済み)。ansは分子の形式使用。",
+   "constructive_guarantees": "仮分数(num>den)+整数落ちなし(num%den≠0——ちょうど割り切れると帯分数でなく整数になり問いが破綻)。",
+   "semantic_position": "分数クラスタの表記位。g05_yakubun(約分)の前段階(4年は約分なしの帯分数化のみ)。転記検査は**例外登録FRAC_PRESERVE**(38/4→9と2/4の分母4保存は正解そのもの・監査第1号で例外機構の初適用2件のうちの1つ)。",
+   "exclusions": "帯分数→仮分数の逆向きは第2波(逆像は機構同一)。約分込み(38/4→9と1/2)は5年領分——**4年正準は非約分の帯分数**(9と2/4が正解)という学年差を例外理由に記録。",
+   "figure_notes": "図なし(表記変換・数値のみ)。",
+   "pedagogy": []
+  }
+ },
+ "g04_frac_addsub_01": {
+  "brief": {
+   "semantic_territory": "同分母分数の加法(和が仮分数)",
+   "number_domain": "分数(分母4〜9)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "corr-0007トリアージ裁可(g04監査第1号・frac系2件は例外登録)",
+     "by": "marko",
+     "date": "2026-08-12"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "真分数+真分数が仮分数になり帯分数で答える。同分母加法とconvertの合成。",
+   "representation": "分子の整数加算+mixed_display。リボンの長さ文脈。",
+   "constructive_guarantees": "両項真分数∧和が仮分数(num1+num2>den)——「帯分数になおす必然」を構成保証。",
+   "semantic_position": "分数クラスタの計算位。g05_frac_add_unlike(異分母)への前段。転記検査は例外登録(同分母の分母保存)。",
+   "exclusions": "和が真分数に収まる形は3年の既習で除外(和>denが同時に担う)。減法(帯分数から引く繰り下がり)は別難度。",
+   "figure_notes": "図なし(純計算に近い最小文脈)。",
+   "pedagogy": []
+  }
+ },
+ "g04_div_riyou_01": {
+  "brief": {
+   "semantic_territory": "等分の文章題",
+   "number_domain": "整数(商10〜24)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "総数÷人数の等分。わり算の利用の基本場面。",
+   "representation": "div_object_pairsレキシコンでobject・counterを対束縛(みかん×こ・えんぴつ×本の対応が崩れない)——**助数詞を品目と対で持つレキシコン設計はg01の「こ」統一正準の先行形**(g04は対束縛で音変化助数詞も安全に使える)。",
+   "constructive_guarantees": "割り切れ(等分の成立性)+商域[10,24]。",
+   "semantic_position": "わり算の利用の代表位。g01_bunsho系(1けた等分)の上位互換。",
+   "exclusions": "あまりつき等分(「何こあまりますか」)は答2欄で第2波。「1人分」でなく「何人に分けられるか」(包含除)は問い構造が別。",
+   "figure_notes": "図なし(分ける文脈は文で立つ)。",
+   "pedagogy": []
+  }
+ },
+ "g04_rect_area_01": {
+  "brief": {
+   "semantic_territory": "長方形の面積",
+   "number_domain": "整数cm(2〜12)",
+   "answer_structure": "single",
+   "figure": "rect_area",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "たて×横。面積概念の初出(単位正方形の敷き詰め)で、公式系列全体の始祖。",
+   "representation": "rect_area kind(show_dims)——**図と本文の同一env駆動の原型パターン**。本文は「図のような長方形の」と図へ委譲し、寸法は図だけが持つ(g05 tri_angleの分業型の先行)。",
+   "constructive_guarantees": "w≠h(正方形除外——正方形は別パターンの領分と明記された設計で、g05_rhombusのd1≠d2と同じ「図形の定義を保つ」制約)。",
+   "semantic_position": "面積系列(g04長方形→g05平行四辺形・三角形・台形・ひし形→g05小数辺rect_area_dec→g06円)の始祖。rect_area kindはg05_rect_area_decに直接流用された。",
+   "exclusions": "正方形(1辺×1辺)は別パターン化前提の除外(現行バンクに未実装=第2波在庫・棚卸し記録)。複合図形(L字)はg04後半の発展で第2波。",
+   "figure_notes": "rect_area kind(show_dims)。寸法ラベル自要素束縛。アスペクトは値域[2,12]²が自然に抑える(比制約なしで足りる正方形近傍除外はw≠hのみ・推定: kindの寸法適応が広い)。",
+   "pedagogy": []
+  }
+ },
+ "g04_angle_sum_01": {
+  "brief": {
+   "semantic_territory": "角度の合成(2角の和)",
+   "number_domain": "整数度(20〜80×2・5°刻み)",
+   "answer_structure": "single",
+   "figure": "angle_sum",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "angle_sumで確立した配置原則——ラベルは自要素束縛、可動は半径・フォントのみ、全域機械スキャン——に従うこと",
+     "by": "marko",
+     "date": "2026-06"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "2つの角を合わせた「あ」の角度。分度器単元の計算位で、角の加法性の理解。",
+   "representation": "**angle_sum配置原則の発祥パターン**(2026-06 directiveの出所・棚卸し記録)——セクターラベルの自要素束縛・可動自由度を半径とフォントに限定・全スロット域の機械スキャンで重なりゼロを実証する方式は、ここで確立されてg05角度系→B層図全般(描画可能性悉皆)へ一般化された。5°刻みは分度器の読み取り粒度。",
+   "constructive_guarantees": "和≦175(180°未満=平角にならない図)+**和≠90(直角に見える図の回避——「見た目が特別な角」を避ける視認性系制約の初出)**。",
+   "semantic_position": "角度系列(g04合成→g05内角和)の起点。図規約の歴史的起点として系譜価値最大。",
+   "exclusions": "差の角(あ=大−小)は図の表現(重ね)が別kind級。3角合成は情報過多。",
+   "figure_notes": "angle_sum kind。2セクター+「あ」ラベル。配置原則の発祥(directive参照)。90°回避は視認性系制約の初出例。",
+   "pedagogy": []
+  }
+ },
+ "g04_div_int_01": {
+  "brief": {
+   "semantic_territory": "÷2けた(商2けた)",
+   "number_domain": "整数(200〜899÷12〜39)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "corr-0007トリアージ裁可(g04監査第1号・制約4件+例外2件)",
+     "by": "marko",
+     "date": "2026-08-12"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "3けた÷2けた・商2けた。筆算を2回転させる完成形。",
+   "representation": "3兄弟共通機構。",
+   "constructive_guarantees": "商域[10,40]+あまり≧1。**2026-08-12追加**: 商≠除数(419÷20=20あまり19型の偶然一致——g03のdiv_amari系・g05以降の商=除数族の初検出例で、型カタログ「商＝除数族」の名の由来)。",
+   "semantic_position": "わり算3兄弟の完成位。",
+   "exclusions": "4けた被除数は筆算3回転で作業量が主眼を食う。",
+   "figure_notes": "図なし(純計算)。",
+   "pedagogy": []
+  }
+ },
+ "g04_estimate_01": {
+  "brief": {
+   "semantic_territory": "がい数の和の見積もり",
+   "number_domain": "整数(百の位までのがい数)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 2,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "各項を百の位に丸めてから足す見積もり。がい数の利用の代表。",
+   "representation": "**round_half_up(整数演算の四捨五入ヘルパ)の使用例**——浮動小数を使わず丸めを実装するヘルパで、g04がい数クラスタが初出(棚卸し記録: g05千分率・314スケールに先行する整数還元文化の源流)。答えの「およそ」接頭が見積もりの表示正準。",
+   "constructive_guarantees": "両項とも%100≠0(四捨五入で値が変わる——丸めても同じ数では見積もりの意味が立たない)。",
+   "semantic_position": "がい数クラスタの利用位(round→range→estimate)。",
+   "exclusions": "差・積の見積もりは丸め誤差の振る舞いが異なり別形(第2波)。上から1けた/2けた指定はgaisu_roundが担う。",
+   "figure_notes": "図なし(数値のみ)。",
+   "pedagogy": []
+  }
+ },
+ "g04_dist_law_01": {
+  "brief": {
+   "semantic_territory": "分配法則のくふう",
+   "number_domain": "整数(和が100固定)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 2,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "a×c+b×c=(a+b)×c。くふうして計算する単元の主形。",
+   "representation": "しき欄「（{a}+{b}）×{c}={sum}×{c}={ans}」が変形の過程そのもの——式変形を答えテンプレで見せる型。",
+   "constructive_guarantees": "**a+b=100の等式制約**——「くふうの旨みが出る」数値の保証を等式1本で行う、値域でなく関係で縛る制約の好例(g05のchoices手筋と対照的なアプローチとして記録価値)。",
+   "semantic_position": "くふうクラスタの中核。jhs c15(展開・因数分解)の遠い先祖(逆向きのくくり出し)。",
+   "exclusions": "逆向き((a+b)×c→分ける)は「くふう」の動機が立たない(まとめる方が楽)ため不採用。和が1000型は数が大きく暗算域外。",
+   "figure_notes": "図なし(純計算)。",
+   "pedagogy": []
+  }
+ },
+ "g04_mult_trick_01": {
+  "brief": {
+   "semantic_territory": "×99のくふう",
+   "number_domain": "整数(a 3〜9)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 2,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "a×99=a×100−a。100を経由する減算分解。",
+   "representation": "しき欄「{a}×100-{a}={h}-{a}={ans}」で分解過程を明示(dist_lawと同じ変形提示型)。",
+   "constructive_guarantees": "a∈[3,9]の1けた限定(a×100−aの暗算が成立する範囲)。制約実質ゼロ。",
+   "semantic_position": "くふうクラスタの第3位。×99固定は「99に出会ったら100−1」という定型の刷り込みで、変数化しない判断(推定: 98・101等への一般化は理解が伴わないと機械暗記になる)。",
+   "exclusions": "×98(−2a)・×101(+a)は同型変奏の第2波。2けた×99は繰り下がりが乗り別難度。",
+   "figure_notes": "図なし(純計算)。",
+   "pedagogy": []
+  }
+ },
+ "g04_dec_div_simple_01": {
+  "brief": {
+   "semantic_territory": "小数÷整数(純計算)",
+   "number_domain": "dec1÷整数2〜4(商小数)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "小数÷整数の筆算導入。小数点の位置決めが学習目標。",
+   "representation": "0.1単位整数の整数除算(q1//n)——割り切れ制約下でスケール保存除算になる最小形。",
+   "constructive_guarantees": "0.1単位で割り切れ+**商の小数性((q1//n)%10>0)**——商が整数に落ちる組(4.8÷2=2.4はOK、4.0÷2=2は排除)を除き「小数の商」を全域保証。",
+   "semantic_position": "小数クラスタ第3位(計算)。div_01(文章)と対。",
+   "exclusions": "あまりの出る小数除法・割り進みは4年後半の別単元(第2波)。除数は[2,4]の小さい域(筆算導入期)。",
+   "figure_notes": "図なし(純計算)。",
+   "pedagogy": []
+  }
+ },
+ "g04_bignum_write_01": {
+  "brief": {
+   "semantic_territory": "大きい数の表記(万と下4けたの合成)",
+   "number_domain": "整数(3万〜89万台)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "「{n}万{m}」の言葉の表記を数字に直す。位取り記数法の理解を表記変換で確認する単元入口。",
+   "representation": "n1×10000+n2の合成そのものがanswer_formula——「万＝10000」の定義が式になっている。",
+   "constructive_guarantees": "n2≧1001(下4けたが4けたで安定・0埋めの表記揺れを回避)。位の欠け(30万5百など)を扱わない値域設計。",
+   "semantic_position": "大数クラスタ(write→x10→calc)の起点。",
+   "exclusions": "億・兆の表記はbignum_calcが単位語として扱う(数字表記だと桁が長すぎ検収困難)。位の欠けた数(3万50)は0の扱いが別難度で第2波。",
+   "figure_notes": "図なし(表記変換・数値のみ)。",
+   "pedagogy": []
+  }
+ },
+ "g04_bignum_x10_01": {
+  "brief": {
+   "semantic_territory": "10倍のしくみ(位が1つ上がる)",
+   "number_domain": "整数(230〜9800)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "10倍で末尾に0が1つつく位取りの性質。g05_dec_shift_up(小数の位取りシフト)の整数側先祖。",
+   "representation": "n×10の最小構成。",
+   "constructive_guarantees": "n≧230(3けた以上で「位が上がる」実感)。制約は実質値域のみ。",
+   "semantic_position": "大数クラスタ第2位。位取りシフト系列(本件→g05 dec_shift)の起点として系譜価値。",
+   "exclusions": "100倍・1/10は同型の変奏で、g05のシフト系が両方向を扱うためg04は10倍のみに絞る(推定: 単元導入の最小形)。",
+   "figure_notes": "図なし(位取り操作・数値のみ)。",
+   "pedagogy": []
+  }
+ },
+ "g04_div_bai_01": {
+  "brief": {
+   "semantic_territory": "何倍か(整数倍)",
+   "number_domain": "整数(倍2〜9)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "corr-0007トリアージ裁可(g04監査第1号)",
+     "by": "marko",
+     "date": "2026-08-12"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "2本のテープの倍関係。「倍=わり算」の意味づけで、g05_frac_bai/dec_bai(端数の倍)の整数側先祖。",
+   "representation": "赤・青テープの固定文脈(色対比で2量の役割が一読で立つ)。",
+   "constructive_guarantees": "割り切れ+倍域[2,9]。**2026-08-12追加**: a≠b²(25cmと5cm→5倍型で答＝短い方の転記一致・平方族)。",
+   "semantic_position": "倍系列(g04整数→g05分数/小数→g06分数倍)の起点。監査第1号で検出率14/200と2番目に高かった実例。",
+   "exclusions": "「青は赤の何分の一」の逆向きは分数答でg05領分。",
+   "figure_notes": "図なし(テープ文脈は文で立つ。テープ図は低学年図kind(統一遡及⑤)の実装後に検討可)。",
+   "pedagogy": []
+  }
+ }
+}

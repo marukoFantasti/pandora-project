@@ -1,0 +1,254 @@
+{
+ "g03_mult_2step_add_01": {
+  "brief": {
+   "semantic_territory": "2ステップ(かけ算→増加・たば+ばら)",
+   "number_domain": "整数",
+   "answer_structure": "two_step",
+   "figure": null,
+   "step_count": 2,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『1たばnまいの色紙がnたばと、ばらがnまい』。かけ算で総数を作ってからばらを足す2段が『1けたの数をかけるかけ算のり用』の定番で、たば+ばらは実物頻出の場面。",
+   "representation": "整数のみ。中間値t=n2*n3をcomputed_slotsで保持し、しき2行を同一envで駆動。intermediate_formulasで式1の出所を追跡。",
+   "constructive_guarantees": "total_range(40<=n2*n3<=250)で2けた×1けたの単元レベルに固定。ばらn4は2〜9でたばより常に小さく、『ばら』の語義と量関係が自動整合。",
+   "semantic_position": "mult_2step族(加算/おつり)の第1位。div_2step_gappeiと合わせ、two_step構造の学年内カタログを構成。",
+   "exclusions": "たば数n3下限3・たば内枚数n2下限12で『1たば』『たば2まい』級の語義崩れ域を回避。",
+   "figure_notes": "図なし(2段の式操作が主眼のテキスト完結型)。",
+   "pedagogy": []
+  }
+ },
+ "g03_mult_2step_change_01": {
+  "brief": {
+   "semantic_territory": "2ステップ(かけ算→おつり)",
+   "number_domain": "整数(金額)",
+   "answer_structure": "two_step",
+   "figure": null,
+   "step_count": 2,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "代金を計算してから出した金額をひく買い物の定番。出す金額が500円か1000円の2択なのは実生活の貨幣体系そのもので、任意整数だと文脈が崩れる。",
+   "representation": "整数のみ。n5はchoices(500,1000)+choice_int(v0.7新設のスロット形式)で貨幣単位を厳密化。単価n2はstep5で5円刻み——端数価格の不自然を刻み側で排除。中間値t=代金をcomputedで保持。",
+   "constructive_guarantees": "change_positive(1<=おつり<=300)でおつりが正かつ出した金額に近い域に限定し、『500円を出す必然性』(代金がそれに近い)を数値設計で作る。",
+   "semantic_position": "mult_2step族の第2位。減算で締める型はjhsの方程式文章題(c05)の代金文脈へ続く。",
+   "exclusions": "おつり==n2(単価)とおつり==n3(個数)の転記型2本を除外。おつり0(ちょうど=おつりの問いが成立しない)はchange_positive下限が排除。",
+   "figure_notes": "図なし(買い物文脈のテキスト完結型)。",
+   "pedagogy": []
+  }
+ },
+ "g03_mult_distrib_sum_01": {
+  "brief": {
+   "semantic_territory": "分配法則(和×n・セット単価)",
+   "number_domain": "整数(金額)",
+   "answer_structure": "two_step",
+   "figure": null,
+   "step_count": 2,
+   "directives": [
+    {
+     "text": "検品判定(2026-08-04): 『それぞれ{n}つずつ』は混在助数詞(こ+本)への中立助数詞として正当、変更なし",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "パンとジュースをセットにして(a+b)×nで求めると楽——『セット単価を先に作ると計算が楽になる』が単元の狙いで、楽になる実感には和がキリの良い数であることが必須。",
+   "representation": "整数のみ。中間値s=a+b(セット単価)をcomputedで保持。パン(こ)とジュース(本)の助数詞混在は『それぞれ{n}つずつ』の中立助数詞で回避(検品判定で正当と裁可)。",
+   "constructive_guarantees": "round_sum((a+b)%100==0)で和を100の倍数に固定——分配法則の旨み(暗算で締まる)の構造的保証で、本パターンの核。step5刻み+sum_range(200〜600)で受理域を確保。",
+   "semantic_position": "分配法則対(和×n/差×n)の和位。jhs c02の分配法則(文字式)へ続く代数前駆で、『計算の工夫』系譜の学年代表。",
+   "exclusions": "a==b(2品同価格は不自然かつ分配の意味が薄れる)を除外。",
+   "figure_notes": "図なし(計算の工夫が主眼のテキスト完結型)。",
+   "pedagogy": []
+  }
+ },
+ "g03_mult_distrib_diff_01": {
+  "brief": {
+   "semantic_territory": "分配法則(差×n・単価差)",
+   "number_domain": "整数(金額)",
+   "answer_structure": "two_step",
+   "figure": null,
+   "step_count": 2,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『代金のちがいは』を(a-b)×nで求める型。個別に総額を出して引くより差を先に作る方が楽、という和版と対の工夫。",
+   "representation": "整数のみ。中間値d=a-b(1こあたりの差)をcomputedで保持。ケーキとプリンは同助数詞(こ)の対で、和版のような中立助数詞を要さない。",
+   "constructive_guarantees": "round_diff((a-b)%10==0)+diff_range(10〜90)で差をキリの良い暗算域に固定——差×nが暗算で締まることが工夫の実感条件。a_winsで差の正を保証。",
+   "semantic_position": "分配法則対の差位。和位と『まとめる方向が逆』の対を成し、混合出題で使い分け判断を問える。",
+   "exclusions": "答==a、答==b、答==nの転記型3本を除外——(a-b)*nは値域が広く本文数値と衝突しやすいため、族カタログの単価・個数両系を個別に張る。",
+   "figure_notes": "図なし(計算の工夫が主眼)。",
+   "pedagogy": []
+  }
+ },
+ "g03_meas_dist_gappei_01": {
+  "brief": {
+   "semantic_territory": "合併(道のり・km/m複名数)",
+   "number_domain": "複名数km_m(m単位の内部整数)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "家→学校→駅の道のり合算。オペランドは1km未満(m表示)で、合算して初めて1kmを超え複名数表記が必要になる——『m単位で計算し複名数へ換算する』2段書きが教科書流の写し。",
+   "representation": "quantity_slots(km_m)でmを内部整数として保持し、表示はq_disp整形。しきは『{q1_disp}+{q2_disp}={ans}m {ans}m={ans_disp}』のm合算→換算の2行で、単位換算の思考順を書式が再現。",
+   "constructive_guarantees": "sum_over_1km(和>=1100)で答えのkm部の存在を保証し複名数の必然性を作る。ans_has_m(和%1000>0)で『何km何m』の問いと答え形式が常に一致。step100でmの繰り上がり計算を不要化——単元の主眼(単位換算)以外の計算負荷を刻みで消す。",
+   "semantic_position": "複名数対(道のりkm_m/重さkg_g)の第1位。g02の長さ合成(m_cm系)の上位単位拡張で、系譜が直結。",
+   "exclusions": "和がちょうど1000の倍数(m部0で問い形式と不一致)をans_has_mが排除。オペランドの1km超(base_range上限900)を刻みとレンジで構造排除。",
+   "figure_notes": "図なし(道のりの地図図示は本質でなく、単位換算の式操作が主眼。実物も文章のみが主形)。",
+   "pedagogy": []
+  }
+ },
+ "g03_meas_weight_gappei_01": {
+  "brief": {
+   "semantic_territory": "合併(重さ・kg/g複名数)",
+   "number_domain": "複名数kg_g(g単位の内部整数)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "検品修正④(2026-08-04): 複名数オペランドは変換行を先行(2kg300g=2300g)し式中の混在を解消(道のり方式と統一)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "かご+中身の全体重量。オペランドの片方(みかん)が1kg超の複名数で与えられ、g換算してから合算する——道のり型と違い『複名数→単名数の変換』が問題側に現れるのが本パターンの固有点。",
+   "representation": "quantity_slots(kg_g)の内部g整数。しきは変換行『{q2_disp}={q2}g』を先行させてから合算(検品修正④)——変換と計算を行で分離し、式中に複名数と単名数が混在する読みにくさを解消。道のり方式との書式統一。",
+   "constructive_guarantees": "no_g_carry(g部の和<=999)でgの繰り上がりを排除——easy難度の宣言的保証で、g02のmm繰り上がりなし設計の踏襲。ans_has_gで『何kg何g』の形式一致。かご(step50)とみかん(step100)の刻み差で現実的な重量感を維持。",
+   "semantic_position": "複名数対の第2位。変換先行の書式は今後の複名数パターン全般の正準(道のり方式と統一済み)。",
+   "exclusions": "gの繰り上がりが出る組(easy難度違反)をno_g_carryが排除。和のg部0をans_has_gが排除。",
+   "figure_notes": "図なし(はかりの図示は第2波在庫の低学年図kind候補。本パターンは換算の式操作が主眼)。",
+   "pedagogy": []
+  }
+ },
+ "g03_dec_add_01": {
+  "brief": {
+   "semantic_territory": "合併(小数第1位・かさ)",
+   "number_domain": "dec1(1/10単位の内部整数)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "やかんとポットの水の合併。小3の小数は第1位まで・かさと長さが主文脈で、L文脈の合併が導入の定番形。",
+   "representation": "内部表現は1/10単位の整数(dec1)——浮動小数を一切使わない文化のg03初適用群。表示はFORMATTERSのde(小数部0なら整数表示)で、内部整数と表示小数の分離をフォーマッタが担う。",
+   "constructive_guarantees": "both_decimal(両オペランドに小数部)で小数計算の必然性を保証——片方が整数だと整数+小数の別単元に退化する。ans_decimal(和にも小数部)で答え形式が問いと一致し、かつ『0.6+0.4=1』型の桁消失を排除。",
+   "semantic_position": "小数加減対の加法位。dec1内部整数はg04のdec1 quantity_slots・g05の314スケールへ続くスケール整数文化の学年内起点。",
+   "exclusions": "和が整数になる組(小数部の消失)をans_decimalが排除。オペランドの整数値(小数部0)をboth_decimalが排除。",
+   "figure_notes": "図なし(かさの図示は数直線・目盛り依存で第2波の領分。本パターンは筆算前の意味理解が主眼)。",
+   "pedagogy": []
+  }
+ },
+ "g03_dec_kyusa_01": {
+  "brief": {
+   "semantic_territory": "求差(小数第1位・複文答え)",
+   "number_domain": "dec1(1/10単位の内部整数)",
+   "answer_structure": "compound_compare",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "転記排除の族カタログ監査(統一遡及②)で対称2本(dec1スケール)を追加検出・反映済み",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "『どちらが何m長いですか』のテープ比較。答えが『{attr_a}テープが{ans}m長い。』の複文で、求差(3けた)の小数版という対構造。",
+   "representation": "dec1内部整数。テープの識別はattribute_pairs(色の対)の束縛で、a_longer(q1>q2)によりattr_aを長い側に固定——複文の主語をテンプレ直書きで一意化する求差3けたと同じ最小設計。",
+   "constructive_guarantees": "both_decimal+ans_decimalで小数計算の必然性と答え形式を保証。diff_meaningful(差>=5=0.5m)で目視で分からない差に限定し比較の必然性を作る。",
+   "semantic_position": "小数加減対の減法位・compound_compare族の小数代表。求差3けた(整数)と同構造の学年内対で、構造の学年間水平展開の実例。",
+   "exclusions": "q1==2*q2とq2==2*q1の対称2本(差=小さい方・dec1スケールでの転記型・統一遡及②で追加検出)を除外。引き分けはa_longerが構造排除。",
+   "figure_notes": "図なし(テープ図の図示はテープ図kind(第2波候補)の領分。本パターンは小数の求差計算が主眼)。",
+   "pedagogy": []
+  }
+ },
+ "g03_frac_represent_01": {
+  "brief": {
+   "semantic_territory": "分数の表現(単位分数のいくつ分)",
+   "number_domain": "分数(真分数)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "『1Lを{den}等分した{num}こ分は何L』——単位分数のいくつ分という分数の定義そのものを問う導入形で、計算を含まない唯一のパターン。",
+   "representation": "fraction_display機構(v0.7新設)の最小適用。answer_formulaはnum(分子の整数)で、表示はans_frac={num}/{den}の整形文字列——env.ansと表示答えが構造的に乖離する代表例で、corr-0007が表示答え基準でなければならない理由の生きた実例。",
+   "constructive_guarantees": "proper(num<den)で真分数に限定——小3の分数表現は1未満が範囲で、仮分数は学年外。全域が構成的に成立し棄却ゼロ。",
+   "semantic_position": "分数3パターン(表現/加法/減法)の定義位。frac_unit_pairs(L/かさ・m/長さ)は加減法と共有し、単元の文脈連続性を保つ。",
+   "exclusions": "num==den(=1で分数表現の意味が消える)と仮分数をproperが一括排除。",
+   "figure_notes": "図なし(等分図・液量図は図依存単元として意図的にスコープ外(file_note記載)。テキストで定義を問える形のみ第1波に採録)。",
+   "pedagogy": []
+  }
+ },
+ "g03_frac_add_01": {
+  "brief": {
+   "semantic_territory": "合併(同分母分数・和は1以下)",
+   "number_domain": "分数(同分母・真分数)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "同分母の加法。小3は和が1以下の範囲で、和=分母のとき答えが『1』になる——分数と整数の接続点を含むのが単元の山場。",
+   "representation": "分子分母は整数スロット。answer_formulaはnum1+num2の分子整数演算に還元し、表示はfmt_fraction(分子=分母で『1』に自動整形)に一任——手計算の『分母はそのまま・分子をたす』と機構が1対1対応。",
+   "constructive_guarantees": "operands_proper(両項真分数)+sum_le_1(和<=分母)で学年範囲に厳密固定。和=分母(答え1)の組は受理域に残し、fmt_fractionの整形で正しく『1』と表示——境界例を排除でなく機構で吸収する設計。",
+   "semantic_position": "分数3パターンの加法位。同分母の分子演算はg05の異分母(通分)への前段で、g05側は本構造に通分を積んだ発展形。",
+   "exclusions": "和が1超(仮分数化・学年外)をsum_le_1が排除。",
+   "figure_notes": "図なし(液量図は図依存としてスコープ外。分子の整数演算が主眼)。",
+   "pedagogy": []
+  }
+ },
+ "g03_frac_sub_01": {
+  "brief": {
+   "semantic_territory": "求残(同分母分数)",
+   "number_domain": "分数(同分母・真分数)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "同分母の減法・求残文脈(ジュースを飲んだのこり)。1からひく型(1-num/den)は実物にあるが帯分数的な前処理(1=den/den)を要するため、意図的に分離しセッション3候補として記録済み。",
+   "representation": "分子分母は整数スロット。answer_formulaはnum1-num2の分子整数演算。表示はfmt_fraction(分子0で『0』)だがpositive_remainderにより0は出ない。",
+   "constructive_guarantees": "operands_proper+positive_remainder(num1>num2)でのこりの正を保証。全域構成的に成立。",
+   "semantic_position": "分数3パターンの減法位。1-m/n型(スコープ外・記録済み)が直系の次候補で、拡張の受け口を持つ完結形。",
+   "exclusions": "num1==num2(のこり0=飲み切りで問いが不自然)とnum1<num2(負)をpositive_remainderが一括排除。",
+   "figure_notes": "図なし(加法位と同じ理由)。",
+   "pedagogy": []
+  }
+ },
+ "g03_div_amari_ceil_2step_01": {
+  "brief": {
+   "semantic_territory": "2ステップ(かけ算→あまり切り上げ)",
+   "number_domain": "整数",
+   "answer_structure": "two_step_remainder_ceil",
+   "figure": null,
+   "step_count": 2,
+   "directives": [
+    {
+     "text": "検品修正①(2026-08-04): 語順を教科書順に(子どもが1れつに{n_a}人ずつ、{n_b}れつに〜)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "列の人数×列数で総数を求めてから長いすの切り上げわり算。単一パターンで乗法・除法・あまり判断の3技能を貫通する、g03バンクの最難度・総仕上げ位。",
+   "representation": "しき3行({n_a}×{n_b}={t} → {t}÷{n2}={q}あまり{rem} → {q}+1={ans})を単一envで駆動。context_setは単段ceilと同じceil_contextsを共有するが、headは総数計算文に置換されるためtail/ans_counterのみ使用——文脈セットの部分再利用の実例。answer_structure=two_step_remainder_ceilはv0.7新設の複合構造。",
+   "constructive_guarantees": "total_range(12<=総数<=81)で2けた域。has_remainder+quotient_in_kukuで単段ceilと同じ+1保証構造。乗法の総数を経由しても切り上げ判断の数値条件が崩れないことを制約の合成で保証。",
+   "semantic_position": "あまり3層とtwo_stepの合流点・g03の頂上パターン。jhsの複合文章題(c05)へ続く多段思考の学年代表。",
+   "exclusions": "答==n_a、答==n_b、答==n2の転記型3本を個別除外——3スロット全てと衝突しうる多段型は族カタログを全数値に張るのが規約。",
+   "figure_notes": "図なし(列の配置図は数え上げへの置換を招くため意図的にテキストのみ。単段ceilと同方針)。",
+   "pedagogy": []
+  }
+ }
+}
