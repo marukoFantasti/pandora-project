@@ -83,5 +83,35 @@ const offOk = DOMESTIC.every(p => MD.processMathText(p.question, { mode: 'off' }
 if (!offOk) bad++;
 console.log('  ' + (offOk ? '✅' : '❌') + ' off モードは入力そのまま返す(変換なし)');
 
+// (E) 生成quizテンプレ: 海外テンプレのインライン資産ドリフト + 国内テンプレのバイト凍結
+console.log('\n=== (E) 生成quizテンプレ(海外インライン資産ドリフト・国内バイト凍結) ===');
+const OV = fs.readFileSync(path.join(ROOT, 'templates', 'student_quiz_overseas_template.html'), 'utf-8');
+function pgExtract(id) { const m = OV.match(new RegExp('<script id="' + id + '"[^>]*>([\\s\\S]*?)</' + 'script>')); return m ? m[1] : null; }
+const INLINE = [
+  ['pg-engine', 'pattern_bank/reading_engine.js'], ['pg-md', 'assets_global/math_display.js'], ['pg-gs', 'assets_global/global_student.js'],
+  ['pg-lex', 'pattern_bank/handoff_jhs/furigana_lexicon.json'], ['pg-ct', 'pattern_bank/handoff_jhs/counter_reading_table.json'],
+];
+for (const [id, src] of INLINE) {
+  const inl = pgExtract(id);
+  if (inl == null) { bad++; console.log('  ❌ ' + id + ' がテンプレに不在'); continue; }
+  const srcTxt = fs.readFileSync(path.join(ROOT, src), 'utf-8');
+  const ok = id.startsWith('pg-lex') || id.startsWith('pg-ct') ? inl.trim() === srcTxt.trim() : inl === srcTxt;
+  if (!ok) bad++;
+  console.log('  ' + (ok ? '✅' : '❌ドリフト') + ' 海外テンプレ ' + id + ' == ' + path.basename(src));
+}
+// 国内テンプレは無改変(国内生成quizのbase)。md5を基準凍結。
+const DOM_TPL = path.join(ROOT, 'templates', 'student_quiz_domestic_template.html');
+const domMd5 = md5(DOM_TPL);
+const gp = JSON.parse(fs.readFileSync(GOLDEN, 'utf-8'));
+if (gp.domestic_template_md5 == null) {
+  gp.domestic_template_md5 = domMd5;
+  fs.writeFileSync(GOLDEN, JSON.stringify(gp, null, 2) + '\n');
+  console.log('  国内テンプレmd5 基準採取(bootstrap): ' + domMd5.slice(0, 12));
+} else {
+  const ok = gp.domestic_template_md5 === domMd5;
+  if (!ok) bad++;
+  console.log('  ' + (ok ? '✅' : '❌') + ' 国内テンプレ(student_quiz_domestic) md5 基準一致(国内生成quiz base バイト不変)');
+}
+
 console.log('\n' + (bad === 0 ? 'math_display_nondestructive: 全通過 ✅(ドリフト0・国内不変・述語共有)' : '❌ ' + bad + '件'));
 process.exit(bad === 0 ? 0 : 1);

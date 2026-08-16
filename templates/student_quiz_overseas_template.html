@@ -34,6 +34,1042 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <!-- BEGIN pandora_global 算数編 v1.0.1 assets(自己完結インライン・出所=assets_global・drift検査あり) -->
+  <script id="pg-lex" type="application/json">{
+ "_meta": {
+  "purpose": "pandora_global算数編: 漢字語→読みの照合表(規約5の写像・決定的・ゼロAI)",
+  "date": "2026-08-14",
+  "matching_rules": [
+   "最長一致: surfacesのキーを長い順に照合。キーは表層形(送り仮名込み可)",
+   "読みはキー内の漢字部分に対応(かな部分はそのまま残す。例: 水とう→すい+とう、割引き→わりび+き)",
+   "処理順はcounter_reading_table.json _meta参照: (1)数値+単位の結合形を規則表で先に処理 (2)残り漢字語を本表で最長一致 (3)残存漢字は網羅ハーネス違反として停止",
+   "同字異読は表層で分離(表す=あらわ/表=ひょう、出し=だ/出て=で、入れ=い/入っ=はい、積み=つ/積=せき、比べ=くら/比=ひ、乗っ=の/乗=じょう、解き=と/解=かい)"
+  ],
+  "notes_for_review": [
+   "上=じょう(直線上・グラフ上の数学文脈を優先。「机の上」等が出たら表層追加で分離)",
+   "後=あと(単独時。○分後は分後=ふんごの表層が先に当たる)",
+   "空=から(空のようき等)、金=かね(お金)、玉: 赤玉=あかだま(連濁)/白玉=しろたま",
+   "引き=び(値引き文脈: ○円引き)。ひき算が出たら表層追加",
+   "「文脈依存」はテンプレ地の文由来か要確認(設計ノート混入疑い・Codeに出所確認を申し送り)"
+  ],
+  "addendum_2026-08-14": "coverage RED対応: 午前・午後を追加(clockフォーマッタ合成出力・Phase0静的抽出の漏れ)。計381表層"
+ },
+ "surfaces": {
+  "二等辺三角形": "にとうへんさんかくけい",
+  "二次方程式": "にじほうていしき",
+  "何時間何分": "なんじかんなんぷん",
+  "平行四辺形": "へいこうしへんけい",
+  "度数分布表": "どすうぶんぷひょう",
+  "最大公約数": "さいだいこうやくすう",
+  "最小公倍数": "さいしょうこうばいすう",
+  "連立方程式": "れんりつほうていしき",
+  "人口密度": "じんこうみつど",
+  "何時何分": "なんじなんぷん",
+  "入館者数": "にゅうかんしゃすう",
+  "四捨五入": "ししゃごにゅう",
+  "因数分解": "いんすうぶんかい",
+  "学習時間": "がくしゅうじかん",
+  "整数部分": "せいすうぶぶん",
+  "文脈依存": "ぶんみゃくいぞん",
+  "有効数字": "ゆうこうすうじ",
+  "正三角形": "せいさんかくけい",
+  "正五角形": "せいごかくけい",
+  "正六角形": "せいろっかくけい",
+  "相対度数": "そうたいどすう",
+  "読書時間": "どくしょじかん",
+  "通学時間": "つうがくじかん",
+  "がい数": "がいすう",
+  "万年筆": "まんねんひつ",
+  "三角形": "さんかくけい",
+  "三角柱": "さんかくちゅう",
+  "不等号": "ふとうごう",
+  "不等式": "ふとうしき",
+  "中央値": "ちゅうおうち",
+  "仮分数": "かぶんすう",
+  "何分後": "なんぷんご",
+  "何年後": "なんねんご",
+  "何時間": "なんじかん",
+  "何試合": "なんしあい",
+  "児童数": "じどうすう",
+  "公倍数": "こうばいすう",
+  "円周率": "えんしゅうりつ",
+  "動物園": "どうぶつえん",
+  "反復横": "はんぷくよこ",
+  "反比例": "はんぴれい",
+  "四角形": "しかくけい",
+  "四角柱": "しかくちゅう",
+  "図書館": "としょかん",
+  "増加量": "ぞうかりょう",
+  "小学校": "しょうがっこう",
+  "小数第": "しょうすうだい",
+  "帯分数": "たいぶんすう",
+  "平均値": "へいきんち",
+  "底面積": "ていめんせき",
+  "拡大図": "かくだいず",
+  "方程式": "ほうていしき",
+  "書かれ": "か",
+  "最頻値": "さいひんち",
+  "月曜日": "げつようび",
+  "木曜日": "もくようび",
+  "次関数": "じかんすう",
+  "正方形": "せいほうけい",
+  "比例式": "ひれいしき",
+  "水とう": "すい",
+  "求める": "もと",
+  "点対称": "てんたいしょう",
+  "画用紙": "がようし",
+  "百分率": "ひゃくぶんりつ",
+  "直方体": "ちょくほうたい",
+  "立方体": "りっぽうたい",
+  "線対称": "せんたいしょう",
+  "自動車": "じどうしゃ",
+  "自然数": "しぜんすう",
+  "自転車": "じてんしゃ",
+  "花びん": "か",
+  "道のり": "みち",
+  "長方形": "ちょうほうけい",
+  "乗っ": "の",
+  "乗り": "の",
+  "乗客": "じょうきゃく",
+  "予定": "よてい",
+  "交点": "こうてん",
+  "人分": "にんぶん",
+  "人口": "じんこう",
+  "人数": "にんずう",
+  "今年": "ことし",
+  "今日": "きょう",
+  "今週": "こんしゅう",
+  "代金": "だいきん",
+  "以上": "いじょう",
+  "以下": "いか",
+  "体積": "たいせき",
+  "何倍": "なんばい",
+  "何度": "なんど",
+  "何通": "なんとお",
+  "偶数": "ぐうすう",
+  "傾き": "かたむ",
+  "先週": "せんしゅう",
+  "入っ": "はい",
+  "入ら": "はい",
+  "入る": "はい",
+  "入れ": "い",
+  "全体": "ぜんたい",
+  "全員": "ぜんいん",
+  "全部": "ぜんぶ",
+  "公園": "こうえん",
+  "公式": "こうしき",
+  "円周": "えんしゅう",
+  "写真": "しゃしん",
+  "出し": "だ",
+  "出せ": "だ",
+  "出会": "であ",
+  "出発": "しゅっぱつ",
+  "分布": "ぶんぷ",
+  "分後": "ふんご",
+  "分数": "ぶんすう",
+  "分速": "ふんそく",
+  "分間": "ふんかん",
+  "切片": "せっぺん",
+  "割合": "わりあい",
+  "割引": "わりび",
+  "加算": "かさん",
+  "北町": "きたまち",
+  "区間": "くかん",
+  "午前": "ごぜん",
+  "午後": "ごご",
+  "半分": "はんぶん",
+  "半径": "はんけい",
+  "南町": "みなみまち",
+  "原点": "げんてん",
+  "去年": "きょねん",
+  "台形": "だいけい",
+  "右側": "みぎがわ",
+  "合同": "ごうどう",
+  "合計": "ごうけい",
+  "同時": "どうじ",
+  "品物": "しなもの",
+  "回数": "かいすう",
+  "図形": "ずけい",
+  "地点": "ちてん",
+  "増加": "ぞうか",
+  "変化": "へんか",
+  "変域": "へんいき",
+  "大小": "だいしょう",
+  "奇数": "きすう",
+  "学校": "がっこう",
+  "定価": "ていか",
+  "定員": "ていいん",
+  "実際": "じっさい",
+  "容積": "ようせき",
+  "対応": "たいおう",
+  "対称": "たいしょう",
+  "小屋": "こや",
+  "小数": "しょうすう",
+  "展開": "てんかい",
+  "左側": "ひだりがわ",
+  "平均": "へいきん",
+  "平行": "へいこう",
+  "年後": "ねんご",
+  "年齢": "ねんれい",
+  "底辺": "ていへん",
+  "度数": "どすう",
+  "座標": "ざひょう",
+  "引き": "び",
+  "得点": "とくてん",
+  "数字": "すうじ",
+  "数量": "すうりょう",
+  "整数": "せいすう",
+  "整理": "せいり",
+  "料金": "りょうきん",
+  "新し": "あたら",
+  "日間": "にちかん",
+  "時速": "じそく",
+  "時間": "じかん",
+  "曲線": "きょくせん",
+  "書き": "か",
+  "書く": "か",
+  "最初": "さいしょ",
+  "未満": "みまん",
+  "本分": "ほんぶん",
+  "来年": "らいねん",
+  "東町": "ひがしまち",
+  "根号": "こんごう",
+  "歩合": "ぶあい",
+  "毎分": "まいふん",
+  "毎日": "まいにち",
+  "比べ": "くら",
+  "比例": "ひれい",
+  "気温": "きおん",
+  "求め": "もと",
+  "測定": "そくてい",
+  "満水": "まんすい",
+  "点数": "てんすう",
+  "牛乳": "ぎゅうにゅう",
+  "現在": "げんざい",
+  "生徒": "せいと",
+  "白玉": "しろたま",
+  "直径": "ちょっけい",
+  "直線": "ちょくせん",
+  "硬貨": "こうか",
+  "確率": "かくりつ",
+  "秒速": "びょうそく",
+  "種類": "しゅるい",
+  "積み": "つ",
+  "積ん": "つ",
+  "筆箱": "ふでばこ",
+  "等分": "とうぶん",
+  "等式": "とうしき",
+  "答え": "こた",
+  "範囲": "はんい",
+  "簡単": "かんたん",
+  "約分": "やくぶん",
+  "累乗": "るいじょう",
+  "結果": "けっか",
+  "縮図": "しゅくず",
+  "縮尺": "しゅくしゃく",
+  "色紙": "いろがみ",
+  "荷物": "にもつ",
+  "表し": "あらわ",
+  "表す": "あらわ",
+  "表せ": "あらわ",
+  "西町": "にしまち",
+  "見積": "みつ",
+  "角度": "かくど",
+  "解き": "と",
+  "解く": "と",
+  "解け": "と",
+  "計算": "けいさん",
+  "記録": "きろく",
+  "試合": "しあい",
+  "赤玉": "あかだま",
+  "通分": "つうぶん",
+  "連続": "れんぞく",
+  "金額": "きんがく",
+  "関係": "かんけい",
+  "関数": "かんすう",
+  "階級": "かいきゅう",
+  "電車": "でんしゃ",
+  "面積": "めんせき",
+  "頂角": "ちょうかく",
+  "順番": "じゅんばん",
+  "麦茶": "むぎちゃ",
+  "黄色": "きいろ",
+  "万": "まん",
+  "上": "じょう",
+  "並": "なら",
+  "中": "なか",
+  "乗": "じょう",
+  "交": "まじ",
+  "人": "にん",
+  "今": "いま",
+  "休": "やす",
+  "位": "くらい",
+  "何": "なん",
+  "余": "あま",
+  "作": "つく",
+  "使": "つか",
+  "個": "こ",
+  "倍": "ばい",
+  "値": "あたい",
+  "停": "てい",
+  "傾": "かたむ",
+  "億": "おく",
+  "兄": "あに",
+  "入": "はい",
+  "内": "うち",
+  "円": "えん",
+  "冊": "さつ",
+  "出": "で",
+  "分": "ぶん",
+  "切": "き",
+  "列": "れつ",
+  "前": "まえ",
+  "割": "わり",
+  "千": "せん",
+  "友": "とも",
+  "取": "と",
+  "台": "だい",
+  "右": "みぎ",
+  "合": "あ",
+  "同": "おな",
+  "向": "む",
+  "和": "わ",
+  "商": "しょう",
+  "回": "かい",
+  "図": "ず",
+  "増": "ふ",
+  "売": "う",
+  "多": "おお",
+  "大": "おお",
+  "妹": "いもうと",
+  "姉": "あね",
+  "始": "はじ",
+  "子": "こ",
+  "安": "やす",
+  "家": "いえ",
+  "小": "ちい",
+  "少": "すく",
+  "左": "ひだり",
+  "店": "みせ",
+  "度": "ど",
+  "式": "しき",
+  "弟": "おとうと",
+  "形": "かたち",
+  "後": "あと",
+  "投": "な",
+  "持": "も",
+  "数": "かず",
+  "方": "ほう",
+  "日": "にち",
+  "時": "じ",
+  "書": "か",
+  "本": "ほん",
+  "来": "き",
+  "枚": "まい",
+  "横": "よこ",
+  "次": "つぎ",
+  "歩": "ある",
+  "歳": "さい",
+  "残": "のこ",
+  "母": "はは",
+  "比": "ひ",
+  "水": "みず",
+  "求": "もと",
+  "消": "け",
+  "深": "ふか",
+  "点": "てん",
+  "父": "ちち",
+  "玉": "たま",
+  "町": "まち",
+  "白": "しろ",
+  "百": "ひゃく",
+  "目": "め",
+  "短": "みじか",
+  "秒": "びょう",
+  "積": "せき",
+  "空": "から",
+  "筆": "ふで",
+  "等": "ひと",
+  "答": "こた",
+  "算": "ざん",
+  "箱": "はこ",
+  "米": "こめ",
+  "紙": "かみ",
+  "終": "お",
+  "縄": "なわ",
+  "縦": "たて",
+  "花": "はな",
+  "茶": "ちゃ",
+  "行": "い",
+  "表": "ひょう",
+  "袋": "ふくろ",
+  "解": "かい",
+  "読": "よ",
+  "調": "しら",
+  "貝": "かい",
+  "買": "か",
+  "赤": "あか",
+  "走": "はし",
+  "足": "た",
+  "車": "くるま",
+  "軸": "じく",
+  "辺": "へん",
+  "追": "お",
+  "通": "とお",
+  "速": "はや",
+  "進": "すす",
+  "運": "はこ",
+  "道": "みち",
+  "選": "えら",
+  "配": "くば",
+  "重": "おも",
+  "量": "りょう",
+  "金": "かね",
+  "鉄": "てつ",
+  "長": "なが",
+  "間": "かん",
+  "離": "はな",
+  "青": "あお",
+  "順": "じゅん",
+  "食": "た",
+  "飲": "の",
+  "駅": "えき",
+  "高": "たか",
+  "黒": "くろ"
+ }
+}</script>
+  <script id="pg-ct" type="application/json">{
+ "_meta": {
+  "purpose": "pandora_global算数編: 数詞+助数詞/単位の読み合成規則表(決定的・ゼロAI)",
+  "scope": "counter_inventory.json全28種+数詞成分表+小数/分数/負数規則",
+  "date": "2026-08-14",
+  "rules": [
+   "合成規則: N+助数詞の読み = Nの数詞読みの末尾成分に、助数詞のdigit_readingsが定める変音を適用",
+   "末尾成分の決定: 一の位が非0なら一の位 / 一の位0なら十の位(じゅう系) / 下2桁00なら百の位(ひゃく系) / 下3桁000なら千の位(せん系)",
+   "十の位が末尾成分のとき: digit_readings['10']の読みの頭に十の位の数詞を冠する(例: 20本=に+じゅっぽん)",
+   "百・千が末尾成分のとき: hundreds/thousandsテーブルの読み+助数詞base(h系助数詞は百=〜っ+p音: 100本=ひゃっぽん、300本=さんびゃっぽん、1000本=せんぼん)",
+   "question形: 「何」+助数詞はquestionフィールドの読み(概ねん末尾=3の変音と同型)。「つ」のみ「いくつ」に置換",
+   "処理順: (1)本規則表で{数値}+単位の結合形を先に読み化 (2)残りの漢字語をfurigana_lexicon.jsonの最長一致で読み化 (3)残存漢字はハーネス違反として停止"
+  ],
+  "addendum_2026-08-14": "Phase0の28種に加え時・日・年を増補(g02 time系の複名数フォーマッタ出力・日間・年後がinventoryに存在するため)。まるこ検収対象",
+  "addendum_2026-08-14_2": "coverage RED 3件対応: 厘counter追加+buai_composite複合規則(歩合の分=ぶ/時間の分=ふんの同表層衝突を隣接共起で決定的に分離)。歩合フォーマッタが割・厘を伴わない裸の{n}分(=ぶ)を出力しうるかはPhase 1.5でCode調査(出力しうる場合はパターン文脈ヒントをPhase 2で設計)"
+ },
+ "numeral_components": {
+  "digits": {
+   "0": "れい",
+   "1": "いち",
+   "2": "に",
+   "3": "さん",
+   "4": "よん",
+   "5": "ご",
+   "6": "ろく",
+   "7": "なな",
+   "8": "はち",
+   "9": "きゅう"
+  },
+  "tens_prefix": {
+   "1": "",
+   "2": "に",
+   "3": "さん",
+   "4": "よん",
+   "5": "ご",
+   "6": "ろく",
+   "7": "なな",
+   "8": "はち",
+   "9": "きゅう"
+  },
+  "hundreds": {
+   "1": "ひゃく",
+   "2": "にひゃく",
+   "3": "さんびゃく",
+   "4": "よんひゃく",
+   "5": "ごひゃく",
+   "6": "ろっぴゃく",
+   "7": "ななひゃく",
+   "8": "はっぴゃく",
+   "9": "きゅうひゃく"
+  },
+  "thousands": {
+   "1": "せん",
+   "2": "にせん",
+   "3": "さんぜん",
+   "4": "よんせん",
+   "5": "ごせん",
+   "6": "ろくせん",
+   "7": "ななせん",
+   "8": "はっせん",
+   "9": "きゅうせん"
+  },
+  "ten_base": "じゅう",
+  "note": "裸の数(単位なし)はこの成分表の素直な連結(例: 345=さんびゃくよんじゅうご)"
+ },
+ "special_notations": {
+  "decimal_point": {
+   "reading": "てん",
+   "after_point": "digit-wise(0.56=れいてんごろく、3.14=さんてんいちよん)"
+  },
+  "fraction": {
+   "pattern": "{num}/{den}",
+   "reading": "{den}ぶんの{num}",
+   "example": "3/4=よんぶんのさん"
+  },
+  "mixed_number": {
+   "pattern": "{int}と{num}/{den}",
+   "reading": "{int}と{den}ぶんの{num}",
+   "example": "2と3/4=にとよんぶんのさん"
+  },
+  "negative": {
+   "prefix": "マイナス",
+   "example": "-5=マイナスご",
+   "note": "jhs c01系signed"
+  },
+  "percent_composite": {
+   "note": "%はカタカナ語のためmutation-free(下のcounters参照)"
+  },
+  "buai_composite": {
+   "pattern": "{a}割{b}分{c}厘 およびその部分列({a}割{b}分 / {b}分{c}厘)",
+   "readings": {
+    "割": "わり",
+    "分": "ぶ",
+    "厘": "りん"
+   },
+   "mutation": "なし(ぶ・りんは変音しない: 1分=いちぶ・3分=さんぶ)",
+   "disambiguation_rule": "数値+分が、同一結合列内で割または厘と隣接共起する場合のみ分=ぶ。単独の{n}分(時間)は従来どおりふん(counters.分)。エンジンは本複合規則を数値+単位の一般規則より先に照合する",
+   "example": "3割5分2厘=さんわりごぶにりん"
+  }
+ },
+ "counters": {
+  "人": {
+   "base": "にん",
+   "digit_readings": {
+    "1": "ひとり",
+    "2": "ふたり",
+    "3": "さんにん",
+    "4": "よにん",
+    "5": "ごにん",
+    "6": "ろくにん",
+    "7": "ななにん",
+    "8": "はちにん",
+    "9": "きゅうにん",
+    "10": "じゅうにん"
+   },
+   "question": "なんにん",
+   "hundreds_1": "ひゃくにん"
+  },
+  "こ": {
+   "base": "こ",
+   "digit_readings": {
+    "1": "いっこ",
+    "2": "にこ",
+    "3": "さんこ",
+    "4": "よんこ",
+    "5": "ごこ",
+    "6": "ろっこ",
+    "7": "ななこ",
+    "8": "はっこ",
+    "9": "きゅうこ",
+    "10": "じゅっこ"
+   },
+   "question": "なんこ",
+   "hundreds_1": "ひゃっこ"
+  },
+  "個": {
+   "alias_of": "こ"
+  },
+  "円": {
+   "base": "えん",
+   "digit_readings": {
+    "1": "いちえん",
+    "2": "にえん",
+    "3": "さんえん",
+    "4": "よえん",
+    "5": "ごえん",
+    "6": "ろくえん",
+    "7": "ななえん",
+    "8": "はちえん",
+    "9": "きゅうえん",
+    "10": "じゅうえん"
+   },
+   "question": "なんえん",
+   "hundreds_1": "ひゃくえん"
+  },
+  "分": {
+   "base": "ふん",
+   "digit_readings": {
+    "1": "いっぷん",
+    "2": "にふん",
+    "3": "さんぷん",
+    "4": "よんぷん",
+    "5": "ごふん",
+    "6": "ろっぷん",
+    "7": "ななふん",
+    "8": "はっぷん",
+    "9": "きゅうふん",
+    "10": "じゅっぷん"
+   },
+   "question": "なんぷん",
+   "hundreds_1": "ひゃっぷん",
+   "note": "時間の分のみ。分ける等の訓はlexicon側"
+  },
+  "L": {
+   "base": "リットル",
+   "mutation_free": true,
+   "question": "なんリットル"
+  },
+  "つ": {
+   "base": "つ",
+   "digit_readings": {
+    "1": "ひとつ",
+    "2": "ふたつ",
+    "3": "みっつ",
+    "4": "よっつ",
+    "5": "いつつ",
+    "6": "むっつ",
+    "7": "ななつ",
+    "8": "やっつ",
+    "9": "ここのつ",
+    "10": "とお"
+   },
+   "question": "いくつ",
+   "range_guard": "1〜10のみ。11以上の出現はハーネス違反"
+  },
+  "まい": {
+   "base": "まい",
+   "mutation_free": true,
+   "question": "なんまい"
+  },
+  "枚": {
+   "alias_of": "まい"
+  },
+  "本": {
+   "base": "ほん",
+   "digit_readings": {
+    "1": "いっぽん",
+    "2": "にほん",
+    "3": "さんぼん",
+    "4": "よんほん",
+    "5": "ごほん",
+    "6": "ろっぽん",
+    "7": "ななほん",
+    "8": "はっぽん",
+    "9": "きゅうほん",
+    "10": "じゅっぽん"
+   },
+   "question": "なんぼん",
+   "hundreds_1": "ひゃっぽん"
+  },
+  "km": {
+   "base": "キロメートル",
+   "mutation_free": true,
+   "question": "なんキロメートル"
+  },
+  "g": {
+   "base": "グラム",
+   "mutation_free": true,
+   "question": "なんグラム"
+  },
+  "m": {
+   "base": "メートル",
+   "mutation_free": true,
+   "question": "なんメートル"
+  },
+  "cm": {
+   "base": "センチメートル",
+   "mutation_free": true,
+   "question": "なんセンチメートル"
+  },
+  "kg": {
+   "base": "キログラム",
+   "mutation_free": true,
+   "question": "なんキログラム"
+  },
+  "dL": {
+   "base": "デシリットル",
+   "mutation_free": true,
+   "question": "なんデシリットル"
+  },
+  "時間": {
+   "base": "じかん",
+   "digit_readings": {
+    "1": "いちじかん",
+    "2": "にじかん",
+    "3": "さんじかん",
+    "4": "よじかん",
+    "5": "ごじかん",
+    "6": "ろくじかん",
+    "7": "ななじかん",
+    "8": "はちじかん",
+    "9": "くじかん",
+    "10": "じゅうじかん"
+   },
+   "question": "なんじかん"
+  },
+  "点": {
+   "base": "てん",
+   "digit_readings": {
+    "1": "いってん",
+    "2": "にてん",
+    "3": "さんてん",
+    "4": "よんてん",
+    "5": "ごてん",
+    "6": "ろくてん",
+    "7": "ななてん",
+    "8": "はってん",
+    "9": "きゅうてん",
+    "10": "じゅってん"
+   },
+   "question": "なんてん",
+   "hundreds_1": "ひゃくてん"
+  },
+  "冊": {
+   "base": "さつ",
+   "digit_readings": {
+    "1": "いっさつ",
+    "2": "にさつ",
+    "3": "さんさつ",
+    "4": "よんさつ",
+    "5": "ごさつ",
+    "6": "ろくさつ",
+    "7": "ななさつ",
+    "8": "はっさつ",
+    "9": "きゅうさつ",
+    "10": "じゅっさつ"
+   },
+   "question": "なんさつ"
+  },
+  "さつ": {
+   "alias_of": "冊"
+  },
+  "きゃく": {
+   "base": "きゃく",
+   "digit_readings": {
+    "1": "いっきゃく",
+    "2": "にきゃく",
+    "3": "さんきゃく",
+    "4": "よんきゃく",
+    "5": "ごきゃく",
+    "6": "ろっきゃく",
+    "7": "ななきゃく",
+    "8": "はっきゃく",
+    "9": "きゅうきゃく",
+    "10": "じゅっきゃく"
+   },
+   "question": "なんきゃく"
+  },
+  "回": {
+   "base": "かい",
+   "digit_readings": {
+    "1": "いっかい",
+    "2": "にかい",
+    "3": "さんかい",
+    "4": "よんかい",
+    "5": "ごかい",
+    "6": "ろっかい",
+    "7": "ななかい",
+    "8": "はっかい",
+    "9": "きゅうかい",
+    "10": "じゅっかい"
+   },
+   "question": "なんかい"
+  },
+  "台": {
+   "base": "だい",
+   "mutation_free": true,
+   "question": "なんだい"
+  },
+  "%": {
+   "base": "パーセント",
+   "mutation_free": true,
+   "question": "なんパーセント"
+  },
+  "割": {
+   "base": "わり",
+   "mutation_free": true,
+   "question": "なんわり"
+  },
+  "歳": {
+   "base": "さい",
+   "digit_readings": {
+    "1": "いっさい",
+    "2": "にさい",
+    "3": "さんさい",
+    "4": "よんさい",
+    "5": "ごさい",
+    "6": "ろくさい",
+    "7": "ななさい",
+    "8": "はっさい",
+    "9": "きゅうさい",
+    "10": "じゅっさい"
+   },
+   "question": "なんさい",
+   "note": "はたち(20歳)特例は採用しない(にじゅっさい)"
+  },
+  "度": {
+   "base": "ど",
+   "mutation_free": true,
+   "question": "なんど"
+  },
+  "秒": {
+   "base": "びょう",
+   "mutation_free": true,
+   "question": "なんびょう"
+  },
+  "時": {
+   "base": "じ",
+   "digit_readings": {
+    "1": "いちじ",
+    "2": "にじ",
+    "3": "さんじ",
+    "4": "よじ",
+    "5": "ごじ",
+    "6": "ろくじ",
+    "7": "しちじ",
+    "8": "はちじ",
+    "9": "くじ",
+    "10": "じゅうじ"
+   },
+   "question": "なんじ",
+   "range_guard": "1〜12(時刻)。11=じゅういちじ、12=じゅうにじ",
+   "note": "時刻表示(8時50分等・複名数フォーマッタ出力)用。Phase0の28種に非収載だがg02 time系で必要"
+  },
+  "日": {
+   "base": "にち",
+   "digit_readings": {
+    "1": "いちにち",
+    "2": "ふつか",
+    "3": "みっか",
+    "4": "よっか",
+    "5": "いつか",
+    "6": "むいか",
+    "7": "なのか",
+    "8": "ようか",
+    "9": "ここのか",
+    "10": "とおか"
+   },
+   "question": "なんにち",
+   "note": "期間読み(和語)。{n}日間={n日の読み}+かん(3日間=みっかかん)。inventoryの日間・日平均対応"
+  },
+  "年": {
+   "base": "ねん",
+   "mutation_free": true,
+   "question": "なんねん",
+   "note": "{n}年後={n}ねんご。inventoryの年後対応"
+  },
+  "厘": {
+   "base": "りん",
+   "mutation_free": true,
+   "question": "なんりん",
+   "note": "歩合系。1厘=いちりん・3厘=さんりん・10厘=じゅうりん(変音なし)"
+  }
+ }
+}</script>
+  <script id="pg-engine">// reading_engine.js — pandora_global算数編 表示層 読み合成エンジン(決定的・ゼロAI・依存ライブラリなし)。
+// 入力: 表示文字列。出力2モード: toRuby(《》中間表現) / toHiragana(全ひらがな化)。
+// 処理順(counter_reading_table _meta / furigana_lexicon _meta.matching_rules 正準):
+//   (1) 数値+単位の結合形(負数・小数・分数・帯分数・複名数)を規則表で読み化
+//   (2) 残り漢字語を furigana_lexicon の最長一致で読み化
+//   (3) 残存漢字があれば例外を投げる(握りつぶし禁止)
+// createEngine(lexicon, counterTable) で辞書を注入。Nodeでは loadDefault() が handoff_jhs から読む。
+'use strict';
+
+function createEngine(lexicon, counterTable) {
+  const SURF = lexicon.surfaces || lexicon;
+  const NC = counterTable.numeral_components;
+  const COUNTERS = counterTable.counters;
+  const SP = counterTable.special_notations;
+  // 単位キーを長い順(cm と m, 時間 と 時 の衝突回避)
+  const UNIT_KEYS = Object.keys(COUNTERS).sort((a, b) => b.length - a.length);
+  // lexicon表層を長い順(最長一致)
+  const SURF_KEYS = Object.keys(SURF).sort((a, b) => b.length - a.length);
+  const KANJI = /[一-鿿々]/;
+  const P_MUTATE = { 'は': 'ぱ', 'ひ': 'ぴ', 'ふ': 'ぷ', 'へ': 'ぺ', 'ほ': 'ぽ' };
+
+  function entryOf(unit) { let e = COUNTERS[unit]; if (e && e.alias_of) e = COUNTERS[e.alias_of]; return e; }
+
+  // 裸の数(<10000中心。万以上は簡易対応)
+  function readNumber(n) {
+    n = Math.trunc(Math.abs(n));
+    if (n === 0) return NC.digits['0'];
+    if (n >= 10000) { const man = Math.floor(n / 10000); const rem = n % 10000; return readNumber(man) + 'まん' + (rem ? readNumber(rem) : ''); }
+    let s = '';
+    const th = Math.floor(n / 1000) % 10, h = Math.floor(n / 100) % 10, t = Math.floor(n / 10) % 10, o = n % 10;
+    if (th) s += NC.thousands[String(th)];
+    if (h) s += NC.hundreds[String(h)];
+    if (t) s += NC.tens_prefix[String(t)] + NC.ten_base;
+    if (o) s += NC.digits[String(o)];
+    return s;
+  }
+
+  // N + 助数詞
+  function readCounter(n, unit) {
+    const e = entryOf(unit);
+    if (!e) throw new Error('未知の単位: ' + unit);
+    n = Math.trunc(n);
+    if (e.range_guard) { const m = e.range_guard.match(/(\d+)〜(\d+)/); if (m && (n < +m[1] || n > +m[2])) throw new Error('range_guard違反 ' + unit + '=' + n + ' (' + e.range_guard + ')'); }
+    if (e.mutation_free) return readNumber(n) + e.base;
+    const dr = e.digit_readings;
+    if (!dr) return readNumber(n) + e.base;
+    if (n >= 1 && n <= 10 && dr[String(n)]) return dr[String(n)];
+    const num0 = k => (k ? readNumber(k) : '');                   // 上位部0は空(れい前置を防ぐ)
+    const o = n % 10;
+    if (o !== 0) return num0(n - o) + dr[String(o)];              // 末尾=一の位
+    if (n % 100 !== 0) {                                          // 末尾=十の位
+      const hundredsPart = n - (n % 100), t = (n % 100) / 10;
+      return num0(hundredsPart) + NC.tens_prefix[String(t)] + dr['10'];
+    }
+    // 末尾=百(以上)の位
+    const h = Math.floor((n % 1000) / 100), thPart = n - (n % 1000);
+    if (n === 100 && e.hundreds_1) return e.hundreds_1;
+    if (e.hundreds_1 && /っ[ぱ-ぽ]/.test(e.hundreds_1) && h) {     // p系変音(300本=さんびゃっぽん)
+      let hr = NC.hundreds[String(h)]; if (/く$/.test(hr)) hr = hr.slice(0, -1) + 'っ';
+      const pb = (P_MUTATE[e.base[0]] || e.base[0]) + e.base.slice(1);
+      return num0(thPart) + hr + pb;
+    }
+    return readNumber(n) + e.base;                                // 非変音の百
+  }
+
+  // 数値表記(小数/分数/帯分数/負数)を読み化。読めれば {reading}, 読めなければ null。
+  function readDecimalDigits(fr) { return fr.split('').map(d => NC.digits[d]).join(''); }
+  function readNumericLiteral(numStr) {
+    // numStr は数値リテラル本体(符号なし)。小数 or 整数。
+    const dm = numStr.match(/^(\d+)\.(\d+)$/);
+    if (dm) return readNumber(+dm[1]) + (SP.decimal_point.reading || 'てん') + readDecimalDigits(dm[2]);
+    if (/^\d+$/.test(numStr)) return readNumber(+numStr);
+    return null;
+  }
+
+  // lexicon: 読みは表層の漢字部に対応。かなはそのまま。単一漢字連を読みで置換。
+  function applyReading(surface, reading) { return KANJI.test(surface) ? surface.replace(/[一-鿿々]+/, reading) : surface; }
+  // 数値+単位や何+単位の group ruby(漢字を含むときのみ)
+  function groupRuby(orig, hira) { return KANJI.test(orig) ? orig + '《' + hira + '》' : orig; }
+
+  // メイン: 左から走査。emit(orig, hira, ruby)。hira=全ひらがな化 / ruby=ルビ注釈形。
+  // opts.buai=true: 文脈ヒント(unit_system=歩合)。裸の{n}分も ぶ(局所の隣接規則で拾えない分をPhase1.5 #5対応)。
+  function scan(text, emit, opts) {
+    opts = opts || {};
+    const s = String(text); let i = 0;
+    const BUAI = SP.buai_composite || null;
+    while (i < s.length) {
+      const rest = s.slice(i);
+      // (歩合の複合規則) 一般の数値+単位より先。分が割/厘と同一結合列で隣接共起する場合のみ 分=ぶ。
+      if (BUAI) {
+        const bm = rest.match(/^((?:\d+[割分厘])+)/);
+        if (bm && /分/.test(bm[1]) && /[割厘]/.test(bm[1])) {
+          let h = ''; bm[1].match(/\d+[割分厘]/g).forEach(seg => { h += readNumber(+seg.slice(0, -1)) + BUAI.readings[seg.slice(-1)]; });
+          emit(bm[1], h, groupRuby(bm[1], h)); i += bm[1].length; continue;
+        }
+      }
+      let m = rest.match(/^(\d+)と(\d+)\/(\d+)/);                  // 帯分数
+      if (m) { const h = readNumber(+m[1]) + 'と' + readNumber(+m[3]) + 'ぶんの' + readNumber(+m[2]); emit(m[0], h, m[0]); i += m[0].length; continue; }
+      m = rest.match(/^(\d+)\/(\d+)/);                             // 分数
+      if (m) { const h = readNumber(+m[2]) + 'ぶんの' + readNumber(+m[1]); emit(m[0], h, m[0]); i += m[0].length; continue; }
+      m = rest.match(/^[−\-](\d+(?:\.\d+)?)/);                    // 負数(+単位)
+      if (m) {
+        let j = i + m[0].length, unit = '';
+        for (const u of UNIT_KEYS) { if (s.slice(j, j + u.length) === u) { unit = u; break; } }
+        const neg = SP.negative.prefix || 'マイナス';
+        let hira = neg + readNumericLiteral(m[1]);
+        if (unit) { const nv = m[1]; hira = neg + (Number.isInteger(+nv) ? readCounter(+nv, unit) : readNumericLiteral(nv) + entryOf(unit).base); j += unit.length; }
+        const orig = s.slice(i, j); emit(orig, hira, groupRuby(orig, hira)); i = j; continue;
+      }
+      if (rest[0] === '何') {                                     // 何+単位(question形)
+        let unit = '';
+        for (const u of UNIT_KEYS) { if (s.slice(i + 1, i + 1 + u.length) === u) { unit = u; break; } }
+        if (unit) { const e = entryOf(unit), hira = e.question || ('なん' + (e.base || '')); emit('何' + unit, hira, '何' + unit + '《' + hira + '》'); i += 1 + unit.length; continue; }
+      }
+      m = rest.match(/^(\d+(?:\.\d+)?)/);                          // 数値(+単位)
+      if (m) {
+        const numStr = m[1]; let j = i + numStr.length, unit = '';
+        for (const u of UNIT_KEYS) { if (s.slice(j, j + u.length) === u) { unit = u; break; } }
+        if (unit) {
+          const e = entryOf(unit);
+          // 文脈ヒント: 歩合系(opts.buai)では裸の{n}分も ぶ(隣接規則で拾えない単独分の大域補正)
+          let hira;
+          if (opts.buai && unit === '分' && BUAI && Number.isInteger(+numStr)) hira = readNumber(+numStr) + BUAI.readings['分'];
+          else hira = Number.isInteger(+numStr) ? readCounter(+numStr, unit) : readNumericLiteral(numStr) + e.base;
+          const orig = numStr + unit; emit(orig, hira, groupRuby(orig, hira)); i = j + unit.length; continue;
+        }
+        emit(numStr, readNumericLiteral(numStr), numStr); i = j; continue;   // 裸の数(ルビなし)
+      }
+      let matched = null;                                         // lexicon 最長一致
+      for (const key of SURF_KEYS) { if (rest.slice(0, key.length) === key) { matched = key; break; } }
+      if (matched) { const raw = SURF[matched]; emit(matched, applyReading(matched, raw), matched.replace(/([一-鿿々]+)/, '$1《' + raw + '》')); i += matched.length; continue; }
+      if (KANJI.test(s[i])) throw new Error('残存漢字: "' + s[i] + '" @ …' + s.slice(Math.max(0, i - 6), i + 4));
+      emit(s[i], s[i], s[i]); i++;                                // かな・記号・英字
+    }
+  }
+
+  function toHiragana(text, opts) { let o = ''; scan(text, (orig, hira) => { o += hira; }, opts); return o; }
+  function toRuby(text, opts) { let o = ''; scan(text, (orig, hira, ruby) => { o += ruby; }, opts); return o; }
+  return { toHiragana, toRuby, readNumber, readCounter, _scan: scan };
+}
+
+function loadDefault() {
+  const fs = require('fs'); const path = require('path');
+  const HJ = path.join(__dirname, 'handoff_jhs');
+  const lex = JSON.parse(fs.readFileSync(path.join(HJ, 'furigana_lexicon.json'), 'utf-8'));
+  const ct = JSON.parse(fs.readFileSync(path.join(HJ, 'counter_reading_table.json'), 'utf-8'));
+  return createEngine(lex, ct);
+}
+
+if (typeof module !== 'undefined' && module.exports) module.exports = { createEngine, loadDefault };
+else if (typeof window !== 'undefined') window.ReadingEngine = { createEngine };   // ブラウザ大域(表示層)
+</script>
+  <script id="pg-md">// math_display.js — pandora_global算数編 表示層 post-processor(共有・決定的・ゼロAI)。
+// processMathText(text, opts) を提供。result_view / 生成student quiz が同一実装で使う。
+//   opts.mode: 'ruby'(《》→<ruby>) | 'kana'(全ひらがな化) | 'off'(無変換)
+//   opts.unitSystem: パターンの unit_system/answer_format 由来の文脈ヒント。
+//                    歩合系(/歩合|buai/)のとき裸の{n}分=ぶ を強制(Phase1.5 #5・隣接規則は従来先行)。
+// 適用範囲は呼び出し側が「問題本文+しき・答え」に限定する。図(SVG)内は非接触(裁可②)。
+// ruby は HTML文字列(innerHTML用)、kana は素のひらがな(textContent用)、off は入力そのまま。
+'use strict';
+
+function createMathDisplay(lexicon, counterTable, readingEngineFactory) {
+  const RE = readingEngineFactory || (typeof require !== 'undefined' ? require('../pattern_bank/reading_engine.js').createEngine
+    : (typeof window !== 'undefined' && window.ReadingEngine && window.ReadingEngine.createEngine));
+  if (!RE) throw new Error('reading_engine(createEngine) が見つかりません');
+  const engine = RE(lexicon, counterTable);
+
+  function escapeHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  // toRuby の 漢字/数字連《よみ》 を <ruby>base<rt>よみ</rt></ruby> へ
+  function rubyMarkupToHtml(s) { return s.replace(/([一-鿿々\d０-９]+)《([^》]+)》/g, '<ruby>$1<rt>$2</rt></ruby>'); }
+  function isBuai(unitSystem) { return typeof unitSystem === 'string' && /歩合|buai/i.test(unitSystem); }
+
+  // text: 表示文字列。opts.mode/unitSystem。戻り値は mode に応じた文字列。
+  function processMathText(text, opts) {
+    opts = opts || {};
+    const mode = opts.mode || 'ruby';
+    if (text == null || mode === 'off') return text == null ? '' : String(text);
+    const eopts = { buai: isBuai(opts.unitSystem) };
+    if (mode === 'kana') return engine.toHiragana(String(text), eopts);
+    // ruby: HTMLエスケープ→ルビ注釈→<ruby>化(既存quiz_templateの escapeHtml→rubyToHtml と同順)
+    return rubyMarkupToHtml(engine.toRuby(escapeHtml(String(text)), eopts));
+  }
+  return { processMathText, _engine: engine };
+}
+
+if (typeof module !== 'undefined' && module.exports) module.exports = { createMathDisplay };
+else if (typeof window !== 'undefined') window.MathDisplay = { createMathDisplay };
+</script>
+  <script id="pg-gs">// global_student.js — 海外(グローバル)生徒/レコード判定の共有述語。算数・国語で同一定義を使う。
+// Phase 0 C-6採用: mode==='overseas' ∨ globalSource===true ∨ vocabLevel存在。
+// レコードは submission 行 または submission_data のどちらに旗があっても拾えるよう両方を見る(寛容)。
+'use strict';
+function isGlobalStudent(record, data) {
+  var r = record || {}, d = data || {};
+  return r.mode === 'overseas' || d.mode === 'overseas'
+    || r.globalSource === true || d.globalSource === true
+    || r.vocabLevel != null || d.vocabLevel != null;
+}
+if (typeof module !== 'undefined' && module.exports) module.exports = { isGlobalStudent };
+else if (typeof window !== 'undefined') window.isGlobalStudent = isGlobalStudent;
+</script>
+  <script id="pg-boot">try{
+    var __L=JSON.parse(document.getElementById("pg-lex").textContent);
+    var __C=JSON.parse(document.getElementById("pg-ct").textContent);
+    window.__md=window.MathDisplay.createMathDisplay(__L,__C,window.ReadingEngine.createEngine);
+  }catch(e){window.__md=null;console.warn("[pandora_global] 読みエンジン初期化失敗→AIふりがなにフォールバック",e);}</script>
+  <!-- END pandora_global assets -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: #f0f4ff; font-family: 'Hiragino Sans','Yu Gothic',sans-serif; }
@@ -53,6 +1089,12 @@
 //   student_name: "阿部 優子"  // 生徒を選んで生成した場合のみ
 // };
 // {{QUIZ_META}}
+
+// ── pandora_global 算数編: 決定的読み(reading_engine)。engine不可時はAI手書き(jp/reading)にフォールバック ──
+const READING_MODE = (typeof QUIZ_META !== "undefined" && QUIZ_META && QUIZ_META.readingSupport) || "ruby"; // ruby|kana|off
+function mdRubyHtml(q){ try{ if(window.__md && READING_MODE === "ruby") return window.__md.processMathText(q.question || "", {mode:"ruby", unitSystem:q.unit_system}); }catch(e){} return null; }
+function mdKanaText(q){ try{ if(window.__md && READING_MODE !== "off") return window.__md.processMathText(q.question || "", {mode:"kana", unitSystem:q.unit_system}); }catch(e){} return q.reading; }
+try{ if(typeof document!=="undefined"){ var __b=document.createElement("div"); __b.textContent="🌏 global（"+(READING_MODE==="kana"?"ふりがな":READING_MODE==="off"?"なし":"ルビ")+"）"; __b.style.cssText="position:fixed;top:8px;right:8px;background:#0a7;color:#fff;font-size:12px;padding:4px 10px;border-radius:12px;z-index:9999"; window.addEventListener("DOMContentLoaded",function(){document.body.appendChild(__b);}); } }catch(e){}
 
 const kanjiQuiz = [
   // ▼▼▼ 漢字クイズがある場合はここに差し込む（無ければ空配列のまま） ▼▼▼
@@ -256,6 +1298,7 @@ function App() {
 
         {questions.map((q,idx)=>{
           const lb=LEVEL_BADGE[q.level]||{label:q.level,color:"#888",bg:"#f5f5f5"};
+          const rq = mdKanaText(q); const rubyHtml = mdRubyHtml(q);
           const uc=UNIT_COLORS[q.unit]||{color:"#555",bg:"#f5f5f5"};
           return (
             <div key={q.id} id={'q-'+q.id} style={{background:"white",borderRadius:14,marginBottom:14,border:"2px solid #dde3f0",overflow:"hidden",boxShadow:"0 2px 6px rgba(0,0,0,0.07)"}}>
@@ -268,12 +1311,12 @@ function App() {
               <div style={{padding:"14px 12px"}}>
                 <div style={{display:"flex",gap:10,alignItems:"flex-start",marginBottom:12}}>
                   <div style={{flexShrink:0}}>{illustrations[q.id]}</div>
-                  <p style={{fontSize:15,lineHeight:2.1,color:"#1a1a1a",fontWeight:"500",margin:0,wordBreak:"break-word"}}>{q.jp}</p>
+                  <p style={{fontSize:15,lineHeight:2.1,color:"#1a1a1a",fontWeight:"500",margin:0,wordBreak:"break-word"}}>{rubyHtml ? <span dangerouslySetInnerHTML={{__html: rubyHtml}}/> : q.jp}</p>
                 </div>
 
-                <button onClick={()=>speak(q.reading)}
-                  style={{background:speaking===q.reading?"#e3f2fd":"#f5f5f5",border:`1px solid ${speaking===q.reading?"#1a9fd4":"#ddd"}`,color:speaking===q.reading?"#1a9fd4":"#666",padding:"5px 12px",borderRadius:8,fontSize:12,cursor:"pointer",marginBottom:12}}>
-                  {speaking===q.reading?"🔊 Playing...":"🔊 読んでみよう / Read aloud"}
+                <button onClick={()=>speak(rq)}
+                  style={{background:speaking===rq?"#e3f2fd":"#f5f5f5",border:`1px solid ${speaking===rq?"#1a9fd4":"#ddd"}`,color:speaking===rq?"#1a9fd4":"#666",padding:"5px 12px",borderRadius:8,fontSize:12,cursor:"pointer",marginBottom:12}}>
+                  {speaking===rq?"🔊 Playing...":"🔊 読んでみよう / Read aloud"}
                 </button>
 
                 <DrawCanvas id={`eq_${q.id}`} height={225} internalHeight={225} label="📐 式を書こう / Write your equation" canvasRef={eqRefs.current[q.id]}/>

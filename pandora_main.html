@@ -1548,6 +1548,9 @@ function generateQuizViaPattern(targetUnits){
                                 // confirmation/practiceの要件を構造的に満たす（基準6、§6.2参照）
         question: accepted.problem,
         answer: accepted.answer,
+        // unit_system(pandora_global算数編 v1.0.1): パターンの answer_unit_system を生成出力に付与(バンク非改変)。
+        // 表示層(reading_engine)の文脈ヒントに使う。歩合系(buai_pm)で裸の{n}分=ぶを強制するため必須。
+        unit_system: entry.pattern.answer_unit_system || null,
         // figure_params(v0.8): 本文と同一envで解決済みの図パラメータ。図付きパターン(g04面積/角度、
         // g05角/面積/体積/円等)のみ非null。生成された student_quiz / 印刷解答用紙で figure_builder.js が描画する。
         figure_params: accepted.figure || null,
