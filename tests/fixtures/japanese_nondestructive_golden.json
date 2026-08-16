@@ -1,0 +1,89 @@
+{
+  "_comment": "国語非破壊の基準(main HEADの現挙動=正)。globalゲート閉じた状態のdomestic出力。",
+  "captured": "2026-08-16",
+  "inputs": {
+    "storyInput": {
+      "text": "今日は学校《がっこう》で先生《せんせい》と algebra を勉強《べんきょう》した。山と川を見る。",
+      "grade": "g3",
+      "level": "g1"
+    },
+    "quesInput": {
+      "answers": [
+        "歩いて",
+        "走る",
+        "食べていて",
+        "みかんを持ちながら",
+        "静かだ",
+        "書かなくて",
+        "読む"
+      ]
+    },
+    "quizInput": {
+      "questions": [
+        {
+          "number": 1,
+          "type": "select",
+          "kanten": "内容",
+          "question_text": "主人公の気持ちは？",
+          "choices": [
+            "ア うれしい",
+            "イ かなしい"
+          ],
+          "answer": "ア",
+          "explanation": "本文3行目"
+        },
+        {
+          "number": 2,
+          "type": "kijutsu",
+          "kanten": "理由",
+          "question_text": "なぜか。",
+          "answer": "雨がふったから。",
+          "_actualCount": 8
+        }
+      ]
+    }
+  },
+  "expected": {
+    "story_verifyFurigana": {
+      "missing": 5,
+      "extra": 0
+    },
+    "story_stripRuby": "今日は学校で先生と algebra を勉強した。山と川を見る。",
+    "question_endsWithMidForm": [
+      false,
+      false,
+      true,
+      true,
+      false,
+      true,
+      false
+    ],
+    "quiz_summarizeQuestions": [
+      {
+        "problem_id": "q1",
+        "number": 1,
+        "type": "select",
+        "kanten": "内容",
+        "question_text": "主人公の気持ちは？",
+        "choices": [
+          "ア うれしい",
+          "イ かなしい"
+        ],
+        "answer": "ア",
+        "explanation": "本文3行目",
+        "_actualCount": null
+      },
+      {
+        "problem_id": "q2",
+        "number": 2,
+        "type": "kijutsu",
+        "kanten": "理由",
+        "question_text": "なぜか。",
+        "choices": [],
+        "answer": "雨がふったから。",
+        "explanation": null,
+        "_actualCount": 8
+      }
+    ]
+  }
+}
