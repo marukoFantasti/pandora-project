@@ -1,0 +1,31 @@
+{
+  "_comment": "国内(gates閉)表示の基準。result_viewは国内でprocessMathText不発火=esc相当。現HEADの現挙動を正とする。",
+  "captured": "2026-08-16",
+  "expected": [
+    {
+      "pid": "q1",
+      "question_html": "右の表は入館者数を表しています。1日平均何人ですか。",
+      "answer_html": "正解：しき （218+217+208+97）÷4=185 答え 185人"
+    },
+    {
+      "pid": "q2",
+      "question_html": "次の計算をしなさい。 3/8 + 1/8",
+      "answer_html": "正解：答え 1/2"
+    },
+    {
+      "pid": "q3",
+      "question_html": "午前8時50分に出発しました。",
+      "answer_html": "正解：答え 3日間"
+    },
+    {
+      "pid": "q4",
+      "question_html": "次の割合を歩合で表しなさい。 0.352",
+      "answer_html": "正解：答え 3割5分2厘"
+    },
+    {
+      "pid": "q5",
+      "question_html": "図の直線は比例のグラフである。",
+      "answer_html": "正解：答え y＝−2x"
+    }
+  ]
+}

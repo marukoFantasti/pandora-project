@@ -208,6 +208,63 @@ async function main() {
 
   html += '</div>';
   app.innerHTML = html;
+
+  // ── pandora_global 算数編: 海外生徒のみ、描画後に本文/答えへ読み(ruby/kana)を後付け ──
+  // 国内レコードは isGlobalStudent=false でこのブロックに入らず、engine/辞書のロードも発生しない(バイト不変)。
+  if (isGlobalStudent(sub, sd)) {
+    applyGlobalReading(app, sub, sd, problems).catch(function (e) { console.warn('[global] 読み付与スキップ:', e); });
+  }
+}
+
+// isGlobalStudent は assets_global/global_student.js と同一定義(共有述語・国内はここでfalseを返し何もロードしない)。
+function isGlobalStudent(record, data) {
+  var r = record || {}, d = data || {};
+  return r.mode === 'overseas' || d.mode === 'overseas'
+    || r.globalSource === true || d.globalSource === true
+    || r.vocabLevel != null || d.vocabLevel != null;
+}
+var _globalMd = null;
+function loadScript(src) { return new Promise(function (res, rej) { var s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = function () { rej(new Error('load失敗 ' + src)); }; document.head.appendChild(s); }); }
+function loadGlobalAssets() {
+  if (_globalMd) return _globalMd;
+  _globalMd = (async function () {
+    await loadScript('assets_global/reading_engine.js');
+    await loadScript('assets_global/math_display.js');
+    var r = await Promise.all([
+      fetch('assets_global/furigana_lexicon.json').then(function (x) { return x.json(); }),
+      fetch('assets_global/counter_reading_table.json').then(function (x) { return x.json(); }),
+    ]);
+    return window.MathDisplay.createMathDisplay(r[0], r[1]);
+  })();
+  return _globalMd;
+}
+function unitSystemHint(p) {
+  var s = p.unit_system || p.answer_unit_system || p.answer_format || '';
+  if (!s) { var t = '' + (p.unit || '') + (p.chapter || '') + ((p.tags || []).join('')); if (t.indexOf('歩合') >= 0) s = '歩合'; }
+  return s;
+}
+async function applyGlobalReading(app, sub, sd, problems) {
+  var mode = sd.readingSupport || sub.readingSupport || 'ruby';   // ruby(既定) | kana | off
+  showReadingBadge(app, mode);
+  if (mode === 'off') return;                                     // off はバッジのみ(engine不要)
+  var MD = await loadGlobalAssets();
+  var qEls = app.querySelectorAll('.question-text');
+  var aEls = app.querySelectorAll('.answer-text');
+  var qi = 0, ai = 0;
+  problems.forEach(function (p) {
+    if (!p.question) return;
+    var hint = unitSystemHint(p);
+    var qEl = qEls[qi++]; if (qEl) qEl.innerHTML = MD.processMathText(p.question, { mode: mode, unitSystem: hint });
+    if (p.answer) { var aEl = aEls[ai++]; if (aEl) aEl.innerHTML = '正解：' + MD.processMathText(p.answer, { mode: mode, unitSystem: hint }); }
+  });
+}
+function showReadingBadge(app, mode) {
+  if (document.getElementById('global-badge')) return;
+  var b = document.createElement('div');
+  b.id = 'global-badge';
+  b.textContent = '🌏 global（' + (mode === 'kana' ? 'ふりがな' : mode === 'off' ? 'なし' : 'ルビ') + '）';
+  b.style.cssText = 'position:fixed;top:8px;right:8px;background:#0a7;color:#fff;font-size:12px;padding:4px 10px;border-radius:12px;z-index:9999';
+  document.body.appendChild(b);
 }
 
 main();
