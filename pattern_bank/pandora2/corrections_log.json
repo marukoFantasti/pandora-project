@@ -173,5 +173,15 @@
   "instruction": "g06は図なし52の先頭『図形なし(』→『図なし(』置換(後続文言バイト保持)・answer_structure_noteリネーム・bank_directives id参照とstep_count欠は取込側で解決。g01はnull12件に学年方針文字列を充当しネスト変換。可逆性(figure_notes・キー名以外の全区画deep一致)を各件で検証。",
   "resolution": "g06 71件(置換51+既適合1+図あり移送19・リネーム71・可逆71)、g01 12件(充当12・可逆12)をpandora2ネスト正準へ。make_training_pairsに g06(bank_directives実体解決+step_count注入)・g01(directives_ref二層解決)を追加。validate_goldはpedagogyが配列のときのみby必須・設計ノート文字列も許容に緩和(g06検収データ非改変)。全356件が整合ハーネス管理下・pairs_design 356。旧null流儀完全解消。",
   "generalization": "設計記録(rationale)の学年横断統一では、学年ごとの微差(参照方式・プレフィックス・任意区画の型・別名キー・欠損区画)を『取込側で吸収』し検収済みデータは改変しない。正準化は値保存の可逆変換(figure_notes等の意図的変更点以外は全区画deep一致)で行い機械照合で保証する。検査(validate)は最も厳しい単一形式を強制せず、正当な複数形式(人間の声配列/設計ノート文字列)を型で判定して許容する。"
+ },
+ {
+  "id": "corr-0017",
+  "date": "2026-08-16",
+  "by": "aya",
+  "scope": "pandora_global算数編 Phase0漢字inventoryの取りこぼし(実行時フォーマッタ出力)",
+  "observed": "Phase0のkanji_vocab_inventoryは静的テンプレ(sentence/answer/question_tail)+レキシコンのみ走査していたため、実行時フォーマッタが生成する文字列(clock=午前/午後、歩合=割・分・厘)を採録漏れ。この漏れがFable辞書(furigana_lexicon)にも伝播し、Phase1の網羅ハーネス(実サンプル生成→toHiragana)で3パターンに残存漢字(午前/午後/厘)が出た。加えてquestion_tailの『(文脈依存)』というメタ注記を地の文として誤採録(除外漏れ)。",
+  "instruction": "網羅は静的テンプレでなく実際にレンダした出力域で行う。inventory抽出はレンダ出力(makeProblem)ベースにし、括弧付きメタ注記((文脈依存)等)は除外する。辞書欠落は検収済み素材を勝手に埋めず、ハーネスで検出して報告→Fable辞書パッチ→再検収の手順。",
+  "resolution": "reading_engine実装+furigana_coverageハーネス新設で残存漢字を機械検出。3件(午前/午後/厘・歩合の分=ぶ同字異読含む)を辞書パッチ要としてFableへ差戻し(検収済みdictは改変しない)。文脈依存はquestion_tailのメタ注記=学生非表示・レンダ出力に不在のためfurigana不要と判定。",
+  "generalization": "『出現の悉皆』を静的定義(テンプレ/レキシコン)だけで採ると、実行時に合成/フォーマットされる表示文字列(和暦・午前午後・歩合・複名数・符号)を取りこぼす。悉皆inventoryは必ず実レンダ出力をサンプルして採取し、括弧付きメタ注記など非表示フィールドは除外する。下流(辞書)の欠落は生成ベースの網羅ハーネスで機械検出し、検収済み素材は勝手に補完せず差戻す。"
  }
 ]
