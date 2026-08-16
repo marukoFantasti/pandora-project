@@ -81,8 +81,17 @@ function createEngine(lexicon, counterTable) {
   // メイン: 左から走査。emit(orig, hira, ruby)。hira=全ひらがな化 / ruby=ルビ注釈形。
   function scan(text, emit) {
     const s = String(text); let i = 0;
+    const BUAI = SP.buai_composite || null;
     while (i < s.length) {
       const rest = s.slice(i);
+      // (歩合の複合規則) 一般の数値+単位より先。分が割/厘と同一結合列で隣接共起する場合のみ 分=ぶ。
+      if (BUAI) {
+        const bm = rest.match(/^((?:\d+[割分厘])+)/);
+        if (bm && /分/.test(bm[1]) && /[割厘]/.test(bm[1])) {
+          let h = ''; bm[1].match(/\d+[割分厘]/g).forEach(seg => { h += readNumber(+seg.slice(0, -1)) + BUAI.readings[seg.slice(-1)]; });
+          emit(bm[1], h, groupRuby(bm[1], h)); i += bm[1].length; continue;
+        }
+      }
       let m = rest.match(/^(\d+)と(\d+)\/(\d+)/);                  // 帯分数
       if (m) { const h = readNumber(+m[1]) + 'と' + readNumber(+m[3]) + 'ぶんの' + readNumber(+m[2]); emit(m[0], h, m[0]); i += m[0].length; continue; }
       m = rest.match(/^(\d+)\/(\d+)/);                             // 分数

@@ -22,16 +22,18 @@ const VECTORS = [
   ['3.14', 'さんてんいちよん'], ['0.56', 'れいてんごろく'],
   ['3/4', 'よんぶんのさん'], ['2と3/4', 'にとよんぶんのさん'],
   ['-5', 'マイナスご'], ['25円', 'にじゅうごえん'], ['345', 'さんびゃくよんじゅうご'],
+  // v1.0.2 追加(buai複合・午前+時刻複名数・単独分=ふん非歩合)
+  ['3割5分2厘', 'さんわりごぶにりん'], ['午前8時50分', 'ごぜんはちじごじゅっぷん'], ['5分', 'ごふん'],
 ];
 
-console.log('=== (2) 固定ベクター20件 golden照合 ===');
+console.log('=== (2) 固定ベクター' + VECTORS.length + '件 golden照合 ===');
 let vbad = 0;
 for (const [inp, exp] of VECTORS) {
   let got; try { got = E.toHiragana(inp); } catch (e) { got = 'ERR:' + e.message; }
   const ok = got === exp; if (!ok) vbad++;
   if (!ok) console.log('  ❌ ' + inp + ' → ' + got + ' (期待 ' + exp + ')');
 }
-console.log('  ' + (vbad === 0 ? '20/20 一致 ✅' : vbad + '件不一致 ❌'));
+console.log('  ' + (vbad === 0 ? VECTORS.length + '/' + VECTORS.length + ' 一致 ✅' : vbad + '件不一致 ❌'));
 
 // ---- (1) 全パターン網羅: サンプルの問題文+答えを toHiragana、残存漢字を検出 ----
 console.log('\n=== (1) 全356パターン 残存漢字網羅(各' + N + '本) ===');
@@ -65,5 +67,5 @@ else {
 }
 
 const fail = vbad > 0 || vpats.length > 0;
-console.log('\n' + (fail ? '❌ furigana_coverage 失敗' : 'furigana_coverage: 全通過 ✅(ベクター20 + 残存漢字0)'));
+console.log('\n' + (fail ? '❌ furigana_coverage 失敗' : 'furigana_coverage: 全通過 ✅(ベクター' + VECTORS.length + ' + 残存漢字0)'));
 process.exit(fail ? 1 : 0);

@@ -11,7 +11,8 @@
    "question形: 「何」+助数詞はquestionフィールドの読み(概ねん末尾=3の変音と同型)。「つ」のみ「いくつ」に置換",
    "処理順: (1)本規則表で{数値}+単位の結合形を先に読み化 (2)残りの漢字語をfurigana_lexicon.jsonの最長一致で読み化 (3)残存漢字はハーネス違反として停止"
   ],
-  "addendum_2026-08-14": "Phase0の28種に加え時・日・年を増補(g02 time系の複名数フォーマッタ出力・日間・年後がinventoryに存在するため)。まるこ検収対象"
+  "addendum_2026-08-14": "Phase0の28種に加え時・日・年を増補(g02 time系の複名数フォーマッタ出力・日間・年後がinventoryに存在するため)。まるこ検収対象",
+  "addendum_2026-08-14_2": "coverage RED 3件対応: 厘counter追加+buai_composite複合規則(歩合の分=ぶ/時間の分=ふんの同表層衝突を隣接共起で決定的に分離)。歩合フォーマッタが割・厘を伴わない裸の{n}分(=ぶ)を出力しうるかはPhase 1.5でCode調査(出力しうる場合はパターン文脈ヒントをPhase 2で設計)"
  },
  "numeral_components": {
   "digits": {
@@ -84,6 +85,17 @@
   },
   "percent_composite": {
    "note": "%はカタカナ語のためmutation-free(下のcounters参照)"
+  },
+  "buai_composite": {
+   "pattern": "{a}割{b}分{c}厘 およびその部分列({a}割{b}分 / {b}分{c}厘)",
+   "readings": {
+    "割": "わり",
+    "分": "ぶ",
+    "厘": "りん"
+   },
+   "mutation": "なし(ぶ・りんは変音しない: 1分=いちぶ・3分=さんぶ)",
+   "disambiguation_rule": "数値+分が、同一結合列内で割または厘と隣接共起する場合のみ分=ぶ。単独の{n}分(時間)は従来どおりふん(counters.分)。エンジンは本複合規則を数値+単位の一般規則より先に照合する",
+   "example": "3割5分2厘=さんわりごぶにりん"
   }
  },
  "counters": {
@@ -402,6 +414,12 @@
    "mutation_free": true,
    "question": "なんねん",
    "note": "{n}年後={n}ねんご。inventoryの年後対応"
+  },
+  "厘": {
+   "base": "りん",
+   "mutation_free": true,
+   "question": "なんりん",
+   "note": "歩合系。1厘=いちりん・3厘=さんりん・10厘=じゅうりん(変音なし)"
   }
  }
 }
