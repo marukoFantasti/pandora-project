@@ -28,8 +28,11 @@ def validate_gold(gold, bank_ids):
         assert not missing, f"{pid} rationale欠落: {missing}"
         for d in b["directives"]:
             assert set(d) >= {"text", "by", "date"}, f"{pid} directive形式不正"
-        for p in r["pedagogy"]:
-            assert set(p) >= {"text", "by", "date"}, f"{pid} pedagogy形式不正(人間の声はby必須)"
+        # pedagogy: 人間の声の配列は各要素 {text,by,date} 必須。
+        # ただし設計ノート文字列形式(g06流儀=AI設計要約・by無し)も許容(配列のみby検査)。
+        if isinstance(r["pedagogy"], list):
+            for p in r["pedagogy"]:
+                assert set(p) >= {"text", "by", "date"}, f"{pid} pedagogy形式不正(人間の声はby必須)"
         hygiene(g, pid)
 
 # 対象学年 → (バンク, rationale正準ファイル)。rationaleは_meta付き完全版(_接頭辞キーは処理対象外)。
@@ -75,6 +78,34 @@ def load_jhs():
             patterns[p["pattern_id"]] = p
     return gold, patterns
 
+def load_g01():
+    # g01: jhs型フラット→ネスト済(_shared/directives_ref)。jhsと同じ二層解決。配信OFFだがrationaleは訓練有効。
+    raw = json.load(open("rationale_g01.json", encoding="utf-8"))
+    shared = raw.get("_shared", {})
+    gold = {}
+    for k, v in raw.items():
+        if k.startswith("_"):
+            continue
+        gold[k] = {"brief": resolve_directives_ref(v["brief"], shared), "rationale": v["rationale"]}
+    patterns = {p["pattern_id"]: p for p in json.load(open("../patterns_g01.json", encoding="utf-8"))["patterns"]}
+    return gold, patterns
+
+def load_g06():
+    # g06: g05系ネスト。brief.directives=id配列→bank_directives(圧縮表)実体解決。step_count欠はバンクから注入。
+    raw = json.load(open("rationale_g06.json", encoding="utf-8"))
+    table = {d["id"]: d for d in raw.get("bank_directives", [])}
+    patterns = {p["pattern_id"]: p for p in json.load(open("../patterns_g06.json", encoding="utf-8"))["patterns"]}
+    gold = {}
+    for k, v in raw.items():
+        if k.startswith("_") or k == "bank_directives":
+            continue
+        b = dict(v["brief"])
+        b["directives"] = [table[i] for i in b.get("directives", []) if i in table]
+        if "step_count" not in b and k in patterns:
+            b["step_count"] = patterns[k].get("step_count")
+        gold[k] = {"brief": b, "rationale": v["rationale"]}
+    return gold, patterns
+
 def main():
     corrections = json.load(open("corrections_log.json", encoding="utf-8"))
     for c in corrections:
@@ -94,6 +125,13 @@ def main():
     jhs_gold, jhs_patterns = load_jhs()
     validate_gold(jhs_gold, set(jhs_patterns))
     grades.append(("jhs", jhs_gold, jhs_patterns))
+    # g06(bank_directives id解決・step_count注入) / g01(jhs型二層解決・配信OFFだが訓練有効)
+    g06_gold, g06_patterns = load_g06()
+    validate_gold(g06_gold, set(g06_patterns))
+    grades.append(("g06", g06_gold, g06_patterns))
+    g01_gold, g01_patterns = load_g01()
+    validate_gold(g01_gold, set(g01_patterns))
+    grades.append(("g01", g01_gold, g01_patterns))
 
     # ① 設計ペア: brief(+人間directives) と rationale → pattern (全学年)
     with open("pairs_design.jsonl", "w", encoding="utf-8") as f:

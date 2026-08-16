@@ -13,7 +13,7 @@ const PB = path.join(ROOT, 'pattern_bank');
 
 // figure_notes正準(ゴールド流儀・null不使用)へ統一済みの学年。既定でここだけ検証する。
 // 他学年(jhs各章/g01/g04/g03/g02)は旧null流儀のまま順次統一(§4・一括改修不要)。統一時にここへ追加。
-const CANONICAL_GRADES = ['g02', 'g03', 'g04', 'g05', 'jhs'];
+const CANONICAL_GRADES = ['g01', 'g02', 'g03', 'g04', 'g05', 'g06', 'jhs'];
 
 // grade -> バンクpattern配列。'jhs'は14章バンクを集約(rationale_jhs.json 1本と突合)。
 function bankPatterns(grade) {

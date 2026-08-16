@@ -163,5 +163,15 @@
   "instruction": "g05全70の完全版を正準として配置(訓練パイプラインが読む rationale_g05_gold.json を置換)。figure_notes正準=ゴールド流儀(図あり=設計記録・図なし=「図なし」で始まる理由文・null不使用)を裁可し schema_spec に明記。整合ハーネスを新設。jhs各章/g01のnullは次回統一で可(一括改修不要・md5非依存)。",
   "resolution": "pandora2/rationale_g05_gold.json を full 70版で置換(ファイル名維持でパイプライン無改修)。make_training_pairs.py は _meta等の_接頭辞キーを読み飛ばすよう1行修正→pairs_design 8→70完走・validate/hygiene通過。tests/rationale_integrity.js 新設(バンクとのID完全一致+figure_params有無とfigure_notes内容の悉皆・遡及学年は明示引数で流用・既定は正準化済みg05のみ)。rationale_schema_spec.md にfigure_notes正準を追記。バンクmd5/golden非依存。",
   "generalization": "rationale等の設計記録を差し替える時は、訓練パイプラインがハードコードで読む正準ファイル名を維持したまま内容を置換し、パイプライン側は予約キー(_接頭辞)を読み飛ばして無改修で吸収する。figure_notesは常に文字列必須(図なしは『図なし』始まりの理由文・null不使用)を正準とし、専用整合ハーネスで悉皆検査する。全学年一括改修は避け、md5非依存の記録系は『次に触るとき統一』で段階移行し、正準化済み学年だけを既定の関門対象にする。"
+ },
+ {
+  "id": "corr-0016",
+  "date": "2026-08-16",
+  "by": "marko",
+  "scope": "g06/g01 rationale正準統一(旧null流儀の完全解消・全356件管理下)",
+  "observed": "遡及各学年のrationaleはスキーマが微妙に異なっていた: directives方式3種(inline実体/directives_ref→_shared二層/id配列→bank_directives圧縮表)、figure_notesがnull/『図形なし(』プレフィックス/文字列、pedagogyが人間の声配列と設計ノート文字列、step_count欠、answer_structure_note別名。統一で機械的一括変換すると検収済みの内容を壊すリスクがある。",
+  "instruction": "g06は図なし52の先頭『図形なし(』→『図なし(』置換(後続文言バイト保持)・answer_structure_noteリネーム・bank_directives id参照とstep_count欠は取込側で解決。g01はnull12件に学年方針文字列を充当しネスト変換。可逆性(figure_notes・キー名以外の全区画deep一致)を各件で検証。",
+  "resolution": "g06 71件(置換51+既適合1+図あり移送19・リネーム71・可逆71)、g01 12件(充当12・可逆12)をpandora2ネスト正準へ。make_training_pairsに g06(bank_directives実体解決+step_count注入)・g01(directives_ref二層解決)を追加。validate_goldはpedagogyが配列のときのみby必須・設計ノート文字列も許容に緩和(g06検収データ非改変)。全356件が整合ハーネス管理下・pairs_design 356。旧null流儀完全解消。",
+  "generalization": "設計記録(rationale)の学年横断統一では、学年ごとの微差(参照方式・プレフィックス・任意区画の型・別名キー・欠損区画)を『取込側で吸収』し検収済みデータは改変しない。正準化は値保存の可逆変換(figure_notes等の意図的変更点以外は全区画deep一致)で行い機械照合で保証する。検査(validate)は最も厳しい単一形式を強制せず、正当な複数形式(人間の声配列/設計ノート文字列)を型で判定して許容する。"
  }
 ]
