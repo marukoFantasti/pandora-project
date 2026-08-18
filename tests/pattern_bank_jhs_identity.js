@@ -47,6 +47,11 @@ const ID = {
     const tot = e.r1 + e.w1, d = g(e.r1, tot);
     return e.tot1 === tot && (e.r1 / d) * tot === r * (tot / d);                  // rn·tot == r·rd
   },
+  // --- c12 図形の調べ方（第2波G-1・angle_around_point）：角の和の恒等 ---
+  jhs_c12_taicho_01: (e, ans) => ans === e.a1,                                   // 対頂角相等: ∠x＝a1（答＝既知・学習内容）
+  jhs_c12_taicho_02: (e, ans) => ans + e.a1 === 180,                             // 一直線180°: ∠x＋a1＝180
+  jhs_c12_isshuu_01: (e, ans) => ans + e.a1 + e.a2 === 180,                      // 3直線上側の和180°: ∠x＋a1＋a2＝180
+  jhs_c12_mawari_01: (e, ans) => ans + e.a1 + e.a2 + e.a3 === 360,               // 一点のまわり360°: ∠x＋a1＋a2＋a3＝360
   // --- c15 展開・因数分解：多項式係数の恒等(問題多項式 == 答えの展開) ---
   // 展開5型: 問題=因数積 → 展開係数が答え多項式の係数と一致(答え係数からの復元と等価)
   jhs_c15_exp_01: (e) => e.s1 === e.a1 + e.b1 && e.t1 === e.a1 * e.b1,            // (x+a)(x+b)=x²+(a+b)x+ab

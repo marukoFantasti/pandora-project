@@ -80,3 +80,17 @@
 | g05 | d11f4ea3 | d11f4ea3 | 1(★md5不変=g04同型) |
 | g06 | de487d1d | 3545261e | 1 |
 | jhs_c07 | b6746602 | 02ab26f9 | 1 |
+
+### 2026-08-18 c12配線(基準md5 21本目・第2波G-1・angle_figure初の本番章)
+- 章: jhs_c12(図形の調べ方) 第2波G-1・4パターン(taicho_01/taicho_02/isshuu_01/mawari_01)。まるこ検収済み(2026-08-14)。
+- 新規章のため初回md5を記録。既存20章のmd5は全て不変(新ファイルの追加=既存章の固定シードRNG列に非干渉。
+  golden生成は各章バンク単独で seed=20260715 → 章内パターンのみ処理のため他章バイト不変)。
+- **基準md5 21本目**: jhs_c12 = ad8f55e1 (golden PASS 12/12・`generate_poc_v10.py ../patterns_jhs_c12.json kyoiku_kanji_g1to6_jhs.json` の全文md5 ad8f55e198b506557ea2013cb27a217a)。
+- Part A(mawari_01受理判定): builderは対頂対を持たない任意光線4本(angles4要素・和360)を受理する(4組[90,100,90,80]/[40,140,110,70]/[50,130,60,120]/[40,140,40,140]でbuild成功)。よって4パターン全部配線(mawari_01保留なし・G-1.1追補不要)。
+- 受理組数(Fable全域→配線側Code clearanceで確定): taicho_01=24 / taicho_02=24 / isshuu_01=**222**(Fable仮232→隣接2既知ラベルが両方小の6組が10px割れ→制約 a1+a2≥70 で刈り確定・corr-0020) / mawari_01=5,538。図の角の和(180/360)はfigure照合で全域整合。
+- ★md5不変(ad8f55e1): isshuu制約 a1+a2≥70 の追加後もgolden(固定シード3本)はバイト不変=g04同型(排除された10組が固定シード列に未出現)。制約効果はfigure照合の悉皆clearanceにのみ現れる(min minText 10.05px・違反0)。
+- taicho_01は答=既知(x=a1=対頂角相等)だが問題本文に数値を含まない(既知角は図内のみ)ため corr-0007(本文∩答え)は非検出=例外登録不要(検証済み)。
+- 20本目までの基準md5一覧(不変): g01 ce14a1aa / g02 e064fc27 / g03 6e5cd3b0 / g04 45650beb / g05 d11f4ea3 /
+  g06 3545261e / jhs_c01 76dbe64c / c02 082b2c3f / c03 6d8e6ede / c04 b221d05f / c05 a571bf63 /
+  c06 00ba3cf0 / c07 02ab26f9 / c08 8c1197f7 / c09 7bdf4082 / c10 9427e7a3 / c15 a1e38dba /
+  c16 2d8f37b7 / c17 1df8cea7 / c18 5bda8385。**+21本目: c12 ad8f55e1**。

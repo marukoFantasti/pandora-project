@@ -1,0 +1,374 @@
+{
+ "schema_version": "1.0",
+ "grade": "jhs",
+ "description": "jhs数学バンク 第2波G-1 c12(図形の調べ方) 第1波4パターン: 対頂角定義(答=既知・学習内容として意図的)/隣接角180逆算/3直線・上側和180/一点周り360(光線4本)。angle_figure(angle_around_point)初投入。G-1基盤での基礎練習の新規採録(参照の独立対頂角行は0=平行線バンドルの解束・2026-08-14棚卸し)。平行線系はG-2、三角形・多角形はG-3、証明はG-4で拡張。",
+ "answer_structures": [
+  "single"
+ ],
+ "shared_lexicon": {},
+ "patterns": [
+  {
+   "pattern_id": "jhs_c12_taicho_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c12_u01",
+   "unit_name": "図形の調べ方",
+   "semantic_category": "対頂角(定義・相等)",
+   "semantic_note": "対頂角相等の定義ドリル。答=既知値(x=a1)は転記でなく学習内容そのもの(相等の認識)=転記排除カタログの意図的適用外(まるこ裁可対象)。90°は4角全等で対頂の視認が退化するため除外。G-1のangle_around_point初投入・2直線4角のcyclic配置。",
+   "step_count": 1,
+   "operation": "対頂角相等: ∠x＝a1",
+   "answer_formula": "a1",
+   "answer_domain": "any_int",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      30,
+      150
+     ],
+     "step": 5
+    }
+   },
+   "computed_slots": {
+    "s1": {
+     "formula": "180 - a1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "not_right",
+     "expr": "a1 != 90",
+     "why": "直交は4角全等で対頂角の視認が退化(どれがxか図から失われる)"
+    }
+   ],
+   "sentence_templates": [
+    "図のように、2つの直線が1つの点で交わっている。∠xの大きさを求めなさい。"
+   ],
+   "answer_template": "答え ∠x＝{a1}°",
+   "figure_params": {
+    "kind": "angle_figure",
+    "subkind": "angle_around_point",
+    "angles": [
+     {
+      "v": "{a1}",
+      "role": "known"
+     },
+     {
+      "v": "{s1}",
+      "role": "plain"
+     },
+     {
+      "v": "{a1}",
+      "role": "unknown",
+      "label": "∠x"
+     },
+     {
+      "v": "{s1}",
+      "role": "plain"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2,
+    1
+   ]
+  },
+  {
+   "pattern_id": "jhs_c12_taicho_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c12_u01",
+   "unit_name": "図形の調べ方",
+   "semantic_category": "隣接角(一直線180°の逆算)",
+   "semantic_note": "2直線交差・∠x=既知の隣接角(x=180−a1)。一直線180°の最初の適用。a1=90は答=既知の転記衝突(90=90)かつ直交退化のため除外——本型は転記排除カタログ適用(taicho_01と対照的)。",
+   "step_count": 1,
+   "operation": "一直線: ∠x＝180−a1",
+   "answer_formula": "180 - a1",
+   "answer_domain": "any_int",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      30,
+      150
+     ],
+     "step": 5
+    }
+   },
+   "computed_slots": {
+    "xv1": {
+     "formula": "180 - a1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_transcribe_x",
+     "expr": "a1 != 90",
+     "why": "転記型リーク排除(a1=90だと答=既知値)+直交退化の一括排除"
+    }
+   ],
+   "sentence_templates": [
+    "図のように、2つの直線が1つの点で交わっている。∠xの大きさを求めなさい。"
+   ],
+   "answer_template": "答え ∠x＝{xv1}°",
+   "figure_params": {
+    "kind": "angle_figure",
+    "subkind": "angle_around_point",
+    "angles": [
+     {
+      "v": "{a1}",
+      "role": "known"
+     },
+     {
+      "v": "{xv1}",
+      "role": "unknown",
+      "label": "∠x"
+     },
+     {
+      "v": "{a1}",
+      "role": "plain"
+     },
+     {
+      "v": "{xv1}",
+      "role": "plain"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2,
+    1
+   ]
+  },
+  {
+   "pattern_id": "jhs_c12_isshuu_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c12_u01",
+   "unit_name": "図形の調べ方",
+   "semantic_category": "3直線交差(上側の和180°)",
+   "semantic_note": "3直線が1点で交わる6角配置・上側3角の和180から未知を逆算(G-1 preview_02の形=描画実証済み)。値域は各角≥25°=仮値域(≥20°・minText10.1で余裕0.1px)からマージンを取って刈った正式値域(g05の102→100採用の流儀)。答=既知の転記2本を個別排除。",
+   "step_count": 1,
+   "operation": "上側の和: ∠x＝180−a1−a2",
+   "answer_formula": "180 - a1 - a2",
+   "answer_domain": "any_int",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      25,
+      130
+     ],
+     "step": 5
+    },
+    "a2": {
+     "type": "int",
+     "range": [
+      25,
+      130
+     ],
+     "step": 5
+    }
+   },
+   "computed_slots": {
+    "xv1": {
+     "formula": "180 - a1 - a2"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "x_min",
+     "expr": "180 - a1 - a2 >= 25",
+     "why": "未知角も25°以上(clearanceマージン込み正式値域)"
+    },
+    {
+     "rule": "adj_known_clearance",
+     "expr": "a1 + a2 >= 70",
+     "why": "隣接する2既知角ラベルの重なり回避(両既知が小だとラベル間<10px:7.07〜9.94)。G-1スキャンは既知ラベル1個構成のため本密度未検出——Code clearanceで確定(corr-0020)"
+    },
+    {
+     "rule": "no_transcribe_a1",
+     "expr": "180 - a1 - a2 != a1",
+     "why": "転記型リーク排除(答=既知a1)"
+    },
+    {
+     "rule": "no_transcribe_a2",
+     "expr": "180 - a1 - a2 != a2",
+     "why": "転記型リーク排除(答=既知a2)"
+    }
+   ],
+   "sentence_templates": [
+    "図のように、3つの直線が1つの点で交わっている。∠xの大きさを求めなさい。"
+   ],
+   "answer_template": "答え ∠x＝{xv1}°",
+   "figure_params": {
+    "kind": "angle_figure",
+    "subkind": "angle_around_point",
+    "angles": [
+     {
+      "v": "{a1}",
+      "role": "known"
+     },
+     {
+      "v": "{a2}",
+      "role": "known"
+     },
+     {
+      "v": "{xv1}",
+      "role": "unknown",
+      "label": "∠x"
+     },
+     {
+      "v": "{a1}",
+      "role": "plain"
+     },
+     {
+      "v": "{a2}",
+      "role": "plain"
+     },
+     {
+      "v": "{xv1}",
+      "role": "plain"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    3,
+    1
+   ]
+  },
+  {
+   "pattern_id": "jhs_c12_mawari_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c12_u01",
+   "unit_name": "図形の調べ方",
+   "semantic_category": "一点のまわりの角(360°)",
+   "semantic_note": "光線4本(直線対なし)・一点周り360から未知を逆算。angle_around_point契約(和360・角数≥3)の一般形適用第1号——builderが対頂対を持たない任意光線を受理するかは配線時に要確認(不可なら光線対応をG-1.1で追補してから配線・本パターンのみ保留)。転記3本を全既知に張る(多値衝突型の族カタログ全部乗せ)。",
+   "step_count": 1,
+   "operation": "一点のまわり: ∠x＝360−a1−a2−a3",
+   "answer_formula": "360 - a1 - a2 - a3",
+   "answer_domain": "any_int",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      40,
+      140
+     ],
+     "step": 5
+    },
+    "a2": {
+     "type": "int",
+     "range": [
+      40,
+      140
+     ],
+     "step": 5
+    },
+    "a3": {
+     "type": "int",
+     "range": [
+      40,
+      140
+     ],
+     "step": 5
+    }
+   },
+   "computed_slots": {
+    "xv1": {
+     "formula": "360 - a1 - a2 - a3"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "x_range",
+     "expr": "360 - a1 - a2 - a3 >= 40 and 360 - a1 - a2 - a3 <= 140",
+     "why": "未知角も40〜140°(光線4本の視認バランス・clearance安全域)"
+    },
+    {
+     "rule": "no_transcribe_a1",
+     "expr": "360 - a1 - a2 - a3 != a1",
+     "why": "転記型リーク排除(答=既知a1)"
+    },
+    {
+     "rule": "no_transcribe_a2",
+     "expr": "360 - a1 - a2 - a3 != a2",
+     "why": "転記型リーク排除(答=既知a2)"
+    },
+    {
+     "rule": "no_transcribe_a3",
+     "expr": "360 - a1 - a2 - a3 != a3",
+     "why": "転記型リーク排除(答=既知a3)"
+    }
+   ],
+   "sentence_templates": [
+    "図で、∠xの大きさを求めなさい。"
+   ],
+   "answer_template": "答え ∠x＝{xv1}°",
+   "figure_params": {
+    "kind": "angle_figure",
+    "subkind": "angle_around_point",
+    "angles": [
+     {
+      "v": "{a1}",
+      "role": "known"
+     },
+     {
+      "v": "{a2}",
+      "role": "known"
+     },
+     {
+      "v": "{a3}",
+      "role": "known"
+     },
+     {
+      "v": "{xv1}",
+      "role": "unknown",
+      "label": "∠x"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  }
+ ]
+}
