@@ -53,13 +53,53 @@ function cases3lines() {
   return cs;
 }
 
-module.exports = { scan, cases2lines, cases3lines, around };
+// ---- 第2波G-2 parallel_lines(平行線と角)。corr-0020: バンクが使うラベル密度・役割構成でスキャンを組む ----
+// 横断角 t1 から各交点4角=[t1,180−t1,t1,180−t1]。pos偶=t1/奇=180−t1。unknownは∠x(bare_zx)。
+function parallel(t1, specs) {
+  return { kind: 'angle_figure', subkind: 'parallel_lines', parallel: [{ label: 'ℓ' }, { label: 'm' }], transversal: { angle: t1 },
+    angles: specs.map(s => ({ at: s.at, pos: s.pos, v: (s.pos % 2 === 0) ? t1 : 180 - t1, role: s.role, label: s.role === 'unknown' ? '∠x' : undefined })) };
+}
+// 4構成(ラベル密度・役割が別)。バンクはこの密度で角を置くため、構成別に悉皆する。
+const PAR_CONS = {
+  i: { name: '(i)同位角 上pos0既知+下pos0未知(最疎)', specs: [{ at: 'upper', pos: 0, role: 'known' }, { at: 'lower', pos: 0, role: 'unknown' }] },
+  ii: { name: '(ii)錯角 上pos2既知+下pos0未知', specs: [{ at: 'upper', pos: 2, role: 'known' }, { at: 'lower', pos: 0, role: 'unknown' }] },
+  iii: { name: '(iii)上2既知隣接+下未知(G-1隣接2既知の平行線版)', specs: [{ at: 'upper', pos: 0, role: 'known' }, { at: 'upper', pos: 1, role: 'known' }, { at: 'lower', pos: 0, role: 'unknown' }] },
+  iv: { name: '(iv)対頂複合 同交点2ラベル 上pos0既知+上pos2未知+下pos0既知', specs: [{ at: 'upper', pos: 0, role: 'known' }, { at: 'upper', pos: 2, role: 'unknown' }, { at: 'lower', pos: 0, role: 'known' }] }
+};
+// 交差角レンジ(仮 30〜150°/5°)で1構成を悉皆
+function casesParallel(kind, lo, hi, st) {
+  lo = lo == null ? 30 : lo; hi = hi == null ? 150 : hi; st = st || 5;
+  const c = PAR_CONS[kind], cs = [];
+  for (let t = lo; t <= hi; t += st) cs.push({ label: kind + ' t=' + t, fp: parallel(t, c.specs), t1: t });
+  return cs;
+}
+
+module.exports = { scan, cases2lines, cases3lines, around, parallel, casesParallel, PAR_CONS };
 
 if (require.main === module) {
+  const FB = require(path.join(__dirname, '..', 'pattern_bank', 'figure_builder.js'));
   for (const [name, cs] of [['2直線交差(30〜150°/5°刻み)', cases2lines()], ['3直線(各隙間≥20°・和180)', cases3lines()]]) {
     const r = scan(cs);
     console.log('=== ' + name + ' ===');
     console.log('  組合せ ' + r.total + ' / 違反 ' + r.violations.length + (r.violations.length ? ':' : ' ✅(違反0)'));
     r.violations.slice(0, 12).forEach(v => console.log('    ❌ ' + v.label + ' minText=' + v.minText + ' overflow=' + v.overflow + (v.err ? ' err=' + v.err : '')));
+  }
+  // G-2: 構成別スキャン(仮値域 交差角30〜150°/5°)
+  console.log('\n=== G-2 parallel_lines 構成別スキャン(仮 交差角30〜150°/5° = 25本/構成) ===');
+  for (const kind of ['i', 'ii', 'iii', 'iv']) {
+    const cs = casesParallel(kind);
+    const r = scan(cs);
+    // 構成内の min minText と、違反(minText<10)の交差角
+    let minMT = 1e9, minAt = null;
+    const violT = [];
+    cs.forEach(c => { const cl = FB._angleFigureMinClearance(c.fp); if (cl.minText < minMT) { minMT = cl.minText; minAt = c.t1; } if (cl.minText < 10) violT.push(c.t1 + '(' + cl.minText.toFixed(2) + ')'); });
+    console.log('  ' + PAR_CONS[kind].name);
+    console.log('    組合せ ' + r.total + ' / 違反 ' + r.violations.length + ' / min minText ' + minMT.toFixed(2) + '@t=' + minAt +
+      (violT.length ? '\n      ❌違反t: ' + violT.join(', ') : ' ✅(違反0)'));
+    if (violT.length) {
+      // 違反する交差角の最大値=下限候補(これより浅い交差はラベルが割れる)
+      const badTs = violT.map(s => parseInt(s));
+      console.log('      → 値域候補: 交差角 ≥ ' + (Math.max(...badTs) + 5) + '°(浅い交差の刈り上げ)');
+    }
   }
 }

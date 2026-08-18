@@ -1063,8 +1063,105 @@
     });
     return lay;
   }
+  // ---- 第2波G-2: parallel_lines(平行線と角) ----
+  // 平行2直線ℓ(上),m(下)を縦GAPで隔て、横断線1本が上下の交点U,Lで交わる。
+  // 横断角 t1(=横断線が平行線と成す角・pos0の実角)から、各交点の4角=[t1,180−t1,t1,180−t1]が
+  // 決定的に定まる(隣接和180・対頂相等・平行輸送でU,Lの同位置角が一致=平行性はデータ構造が担保)。
+  // pos 0..3 は交点の局所frameで CCW(0=右+x, θ, 180=左, θ+180)——posk は ray_k〜ray_{k+1} の楔。
+  var PARALLEL_GAP = 78, PARALLEL_LINE_EXT = 44, PARALLEL_TRANS_EXT = 40;
+  function parallelLinesGeom(fp) {
+    var t1 = Number((fp.transversal || {}).angle);
+    if (!(t1 > 0 && t1 < 180)) throw new Error('parallel_lines契約違反: 横断角 ' + t1 + ' は(0,180)必須');
+    var H = PARALLEL_GAP, th = t1 * DEG;
+    var ux = (H / 2) / Math.tan(th);                       // U_x(θ=90で0・θ<90で正・θ>90で負)
+    var U = [ux, H / 2], L = [-ux, -H / 2];
+    var W = Math.abs(ux) + PARALLEL_LINE_EXT;
+    var dir = [Math.cos(th), Math.sin(th)];
+    var topEnd = [U[0] + PARALLEL_TRANS_EXT * dir[0], U[1] + PARALLEL_TRANS_EXT * dir[1]];
+    var botEnd = [L[0] - PARALLEL_TRANS_EXT * dir[0], L[1] - PARALLEL_TRANS_EXT * dir[1]];
+    return { t1: t1, H: H, U: U, L: L, ux: ux, W: W, dir: dir, topEnd: topEnd, botEnd: botEnd };
+  }
+  // (at,pos)→楔の中心角範囲[a0,a1](交点局所・度)と、そのposが持つ実角値(pos偶=t1/奇=180−t1)。
+  function parallelWedge(t1, pos) {
+    var A0 = [0, t1, 180, 180 + t1], A1 = [t1, 180, 180 + t1, 360];
+    return { a0: A0[pos], a1: A1[pos], v: (pos % 2 === 0) ? t1 : 180 - t1 };
+  }
+  function parallelLinesLayout(fp) {
+    var uStyle = fp.unknown_style || 'bare_zx';
+    var g = parallelLinesGeom(fp), lay = newLayout(), t1 = g.t1;
+    var Uw = worldFlip(g.U), Lw = worldFlip(g.L);
+    var Wr = worldFlip([g.W, g.H / 2]), Wl = worldFlip([-g.W, g.H / 2]);      // ℓの右端・左端
+    var Mr = worldFlip([g.W, -g.H / 2]), Ml = worldFlip([-g.W, -g.H / 2]);    // mの右端・左端
+    var top = worldFlip(g.topEnd), bot = worldFlip(g.botEnd);
+    // 直線3本(ℓ・m・横断線)
+    lay.parts.push(lineEl(Wl, Wr, C_STROKE, 2));
+    lay.parts.push(lineEl(Ml, Mr, C_STROKE, 2));
+    lay.parts.push(lineEl(top, bot, C_STROKE, 2));
+    lay.pts.push(Wl, Wr, Ml, Mr, top, bot);
+    // ray分割セグメント(ラベルの自要素判定用)。交点局所CCW: [右, 横断上/U→トップ・L→U, 左, 横断下/U→L・L→ボトム]
+    function seg(id, p1, p2) { lay.segs.push({ id: id, p1: p1, p2: p2 }); }
+    seg('lU_e', Uw, Wr); seg('lU_w', Uw, Wl);
+    seg('mL_e', Lw, Mr); seg('mL_w', Lw, Ml);
+    seg('t_up', Uw, top); seg('t_UL', Uw, Lw); seg('t_lo', Lw, bot);
+    var rays = { upper: ['lU_e', 't_up', 'lU_w', 't_UL'], lower: ['mL_e', 't_UL', 'mL_w', 't_lo'] };
+    // 交点マーカー
+    lay.parts.push('<circle cx="' + Uw[0].toFixed(2) + '" cy="' + Uw[1].toFixed(2) + '" r="2.2" fill="' + C_STROKE + '"/>');
+    lay.parts.push('<circle cx="' + Lw[0].toFixed(2) + '" cy="' + Lw[1].toFixed(2) + '" r="2.2" fill="' + C_STROKE + '"/>');
+    // 平行マーク(各線中点に「>」1個・線分中点束縛・+x向き)
+    function chevron(midW, id) {
+      var mx = midW[0], my = midW[1], p0 = [mx - 3, my - 6], p1 = [mx + 3.5, my], p2 = [mx - 3, my + 6];
+      lay.parts.push('<path d="M ' + p0[0].toFixed(2) + ' ' + p0[1].toFixed(2) + ' L ' + p1[0].toFixed(2) + ' ' + p1[1].toFixed(2) + ' L ' + p2[0].toFixed(2) + ' ' + p2[1].toFixed(2) + '" fill="none" stroke="' + C_STROKE + '" stroke-width="1.6"/>');
+      seg(id, p0, p2); lay.pts.push(p0, p1, p2);
+    }
+    chevron(worldFlip([0, g.H / 2]), 'pm_u');
+    chevron(worldFlip([0, -g.H / 2]), 'pm_l');
+    // 角の弧 + ラベルspec
+    var specs = [];
+    (fp.angles || []).forEach(function (a) {
+      var role = a.role || 'plain'; if (role === 'plain') return;
+      var at = a.at, pos = Number(a.pos);
+      if (at !== 'upper' && at !== 'lower') throw new Error('parallel_lines契約違反: at ' + at + ' は upper|lower');
+      if (!(pos >= 0 && pos <= 3)) throw new Error('parallel_lines契約違反: pos ' + pos + ' は0..3');
+      var wd = parallelWedge(t1, pos);
+      if (a.v != null && Math.floor(Number(a.v) + 0.5) !== Math.floor(wd.v + 0.5))
+        throw new Error('parallel_lines契約違反: (' + at + ',pos' + pos + ')の角=' + wd.v + ' だが v=' + a.v + '(隣接和180/対頂相等/平行輸送に反する)');
+      var center = at === 'upper' ? g.U : g.L, isUn = role === 'unknown';
+      var col = isUn ? C_TARGET : C_KNOWN, w = isUn ? 2 : 1.6, r = isUn ? ANGLE_UR : ANGLE_KR;
+      var aw = arcPath(center, r, wd.a0, wd.a1, col, w); lay.parts.push(aw.el);
+      aw.ext.forEach(function (p) { lay.pts.push(p); });
+      for (var cd = Math.ceil(wd.a0 / 90) * 90; cd < wd.a1; cd += 90) lay.pts.push(arcPtWorld(center, r, cd));
+      var bis = (wd.a0 + wd.a1) / 2, dirSvg = [Math.cos(bis * DEG), -Math.sin(bis * DEG)];
+      var text = isUn ? (uStyle === 'circle_x' ? 'x' : (a.label != null ? String(a.label) : '∠x'))
+        : (a.label != null ? String(a.label) : Math.floor(wd.v + 0.5) + '°');
+      specs.push({ role: role, text: text, anchor: worldFlip(center), dir: dirSvg,
+        cands: isUn ? (uStyle === 'circle_zx_big' ? ANGLE_UN_CANDS_BIG : ANGLE_UN_CANDS) : ANGLE_KN_CANDS,
+        color: col, own: [rays[at][pos], rays[at][(pos + 1) % 4]] });
+    });
+    // 直線ラベル ℓ,m(線端束縛=左端の外側)
+    var lp = (fp.parallel || [{}, {}]);
+    var lLbl = (lp[0] && lp[0].label) || 'ℓ', mLbl = (lp[1] && lp[1].label) || 'm';
+    specs.push({ role: 'line', text: lLbl, anchor: Wl, dirs: [[-0.96, -0.28], [-0.96, 0.28]], cands: [[11, 13], [14, 13], [17, 12]], color: C_STROKE, own: ['lU_e', 'lU_w'] });
+    specs.push({ role: 'line', text: mLbl, anchor: Ml, dirs: [[-0.96, 0.28], [-0.96, -0.28]], cands: [[11, 13], [14, 13], [17, 12]], color: C_STROKE, own: ['mL_e', 'mL_w'] });
+    // 配置(自要素束縛・placeLbl・決定的候補列)
+    specs.forEach(function (sp) {
+      var others = lay.labels.map(function (l) { return l.box; });
+      var ownSegs = lay.segs.filter(function (s) { return sp.own.indexOf(s.id) >= 0; });
+      var otherSegs = lay.segs.filter(function (s) { return sp.own.indexOf(s.id) < 0; });
+      var pl = placeLbl(sp.anchor, sp.dirs || [sp.dir], sp.text, others, ownSegs, otherSegs, sp.cands);
+      if (sp.role === 'unknown' && uStyle !== 'bare_zx') {
+        var cr = pl.fs * (uStyle === 'circle_x' ? 1.15 : 0.95);
+        lay.parts.push('<circle cx="' + pl.cx.toFixed(2) + '" cy="' + pl.cy.toFixed(2) + '" r="' + cr.toFixed(1) + '" fill="#fff" stroke="' + C_TARGET + '" stroke-width="1.2"/>');
+        lay.pts.push([pl.cx - cr, pl.cy - cr], [pl.cx + cr, pl.cy + cr]);
+      }
+      lay.parts.push(textEl(pl.cx, pl.cy, sp.text, pl.fs, sp.color));
+      lay.labels.push({ box: pl.box, own: sp.own, text: sp.text });
+      lay.pts.push([pl.box.x0, pl.box.y0], [pl.box.x1, pl.box.y1]);
+    });
+    return lay;
+  }
   function angleFigureLayout(fp) {
     if (fp.subkind === 'angle_around_point') return angleAroundPointLayout(fp);
+    if (fp.subkind === 'parallel_lines') return parallelLinesLayout(fp);
     throw new Error('angle_figure: 未対応subkind ' + fp.subkind);
   }
 
@@ -1118,6 +1215,8 @@
     para_area: paraAreaGeom, tri_area: triAreaGeom, trap_area: trapAreaGeom,
     rhombus_area: rhombusAreaGeom, circle: circleGeom, cuboid: cuboidGeom, circle_v2: circleV2Geom,
     angle_around_point: angleAroundPointGeom,   // 第2波G-1: 幾何ベクター用(ray方向・弧中心角・座標)
+    parallel_lines: parallelLinesGeom,           // 第2波G-2: 交点U,L座標・横断向き・平行輸送(vector用)
+    parallel_wedge: parallelWedge,               // (t1,pos)→楔[a0,a1]と実角値(pos偶t1/奇180−t1)
     arc_sample_points: arcSamplePoints,          // 弧サンプル点(曲率関門用・頂点からr一定検査)
     // ベクター用の位置引数ラッパ（Python prism_geom(base_kind,a,b,h) と同型）
     prism: function (base_kind, a, b, h) {
