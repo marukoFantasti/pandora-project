@@ -1077,6 +1077,15 @@
 
   var BUILDERS = { rect_area: rectArea, angle_sum: angleSum, table: drawTable };
   Object.keys(C_LAYOUTS).forEach(function (k) { BUILDERS[k] = makeCBuilder(k); });
+  // angle_figure限定のviewport整合(既存kindのlayoutToSvg出力は非接触=golden不変)。
+  // width/height を viewBox の w,h と厳密一致させ(ceil由来の縦横比ズレを排除)、preserveAspectRatio=meetを明示。
+  // → consumerがnone/固定枠で描画しても円弧が楕円化(潰れ)しない。angle_figure_vectorsで関門化。
+  function matchViewportAspect(svg) {
+    var m = svg.match(/viewBox="[-\d.]+ [-\d.]+ ([-\d.]+) ([-\d.]+)"/);
+    if (!m) return svg;
+    return svg.replace(/ width="[^"]*" height="[^"]*"/, ' width="' + m[1] + '" height="' + m[2] + '" preserveAspectRatio="xMidYMid meet"');
+  }
+  BUILDERS.angle_figure = function (fp) { return matchViewportAspect(layoutToSvg(angleFigureLayout(fp))); };
 
   function svg(w, h, inner) {
     return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + Math.ceil(w) + ' ' + Math.ceil(h) +

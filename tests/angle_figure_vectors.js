@@ -38,6 +38,22 @@ function curvatureCheck(fp) {
   return e;
 }
 
+// ── viewport整合関門: ルートSVGの width/height縦横比 == viewBox縦横比(±0.1%) かつ
+//    preserveAspectRatio が "none" でないこと。自動フィットでviewBoxが変わった際に width/height が
+//    追随しない不整合(=直線では見えず円弧だけ楕円化する表示歪み)を構造排除。
+function viewportCheck(fp) {
+  const svg = FB.build(fp), hdr = (svg.match(/<svg[^>]*>/) || [''])[0];
+  const w = +(hdr.match(/ width="([-\d.]+)"/) || [])[1], h = +(hdr.match(/ height="([-\d.]+)"/) || [])[1];
+  const vb = hdr.match(/viewBox="[-\d.]+ [-\d.]+ ([-\d.]+) ([-\d.]+)"/);
+  const par = (hdr.match(/preserveAspectRatio="([^"]*)"/) || [])[1];
+  let e = 0;
+  if (!w || !h || !vb) { return 1; }
+  const diff = Math.abs((w / h) / (+vb[1] / +vb[2]) - 1) * 100;
+  if (diff > 0.1) e++;                         // 縦横比不整合=円弧の楕円化リスク
+  if (par == null || par === 'none') e++;      // preserveAspectRatio 未指定/none は歪み許容につき不可
+  return e;
+}
+
 // 修正前の欠陥クラス(潰れ=楕円弧)を関門が捕まえるか実証: 合成の楕円path(rx≠ry)で RED を確認。
 console.log('=== 曲率関門の欠陥捕捉 実証(潰れ=楕円化の検出) ===');
 (function () {
@@ -74,6 +90,8 @@ for (const c of CASES) {
       JSON.stringify(FB._angleFigureMinClearance({ kind: 'angle_figure', subkind: 'angle_around_point', angles: c.angles }))) e++;
   // 曲率関門: SVG弧の真円性(rx==ry==r・サンプル点r±0.5)
   e += curvatureCheck({ kind: 'angle_figure', subkind: 'angle_around_point', angles: c.angles });
+  // viewport整合関門: width/height縦横比==viewBox(±0.1%)・preserveAspectRatio≠none
+  e += viewportCheck({ kind: 'angle_figure', subkind: 'angle_around_point', angles: c.angles });
   if (e) { bad += e; console.log('  ❌ ' + c.label + ' (' + e + '件不一致)'); }
 }
 console.log('\n' + (bad === 0 ? 'angle_figure幾何ベクター+曲率関門: 全' + CASES.length + 'ケース一致 ✅(座標±0.5px・弧中心角・真円rx==ry==r・シード非依存)' : '❌ ' + bad + '件'));
