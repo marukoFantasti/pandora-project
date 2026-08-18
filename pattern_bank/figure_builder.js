@@ -1028,7 +1028,7 @@
     return pts;
   }
   function angleAroundPointLayout(fp) {
-    var uStyle = fp.unknown_style || 'circle_zx';   // circle_zx(既定)/circle_x/circle_zx_big/bare_zx
+    var uStyle = fp.unknown_style || 'bare_zx';   // bare_zx(既定・まるこ選定2026-08-14)/circle_zx/circle_x/circle_zx_big
     var angles = (fp.angles || []).map(function (a) { return { v: Number(a.v), role: a.role || 'plain', label: a.label }; });
     var g = angleAroundPointGeom(angles), lay = newLayout(), O = worldFlip(g.O), n = g.ends.length;
     // 直線(=各ray。対頂角配置ではrayが対で直線を成す)。交点中心・固定長。
