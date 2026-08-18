@@ -985,13 +985,79 @@
     return lay;
   }
 
+  // ============================================================
+  // 第2波G-1: angle_figure kind（spec_angle_figure.md v1.0）。実証台=angle_around_point。
+  // 一点で交わる2〜3直線の一点周りの角。既知角=緑(r18)/未知角=赤(r34)・未知∠x白丸囲み(g05 v5様式)。
+  // figure_params = {kind:'angle_figure', subkind:'angle_around_point',
+  //   angles:[{v:<度>, role:'known'|'unknown'|'plain', label:<表示文字>}, …連続・和360], point?:<原点名>}
+  // 契約: 角度和=360(整数)。違反は例外(生徒非露出)。全数値はスロット参照(数値直書き禁止)。
+  // ============================================================
+  var ANGLE_RAY_LEN = 95, ANGLE_KR = 18, ANGLE_UR = 34;
+  // 決定的候補列（可動=距離・フォントのみ・仕様§0-2）。[Oからの距離, フォント]
+  var ANGLE_KN_CANDS = [[30, 13], [27, 13], [34, 13], [30, 11], [27, 11], [38, 11], [24, 11], [42, 11]];
+  var ANGLE_UN_CANDS = [[48, 13], [44, 13], [52, 13], [48, 11], [44, 11], [56, 11], [40, 11], [60, 11]];
+  function angleAroundPointGeom(angles) {
+    var sum = 0; for (var i = 0; i < angles.length; i++) sum += Number(angles[i].v);
+    if (Math.floor(sum + 0.5) !== 360) throw new Error('angle_around_point契約違反: 角度和' + sum + '≠360');
+    if (angles.length < 3) throw new Error('angle_around_point契約違反: 角の数<3(2直線=4角/3直線=6角)');
+    var O = [0, 0], n = angles.length, dirs = [0], ends = [];
+    for (var k = 0; k < n; k++) { if (k > 0) dirs.push(dirs[k - 1] + Number(angles[k - 1].v)); }
+    for (var j = 0; j < n; j++) { var a = dirs[j] * DEG; ends.push([ANGLE_RAY_LEN * Math.cos(a), ANGLE_RAY_LEN * Math.sin(a)]); }
+    var arcs = [];
+    for (var m = 0; m < n; m++) {
+      var a0 = dirs[m], a1 = dirs[m] + Number(angles[m].v), role = angles[m].role || 'plain';
+      arcs.push({ a0: a0, a1: a1, bis: (a0 + a1) / 2, role: role, r: role === 'unknown' ? ANGLE_UR : ANGLE_KR, label: angles[m].label });
+    }
+    return { O: O, dirs: dirs, ends: ends, arcs: arcs, RAY_LEN: ANGLE_RAY_LEN };
+  }
+  // world(y上向き)で計算しworldFlipで出力する弧
+  function arcWorld(O, r, a0d, a1d, color, w) {
+    var steps = Math.max(3, Math.round(Math.abs(a1d - a0d) / 4)), pts = [];
+    for (var i = 0; i <= steps; i++) { var a = (a0d + (a1d - a0d) * i / steps) * DEG, p = worldFlip([O[0] + r * Math.cos(a), O[1] + r * Math.sin(a)]); pts.push(p[0].toFixed(2) + ',' + p[1].toFixed(2)); }
+    return { el: '<polyline points="' + pts.join(' ') + '" fill="none" stroke="' + color + '" stroke-width="' + w + '"/>', mid: worldFlip([O[0] + r * Math.cos((a0d + a1d) / 2 * DEG), O[1] + r * Math.sin((a0d + a1d) / 2 * DEG)]) };
+  }
+  function angleAroundPointLayout(fp) {
+    var angles = (fp.angles || []).map(function (a) { return { v: Number(a.v), role: a.role || 'plain', label: a.label }; });
+    var g = angleAroundPointGeom(angles), lay = newLayout(), O = worldFlip(g.O), n = g.ends.length;
+    // 直線(=各ray。対頂角配置ではrayが対で直線を成す)。交点中心・固定長。
+    for (var i = 0; i < n; i++) { var e = worldFlip(g.ends[i]); lay.parts.push(lineEl(O, e, C_STROKE, 2)); lay.segs.push({ id: 'r' + i, p1: O, p2: e }); lay.pts.push(O, e); }
+    lay.parts.push('<circle cx="' + O[0].toFixed(2) + '" cy="' + O[1].toFixed(2) + '" r="2.2" fill="' + C_STROKE + '"/>');
+    // 弧 + ラベル（known/unknownのみ。plainは幾何のみ）
+    var specs = [];
+    g.arcs.forEach(function (arc, idx) {
+      if (arc.role === 'plain') return;
+      var col = arc.role === 'unknown' ? C_TARGET : C_KNOWN, w = arc.role === 'unknown' ? 2 : 1.6;
+      var aw = arcWorld(g.O, arc.r, arc.a0, arc.a1, col, w); lay.parts.push(aw.el); lay.pts.push(aw.mid);
+      var bisW = [Math.cos(arc.bis * DEG), Math.sin(arc.bis * DEG)], dirSvg = [bisW[0], -bisW[1]];   // world→svg
+      specs.push({ role: arc.role, text: arc.label != null ? String(arc.label) : (arc.role === 'unknown' ? '∠x' : Math.floor(arc.a1 - arc.a0 + 0.5) + '°'),
+        dir: dirSvg, cands: arc.role === 'unknown' ? ANGLE_UN_CANDS : ANGLE_KN_CANDS, color: col, own: ['r' + idx, 'r' + ((idx + 1) % n)] });
+    });
+    // ラベル配置（自弧束縛=own2ray・placeLbl・決定的候補列）。未知は白丸囲みを先に敷く。
+    specs.forEach(function (sp) {
+      var others = lay.labels.map(function (l) { return l.box; });
+      var ownSegs = lay.segs.filter(function (s) { return sp.own.indexOf(s.id) >= 0; });
+      var otherSegs = lay.segs.filter(function (s) { return sp.own.indexOf(s.id) < 0; });
+      var pl = placeLbl(O, [sp.dir], sp.text, others, ownSegs, otherSegs, sp.cands);
+      if (sp.role === 'unknown') lay.parts.push('<circle cx="' + pl.cx.toFixed(2) + '" cy="' + pl.cy.toFixed(2) + '" r="' + (pl.fs * 0.95).toFixed(1) + '" fill="#fff" stroke="' + C_TARGET + '" stroke-width="1.2"/>');
+      lay.parts.push(textEl(pl.cx, pl.cy, sp.text, pl.fs, sp.color));
+      lay.labels.push({ box: pl.box, own: sp.own, text: sp.text });
+      lay.pts.push([pl.box.x0, pl.box.y0], [pl.box.x1, pl.box.y1]);
+    });
+    return lay;
+  }
+  function angleFigureLayout(fp) {
+    if (fp.subkind === 'angle_around_point') return angleAroundPointLayout(fp);
+    throw new Error('angle_figure: 未対応subkind ' + fp.subkind);
+  }
+
   var C_LAYOUTS = {
     tri_angle: triAngleLayout, tri_angle_iso: triAngleIsoLayout, quad_angle: quadAngleLayout,
     para_area: paraAreaLayout, tri_area: triAreaLayout, trap_area: trapAreaLayout,
     rhombus_area: rhombusAreaLayout, circle: circleLayout, cuboid: cuboidLayout, prism: prismLayout,
-    sym_polygon: symPolygonLayout, similar_pair: similarPairLayout, xy_graph: xyGraphLayout, dot_plot: dotPlotLayout, histogram: histogramLayout
+    sym_polygon: symPolygonLayout, similar_pair: similarPairLayout, xy_graph: xyGraphLayout, dot_plot: dotPlotLayout, histogram: histogramLayout,
+    angle_figure: angleFigureLayout
   };
-  var C_ANGLE = { tri_angle: 1, tri_angle_iso: 1, quad_angle: 1 };
+  var C_ANGLE = { tri_angle: 1, tri_angle_iso: 1, quad_angle: 1, angle_figure: 1 };
   function makeCBuilder(kind) { return function (fp) { return layoutToSvg(C_LAYOUTS[kind](fp)); }; }
   function makeCClearance(kind) {
     return function (fp) { var lay = C_LAYOUTS[kind](fp); return (C_ANGLE[kind] ? scanPolyAngle : scanLayout)(lay); };
@@ -1024,6 +1090,7 @@
     tri_angle: triAngleGeom, tri_angle_iso: triAngleIsoGeom, quad_angle: quadAngleGeom,
     para_area: paraAreaGeom, tri_area: triAreaGeom, trap_area: trapAreaGeom,
     rhombus_area: rhombusAreaGeom, circle: circleGeom, cuboid: cuboidGeom, circle_v2: circleV2Geom,
+    angle_around_point: angleAroundPointGeom,   // 第2波G-1: 幾何ベクター用(ray方向・弧中心角・座標)
     // ベクター用の位置引数ラッパ（Python prism_geom(base_kind,a,b,h) と同型）
     prism: function (base_kind, a, b, h) {
       return prismGeom(base_kind === 'rect' ? { base_kind: 'rect', w: a, d: b, height: h }
