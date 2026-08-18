@@ -18,7 +18,37 @@ const CASES = [];
     { v: gs[0], role: 'known', label: gs[0] + '°' }, { v: gs[1], role: 'unknown', label: '∠x' }, { v: gs[2], role: 'plain' },
     { v: gs[0], role: 'plain' }, { v: gs[1], role: 'plain' }, { v: gs[2], role: 'plain' }] }));
 
-console.log('=== angle_figure 幾何ベクター(' + CASES.length + 'ケース) ===');
+// ── 曲率関門: SVG弧の真円性を機械検査（潰れ=楕円化/off半径 を捕まえる） ──
+// (a) <path A rx ry …> の rx==ry==期待r（既知18/未知34）。ellipse化(rx≠ry)=潰れ→検出。
+// (b) 弧サンプル点(≥5)が頂点O(=SVG[0,0])から距離r±0.5px。
+function curvatureCheck(fp) {
+  const svg = FB.build(fp);
+  const arcs = [...svg.matchAll(/<path d="M [-\d.]+ [-\d.]+ A (\d+(?:\.\d+)?) (\d+(?:\.\d+)?) 0 \d \d [-\d.]+ [-\d.]+" fill="none" stroke="(#[0-9A-Fa-f]+)"/g)];
+  const geom = FB._geom.angle_around_point(fp.angles);
+  const drawn = geom.arcs.filter(a => a.role !== 'plain');
+  let e = 0;
+  if (arcs.length !== drawn.length) e++;
+  arcs.forEach((m, i) => {
+    const rx = +m[1], ry = +m[2], expR = drawn[i] ? drawn[i].r : null;
+    if (rx !== ry) e++;                         // 楕円化=潰れ
+    if (expR != null && Math.abs(rx - expR) > 0.5) e++;
+    // サンプル点(頂点O=[0,0])距離r±0.5
+    if (drawn[i]) FB._geom.arc_sample_points([0, 0], drawn[i].r, drawn[i].a0, drawn[i].a1, 6).forEach(p => { if (Math.abs(Math.hypot(p[0], p[1]) - drawn[i].r) > 0.5) e++; });
+  });
+  return e;
+}
+
+// 修正前の欠陥クラス(潰れ=楕円弧)を関門が捕まえるか実証: 合成の楕円path(rx≠ry)で RED を確認。
+console.log('=== 曲率関門の欠陥捕捉 実証(潰れ=楕円化の検出) ===');
+(function () {
+  const flat = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><path d="M 34 0 A 34 20 0 0 0 -34 0" fill="none" stroke="#C0392B"/></svg>';
+  const m = flat.match(/A (\d+) (\d+) /);
+  const flattenedDetected = m && m[1] !== m[2];   // rx=34,ry=20 → 楕円=潰れ
+  console.log('  合成の潰れ弧(A 34 20=楕円): 関門判定 rx≠ry → ' + (flattenedDetected ? 'RED検出 ✅(欠陥を正しく捕まえる)' : '見逃し ❌'));
+  if (!flattenedDetected) bad++;
+})();
+
+console.log('\n=== angle_figure 幾何ベクター(' + CASES.length + 'ケース) + 曲率関門 ===');
 for (const c of CASES) {
   const g = FB._geom.angle_around_point(c.angles);
   let e = 0;
@@ -42,7 +72,9 @@ for (const c of CASES) {
   if (s1 !== s2) e++;
   if (JSON.stringify(FB._angleFigureMinClearance({ kind: 'angle_figure', subkind: 'angle_around_point', angles: c.angles })) !==
       JSON.stringify(FB._angleFigureMinClearance({ kind: 'angle_figure', subkind: 'angle_around_point', angles: c.angles }))) e++;
+  // 曲率関門: SVG弧の真円性(rx==ry==r・サンプル点r±0.5)
+  e += curvatureCheck({ kind: 'angle_figure', subkind: 'angle_around_point', angles: c.angles });
   if (e) { bad += e; console.log('  ❌ ' + c.label + ' (' + e + '件不一致)'); }
 }
-console.log('\n' + (bad === 0 ? 'angle_figure幾何ベクター: 全' + CASES.length + 'ケース一致 ✅(座標±0.5px・弧中心角・シード非依存)' : '❌ ' + bad + '件'));
+console.log('\n' + (bad === 0 ? 'angle_figure幾何ベクター+曲率関門: 全' + CASES.length + 'ケース一致 ✅(座標±0.5px・弧中心角・真円rx==ry==r・シード非依存)' : '❌ ' + bad + '件'));
 process.exit(bad === 0 ? 0 : 1);

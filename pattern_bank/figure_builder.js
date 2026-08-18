@@ -1010,11 +1010,21 @@
     }
     return { O: O, dirs: dirs, ends: ends, arcs: arcs, RAY_LEN: ANGLE_RAY_LEN };
   }
-  // world(y上向き)で計算しworldFlipで出力する弧
-  function arcWorld(O, r, a0d, a1d, color, w) {
-    var steps = Math.max(3, Math.round(Math.abs(a1d - a0d) / 4)), pts = [];
-    for (var i = 0; i <= steps; i++) { var a = (a0d + (a1d - a0d) * i / steps) * DEG, p = worldFlip([O[0] + r * Math.cos(a), O[1] + r * Math.sin(a)]); pts.push(p[0].toFixed(2) + ',' + p[1].toFixed(2)); }
-    return { el: '<polyline points="' + pts.join(' ') + '" fill="none" stroke="' + color + '" stroke-width="' + w + '"/>', mid: worldFlip([O[0] + r * Math.cos((a0d + a1d) / 2 * DEG), O[1] + r * Math.sin((a0d + a1d) / 2 * DEG)]) };
+  // 弧描画の一本化(赤=未知/緑=既知/等角弧G-4も共通)。中心O・半径r(rx=ry=r=真円)の native SVG弧。
+  // worldFlip(y反転)でworld-CCW↔SVG-CWが反転するため sweep を反転して指定(仮説どおり)。
+  // A rx ry ... で rx=ry=r を厳守(elliptical化=潰れ を構造的に排除)。曲率はangle_figure_vectorsで悉皆関門。
+  function arcPtWorld(O, r, degv) { return worldFlip([O[0] + r * Math.cos(degv * DEG), O[1] + r * Math.sin(degv * DEG)]); }
+  function arcPath(O, r, a0d, a1d, color, w) {
+    var s = arcPtWorld(O, r, a0d), e = arcPtWorld(O, r, a1d), span = a1d - a0d;
+    var largeArc = Math.abs(span) > 180 ? 1 : 0, sweep = span > 0 ? 0 : 1;   // world-CCW(span>0)→SVGでCW(sweep0)
+    return { el: '<path d="M ' + s[0].toFixed(2) + ' ' + s[1].toFixed(2) + ' A ' + r + ' ' + r + ' 0 ' + largeArc + ' ' + sweep + ' ' + e[0].toFixed(2) + ' ' + e[1].toFixed(2) + '" fill="none" stroke="' + color + '" stroke-width="' + w + '"/>',
+      r: r, ext: [s, e, arcPtWorld(O, r, (a0d + a1d) / 2)] };   // ext: viewBox拡張用(端点+中点)。>90°で頂側にも及ぶ分は下の cardinal で補う
+  }
+  // 弧サンプル点(頂点Oからの距離r検査用・幾何ベクター/曲率関門が使う)。SVG座標。
+  function arcSamplePoints(O, r, a0d, a1d, n) {
+    n = n || 7; var pts = [];
+    for (var i = 0; i <= n; i++) pts.push(arcPtWorld(O, r, a0d + (a1d - a0d) * i / n));
+    return pts;
   }
   function angleAroundPointLayout(fp) {
     var angles = (fp.angles || []).map(function (a) { return { v: Number(a.v), role: a.role || 'plain', label: a.label }; });
@@ -1027,7 +1037,9 @@
     g.arcs.forEach(function (arc, idx) {
       if (arc.role === 'plain') return;
       var col = arc.role === 'unknown' ? C_TARGET : C_KNOWN, w = arc.role === 'unknown' ? 2 : 1.6;
-      var aw = arcWorld(g.O, arc.r, arc.a0, arc.a1, col, w); lay.parts.push(aw.el); lay.pts.push(aw.mid);
+      var aw = arcPath(g.O, arc.r, arc.a0, arc.a1, col, w); lay.parts.push(aw.el);
+      aw.ext.forEach(function (p) { lay.pts.push(p); });
+      for (var cd = Math.ceil(arc.a0 / 90) * 90; cd < arc.a1; cd += 90) lay.pts.push(arcPtWorld(g.O, arc.r, cd));   // >90°弧が跨ぐcardinalもviewBoxに含める
       var bisW = [Math.cos(arc.bis * DEG), Math.sin(arc.bis * DEG)], dirSvg = [bisW[0], -bisW[1]];   // world→svg
       specs.push({ role: arc.role, text: arc.label != null ? String(arc.label) : (arc.role === 'unknown' ? '∠x' : Math.floor(arc.a1 - arc.a0 + 0.5) + '°'),
         dir: dirSvg, cands: arc.role === 'unknown' ? ANGLE_UN_CANDS : ANGLE_KN_CANDS, color: col, own: ['r' + idx, 'r' + ((idx + 1) % n)] });
@@ -1091,6 +1103,7 @@
     para_area: paraAreaGeom, tri_area: triAreaGeom, trap_area: trapAreaGeom,
     rhombus_area: rhombusAreaGeom, circle: circleGeom, cuboid: cuboidGeom, circle_v2: circleV2Geom,
     angle_around_point: angleAroundPointGeom,   // 第2波G-1: 幾何ベクター用(ray方向・弧中心角・座標)
+    arc_sample_points: arcSamplePoints,          // 弧サンプル点(曲率関門用・頂点からr一定検査)
     // ベクター用の位置引数ラッパ（Python prism_geom(base_kind,a,b,h) と同型）
     prism: function (base_kind, a, b, h) {
       return prismGeom(base_kind === 'rect' ? { base_kind: 'rect', w: a, d: b, height: h }
