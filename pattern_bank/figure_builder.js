@@ -996,6 +996,7 @@
   // 決定的候補列（可動=距離・フォントのみ・仕様§0-2）。[Oからの距離, フォント]
   var ANGLE_KN_CANDS = [[30, 13], [27, 13], [34, 13], [30, 11], [27, 11], [38, 11], [24, 11], [42, 11]];
   var ANGLE_UN_CANDS = [[48, 13], [44, 13], [52, 13], [48, 11], [44, 11], [56, 11], [40, 11], [60, 11]];
+  var ANGLE_UN_CANDS_BIG = [[52, 16], [48, 16], [56, 16], [52, 14], [48, 14], [60, 14], [44, 14], [64, 13]];   // 案b: フォント拡大(白丸径連動)
   function angleAroundPointGeom(angles) {
     var sum = 0; for (var i = 0; i < angles.length; i++) sum += Number(angles[i].v);
     if (Math.floor(sum + 0.5) !== 360) throw new Error('angle_around_point契約違反: 角度和' + sum + '≠360');
@@ -1027,6 +1028,7 @@
     return pts;
   }
   function angleAroundPointLayout(fp) {
+    var uStyle = fp.unknown_style || 'circle_zx';   // circle_zx(既定)/circle_x/circle_zx_big/bare_zx
     var angles = (fp.angles || []).map(function (a) { return { v: Number(a.v), role: a.role || 'plain', label: a.label }; });
     var g = angleAroundPointGeom(angles), lay = newLayout(), O = worldFlip(g.O), n = g.ends.length;
     // 直線(=各ray。対頂角配置ではrayが対で直線を成す)。交点中心・固定長。
@@ -1041,16 +1043,20 @@
       aw.ext.forEach(function (p) { lay.pts.push(p); });
       for (var cd = Math.ceil(arc.a0 / 90) * 90; cd < arc.a1; cd += 90) lay.pts.push(arcPtWorld(g.O, arc.r, cd));   // >90°弧が跨ぐcardinalもviewBoxに含める
       var bisW = [Math.cos(arc.bis * DEG), Math.sin(arc.bis * DEG)], dirSvg = [bisW[0], -bisW[1]];   // world→svg
-      specs.push({ role: arc.role, text: arc.label != null ? String(arc.label) : (arc.role === 'unknown' ? '∠x' : Math.floor(arc.a1 - arc.a0 + 0.5) + '°'),
-        dir: dirSvg, cands: arc.role === 'unknown' ? ANGLE_UN_CANDS : ANGLE_KN_CANDS, color: col, own: ['r' + idx, 'r' + ((idx + 1) % n)] });
+      // 未知角ラベルの意匠(既定=circle_zx: 白丸+∠x)。案a=circle_x(白丸+x・∠を落とす)/案b=circle_zx_big(∠x拡大)/案c=bare_zx(囲みなし)
+      var isUn = arc.role === 'unknown';
+      var unText = uStyle === 'circle_x' ? 'x' : (arc.label != null ? String(arc.label) : '∠x');
+      specs.push({ role: arc.role, text: isUn ? unText : (arc.label != null ? String(arc.label) : Math.floor(arc.a1 - arc.a0 + 0.5) + '°'),
+        dir: dirSvg, cands: isUn ? (uStyle === 'circle_zx_big' ? ANGLE_UN_CANDS_BIG : ANGLE_UN_CANDS) : ANGLE_KN_CANDS, color: col, own: ['r' + idx, 'r' + ((idx + 1) % n)] });
     });
-    // ラベル配置（自弧束縛=own2ray・placeLbl・決定的候補列）。未知は白丸囲みを先に敷く。
+    // ラベル配置（自弧束縛=own2ray・placeLbl・決定的候補列）。未知は(案により)白丸囲みを先に敷く。
     specs.forEach(function (sp) {
       var others = lay.labels.map(function (l) { return l.box; });
       var ownSegs = lay.segs.filter(function (s) { return sp.own.indexOf(s.id) >= 0; });
       var otherSegs = lay.segs.filter(function (s) { return sp.own.indexOf(s.id) < 0; });
       var pl = placeLbl(O, [sp.dir], sp.text, others, ownSegs, otherSegs, sp.cands);
-      if (sp.role === 'unknown') lay.parts.push('<circle cx="' + pl.cx.toFixed(2) + '" cy="' + pl.cy.toFixed(2) + '" r="' + (pl.fs * 0.95).toFixed(1) + '" fill="#fff" stroke="' + C_TARGET + '" stroke-width="1.2"/>');
+      var withCircle = sp.role === 'unknown' && uStyle !== 'bare_zx';   // 案c(bare_zx)は白丸なし
+      if (withCircle) { var cr = pl.fs * (uStyle === 'circle_x' ? 1.15 : 0.95); lay.parts.push('<circle cx="' + pl.cx.toFixed(2) + '" cy="' + pl.cy.toFixed(2) + '" r="' + cr.toFixed(1) + '" fill="#fff" stroke="' + C_TARGET + '" stroke-width="1.2"/>'); lay.pts.push([pl.cx - cr, pl.cy - cr], [pl.cx + cr, pl.cy + cr]); }
       lay.parts.push(textEl(pl.cx, pl.cy, sp.text, pl.fs, sp.color));
       lay.labels.push({ box: pl.box, own: sp.own, text: sp.text });
       lay.pts.push([pl.box.x0, pl.box.y0], [pl.box.x1, pl.box.y1]);
