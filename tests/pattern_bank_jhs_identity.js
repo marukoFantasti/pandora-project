@@ -52,6 +52,11 @@ const ID = {
   jhs_c12_taicho_02: (e, ans) => ans + e.a1 === 180,                             // 一直線180°: ∠x＋a1＝180
   jhs_c12_isshuu_01: (e, ans) => ans + e.a1 + e.a2 === 180,                      // 3直線上側の和180°: ∠x＋a1＋a2＝180
   jhs_c12_mawari_01: (e, ans) => ans + e.a1 + e.a2 + e.a3 === 360,               // 一点のまわり360°: ∠x＋a1＋a2＋a3＝360
+  // --- c12 第2波G-2 parallel_lines(平行線と角) ---
+  jhs_c12_doui_01: (e, ans) => ans === e.t1,                                     // 同位角相等: ∠x＝t1
+  jhs_c12_sakka_01: (e, ans) => ans === e.t1,                                    // 錯角相等: ∠x＝t1
+  jhs_c12_naikaku_01: (e, ans) => ans + e.t1 === 180,                            // 同側内角の和180°: ∠x＋t1＝180
+  jhs_c12_fukugo_01: (e, ans) => ans + e.s1 === 180 && ans === e.t1,             // 隣接180→同位角: ∠x＋s1＝180 ∧ ∠x＝t1
   // --- c15 展開・因数分解：多項式係数の恒等(問題多項式 == 答えの展開) ---
   // 展開5型: 問題=因数積 → 展開係数が答え多項式の係数と一致(答え係数からの復元と等価)
   jhs_c15_exp_01: (e) => e.s1 === e.a1 + e.b1 && e.t1 === e.a1 * e.b1,            // (x+a)(x+b)=x²+(a+b)x+ab

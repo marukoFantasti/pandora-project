@@ -1,0 +1,289 @@
+{
+ "_meta_append": {
+  "purpose": "patterns_jhs_c12.jsonへの追補(第2波・G-2 parallel_lines 4パターン。c18追補=Phase D-2方式)",
+  "date": "2026-08-15",
+  "note": "追補後c12=8パターン。折れ線複合(補助平行線のZ字)はG-2.5候補在庫として記録(新図構成のため)"
+ },
+ "patterns": [
+  {
+   "pattern_id": "jhs_c12_doui_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c12_u01",
+   "unit_name": "図形の調べ方",
+   "semantic_category": "同位角(平行線・相等)",
+   "semantic_note": "平行線の同位角相等の認識ドリル。答=既知値(x=t1)はtaicho_01と同類型(相等が学習内容・転記カタログ適用外=裁可済み類型)。90°除外は直交で全角相等となり「どの関係でxが決まるか」の視認が退化するため。スキャン構成(i)最疎(minText42.74)。",
+   "step_count": 1,
+   "operation": "同位角相等: ∠x＝t1",
+   "answer_formula": "t1",
+   "answer_domain": "any_int",
+   "slots": {
+    "t1": {
+     "type": "int",
+     "range": [
+      30,
+      150
+     ],
+     "step": 5
+    }
+   },
+   "computed_slots": {},
+   "value_constraints": [
+    {
+     "rule": "not_right",
+     "expr": "t1 != 90",
+     "why": "直交は全角相等で角関係の視認が退化"
+    }
+   ],
+   "sentence_templates": [
+    "図で、直線ℓと直線mは平行である。∠xの大きさを求めなさい。"
+   ],
+   "answer_template": "答え ∠x＝{t1}°",
+   "figure_params": {
+    "kind": "angle_figure",
+    "subkind": "parallel_lines",
+    "transversal": {
+     "angle": "{t1}"
+    },
+    "angles": [
+     {
+      "at": "upper",
+      "pos": 0,
+      "v": "{t1}",
+      "role": "known"
+     },
+     {
+      "at": "lower",
+      "pos": 0,
+      "v": "{t1}",
+      "role": "unknown",
+      "label": "∠x"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c12_sakka_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c12_u01",
+   "unit_name": "図形の調べ方",
+   "semantic_category": "錯角(平行線・相等)",
+   "semantic_note": "錯角相等の認識ドリル(Z字の対応位置)。答=既知値の裁可済み類型。pos構成はスキャン構成(ii)そのもの(上pos2既知+下pos0未知・minText18.93)。同位角との混合出題で「どちらの関係か」の識別を問える対を成す。",
+   "step_count": 1,
+   "operation": "錯角相等: ∠x＝t1",
+   "answer_formula": "t1",
+   "answer_domain": "any_int",
+   "slots": {
+    "t1": {
+     "type": "int",
+     "range": [
+      30,
+      150
+     ],
+     "step": 5
+    }
+   },
+   "computed_slots": {},
+   "value_constraints": [
+    {
+     "rule": "not_right",
+     "expr": "t1 != 90",
+     "why": "直交退化(doui_01と同一理由)"
+    }
+   ],
+   "sentence_templates": [
+    "図で、直線ℓと直線mは平行である。∠xの大きさを求めなさい。"
+   ],
+   "answer_template": "答え ∠x＝{t1}°",
+   "figure_params": {
+    "kind": "angle_figure",
+    "subkind": "parallel_lines",
+    "transversal": {
+     "angle": "{t1}"
+    },
+    "angles": [
+     {
+      "at": "upper",
+      "pos": 2,
+      "v": "{t1}",
+      "role": "known"
+     },
+     {
+      "at": "lower",
+      "pos": 0,
+      "v": "{t1}",
+      "role": "unknown",
+      "label": "∠x"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c12_naikaku_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c12_u01",
+   "unit_name": "図形の調べ方",
+   "semantic_category": "同側内角(和180°・計算型)",
+   "semantic_note": "同側内角の和180から逆算(x=180−t1)。相等2種(同位・錯角)に対する計算型で、平行線系の「見る→計算する」の橋。既知は内側(上pos2)・未知は同じ側の内側(下・奇pos=180−t1側)。pos割当はbuilderの契約検査(v不一致throw)が守るため、配線時に実posでclearance悉皆(corr-0020二段)を必須とする。",
+   "step_count": 1,
+   "operation": "同側内角: ∠x＝180−t1",
+   "answer_formula": "180 - t1",
+   "answer_domain": "any_int",
+   "slots": {
+    "t1": {
+     "type": "int",
+     "range": [
+      30,
+      150
+     ],
+     "step": 5
+    }
+   },
+   "computed_slots": {
+    "xv1": {
+     "formula": "180 - t1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_transcribe_x",
+     "expr": "t1 != 90",
+     "why": "転記型リーク排除(t1=90だと答=既知値)+直交退化の一括"
+    }
+   ],
+   "sentence_templates": [
+    "図で、直線ℓと直線mは平行である。∠xの大きさを求めなさい。"
+   ],
+   "answer_template": "答え ∠x＝{xv1}°",
+   "figure_params": {
+    "kind": "angle_figure",
+    "subkind": "parallel_lines",
+    "transversal": {
+     "angle": "{t1}"
+    },
+    "angles": [
+     {
+      "at": "upper",
+      "pos": 2,
+      "v": "{t1}",
+      "role": "known"
+     },
+     {
+      "at": "lower",
+      "pos": 1,
+      "v": "{xv1}",
+      "role": "unknown",
+      "label": "∠x"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c12_fukugo_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c12_u01",
+   "unit_name": "図形の調べ方",
+   "semantic_category": "複合(隣接180→同位角の2段推論)",
+   "semantic_note": "既知は上交点の奇pos(表示値s1=180−t1)・未知は下pos0(x=t1)。解法は「隣接180でt1を出す→同位角で輸送」または「錯角側の経路」の2段推論——c12実物の複合角度計算(diff2)の最小形。表示既知s1と答t1が180の補対で、転記はt1≠90(s1=t1の一致点)を除外。ラベル密度は構成(i)同等(上1+下1)でスキャン安全域内だが、実pos構成での悉皆を配線時に実施。",
+   "step_count": 1,
+   "operation": "隣接180+同位角: ∠x＝180−s1(s1＝表示既知)",
+   "answer_formula": "t1",
+   "answer_domain": "any_int",
+   "slots": {
+    "t1": {
+     "type": "int",
+     "range": [
+      30,
+      150
+     ],
+     "step": 5
+    }
+   },
+   "computed_slots": {
+    "s1": {
+     "formula": "180 - t1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_transcribe_x",
+     "expr": "t1 != 90",
+     "why": "転記型リーク排除(t1=90だと答=表示既知s1)+直交退化"
+    }
+   ],
+   "sentence_templates": [
+    "図で、直線ℓと直線mは平行である。∠xの大きさを求めなさい。"
+   ],
+   "answer_template": "答え ∠x＝{t1}°",
+   "figure_params": {
+    "kind": "angle_figure",
+    "subkind": "parallel_lines",
+    "transversal": {
+     "angle": "{t1}"
+    },
+    "angles": [
+     {
+      "at": "upper",
+      "pos": 1,
+      "v": "{s1}",
+      "role": "known"
+     },
+     {
+      "at": "lower",
+      "pos": 0,
+      "v": "{t1}",
+      "role": "unknown",
+      "label": "∠x"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  }
+ ]
+}

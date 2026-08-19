@@ -18,61 +18,63 @@ const bank = JSON.parse(fs.readFileSync(path.join(ROOT, 'pattern_bank', 'pattern
 const byId = {}; bank.patterns.forEach(p => byId[p.pattern_id] = p);
 
 function rng(lo, hi, st) { const a = []; for (let v = lo; v <= hi; v += st) a.push(v); return a; }
-// バンク figure_params の "{slot}" を env で解決して具体 fp を得る(テンプレ由来=ドリフトなし)。
+function resolve(v, env) { const k = String(v).replace(/[{}]/g, ''); return env[k] !== undefined ? env[k] : Number(v); }
+// バンク figure_params の "{slot}" を env で解決して具体 fp を得る(テンプレ由来=ドリフトなし)。両subkind対応。
 function instantiate(p, env) {
   const fp = JSON.parse(JSON.stringify(p.figure_params));
+  if (fp.transversal) fp.transversal = Object.assign({}, fp.transversal, { angle: resolve(fp.transversal.angle, env) });
   fp.angles = fp.angles.map(a => {
-    const key = String(a.v).replace(/[{}]/g, '');
-    const out = { v: env[key], role: a.role };
-    if (a.label) out.label = a.label;
+    const out = { v: resolve(a.v, env), role: a.role };
+    if (a.at) out.at = a.at; if (a.pos !== undefined) out.pos = a.pos; if (a.label) out.label = a.label;
     return out;
   });
   return fp;
 }
 
 // 正式値域の全数列挙(バンク value_constraints をミラー。恒等/図照合の慣行=数式を検査側に写す)。
+// sub='around'(angle_around_point・和360検査) / 'parallel'(parallel_lines・semBad/minSeg検査)。
 const DOMAINS = {
-  // 2直線4角: a1∈[30,150]/5・a1≠90(直交退化)。s1=180−a1。
-  jhs_c12_taicho_01: { expect: 24, envs: () => rng(30, 150, 5).filter(a1 => a1 !== 90).map(a1 => ({ a1, s1: 180 - a1 })) },
-  jhs_c12_taicho_02: { expect: 24, envs: () => rng(30, 150, 5).filter(a1 => a1 !== 90).map(a1 => ({ a1, xv1: 180 - a1 })) },
-  // 3直線6角: a1,a2∈[25,130]/5・xv1=180−a1−a2 で xv1≥25∧xv1≠a1∧xv1≠a2∧a1+a2≥70(隣接2既知の密度clearance・corr-0020)。
+  // --- 第1波 angle_around_point ---
+  jhs_c12_taicho_01: { expect: 24, sub: 'around', envs: () => rng(30, 150, 5).filter(a1 => a1 !== 90).map(a1 => ({ a1, s1: 180 - a1 })) },
+  jhs_c12_taicho_02: { expect: 24, sub: 'around', envs: () => rng(30, 150, 5).filter(a1 => a1 !== 90).map(a1 => ({ a1, xv1: 180 - a1 })) },
   jhs_c12_isshuu_01: {
-    expect: 222, envs: () => { const o = []; for (const a1 of rng(25, 130, 5)) for (const a2 of rng(25, 130, 5)) { const xv1 = 180 - a1 - a2; if (xv1 >= 25 && xv1 !== a1 && xv1 !== a2 && a1 + a2 >= 70) o.push({ a1, a2, xv1 }); } return o; }
+    expect: 222, sub: 'around', envs: () => { const o = []; for (const a1 of rng(25, 130, 5)) for (const a2 of rng(25, 130, 5)) { const xv1 = 180 - a1 - a2; if (xv1 >= 25 && xv1 !== a1 && xv1 !== a2 && a1 + a2 >= 70) o.push({ a1, a2, xv1 }); } return o; }
   },
-  // 光線4本: a1,a2,a3∈[40,140]/5・xv1=360−Σ で xv1∈[40,140]∧xv1≠a1/a2/a3。
   jhs_c12_mawari_01: {
-    expect: 5538, envs: () => { const o = []; for (const a1 of rng(40, 140, 5)) for (const a2 of rng(40, 140, 5)) for (const a3 of rng(40, 140, 5)) { const xv1 = 360 - a1 - a2 - a3; if (xv1 >= 40 && xv1 <= 140 && xv1 !== a1 && xv1 !== a2 && xv1 !== a3) o.push({ a1, a2, a3, xv1 }); } return o; }
-  }
+    expect: 5538, sub: 'around', envs: () => { const o = []; for (const a1 of rng(40, 140, 5)) for (const a2 of rng(40, 140, 5)) for (const a3 of rng(40, 140, 5)) { const xv1 = 360 - a1 - a2 - a3; if (xv1 >= 40 && xv1 <= 140 && xv1 !== a1 && xv1 !== a2 && xv1 !== a3) o.push({ a1, a2, a3, xv1 }); } return o; }
+  },
+  // --- 第2波 parallel_lines(交差角t1∈[30,150]/5・t1≠90直交退化。実pos構成でclearance悉皆・corr-0020二段) ---
+  jhs_c12_doui_01: { expect: 24, sub: 'parallel', envs: () => rng(30, 150, 5).filter(t => t !== 90).map(t1 => ({ t1 })) },
+  jhs_c12_sakka_01: { expect: 24, sub: 'parallel', envs: () => rng(30, 150, 5).filter(t => t !== 90).map(t1 => ({ t1 })) },
+  jhs_c12_naikaku_01: { expect: 24, sub: 'parallel', envs: () => rng(30, 150, 5).filter(t => t !== 90).map(t1 => ({ t1, xv1: 180 - t1 })) },
+  jhs_c12_fukugo_01: { expect: 24, sub: 'parallel', envs: () => rng(30, 150, 5).filter(t => t !== 90).map(t1 => ({ t1, s1: 180 - t1 })) }
 };
 
 let bad = 0;
-console.log('=== c12 angle_figure 悉皆図照合(正式値域・受理組数/和360/描画/clearance) ===');
+console.log('=== c12 angle_figure 悉皆図照合(正式値域・受理組数/幾何整合/描画/clearance) ===');
 for (const p of bank.patterns) {
   const dom = DOMAINS[p.pattern_id];
   if (!dom) { console.log('  ⚠️ ' + p.pattern_id + ' 値域未定義(要登録)'); bad++; continue; }
   const envs = dom.envs();
-  // (1) 受理組数
   const countOk = envs.length === dom.expect;
   if (!countOk) bad++;
-  // (2)(3) 和360 + 描画可能性、(4) clearance用 cases
-  let sumBad = 0, drawBad = 0;
-  const cases = [];
+  let geomBad = 0, drawBad = 0, clBad = 0, minMT = 1e9;   // geomBad: around=和360≠ / parallel=契約throw
   for (const env of envs) {
-    const fp = instantiate(p, env);
-    const s = fp.angles.reduce((acc, a) => acc + Number(a.v), 0);
-    if (s !== 360) sumBad++;
-    let svg; try { svg = FB.build(fp); } catch (e) { drawBad++; continue; }
+    let fp, svg;
+    try { fp = instantiate(p, env); } catch (e) { geomBad++; continue; }
+    if (dom.sub === 'around') { if (fp.angles.reduce((acc, a) => acc + Number(a.v), 0) !== 360) geomBad++; }
+    try { svg = FB.build(fp); } catch (e) { geomBad++; continue; }   // parallel: 契約検査throw=幾何不整合
     if (!svg || svg.length < 200 || svg.indexOf('undefined') >= 0 || (svg.match(/<svg/g) || []).length !== 1) drawBad++;
-    cases.push({ label: p.pattern_id + ' ' + JSON.stringify(env), fp });
+    const cl = FB._angleFigureMinClearance(fp);
+    if (cl.minText < minMT) minMT = cl.minText;
+    // clearance: ラベル間≥10 ∧ 非自線分≥4 ∧ 自要素最近傍(semBad=0)
+    if (cl.minText < 10 || cl.minSeg < 4 || cl.semBad > 0) { clBad++; if (clBad <= 6) console.log('       ❌ ' + p.pattern_id + ' ' + JSON.stringify(env) + ' minText=' + cl.minText.toFixed(2) + ' minSeg=' + cl.minSeg.toFixed(2) + ' semBad=' + cl.semBad); }
   }
-  // (4) clearance 悉皆(minText≥10 ∧ overflow0)
-  const res = scan(cases);
-  const clOk = res.violations.length === 0;
-  if (sumBad) bad++; if (drawBad) bad++; if (!clOk) bad += res.violations.length;
-  console.log('  ' + (countOk && !sumBad && !drawBad && clOk ? '✅' : '❌') + ' ' + p.pattern_id +
+  if (geomBad) bad += geomBad; if (drawBad) bad += drawBad; if (clBad) bad += clBad;
+  const gLbl = dom.sub === 'around' ? '和360不一致' : '契約不整合';
+  console.log('  ' + (countOk && !geomBad && !drawBad && !clBad ? '✅' : '❌') + ' ' + p.pattern_id +
     ' [' + p.figure_params.subkind + ']: 受理組 ' + envs.length + '/' + dom.expect +
-    ' / 和360不一致 ' + sumBad + ' / 描画不良 ' + drawBad + ' / clearance違反 ' + res.violations.length);
-  res.violations.slice(0, 6).forEach(v => console.log('       ❌ ' + v.label + ' minText=' + v.minText + ' overflow=' + v.overflow + (v.err ? ' err=' + v.err : '')));
+    ' / ' + gLbl + ' ' + geomBad + ' / 描画不良 ' + drawBad + ' / clearance違反 ' + clBad + ' / min minText ' + minMT.toFixed(2));
 }
-console.log('\n' + (bad === 0 ? 'c12 図照合: 全4パターン合格 ✅(受理組数24/24/222/5,538・和360・描画・clearance悉皆違反0・min minText 10.05px)' : '❌ ' + bad + '件'));
+console.log('\n' + (bad === 0 ? 'c12 図照合: 全8パターン合格 ✅(第1波24/24/222/5,538 + 第2波G-2 24×4・幾何整合・描画・clearance悉皆違反0)' : '❌ ' + bad + '件'));
 process.exit(bad === 0 ? 0 : 1);

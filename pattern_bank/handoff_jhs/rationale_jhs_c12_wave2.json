@@ -1,0 +1,101 @@
+{
+ "_meta": {
+  "schema": "rationale_g05_gold.json準拠(pandora2正準・ネスト形)",
+  "scope": "jhs_c12 第2波4パターン(G-2 parallel_lines)。rationale_jhs.jsonへ追補統合(136→140)",
+  "note": "figure_notes正準(図あり=設計記録)。ネイティブ記述 2026-08-15",
+  "order": "バンク順"
+ },
+ "jhs_c12_doui_01": {
+  "brief": {
+   "semantic_territory": "同位角(平行線・相等)",
+   "number_domain": "整数(度・5°刻み)",
+   "answer_structure": "single",
+   "figure": "parallel_lines",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "G-2値域はスキャン確定の交差角30〜150°(4構成×25本・違反0)。平行線は隣接楔が必ず和180で「両方小」の退化が構造的に起きない(G-1 isshuu退化の平行線版は不発生)——構成別スキャンの知見",
+     "by": "marko",
+     "date": "2026-08"
+    },
+    {
+     "text": "折れ線複合(補助平行線のZ字・2段輸送)は新図構成のためG-2.5候補在庫として記録。未知弧・ラベル配置の美観一括見直しもG-3前の在庫(目視「ぎりぎりオッケー」所見)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "平行線と角はc12実問題の最大バケツ(約12行・棚卸し2026-08-14)。同位角相等はその入口で、参照でも既知1角から各位置の角を問う小問群の第1位置。",
+   "representation": "parallel_lines subkindの適用第1号。横断角t1から上下各交点の4角が決定的に定まり、{at,pos}指定で角の位置を宣言——builderの契約検査(pos偶=t1/奇=180−t1のv一致・平行輸送の一括保証)により、図と本文と答えの整合が三重に守られる。",
+   "constructive_guarantees": "答=既知値(x=t1)は同位角相等の認識が学習内容——taicho_01で裁可済みの類型を平行線に適用。90°除外(直交は全角相等で角関係の識別が図から失われる)。値域30〜150・5°刻みはG-2スキャン確定域(構成(i)・minText42.74=最疎)。",
+   "semantic_position": "平行線4パターンの第1位。錯角(sakka_01)と相等対を成し、混合出題で関係の識別を問う。G-3の三角形の角(平行線補助)への土台。",
+   "exclusions": "t1==90(直交退化)。",
+   "figure_notes": "スキャン構成(i)(上pos0既知+下pos0未知・最疎42.74px)そのもの。平行マーク「>」各線中点束縛・直線ラベルℓ,m左端束縛もclearance検査対象。縦GAP78px固定・viewBoxは交差角で133〜270px横幅(既存図と同オーダー)。",
+   "pedagogy": []
+  }
+ },
+ "jhs_c12_sakka_01": {
+  "brief": {
+   "semantic_territory": "錯角(平行線・相等)",
+   "number_domain": "整数(度・5°刻み)",
+   "answer_structure": "single",
+   "figure": "parallel_lines",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "錯角相等(Z字の対応位置)。同位角と並ぶ相等関係の第2位置で、参照小問でも同位角とセットで問われる標準形。",
+   "representation": "pos構成はG-2スキャン構成(ii)そのもの(上pos2既知+下pos0未知・minText18.93)。同位角とはposだけが違う同型パターン——図構造の再利用で関係の違いを表現する族設計(c12第1波taicho対と同じ手筋)。",
+   "constructive_guarantees": "答=既知の裁可済み類型。90°除外。値域はスキャン確定域内。",
+   "semantic_position": "平行線4パターンの第2位。「上下の対応角が輸送された同じ角に見える」錯角の視覚は目視承認済み(preview_ii)。",
+   "exclusions": "t1==90(直交退化)。",
+   "figure_notes": "構成(ii)実証域(違反0・minText18.93)。錯角のZ字視覚が本パターンの教育的核心で、図なし化は不可能な真正の図依存パターン。",
+   "pedagogy": []
+  }
+ },
+ "jhs_c12_naikaku_01": {
+  "brief": {
+   "semantic_territory": "同側内角(和180°・計算型)",
+   "number_domain": "整数(度・5°刻み)",
+   "answer_structure": "single",
+   "figure": "parallel_lines",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "pos割当(下側の奇pos)は配線時にbuilder実装のpos幾何と突合し、実pos構成でclearance悉皆を実施(corr-0020二段)。契約検査(v不一致throw)が誤割当を即検出する",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "同側内角の和=180°。相等2種(見て等しい)から計算(180−t)へ進む位置で、平行線系の「認識→演算」の橋。",
+   "representation": "既知=内側(上pos2)・未知=同じ側の内側(下・奇pos)。値の整合(奇pos=180−t1)はローカル全域検証済みだが、pos番号と幾何位置の対応はbuilder実装依存のため配線時確認をdirectivesに明記——値域確定(corr-0020)と同じ二段フローをpos割当にも適用する初例。",
+   "constructive_guarantees": "t1==90の除外が転記排除(答90=既知90)と直交退化を一括処理(taicho_02と同じ合わせ技・rule名は転記側)。",
+   "semantic_position": "平行線4パターンの第3位・計算型の入口。fukugo_01(2段推論)への前段。",
+   "exclusions": "t1==90(転記+退化)。",
+   "figure_notes": "ラベル密度は上1+下1で構成(i)(ii)同等の疎構成だが、posペアがスキャン済み構成と異なるため配線時に実構成で悉皆(directives参照)。",
+   "pedagogy": []
+  }
+ },
+ "jhs_c12_fukugo_01": {
+  "brief": {
+   "semantic_territory": "複合(隣接180°→同位角の2段推論)",
+   "number_domain": "整数(度・5°刻み)",
+   "answer_structure": "single",
+   "figure": "parallel_lines",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "表示既知が求めたい角の隣(奇pos・s1=180−t1)にあり、隣接180で起こしてから同位角で輸送する2段推論——c12後半の複合角度計算(diff2)の最小形。1段の相等・計算3パターンの上に立つc12第2波の頂上。",
+   "representation": "スロットはt1のみ・表示はcomputed s1——「答えから問題を構成する」逆算生成(g05円周逆算の手筋)の角度版で、2段推論でも制約は1本で済む。解法経路は隣接180→同位/対頂→錯角の複数が正解に収束する(経路自由・答一意)。",
+   "constructive_guarantees": "t1==90(答=表示既知の転記一致点)を除外。ラベル密度は構成(i)同等の疎構成。",
+   "semantic_position": "平行線4パターンの第4位。G-2.5候補の折れ線複合(補助平行線)・G-3の三角形の角(平行線補助解法)への直接の前駆。",
+   "exclusions": "t1==90(転記+退化)。",
+   "figure_notes": "上交点の奇pos既知+下pos0未知。密度は疎だが実pos構成での悉皆を配線時に実施(naikaku_01と同じ二段)。",
+   "pedagogy": []
+  }
+ }
+}

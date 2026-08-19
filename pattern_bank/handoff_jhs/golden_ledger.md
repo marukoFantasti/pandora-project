@@ -94,3 +94,16 @@
   g06 3545261e / jhs_c01 76dbe64c / c02 082b2c3f / c03 6d8e6ede / c04 b221d05f / c05 a571bf63 /
   c06 00ba3cf0 / c07 02ab26f9 / c08 8c1197f7 / c09 7bdf4082 / c10 9427e7a3 / c15 a1e38dba /
   c16 2d8f37b7 / c17 1df8cea7 / c18 5bda8385。**+21本目: c12 ad8f55e1**。
+
+### 2026-08-19 c12第2波 基準md5更新(G-2平行線4パターンをappend・Phase D-2方式)
+- 章: jhs_c12。第2波G-2 parallel_lines 4パターン(doui_01/sakka_01/naikaku_01/fukugo_01)を
+  既存patterns配列末尾へappend(c18追補と同じD-2方式)。まるこ検収済み(2026-08-15)。c12=4→8パターン。
+- 更新理由: G-2 parallel_lines(平行線と角)本番投入。同位角/錯角(相等)・同側内角/複合(計算)の4型。
+- 旧md5: ad8f55e1 (4パターン) / 新md5: **78a83d3d** (8パターン)。golden PASS 24/24。
+- 不変証明: 既存4パターン(taicho_01/taicho_02/isshuu_01/mawari_01)のgoldenセクションが
+  append前後で**バイト一致**(固定シード・既存が配列先で先行処理=RNG列不変・head45行diff無し)。ID/unit_id衝突なし。
+- pos突合(配線時確認): naikaku_01(上pos2既知+下pos1未知)=同側内角(両内部・同左側・和180)✓ /
+  fukugo_01(上pos1既知+下pos0未知)=隣接180→同位角の2段 ✓。builder契約検査(v↔pos角一致)で全域保証。
+- clearance悉皆(corr-0020二段・実pos構成×受理24組): doui 42.74 / sakka 18.93 / naikaku 10.45 /
+  fukugo 10.14 (min minText・全て違反0)。⚡はc12点灯済みのため維持(BANK_FILES登録済)。
+- 基準md5更新: 21本目 c12 = ad8f55e1 → **78a83d3d**(他20章は不変)。
