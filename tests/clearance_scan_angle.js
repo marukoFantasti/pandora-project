@@ -105,7 +105,31 @@ function polyScan(FB) {
   return out;
 }
 
-module.exports = { scan, cases2lines, cases3lines, around, parallel, casesParallel, PAR_CONS, poly, polyScan };
+// ---- 第2波G-4a congruent_pair(合同2三角形の求角)。バンク想定2構成をvalue域で悉皆(corr-0020) ----
+function cong(angles, leftShow, rightShow) {
+  return { kind: 'angle_figure', subkind: 'congruent_pair', angles: angles.map(function (v) { return { v: v }; }),
+    left: { names: ['A', 'B', 'C'], show: leftShow }, right: { names: ['D', 'E', 'F'], show: rightShow }, side_ticks: true };
+}
+function congScan(FB) {
+  const out = {}; const rng = (lo, hi, st) => { const a = []; for (let v = lo; v <= hi; v += st) a.push(v); return a; };
+  function run(key, name, combos) {
+    let viol = 0, minMT = 1e9, minSeg = 1e9, badEx = []; let vbW = 0, vbH = 0;
+    for (const fp of combos) {
+      let cl; try { cl = FB._angleFigureMinClearance(fp); } catch (e) { cl = { minText: -1, minSeg: -1, semBad: 99 }; }
+      const svg = FB.build(fp); const m = svg.match(/viewBox="[-\d.]+ [-\d.]+ ([\d.]+) ([\d.]+)"/); if (m) { vbW = Math.max(vbW, +m[1]); vbH = Math.max(vbH, +m[2]); }
+      if (cl.minText < minMT) minMT = cl.minText; if (cl.minSeg < minSeg) minSeg = cl.minSeg;
+      if (cl.minText < 10 || cl.minSeg < 4 || cl.semBad > 0) { viol++; if (badEx.length < 4) badEx.push({ a: fp.angles.map(x => x.v), mt: cl.minText, sb: cl.semBad }); }
+    }
+    out[key] = { name, total: combos.length, viol, minMT: +minMT.toFixed(2), minSeg: +minSeg.toFixed(2), vbW: Math.round(vbW), vbH: Math.round(vbH), badEx };
+  }
+  // 三角形域(G-3): a1,a2∈[25,130]/5・a3=180−a1−a2∈[25,130]・a1+a2≥65(偏平刈り初期適用)
+  function domain() { const o = []; for (const a1 of rng(25, 130, 5)) for (const a2 of rng(25, 130, 5)) { const a3 = 180 - a1 - a2; if (a3 >= 25 && a3 <= 130 && a1 + a2 >= 65) o.push([a1, a2, a3]); } return o; }
+  run('i', '(i)左1角既知+右対応角∠x(マーク疎)', domain().map(a => cong(a, [{ at: 0, role: 'known' }], [{ at: 0, role: 'unknown', label: '∠x' }])));
+  run('ii', '(ii)左2角既知+右第3角∠x(ラベル3+マーク)', domain().map(a => cong(a, [{ at: 0, role: 'known' }, { at: 1, role: 'known' }], [{ at: 2, role: 'unknown', label: '∠x' }])));
+  return out;
+}
+
+module.exports = { scan, cases2lines, cases3lines, around, parallel, casesParallel, PAR_CONS, poly, polyScan, cong, congScan };
 
 if (require.main === module) {
   const FB = require(path.join(__dirname, '..', 'pattern_bank', 'figure_builder.js'));
