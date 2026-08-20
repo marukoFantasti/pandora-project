@@ -1159,9 +1159,129 @@
     });
     return lay;
   }
+  // ---- 第2波G-3: polygon(多角形の内角・n=3〜6) ----
+  // 頂点配置=接円(incircle)接線構成: 全辺を共通の内接円(ρ=1)に接する直線とし、隣接接線の交点を頂点とする。
+  // 外角=隣接辺の回転角=(180−内角)で法線は総回転360°→必ず閉じ・必ず凸(乱数なし・n非依存の統一式。
+  // g05 quad_angleのAD探索(n=4の2自由度探索)を、閉形のn一般構成へ一般化)。最短辺はρスケールで担保。
+  var POLY_TARGET = 226;   // 目標最大寸法(既存図とUI整合)
+  function polygonGeom(fp) {
+    var angles = (fp.angles || []).map(function (a) { return Number(a.v); });
+    var n = angles.length, verts = fp.vertices || [];
+    if (verts.length !== n) throw new Error('polygon契約違反: vertices数' + verts.length + '≠angles数' + n);
+    if (n < 3 || n > 6) throw new Error('polygon契約違反: n=' + n + ' は3..6');
+    var sum = 0; for (var i = 0; i < n; i++) sum += angles[i];
+    if (Math.floor(sum + 0.5) !== (n - 2) * 180) throw new Error('polygon契約違反: 内角和' + sum + '≠' + ((n - 2) * 180));
+    for (var j = 0; j < n; j++) if (!(angles[j] > 0 && angles[j] < 180)) throw new Error('polygon契約違反: 内角' + angles[j] + 'は(0,180)=凸必須');
+    var dirs = [0];
+    for (var k = 1; k < n; k++) dirs.push(dirs[k - 1] + (180 - angles[k]));
+    var nrm = dirs.map(function (dd) { return [Math.sin(dd * DEG), -Math.cos(dd * DEG)]; });   // 外向き法線
+    var Vraw = [];
+    for (var m = 0; m < n; m++) { var a = nrm[(m - 1 + n) % n], b = nrm[m], det = a[0] * b[1] - a[1] * b[0]; Vraw.push([(b[1] - a[1]) / det, (a[0] - b[0]) / det]); }
+    var xs = Vraw.map(function (p) { return p[0]; }), ys = Vraw.map(function (p) { return p[1]; });
+    var w = Math.max.apply(null, xs) - Math.min.apply(null, xs), h = Math.max.apply(null, ys) - Math.min.apply(null, ys);
+    var sc = POLY_TARGET / Math.max(w, h);
+    var mx = (Math.max.apply(null, xs) + Math.min.apply(null, xs)) / 2, my = (Math.max.apply(null, ys) + Math.min.apply(null, ys)) / 2;
+    var pts = Vraw.map(function (p) { return [(p[0] - mx) * sc, (p[1] - my) * sc]; });
+    var cen = [0, 0]; pts.forEach(function (p) { cen[0] += p[0] / n; cen[1] += p[1] / n; });
+    var edges = []; for (var e = 0; e < n; e++) edges.push(Math.hypot(pts[e][0] - pts[(e + 1) % n][0], pts[e][1] - pts[(e + 1) % n][1]));
+    return { pts: pts, cen: cen, angles: angles, n: n, min_edge: Math.min.apply(null, edges), edges: edges, scale: sc };
+  }
+  // 頂点Vでの内角[a0,a1](world度・span≈内角値・内側=重心向き)
+  function polyInteriorArc(g, i) {
+    var n = g.n, V = g.pts[i], P = g.pts[(i - 1 + n) % n], Q = g.pts[(i + 1) % n];
+    var aP = Math.atan2(P[1] - V[1], P[0] - V[0]) / DEG, aN = Math.atan2(Q[1] - V[1], Q[0] - V[0]) / DEG;
+    var span = ((aN - aP) % 360 + 360) % 360, av = g.angles[i];
+    if (Math.abs(span - av) < 1) return { a0: aP, a1: aP + span };
+    return { a0: aN, a1: aN + (360 - span) };
+  }
+  function polygonLayout(fp) {
+    var uStyle = fp.unknown_style || 'bare_zx';
+    var g = polygonGeom(fp), n = g.n, lay = newLayout();
+    var W = g.pts.map(worldFlip);
+    lay.parts.push(polygonEl(W, '#ffffff', 2));                 // 白塗り+青枠
+    W.forEach(function (p) { lay.pts.push(p); });
+    for (var e = 0; e < n; e++) lay.segs.push({ id: 'e' + e, p1: W[e], p2: W[(e + 1) % n] });   // 辺e = V_e→V_{e+1}
+    var specs = [];
+    var extSet = {}; (fp.external || []).forEach(function (ex) { extSet[Number(ex.at)] = 1; });   // 外角を持つ頂点(延長線を頂点名のown扱いに)
+    // 内角の弧+ラベル / 頂点名
+    (fp.angles || []).forEach(function (a, i) {
+      var role = a.role || 'plain', Vw = g.pts[i];
+      var arc = polyInteriorArc(g, i), bis = (arc.a0 + arc.a1) / 2;
+      if (role !== 'plain') {
+        var isUn = role === 'unknown', col = isUn ? C_TARGET : C_KNOWN, wdt = isUn ? 2 : 1.6, r = isUn ? ANGLE_UR : ANGLE_KR;
+        var aw = arcPath(Vw, r, arc.a0, arc.a1, col, wdt); lay.parts.push(aw.el);
+        aw.ext.forEach(function (p) { lay.pts.push(p); });
+        var text = isUn ? (uStyle === 'circle_x' ? 'x' : (a.label != null ? String(a.label) : '∠x')) : (a.label != null ? String(a.label) : Math.floor(g.angles[i] + 0.5) + '°');
+        specs.push({ role: role, text: text, anchor: worldFlip(Vw), dir: [Math.cos(bis * DEG), -Math.sin(bis * DEG)],
+          cands: isUn ? ANGLE_UN_CANDS : ANGLE_KN_CANDS, color: col, own: ['e' + i, 'e' + ((i - 1 + n) % n)] });
+      }
+      var nm = (fp.vertices[i] || {}).name;
+      if (nm != null) specs.push({ role: 'name', text: String(nm), anchor: worldFlip(Vw), dir: [-Math.cos(bis * DEG), Math.sin(bis * DEG)],
+        cands: [[13, 13], [16, 13], [19, 12], [23, 12], [27, 12]], color: C_STROKE, own: extSet[i] ? ['e' + i, 'e' + ((i - 1 + n) % n), 'ext' + i] : ['e' + i, 'e' + ((i - 1 + n) % n)] });
+    });
+    // 等長マーク(二等辺・平行四辺形の等辺): {ticks, edges:[edgeIdx…]} を辺中点に垂直チョン
+    (fp.marks || []).forEach(function (mk) {
+      (mk.edges || []).forEach(function (ei) {
+        var p1 = W[ei], p2 = W[(ei + 1) % n], mid = [(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2];
+        var dx = p2[0] - p1[0], dy = p2[1] - p1[1], len = Math.hypot(dx, dy); dx /= len; dy /= len;
+        var px = -dy, py = dx, t = mk.ticks || 1;
+        for (var s = 0; s < t; s++) {
+          var off = (s - (t - 1) / 2) * 3.2, c = [mid[0] + dx * off, mid[1] + dy * off];
+          lay.parts.push(lineEl([c[0] - px * 4.5, c[1] - py * 4.5], [c[0] + px * 4.5, c[1] + py * 4.5], C_STROKE, 1.6));
+        }
+        lay.pts.push(mid);
+      });
+    });
+    // 平行辺マーク(平行四辺形): [[edgeIdx,edgeIdx]…] の各辺中点に「>」(辺方向)
+    (fp.parallel_marks || []).forEach(function (pair, gi) {
+      pair.forEach(function (ei) {
+        var p1 = W[ei], p2 = W[(ei + 1) % n], mid = [(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2];
+        var dx = p2[0] - p1[0], dy = p2[1] - p1[1], len = Math.hypot(dx, dy); dx /= len; dy /= len;
+        var px = -dy, py = dx, tip = [mid[0] + dx * 3.5, mid[1] + dy * 3.5], b1 = [mid[0] - dx * 2 + px * 5, mid[1] - dy * 2 + py * 5], b2 = [mid[0] - dx * 2 - px * 5, mid[1] - dy * 2 - py * 5];
+        lay.parts.push('<path d="M ' + b1[0].toFixed(2) + ' ' + b1[1].toFixed(2) + ' L ' + tip[0].toFixed(2) + ' ' + tip[1].toFixed(2) + ' L ' + b2[0].toFixed(2) + ' ' + b2[1].toFixed(2) + '" fill="none" stroke="' + C_STROKE + '" stroke-width="1.5"/>');
+        lay.pts.push(b1, b2, tip);
+      });
+    });
+    // 外角(辺の延長線+外角弧)。external:[{at:vertexIdx, role, label, v}] v=180−内角
+    (fp.external || []).forEach(function (ex) {
+      var i = Number(ex.at), Vw = g.pts[i], Pw = g.pts[(i - 1 + n) % n], Qw = g.pts[(i + 1) % n];
+      var av = g.angles[i], extAng = 180 - av;
+      if (ex.v != null && Math.floor(Number(ex.v) + 0.5) !== Math.floor(extAng + 0.5)) throw new Error('polygon契約違反: 頂点' + i + 'の外角=' + extAng + ' だが v=' + ex.v);
+      var din = [Vw[0] - Pw[0], Vw[1] - Pw[1]], dl = Math.hypot(din[0], din[1]); din = [din[0] / dl, din[1] / dl];
+      var extEnd = [Vw[0] + din[0] * 40, Vw[1] + din[1] * 40];
+      lay.parts.push(lineEl(worldFlip(Vw), worldFlip(extEnd), C_STROKE, 2));
+      lay.segs.push({ id: 'ext' + i, p1: worldFlip(Vw), p2: worldFlip(extEnd) });
+      lay.pts.push(worldFlip(extEnd));
+      // 外角弧: 延長線方向 → 次の辺方向(V→Q)
+      var aExt = Math.atan2(din[1], din[0]) / DEG, aQ = Math.atan2(Qw[1] - Vw[1], Qw[0] - Vw[0]) / DEG;
+      var span = ((aQ - aExt) % 360 + 360) % 360; if (Math.abs(span - extAng) > 1) span = -(360 - span);
+      var role = ex.role || 'known', isUn = role === 'unknown', col = isUn ? C_TARGET : C_KNOWN, r = isUn ? ANGLE_UR : ANGLE_KR;
+      var aw = arcPath(Vw, r, aExt, aExt + span, col, isUn ? 2 : 1.6); lay.parts.push(aw.el); aw.ext.forEach(function (p) { lay.pts.push(p); });
+      var bis = aExt + span / 2;
+      var text = isUn ? '∠x' : (ex.label != null ? String(ex.label) : Math.floor(extAng + 0.5) + '°');
+      specs.push({ role: role, text: text, anchor: worldFlip(Vw), dir: [Math.cos(bis * DEG), -Math.sin(bis * DEG)], cands: isUn ? ANGLE_UN_CANDS : ANGLE_KN_CANDS, color: col, own: ['ext' + i, 'e' + i] });
+    });
+    // 配置
+    specs.forEach(function (sp) {
+      var others = lay.labels.map(function (l) { return l.box; });
+      var ownSegs = lay.segs.filter(function (s) { return sp.own.indexOf(s.id) >= 0; });
+      var otherSegs = lay.segs.filter(function (s) { return sp.own.indexOf(s.id) < 0; });
+      var pl = placeLbl(sp.anchor, [sp.dir], sp.text, others, ownSegs, otherSegs, sp.cands);
+      if (sp.role === 'unknown' && uStyle !== 'bare_zx') {
+        var cr = pl.fs * (uStyle === 'circle_x' ? 1.15 : 0.95);
+        lay.parts.push('<circle cx="' + pl.cx.toFixed(2) + '" cy="' + pl.cy.toFixed(2) + '" r="' + cr.toFixed(1) + '" fill="#fff" stroke="' + C_TARGET + '" stroke-width="1.2"/>');
+        lay.pts.push([pl.cx - cr, pl.cy - cr], [pl.cx + cr, pl.cy + cr]);
+      }
+      lay.parts.push(textEl(pl.cx, pl.cy, sp.text, pl.fs, sp.color));
+      lay.labels.push({ box: pl.box, own: sp.own, text: sp.text });
+      lay.pts.push([pl.box.x0, pl.box.y0], [pl.box.x1, pl.box.y1]);
+    });
+    return lay;
+  }
   function angleFigureLayout(fp) {
     if (fp.subkind === 'angle_around_point') return angleAroundPointLayout(fp);
     if (fp.subkind === 'parallel_lines') return parallelLinesLayout(fp);
+    if (fp.subkind === 'polygon') return polygonLayout(fp);
     throw new Error('angle_figure: 未対応subkind ' + fp.subkind);
   }
 
@@ -1217,6 +1337,8 @@
     angle_around_point: angleAroundPointGeom,   // 第2波G-1: 幾何ベクター用(ray方向・弧中心角・座標)
     parallel_lines: parallelLinesGeom,           // 第2波G-2: 交点U,L座標・横断向き・平行輸送(vector用)
     parallel_wedge: parallelWedge,               // (t1,pos)→楔[a0,a1]と実角値(pos偶t1/奇180−t1)
+    polygon: polygonGeom,                         // 第2波G-3: 接円接線構成の頂点座標(vector用)
+    poly_interior_arc: polyInteriorArc,          // 頂点iの内角弧[a0,a1](world度)
     arc_sample_points: arcSamplePoints,          // 弧サンプル点(曲率関門用・頂点からr一定検査)
     // ベクター用の位置引数ラッパ（Python prism_geom(base_kind,a,b,h) と同型）
     prism: function (base_kind, a, b, h) {

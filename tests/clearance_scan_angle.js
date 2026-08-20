@@ -74,7 +74,36 @@ function casesParallel(kind, lo, hi, st) {
   return cs;
 }
 
-module.exports = { scan, cases2lines, cases3lines, around, parallel, casesParallel, PAR_CONS };
+// ---- 第2波G-3 polygon(多角形の内角)。バンク想定5構成をvalue域で悉皆(corr-0020) ----
+function poly(names, angleSpecs, extra) {
+  return Object.assign({ kind: 'angle_figure', subkind: 'polygon',
+    vertices: names.map(nm => ({ name: nm })), angles: angleSpecs }, extra || {});
+}
+const NM = ['A', 'B', 'C', 'D', 'E', 'F'];
+function polyClear(FB, fp) { try { return FB._angleFigureMinClearance(fp); } catch (e) { return { minText: -1, minSeg: -1, semBad: 99, err: e.message }; } }
+// 各構成のvalue域列挙器(FB注入)。violation=minText<10 ∨ minSeg<4 ∨ semBad>0。
+function polyScan(FB) {
+  const out = {};
+  const rng = (lo, hi, st) => { const a = []; for (let v = lo; v <= hi; v += st) a.push(v); return a; };
+  function run(key, name, combos) {
+    let viol = 0, minMT = 1e9, worst = null, badEx = [];
+    for (const fp of combos) { const cl = polyClear(FB, fp); if (cl.minText < minMT) { minMT = cl.minText; worst = fp; } if (cl.minText < 10 || cl.minSeg < 4 || cl.semBad > 0) { viol++; if (badEx.length < 4) badEx.push({ a: fp.angles.map(a => a.v), mt: cl.minText, ms: cl.minSeg, sb: cl.semBad }); } }
+    out[key] = { name, total: combos.length, viol, minMT: +minMT.toFixed(2), badEx };
+  }
+  // (i) 三角形 2既知+1未知
+  { const c = []; for (const a1 of rng(35, 110, 5)) for (const a2 of rng(35, 110, 5)) { const a3 = 180 - a1 - a2; if (a3 < 35 || a3 > 110) continue; c.push(poly(NM.slice(0, 3), [{ v: a1, role: 'known' }, { v: a2, role: 'known' }, { v: a3, role: 'unknown', label: '∠x' }])); } run('i', '(i)三角形 2既知+1未知', c); }
+  // (ii) 三角形 1既知+外角未知(頂点C)
+  { const c = []; for (const a1 of rng(35, 110, 5)) for (const a2 of rng(35, 110, 5)) { const a3 = 180 - a1 - a2; if (a3 < 35 || a3 > 110) continue; c.push(poly(NM.slice(0, 3), [{ v: a1, role: 'known' }, { v: a2, role: 'plain' }, { v: a3, role: 'plain' }], { external: [{ at: 2, v: 180 - a3, role: 'unknown' }] })); } run('ii', '(ii)三角形 1既知+外角未知', c); }
+  // (iii) 四角形 3既知+1未知
+  { const c = []; for (const a1 of rng(60, 140, 10)) for (const a2 of rng(60, 140, 10)) for (const a3 of rng(60, 140, 10)) { const a4 = 360 - a1 - a2 - a3; if (a4 < 60 || a4 > 140) continue; c.push(poly(NM.slice(0, 4), [{ v: a1, role: 'known' }, { v: a2, role: 'known' }, { v: a3, role: 'known' }, { v: a4, role: 'unknown', label: '∠x' }])); } run('iii', '(iii)四角形 3既知+1未知', c); }
+  // (iv) 五角形 4既知+1未知
+  { const c = []; for (const a1 of rng(90, 130, 10)) for (const a2 of rng(90, 130, 10)) for (const a3 of rng(90, 130, 10)) for (const a4 of rng(90, 130, 10)) { const a5 = 540 - a1 - a2 - a3 - a4; if (a5 < 90 || a5 > 130) continue; c.push(poly(NM.slice(0, 5), [{ v: a1, role: 'known' }, { v: a2, role: 'known' }, { v: a3, role: 'known' }, { v: a4, role: 'known' }, { v: a5, role: 'unknown', label: '∠x' }])); } run('iv', '(iv)五角形 4既知+1未知', c); }
+  // (v) 二等辺 頂角未知(底角等長マーク)
+  { const c = []; for (const t of rng(20, 140, 5)) { const b = (180 - t) / 2; if (b % 1 !== 0) continue; c.push(poly(NM.slice(0, 3), [{ v: t, role: 'unknown', label: '∠x' }, { v: b, role: 'known' }, { v: b, role: 'plain' }], { marks: [{ ticks: 1, edges: [0, 2] }] })); } run('v', '(v)二等辺 頂角未知+底角等長', c); }
+  return out;
+}
+
+module.exports = { scan, cases2lines, cases3lines, around, parallel, casesParallel, PAR_CONS, poly, polyScan };
 
 if (require.main === module) {
   const FB = require(path.join(__dirname, '..', 'pattern_bank', 'figure_builder.js'));
