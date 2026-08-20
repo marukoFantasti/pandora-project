@@ -1362,7 +1362,28 @@
     var right = T.map(function (p) { var mx = -p[0], my = p[1]; return [mx * C - my * S + DX, mx * S + my * C]; });   // ミラー+回転+右へ平行移動
     return { left: left, right: right, angles: angles, DX: DX };
   }
+  // 書式ゆらぎ吸収(意味不変の正書式化・G-3方式)。バンク設計側の記法(left_vertices/right_vertices・
+  // angles[i]のleft/right role+label_right・side_ticks配列)を builder 正書式へ機械変換する。
+  function normalizeCongruentFp(fp) {
+    var out = Object.assign({}, fp);
+    var ln = fp.left_vertices || (fp.left && fp.left.names) || ['A', 'B', 'C'];
+    var rn = fp.right_vertices || (fp.right && fp.right.names) || ['D', 'E', 'F'];
+    var leftShow = (fp.left && fp.left.show) ? fp.left.show.slice() : [];
+    var rightShow = (fp.right && fp.right.show) ? fp.right.show.slice() : [];
+    var angleVals = fp.angles;
+    if (fp.angles && fp.angles.some(function (a) { return a && (a.left != null || a.right != null); })) {
+      leftShow = []; rightShow = [];
+      fp.angles.forEach(function (a, i) {
+        if (a.left && a.left !== 'plain') leftShow.push({ at: i, role: a.left, label: a.label_left });
+        if (a.right && a.right !== 'plain') rightShow.push({ at: i, role: a.right, label: a.label_right });
+      });
+      angleVals = fp.angles.map(function (a) { return { v: a.v }; });
+    }
+    out.angles = angleVals; out.left = { names: ln, show: leftShow }; out.right = { names: rn, show: rightShow };
+    return out;
+  }
   function congruentPairLayout(fp) {
+    fp = normalizeCongruentFp(fp);   // 書式正規化
     var uStyle = fp.unknown_style || 'bare_zx';
     var g = congruentPairGeom(fp), lay = newLayout(), specs = [];
     var lnames = (fp.left && fp.left.names) || ['A', 'B', 'C'], rnames = (fp.right && fp.right.names) || ['D', 'E', 'F'];
@@ -1388,14 +1409,15 @@
     }
     processTri(g.left, 'L', lnames, (fp.left || {}).show);
     processTri(g.right, 'R', rnames, (fp.right || {}).show);
-    // 対応辺の等長チョン: side_ticks:true → 両三角形の辺e(=0,1,2)に(e+1)本(1/2/3)。対応辺が同本数=合同の視認。
+    // 対応辺の等長チョン: side_ticks=true → 辺e(=0,1,2)に(e+1)本 / 配列 → side_ticks[e]本。対応辺が同本数=合同の視認。
     if (fp.side_ticks) {
+      var tickCounts = Array.isArray(fp.side_ticks) ? fp.side_ticks : [1, 2, 3];
       [g.left, g.right].forEach(function (pts) {
         var W = pts.map(worldFlip);
         for (var e = 0; e < 3; e++) {
           var p1 = W[e], p2 = W[(e + 1) % 3], mid = [(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2];
           var dx = p2[0] - p1[0], dy = p2[1] - p1[1], len = Math.hypot(dx, dy); dx /= len; dy /= len;
-          var px = -dy, py = dx, cnt = e + 1;
+          var px = -dy, py = dx, cnt = tickCounts[e] != null ? tickCounts[e] : (e + 1);
           for (var c = 0; c < cnt; c++) { var off = (c - (cnt - 1) / 2) * 3.2, cc = [mid[0] + dx * off, mid[1] + dy * off]; lay.parts.push(lineEl([cc[0] - px * 4.5, cc[1] - py * 4.5], [cc[0] + px * 4.5, cc[1] + py * 4.5], C_STROKE, 1.6)); }
           lay.pts.push(mid);
         }

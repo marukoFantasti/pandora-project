@@ -121,3 +121,11 @@
   - clearance確定(corr-0020): heishi仮24→**22**(a1≥40追加。鋭角頂点の既知ラベル底辺寄りsemBad 2組を刈り)。golden不変(g04同型)。
     rt 10/nitohen 9・8は仮通り違反0。
 - 基準md5一覧: 21本目 c12=56e9ee03 / **22本目 c13=48af25f9**(他20章不変)。
+
+### 2026-08-20 c13第2波(G-4a congruent_pair 2追補・D-2) 角度図族の完成便
+- c13にG-4a合同求角2パターン(goudou_01/goudou_02)をD-2 append(4→6)。まるこ検収済み(2026-08-16・目視2枚合格)。
+- 旧md5 48af25f9(4) → **新md5 ea3af757**(6)。golden PASS 18/18。既存4セクション byte一致(D-2不変証明)。
+- 書式変換(builder正規化層・G-3方式): left_vertices/right_vertices→left/right.names /
+  angles[i]のleft/right role+label_right→left.show/right.show(at-index) / side_ticks配列[1,2,3]→辺別本数。
+- clearance悉皆(corr-0020・G-4aスキャン確定域[45,100]採用): goudou_01=受理55・goudou_02=受理46=違反0。
+- furigana「合同(ごうどう)」は既存辞書済=欠落なし。angle_figure族(G-1対頂〜G-4a合同)が c12/c13 で本番完成。

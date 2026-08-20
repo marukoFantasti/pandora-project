@@ -356,6 +356,206 @@
    },
    "answer_structure": "single",
    "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c13_goudou_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c13_u01",
+   "unit_name": "三角形・平行四辺形",
+   "semantic_category": "合同な図形(対応角の相等)",
+   "semantic_note": "△ABC≡△DEFで左∠A既知→右の対応角∠x。答=既知値は対応角相等の認識が学習内容(taicho/doui裁可済み類型の合同版)。対応はチョン(1/2/3本)で追う——本文は合同の宣言のみで対応順は図のマークが担う。b1・第3角はrole=plain(構成(i)マーク疎)。",
+   "step_count": 1,
+   "operation": "対応角相等: ∠x＝a1",
+   "answer_formula": "a1",
+   "answer_domain": "any_int",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      45,
+      100
+     ],
+     "step": 5
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      45,
+      100
+     ],
+     "step": 5
+    }
+   },
+   "computed_slots": {
+    "c1": {
+     "formula": "180 - a1 - b1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "third_in_domain",
+     "expr": "180 - a1 - b1 >= 45 and 180 - a1 - b1 <= 100",
+     "why": "第3角も確定値域45〜100°(G-4aスキャン: 6頂点名+ラベル密度で単図より狭域・両構成違反0)"
+    }
+   ],
+   "sentence_templates": [
+    "図で、三角形ABCと三角形DEFは合同である。∠xの大きさを求めなさい。"
+   ],
+   "answer_template": "答え ∠x＝{a1}°",
+   "figure_params": {
+    "kind": "angle_figure",
+    "subkind": "congruent_pair",
+    "left_vertices": [
+     "A",
+     "B",
+     "C"
+    ],
+    "right_vertices": [
+     "D",
+     "E",
+     "F"
+    ],
+    "angles": [
+     {
+      "v": "{a1}",
+      "left": "known",
+      "right": "unknown",
+      "label_right": "∠x"
+     },
+     {
+      "v": "{b1}",
+      "left": "plain",
+      "right": "plain"
+     },
+     {
+      "v": "{c1}",
+      "left": "plain",
+      "right": "plain"
+     }
+    ],
+    "side_ticks": [
+     1,
+     2,
+     3
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c13_goudou_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c13_u01",
+   "unit_name": "三角形・平行四辺形",
+   "semantic_category": "合同な図形(内角和との2段推論)",
+   "semantic_note": "左∠A・∠B既知→右の第3対応角∠x=180−a1−b1。解法は「左で内角和→対応角相等」または「対応2角を転写→右で内角和」の2経路が答一意に収束(fukugo_01と同じ経路自由設計)。転記2本(答≠既知)を個別排除。構成(ii)=ラベル3個+マークの密構成・確定値域内で違反0実証済み。",
+   "step_count": 1,
+   "operation": "合同+内角和: ∠x＝180−a1−b1",
+   "answer_formula": "180 - a1 - b1",
+   "answer_domain": "any_int",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      45,
+      100
+     ],
+     "step": 5
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      45,
+      100
+     ],
+     "step": 5
+    }
+   },
+   "computed_slots": {
+    "xv1": {
+     "formula": "180 - a1 - b1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "x_in_domain",
+     "expr": "180 - a1 - b1 >= 45 and 180 - a1 - b1 <= 100",
+     "why": "未知角も確定値域45〜100°"
+    },
+    {
+     "rule": "no_transcribe_a1",
+     "expr": "180 - a1 - b1 != a1",
+     "why": "転記型リーク排除(答=既知a1)"
+    },
+    {
+     "rule": "no_transcribe_b1",
+     "expr": "180 - a1 - b1 != b1",
+     "why": "転記型リーク排除(答=既知b1)"
+    }
+   ],
+   "sentence_templates": [
+    "図で、三角形ABCと三角形DEFは合同である。∠xの大きさを求めなさい。"
+   ],
+   "answer_template": "答え ∠x＝{xv1}°",
+   "figure_params": {
+    "kind": "angle_figure",
+    "subkind": "congruent_pair",
+    "left_vertices": [
+     "A",
+     "B",
+     "C"
+    ],
+    "right_vertices": [
+     "D",
+     "E",
+     "F"
+    ],
+    "angles": [
+     {
+      "v": "{a1}",
+      "left": "known",
+      "right": "plain"
+     },
+     {
+      "v": "{b1}",
+      "left": "known",
+      "right": "plain"
+     },
+     {
+      "v": "{xv1}",
+      "left": "plain",
+      "right": "unknown",
+      "label_right": "∠x"
+     }
+    ],
+    "side_ticks": [
+     1,
+     2,
+     3
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
   }
  ]
 }

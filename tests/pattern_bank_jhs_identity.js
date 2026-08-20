@@ -66,6 +66,9 @@ const ID = {
   jhs_c13_nitohen_01: (e, ans) => 2 * ans + e.t1 === 180,                        // 二等辺底角: 2∠x＋t1＝180
   jhs_c13_nitohen_02: (e, ans) => ans + 2 * e.b1 === 180,                        // 二等辺頂角: ∠x＋2b1＝180
   jhs_c13_heishi_01: (e, ans) => ans + e.a1 === 180,                             // 平行四辺形隣角: ∠x＋a1＝180
+  // --- c13 G-4a congruent_pair(合同求角) ---
+  jhs_c13_goudou_01: (e, ans) => ans === e.a1,                                   // 対応角相等: ∠x＝a1
+  jhs_c13_goudou_02: (e, ans) => ans + e.a1 + e.b1 === 180,                      // 合同+内角和: ∠x＋a1＋b1＝180
   // --- c15 展開・因数分解：多項式係数の恒等(問題多項式 == 答えの展開) ---
   // 展開5型: 問題=因数積 → 展開係数が答え多項式の係数と一致(答え係数からの復元と等価)
   jhs_c15_exp_01: (e) => e.s1 === e.a1 + e.b1 && e.t1 === e.a1 * e.b1,            // (x+a)(x+b)=x²+(a+b)x+ab
