@@ -649,6 +649,324 @@
    },
    "answer_structure": "single",
    "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c12_tri_naikaku_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c12_u01",
+   "unit_name": "図形の調べ方",
+   "semantic_category": "三角形の内角(2既知→1未知・和180°)",
+   "semantic_note": "内角和180の基本形。スキャン構成(i)実証域(136組・minText21.79)。転記2本(答≠既知)を個別排除。頂点名A,B,C。",
+   "step_count": 1,
+   "operation": "内角和: ∠x＝180−a1−a2",
+   "answer_formula": "180 - a1 - a2",
+   "answer_domain": "any_int",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      25,
+      130
+     ],
+     "step": 5
+    },
+    "a2": {
+     "type": "int",
+     "range": [
+      25,
+      130
+     ],
+     "step": 5
+    }
+   },
+   "computed_slots": {
+    "xv1": {
+     "formula": "180 - a1 - a2"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "x_range",
+     "expr": "180 - a1 - a2 >= 25 and 180 - a1 - a2 <= 130",
+     "why": "未知角も25〜130°(接円配置の視認・clearance域)"
+    },
+    {
+     "rule": "flat_tri_clearance",
+     "expr": "a1 + a2 >= 65",
+     "why": "偏平三角形回避(a1,a2とも小→鈍角頂点の未知ラベルが底辺寄り=semBad)。Code clearance確定・corr-0020(仮232→226)"
+    },
+    {
+     "rule": "no_transcribe_a1",
+     "expr": "180 - a1 - a2 != a1",
+     "why": "転記型リーク排除(答=既知a1)"
+    },
+    {
+     "rule": "no_transcribe_a2",
+     "expr": "180 - a1 - a2 != a2",
+     "why": "転記型リーク排除(答=既知a2)"
+    }
+   ],
+   "sentence_templates": [
+    "図の三角形ABCで、∠xの大きさを求めなさい。"
+   ],
+   "answer_template": "答え ∠x＝{xv1}°",
+   "figure_params": {
+    "kind": "angle_figure",
+    "subkind": "polygon",
+    "n": 3,
+    "vertices": [
+     "A",
+     "B",
+     "C"
+    ],
+    "angles": [
+     {
+      "v": "{a1}",
+      "role": "known"
+     },
+     {
+      "v": "{a2}",
+      "role": "known"
+     },
+     {
+      "v": "{xv1}",
+      "role": "unknown",
+      "label": "∠x"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c12_tri_gaikaku_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c12_u01",
+   "unit_name": "図形の調べ方",
+   "semantic_category": "三角形の外角(外角定理・2内角の和)",
+   "semantic_note": "外角定理x=a1+a2(隣り合わない2内角の和)。答>両既知が構造的に成立するため転記が原理的に不能——族カタログ適用不要の希少型として記録。外角は辺延長40px+外角弧(G-3実装)。上限155°で補角(隣接内角)≥25を保証。",
+   "step_count": 1,
+   "operation": "外角定理: ∠x＝a1＋a2",
+   "answer_formula": "a1 + a2",
+   "answer_domain": "any_int",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      25,
+      130
+     ],
+     "step": 5
+    },
+    "a2": {
+     "type": "int",
+     "range": [
+      25,
+      130
+     ],
+     "step": 5
+    }
+   },
+   "computed_slots": {
+    "xv1": {
+     "formula": "a1 + a2"
+    },
+    "s1": {
+     "formula": "180 - a1 - a2"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "ext_range",
+     "expr": "a1 + a2 >= 50 and a1 + a2 <= 155",
+     "why": "外角50〜155°(隣接内角=180−x≥25の接円配置保証)"
+    }
+   ],
+   "sentence_templates": [
+    "図の三角形ABCで、∠xの大きさを求めなさい。"
+   ],
+   "answer_template": "答え ∠x＝{xv1}°",
+   "figure_params": {
+    "kind": "angle_figure",
+    "subkind": "polygon",
+    "n": 3,
+    "vertices": [
+     "A",
+     "B",
+     "C"
+    ],
+    "angles": [
+     {
+      "v": "{a1}",
+      "role": "known"
+     },
+     {
+      "v": "{a2}",
+      "role": "known"
+     },
+     {
+      "v": "{s1}",
+      "role": "plain"
+     }
+    ],
+    "external": {
+     "vertex": "C",
+     "v": "{xv1}",
+     "role": "unknown",
+     "label": "∠x"
+    }
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c12_gokaku_naikaku_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c12_u01",
+   "unit_name": "図形の調べ方",
+   "semantic_category": "五角形の内角(4既知→1未知・和540°)",
+   "semantic_note": "多角形内角和(n−2)×180の適用位。値域は各内角90〜130°(G-3スキャン構成(iv)の確定候補・365組違反0)。転記4本を全既知に張る(多値衝突型の全部乗せ)。",
+   "step_count": 1,
+   "operation": "内角和540: ∠x＝540−(a1+a2+a3+a4)",
+   "answer_formula": "540 - a1 - a2 - a3 - a4",
+   "answer_domain": "any_int",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      90,
+      130
+     ],
+     "step": 5
+    },
+    "a2": {
+     "type": "int",
+     "range": [
+      90,
+      130
+     ],
+     "step": 5
+    },
+    "a3": {
+     "type": "int",
+     "range": [
+      90,
+      130
+     ],
+     "step": 5
+    },
+    "a4": {
+     "type": "int",
+     "range": [
+      90,
+      130
+     ],
+     "step": 5
+    }
+   },
+   "computed_slots": {
+    "xv1": {
+     "formula": "540 - a1 - a2 - a3 - a4"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "x_range",
+     "expr": "540 - a1 - a2 - a3 - a4 >= 90 and 540 - a1 - a2 - a3 - a4 <= 130",
+     "why": "未知角も90〜130°(五角形の値域候補・スキャン確定域)"
+    },
+    {
+     "rule": "no_transcribe_a1",
+     "expr": "540 - a1 - a2 - a3 - a4 != a1",
+     "why": "転記型リーク排除"
+    },
+    {
+     "rule": "no_transcribe_a2",
+     "expr": "540 - a1 - a2 - a3 - a4 != a2",
+     "why": "転記型リーク排除"
+    },
+    {
+     "rule": "no_transcribe_a3",
+     "expr": "540 - a1 - a2 - a3 - a4 != a3",
+     "why": "転記型リーク排除"
+    },
+    {
+     "rule": "no_transcribe_a4",
+     "expr": "540 - a1 - a2 - a3 - a4 != a4",
+     "why": "転記型リーク排除"
+    }
+   ],
+   "sentence_templates": [
+    "図の五角形ABCDEで、∠xの大きさを求めなさい。"
+   ],
+   "answer_template": "答え ∠x＝{xv1}°",
+   "figure_params": {
+    "kind": "angle_figure",
+    "subkind": "polygon",
+    "n": 5,
+    "vertices": [
+     "A",
+     "B",
+     "C",
+     "D",
+     "E"
+    ],
+    "angles": [
+     {
+      "v": "{a1}",
+      "role": "known"
+     },
+     {
+      "v": "{a2}",
+      "role": "known"
+     },
+     {
+      "v": "{a3}",
+      "role": "known"
+     },
+     {
+      "v": "{a4}",
+      "role": "known"
+     },
+     {
+      "v": "{xv1}",
+      "role": "unknown",
+      "label": "∠x"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
   }
  ]
 }

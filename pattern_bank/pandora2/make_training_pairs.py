@@ -47,7 +47,7 @@ GRADES = [
 def load_gold(rnpath):
     return {k: v for k, v in json.load(open(rnpath, encoding="utf-8")).items() if not k.startswith("_")}
 
-JHS_CHAPTERS = ["c01","c02","c03","c04","c05","c06","c07","c08","c09","c10","c12","c15","c16","c17","c18"]
+JHS_CHAPTERS = ["c01","c02","c03","c04","c05","c06","c07","c08","c09","c10","c12","c13","c15","c16","c17","c18"]
 
 def resolve_directives_ref(brief, shared):
     # jhs brief は directives_ref(_shared参照)。訓練ペア用に実directivesへ解決(格納ファイルは参照のまま保全)。

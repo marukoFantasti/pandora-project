@@ -107,3 +107,17 @@
 - clearance悉皆(corr-0020二段・実pos構成×受理24組): doui 42.74 / sakka 18.93 / naikaku 10.45 /
   fukugo 10.14 (min minText・全て違反0)。⚡はc12点灯済みのため維持(BANK_FILES登録済)。
 - 基準md5更新: 21本目 c12 = ad8f55e1 → **78a83d3d**(他20章は不変)。
+
+### 2026-08-20 c12第3波(G-3 polygon 3追補・D-2) + c13新設(⚡16章目・基準md5 22本目)
+- **c12**: 第3波G-3 polygon 3パターン(tri_naikaku/tri_gaikaku/gokaku_naikaku)をD-2 append(8→11)。
+  - 旧md5 78a83d3d(8) → **新md5 56e9ee03**(11)。golden PASS 33/33。既存8セクションはappend前後バイト一致(D-2不変証明)。
+  - clearance確定(corr-0020): tri_naikaku仮232→**226**(a1+a2≥65追加。偏平三角形6組=鈍角頂点の未知ラベル底辺寄りsemBadを刈り)。
+    golden不変(排除組が固定シード未出現=g04同型)。gaikaku 253/gokaku 2536は仮通り違反0。
+- **c13新設(三角形・平行四辺形・jhs2)**: G-3 polygon 4パターン(rt_tri/nitohen_01/nitohen_02/heishi)。まるこ検収済み(2026-08-15)。
+  - **基準md5 22本目: c13 = 48af25f9**(golden PASS 12/12)。BANK_FILES登録・⚡c13点灯(16章目)。
+  - 単元名: Fable仮「三角形と四角形」→単元マスタ照合で「**三角形・平行四辺形**」に修正(5箇所)。
+  - figure_params書式変換(意味不変・builder正規化層): 頂点名列→{name} / external単体obj(vertex名)→配列(at-index) /
+    equal_marks(辺名ペア)→marks(辺index) / parallel_marks(辺名ペア)→辺index+平行自動グループ化(>/>>)。
+  - clearance確定(corr-0020): heishi仮24→**22**(a1≥40追加。鋭角頂点の既知ラベル底辺寄りsemBad 2組を刈り)。golden不変(g04同型)。
+    rt 10/nitohen 9・8は仮通り違反0。
+- 基準md5一覧: 21本目 c12=56e9ee03 / **22本目 c13=48af25f9**(他20章不変)。

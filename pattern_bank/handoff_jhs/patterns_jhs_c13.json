@@ -1,0 +1,361 @@
+{
+ "schema_version": "1.0",
+ "grade": "jhs",
+ "description": "jhs数学バンク c13(三角形・平行四辺形) 第1波4パターン: 直角三角形(90既知マーク)・二等辺(頂角既知/底角既知)・平行四辺形(隣角)。G-3 polygon基盤。単元名は配線時に単元マスタと突合(相違なら修正)。平四対角相等・長方形・ひし形・台形は第2波在庫。",
+ "answer_structures": [
+  "single"
+ ],
+ "shared_lexicon": {},
+ "patterns": [
+  {
+   "pattern_id": "jhs_c13_rt_tri_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c13_u01",
+   "unit_name": "三角形・平行四辺形",
+   "semantic_category": "直角三角形の内角(90既知+鋭角1既知→鋭角未知)",
+   "semantic_note": "直角は既知側のみ(G-3.1非対称: 未知90はマーク化で答が漏れるため本パターンは常に90=既知・鋭角=未知の向きでのみ設計)。スキャン(rt)実証域(鋭角20〜70°・11組違反0)。90は直角マーク(小正方形)描画・図テキストに90°非表示。",
+   "step_count": 1,
+   "operation": "直角三角形: ∠x＝90−a1",
+   "answer_formula": "90 - a1",
+   "answer_domain": "any_int",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      20,
+      70
+     ],
+     "step": 5
+    }
+   },
+   "computed_slots": {
+    "xv1": {
+     "formula": "90 - a1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_transcribe_x",
+     "expr": "a1 != 45",
+     "why": "転記型リーク排除(a1=45だと答=既知値)"
+    }
+   ],
+   "sentence_templates": [
+    "図の直角三角形ABCで、∠xの大きさを求めなさい。"
+   ],
+   "answer_template": "答え ∠x＝{xv1}°",
+   "figure_params": {
+    "kind": "angle_figure",
+    "subkind": "polygon",
+    "n": 3,
+    "vertices": [
+     "A",
+     "B",
+     "C"
+    ],
+    "angles": [
+     {
+      "v": 90,
+      "role": "known"
+     },
+     {
+      "v": "{a1}",
+      "role": "known"
+     },
+     {
+      "v": "{xv1}",
+      "role": "unknown",
+      "label": "∠x"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    90
+   ]
+  },
+  {
+   "pattern_id": "jhs_c13_nitohen_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c13_u01",
+   "unit_name": "三角形・平行四辺形",
+   "semantic_category": "二等辺三角形(頂角既知→底角未知)",
+   "semantic_note": "底角相等の適用: x=(180−t1)÷2。t1は10°刻み(偶数保証で割り切れ構造化——answer_domainの整数保証を刻みで作る手筋)。頂角≤120はスキャン(v)の確定値域(130/140偏平で2組割れ→≤120採用)。t1=60(正三角形退化・答=既知)を除外。等長マーク2辺。",
+   "step_count": 1,
+   "operation": "底角: ∠x＝(180−t1)÷2",
+   "answer_formula": "(180 - t1) // 2",
+   "answer_domain": "any_int",
+   "slots": {
+    "t1": {
+     "type": "int",
+     "range": [
+      30,
+      120
+     ],
+     "step": 10
+    }
+   },
+   "computed_slots": {
+    "xv1": {
+     "formula": "(180 - t1) // 2"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_transcribe_x",
+     "expr": "t1 != 60",
+     "why": "転記型リーク排除+正三角形退化(全角60で二等辺の特殊視認が消える)の一括"
+    }
+   ],
+   "sentence_templates": [
+    "図の三角形ABCは、AB＝ACの二等辺三角形である。∠xの大きさを求めなさい。"
+   ],
+   "answer_template": "答え ∠x＝{xv1}°",
+   "figure_params": {
+    "kind": "angle_figure",
+    "subkind": "polygon",
+    "n": 3,
+    "vertices": [
+     "A",
+     "B",
+     "C"
+    ],
+    "angles": [
+     {
+      "v": "{t1}",
+      "role": "known"
+     },
+     {
+      "v": "{xv1}",
+      "role": "unknown",
+      "label": "∠x"
+     },
+     {
+      "v": "{xv1}",
+      "role": "plain"
+     }
+    ],
+    "equal_marks": [
+     [
+      "A",
+      "B"
+     ],
+     [
+      "A",
+      "C"
+     ]
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c13_nitohen_02",
+   "grade": "jhs",
+   "unit_id": "jhs_c13_u01",
+   "unit_name": "三角形・平行四辺形",
+   "semantic_category": "二等辺三角形(底角既知→頂角未知)",
+   "semantic_note": "頂角=180−2×底角の逆算。底角35〜75°で頂角30〜110°(≤120の確定値域内)。b1=60(正三角形退化+転記)を除外。nitohen_01と順逆の対。",
+   "step_count": 1,
+   "operation": "頂角: ∠x＝180−2×b1",
+   "answer_formula": "180 - 2 * b1",
+   "answer_domain": "any_int",
+   "slots": {
+    "b1": {
+     "type": "int",
+     "range": [
+      35,
+      75
+     ],
+     "step": 5
+    }
+   },
+   "computed_slots": {
+    "xv1": {
+     "formula": "180 - 2 * b1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_transcribe_x",
+     "expr": "b1 != 60",
+     "why": "転記型リーク排除+正三角形退化の一括"
+    }
+   ],
+   "sentence_templates": [
+    "図の三角形ABCは、AB＝ACの二等辺三角形である。∠xの大きさを求めなさい。"
+   ],
+   "answer_template": "答え ∠x＝{xv1}°",
+   "figure_params": {
+    "kind": "angle_figure",
+    "subkind": "polygon",
+    "n": 3,
+    "vertices": [
+     "A",
+     "B",
+     "C"
+    ],
+    "angles": [
+     {
+      "v": "{xv1}",
+      "role": "unknown",
+      "label": "∠x"
+     },
+     {
+      "v": "{b1}",
+      "role": "known"
+     },
+     {
+      "v": "{b1}",
+      "role": "plain"
+     }
+    ],
+    "equal_marks": [
+     [
+      "A",
+      "B"
+     ],
+     [
+      "A",
+      "C"
+     ]
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c13_heishi_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c13_u01",
+   "unit_name": "三角形・平行四辺形",
+   "semantic_category": "平行四辺形(隣り合う角・和180°)",
+   "semantic_note": "平四の隣角和180の逆算(対辺平行→同側内角)。対角相等(答=既知の認識型)は第2波在庫に記録。a1=90(転記+長方形退化)を除外。平行辺マーク(対辺2組)。ラベル2個の疎構成だが実構成clearance悉皆を配線時に実施(corr-0020)。",
+   "step_count": 1,
+   "operation": "隣角: ∠x＝180−a1",
+   "answer_formula": "180 - a1",
+   "answer_domain": "any_int",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      30,
+      150
+     ],
+     "step": 5
+    }
+   },
+   "computed_slots": {
+    "xv1": {
+     "formula": "180 - a1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_transcribe_x",
+     "expr": "a1 != 90",
+     "why": "転記型リーク排除(答90=既知90)+長方形退化の一括"
+    },
+    {
+     "rule": "acute_clearance",
+     "expr": "a1 >= 40",
+     "why": "鋭角頂点の既知ラベル底辺寄り回避(a1=30,35でsemBad)。Code clearance確定・corr-0020(仮24→22)"
+    }
+   ],
+   "sentence_templates": [
+    "図の四角形ABCDは平行四辺形である。∠xの大きさを求めなさい。"
+   ],
+   "answer_template": "答え ∠x＝{xv1}°",
+   "figure_params": {
+    "kind": "angle_figure",
+    "subkind": "polygon",
+    "n": 4,
+    "vertices": [
+     "A",
+     "B",
+     "C",
+     "D"
+    ],
+    "angles": [
+     {
+      "v": "{a1}",
+      "role": "known"
+     },
+     {
+      "v": "{xv1}",
+      "role": "unknown",
+      "label": "∠x"
+     },
+     {
+      "v": "{a1}",
+      "role": "plain"
+     },
+     {
+      "v": "{xv1}",
+      "role": "plain"
+     }
+    ],
+    "parallel_marks": [
+     [
+      "A",
+      "B"
+     ],
+     [
+      "D",
+      "C"
+     ],
+     [
+      "A",
+      "D"
+     ],
+     [
+      "B",
+      "C"
+     ]
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  }
+ ]
+}

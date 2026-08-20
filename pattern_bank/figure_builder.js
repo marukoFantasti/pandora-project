@@ -1205,7 +1205,32 @@
     return { el: '<path d="M ' + f1[0].toFixed(2) + ' ' + f1[1].toFixed(2) + ' L ' + fc[0].toFixed(2) + ' ' + fc[1].toFixed(2) + ' L ' + f2[0].toFixed(2) + ' ' + f2[1].toFixed(2) + '" fill="none" stroke="' + C_KNOWN + '" stroke-width="1.6"/>',
       pts: [f1, f2, fc], seg1: [f1, fc], seg2: [fc, f2] };
   }
+  // 書式ゆらぎ吸収(意味不変の正書式化・契約検査throwが最終防衛)。バンク設計側の記法(頂点名・辺名ペア・
+  // external単体)を builder 正書式(頂点{name}・辺index・external配列/at-index)へ機械変換する。
+  function polyNameIdx(names, nm) { return names.indexOf(nm); }
+  function polyEdgeFromPair(names, pair) {   // 辺名ペア[n1,n2]→辺index(隣接頂点間の辺)。既にindexならそのまま。
+    if (!Array.isArray(pair)) return pair;
+    if (typeof pair[0] === 'number') return pair[0];
+    var n = names.length, i1 = names.indexOf(pair[0]), i2 = names.indexOf(pair[1]);
+    for (var e = 0; e < n; e++) { var a = e, b = (e + 1) % n; if ((a === i1 && b === i2) || (a === i2 && b === i1)) return e; }
+    return -1;
+  }
+  function normalizePolygonFp(fp) {
+    var names = (fp.vertices || []).map(function (v) { return typeof v === 'string' ? v : (v && v.name); });
+    var out = Object.assign({}, fp);
+    out.vertices = names.map(function (nm) { return { name: nm }; });
+    if (fp.external) {   // 単体obj→配列 / vertex名→at-index
+      var exs = Array.isArray(fp.external) ? fp.external : [fp.external];
+      out.external = exs.map(function (ex) { var e = Object.assign({}, ex); if (e.at == null && e.vertex != null) e.at = names.indexOf(e.vertex); return e; });
+    }
+    if (fp.equal_marks) {   // 辺名ペア列(フラット=同一等長)→ marks(edge index・ticks1)
+      out.marks = (fp.marks || []).concat([{ ticks: 1, edges: fp.equal_marks.map(function (pr) { return polyEdgeFromPair(names, pr); }) }]);
+    }
+    if (fp.parallel_marks) out.parallel_marks = fp.parallel_marks.map(function (pr) { return polyEdgeFromPair(names, pr); });   // 辺index(フラット)へ
+    return out;
+  }
   function polygonLayout(fp) {
+    fp = normalizePolygonFp(fp);   // 書式正規化
     var uStyle = fp.unknown_style || 'bare_zx';
     var g = polygonGeom(fp), n = g.n, lay = newLayout();
     var W = g.pts.map(worldFlip);
@@ -1254,16 +1279,30 @@
         lay.pts.push(mid);
       });
     });
-    // 平行辺マーク(平行四辺形): [[edgeIdx,edgeIdx]…] の各辺中点に「>」(辺方向)
-    (fp.parallel_marks || []).forEach(function (pair, gi) {
-      pair.forEach(function (ei) {
-        var p1 = W[ei], p2 = W[(ei + 1) % n], mid = [(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2];
-        var dx = p2[0] - p1[0], dy = p2[1] - p1[1], len = Math.hypot(dx, dy); dx /= len; dy /= len;
-        var px = -dy, py = dx, tip = [mid[0] + dx * 3.5, mid[1] + dy * 3.5], b1 = [mid[0] - dx * 2 + px * 5, mid[1] - dy * 2 + py * 5], b2 = [mid[0] - dx * 2 - px * 5, mid[1] - dy * 2 - py * 5];
-        lay.parts.push('<path d="M ' + b1[0].toFixed(2) + ' ' + b1[1].toFixed(2) + ' L ' + tip[0].toFixed(2) + ' ' + tip[1].toFixed(2) + ' L ' + b2[0].toFixed(2) + ' ' + b2[1].toFixed(2) + '" fill="none" stroke="' + C_STROKE + '" stroke-width="1.5"/>');
-        lay.pts.push(b1, b2, tip);
+    // 平行辺マーク: 辺indexフラット列を方向で自動グループ化し、グループ順位+1本の「>」を描く
+    // (>=第1平行対・>>=第2平行対。平行四辺形の2対を区別する教科書記法)。
+    (function () {
+      var pm = fp.parallel_marks || []; if (!pm.length) return;
+      var groups = [];
+      pm.forEach(function (ei) {
+        var p1 = g.pts[ei], p2 = g.pts[(ei + 1) % n], dx = p2[0] - p1[0], dy = p2[1] - p1[1], l = Math.hypot(dx, dy); dx /= l; dy /= l;
+        var grp = null; for (var k = 0; k < groups.length; k++) if (Math.abs(groups[k].dir[0] * dy - groups[k].dir[1] * dx) < 0.03) { grp = groups[k]; break; }
+        if (grp) grp.edges.push(ei); else groups.push({ dir: [dx, dy], edges: [ei] });
       });
-    });
+      groups.forEach(function (gr, gi) {
+        gr.edges.forEach(function (ei) {
+          var p1 = W[ei], p2 = W[(ei + 1) % n], mid = [(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2];
+          var dx = p2[0] - p1[0], dy = p2[1] - p1[1], len = Math.hypot(dx, dy); dx /= len; dy /= len;
+          var px = -dy, py = dx, cnt = gi + 1;
+          for (var c = 0; c < cnt; c++) {
+            var base = mid[0] - dx * ((cnt - 1) * 1.75) + dx * c * 3.5, basy = mid[1] - dy * ((cnt - 1) * 1.75) + dy * c * 3.5;
+            var tip = [base + dx * 3.5, basy + dy * 3.5], b1 = [base - dx * 2 + px * 5, basy - dy * 2 + py * 5], b2 = [base - dx * 2 - px * 5, basy - dy * 2 - py * 5];
+            lay.parts.push('<path d="M ' + b1[0].toFixed(2) + ' ' + b1[1].toFixed(2) + ' L ' + tip[0].toFixed(2) + ' ' + tip[1].toFixed(2) + ' L ' + b2[0].toFixed(2) + ' ' + b2[1].toFixed(2) + '" fill="none" stroke="' + C_STROKE + '" stroke-width="1.5"/>');
+            lay.pts.push(b1, b2, tip);
+          }
+        });
+      });
+    })();
     // 外角(辺の延長線+外角弧)。external:[{at:vertexIdx, role, label, v}] v=180−内角
     (fp.external || []).forEach(function (ex) {
       var i = Number(ex.at), Vw = g.pts[i], Pw = g.pts[(i - 1 + n) % n], Qw = g.pts[(i + 1) % n];

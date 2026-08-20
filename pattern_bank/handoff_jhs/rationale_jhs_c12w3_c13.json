@@ -1,0 +1,171 @@
+{
+ "_meta": {
+  "schema": "rationale_g05_gold.json準拠(pandora2正準・ネスト形)",
+  "scope": "jhs_c12第3波3件+jhs_c13第1波4件(G-3 polygon)。rationale_jhs.jsonへ追補統合(140→147)",
+  "note": "figure_notes正準(図あり=設計記録)。ネイティブ記述 2026-08-15",
+  "order": "バンク順(c12→c13)"
+ },
+ "jhs_c12_tri_naikaku_01": {
+  "brief": {
+   "semantic_territory": "三角形の内角(和180°・2既知→1未知)",
+   "number_domain": "整数(度・5°刻み)",
+   "answer_structure": "single",
+   "figure": "polygon(n=3)",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "G-3頂点配置は接円接線構成(共通内接円への接線交点・閉形式・n=3〜6統一・乱数なし)。g05のAD探索(候補列走査)の一般化として採用(2026-08-15)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "内角和180°の基本形はc12三角形系列の入口。参照ではdiff2の複合(平行線併用)に埋まっているが、単独形は基礎ドリルとして解束採録(c12第1波と同方針)。",
+   "representation": "polygon subkind(接円接線構成)の適用第1号。角度指定から頂点座標が閉形式で決定し内角が厳密復元(±0.5°ベクター実証)される——「図が角度に従う」保証がbuilder側で完結。頂点名A,B,Cは自頂点束縛。",
+   "constructive_guarantees": "各角25〜130°+未知同域(スキャン構成(i)・136組違反0の実証域)。転記2本(答=a1/a2)を個別排除。受理232組の内角和180を全域検証済み。",
+   "semantic_position": "三角形系列の始祖。外角定理(gaikaku_01)・直角三角形(c13 rt)・二等辺(c13 nitohen)が全て本構造の特殊化・拡張。",
+   "exclusions": "x<25または>130(接円配置の視認域)・x==a1・x==a2(転記)。",
+   "figure_notes": "接円接線構成の初適用。スキャン構成(i)実証域(minText21.79)。r28確定意匠(2026-08-15 A/B選定)での初のpolygonバンク。",
+   "pedagogy": []
+  }
+ },
+ "jhs_c12_tri_gaikaku_01": {
+  "brief": {
+   "semantic_territory": "三角形の外角(外角定理)",
+   "number_domain": "整数(度・5°刻み)",
+   "answer_structure": "single",
+   "figure": "polygon(n=3・外角)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "外角=隣り合わない2内角の和。内角和経由(180−c、180−その和)の2段を1段に圧縮する定理として教える位置で、c12三角形系列の第2形。",
+   "representation": "external要素(辺延長40px+外角弧・G-3実装)の適用第1号。隣接内角(頂点C)はcomputed s1=180−xでrole=plain——外角と隣接内角の補対関係が図データに内在。",
+   "constructive_guarantees": "x=a1+a2>max(a1,a2)が構造的に成立し転記が原理的に不能——族カタログ適用不要の希少型(加法系のtwo_step以来)。外角50〜155°で隣接内角≥25(接円配置保証)。受理253組を全域検証済み。",
+   "semantic_position": "三角形系列の第2位。「和で作る答え」は転記フリー構造の代表として、族カタログ設計の対照標本になる。",
+   "exclusions": "a1+a2<50または>155(隣接内角の視認域)。",
+   "figure_notes": "外角(延長線+外角弧)の実配線初例。スキャン構成(ii)実証域(136組違反0)——ただし本パターンは内角2既知+外角未知でラベル3個とやや密のため、配線時に実構成悉皆を実施(corr-0020)。",
+   "pedagogy": []
+  }
+ },
+ "jhs_c12_gokaku_naikaku_01": {
+  "brief": {
+   "semantic_territory": "五角形の内角(和540°・4既知→1未知)",
+   "number_domain": "整数(度・5°刻み)",
+   "answer_structure": "single",
+   "figure": "polygon(n=5)",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "五角形の値域は各内角90〜130°(G-3スキャン構成(iv)確定候補・365組違反0)。六角形はspot違反0確認済みだが第2波在庫",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "多角形内角和(n−2)×180の適用。参照の内角和系(135/360/900等)のうち五角形540が図付き求角の主形で、n一般の公式適用は数値問題(図なし)側の領分。",
+   "representation": "n=5の接円接線構成。値域90〜130°は「正五角形(108°)の近傍」で、接円構成の辺長バランスが自然な五角形に見える域とclearance安全域の交差。",
+   "constructive_guarantees": "未知も90〜130°(x_range)。転記4本を全既知に張る(多値衝突型の全部乗せ——c12 mawari_01と同規約)。受理2,536組を全域検証済み。",
+   "semantic_position": "多角形系列の代表位。g05 quad_angle(四角形360)→本パターン(五角形540)→六角形720(在庫)の内角和系譜。",
+   "exclusions": "x域外・転記4本。",
+   "figure_notes": "n=5初配線。スキャン構成(iv)実証域(minText19.29)。六角形spot(違反0・min13.3)は在庫記録のみ。",
+   "pedagogy": []
+  }
+ },
+ "jhs_c13_rt_tri_01": {
+  "brief": {
+   "semantic_territory": "直角三角形の内角(鋭角の補完)",
+   "number_domain": "整数(度・5°刻み)",
+   "answer_structure": "single",
+   "figure": "polygon(n=3・直角マーク)",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "直角の非対称規約(G-3.1): 既知90のみ直角マーク(小正方形・90°非表示)・未知90はマーク化しない(答の視認漏れ防止)。よって直角三角形パターンは常に「90=既知・鋭角=未知」の向きでのみ設計する",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "鋭角2つの和=90°。c13の頻出図(棚卸しで合同証明も90中心)の求角入口で、まるこの「直角が出ていないのは偶然か」の指摘(2026-08-15)がG-3.1実装とこのパターンの直接の契機。",
+   "representation": "angles配列に定数90を直書き——スロット参照原則の例外だが、90はパターンの定義そのもの(可変にすると直角三角形でなくなる)でtemplate_number_constants[90]に宣言(数値照合の許可制・欠陥7の作法)。builderが90既知を自動でマーク描画。",
+   "constructive_guarantees": "鋭角20〜70°(スキャン(rt)実証域・11組違反0)。a1=45(答=既知の転記)を除外——45°の直角二等辺は二等辺側の在庫として分離。",
+   "semantic_position": "c13の始祖・16章目⚡の第1号。二等辺・平四と合わせ「性質から角を決める」章の入口。",
+   "exclusions": "a1==45(転記・直角二等辺は在庫へ)。",
+   "figure_notes": "直角マーク(小正方形10px・既知緑・90°テキスト非表示)の初配線。非対称規約により逆向き(∠x=90)の変種は構造的に存在しない。",
+   "pedagogy": []
+  }
+ },
+ "jhs_c13_nitohen_01": {
+  "brief": {
+   "semantic_territory": "二等辺三角形(頂角既知→底角)",
+   "number_domain": "整数(度)",
+   "answer_structure": "single",
+   "figure": "polygon(n=3・等長マーク)",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "頂角の値域上限120°を採用(G-3スキャン構成(v): 頂角130/140の偏平で2組割れ→≤120で違反0の確定値域)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "底角相等の適用: x=(180−頂角)÷2。参照c13の二等辺求角(35/70)の一般化。",
+   "representation": "頂角t1は10°刻み——(180−t1)÷2の整数性を刻みの偶数保証で構造化する手筋(answer_domainの保証を制約でなくレンジ設計で作る・g05割り切れ設計の角度版)。底角2つはxv1をunknownとplainで二重参照——相等が図データに内在。等長マーク(AB=AC)2本。",
+   "constructive_guarantees": "頂角30〜120°(確定値域)。t1=60の除外が転記(答60=既知60)と正三角形退化(二等辺の特殊視認消失)を一括処理。受理9組——組数は少ないが、二等辺の教育的レンジ自体が狭い(過剰生成より正確な域)。",
+   "semantic_position": "c13性質系列の第2位。底角既知版(nitohen_02)と順逆対。",
+   "exclusions": "t1==60(転記+退化)。奇数頂角(非整数底角)は刻みが構造排除。",
+   "figure_notes": "等長マーク(チョン)の初配線。スキャン構成(v)の確定値域内。",
+   "pedagogy": []
+  }
+ },
+ "jhs_c13_nitohen_02": {
+  "brief": {
+   "semantic_territory": "二等辺三角形(底角既知→頂角)",
+   "number_domain": "整数(度・5°刻み)",
+   "answer_structure": "single",
+   "figure": "polygon(n=3・等長マーク)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "頂角=180−2×底角の逆算。頂角既知版との双方向で底角相等の理解を往復させる、単元の標準対。",
+   "representation": "既知は底角1つ(b1)・もう一方の底角はb1のplain参照(相等の内在)・未知が頂角。nitohen_01と図構造は同一でrole配置だけが逆——順逆対を図の再利用で作る族の手筋。",
+   "constructive_guarantees": "底角35〜75°で頂角30〜110°(確定値域≤120内に自動収束)。b1=60(転記+正三角形)除外。受理8組を全域検証済み。",
+   "semantic_position": "c13性質系列の第3位・nitohen_01の逆位。",
+   "exclusions": "b1==60(転記+退化)。",
+   "figure_notes": "nitohen_01と同一図構造(role逆転のみ)。clearance域共有。",
+   "pedagogy": []
+  }
+ },
+ "jhs_c13_heishi_01": {
+  "brief": {
+   "semantic_territory": "平行四辺形(隣り合う角・和180°)",
+   "number_domain": "整数(度・5°刻み)",
+   "answer_structure": "single",
+   "figure": "polygon(n=4・平行辺マーク)",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "平四の対角相等(答=既知の認識型)・長方形・ひし形・台形はc13第2波在庫として記録",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "隣角の和180°(対辺平行→同側内角)。c13四角形系の入口で、参照の平四∠x群(8行・15〜150°)の最頻構造。",
+   "representation": "4角をa1,x,a1,xのcyclic二重参照で表し、平四の対角相等が図データに内在(値の対称性=性質の表現)。平行辺マーク(>)を対辺2組に。G-2平行線の同側内角(naikaku_01)と同じ数理が閉図形に現れる——単元間の数理接続がバンク構造にも現れる例。",
+   "constructive_guarantees": "a1=90の除外が転記(答90=既知90)と長方形退化(平四の一般性消失)を一括処理。30〜150°・受理24組。",
+   "semantic_position": "c13四角形系の第1位。対角相等・特殊平四(長方形・ひし形)への拡張受け口(在庫記録済み)。",
+   "exclusions": "a1==90(転記+退化)。",
+   "figure_notes": "平行辺マーク対辺2組の初配線。ラベル2個の疎構成だが平四のposペアは未スキャン構成のため配線時に実構成悉皆(corr-0020二段)。",
+   "pedagogy": []
+  }
+ }
+}

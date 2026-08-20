@@ -57,6 +57,15 @@ const ID = {
   jhs_c12_sakka_01: (e, ans) => ans === e.t1,                                    // 錯角相等: ∠x＝t1
   jhs_c12_naikaku_01: (e, ans) => ans + e.t1 === 180,                            // 同側内角の和180°: ∠x＋t1＝180
   jhs_c12_fukugo_01: (e, ans) => ans + e.s1 === 180 && ans === e.t1,             // 隣接180→同位角: ∠x＋s1＝180 ∧ ∠x＝t1
+  // --- c12 第3波G-3 polygon(多角形の内角) ---
+  jhs_c12_tri_naikaku_01: (e, ans) => ans + e.a1 + e.a2 === 180,                 // 三角形内角和180: ∠x＋a1＋a2＝180
+  jhs_c12_tri_gaikaku_01: (e, ans) => ans === e.a1 + e.a2,                        // 外角定理: ∠x＝a1＋a2
+  jhs_c12_gokaku_naikaku_01: (e, ans) => ans + e.a1 + e.a2 + e.a3 + e.a4 === 540, // 五角形内角和540: ∠x＋Σ＝540
+  // --- c13 三角形・平行四辺形(G-3 polygon) ---
+  jhs_c13_rt_tri_01: (e, ans) => ans + e.a1 === 90,                              // 直角三角形: ∠x＋a1＝90
+  jhs_c13_nitohen_01: (e, ans) => 2 * ans + e.t1 === 180,                        // 二等辺底角: 2∠x＋t1＝180
+  jhs_c13_nitohen_02: (e, ans) => ans + 2 * e.b1 === 180,                        // 二等辺頂角: ∠x＋2b1＝180
+  jhs_c13_heishi_01: (e, ans) => ans + e.a1 === 180,                             // 平行四辺形隣角: ∠x＋a1＝180
   // --- c15 展開・因数分解：多項式係数の恒等(問題多項式 == 答えの展開) ---
   // 展開5型: 問題=因数積 → 展開係数が答え多項式の係数と一致(答え係数からの復元と等価)
   jhs_c15_exp_01: (e) => e.s1 === e.a1 + e.b1 && e.t1 === e.a1 * e.b1,            // (x+a)(x+b)=x²+(a+b)x+ab

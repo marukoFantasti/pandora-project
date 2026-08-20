@@ -28,6 +28,9 @@ function instantiate(p, env) {
     if (a.at) out.at = a.at; if (a.pos !== undefined) out.pos = a.pos; if (a.label) out.label = a.label;
     return out;
   });
+  if (fp.external) fp.external = Array.isArray(fp.external)
+    ? fp.external.map(e => Object.assign({}, e, { v: resolve(e.v, env) }))
+    : Object.assign({}, fp.external, { v: resolve(fp.external.v, env) });   // polygon外角(handoff書式=単体obj/builder正規化)
   return fp;
 }
 
@@ -47,7 +50,14 @@ const DOMAINS = {
   jhs_c12_doui_01: { expect: 24, sub: 'parallel', envs: () => rng(30, 150, 5).filter(t => t !== 90).map(t1 => ({ t1 })) },
   jhs_c12_sakka_01: { expect: 24, sub: 'parallel', envs: () => rng(30, 150, 5).filter(t => t !== 90).map(t1 => ({ t1 })) },
   jhs_c12_naikaku_01: { expect: 24, sub: 'parallel', envs: () => rng(30, 150, 5).filter(t => t !== 90).map(t1 => ({ t1, xv1: 180 - t1 })) },
-  jhs_c12_fukugo_01: { expect: 24, sub: 'parallel', envs: () => rng(30, 150, 5).filter(t => t !== 90).map(t1 => ({ t1, s1: 180 - t1 })) }
+  jhs_c12_fukugo_01: { expect: 24, sub: 'parallel', envs: () => rng(30, 150, 5).filter(t => t !== 90).map(t1 => ({ t1, s1: 180 - t1 })) },
+  // --- 第3波 G-3 polygon(実構成clearance悉皆・corr-0020) ---
+  // 三角形2既知+1未知: a1,a2∈[25,130]/5・xv1=180−a1−a2∈[25,130]∧≠a1,a2。
+  jhs_c12_tri_naikaku_01: { expect: 226, sub: 'polygon', envs: () => { const o = []; for (const a1 of rng(25, 130, 5)) for (const a2 of rng(25, 130, 5)) { const xv1 = 180 - a1 - a2; if (xv1 >= 25 && xv1 <= 130 && xv1 !== a1 && xv1 !== a2 && a1 + a2 >= 65) o.push({ a1, a2, xv1 }); } return o; } },
+  // 三角形外角: a1,a2∈[25,130]/5・xv1=a1+a2∈[50,155]。s1=180−a1−a2。
+  jhs_c12_tri_gaikaku_01: { expect: 253, sub: 'polygon', envs: () => { const o = []; for (const a1 of rng(25, 130, 5)) for (const a2 of rng(25, 130, 5)) { const x = a1 + a2; if (x >= 50 && x <= 155) o.push({ a1, a2, xv1: x, s1: 180 - a1 - a2 }); } return o; } },
+  // 五角形4既知+1未知: a1..a4∈[90,130]/5・xv1=540−Σ∈[90,130]∧≠各。
+  jhs_c12_gokaku_naikaku_01: { expect: 2536, sub: 'polygon', envs: () => { const o = []; for (const a1 of rng(90, 130, 5)) for (const a2 of rng(90, 130, 5)) for (const a3 of rng(90, 130, 5)) for (const a4 of rng(90, 130, 5)) { const xv1 = 540 - a1 - a2 - a3 - a4; if (xv1 >= 90 && xv1 <= 130 && xv1 !== a1 && xv1 !== a2 && xv1 !== a3 && xv1 !== a4) o.push({ a1, a2, a3, a4, xv1 }); } return o; } }
 };
 
 let bad = 0;
@@ -76,5 +86,5 @@ for (const p of bank.patterns) {
     ' [' + p.figure_params.subkind + ']: 受理組 ' + envs.length + '/' + dom.expect +
     ' / ' + gLbl + ' ' + geomBad + ' / 描画不良 ' + drawBad + ' / clearance違反 ' + clBad + ' / min minText ' + minMT.toFixed(2));
 }
-console.log('\n' + (bad === 0 ? 'c12 図照合: 全8パターン合格 ✅(第1波24/24/222/5,538 + 第2波G-2 24×4・幾何整合・描画・clearance悉皆違反0)' : '❌ ' + bad + '件'));
+console.log('\n' + (bad === 0 ? 'c12 図照合: 全11パターン合格 ✅(G-1 24/24/222/5,538 + G-2 24×4 + G-3 226/253/2,536・幾何整合・描画・clearance悉皆違反0)' : '❌ ' + bad + '件'));
 process.exit(bad === 0 ? 0 : 1);
