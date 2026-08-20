@@ -1194,6 +1194,17 @@
     if (Math.abs(span - av) < 1) return { a0: aP, a1: aP + span };
     return { a0: aN, a1: aN + (360 - span) };
   }
+  // 直角マーク(小正方形・教科書標準記法)。angle_figure系共通: 既知角==90°のとき弧+「90°」の代わりに
+  // 頂点Vの角内側へ一辺≈10pxの小正方形を描く。e1,e2=Vからの2辺方向(world単位)。既知緑。
+  // ★非対称(契約): role=unknownは値が90でも直角マークにせず赤弧+∠xのまま——マーク化すると
+  //   「90°」という答えが図から視認で漏れるため。既知(=与件)のみマーク化する。
+  function rightAngleMark(Vw, e1, e2, sidePx) {
+    var s = sidePx || 10;
+    var P1 = [Vw[0] + e1[0] * s, Vw[1] + e1[1] * s], P2 = [Vw[0] + e2[0] * s, Vw[1] + e2[1] * s], Cn = [Vw[0] + (e1[0] + e2[0]) * s, Vw[1] + (e1[1] + e2[1]) * s];
+    var f1 = worldFlip(P1), f2 = worldFlip(P2), fc = worldFlip(Cn);
+    return { el: '<path d="M ' + f1[0].toFixed(2) + ' ' + f1[1].toFixed(2) + ' L ' + fc[0].toFixed(2) + ' ' + fc[1].toFixed(2) + ' L ' + f2[0].toFixed(2) + ' ' + f2[1].toFixed(2) + '" fill="none" stroke="' + C_KNOWN + '" stroke-width="1.6"/>',
+      pts: [f1, f2, fc], seg1: [f1, fc], seg2: [fc, f2] };
+  }
   function polygonLayout(fp) {
     var uStyle = fp.unknown_style || 'bare_zx';
     var g = polygonGeom(fp), n = g.n, lay = newLayout();
@@ -1208,12 +1219,23 @@
       var role = a.role || 'plain', Vw = g.pts[i];
       var arc = polyInteriorArc(g, i), bis = (arc.a0 + arc.a1) / 2;
       if (role !== 'plain') {
-        var isUn = role === 'unknown', col = isUn ? C_TARGET : C_KNOWN, wdt = isUn ? 2 : 1.6, r = isUn ? ANGLE_UR : ANGLE_KR;
-        var aw = arcPath(Vw, r, arc.a0, arc.a1, col, wdt); lay.parts.push(aw.el);
-        aw.ext.forEach(function (p) { lay.pts.push(p); });
-        var text = isUn ? (uStyle === 'circle_x' ? 'x' : (a.label != null ? String(a.label) : '∠x')) : (a.label != null ? String(a.label) : Math.floor(g.angles[i] + 0.5) + '°');
-        specs.push({ role: role, text: text, anchor: worldFlip(Vw), dir: [Math.cos(bis * DEG), -Math.sin(bis * DEG)],
-          cands: isUn ? ANGLE_UN_CANDS : ANGLE_KN_CANDS, color: col, own: ['e' + i, 'e' + ((i - 1 + n) % n)] });
+        var isUn = role === 'unknown';
+        if (!isUn && Math.floor(g.angles[i] + 0.5) === 90) {
+          // 既知の直角=小正方形マーク(弧+「90°」を描かない)。unknownは値90でも下のarc経路(∠x)=非対称。
+          var nx = g.pts[(i + 1) % n], pv = g.pts[(i - 1 + n) % n];
+          var l1 = Math.hypot(nx[0] - Vw[0], nx[1] - Vw[1]), l2 = Math.hypot(pv[0] - Vw[0], pv[1] - Vw[1]);
+          var rm = rightAngleMark(Vw, [(nx[0] - Vw[0]) / l1, (nx[1] - Vw[1]) / l1], [(pv[0] - Vw[0]) / l2, (pv[1] - Vw[1]) / l2]);
+          lay.parts.push(rm.el);
+          lay.segs.push({ id: 'rm' + i, p1: rm.seg1[0], p2: rm.seg1[1] }, { id: 'rm' + i, p1: rm.seg2[0], p2: rm.seg2[1] });
+          rm.pts.forEach(function (p) { lay.pts.push(p); });
+        } else {
+          var col = isUn ? C_TARGET : C_KNOWN, wdt = isUn ? 2 : 1.6, r = isUn ? ANGLE_UR : ANGLE_KR;
+          var aw = arcPath(Vw, r, arc.a0, arc.a1, col, wdt); lay.parts.push(aw.el);
+          aw.ext.forEach(function (p) { lay.pts.push(p); });
+          var text = isUn ? (uStyle === 'circle_x' ? 'x' : (a.label != null ? String(a.label) : '∠x')) : (a.label != null ? String(a.label) : Math.floor(g.angles[i] + 0.5) + '°');
+          specs.push({ role: role, text: text, anchor: worldFlip(Vw), dir: [Math.cos(bis * DEG), -Math.sin(bis * DEG)],
+            cands: isUn ? ANGLE_UN_CANDS : ANGLE_KN_CANDS, color: col, own: ['e' + i, 'e' + ((i - 1 + n) % n)] });
+        }
       }
       var nm = (fp.vertices[i] || {}).name;
       if (nm != null) specs.push({ role: 'name', text: String(nm), anchor: worldFlip(Vw), dir: [-Math.cos(bis * DEG), Math.sin(bis * DEG)],
@@ -1339,6 +1361,7 @@
     parallel_wedge: parallelWedge,               // (t1,pos)→楔[a0,a1]と実角値(pos偶t1/奇180−t1)
     polygon: polygonGeom,                         // 第2波G-3: 接円接線構成の頂点座標(vector用)
     poly_interior_arc: polyInteriorArc,          // 頂点iの内角弧[a0,a1](world度)
+    right_angle_mark: rightAngleMark,            // G-3.1: 直角マーク(小正方形)頂点座標(vector用)
     arc_sample_points: arcSamplePoints,          // 弧サンプル点(曲率関門用・頂点からr一定検査)
     // ベクター用の位置引数ラッパ（Python prism_geom(base_kind,a,b,h) と同型）
     prism: function (base_kind, a, b, h) {

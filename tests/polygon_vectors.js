@@ -75,6 +75,38 @@ for (const angs of SETS) {
   if (e) { bad += e; console.log('  ❌ n=' + n + ' ' + JSON.stringify(angs) + ' (' + e + '件)'); }
 }
 
+// 直角マーク(G-3.1): 既知90°=小正方形。マーク3点座標±0.5px・両辺への平行性・「90°」非表示。
+(function () {
+  const fp = { kind: 'angle_figure', subkind: 'polygon', vertices: [{ name: 'A' }, { name: 'B' }, { name: 'C' }],
+    angles: [{ v: 90, role: 'known' }, { v: 55, role: 'known' }, { v: 35, role: 'unknown', label: '∠x' }] };
+  const g = FB._geom.polygon(fp), V = g.pts[0], nx = g.pts[1], pv = g.pts[2];
+  const l1 = Math.hypot(nx[0] - V[0], nx[1] - V[1]), l2 = Math.hypot(pv[0] - V[0], pv[1] - V[1]);
+  const e1 = [(nx[0] - V[0]) / l1, (nx[1] - V[1]) / l1], e2 = [(pv[0] - V[0]) / l2, (pv[1] - V[1]) / l2];
+  const exp = FB._geom.right_angle_mark(V, e1, e2);   // world V(内部でflip)。{pts:[f1,f2,fc]}(SVG)
+  const svg = FB.build(fp);
+  const m = svg.match(/<path d="M ([-\d.]+) ([-\d.]+) L ([-\d.]+) ([-\d.]+) L ([-\d.]+) ([-\d.]+)" fill="none" stroke="#1D9E75" stroke-width="1.6"/);
+  let e = 0;
+  if (!m) e++; else {
+    const P1 = [+m[1], +m[2]], Cn = [+m[3], +m[4]], P2 = [+m[5], +m[6]];
+    if (Math.hypot(P1[0] - exp.pts[0][0], P1[1] - exp.pts[0][1]) > 0.5) e++;   // f1
+    if (Math.hypot(Cn[0] - exp.pts[2][0], Cn[1] - exp.pts[2][1]) > 0.5) e++;   // fc
+    if (Math.hypot(P2[0] - exp.pts[1][0], P2[1] - exp.pts[1][1]) > 0.5) e++;   // f2
+    // 平行性: (P1→Cn)∥辺e2(svg) ・ (Cn→P2)∥辺e1(svg)
+    const e1s = [e1[0], -e1[1]], e2s = [e2[0], -e2[1]];
+    const v1 = [Cn[0] - P1[0], Cn[1] - P1[1]], v2 = [P2[0] - Cn[0], P2[1] - Cn[1]];
+    if (Math.abs(v1[0] * e2s[1] - v1[1] * e2s[0]) > 0.5) e++;
+    if (Math.abs(v2[0] * e1s[1] - v2[1] * e1s[0]) > 0.5) e++;
+    // 一辺≈10px
+    if (Math.abs(Math.hypot(v1[0], v1[1]) - 10) > 0.5 || Math.abs(Math.hypot(v2[0], v2[1]) - 10) > 0.5) e++;
+  }
+  if (svg.indexOf('90°') >= 0) e++;                                            // 既知90°の値は非表示
+  // 非対称: 未知90°はマークにせず赤弧+∠x
+  const un = FB.build({ kind: 'angle_figure', subkind: 'polygon', vertices: [{ name: 'A' }, { name: 'B' }, { name: 'C' }], angles: [{ v: 90, role: 'unknown', label: '∠x' }, { v: 55, role: 'known' }, { v: 35, role: 'known' }] });
+  if (!un.includes('∠x') || !/A 28 28/.test(un)) e++;                          // 未知90°=r28赤弧(マークでない)
+  bad += e;
+  console.log('  直角マーク(既知90°=小正方形): 3点±0.5px・両辺平行・一辺10px・90°非表示・未知90非対称 ' + (e === 0 ? '✅' : '❌ ' + e + '件'));
+})();
+
 // 合成の潰れ弧(rx≠ry)を曲率関門が捕まえるか実証
 (function () { const flat = '<path d="M 5 0 A 18 12 0 0 0 -5 0" fill="none"'; const m = flat.match(/A (\d+) (\d+) /); if (!(m && m[1] !== m[2])) bad++; console.log('  曲率関門 潰れ検出(A 18 12=楕円): ' + (m && m[1] !== m[2] ? 'RED ✅' : '見逃し ❌')); })();
 

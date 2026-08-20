@@ -98,6 +98,8 @@ function polyScan(FB) {
   { const c = []; for (const a1 of rng(60, 140, 10)) for (const a2 of rng(60, 140, 10)) for (const a3 of rng(60, 140, 10)) { const a4 = 360 - a1 - a2 - a3; if (a4 < 60 || a4 > 140) continue; c.push(poly(NM.slice(0, 4), [{ v: a1, role: 'known' }, { v: a2, role: 'known' }, { v: a3, role: 'known' }, { v: a4, role: 'unknown', label: '∠x' }])); } run('iii', '(iii)四角形 3既知+1未知', c); }
   // (iv) 五角形 4既知+1未知
   { const c = []; for (const a1 of rng(90, 130, 10)) for (const a2 of rng(90, 130, 10)) for (const a3 of rng(90, 130, 10)) for (const a4 of rng(90, 130, 10)) { const a5 = 540 - a1 - a2 - a3 - a4; if (a5 < 90 || a5 > 130) continue; c.push(poly(NM.slice(0, 5), [{ v: a1, role: 'known' }, { v: a2, role: 'known' }, { v: a3, role: 'known' }, { v: a4, role: 'known' }, { v: a5, role: 'unknown', label: '∠x' }])); } run('iv', '(iv)五角形 4既知+1未知', c); }
+  // (rt) 直角三角形 90既知(直角マーク)+鋭角1既知+鋭角1未知
+  { const c = []; for (const a2 of rng(20, 70, 5)) { const a3 = 90 - a2; if (a3 < 20 || a3 > 70) continue; c.push(poly(NM.slice(0, 3), [{ v: 90, role: 'known' }, { v: a2, role: 'known' }, { v: a3, role: 'unknown', label: '∠x' }])); } run('rt', '(rt)直角三角形 90既知+鋭角既知+鋭角未知', c); }
   // (v) 二等辺 頂角未知(底角等長マーク)
   { const c = []; for (const t of rng(20, 140, 5)) { const b = (180 - t) / 2; if (b % 1 !== 0) continue; c.push(poly(NM.slice(0, 3), [{ v: t, role: 'unknown', label: '∠x' }, { v: b, role: 'known' }, { v: b, role: 'plain' }], { marks: [{ ticks: 1, edges: [0, 2] }] })); } run('v', '(v)二等辺 頂角未知+底角等長', c); }
   return out;
