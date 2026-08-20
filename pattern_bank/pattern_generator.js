@@ -196,6 +196,25 @@
     var sign = neg ? MINUS : '';
     return k === 1 ? (sign + '√' + m) : (sign + k + '√' + m);
   }
+  // π係数の整形（pi_coef機構・sqrt族の横展開）。係数のみ整数演算・π記号は表示層（ゼロ浮動小数）。
+  // 整数係数: 0→"0"、1→"π"、−1→"−π"、他→fmtSigned(c)+"π"。（36→"36π"）
+  function fmtPi(c) {
+    c = Math.trunc(c);
+    if (c === 0) return '0';
+    if (c === 1) return 'π';
+    if (c === -1) return MINUS + 'π';
+    return fmtSigned(c) + 'π';
+  }
+  // 分数係数×π（円錐1/3・球4/3対応）: (num/den)を約分し den==1→fmtPi(num)、他→"[−](p/q)π"。
+  function fmtPiFrac(num, den) {
+    num = Math.trunc(num); den = Math.trunc(den);
+    if (den < 0) { num = -num; den = -den; }
+    var g = gcdInt(Math.abs(num), den) || 1;
+    num = Math.trunc(num / g); den = Math.trunc(den / g);
+    if (num === 0) return '0';
+    if (den === 1) return fmtPi(num);
+    return (num < 0 ? MINUS : '') + '(' + Math.abs(num) + '/' + den + ')π';
+  }
   // スロット range=[lo,hi](step) の到達可能値ドメインを "件数:先頭:末尾" で返す
   // （負域含む Python randrange とのマッピング一致照合用。randRange と同一: n=floor((hi-lo)/step)+1）。
   function sampleDomain(lo, hi, step) {
@@ -362,11 +381,11 @@
     // 許可関数を増やすだけ（abs/max/min と同格）。既存バンクは未参照＝非干渉。
     var fn = new Function('abs', 'max', 'min', 'pymod', 'round_half_up', 'round_range_lower', 'round_range_upper_excl',
       'gcd', 'lcm', 'reduce_num', 'reduce_den',
-      'fmt_signed', 'fmt_coef', 'fmt_coefj', 'fmt_termj', 'sgn_str', 'sqrt_coef', 'sqrt_rad', 'fmt_sqrt', 'dec2fix',
+      'fmt_signed', 'fmt_coef', 'fmt_coefj', 'fmt_termj', 'sgn_str', 'sqrt_coef', 'sqrt_rad', 'fmt_sqrt', 'fmt_pi', 'fmt_pi_frac', 'dec2fix',
       keys.join(','), 'return (' + jsExpr + ');');
     return fn.apply(null, [Math.abs, Math.max, Math.min, pymod, roundHalfUp, roundRangeLower, roundRangeUpperExcl,
       gcdInt, lcmInt, reduceNum, reduceDen,
-      fmtSigned, fmtCoef, fmtCoefj, fmtTermj, sgnStr, sqrtCoef, sqrtRad, fmtSqrt, fmtDec2fix].concat(vals));
+      fmtSigned, fmtCoef, fmtCoefj, fmtTermj, sgnStr, sqrtCoef, sqrtRad, fmtSqrt, fmtPi, fmtPiFrac, fmtDec2fix].concat(vals));
   }
 
   // ---- スロット解決 ----
@@ -703,6 +722,7 @@
     var a = env.ans, inDomain;
     if (dom === 'any_int') inDomain = true;
     else if (dom === 'nonzero_int') inDomain = a !== 0;
+    else if (dom === 'pi_coef') inDomain = a > 0;   // S-1: π係数（ans=係数・表示fmt_pi(ans)）。正。
     else inDomain = a > 0;   // positive_int（既定・既存バンク全て）
 
     return {
@@ -793,6 +813,8 @@
     sqrtCoef: sqrtCoef,
     sqrtRad: sqrtRad,
     fmtSqrt: fmtSqrt,
+    fmtPi: fmtPi,
+    fmtPiFrac: fmtPiFrac,
     fmtDec2fix: fmtDec2fix,
     sampleDomain: sampleDomain,
     resolveFigureParams: resolveFigureParams,

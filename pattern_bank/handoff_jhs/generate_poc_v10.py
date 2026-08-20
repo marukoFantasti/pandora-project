@@ -226,6 +226,36 @@ SAFE.update({"fmt_signed": fmt_signed, "fmt_coef": fmt_coef, "fmt_coefj": fmt_co
              "fmt_termj": fmt_termj, "sgn_str": sgn_str,
              "sqrt_coef": sqrt_coef, "sqrt_rad": sqrt_rad, "fmt_sqrt": fmt_sqrt})
 
+# ===== S-1 追加ヘルパ（pi_coef機構・sqrt族の横展開。係数のみ整数演算・π記号は表示層＝
+#        ゼロ浮動小数。JS(pattern_generator.js fmtPi/fmtPiFrac)と1:1移植・等価性ベクター照合） =====
+def fmt_pi(c):
+    """整数係数×π: 0→"0"、1→"π"、−1→"−π"、他→fmt_signed(c)+"π"。（36→"36π"）"""
+    c = int(c)
+    if c == 0:
+        return "0"
+    if c == 1:
+        return "π"
+    if c == -1:
+        return _MINUS + "π"
+    return fmt_signed(c) + "π"
+
+def fmt_pi_frac(num, den):
+    """分数係数×π（円錐1/3・球4/3対応）: (num/den)を約分し den==1→fmt_pi(num)、他→"[−](p/q)π"。
+    （32,3→"(32/3)π"、12,1→"12π"、8,4→"2π"）"""
+    num = int(num); den = int(den)
+    if den < 0:
+        num, den = -num, -den
+    g = gcd(abs(num), den) or 1
+    num //= g; den //= g
+    if num == 0:
+        return "0"
+    if den == 1:
+        return fmt_pi(num)
+    sign = _MINUS if num < 0 else ""
+    return f"{sign}({abs(num)}/{den})π"
+
+SAFE.update({"fmt_pi": fmt_pi, "fmt_pi_frac": fmt_pi_frac})
+
 def sample_domain(lo, hi, step=1):
     """スロット range=[lo,hi](step) の到達可能値ドメインを "件数:先頭:末尾" で返す
     （負域含む JS randRange との一致照合用。JS randRange と同一の値マッピング:
@@ -552,6 +582,8 @@ def verify(pattern, env, problem):
         in_domain = True
     elif dom == "nonzero_int":
         in_domain = a != 0
+    elif dom == "pi_coef":  # S-1: π係数（ans=係数・表示はfmt_pi(ans)）。体積/表面積の係数は正。
+        in_domain = a > 0
     else:  # positive_int（既定・既存バンク全て）
         in_domain = a > 0
     return {"kanji_ok": not bad,
@@ -569,6 +601,7 @@ def _run_vectors(path):
             "fmt_signed": fmt_signed, "fmt_coef": fmt_coef, "fmt_coefj": fmt_coefj,
             "fmt_termj": fmt_termj, "sgn_str": sgn_str, "sqrt_coef": sqrt_coef,
             "sqrt_rad": sqrt_rad, "fmt_sqrt": fmt_sqrt, "sample_domain": sample_domain,
+            "fmt_pi": fmt_pi, "fmt_pi_frac": fmt_pi_frac,
             "dec2fix": fmt_dec2fix}
     bad = total = covered = 0
     skipped = []
