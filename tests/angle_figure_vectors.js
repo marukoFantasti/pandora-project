@@ -19,7 +19,7 @@ const CASES = [];
     { v: gs[0], role: 'plain' }, { v: gs[1], role: 'plain' }, { v: gs[2], role: 'plain' }] }));
 
 // ── 曲率関門: SVG弧の真円性を機械検査（潰れ=楕円化/off半径 を捕まえる） ──
-// (a) <path A rx ry …> の rx==ry==期待r（既知18/未知34）。ellipse化(rx≠ry)=潰れ→検出。
+// (a) <path A rx ry …> の rx==ry==期待r（既知18/未知28）。ellipse化(rx≠ry)=潰れ→検出。
 // (b) 弧サンプル点(≥5)が頂点O(=SVG[0,0])から距離r±0.5px。
 function curvatureCheck(fp) {
   const svg = FB.build(fp);
@@ -78,7 +78,7 @@ for (const c of CASES) {
     if (Math.abs(g.ends[i][0] - ex) > 0.5 || Math.abs(g.ends[i][1] - ey) > 0.5) e++;
     const expBis = expDir + Number(c.angles[i].v) / 2;
     if (Math.abs(g.arcs[i].bis - expBis) > 1e-6) e++;
-    if (g.arcs[i].r !== (c.angles[i].role === 'unknown' ? 34 : 18)) e++;
+    if (g.arcs[i].r !== (c.angles[i].role === 'unknown' ? 28 : 18)) e++;
     expDir += Number(c.angles[i].v);
   }
   if (Math.abs(expDir - 360) > 1e-6) e++;   // 和360
