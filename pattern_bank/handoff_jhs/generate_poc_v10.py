@@ -479,9 +479,15 @@ def build_env(pattern, unit_id=None):
     # from形式: "set[j].field"(辞書アイテム) / "set[i][0]"(リストペア) / "set" / "set(distinct)"
     # 同一インデックス変数(j/i/k…)を共有するスロットは同じアイテムから取る
     dict_groups, list_groups, simple, distinct = {}, {}, {}, []
+    slot_indexed = []
     for name, spec in pattern["slots"].items():
         f = spec.get("from")
         if not f:
+            continue
+        # P-1: スロット名添字 "set[c1].field"(添字=宣言スロットの抽選値で決定的索引・JS slotIndexedと1:1)
+        ms = re.match(r"(\w+)\[(\w+)\]\.(\w+)$", f)
+        if ms and ms.group(2) in pattern["slots"]:
+            slot_indexed.append((name, ms.group(1), ms.group(2), ms.group(3)))
             continue
         m = re.match(r"(\w+)\[(\w)\]\.(\w+)$", f)
         if m:
@@ -501,6 +507,9 @@ def build_env(pattern, unit_id=None):
             distinct.append((name, m.group(1)))
             continue
         simple[name] = f
+    # P-1: スロット名添字の解決(数値抽選済みenvの値で索引)
+    for _nm, _set, _idx, _fld in slot_indexed:
+        env[_nm] = LEX[_set][env[_idx]][_fld]
     object_binding = None  # attr整合で object を棄却・再抽選する場合に使う (JS 201-204相当)
     for (set_name, _), fields in dict_groups.items():
         item = (random.choice(filtered_container_sets(pattern))
@@ -599,9 +608,21 @@ def build_env(pattern, unit_id=None):
         for _n in pattern.get("computed_slots", {}):
             if isinstance(env.get(_n), str):
                 env[f"{_n}_edges"] = fmt_edge_set(env[_n])
+    # P-1 display_swap層: {"slot==int": {表示名: 参照slot名}} — 成立ブランチの表示スロット束縛。
+    for _cond, _binds in pattern.get("display_swap", {}).items():
+        _m = re.match(r"^(\w+)\s*==\s*(-?\d+)$", _cond)
+        if _m and env.get(_m.group(1)) == int(_m.group(2)):
+            for _nm, _ref in _binds.items():
+                env[_nm] = env[_ref]
     # 答え(整数)
     env["ans"] = eval(pattern["answer_formula"], SAFE,
                       {k: v for k, v in env.items() if isinstance(v, int)})
+    # P-1 word_choice正規化層(choice3様式の語版): ans→{W1_word}(word_map/位置解決)。
+    if _pidom == "word_choice":
+        if pattern.get("word_map"):
+            env["W1_word"] = pattern["word_map"].get(str(env["ans"]), "")
+        elif pattern.get("display_swap"):
+            env["W1_word"] = env.get(["obj_first", "obj_second"][env["ans"] - 1], "")
     # fraction_display: {表示名: [分子スロット名, 分母スロット名]} → 整形文字列を注入
     for disp_name, (num_key, den_key) in pattern.get("fraction_display", {}).items():
         env[disp_name] = fmt_fraction(env[num_key], env[den_key])
@@ -675,6 +696,8 @@ def verify(pattern, env, problem):
         in_domain = isinstance(a, str) and len(a) > 0 and norm_edge_set(a) == a
     elif dom == "num_seq":  # P-1: 数値列(表示=要素slot直書き・verify=先頭要素/全要素はハーネス照合)。
         in_domain = isinstance(a, int) and not isinstance(a, bool)
+    elif dom == "word_choice":  # P-1: 語答え(内部=番号・表示=語マップ/位置解決)。
+        in_domain = isinstance(a, int) and not isinstance(a, bool) and a >= 1 and (not pattern.get("word_map") or a <= len(pattern["word_map"]))
     else:  # positive_int（既定・既存バンク全て）
         in_domain = a > 0
     return {"kanji_ok": not bad,

@@ -2529,6 +2529,78 @@
 {"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g01_seq_tobi_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "系列穴埋め対の第2位・g02の九九(2・5のだん先行)への数列的前段。"}
 {"doc_type": "rationale", "section": "exclusions", "pattern_id": "g01_seq_tobi_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "s+4k>120・刻み30(在庫)。"}
 {"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g01_seq_tobi_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "図なし(同上)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g01_junjo_banme_01", "grade": "g01", "unit_id": "g01_c11_u01", "kind": null, "text": "「まえからkばんめ」の位置から後方の数を求める。序数の位置理解(ばんめ=1つの位置)が芯。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g01_junjo_banme_01", "grade": "g01", "unit_id": "g01_c11_u01", "kind": null, "text": "人の並び(音変化ひとり/ふたり)を避け物列(count_items)で構成——かな正準規約のバッチ1求補と同判断。あかい{it1}の位置指定で列内の1点を言語指示。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g01_junjo_banme_01", "grade": "g01", "unit_id": "g01_c11_u01", "kind": null, "text": "うしろ2こ以上(成立性)・転記排除n≠2k。受理60組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g01_junjo_banme_01", "grade": "g01", "unit_id": "g01_c11_u01", "kind": null, "text": "序数対の位置側。集合数(shugo_01)と同式異意味の弁別対。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g01_junjo_banme_01", "grade": "g01", "unit_id": "g01_c11_u01", "kind": null, "text": "k>n−2・n=2k(転記)。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g01_junjo_banme_01", "grade": "g01", "unit_id": "g01_c11_u01", "kind": null, "text": "図なし(並びの絵は転記データ上出現せず・言語位置指定のテキスト完結)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g01_junjo_shugo_01", "grade": "g01", "unit_id": "g01_c11_u01", "kind": null, "text": "「まえからkこ」=先頭からのk個の塊。序数(1つの位置)との読み分けが単元目的。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g01_junjo_shugo_01", "grade": "g01", "unit_id": "g01_c11_u01", "kind": null, "text": "banme_01と同式(n−k)・同値域・異文言の弁別対——「同じ計算・違う意味」を文言だけで分ける統制設計(doui/sakka対の文章題版)。混合出題で「ばんめ/こ」の区別が立つ。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g01_junjo_shugo_01", "grade": "g01", "unit_id": "g01_c11_u01", "kind": null, "text": "banme_01と同一制約(難度統制)。受理60組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g01_junjo_shugo_01", "grade": "g01", "unit_id": "g01_c11_u01", "kind": null, "text": "序数対の集合側。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g01_junjo_shugo_01", "grade": "g01", "unit_id": "g01_c11_u01", "kind": null, "text": "同上。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g01_junjo_shugo_01", "grade": "g01", "unit_id": "g01_c11_u01", "kind": null, "text": "図なし(同上)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g01_jikan_ato_01", "grade": "g01", "unit_id": "g01_c12_u01", "kind": null, "text": "「いまhじ、dじかんあとは」。時刻の加法関係のテキスト版で、文字盤よみ(図依存)と切り分けた言語側の時刻理解。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g01_jikan_ato_01", "grade": "g01", "unit_id": "g01_c12_u01", "kind": null, "text": "h+d≦12の日跨ぎなし制約(1年は12時制の正時のみ・分は2年域)。単位「じ」をかな答え形式に。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g01_jikan_ato_01", "grade": "g01", "unit_id": "g01_c12_u01", "kind": null, "text": "転記自動安全(答>h,d)。受理29組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g01_jikan_ato_01", "grade": "g01", "unit_id": "g01_c12_u01", "kind": null, "text": "時刻対の順方向。g02の時刻と時間(分単位)への前段。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g01_jikan_ato_01", "grade": "g01", "unit_id": "g01_c12_u01", "kind": null, "text": "h+d>12(日跨ぎ)。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g01_jikan_ato_01", "grade": "g01", "unit_id": "g01_c12_u01", "kind": null, "text": "図なし(文字盤は図依存として対象外・本パターンは時刻の数理関係のみ)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g01_jikan_mae_01", "grade": "g01", "unit_id": "g01_c12_u01", "kind": null, "text": "dじかん前の時刻。ato_01の逆向き対。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g01_jikan_mae_01", "grade": "g01", "unit_id": "g01_c12_u01", "kind": null, "text": "h−d≧1(時刻の正)。転記排除h≠2d。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g01_jikan_mae_01", "grade": "g01", "unit_id": "g01_c12_u01", "kind": null, "text": "受理27組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g01_jikan_mae_01", "grade": "g01", "unit_id": "g01_c12_u01", "kind": null, "text": "時刻対の逆方向。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g01_jikan_mae_01", "grade": "g01", "unit_id": "g01_c12_u01", "kind": null, "text": "h−d<1・h=2d(転記)。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g01_jikan_mae_01", "grade": "g01", "unit_id": "g01_c12_u01", "kind": null, "text": "図なし(同上)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g01_kurabe_nagasa_01", "grade": "g01", "unit_id": "g01_c13_u01", "kind": null, "text": "任意単位(クリップ)による間接比較。「数の大きい方=長い」の対応が学習内容で、直接比較(実物合わせ・図依存)と切り分けた数理側。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g01_kurabe_nagasa_01", "grade": "g01", "unit_id": "g01_c13_u01", "kind": null, "text": "word_choice初使用群の代表。内部=1/2(あか/しろ)・表示=語マップ——choice3の内部番号/表示記号分離の語版横展開。色対テープ+クリップの全かな構成。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g01_kurabe_nagasa_01", "grade": "g01", "unit_id": "g01_c13_u01", "kind": null, "text": "a≠b(弁別)。答=語のため数値転記の概念外(語と数値が別トークン種)。受理240組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g01_kurabe_nagasa_01", "grade": "g01", "unit_id": "g01_c13_u01", "kind": null, "text": "くらべ4部作の第1位(長さ)。kurabe_01(数の大小)の量比較版。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g01_kurabe_nagasa_01", "grade": "g01", "unit_id": "g01_c13_u01", "kind": null, "text": "a=b(比較不成立)。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g01_kurabe_nagasa_01", "grade": "g01", "unit_id": "g01_c13_u01", "kind": null, "text": "図なし(実物比較の絵は図依存・任意単位の数理はテキスト完結)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g01_kurabe_kasa_01", "grade": "g01", "unit_id": "g01_c13_u02", "kind": null, "text": "水のかさの間接比較(やかんにコップ何こぶん)。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g01_kurabe_kasa_01", "grade": "g01", "unit_id": "g01_c13_u02", "kind": null, "text": "nagasa_01と同構成の量替え(色やかん+コップこぶん)。「はい」回避のdirectives適用(nagasa_01参照)。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g01_kurabe_kasa_01", "grade": "g01", "unit_id": "g01_c13_u02", "kind": null, "text": "受理90組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g01_kurabe_kasa_01", "grade": "g01", "unit_id": "g01_c13_u02", "kind": null, "text": "くらべ4部作の第2位(かさ)。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g01_kurabe_kasa_01", "grade": "g01", "unit_id": "g01_c13_u02", "kind": null, "text": "a=b。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g01_kurabe_kasa_01", "grade": "g01", "unit_id": "g01_c13_u02", "kind": null, "text": "図なし(同上)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g01_kurabe_hirosa_01", "grade": "g01", "unit_id": "g01_c13_u03", "kind": null, "text": "ますめによる広さ比較(じんとり遊びの数理版)。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g01_kurabe_hirosa_01", "grade": "g01", "unit_id": "g01_c13_u03", "kind": null, "text": "同構成の量替え(色かみ+ますめこぶん)。長さ・かさ・広さの3量が同型で並ぶ——「任意単位の数」に統一する量感覚の抽象化を型の同一性が写す。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g01_kurabe_hirosa_01", "grade": "g01", "unit_id": "g01_c13_u03", "kind": null, "text": "受理210組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g01_kurabe_hirosa_01", "grade": "g01", "unit_id": "g01_c13_u03", "kind": null, "text": "くらべ4部作の第3位(広さ)。g04面積(普遍単位)への遠い前段。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g01_kurabe_hirosa_01", "grade": "g01", "unit_id": "g01_c13_u03", "kind": null, "text": "a=b。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g01_kurabe_hirosa_01", "grade": "g01", "unit_id": "g01_c13_u03", "kind": null, "text": "図なし(同上)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g01_kurabe_ichiban_01", "grade": "g01", "unit_id": "g01_c13_u01", "kind": null, "text": "3値からいちばんを選ぶ(2値「どちらが」の発展形)。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g01_kurabe_ichiban_01", "grade": "g01", "unit_id": "g01_c13_u01", "kind": null, "text": "3値相異制約で最大一意。answer_formulaは3分岐の条件式(word_choice 3択の内部番号)。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g01_kurabe_ichiban_01", "grade": "g01", "unit_id": "g01_c13_u01", "kind": null, "text": "distinct 3本(最大の一意性=答の well-defined 保証)。受理3,360組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g01_kurabe_ichiban_01", "grade": "g01", "unit_id": "g01_c13_u01", "kind": null, "text": "くらべ4部作の掉尾。かずしらべ(ooi_01)と同構造の量/個数の対。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g01_kurabe_ichiban_01", "grade": "g01", "unit_id": "g01_c13_u01", "kind": null, "text": "同値の組(一意性崩れ)。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g01_kurabe_ichiban_01", "grade": "g01", "unit_id": "g01_c13_u01", "kind": null, "text": "図なし(同上)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g01_katachi_utsushi_01", "grade": "g01", "unit_id": "g01_c14_u01", "kind": null, "text": "「はこの底を写すとしかく」——立体名→面の形の言語推論(調査c35系の有力判定・図なし再構成の第一候補)。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g01_katachi_utsushi_01", "grade": "g01", "unit_id": "g01_c14_u01", "kind": null, "text": "lexicon solid_face(はこ→しかく/さいころ→ましかく/つつ→まる)の対応表参照。答=faceの語(word_choiceのlexicon版)。受理3組——定義的ドリルの正確な狭さ(二等辺・球と同判断)。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g01_katachi_utsushi_01", "grade": "g01", "unit_id": "g01_c14_u01", "kind": null, "text": "対応表が答を一意に決定(照合表方式=規約5の語彙版)。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g01_katachi_utsushi_01", "grade": "g01", "unit_id": "g01_c14_u01", "kind": null, "text": "かたち族の言語側入口。g02の図形名(三角形・四角形)への語彙前段。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g01_katachi_utsushi_01", "grade": "g01", "unit_id": "g01_c14_u01", "kind": null, "text": "ボール(写し取れない=転がる・対応表に置かない構造排除)。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g01_katachi_utsushi_01", "grade": "g01", "unit_id": "g01_c14_u01", "kind": null, "text": "図なし(立体名→面名の言語対応で完結・実物写し取りの絵は図依存として対象外)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g01_katachi_nakama_01", "grade": "g01", "unit_id": "g01_c14_u01", "kind": null, "text": "2物から種別に合う方を選ぶ(調査c34系有力判定の2択版)。立体種別の語彙分類。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g01_katachi_nakama_01", "grade": "g01", "unit_id": "g01_c14_u01", "kind": null, "text": "正解種別c1・誤種別d1(≠c1)の対提示+swapスロットs1で前後入替——表示位置の暗記を決定的に排除(choice3の固定順と逆の判断: 2択の位置漏れは選択肢が物名そのもののため実害が大きい)。表示合成(obj_first/second)は配線時様式委任。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g01_katachi_nakama_01", "grade": "g01", "unit_id": "g01_c14_u01", "kind": null, "text": "c1≠d1(弁別成立)。受理12組(3種×2誤種×2順)。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g01_katachi_nakama_01", "grade": "g01", "unit_id": "g01_c14_u01", "kind": null, "text": "かたち族の分類側。utsushi_01と語彙を共有(solid_face)。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g01_katachi_nakama_01", "grade": "g01", "unit_id": "g01_c14_u01", "kind": null, "text": "同種別対(弁別不成立)。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g01_katachi_nakama_01", "grade": "g01", "unit_id": "g01_c14_u01", "kind": null, "text": "図なし(物名の言語分類で完結・絵の分類は図依存在庫)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g01_katachi_kosei_01", "grade": "g01", "unit_id": "g01_c14_u02", "kind": null, "text": "さんかくのいろいた何枚で形を作るか(調査c36系の条件付き判定——正準構成のみ言語で自立)。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g01_katachi_kosei_01", "grade": "g01", "unit_id": "g01_c14_u02", "kind": null, "text": "lexicon iroita_kosei(ましかく=2/おおきなさんかく=2/おおきなましかく=4)の正準構成限定。見本図前提の任意構成は図kind(いろいた構成図)の在庫として分離。受理3組。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g01_katachi_kosei_01", "grade": "g01", "unit_id": "g01_c14_u02", "kind": null, "text": "対応表による答の一意性。文成立性は目視判定対象(落とす場合あり・_meta記載)。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g01_katachi_kosei_01", "grade": "g01", "unit_id": "g01_c14_u02", "kind": null, "text": "かたち族の構成側・バッチ3の試作位置。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g01_katachi_kosei_01", "grade": "g01", "unit_id": "g01_c14_u02", "kind": null, "text": "非正準構成(図依存)。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g01_katachi_kosei_01", "grade": "g01", "unit_id": "g01_c14_u02", "kind": null, "text": "図なし(正準構成の枚数は言語知識として自立——ただし成立性の最終判定はまるこ目視)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g01_kazushirabe_ooi_01", "grade": "g01", "unit_id": "g01_c15_u01", "kind": null, "text": "3種の個数比較で最多種を答える。絵の分類かぞえ(図依存)のうち、集計後の判断部分をテキスト化した形。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g01_kazushirabe_ooi_01", "grade": "g01", "unit_id": "g01_c15_u01", "kind": null, "text": "ichiban_01と同構造の個数版(count_items 3種固定順)。すくない版は在庫記録。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g01_kazushirabe_ooi_01", "grade": "g01", "unit_id": "g01_c15_u01", "kind": null, "text": "3値相異(最多一意)。受理210組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g01_kazushirabe_ooi_01", "grade": "g01", "unit_id": "g01_c15_u01", "kind": null, "text": "かずしらべの言語側・P-1(g01)の掉尾。g03棒グラフ(図依存在庫)への前段。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g01_kazushirabe_ooi_01", "grade": "g01", "unit_id": "g01_c15_u01", "kind": null, "text": "同値組。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g01_kazushirabe_ooi_01", "grade": "g01", "unit_id": "g01_c15_u01", "kind": null, "text": "図なし(絵の集計は図依存として対象外・判断部分のみテキスト完結)。"}
 {"doc_type": "correction", "section": "generalization", "scope": {"type": "kind", "target": "tri_angle, tri_angle_iso, quad_angle"}, "by": "marko", "text": "あ、が離れ過ぎじゃない? → 頂点系の図では未知ラベルも内側が既定。『外側』はangle_sum(頂点から射線が開く図)に固有の慣行であり、閉図形へ転用しない。"}
 {"doc_type": "correction", "section": "generalization", "scope": {"type": "kind", "target": "para_area, tri_area, trap_area, rhombus_area"}, "by": "marko", "text": "数字の1が、縦線と交わったらわかりにくくなるね。 → 数字字形(特に1)と縦線の平行隣接は距離保証と別に水平クリアランスで防ぐ。新kindの仕様段階で『字形と線の紛れ』をチェックリストに含める。"}
 {"doc_type": "correction", "section": "generalization", "scope": {"type": "generator", "target": "pattern_generator.js translateFloorDiv / JS検証関門"}, "by": "marko", "text": "(A)translateFloorDivを根治で修正（//・%の左オペランドが * / % // の連鎖を含むよう、Pythonの同順位・左結合と等価に）。JS verifyパリティ(JS生成の答え==Python評価)を全学年の標準関門に昇格。バンクJSONは触らない(括弧化しない)。 → 式翻訳器は演算子の優先順位・結合性をPython準拠で保証する。生成器変更・バンク追加時は必ずJS↔Python答えパリティ関門を実行する（生成成功チェックだけでは誤訳を検出できない）。"}

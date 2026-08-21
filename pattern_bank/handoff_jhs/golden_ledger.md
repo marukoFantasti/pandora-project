@@ -188,3 +188,14 @@
 - **corr-0007例外**: g01_kurabe_ookii_01 を SELECTION_ANSWER(kurabe族3件目)。例外総数 77→**78**・gate残差0。
 - unit_id: c04_u04/c09_u01/c10_u01 新設→g01_unit_mapping.md 追記。かな検査1600標本漢字0。
 - rationale 402→410・integrity 410・pairs_design 410・furigana 410残存0。恒等検算31パターン93000本(num_seq系は全要素恒等込み)。パリティ全一致・全30関門PASS。配信OFF継続。
+
+### 2026-08-22 g01バッチ3(P-1完了便・序数/時刻/くらべ/かたち/かずしらべ12追補・D-2)
+- g01に12パターンをD-2 append(31→43)。まるこ検収済み(2026-08-22・Fable素材受領標準の初適用便)。序数2(c11)・時刻2(c12)・くらべ語答え4(c13)・かたち3(c14)・かずしらべ1(c15)。
+- 旧md5 e0e3786a(31)→**新md5 a08f0cef**(43)。golden PASS 129/129。既存31 byte一致(D-2成立)。shared_lexicon新キー2本(solid_face/iroita_kosei)も外科append=既存キー・既存出力不変を同時証明。素材の格納位置は_meta_append.shared_lexicon_additions(受領検証で発見・仕様どおり本体へ配置)。
+- **word_choice機構本番デビュー7パターン**(choice3様式の語版): answer_domain "word_choice"=内部番号int・ans→{W1_word}を正規化層で自動生成(word_map宣言/またはdisplay_swap位置解決)。語は表示層専用=既存comparison流儀と整合。
+- **A2 word_map重複修正**: kurabe系3(nagasa/kasa/hirosa)をword_map色語のみ+テンプレ「の」除去(「あかいの テープ」文法回避で「{W1_word} テープ」形へ)。**ichibanにも同型重複を発見**(指示の想定と相違)→同修正。kazushirabe/utsushi/nakamaは重複なし確認。
+- **A3 display_swap層**: {"slot==int":{表示名:参照slot}}の条件束縛を両engineに実装(nakamaの前後入替=位置暗記排除)。
+- **from拡張(スロット名添字)**: "solid_face[c1].field"形(添字=宣言スロットの抽選値・answer_formulaが添字参照)を両engineのfrom解決器へ追加(1文字匿名添字と共存・既存バンク非干渉)。
+- **pyTernary(入れ子条件式)**: 既存翻訳器が単層のみだったため括弧対応の再帰翻訳へ拡張(ichiban/kazushirabeの2段ネスト対応・単層出力は従来と同一=パリティ全一致で非干渉実証)。
+- 採点: wordChoiceMatch実装(完全一致+前方一致で名詞接尾省略「あかい」を吸収・空白/全角ゆれ吸収・数値答は非適用)。実地9標本PASS。
+- かな検査2400標本漢字0。rationale 410→**422**・integrity 422・pairs_design 422・furigana 422残存0。恒等検算43パターン129000本。全30関門+パリティ+corr-0007 gate PASS。配信OFF継続。

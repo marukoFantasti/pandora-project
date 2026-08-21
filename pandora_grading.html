@@ -836,6 +836,22 @@ function numSeqNorm(s) {
   var m = t.match(/-?\d+/g) || [];
   return m.map(function (x) { return String(parseInt(x, 10)); }).join(',');
 }
+// word_choice機構(P-1): 語答えの照合。正答マーカー以降の語(かな/カナ)を正規化(空白除去)し、
+// 生徒答と完全一致 または 生徒答(2文字以上)が正答語の前方一致(名詞接尾の省略「あかい」⊂「あかい テープ」を吸収)。
+function wordAnsTail(answer) {
+  var t = String(answer == null ? '' : answer);
+  var mk = Math.max(t.lastIndexOf('こたえ') < 0 ? -1 : t.lastIndexOf('こたえ') + 3,
+                    t.lastIndexOf('答え') < 0 ? -1 : t.lastIndexOf('答え') + 2);
+  if (mk >= 0) t = t.slice(mk);
+  return t.trim();
+}
+function wordChoiceMatch(studentAns, answer) {
+  var b = wordAnsTail(answer).replace(/[\s\u3000]/g, '');
+  var a = String(studentAns == null ? '' : studentAns).replace(/[\s\u3000]/g, '');
+  if (!b || /\d/.test(b)) return null;   // 語答えでない(数値含む)→非適用
+  if (a.length < 2) return false;
+  return a === b || (b.indexOf(a) === 0);
+}
 function numSeqMatch(studentAns, answer) {
   // 正答は「こたえ/答え」マーカー以降のみ照合(テンプレ接頭辞の数値を除外)
   var tail = String(answer == null ? '' : answer);
@@ -1046,7 +1062,14 @@ function renderGrading(sub) {
       gs = { result: numSeqMatch(studentEdges, p.answer) ? 'correct' : 'incorrect', note: gs.note || '', auto: true };
       gradeState[pid] = gs;
     }
-    var isDigitalAuto = isDigitalChoice || isDigitalEdgeSet || isDigitalNumSeq;
+    // word_choice機構(P-1): 語答え(正答マーカー以降がかな語・数値なし)は語照合で自動採点。
+    var isDigitalWordChoice = !isDigitalChoice && !isDigitalEdgeSet && !isDigitalNumSeq && studentEdges != null &&
+      (function () { var t = wordAnsTail(p.answer); return t !== '' && !/\d/.test(t) && /[ぁ-んァ-ヶー]/.test(t); })();
+    if (!gs.result && isDigitalWordChoice) {
+      var wm = wordChoiceMatch(studentEdges, p.answer);
+      if (wm !== null) { gs = { result: wm ? 'correct' : 'incorrect', note: gs.note || '', auto: true }; gradeState[pid] = gs; }
+    }
+    var isDigitalAuto = isDigitalChoice || isDigitalEdgeSet || isDigitalNumSeq || isDigitalWordChoice;
     var cardClass = gs.result ? ' ' + gs.result : '';
 
     html += '<div class="problem-card' + cardClass + '" id="pc-' + pid + '">';
@@ -1077,9 +1100,9 @@ function renderGrading(sub) {
       '<div><div class="col-label">正解</div>' +
       '<div class="answer-text">' + (p.answer || '-') + '</div></div>' +
       (isDigitalAuto ?
-        '<div><div class="col-label">' + ((isDigitalEdgeSet || isDigitalNumSeq) ? '生徒の解答' : '生徒の選択') + '</div>' +
+        '<div><div class="col-label">' + ((isDigitalEdgeSet || isDigitalNumSeq || isDigitalWordChoice) ? '生徒の解答' : '生徒の選択') + '</div>' +
         '<div style="font-size:16px;font-weight:700;color:' + (gs.result === 'correct' ? 'var(--green)' : 'var(--red)') + '">' +
-        escHtml(String((isDigitalEdgeSet || isDigitalNumSeq) ? studentEdges : p.student_choice)) + '</div></div>' : '') +
+        escHtml(String((isDigitalEdgeSet || isDigitalNumSeq || isDigitalWordChoice) ? studentEdges : p.student_choice)) + '</div></div>' : '') +
     '</div>';
 
     // 右：採点コントロール

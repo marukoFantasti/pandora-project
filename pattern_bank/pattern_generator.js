@@ -411,9 +411,33 @@
     return parts.join(' && ');
   }
 
+  // Python条件式→JS三項の再帰翻訳(P-1: 入れ子 "2 if b>c else 3" 対応)。トップレベル(括弧深度0)の
+  // if/else を括弧対応スキャンで分割し、値枝・else枝へ再帰。単層は従来出力と同一=既存バンク非干渉。
+  function pyTernary(e) {
+    e = e.trim();
+    // 全体を包む括弧を剥ぐ(「(2 if b>c else 3)」の再帰受け皿)
+    while (e.charAt(0) === '(') {
+      var d = 0, whole = false;
+      for (var i = 0; i < e.length; i++) {
+        if (e[i] === '(') d++;
+        else if (e[i] === ')') { d--; if (d === 0) { whole = (i === e.length - 1); break; } }
+      }
+      if (!whole) break;
+      e = e.slice(1, -1).trim();
+    }
+    var depth = 0, ifPos = -1, elsePos = -1;
+    for (var j = 0; j < e.length; j++) {
+      if (e[j] === '(') depth++;
+      else if (e[j] === ')') depth--;
+      else if (depth === 0 && ifPos < 0 && e.slice(j, j + 4) === ' if ') ifPos = j;
+      else if (depth === 0 && ifPos >= 0 && e.slice(j, j + 6) === ' else ') { elsePos = j; break; }
+    }
+    if (ifPos < 0 || elsePos < 0) return e;
+    var val = e.slice(0, ifPos), cond = e.slice(ifPos + 4, elsePos), els = e.slice(elsePos + 6);
+    return '(' + cond.trim() + ') ? (' + pyTernary(val) + ') : (' + pyTernary(els) + ')';
+  }
   function pyExprToJs(expr) {
-    var out = expr.match(/^(.+?)\s+if\s+(.+?)\s+else\s+(.+)$/);
-    if (out) expr = '(' + out[2] + ') ? (' + out[1] + ') : (' + out[3] + ')';
+    expr = pyTernary(expr);
     expr = translateArith(expr);
     expr = expandChainedComparison(expr);
     return expr
@@ -533,10 +557,13 @@
     // from形式: "set[j].field"(辞書) / "set[i][0]"(リストペア) / "set" / "set(distinct)"
     // 同一インデックス変数を共有するスロットは同じアイテムから取る。
     // attribute_pairs は dict形状のため list_groups では解決せず、下の attr_a/b 専用処理に迂回。
-    var dictGroups = {}, listGroups = {}, simple = {}, distinct = [];
+    var dictGroups = {}, listGroups = {}, simple = {}, distinct = [], slotIndexed = [];
     Object.keys(pattern.slots || {}).forEach(function (name) {
       var f = (pattern.slots[name] || {}).from;
       if (!f) return;
+      // P-1: スロット名添字 "set[c1].field"(添字=宣言スロットの抽選値で決定的に索引。answer_formulaが添字を参照できる)
+      var ms = f.match(/^(\w+)\[(\w+)\]\.(\w+)$/);
+      if (ms && Object.prototype.hasOwnProperty.call(pattern.slots || {}, ms[2])) { slotIndexed.push({ name: name, set: ms[1], idx: ms[2], field: ms[3] }); return; }
       var m = f.match(/^(\w+)\[(\w)\]\.(\w+)$/);
       if (m) { (dictGroups[m[1] + ' ' + m[2]] = dictGroups[m[1] + ' ' + m[2]] || { set: m[1], fields: {} }).fields[name] = m[3]; return; }
       m = f.match(/^(\w+)\[(\w)\]\[(\d+)\]$/);
@@ -550,6 +577,9 @@
       if (m) { distinct.push([name, m[1]]); return; }
       simple[name] = f;
     });
+
+    // P-1: スロット名添字の解決(数値抽選済みenvの値で索引)
+    slotIndexed.forEach(function (si) { env[si.name] = lex[si.set][env[si.idx]][si.field]; });
 
     var objectBinding = null;  // attr整合で object を棄却・再抽選する場合に使う
     Object.keys(dictGroups).forEach(function (key) {
@@ -671,6 +701,14 @@
         if (typeof env[nm] === 'string') env[nm + '_edges'] = fmtEdgeSet(env[nm]);
       });
     }
+    // P-1 display_swap層: {"slot==int": {表示名: 参照slot名}} — 成立ブランチの表示スロットを束縛(前後入替を決定的に)。
+    Object.keys(pattern.display_swap || {}).forEach(function (cond) {
+      var m = cond.match(/^(\w+)\s*==\s*(-?\d+)$/);
+      if (m && env[m[1]] === parseInt(m[2], 10)) {
+        var binds = pattern.display_swap[cond];
+        Object.keys(binds).forEach(function (nm) { env[nm] = env[binds[nm]]; });
+      }
+    });
 
     // 答え（整数値のみをformulaに渡す＝Pythonのisinstance(v,int)フィルタと同義）
     var intEnv = {};
@@ -678,6 +716,12 @@
       if (typeof env[k] === 'number' && Number.isInteger(env[k])) intEnv[k] = env[k];
     });
     env.ans = evalExpr(pattern.answer_formula, intEnv);
+    // P-1 word_choice正規化層(choice3様式の語版): ans(番号int)→ {W1_word}。word_map宣言があれば語マップ、
+    // 無ければ display_swap の位置スロット(obj_first/obj_second)から位置解決。語は表示層専用(comparison流儀と整合)。
+    if (_pidom === 'word_choice') {
+      if (pattern.word_map) env.W1_word = pattern.word_map[String(env.ans)] || '';
+      else if (pattern.display_swap) env.W1_word = env[['obj_first', 'obj_second'][env.ans - 1]] || '';
+    }
 
     // fraction_display: {表示名: [分子スロット名, 分母スロット名]} → 整形文字列を注入
     var fd = pattern.fraction_display || {};
@@ -803,6 +847,7 @@
     else if (dom === 'choice3') inDomain = Number.isInteger(a) && a >= 1 && a <= 3;   // G-4b: 選択肢番号(表示fmt_choice・恒等=番号一致)。
     else if (dom === 'edge_set') inDomain = typeof a === 'string' && a.length > 0 && normEdgeSet(a) === a;   // G-4b: 辺の正規化集合(非空・辞書順正規形・恒等=集合一致)。
     else if (dom === 'num_seq') inDomain = Number.isInteger(a);   // P-1: 数値列(表示=要素slot直書き・verify=先頭要素/全要素はハーネス照合=enumeration分担)。
+    else if (dom === 'word_choice') inDomain = Number.isInteger(a) && a >= 1 && (!pattern.word_map || a <= Object.keys(pattern.word_map).length);   // P-1: 語答え(内部=番号・表示=語マップ/位置解決)。
     else inDomain = a > 0;   // positive_int（既定・既存バンク全て）
 
     return {

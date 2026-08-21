@@ -1,4 +1,4 @@
-// g01(小1・加法/減法)31パターンの恒等検算(12+バッチ1 11+バッチ2 8)(設計側ストレスと同一仕様)。
+// g01(小1・加法/減法)43パターンの恒等検算(12+バッチ1 11+バッチ2 8+バッチ3 12)(設計側ストレスと同一仕様)。
 // 各パターンの答え=answer_formula の恒等性 + 制約(転記退化排除・桁上/桁下条件)を高volで悉皆検証。
 //
 // 実行:  node tests/pattern_bank_g01_identity.js [N]
@@ -46,6 +46,19 @@ const ID = {
   g01_seq_mae_01: e => e.ans === e.n1 - 1,
   g01_seq_ana_01: e => e.ans === e.s1 + 2 && e.d1 === e.s1 + 1 && e.n1d === e.s1 + 2 && e.n2d === e.s1 + 3 && e.e1 === e.s1 + 4,
   g01_seq_tobi_01: e => e.ans === e.s1 + 2 * e.k1 && [2, 5, 10].includes(e.k1) && e.d1 === e.s1 + e.k1 && e.n1d === e.s1 + 2 * e.k1 && e.n2d === e.s1 + 3 * e.k1 && e.e1 === e.s1 + 4 * e.k1 && e.e1 <= 120,
+  // バッチ3(P-1完了便・12パターン。word_choice系=番号一致+語マップ整合はスモークで確認)
+  g01_junjo_banme_01: e => e.ans === e.n1 - e.k1 && e.k1 <= e.n1 - 2 && e.n1 !== 2 * e.k1,
+  g01_junjo_shugo_01: e => e.ans === e.n1 - e.k1 && e.k1 <= e.n1 - 2 && e.n1 !== 2 * e.k1,
+  g01_jikan_ato_01: e => e.ans === e.h1 + e.d1 && e.ans <= 12,
+  g01_jikan_mae_01: e => e.ans === e.h1 - e.d1 && e.ans >= 1 && e.h1 !== 2 * e.d1,
+  g01_kurabe_nagasa_01: e => e.ans === (e.a1 > e.b1 ? 1 : 2) && e.a1 !== e.b1,
+  g01_kurabe_kasa_01: e => e.ans === (e.a1 > e.b1 ? 1 : 2) && e.a1 !== e.b1,
+  g01_kurabe_hirosa_01: e => e.ans === (e.a1 > e.b1 ? 1 : 2) && e.a1 !== e.b1,
+  g01_kurabe_ichiban_01: e => e.ans === ((e.a1 > e.b1 && e.a1 > e.c1) ? 1 : (e.b1 > e.c1 ? 2 : 3)) && e.a1 !== e.b1 && e.b1 !== e.c1 && e.a1 !== e.c1,
+  g01_katachi_utsushi_01: e => e.ans === e.j1 + 1 && [0, 1, 2].includes(e.j1),
+  g01_katachi_nakama_01: e => e.ans === (e.s1 === 0 ? 1 : 2) && e.c1 !== e.d1 && [0, 1].includes(e.s1),
+  g01_katachi_kosei_01: e => e.ans === e.kn1 && [2, 4].includes(e.kn1),
+  g01_kazushirabe_ooi_01: e => e.ans === ((e.a1 > e.b1 && e.a1 > e.c1) ? 1 : (e.b1 > e.c1 ? 2 : 3)) && e.a1 !== e.b1 && e.b1 !== e.c1 && e.a1 !== e.c1,
 };
 
 let bad = 0, checked = 0;
@@ -64,5 +77,5 @@ for (const p of bank.patterns) {
   }
   console.log('  ' + p.pattern_id.padEnd(24) + ' ' + N + '本 恒等' + (pb === 0 ? 'OK ✅' : 'NG ' + pb + ' ❌'));
 }
-console.log('\n' + (bad === 0 ? 'g01 恒等検算: 全31パターン合格 ✅ (' + checked + '本)' : '❌ ' + bad + '件'));
+console.log('\n' + (bad === 0 ? 'g01 恒等検算: 全43パターン合格 ✅ (' + checked + '本)' : '❌ ' + bad + '件'));
 process.exit(bad === 0 ? 0 : 1);
