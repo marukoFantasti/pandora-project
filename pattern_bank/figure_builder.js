@@ -1532,6 +1532,19 @@
       angleVals = fp.angles.map(function (a) { return { v: a.v }; });
     }
     out.angles = angleVals; out.left = { names: ln, show: leftShow }; out.right = { names: rn, show: rightShow };
+    // mark_scheme(G-4b): SSS/SAS/ASA の静的マーク構成(G-4a資産 side_ticks/angle_marks の構成替え)。
+    // 辺e0=V0-V1・e1=V1-V2・e2=V2-V0。角Vi=辺e(i-1)とeiの間。角度値は全plain(shows空)=マークだけで条件判定。
+    if (fp.mark_scheme) {
+      var MS = {
+        SSS: { side_ticks: [1, 2, 3], angle_marks: [] },                                          // 対応3辺チョン1/2/3本
+        SAS: { side_ticks: [1, 2, 0], angle_marks: [{ weight: 1, at: [1] }] },                    // 2辺(e0,e1)チョン+間の角V1に等角弧
+        ASA: { side_ticks: [1, 0, 0], angle_marks: [{ weight: 1, at: [0] }, { weight: 2, at: [1] }] } // 1辺(e0)チョン+両端角V0,V1に等角弧2種
+      };
+      var ms = MS[fp.mark_scheme];
+      if (!ms) throw new Error('congruent_pair契約違反: 未知mark_scheme ' + fp.mark_scheme);
+      if (fp.side_ticks == null) out.side_ticks = ms.side_ticks;
+      if (fp.angle_marks == null) out.angle_marks = ms.angle_marks;
+    }
     return out;
   }
   function congruentPairLayout(fp) {

@@ -215,6 +215,13 @@
     if (den === 1) return fmtPi(num);
     return (num < 0 ? MINUS : '') + '(' + Math.abs(num) + '/' + den + ')π';
   }
+  // 選択肢記号の整形（choice機構・pi_coef様式の横展開）。内部=選択肢番号int(1..3)・
+  // 表示=記号1字(1→ア/2→イ/3→ウ)。番号のみ整数演算・記号は表示層（ゼロ浮動小数・数値トークン非混入）。
+  var CHOICE_LABELS = 'アイウエオ';
+  function fmtChoice(n) {
+    n = Math.trunc(n);
+    return (n >= 1 && n <= CHOICE_LABELS.length) ? CHOICE_LABELS.charAt(n - 1) : '';
+  }
   // スロット range=[lo,hi](step) の到達可能値ドメインを "件数:先頭:末尾" で返す
   // （負域含む Python randrange とのマッピング一致照合用。randRange と同一: n=floor((hi-lo)/step)+1）。
   function sampleDomain(lo, hi, step) {
@@ -381,11 +388,11 @@
     // 許可関数を増やすだけ（abs/max/min と同格）。既存バンクは未参照＝非干渉。
     var fn = new Function('abs', 'max', 'min', 'pymod', 'round_half_up', 'round_range_lower', 'round_range_upper_excl',
       'gcd', 'lcm', 'reduce_num', 'reduce_den',
-      'fmt_signed', 'fmt_coef', 'fmt_coefj', 'fmt_termj', 'sgn_str', 'sqrt_coef', 'sqrt_rad', 'fmt_sqrt', 'fmt_pi', 'fmt_pi_frac', 'dec2fix',
+      'fmt_signed', 'fmt_coef', 'fmt_coefj', 'fmt_termj', 'sgn_str', 'sqrt_coef', 'sqrt_rad', 'fmt_sqrt', 'fmt_pi', 'fmt_pi_frac', 'fmt_choice', 'dec2fix',
       keys.join(','), 'return (' + jsExpr + ');');
     return fn.apply(null, [Math.abs, Math.max, Math.min, pymod, roundHalfUp, roundRangeLower, roundRangeUpperExcl,
       gcdInt, lcmInt, reduceNum, reduceDen,
-      fmtSigned, fmtCoef, fmtCoefj, fmtTermj, sgnStr, sqrtCoef, sqrtRad, fmtSqrt, fmtPi, fmtPiFrac, fmtDec2fix].concat(vals));
+      fmtSigned, fmtCoef, fmtCoefj, fmtTermj, sgnStr, sqrtCoef, sqrtRad, fmtSqrt, fmtPi, fmtPiFrac, fmtChoice, fmtDec2fix].concat(vals));
   }
 
   // ---- スロット解決 ----
@@ -603,6 +610,13 @@
         if (typeof env[nm] === 'number' && Number.isInteger(env[nm])) env[nm + '_pi'] = _pidom === 'pi_coef' ? fmtPi(env[nm]) : fmtPiFrac(env[nm], 3);
       });
     }
+    // G-4b choice機構: choice3系は computed_slot X → {X}_choice 表示(fmtChoice・1→ア/2→イ/3→ウ)を自動生成。
+    // (バンクは answer_domain "choice3" 宣言 + answer_template {X_choice} を書くだけ=表示層をここで吸収)
+    if (_pidom === 'choice3') {
+      Object.keys(pattern.computed_slots || {}).forEach(function (nm) {
+        if (typeof env[nm] === 'number' && Number.isInteger(env[nm])) env[nm + '_choice'] = fmtChoice(env[nm]);
+      });
+    }
 
     // 答え（整数値のみをformulaに渡す＝Pythonのisinstance(v,int)フィルタと同義）
     var intEnv = {};
@@ -732,6 +746,7 @@
     if (dom === 'any_int') inDomain = true;
     else if (dom === 'nonzero_int') inDomain = a !== 0;
     else if (dom === 'pi_coef' || dom === 'pi_coef_frac3') inDomain = a > 0;   // S-1/S-3: π係数(表示fmt_pi/fmt_pi_frac(_,3))。正。
+    else if (dom === 'choice3') inDomain = Number.isInteger(a) && a >= 1 && a <= 3;   // G-4b: 選択肢番号(表示fmt_choice・恒等=番号一致)。
     else inDomain = a > 0;   // positive_int（既定・既存バンク全て）
 
     return {
@@ -824,6 +839,7 @@
     fmtSqrt: fmtSqrt,
     fmtPi: fmtPi,
     fmtPiFrac: fmtPiFrac,
+    fmtChoice: fmtChoice,
     fmtDec2fix: fmtDec2fix,
     sampleDomain: sampleDomain,
     resolveFigureParams: resolveFigureParams,

@@ -21,7 +21,7 @@ const IMPL = {
   fmt_signed: P.fmtSigned, fmt_coef: P.fmtCoef, fmt_coefj: P.fmtCoefj,
   fmt_termj: P.fmtTermj, sgn_str: P.sgnStr, sqrt_coef: P.sqrtCoef,
   sqrt_rad: P.sqrtRad, fmt_sqrt: P.fmtSqrt, sample_domain: P.sampleDomain,
-  fmt_pi: P.fmtPi, fmt_pi_frac: P.fmtPiFrac,
+  fmt_pi: P.fmtPi, fmt_pi_frac: P.fmtPiFrac, fmt_choice: P.fmtChoice,
   dec2fix: P.fmtDec2fix
 };
 

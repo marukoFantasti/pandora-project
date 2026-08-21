@@ -129,7 +129,49 @@ function congScan(FB) {
   return out;
 }
 
-module.exports = { scan, cases2lines, cases3lines, around, parallel, casesParallel, PAR_CONS, poly, polyScan, cong, congScan };
+// ---- G-4b congruent_pair mark_scheme(SSS/SAS/ASA・合同条件識別)。確定値域[45,100]で3構成を悉皆(corr-0020) ----
+// マークだけで条件判定させる(角度値は全plain)。検査: (1)名前ラベルclearance(scanPolyAngle) +
+// (2)マーク(チョン線1.6/等角弧1.3)と頂点名ラベルの最小間隔(マークは頂点内側・名は外側=分離が担保。
+// 密度最大のASA(等角弧6本)でも名に食い込まないことを実測)。乱数なし=シード非依存。
+function congMark(scheme, angles) {
+  return { kind: 'angle_figure', subkind: 'congruent_pair', mark_scheme: scheme,
+    angles: angles.map(function (v) { return { v: v }; }),
+    left: { names: ['A', 'B', 'C'], show: [] }, right: { names: ['D', 'E', 'F'], show: [] } };
+}
+function markNameGap(svg) {
+  // 名ラベル中心
+  var names = [], m, reN = /<text x="([-\d.]+)" y="([-\d.]+)"[^>]*>[A-F]<\/text>/g;
+  while ((m = reN.exec(svg))) names.push([+m[1], +m[2]]);
+  // マーク点: チョン線(1.6)の両端 + 等角弧(1.3)の両端
+  var marks = [], reL = /<line x1="([-\d.]+)" y1="([-\d.]+)" x2="([-\d.]+)" y2="([-\d.]+)" stroke="#1a56c4" stroke-width="1\.6"/g;
+  while ((m = reL.exec(svg))) { marks.push([+m[1], +m[2]]); marks.push([+m[3], +m[4]]); }
+  var reA = /<path d="M ([-\d.]+) ([-\d.]+) A [\d.]+ [\d.]+ 0 \d \d ([-\d.]+) ([-\d.]+)" fill="none" stroke="#1a56c4" stroke-width="1\.3"/g;
+  while ((m = reA.exec(svg))) { marks.push([+m[1], +m[2]]); marks.push([+m[3], +m[4]]); }
+  var min = 1e9;
+  names.forEach(function (n) { marks.forEach(function (k) { var d = Math.hypot(n[0] - k[0], n[1] - k[1]); if (d < min) min = d; }); });
+  return { min: min, names: names.length, marks: marks.length };
+}
+function congMarkScan(FB) {
+  var out = {}; var rng = function (lo, hi, st) { var a = []; for (var v = lo; v <= hi; v += st) a.push(v); return a; };
+  // G-4a確定値域: a1,b1∈[45,100]/5・c1=180−a1−b1∈[45,100]
+  var domain = []; for (var a1 of rng(45, 100, 5)) for (var b1 of rng(45, 100, 5)) { var c1 = 180 - a1 - b1; if (c1 >= 45 && c1 <= 100) domain.push([a1, b1, c1]); }
+  ['SSS', 'SAS', 'ASA'].forEach(function (scheme) {
+    var viol = 0, minMT = 1e9, minSeg = 1e9, minGap = 1e9, markMax = 0, drawBad = 0, badEx = [];
+    domain.forEach(function (a) {
+      var fp = congMark(scheme, a), svg, cl;
+      try { svg = FB.build(fp); } catch (e) { drawBad++; return; }
+      if (!svg || svg.indexOf('undefined') >= 0 || (svg.match(/<svg/g) || []).length !== 1) drawBad++;
+      try { cl = FB._angleFigureMinClearance(fp); } catch (e) { cl = { minText: -1, minSeg: -1, semBad: 99 }; }
+      if (cl.minText < minMT) minMT = cl.minText; if (cl.minSeg < minSeg) minSeg = cl.minSeg;
+      var g = markNameGap(svg); if (g.min < minGap) minGap = g.min; if (g.marks > markMax) markMax = g.marks;
+      if (cl.minText < 10 || cl.minSeg < 4 || cl.semBad > 0 || g.min < 8) { viol++; if (badEx.length < 4) badEx.push({ a: a, mt: +cl.minText.toFixed(1), gap: +g.min.toFixed(1) }); }
+    });
+    out[scheme] = { total: domain.length, viol, drawBad, minMT: +minMT.toFixed(2), minSeg: +minSeg.toFixed(2), minGap: +minGap.toFixed(2), markMax, badEx };
+  });
+  return out;
+}
+
+module.exports = { scan, cases2lines, cases3lines, around, parallel, casesParallel, PAR_CONS, poly, polyScan, cong, congScan, congMark, congMarkScan };
 
 if (require.main === module) {
   const FB = require(path.join(__dirname, '..', 'pattern_bank', 'figure_builder.js'));
@@ -157,4 +199,14 @@ if (require.main === module) {
       console.log('      → 値域候補: 交差角 ≥ ' + (Math.max(...badTs) + 5) + '°(浅い交差の刈り上げ)');
     }
   }
+  // G-4b: congruent_pair mark_scheme(SSS/SAS/ASA)悉皆(corr-0020・確定値域[45,100])
+  console.log('\n=== G-4b congruent_pair mark_scheme 悉皆(3構成×[45,100]=55組/構成・マークだけで条件判定) ===');
+  const mr = congMarkScan(FB);
+  for (const s of ['SSS', 'SAS', 'ASA']) {
+    const o = mr[s];
+    console.log('  ' + (o.viol === 0 && o.drawBad === 0 ? '✅' : '❌') + ' ' + s + ': 組' + o.total + ' 違反' + o.viol + ' 描画不良' + o.drawBad +
+      ' / minText ' + o.minMT + ' minSeg ' + o.minSeg + ' マーク-名間隔 ' + o.minGap + 'px(マーク点最大' + o.markMax + ')');
+    if (o.badEx.length) console.log('       ex: ' + JSON.stringify(o.badEx));
+  }
+  console.log('  → マーク密度: ASA(等角弧6本)が最大=山。マークは頂点内側・名ラベルは外側で分離、全構成 名clearance/マーク間隔とも余裕。');
 }

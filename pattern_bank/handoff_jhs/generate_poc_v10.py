@@ -256,6 +256,16 @@ def fmt_pi_frac(num, den):
 
 SAFE.update({"fmt_pi": fmt_pi, "fmt_pi_frac": fmt_pi_frac})
 
+# ===== G-4b 追加ヘルパ（choice機構・pi_coef様式の横展開。内部=選択肢番号int(1..3)・記号は表示層。
+#        JS(pattern_generator.js fmtChoice)と1:1移植） =====
+_CHOICE_LABELS = "アイウエオ"
+def fmt_choice(n):
+    """選択肢記号の整形: 1→ア/2→イ/3→ウ。番号のみ整数演算・記号は表示層(数値トークン非混入)。"""
+    n = int(n)
+    return _CHOICE_LABELS[n - 1] if 1 <= n <= len(_CHOICE_LABELS) else ""
+
+SAFE.update({"fmt_choice": fmt_choice})
+
 def sample_domain(lo, hi, step=1):
     """スロット range=[lo,hi](step) の到達可能値ドメインを "件数:先頭:末尾" で返す
     （負域含む JS randRange との一致照合用。JS randRange と同一の値マッピング:
@@ -521,6 +531,11 @@ def build_env(pattern, unit_id=None):
         for _n in pattern.get("computed_slots", {}):
             if isinstance(env.get(_n), int):
                 env[f"{_n}_pi"] = fmt_pi(env[_n]) if _pidom == "pi_coef" else fmt_pi_frac(env[_n], 3)
+    # G-4b choice機構: choice3系は computed_slot X → {X}_choice 表示(fmt_choice・1→ア/2→イ/3→ウ)を自動生成。
+    if _pidom == "choice3":
+        for _n in pattern.get("computed_slots", {}):
+            if isinstance(env.get(_n), int) and not isinstance(env.get(_n), bool):
+                env[f"{_n}_choice"] = fmt_choice(env[_n])
     # 答え(整数)
     env["ans"] = eval(pattern["answer_formula"], SAFE,
                       {k: v for k, v in env.items() if isinstance(v, int)})
@@ -591,6 +606,8 @@ def verify(pattern, env, problem):
         in_domain = a != 0
     elif dom in ("pi_coef", "pi_coef_frac3"):  # S-1/S-3: π係数(ans=係数・表示fmt_pi/fmt_pi_frac(_,3))。正。
         in_domain = a > 0
+    elif dom == "choice3":  # G-4b: 選択肢番号(表示fmt_choice・恒等=番号一致)。
+        in_domain = isinstance(a, int) and not isinstance(a, bool) and 1 <= a <= 3
     else:  # positive_int（既定・既存バンク全て）
         in_domain = a > 0
     return {"kanji_ok": not bad,
@@ -608,7 +625,7 @@ def _run_vectors(path):
             "fmt_signed": fmt_signed, "fmt_coef": fmt_coef, "fmt_coefj": fmt_coefj,
             "fmt_termj": fmt_termj, "sgn_str": sgn_str, "sqrt_coef": sqrt_coef,
             "sqrt_rad": sqrt_rad, "fmt_sqrt": fmt_sqrt, "sample_domain": sample_domain,
-            "fmt_pi": fmt_pi, "fmt_pi_frac": fmt_pi_frac,
+            "fmt_pi": fmt_pi, "fmt_pi_frac": fmt_pi_frac, "fmt_choice": fmt_choice,
             "dec2fix": fmt_dec2fix}
     bad = total = covered = 0
     skipped = []

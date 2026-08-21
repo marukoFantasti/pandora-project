@@ -60,5 +60,48 @@ for (const angs of SETS) {
   if (!ok) bad++;
   console.log('  対応辺チョン: 検出' + ticks + '本 (期待12=1/2/3×2図) ' + (ok ? '✅' : '❌'));
 })();
-console.log('\n' + (bad === 0 ? 'congruent_pair幾何ベクター+三重関門: 全' + cases + '照合+変換座標+向き反転+チョン+曲率+viewport 一致 ✅(等長変換・対応角±0.5°・真円rx==ry==r・シード非依存)' : '❌ ' + bad + '件'));
+// ---- G-4b mark_scheme(SSS/SAS/ASA・合同条件識別)の対応整合ベクター ----
+// マーク(等長チョン/等角弧)が左右両三角形に対応して同数描かれ、構成ごとの規定密度に一致する。
+// マークは頂点内側=条件をマークだけで判定させる設計(角度値は全plain)。
+function markFp(scheme, angs) {
+  return { kind: 'angle_figure', subkind: 'congruent_pair', mark_scheme: scheme,
+    angles: angs.map(v => ({ v })), left: { names: ['A', 'B', 'C'], show: [] }, right: { names: ['D', 'E', 'F'], show: [] } };
+}
+function markCounts(svg) {
+  let ticksL = 0, ticksR = 0, arcsL = 0, arcsR = 0; const radii = {}; let m;
+  const reL = /<line x1="([-\d.]+)" y1="[-\d.]+" x2="([-\d.]+)" y2="[-\d.]+" stroke="#1a56c4" stroke-width="1.6"/g;
+  while ((m = reL.exec(svg))) { ((+m[1] + +m[2]) / 2 < 0 ? ticksL++ : ticksR++); }
+  const reA = /<path d="M ([-\d.]+) [-\d.]+ A ([\d.]+) [\d.]+ 0 \d \d [-\d.]+ [-\d.]+" fill="none" stroke="#1a56c4" stroke-width="1.3"/g;
+  while ((m = reA.exec(svg))) { (+m[1] < 0 ? arcsL++ : arcsR++); radii[m[2]] = 1; }
+  return { ticksL, ticksR, arcsL, arcsR, radii: Object.keys(radii).map(Number).sort((a, b) => a - b) };
+}
+// per-triangle 期待: SSS チョン6/弧0・SAS チョン3/弧1(半径1種)・ASA チョン1/弧3(半径2種=等角弧2種)
+const EXPECT = { SSS: { t: 6, a: 0, nr: 0 }, SAS: { t: 3, a: 1, nr: 1 }, ASA: { t: 1, a: 3, nr: 2 } };
+console.log('  --- G-4b mark_scheme 対応整合(SSS/SAS/ASA) ---');
+for (const scheme of ['SSS', 'SAS', 'ASA']) {
+  for (const angs of SETS.slice(0, 5)) {
+    cases++; let e = 0;
+    const svg = FB.build(markFp(scheme, angs)), c = markCounts(svg), ex = EXPECT[scheme];
+    if (c.ticksL !== ex.t || c.ticksR !== ex.t) e++;           // チョン数=規定 かつ 左右対応(合同の視認)
+    if (c.arcsL !== ex.a || c.arcsR !== ex.a) e++;             // 等角弧数=規定 かつ 左右対応
+    if (c.radii.length !== ex.nr) e++;                         // 弧半径の種数(ASA=2種でASA固有性)
+    if (svg.indexOf('undefined') >= 0) e++;
+    if (FB.build(markFp(scheme, angs)) !== svg) e++;           // シード非依存
+    if (e) { bad += e; console.log('    ❌ ' + scheme + ' ' + JSON.stringify(angs) + ' counts=' + JSON.stringify(c) + ' (' + e + ')'); }
+  }
+  const c0 = markCounts(FB.build(markFp(scheme, [55, 65, 60])));
+  console.log('    ' + scheme + ': チョン' + c0.ticksL + '/' + c0.ticksR + '(L/R) 等角弧' + c0.arcsL + '/' + c0.arcsR + ' 半径種' + c0.radii.length + ' ✅');
+}
+// 未知mark_schemeは契約違反throw
+(function () { cases++; let threw = 0; try { FB.build(markFp('ZZZ', [60, 60, 60])); } catch (e) { threw = 1; } if (!threw) { bad++; console.log('    ❌ 未知mark_scheme非throw'); } })();
+// ---- fmt_choice(choice機構・表示記号1字・恒等=番号一致) ----
+const PG = require(path.join(__dirname, '..', 'pattern_bank', 'pattern_generator.js'));
+console.log('  --- fmt_choice(1→ア/2→イ/3→ウ・数値トークン非混入) ---');
+[[1, 'ア'], [2, 'イ'], [3, 'ウ'], [0, ''], [4, 'エ']].forEach(function (t) {
+  cases++; const got = PG.fmtChoice(t[0]);
+  if (got !== t[1]) { bad++; console.log('    ❌ fmt_choice(' + t[0] + ')=' + JSON.stringify(got) + ' 期待' + JSON.stringify(t[1])); }
+  if (/\d/.test(got)) { bad++; console.log('    ❌ fmt_choice(' + t[0] + ') に数字トークン混入'); }   // corr-0007透過
+});
+
+console.log('\n' + (bad === 0 ? 'congruent_pair幾何ベクター+三重関門+G-4bマーク構成/fmt_choice: 全' + cases + '照合 一致 ✅(等長変換・対応角±0.5°・真円・マーク左右対応・SSS/SAS/ASA密度・記号透過・シード非依存)' : '❌ ' + bad + '件'));
 process.exit(bad === 0 ? 0 : 1);
