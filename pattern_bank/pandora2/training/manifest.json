@@ -123,5 +123,33 @@
   "jhs_c16_intpart_01",
   "jhs_c17_sq_01"
  ],
- "ratio_t1_t5": 1.948
+ "ratio_t1_t5": 1.948,
+ "eval_briefs": {
+  "file": "eval_briefs.json",
+  "count": 15,
+  "ids": [
+   "g03_frac_sub_from1_01",
+   "g05_wariai_nibai_hos_01",
+   "g06_kakudai_hen_01",
+   "jhs_c10_card_01",
+   "jhs_c12_orebi_01",
+   "jhs_c12_rokkaku_naikaku_01",
+   "jhs_c13_daikei_01",
+   "jhs_c13_heishi_taikaku_01",
+   "jhs_c13_rt_nitohen_01",
+   "jhs_c14_ensui_hyomen_01",
+   "jhs_c14_kaiten_yoko_01",
+   "jhs_c14_kyu_hyomen_01",
+   "jhs_c14_nejire_ae_01",
+   "jhs_c14_sankakusui_vol_01",
+   "jhs_c15_menseki_01"
+  ],
+  "non_overlap_verified": {
+   "banks": 391,
+   "training_gold": 391,
+   "held_out": 15,
+   "overlap": 0
+  },
+  "note": "⑤本番評価用の未見brief(まるこ検収済み)。⑥実行は据え置き"
+ }
 }
