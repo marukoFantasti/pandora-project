@@ -774,6 +774,50 @@
     finishLabels(lay, [{ anchor: worldFlip([R / 2, 0]), dir: [0, -1], text: fp.r + u, cands: dimCands(), color: '#333', own: 'redge' }]);
     return lay;
   }
+  // ---- 第2ブロックS-4: rotation_source(回転体の源=回転前平面図形+回転軸。立体は描かない) ----
+  // 軸=縦の一点鎖線(dash-dot・新描画要素)・直線ℓ。図形は軸の右側。回転後の立体は想像が学習内容ゆえ非描画。
+  var AXIS_DASH = '7,3,1.5,3';   // 一点鎖線(長dash-gap-dot-gap)
+  function rotationSourceGeom(fp) {
+    var sk = fp.source_kind || 'rect', r = Number(fp.r);
+    if (sk === 'semicircle') { var scS = Math.min(80 / r, 16); return { source_kind: sk, r: r, R: r * scS, scale: scS }; }
+    var h = Number(fp.height != null ? fp.height : fp.h), sc = Math.min(90 / r, 150 / h, 16);
+    return { source_kind: sk, r: r, h: h, rx: r * sc, H: h * sc, scale: sc };
+  }
+  function rotationSourceLayout(fp) {
+    var g = rotationSourceGeom(fp), u = fp.unit || 'cm', lay = newLayout(), sk = g.source_kind;
+    var topY = sk === 'semicircle' ? g.R : g.H, botY = sk === 'semicircle' ? -g.R : 0;
+    var aTop = worldFlip([0, topY + 22]), aBot = worldFlip([0, botY - 22]);
+    lay.parts.push(lineEl(aTop, aBot, C_STROKE, 1.4, AXIS_DASH));                 // 回転軸(一点鎖線)。参照線ゆえclearance対象外(寸法は軸基準に置く)
+    lay.pts.push(aTop, aBot);
+    lay.parts.push(textEl(aTop[0] - 9, aTop[1] + 2, 'ℓ', 13, C_STROKE));          // 直線ℓ
+    lay.pts.push([aTop[0] - 15, aTop[1]]);
+    if (sk === 'rect') {
+      var pr = [[0, 0], [g.rx, 0], [g.rx, g.H], [0, g.H]].map(worldFlip);
+      lay.parts.push(polygonEl(pr, C_FILL)); pr.forEach(function (p) { lay.pts.push(p); });
+      lay.segs.push({ id: 'redge', p1: pr[0], p2: pr[1] }, { id: 'hedge', p1: pr[1], p2: pr[2] });
+      finishLabels(lay, [
+        { anchor: [(pr[0][0] + pr[1][0]) / 2, pr[0][1]], dir: [0, 1], text: g.r + u, cands: dimCands(), color: '#333', own: 'redge' },
+        { anchor: [(pr[1][0] + pr[2][0]) / 2, (pr[1][1] + pr[2][1]) / 2], dir: [1, 0], text: g.h + u, cands: dimCands(), color: '#333', own: 'hedge' }]);
+    } else if (sk === 'right_tri') {
+      var v = [[0, 0], [g.rx, 0], [0, g.H]].map(worldFlip);                       // 直角 at (0,0)=軸と底辺
+      lay.parts.push(polygonEl(v, C_FILL)); v.forEach(function (p) { lay.pts.push(p); });
+      var rm = rightAngleMark([0, 0], [1, 0], [0, 1]); lay.parts.push(rm.el); rm.pts.forEach(function (p) { lay.pts.push(p); });
+      lay.segs.push({ id: 'redge', p1: v[0], p2: v[1] }, { id: 'hedge', p1: v[0], p2: v[2] });
+      finishLabels(lay, [
+        { anchor: [(v[0][0] + v[1][0]) / 2, v[0][1]], dir: [0, 1], text: g.r + u, cands: dimCands(), color: '#333', own: 'redge' },
+        { anchor: [(v[0][0] + v[2][0]) / 2, (v[0][1] + v[2][1]) / 2], dir: [-1, 0], text: g.h + u, cands: dimCands(), color: '#333', own: 'hedge' }]);
+    } else {   // semicircle: 直径が軸に接する半円(半径r・弧は真円=corr-0019)。arcPath(中心[0,0],r=R,90→−90=右半)
+      var R = g.R, top = worldFlip([0, R]), bot = worldFlip([0, -R]), cen = worldFlip([0, 0]);
+      lay.parts.push(lineEl(top, bot, C_STROKE, 2));                             // 直径(軸上・実線)
+      var aw = arcPath([0, 0], R, 90, -90, C_STROKE, 2); lay.parts.push(aw.el); aw.ext.forEach(function (p) { lay.pts.push(p); });
+      lay.pts.push(top, bot, worldFlip([R, 0]));
+      lay.parts.push(lineEl(cen, worldFlip([R, 0]), C_TARGET, 1.4));             // 半径線
+      lay.parts.push('<circle cx="' + cen[0].toFixed(2) + '" cy="' + cen[1].toFixed(2) + '" r="2.2" fill="' + C_STROKE + '"/>');
+      lay.segs.push({ id: 'redge', p1: cen, p2: worldFlip([R, 0]) });
+      finishLabels(lay, [{ anchor: worldFlip([R / 2, 0]), dir: [0, -1], text: g.r + u, cands: dimCands(), color: '#333', own: 'redge' }]);
+    }
+    return lay;
+  }
 
   function circleLayout(fp) {
     if (Number(fp.fig_version) === 2) return circleV2Layout(fp);   // v2へ分岐（v1は以下で完全維持）
@@ -1567,6 +1611,7 @@
     para_area: paraAreaLayout, tri_area: triAreaLayout, trap_area: trapAreaLayout,
     rhombus_area: rhombusAreaLayout, circle: circleLayout, cuboid: cuboidLayout, prism: prismLayout,
     pyramid: pyramidLayout, cylinder: cylinderLayout, cone: coneLayout, sphere: sphereLayout,
+    rotation_source: rotationSourceLayout,
     sym_polygon: symPolygonLayout, similar_pair: similarPairLayout, xy_graph: xyGraphLayout, dot_plot: dotPlotLayout, histogram: histogramLayout,
     angle_figure: angleFigureLayout
   };
@@ -1621,6 +1666,7 @@
     congruent_pair: congruentPairGeom,           // 第2波G-4a: 合同2三角形の左右座標(vector用)
     pyramid: pyramidGeom, cylinder: cylinderGeom, cone: coneGeom, sphere: sphereGeom,   // 第2ブロックS-2: 錐円系(vector用)
     pyramid_visible: pyramidVisible, convex_hull: convexHull,   // S-2.1: 隠線シルエット判定(vector用・corr-0023)
+    rotation_source: rotationSourceGeom,   // 第2ブロックS-4: 回転体の源(vector用)
     arc_sample_points: arcSamplePoints,          // 弧サンプル点(曲率関門用・頂点からr一定検査)
     // ベクター用の位置引数ラッパ（Python prism_geom(base_kind,a,b,h) と同型）
     prism: function (base_kind, a, b, h) {
