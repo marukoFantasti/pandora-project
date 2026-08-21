@@ -9,7 +9,7 @@
   "COMPOUND_UNIT_PRESERVE": "複合単位の非演算位保存は正解の構成要素(m/cm・L/dL・時/分など演算しない位が本文値のまま残る)。",
   "NOTATION_CONVERT": "表記変換は数値保存が定義(歩合・縮尺など、数値を保ったまま表記を変える操作)。",
   "COORD_DENOM": "既約分数の分母/座標値＝本文座標そのもの(交点・軸の座標が答えの構成要素。比の値と同構造)。",
-  "SELECTION_ANSWER": "答＝本文の提示値そのものを選ぶ/同定するのが学習内容(かずの大小比較・値の弁別)。jhs_c07_jiku_01と同性質。"
+  "SELECTION_ANSWER": "答＝本文の提示値そのものを選ぶ/同定する、または保存する(0の性質 N±0=N)のが学習内容(かずの大小比較・値の弁別・0を含む計算)。jhs_c07_jiku_01と同性質。"
  },
  "exemptions": [
   {
@@ -313,6 +313,14 @@
   },
   {
    "pattern_id": "g01_kurabe_01",
+   "code": "SELECTION_ANSWER"
+  },
+  {
+   "pattern_id": "g01_add_zero_01",
+   "code": "SELECTION_ANSWER"
+  },
+  {
+   "pattern_id": "g01_sub_zero_01",
    "code": "SELECTION_ANSWER"
   }
  ]

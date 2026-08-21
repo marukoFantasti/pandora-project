@@ -1,4 +1,4 @@
-// g01(小1・加法/減法)12パターンの恒等検算(設計側ストレスと同一仕様)。
+// g01(小1・加法/減法)23パターンの恒等検算(12+バッチ1追補11)(設計側ストレスと同一仕様)。
 // 各パターンの答え=answer_formula の恒等性 + 制約(転記退化排除・桁上/桁下条件)を高volで悉皆検証。
 //
 // 実行:  node tests/pattern_bank_g01_identity.js [N]
@@ -25,6 +25,18 @@ const ID = {
   g01_bunsho_nokori_01: e => e.ans === e.a1 - e.b1 && e.ans >= 1 && e.ans !== e.b1,
   g01_bunsho_chigai_01: e => e.ans === e.a1 - e.b1 && e.a1 > e.b1 && e.ans !== e.b1,
   g01_kurabe_01: e => e.ans === Math.max(e.a1, e.b1) && e.a1 !== e.b1,
+  // バッチ1(P-1第一波・11パターン)
+  g01_add_zero_01: e => e.ans === e.a1 + e.b1 && (e.a1 === 0 || e.b1 === 0) && e.ans >= 0,
+  g01_sub_zero_01: e => e.ans === e.a1 - e.b1 && (e.b1 === 0 || e.a1 === e.b1) && e.ans >= 0,
+  g01_add_tens_01: e => e.ans === 10 * (e.t1 + e.t2) && e.t1 + e.t2 <= 13,
+  g01_sub_tens_01: e => e.ans === 10 * (e.t1 - e.t2) && e.t1 > e.t2 && e.t1 !== 2 * e.t2,
+  g01_add_tensone_01: e => e.ans === 10 * e.t1 + e.u1 + e.v1 && e.u1 + e.v1 <= 9,
+  g01_sub_tensone_01: e => e.ans === 10 * e.t1 + e.u1 - e.v1 && e.v1 <= e.u1,
+  g01_threenum_mix_01: e => e.ans === e.a1 - e.b1 + e.c1 && e.a1 - e.b1 >= 1 && e.ans <= 15 && e.b1 !== e.c1 && e.a1 !== e.b1 && e.a1 + e.c1 !== 2 * e.b1,
+  g01_bunsho_kyudai_01: e => e.ans === e.b1 + e.d1 && e.ans <= 15,
+  g01_bunsho_kyusho_01: e => e.ans === e.b1 - e.d1 && e.ans >= 2 && e.b1 !== 2 * e.d1,
+  g01_bunsho_onaji_01: e => e.ans === e.d1 * e.n1 && e.ans <= 15,
+  g01_bunsho_kyuho_01: e => e.ans === e.a1 - e.b1 && e.ans >= 2 && e.a1 !== 2 * e.b1,
 };
 
 let bad = 0, checked = 0;
@@ -43,5 +55,5 @@ for (const p of bank.patterns) {
   }
   console.log('  ' + p.pattern_id.padEnd(24) + ' ' + N + '本 恒等' + (pb === 0 ? 'OK ✅' : 'NG ' + pb + ' ❌'));
 }
-console.log('\n' + (bad === 0 ? 'g01 恒等検算: 全12パターン合格 ✅ (' + checked + '本)' : '❌ ' + bad + '件'));
+console.log('\n' + (bad === 0 ? 'g01 恒等検算: 全23パターン合格 ✅ (' + checked + '本)' : '❌ ' + bad + '件'));
 process.exit(bad === 0 ? 0 : 1);

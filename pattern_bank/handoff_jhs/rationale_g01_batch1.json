@@ -1,0 +1,147 @@
+{
+ "_meta": {
+  "schema": "rationale_g05_gold.json準拠(pandora2正準・ネスト形)",
+  "scope": "g01追補11件(小学第2波P-1バッチ1)。rationale_g01正準へ追補統合(12→23)",
+  "note": "figure_notes正準。手続き型の軽量様式(criteria§3層別)。ネイティブ記述 2026-08-22",
+  "order": "バンク順"
+ },
+ "g01_add_zero_01": {
+  "brief": {"semantic_territory": "0を ふくむ たしざん", "number_domain": "整数(0〜9)", "answer_structure": "single", "figure": null, "step_count": 1,
+   "directives": [
+    {"text": "0加減はrange拡張でなく新設(単元の狙い=0を含む計算の集中で、拡張だと0が稀出になり計算要求を満たせない・2026-08-22裁可)", "by": "marko", "date": "2026-08"},
+    {"text": "答=非0側の本文値は「0をたしても かわらない」の学習内容=転記検査の例外(kurabe_01・taicho_01族・要例外登録)", "by": "marko", "date": "2026-08"}
+   ]},
+  "rationale": {
+   "source_features": "0のたしざん単元の主形。じゃんけんや玉入れの0点文脈から抽象化された計算形で、0の演算的性質の初対面。",
+   "representation": "制約1本(a=0∨b=0)でa+0/0+a/0+0の3形を単一テンプレから網羅——形ごとのパターン分割をせず制約で単元要求を書く最小構成。",
+   "constructive_guarantees": "zero_requiredが単元要求(0の関与)を保証。0を含まない組は既存add系の領分として構造分離。受理19組。",
+   "semantic_position": "0演算対の加法位。既存add_nocarry/carryの手前に立つ性質理解の位置。",
+   "exclusions": "両方非0(既存領分)。",
+   "figure_notes": "図なし(純計算。0の可視化(空の皿等)は転記データ上図が出現せず、テキスト完結が実物準拠)。",
+   "pedagogy": []
+  }
+ },
+ "g01_sub_zero_01": {
+  "brief": {"semantic_territory": "0を ふくむ ひきざん", "number_domain": "整数(0〜9)", "answer_structure": "single", "figure": null, "step_count": 1, "directives": []},
+  "rationale": {
+   "source_features": "−0(かわらない)と自分引き(ぜんぶひくと0)の2形が単元の学習内容。",
+   "representation": "制約1本(b=0∨a=b)で2形を単一テンプレから網羅——add_zero_01と対の最小構成。答=a/0はいずれも学習内容(転記例外の同族)。",
+   "constructive_guarantees": "zero_formが2形限定を保証。受理19組。",
+   "semantic_position": "0演算対の減法位。",
+   "exclusions": "0が関与しない通常減算(既存sub系の領分)。",
+   "figure_notes": "図なし(add_zero_01と同じ理由)。",
+   "pedagogy": []
+  }
+ },
+ "g01_add_tens_01": {
+  "brief": {"semantic_territory": "なん十＋なん十", "number_domain": "整数(10の倍数・和≦130)", "answer_structure": "single", "figure": null, "step_count": 1, "directives": []},
+  "rationale": {
+   "source_features": "20+30を「10が2つと3つで5つ」と束で考える大きい数の計算入口。",
+   "representation": "内部は束の個数(t)・表示はcomputed(A=10t)——内部整数/表示分離のスケール整数文化をg01の10束に適用。",
+   "constructive_guarantees": "和≦130(参照レンジ内)。和>各項の転記自動安全。受理66組。",
+   "semantic_position": "大きい数計算4部作の第1位。g02の2桁計算への束概念の橋。",
+   "exclusions": "和140以上(参照レンジ外)。",
+   "figure_notes": "図なし(束の可視化は転記データ上出現せず・テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g01_sub_tens_01": {
+  "brief": {"semantic_territory": "なん十−なん十", "number_domain": "整数(10の倍数)", "answer_structure": "single", "figure": null, "step_count": 1, "directives": []},
+  "rationale": {
+   "source_features": "束の減法(50−20=10が5つから2つ取る)。",
+   "representation": "add_tens_01と同一のcomputed表示・逆演算対。",
+   "constructive_guarantees": "t1>t2で差の正。転記排除t1≠2t2(差=ひく数の束版)。受理32組。",
+   "semantic_position": "大きい数4部作の第2位。",
+   "exclusions": "差が0以下・t1=2t2(転記)。",
+   "figure_notes": "図なし(同上)。",
+   "pedagogy": []
+  }
+ },
+ "g01_add_tensone_01": {
+  "brief": {"semantic_territory": "なん十なん＋1けた(くりあがりなし)", "number_domain": "整数(2桁+1桁)", "answer_structure": "single", "figure": null, "step_count": 1, "directives": []},
+  "rationale": {
+   "source_features": "34+5=一の位だけが動く位ごとの加法。位取りの操作的理解。",
+   "representation": "N=10t+uのcomputed合成で2桁を位スロットから構成——位の構造がスロット設計に内在。",
+   "constructive_guarantees": "u+v≦9でくり上がり不発生(2桁くり上がりは2年の領分=学年計算要求の上限側の欠陥3)。転記自動安全。受理324組。",
+   "semantic_position": "大きい数4部作の第3位。g02のくり上がり2桁計算の直前段。",
+   "exclusions": "u+v≧10(くり上がり=学年外)。",
+   "figure_notes": "図なし(純計算)。",
+   "pedagogy": []
+  }
+ },
+ "g01_sub_tensone_01": {
+  "brief": {"semantic_territory": "なん十なん−1けた(くりさがりなし)", "number_domain": "整数(2桁−1桁)", "answer_structure": "single", "figure": null, "step_count": 1, "directives": []},
+  "rationale": {
+   "source_features": "38−5=一の位だけが動く減法。",
+   "representation": "add_tensone_01と同構成の逆演算対。u−v=0(答がなん十ちょうど)は許容——位が空になる経験も学習内容で、除外しない判断を明記。",
+   "constructive_guarantees": "v≦uでくり下がり不発生。答≧10>vの転記自動安全。受理396組。",
+   "semantic_position": "大きい数4部作の掉尾。",
+   "exclusions": "v>u(くり下がり=学年外)。",
+   "figure_notes": "図なし(純計算)。",
+   "pedagogy": []
+  }
+ },
+ "g01_threenum_mix_01": {
+  "brief": {"semantic_territory": "3つの かず(ひいて たす)", "number_domain": "整数(1年生域・答≦15)", "answer_structure": "single", "figure": null, "step_count": 1, "directives": []},
+  "rationale": {
+   "source_features": "a−b+cの混合形。バスの乗り降り文脈の計算版で、符号が途中で変わる左から順の計算。",
+   "representation": "既存threenum_01(a+b−c)との1符号形1パターン対。混合の残り順(第2波在庫だった本形)の回収便。",
+   "constructive_guarantees": "中間値正(1年生はひけない状態を扱わない)+答≦15。転記排除3本の同値変形群(b=c→答a・a=b→答c・a+c=2b→答b)——threenum_01のフルセットを混合形に写像。受理222組。",
+   "semantic_position": "3つのかず対の完成。g02のzogen_bus(3口増減文章題)への計算的前段。",
+   "exclusions": "中間値0以下・答16以上・転記3系。",
+   "figure_notes": "図なし(純計算)。",
+   "pedagogy": []
+  }
+ },
+ "g01_bunsho_kyudai_01": {
+  "brief": {"semantic_territory": "求大(〜より おおい)", "number_domain": "整数(1年生域)", "answer_structure": "single", "figure": null, "step_count": 1,
+   "directives": [
+    {"text": "人数文脈は音変化(ひとり/ふたり)のため、かな正準規約(音変化のない「こ」統一)により色+個数文脈で構成する——g01文章題の助数詞規約の適用継続", "by": "marko", "date": "2026-08"}
+   ]},
+  "rationale": {
+   "source_features": "「AはBより dこ おおい」から大きい方を求める。関係語(より おおい)→加法の対応が学習内容で、1年後半の文章題新型。",
+   "representation": "色対(あかい/しろい)+count_items+「こ」統一——awasete_01の流儀の完全継承。基準量bと差dのスロット役割命名。",
+   "constructive_guarantees": "答≦15の1年生域。和>各項の転記自動安全。受理35組。",
+   "semantic_position": "求大求小対の第1位。g02の求差(どちらがなんこ多い)の逆向き前段——1年は差から大小を作り、2年は大小から差を問う。",
+   "exclusions": "答16以上。",
+   "figure_notes": "図なし(関係語の読解が主眼のテキスト完結型)。",
+   "pedagogy": []
+  }
+ },
+ "g01_bunsho_kyusho_01": {
+  "brief": {"semantic_territory": "求小(〜より すくない)", "number_domain": "整数(1年生域)", "answer_structure": "single", "figure": null, "step_count": 1, "directives": []},
+  "rationale": {
+   "source_features": "「より すくない」から小さい方を求める。求大と逆演算の関係語対。",
+   "representation": "kyudai_01と同構成・逆演算。関係語と演算の対応を対で踏ませる単元構成の写し。",
+   "constructive_guarantees": "小さい方≧2(1こは比較文として不自然)。転記排除b≠2d(答=差)。受理51組。",
+   "semantic_position": "求大求小対の第2位。",
+   "exclusions": "答1以下・b=2d(転記)。",
+   "figure_notes": "図なし(同上)。",
+   "pedagogy": []
+  }
+ },
+ "g01_bunsho_onaji_01": {
+  "brief": {"semantic_territory": "おなじかずずつ(累加)", "number_domain": "整数(答≦15)", "answer_structure": "single", "figure": null, "step_count": 1, "directives": []},
+  "rationale": {
+   "source_features": "nにんに dこずつ→ぜんぶ。乗法前段の累加(2+2+2)で、かけ算の素地作りの単元。",
+   "representation": "内部式はd×nだが児童の手筋は累加——answer_formulaと解法の乖離を許す初例(答の正しさは式が保証・手筋は指導の領分)。n≦3・答≦15で累加で数えられる範囲に限定。",
+   "constructive_guarantees": "d・n≧2で答>各項の転記自動安全。受理8組——狭いが乗法前段の教育的レンジとして適正(二等辺・球と同判断)。",
+   "semantic_position": "g02のmult_1atari(1あたり×いくつ分)への直系前段。累加→乗法の学年間系譜の起点。",
+   "exclusions": "答16以上(累加の実感域外)。",
+   "figure_notes": "図なし(おはじき配列図は転記データ上出現せず・テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g01_bunsho_kyuho_01": {
+  "brief": {"semantic_territory": "求補(全体と一方から他方)", "number_domain": "整数(1年生域)", "answer_structure": "single", "figure": null, "step_count": 1, "directives": []},
+  "rationale": {
+   "source_features": "あわせてa・あかがb→しろは。取り去る操作がないのに減法——g02求補(kyuho)の1年前段で、部分-全体の静的関係の初対面。",
+   "representation": "人数文脈(ひとり/ふたりの音変化)を避け、色+「こ」で部分-全体を構成——かな正準規約の適用(directives参照・kyudai_01)。色対はattribute対の前身形。",
+   "constructive_guarantees": "もう一方の部分≧2。転記排除a≠2b(答=既知部分・g02_kyuhoと同カタログ)。受理60組。",
+   "semantic_position": "文章題新型4部作の掉尾。g02_addsub_kyuho_2digit_01への直系前段で、5意味カテゴリの1年側の入口。",
+   "exclusions": "部分1以下・a=2b(転記)。",
+   "figure_notes": "図なし(部分-全体のテキスト完結型)。",
+   "pedagogy": []
+  }
+ }
+}
