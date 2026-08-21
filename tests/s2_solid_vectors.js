@@ -90,5 +90,28 @@ console.log('\n=== S-2 幾何ベクター + corr-0022(投影楕円) ===');
   if (e) { bad += e; console.log('  ❌ sphere r' + r + ' (' + e + ')'); }
 });
 
-console.log('\n' + (bad === 0 ? 'S-2幾何ベクター+corr-0022: 全' + cases + 'ケース一致 ✅(頂点収束・楕円比2:1固定・真円/楕円の対象切り分け・シード非依存)' : '❌ ' + bad + '件'));
+// corr-0023: pyramid隠線はシルエット(凸包内点)への側稜1本のみ破線。前後ペア一律(旧: 奥2本破線)はRED。
+console.log('\n=== corr-0023 隠線シルエット判定 関門(前後ペア一律→シルエット) ===');
+[['rect', { kind: 'pyramid', base_kind: 'rect', w: 6, d: 4, height: 8, unit: 'cm' }],
+['tri', { kind: 'pyramid', base_kind: 'tri', base: 6, base_height: 4, height: 8, unit: 'cm' }]].forEach(function (t) {
+  const g = FB._geom.pyramid(t[1]), base = g.base.map(p => [p[0], -p[1]]), apex = [g.apex[0], -g.apex[1]];
+  const vis = FB._geom.pyramid_visible(base, apex);
+  function violations(dashedIdx) { let e = 0; for (let i = 0; i < base.length; i++) { const d = dashedIdx.indexOf(i) >= 0; if (d !== (!vis[i])) e++; } return e; }
+  const correct = vis.map((v, i) => v ? -1 : i).filter(i => i >= 0);
+  const oldRule = []; for (let i = 0; i < base.length; i++) if (!(i === 0 || i === 1)) oldRule.push(i);   // 修正前: 前2実線・他破線
+  // 旧ルールが正解と異なる時のみREDを要求(tri は旧ルールが偶然正解=奥1本と一致・rectで実バグ)。
+  const oldDiffers = JSON.stringify(oldRule.slice().sort()) !== JSON.stringify(correct.slice().sort());
+  const redOK = oldDiffers ? violations(oldRule) > 0 : true, greenOK = violations(correct) === 0;
+  // 実SVG: 破線側稜(x2y2==apex)の底頂点==非可視 か
+  const svg = FB.build(t[1]); let sideOK = true;
+  for (const m of svg.matchAll(/<line x1="([-\d.]+)" y1="([-\d.]+)" x2="([-\d.]+)" y2="([-\d.]+)" stroke="#1a56c4"[^>]*?\/>/g)) {
+    if (Math.abs(+m[3] - apex[0]) > 0.5 || Math.abs(+m[4] - apex[1]) > 0.5) continue;
+    const idx = base.findIndex(b => Math.abs(b[0] - +m[1]) < 0.5 && Math.abs(b[1] - +m[2]) < 0.5); if (idx < 0) continue;
+    if ((m[0].indexOf('4,4') >= 0) !== (!vis[idx])) sideOK = false;
+  }
+  if (!(redOK && greenOK && sideOK)) bad++;
+  console.log('  ' + t[0] + ': 修正前(前2実線他破線)違反' + violations(oldRule) + '→RED ' + (redOK ? '✅' : '❌') + ' / 修正後(シルエット)違反' + violations(correct) + '→GREEN ' + (greenOK ? '✅' : '❌') + ' / 実SVG側稜破線==非可視 ' + (sideOK ? '✅' : '❌') + ' [隠れ頂点idx=' + JSON.stringify(correct) + ']');
+});
+
+console.log('\n' + (bad === 0 ? 'S-2幾何ベクター+corr-0022+corr-0023: 全' + cases + 'ケース+隠線シルエット 一致 ✅(頂点収束・楕円比2:1固定・真円/楕円切り分け・隠線=凸包内点1本・シード非依存)' : '❌ ' + bad + '件'));
 process.exit(bad === 0 ? 0 : 1);

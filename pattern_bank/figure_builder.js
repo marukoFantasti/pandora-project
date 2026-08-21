@@ -681,6 +681,22 @@
     var c = worldFlip([cxW, cyW]);
     return '<ellipse cx="' + c[0].toFixed(2) + '" cy="' + c[1].toFixed(2) + '" rx="' + rx.toFixed(2) + '" ry="' + ry.toFixed(2) + '" fill="' + (fill || 'none') + '" stroke="' + color + '" stroke-width="' + w + '"/>';
   }
+  // 凸包(Andrew monotone chain・小点集合用)。隠線のシルエット可視判定に使う。
+  function convexHull(pts) {
+    var p = pts.slice().sort(function (a, b) { return a[0] - b[0] || a[1] - b[1]; });
+    if (p.length < 3) return p.slice();
+    function cross(o, a, b) { return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]); }
+    var lo = [], up = [], i;
+    for (i = 0; i < p.length; i++) { while (lo.length >= 2 && cross(lo[lo.length - 2], lo[lo.length - 1], p[i]) <= 0) lo.pop(); lo.push(p[i]); }
+    for (i = p.length - 1; i >= 0; i--) { while (up.length >= 2 && cross(up[up.length - 2], up[up.length - 1], p[i]) <= 0) up.pop(); up.push(p[i]); }
+    lo.pop(); up.pop(); return lo.concat(up);
+  }
+  // pyramid底頂点の可視判定(svg座標): {apex}∪base の凸包に載る底頂点=可視(シルエット上)。
+  // 隠れる側稜は凸包内点(最遠=基底+奥行きベクトルの頂点)への1本のみ。前後ペアの一律判定は誤り。
+  function pyramidVisible(baseSvg, apexSvg) {
+    var hull = convexHull(baseSvg.concat([apexSvg]));
+    return baseSvg.map(function (v) { return hull.some(function (h) { return Math.abs(h[0] - v[0]) < 0.01 && Math.abs(h[1] - v[1]) < 0.01; }); });
+  }
   // ---- pyramid(角錐・prism小改修: 上面→頂点1点に収束) ----
   function pyramidGeom(fp) {
     var g = prismGeom(fp), base = g.base, n = base.length, cen = [0, 0];
@@ -690,10 +706,10 @@
   function pyramidLayout(fp) {
     var g = pyramidGeom(fp), u = fp.unit || 'cm', lay = newLayout();
     var base = g.base.map(worldFlip), apex = worldFlip(g.apex), cen = worldFlip(g.cen), n = base.length;
-    lay.parts.push(lineEl(base[0], base[1], C_STROKE, 2));                                   // 前底辺(実線)
-    for (var e = 1; e < n; e++) lay.parts.push(lineEl(base[e], base[(e + 1) % n], C_STROKE, 1.4, '4,4'));
-    lay.parts.push(lineEl(base[n - 1], base[0], C_STROKE, 1.4, '4,4'));
-    for (var v = 0; v < n; v++) lay.parts.push(lineEl(base[v], apex, C_STROKE, (v === 0 || v === 1) ? 2 : 1.4, (v === 0 || v === 1) ? null : '4,4'));   // 側稜
+    // シルエット準拠の隠線判定(convex hull)。両端可視の底辺=実線 / 可視底頂点への側稜=実線、隠れ(凸包内)=破線。
+    var vis = pyramidVisible(base, apex);
+    for (var e = 0; e < n; e++) { var solid = vis[e] && vis[(e + 1) % n]; lay.parts.push(lineEl(base[e], base[(e + 1) % n], C_STROKE, solid ? 2 : 1.4, solid ? null : '4,4')); }
+    for (var v = 0; v < n; v++) lay.parts.push(lineEl(base[v], apex, C_STROKE, vis[v] ? 2 : 1.4, vis[v] ? null : '4,4'));   // 側稜(隠れは最遠1本のみ)
     lay.parts.push(lineEl(apex, cen, C_TARGET, 1.4, '5,4'));                                 // 高さ(頂点→底中心・破線)
     lay.parts.push('<path d="M ' + cen[0].toFixed(2) + ' ' + (cen[1] - 8).toFixed(2) + ' h 8 v 8" fill="none" stroke="' + C_TARGET + '" stroke-width="1.2"/>');
     base.concat([apex, cen]).forEach(function (p) { lay.pts.push(p); });
@@ -1604,6 +1620,7 @@
     right_angle_mark: rightAngleMark,            // G-3.1: 直角マーク(小正方形)頂点座標(vector用)
     congruent_pair: congruentPairGeom,           // 第2波G-4a: 合同2三角形の左右座標(vector用)
     pyramid: pyramidGeom, cylinder: cylinderGeom, cone: coneGeom, sphere: sphereGeom,   // 第2ブロックS-2: 錐円系(vector用)
+    pyramid_visible: pyramidVisible, convex_hull: convexHull,   // S-2.1: 隠線シルエット判定(vector用・corr-0023)
     arc_sample_points: arcSamplePoints,          // 弧サンプル点(曲率関門用・頂点からr一定検査)
     // ベクター用の位置引数ラッパ（Python prism_geom(base_kind,a,b,h) と同型）
     prism: function (base_kind, a, b, h) {
