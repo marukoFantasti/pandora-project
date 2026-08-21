@@ -3807,5 +3807,68 @@
    "figure_notes": "pyramid隠線はconvexHullシルエット計算(corr-0023関門下)。高さ線は赤破線+直角記号の内部構造表示。",
    "pedagogy": []
   }
+ },
+ "jhs_c14_kaiten_enchu_01": {
+  "brief": {
+   "semantic_territory": "回転体(長方形→円柱)",
+   "number_domain": "整数係数×π(pi_coef)",
+   "answer_structure": "single",
+   "figure": "rotation_source(rect)",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "回転体の図は回転前の源のみ描き、回転後の立体は描かない——形の同定(頭の中で立ち上げる)が学習内容で、立体を添えると答えの半分が図から漏れる。bare_zx『答えを図に書かない』原則の回転体版(2026-08-21)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "長方形を軸まわりに1回転→円柱。回転体は「何になるか」の同定と求積の2段だが、体積を問えば同定は解法内で必然的に踏まれる——名指し(文字列答え)を避けつつ同定を確実に通過させるE案系の設計。",
+   "representation": "rotation_source kind(軸=一点鎖線ℓ・源図形は軸右側・軸接触辺の隙間0)。求積はenchu_vol_01と完全同型で図構成のみ違う——「同じ計算・違う入口」により、円柱体積の定着と回転の想像を独立に混合出題できる。",
+   "constructive_guarantees": "S-3円柱と同一値域・同cap・同じ転記フリー証明(受理91組)。",
+   "semantic_position": "回転体3部作の第1位。S-3の直接求積と対になり、空間系10問バケツの回転体5問相当を3構造で覆う。",
+   "exclusions": "係数600超。",
+   "figure_notes": "一点鎖線(dash-dot)は新描画要素として描画検査を関門化済み。軸接触の隙間0はベクター検査対象(隙間があると穴あき回転体の別問題に見える——まるこ目視観点を機械化)。",
+   "pedagogy": []
+  }
+ },
+ "jhs_c14_kaiten_ensui_01": {
+  "brief": {
+   "semantic_territory": "回転体(直角三角形→円錐)",
+   "number_domain": "係数×π(分数許容・pi_coef_frac3)",
+   "answer_structure": "single",
+   "figure": "rotation_source(right_tri)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "直角三角形(直角をはさむ縦辺が軸接触)を1回転→円錐。斜辺が母線に対応する構造の想像が本パターン固有の学習点。",
+   "representation": "ensui_vol_01と同型求積(fmt_pi_frac・縛らない側の使い分け正準)。直角記号は既存rightAngleMark——回転体の直角は定義上常に既知で、非対称規約(未知90のマーク化禁止)と自然に整合。",
+   "constructive_guarantees": "S-3円錐と同一値域・分数係数率も同分布。転記フリー同証明(受理91組)。",
+   "semantic_position": "回転体3部作の第2位。「柱の1/3」をS-3(直接)とS-4(回転)の両入口から踏む。",
+   "exclusions": "分子600超。",
+   "figure_notes": "軸接触辺=直角をはさむ縦辺(接触辺の選択が回転後の形を決める——横辺接触は別の円錐で、変種は第3波在庫)。",
+   "pedagogy": []
+  }
+ },
+ "jhs_c14_kaiten_kyu_01": {
+  "brief": {
+   "semantic_territory": "回転体(半円→球)",
+   "number_domain": "係数×π(分数許容・pi_coef_frac3)",
+   "answer_structure": "single",
+   "figure": "rotation_source(semicircle)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "半円(直径が軸接触)を1回転→球。回転体3部作の掉尾で、曲線源(弧)から曲面体への想像が最も抽象度が高い。",
+   "representation": "半円弧は真円(corr-0019対象・arcPath流用)——rotation_sourceに角度族の弧資産がそのまま入る、kind横断の資産再利用。求積はkyu_vol_01と同型。",
+   "constructive_guarantees": "S-3球と同一値域(r∈[2,9])・転記フリー(受理8組)。",
+   "semantic_position": "空間系10問バケツの完了位置。第2ブロック(S-1〜S-4)がここで閉じ、c11〜c14の経路A対象は全構造被覆——残余は裁可済みの対象外(作図・記述証明・展開図)とG-4b棚(名指し・投影図選択・合同条件)のみ。",
+   "exclusions": "なし。",
+   "figure_notes": "半円の直径が軸に完全接触(隙間0検査)。弧の真円性はcorr-0019関門が回転体でも継続適用——「意図された真円」と「意図された楕円(corr-0022)」の切り分けがkind横断で一貫。",
+   "pedagogy": []
+  }
  }
 }

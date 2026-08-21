@@ -446,11 +446,15 @@
   "飲": "の",
   "駅": "えき",
   "高": "たか",
-  "黒": "くろ"
+  "黒": "くろ",
+  "回転": "かいてん",
+  "立体": "りったい",
+  "半円": "はんえん"
  }
 }
 </script>
-  <script id="pg-ct" type="application/json">{
+  <script id="pg-ct" type="application/json">
+{
  "_meta": {
   "purpose": "pandora_global算数編: 数詞+助数詞/単位の読み合成規則表(決定的・ゼロAI)",
   "scope": "counter_inventory.json全28種+数詞成分表+小数/分数/負数規則",
@@ -768,6 +772,22 @@
    },
    "question": "なんきゃく"
   },
+  "回転": {
+   "base": "かいてん",
+   "digit_readings": {
+    "1": "いっかいてん",
+    "2": "にかいてん",
+    "3": "さんかいてん",
+    "4": "よんかいてん",
+    "5": "ごかいてん",
+    "6": "ろっかいてん",
+    "7": "ななかいてん",
+    "8": "はっかいてん",
+    "9": "きゅうかいてん",
+    "10": "じゅっかいてん"
+   },
+   "question": "なんかいてん"
+  },
   "回": {
    "base": "かい",
    "digit_readings": {
@@ -874,7 +894,8 @@
    "note": "歩合系。1厘=いちりん・3厘=さんりん・10厘=じゅうりん(変音なし)"
   }
  }
-}</script>
+}
+</script>
   <script id="pg-engine">// reading_engine.js — pandora_global算数編 表示層 読み合成エンジン(決定的・ゼロAI・依存ライブラリなし)。
 // 入力: 表示文字列。出力2モード: toRuby(《》中間表現) / toHiragana(全ひらがな化)。
 // 処理順(counter_reading_table _meta / furigana_lexicon _meta.matching_rules 正準):

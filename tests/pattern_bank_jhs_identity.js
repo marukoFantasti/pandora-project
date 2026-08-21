@@ -80,6 +80,10 @@ const ID = {
   jhs_c14_ensui_vol_01: (e, ans) => ans === e.r1 * e.r1 * e.h1,                                 // 円錐体積係数: r²h(表示は/3)
   jhs_c14_kyu_vol_01: (e, ans) => ans === 4 * e.r1 * e.r1 * e.r1,                               // 球体積係数: 4r³(表示は/3)
   jhs_c14_kakusui_vol_01: (e, ans) => ans === Math.floor(e.w1 * e.d1 * e.h1 / 3),               // 四角錐体積: wdh//3
+  // --- c14 S-4 回転体(源図形→立体・ans=係数・S-3 vol変種と同係数) ---
+  jhs_c14_kaiten_enchu_01: (e, ans) => ans === e.r1 * e.r1 * e.h1,                               // 長方形→円柱: r²h(=enchu_vol同型)
+  jhs_c14_kaiten_ensui_01: (e, ans) => ans === e.r1 * e.r1 * e.h1,                               // 直角三角形→円錐: r²h(表示は/3・=ensui_vol同型)
+  jhs_c14_kaiten_kyu_01: (e, ans) => ans === 4 * e.r1 * e.r1 * e.r1,                             // 半円→球: 4r³(表示は/3・=kyu_vol同型)
   // --- c15 展開・因数分解：多項式係数の恒等(問題多項式 == 答えの展開) ---
   // 展開5型: 問題=因数積 → 展開係数が答え多項式の係数と一致(答え係数からの復元と等価)
   jhs_c15_exp_01: (e) => e.s1 === e.a1 + e.b1 && e.t1 === e.a1 * e.b1,            // (x+a)(x+b)=x²+(a+b)x+ab

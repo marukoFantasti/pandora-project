@@ -1,0 +1,197 @@
+{
+ "_meta_append": {
+  "purpose": "patterns_jhs_c14.jsonへの追補(S-4・回転体3パターン。c14=9→12・空間系10問バケツ完了便)",
+  "date": "2026-08-21",
+  "note": "図は回転前の源のみ(立体非描画=形の同定が学習内容・bare_zx原則の回転体版)。求積はS-3と同型で図構成のみ違う——「同じ計算・違う入口」。counter規則表に回転を追加(1回転=いっかいてんの結合形対応・別添パッチ)"
+ },
+ "patterns": [
+  {
+   "pattern_id": "jhs_c14_kaiten_enchu_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c14_u01",
+   "unit_name": "空間図形",
+   "semantic_category": "回転体(長方形→円柱・πr²h)",
+   "semantic_note": "長方形(横r×縦h・軸接触辺=縦)を軸ℓまわりに1回転→円柱。形の同定(想像)+求積の2段が暗黙に接続——同定を明示的に答えさせる(名指し)はG-4b棚、体積を問えば同定は解法内で必然的に踏まれる。求積はenchu_vol_01と同型・転記フリー同証明。",
+   "step_count": 1,
+   "operation": "回転体(円柱): V＝π×r1²×h1",
+   "answer_formula": "r1 * r1 * h1",
+   "answer_domain": "pi_coef",
+   "slots": {
+    "r1": {
+     "type": "int",
+     "range": [
+      2,
+      10
+     ]
+    },
+    "h1": {
+     "type": "int",
+     "range": [
+      3,
+      15
+     ]
+    }
+   },
+   "computed_slots": {
+    "V1": {
+     "formula": "r1 * r1 * h1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "coef_cap",
+     "expr": "r1 * r1 * h1 <= 600",
+     "why": "係数3桁以内"
+    }
+   ],
+   "sentence_templates": [
+    "図の長方形を、直線ℓを軸として1回転させてできる立体の体積を求めなさい。"
+   ],
+   "answer_template": "答え {V1_pi}cm³",
+   "figure_params": {
+    "kind": "rotation_source",
+    "source_kind": "rect",
+    "r": "{r1}",
+    "height": "{h1}",
+    "unit": "cm"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "jhs_c14_kaiten_ensui_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c14_u01",
+   "unit_name": "空間図形",
+   "semantic_category": "回転体(直角三角形→円錐・(1/3)πr²h)",
+   "semantic_note": "直角三角形(直角をはさむ縦辺が軸接触)を1回転→円錐。ensui_vol_01と同型求積・fmt_pi_frac(縛らない側の使い分け正準どおり)。直角記号は既存rightAngleMark(緑・非対称規約は既知側=定義上常に既知)。",
+   "step_count": 1,
+   "operation": "回転体(円錐): V＝(1/3)×π×r1²×h1",
+   "answer_formula": "r1 * r1 * h1",
+   "answer_domain": "pi_coef_frac3",
+   "slots": {
+    "r1": {
+     "type": "int",
+     "range": [
+      2,
+      10
+     ]
+    },
+    "h1": {
+     "type": "int",
+     "range": [
+      3,
+      15
+     ]
+    }
+   },
+   "computed_slots": {
+    "V1": {
+     "formula": "r1 * r1 * h1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "coef_cap",
+     "expr": "r1 * r1 * h1 <= 600",
+     "why": "分子3桁以内"
+    }
+   ],
+   "sentence_templates": [
+    "図の直角三角形を、直線ℓを軸として1回転させてできる立体の体積を求めなさい。"
+   ],
+   "answer_template": "答え {V1_pi}cm³",
+   "figure_params": {
+    "kind": "rotation_source",
+    "source_kind": "right_tri",
+    "r": "{r1}",
+    "height": "{h1}",
+    "unit": "cm"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1,
+    1,
+    3
+   ]
+  },
+  {
+   "pattern_id": "jhs_c14_kaiten_kyu_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c14_u01",
+   "unit_name": "空間図形",
+   "semantic_category": "回転体(半円→球・(4/3)πr³)",
+   "semantic_note": "半円(直径が軸接触)を1回転→球。kyu_vol_01と同型・分数係数許容。半円の弧は真円(corr-0019対象・arcPath流用)。",
+   "step_count": 1,
+   "operation": "回転体(球): V＝(4/3)×π×r1³",
+   "answer_formula": "4 * r1 * r1 * r1",
+   "answer_domain": "pi_coef_frac3",
+   "slots": {
+    "r1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "computed_slots": {
+    "V1": {
+     "formula": "4 * r1 * r1 * r1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "図の半円を、直線ℓを軸として1回転させてできる立体の体積を求めなさい。"
+   ],
+   "answer_template": "答え {V1_pi}cm³",
+   "figure_params": {
+    "kind": "rotation_source",
+    "source_kind": "semicircle",
+    "r": "{r1}",
+    "unit": "cm"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1,
+    4,
+    3
+   ]
+  }
+ ]
+}

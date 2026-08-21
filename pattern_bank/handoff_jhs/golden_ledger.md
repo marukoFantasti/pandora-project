@@ -145,3 +145,9 @@
 - **furigana**: 増補パッチ(円柱/円錐/角錐/球+四角錐/三角錐)適用・3コピー同期・残存漢字0。
 - clearance悉皆(prism流儀3観点): 受理91/70/91/8/695=違反0。
 - pi_coef_frac3を両dispatch登録(ans>0)。分数分母3はtemplate_number_constants宣言でcorr-0007除外。
+
+### 2026-08-21 c14第3波(S-4 回転体3追補・空間系完了・D-2)
+- c14に回転体3パターンをD-2 append(9→12・空間ブロック完了便)。まるこ検収済み。長方形→円柱(pi_coef・πr²h)・直角三角形→円錐(pi_coef_frac3・(1/3)πr²h)・半円→球(pi_coef_frac3・(4/3)πr³)。source図(rotation_source kind)を軸ℓまわり1回転で立体を同定→求積の2段(同定は解法内で必然・名指しはG-4b棚)。
+- 旧md5 0f139c0f(9)→**新md5 2ff88dbd**(12)。golden PASS 36/36。既存9(baseline行1-100)byte一致(D-2成立)。
+- **kanji_policy補填**: 本文「直線ℓを軸として」の「軸」は教育漢字g1-6外(中学配当)→allowed_extra:"軸"を3パターンに追加(錐と同型・最小宣言方針・ふりがな付き専門用語許可)。
+- **furigana(furigana_patch_s4)**: lexicon 3語(回転→かいてん/立体→りったい/半円→はんえん)+counter規則表「回転」(digit_readings いっかいてん〜じゅっかいてん)。counter「回転」は「回」より長い単位=reading_engineのUNIT_KEYS長さ降順ソートで先に照合(最長一致)→「1回転=いっかいてん」実レンダ確認。3コピー同期(handoff/assets_global/海外テンプレpg-lex+pg-ct)・残存漢字0。

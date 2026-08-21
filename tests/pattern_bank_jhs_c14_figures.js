@@ -17,6 +17,7 @@ function cyl(r, h) { return { kind: 'cylinder', r: r, height: h, unit: 'cm' }; }
 function cone(r, h) { return { kind: 'cone', r: r, height: h, unit: 'cm' }; }
 function sphere(r) { return { kind: 'sphere', r: r, unit: 'cm' }; }
 function pyr(o) { return Object.assign({ kind: 'pyramid', unit: 'cm' }, o); }
+function rot(sk, r, h) { const o = { kind: 'rotation_source', source_kind: sk, r: r, unit: 'cm' }; if (h != null) o.height = h; return o; }
 
 const DOMAINS = {
   // 三角柱の体積: b1∈[4,12]・bh1∈[3,10]・h1∈[4,15]・even(b1·bh1)・V≤500。図=tri(base=b1,base_height=bh1,height=h1)。
@@ -45,7 +46,14 @@ const DOMAINS = {
   // 球体積: r∈[2,9]・最疎。図=sphere。
   jhs_c14_kyu_vol_01: { expect: 8, envs: () => rng(2, 9).map(function (r) { return sphere(r); }) },
   // 四角錐体積: w∈[3,12]・d∈[3,10]・h∈[4,15]・(wdh)%3==0・wdh//3≤400。図=pyramid。
-  jhs_c14_kakusui_vol_01: { expect: 695, envs: () => { const o = []; for (const w of rng(3, 12)) for (const d of rng(3, 10)) for (const h of rng(4, 15)) { if ((w * d * h) % 3 !== 0) continue; if (Math.floor(w * d * h / 3) > 400) continue; o.push(pyr({ base_kind: 'rect', w: w, d: d, height: h })); } return o; } }
+  jhs_c14_kakusui_vol_01: { expect: 695, envs: () => { const o = []; for (const w of rng(3, 12)) for (const d of rng(3, 10)) for (const h of rng(4, 15)) { if ((w * d * h) % 3 !== 0) continue; if (Math.floor(w * d * h / 3) > 400) continue; o.push(pyr({ base_kind: 'rect', w: w, d: d, height: h })); } return o; } },
+  // --- S-4 wave3 回転体(rotation_source・軸ℓは参照線=clearance除外) ---
+  // 回転体(長方形→円柱): r∈[2,10]・h∈[3,15]・r²h≤600。図=rotation_source(rect)。
+  jhs_c14_kaiten_enchu_01: { expect: 91, envs: () => { const o = []; for (const r of rng(2, 10)) for (const h of rng(3, 15)) { if (r * r * h > 600) continue; o.push(rot('rect', r, h)); } return o; } },
+  // 回転体(直角三角形→円錐): r∈[2,10]・h∈[3,15]・r²h≤600。図=rotation_source(right_tri)。
+  jhs_c14_kaiten_ensui_01: { expect: 91, envs: () => { const o = []; for (const r of rng(2, 10)) for (const h of rng(3, 15)) { if (r * r * h > 600) continue; o.push(rot('right_tri', r, h)); } return o; } },
+  // 回転体(半円→球): r∈[2,9]・最疎。図=rotation_source(semicircle)。
+  jhs_c14_kaiten_kyu_01: { expect: 8, envs: () => rng(2, 9).map(function (r) { return rot('semicircle', r); }) }
 };
 
 let bad = 0;
@@ -58,12 +66,13 @@ for (const [pid, dom] of Object.entries(DOMAINS)) {
   for (const fp of envs) {
     let svg; try { svg = FB.build(fp); } catch (e) { drawBad++; continue; }
     if (!svg || svg.length < 200 || svg.indexOf('undefined') >= 0 || (svg.match(/<svg/g) || []).length !== 1) drawBad++;
-    const cl = FB['_'+fp.kind+'MinClearance'](fp);
+    const clKey = '_' + fp.kind.replace(/_([a-z])/g, function (m, c) { return c.toUpperCase(); }) + 'MinClearance';
+    const cl = FB[clKey](fp);
     if (cl.minText < minMT) minMT = cl.minText; if (cl.minSeg < minSeg) minSeg = cl.minSeg;
     if (cl.minText < 10 || cl.minSeg < 4 || cl.semBad > 0) { clBad++; if (clBad <= 6) console.log('       ❌ ' + pid + ' ' + JSON.stringify(fp) + ' minText=' + cl.minText.toFixed(2) + ' minSeg=' + cl.minSeg.toFixed(2) + ' semBad=' + cl.semBad); }
   }
   if (drawBad) bad += drawBad; if (clBad) bad += clBad;
   console.log('  ' + (countOk && !drawBad && !clBad ? '✅' : '❌') + ' ' + pid + ': 受理組 ' + envs.length + '/' + dom.expect + ' / 描画不良 ' + drawBad + ' / clearance違反 ' + clBad + ' / min(minText ' + minMT.toFixed(1) + ', minSeg ' + minSeg.toFixed(1) + ')');
 }
-console.log('\n' + (bad === 0 ? 'c14 図照合: 全9パターン合格 ✅(角柱613/621/384/30 + 錐円91/70/91/8/695・prism流儀3観点悉皆違反0)' : '❌ ' + bad + '件'));
+console.log('\n' + (bad === 0 ? 'c14 図照合: 全12パターン合格 ✅(角柱613/621/384/30 + 錐円91/70/91/8/695 + 回転体91/91/8・prism流儀3観点悉皆違反0)' : '❌ ' + bad + '件'));
 process.exit(bad === 0 ? 0 : 1);
