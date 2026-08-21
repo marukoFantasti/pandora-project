@@ -261,6 +261,14 @@
     var edges = normEdgeSet(s).split(',').filter(function (x) { return x; });
     return edges.map(function (e) { return '辺' + e; }).join('、');
   }
+  // 数値列の正規化(num_seq機構・edgeSet様式の順序保存版)。数値トークンを出現順に抽出し
+  // カンマ連結(区切り・空白ゆれ吸収/順序は保存=順序違いは別値)。−(U+2212)/-両対応・全角数字→半角。
+  function normNumSeq(s) {
+    if (s == null) return '';
+    var t = String(s).replace(/[０-９]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0xFEE0); }).replace(/−/g, '-');
+    var m = t.match(/-?\d+/g) || [];
+    return m.map(function (x) { return String(parseInt(x, 10)); }).join(',');
+  }
   // スロット range=[lo,hi](step) の到達可能値ドメインを "件数:先頭:末尾" で返す
   // （負域含む Python randrange とのマッピング一致照合用。randRange と同一: n=floor((hi-lo)/step)+1）。
   function sampleDomain(lo, hi, step) {
@@ -793,6 +801,7 @@
     else if (dom === 'pi_coef' || dom === 'pi_coef_frac3') inDomain = a > 0;   // S-1/S-3: π係数(表示fmt_pi/fmt_pi_frac(_,3))。正。
     else if (dom === 'choice3') inDomain = Number.isInteger(a) && a >= 1 && a <= 3;   // G-4b: 選択肢番号(表示fmt_choice・恒等=番号一致)。
     else if (dom === 'edge_set') inDomain = typeof a === 'string' && a.length > 0 && normEdgeSet(a) === a;   // G-4b: 辺の正規化集合(非空・辞書順正規形・恒等=集合一致)。
+    else if (dom === 'num_seq') inDomain = Number.isInteger(a);   // P-1: 数値列(表示=要素slot直書き・verify=先頭要素/全要素はハーネス照合=enumeration分担)。
     else inDomain = a > 0;   // positive_int（既定・既存バンク全て）
 
     return {
@@ -887,6 +896,7 @@
     fmtPiFrac: fmtPiFrac,
     fmtChoice: fmtChoice,
     edgeRel: edgeRel, normEdgeSet: normEdgeSet, fmtEdgeSet: fmtEdgeSet, cuboidEdgeRelation: cuboidEdgeRelation,
+    normNumSeq: normNumSeq,
     fmtDec2fix: fmtDec2fix,
     sampleDomain: sampleDomain,
     resolveFigureParams: resolveFigureParams,

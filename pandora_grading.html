@@ -826,6 +826,23 @@ function edgeSetMatch(studentAns, answer) {
   var a = edgeSetNorm(studentAns), b = edgeSetNorm(answer);
   return b !== '' && a === b;   // 完全一致のみ(空集合の答は不成立)
 }
+// num_seq機構(P-1): 数値列の順序保存照合。数値トークンを出現順に抽出して系列一致
+// (edgeSet様式の横展開・区切り(、,/空白)/全角/−ゆれ吸収・順序違いは✗)。
+function numSeqNorm(s) {
+  if (s == null) return '';
+  var t = String(s).replace(/[０-９]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0xFEE0); }).replace(/−/g, '-');
+  var m = t.match(/-?\d+/g) || [];
+  return m.map(function (x) { return String(parseInt(x, 10)); }).join(',');
+}
+function numSeqMatch(studentAns, answer) {
+  // 正答は「こたえ/答え」マーカー以降のみ照合(テンプレ接頭辞の数値を除外)
+  var tail = String(answer == null ? '' : answer);
+  var mk = tail.lastIndexOf('こたえ'); var mk2 = tail.lastIndexOf('答え');
+  var cut = Math.max(mk < 0 ? -1 : mk + 3, mk2 < 0 ? -1 : mk2 + 2);
+  if (cut >= 0) tail = tail.slice(cut);
+  var b = numSeqNorm(tail);
+  return b.indexOf(',') > 0 && numSeqNorm(studentAns) === b;   // 2要素以上の系列のみ成立
+}
 
 // 国語の1問カードを描画（観点タグ・形式ごとに表示を分ける）。
 // 選択式は student_choice と正答の照合で自動採点し gradeState に事前セット、
@@ -1019,7 +1036,15 @@ function renderGrading(sub) {
       gs = { result: edgeSetMatch(studentEdges, p.answer) ? 'correct' : 'incorrect', note: gs.note || '', auto: true };
       gradeState[pid] = gs;
     }
-    var isDigitalAuto = isDigitalChoice || isDigitalEdgeSet;
+    // num_seq機構(P-1): デジタル数値列答(正答マーカー以降に数値2トークン以上)は順序保存の系列一致で
+    // 自動採点。単独数値答(1トークン)は非発火=既存の手動採点フローに非干渉。
+    var isDigitalNumSeq = !isDigitalChoice && !isDigitalEdgeSet && studentEdges != null &&
+      (function () { var t = String(p.answer || ''); var mk = Math.max(t.lastIndexOf('こたえ'), t.lastIndexOf('答え')); return numSeqNorm(mk >= 0 ? t.slice(mk) : t).indexOf(',') > 0; })();
+    if (!gs.result && isDigitalNumSeq) {
+      gs = { result: numSeqMatch(studentEdges, p.answer) ? 'correct' : 'incorrect', note: gs.note || '', auto: true };
+      gradeState[pid] = gs;
+    }
+    var isDigitalAuto = isDigitalChoice || isDigitalEdgeSet || isDigitalNumSeq;
     var cardClass = gs.result ? ' ' + gs.result : '';
 
     html += '<div class="problem-card' + cardClass + '" id="pc-' + pid + '">';
@@ -1050,9 +1075,9 @@ function renderGrading(sub) {
       '<div><div class="col-label">正解</div>' +
       '<div class="answer-text">' + (p.answer || '-') + '</div></div>' +
       (isDigitalAuto ?
-        '<div><div class="col-label">' + (isDigitalEdgeSet ? '生徒の解答' : '生徒の選択') + '</div>' +
+        '<div><div class="col-label">' + ((isDigitalEdgeSet || isDigitalNumSeq) ? '生徒の解答' : '生徒の選択') + '</div>' +
         '<div style="font-size:16px;font-weight:700;color:' + (gs.result === 'correct' ? 'var(--green)' : 'var(--red)') + '">' +
-        escHtml(String(isDigitalEdgeSet ? studentEdges : p.student_choice)) + '</div></div>' : '') +
+        escHtml(String((isDigitalEdgeSet || isDigitalNumSeq) ? studentEdges : p.student_choice)) + '</div></div>' : '') +
     '</div>';
 
     // 右：採点コントロール

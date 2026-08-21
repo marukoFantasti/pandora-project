@@ -315,6 +315,15 @@ def fmt_edge_set(s):
 
 SAFE.update({"edge_rel": edge_rel, "norm_edge_set": norm_edge_set, "fmt_edge_set": fmt_edge_set})
 
+def norm_num_seq(s):
+    """数値列の正規化(num_seq機構・JS normNumSeqと1:1)。出現順トークンのカンマ連結(順序保存)。"""
+    if s is None:
+        return ""
+    t = str(s).translate(str.maketrans("０１２３４５６７８９−", "0123456789-"))
+    return ",".join(str(int(x)) for x in re.findall(r"-?\d+", t))
+
+SAFE.update({"norm_num_seq": norm_num_seq})
+
 def sample_domain(lo, hi, step=1):
     """スロット range=[lo,hi](step) の到達可能値ドメインを "件数:先頭:末尾" で返す
     （負域含む JS randRange との一致照合用。JS randRange と同一の値マッピング:
@@ -664,6 +673,8 @@ def verify(pattern, env, problem):
         in_domain = isinstance(a, int) and not isinstance(a, bool) and 1 <= a <= 3
     elif dom == "edge_set":  # G-4b: 辺の正規化集合(非空・辞書順正規形・恒等=集合一致)。
         in_domain = isinstance(a, str) and len(a) > 0 and norm_edge_set(a) == a
+    elif dom == "num_seq":  # P-1: 数値列(表示=要素slot直書き・verify=先頭要素/全要素はハーネス照合)。
+        in_domain = isinstance(a, int) and not isinstance(a, bool)
     else:  # positive_int（既定・既存バンク全て）
         in_domain = a > 0
     return {"kanji_ok": not bad,
@@ -682,7 +693,7 @@ def _run_vectors(path):
             "fmt_termj": fmt_termj, "sgn_str": sgn_str, "sqrt_coef": sqrt_coef,
             "sqrt_rad": sqrt_rad, "fmt_sqrt": fmt_sqrt, "sample_domain": sample_domain,
             "fmt_pi": fmt_pi, "fmt_pi_frac": fmt_pi_frac, "fmt_choice": fmt_choice,
-            "edge_rel": edge_rel, "norm_edge_set": norm_edge_set, "fmt_edge_set": fmt_edge_set,
+            "edge_rel": edge_rel, "norm_edge_set": norm_edge_set, "fmt_edge_set": fmt_edge_set, "norm_num_seq": norm_num_seq,
             "dec2fix": fmt_dec2fix}
     bad = total = covered = 0
     skipped = []

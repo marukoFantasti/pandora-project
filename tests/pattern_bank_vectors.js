@@ -22,7 +22,7 @@ const IMPL = {
   fmt_termj: P.fmtTermj, sgn_str: P.sgnStr, sqrt_coef: P.sqrtCoef,
   sqrt_rad: P.sqrtRad, fmt_sqrt: P.fmtSqrt, sample_domain: P.sampleDomain,
   fmt_pi: P.fmtPi, fmt_pi_frac: P.fmtPiFrac, fmt_choice: P.fmtChoice,
-  edge_rel: P.edgeRel, norm_edge_set: P.normEdgeSet, fmt_edge_set: P.fmtEdgeSet,
+  edge_rel: P.edgeRel, norm_edge_set: P.normEdgeSet, fmt_edge_set: P.fmtEdgeSet, norm_num_seq: P.normNumSeq,
   dec2fix: P.fmtDec2fix
 };
 
