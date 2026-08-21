@@ -213,5 +213,25 @@
   "instruction": "図を歪めず方針B(バンク制約強化)で対処。制約 a1+a2≥70 を追加し受理222組・min minText 10.05px・悉皆違反0を確定せよ。≥65では余裕0.05で薄いためg05のマージン刈り流儀と整合する≥70を採る。",
   "resolution": "value_constraintsにadj_known_clearance(a1+a2≥70)を追加(受理232→222)。golden md5は固定シード3本に排除組が未出現でバイト不変(g04同型)。figure照合テスト(pattern_bank_jhs_c12_figures.js)を222期待・悉皆clearanceで新設。rationaleのdirectives/constructive_guarantees/figure_notesに確定根拠を追記。",
   "generalization": "clearanceスキャンの実証域は、ラベル密度・役割構成が同型のパターンにのみ転用できる——既知ラベル数が増えると密度が上がり従前の余裕が崩れるため、構成が異なれば再スキャンを要する。バンク値域はFableの仮決め→Codeの悉皆clearanceスキャンによる確定、の二段を正準フローとする。"
+ },
+ {
+  "id": "corr-0021",
+  "date": "2026-08-21",
+  "by": "marko",
+  "scope": "pattern_generator.js / generate_poc_v10.py verify nums_from_slots",
+  "observed": "c14三角柱表面積(直角三角形底面)は本文に3辺(computed_slots a1/b1/c1=3k/4k/5k)を明示。verifyのnums_from_slotsが許可集合(allowed_nums)を基底slots+_disp+テンプレ定数のみで構成しcomputed_slotsを含まず、本文のcomputed値がstray扱い→FAIL。",
+  "instruction": "computed値を本文に明示する設計を許すため、allowed_numsにcomputed_slots値を追加(JS/Python両verify)。緩和のみ=既存golden md5不変で非後退を実証してから配線続行。",
+  "resolution": "両verifyのallowed_nums構成条件に computed_slots キーを追加。既存golden(c06/c15/c17)md5不変・parity全一致・drift不変で非後退確認。",
+  "generalization": "computed_slotsはslot由来の決定的派生値ゆえ本文に現れても『slot由来』であり、nums_from_slotsの許可源に含めるのが正。派生値を本文提示する図問題(求積の与件辺など)で必要。verify緩和は『既存golden md5不変』で非後退を必ず実証してから配線する。"
+ },
+ {
+  "id": "corr-0022",
+  "date": "2026-08-21",
+  "by": "marko",
+  "scope": "figure_builder.js 錐円系kind(cylinder/cone/sphere)の投影楕円 / tests/s2_solid_vectors.js",
+  "observed": "円の斜投影は楕円になる=『意図された楕円』。真円関門(corr-0019: rx==ry)をそのまま適用すると正当な投影楕円が全てREDになり、逆に無検査だと楕円が歪んでも気づけない。",
+  "instruction": "真円関門の精神(曲線の形状不変量を張る)を楕円へ拡張。投影楕円は rx/ry が投影方式の固定値(斜投影の深さ0.5に整合する 2:1)と一致(±0.5%)し、同一図内の全楕円が同比であることを検査する形状不変量関門(projection_ellipse_ratio)を新設。真円(球のoutline<circle>)と投影楕円(赤道)は対象を切り分ける。",
+  "resolution": "s2_solid_vectors.js に corr-0022関門を実装。<ellipse rx ry>と<path A rx ry>の全楕円軸を抽出しrx/ry==2±0.5%・同一図同比を検査。誤比(3:1)合成でRED実証。sphereは<circle>=真円(corr-0019相当)/赤道<path A R ry>=投影楕円(corr-0022)で切り分け。",
+  "generalization": "曲線の形状不変量関門は『真円=等距離(rx==ry)』だけでなく『投影楕円=固定投影比(rx/ry=const)』へ一般化できる。意図された非真円曲線は、その曲線を定義する固定比を形状不変量として関門化する(無検査にしない)。真円と投影楕円が共存する図では要素種(<circle>/<ellipse>/<path>)で関門対象を切り分ける。"
  }
 ]

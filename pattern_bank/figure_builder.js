@@ -667,6 +667,98 @@
   function bk_is_rect(g) { return g.base_kind === 'rect'; }
   function dimCands() { return [[20, 15], [26, 15], [20, 13], [28, 13], [20, 11]]; }
 
+  // ==== 第2ブロックS-2: 錐円系kind(pyramid/cylinder/cone/sphere) ====
+  // 投影楕円: 円の斜投影は「意図された楕円」。minor/major = ELLIPSE_RATIO(斜投影の深さ0.5に整合)固定。
+  // corr-0022関門(projection_ellipse_ratio)で全楕円がこの比±0.5%・同一図内で同比を検査(真円関門corr-0019とは対象別)。
+  var ELLIPSE_RATIO = 0.5;
+  // 楕円の半弧(front=手前=下側world・back=奥=上側world)。native <path A rx ry>(rx≠ry=投影楕円)。
+  function ellipseArcEl(cxW, cyW, rx, ry, side, color, w, dash) {
+    var L = worldFlip([cxW - rx, cyW]), R = worldFlip([cxW + rx, cyW]);
+    var sweep = side === 'front' ? 0 : 1;   // SVG y下向き: front(下側world)→sweep0
+    return '<path d="M ' + L[0].toFixed(2) + ' ' + L[1].toFixed(2) + ' A ' + rx.toFixed(2) + ' ' + ry.toFixed(2) + ' 0 0 ' + sweep + ' ' + R[0].toFixed(2) + ' ' + R[1].toFixed(2) + '" fill="none" stroke="' + color + '" stroke-width="' + w + '"' + (dash ? ' stroke-dasharray="' + dash + '"' : '') + '/>';
+  }
+  function ellipseFullEl(cxW, cyW, rx, ry, color, w, fill) {
+    var c = worldFlip([cxW, cyW]);
+    return '<ellipse cx="' + c[0].toFixed(2) + '" cy="' + c[1].toFixed(2) + '" rx="' + rx.toFixed(2) + '" ry="' + ry.toFixed(2) + '" fill="' + (fill || 'none') + '" stroke="' + color + '" stroke-width="' + w + '"/>';
+  }
+  // ---- pyramid(角錐・prism小改修: 上面→頂点1点に収束) ----
+  function pyramidGeom(fp) {
+    var g = prismGeom(fp), base = g.base, n = base.length, cen = [0, 0];
+    base.forEach(function (p) { cen[0] += p[0] / n; cen[1] += p[1] / n; });
+    return { base_kind: fp.base_kind || 'rect', base: base, cen: cen, apex: [cen[0], cen[1] + g.H], H: g.H, scale: g.scale };
+  }
+  function pyramidLayout(fp) {
+    var g = pyramidGeom(fp), u = fp.unit || 'cm', lay = newLayout();
+    var base = g.base.map(worldFlip), apex = worldFlip(g.apex), cen = worldFlip(g.cen), n = base.length;
+    lay.parts.push(lineEl(base[0], base[1], C_STROKE, 2));                                   // 前底辺(実線)
+    for (var e = 1; e < n; e++) lay.parts.push(lineEl(base[e], base[(e + 1) % n], C_STROKE, 1.4, '4,4'));
+    lay.parts.push(lineEl(base[n - 1], base[0], C_STROKE, 1.4, '4,4'));
+    for (var v = 0; v < n; v++) lay.parts.push(lineEl(base[v], apex, C_STROKE, (v === 0 || v === 1) ? 2 : 1.4, (v === 0 || v === 1) ? null : '4,4'));   // 側稜
+    lay.parts.push(lineEl(apex, cen, C_TARGET, 1.4, '5,4'));                                 // 高さ(頂点→底中心・破線)
+    lay.parts.push('<path d="M ' + cen[0].toFixed(2) + ' ' + (cen[1] - 8).toFixed(2) + ' h 8 v 8" fill="none" stroke="' + C_TARGET + '" stroke-width="1.2"/>');
+    base.concat([apex, cen]).forEach(function (p) { lay.pts.push(p); });
+    lay.segs.push({ id: 'wedge', p1: base[0], p2: base[1] }, { id: 'hedge', p1: apex, p2: cen });
+    finishLabels(lay, [
+      { anchor: [(base[0][0] + base[1][0]) / 2, base[0][1]], dir: [0, 1], text: (g.base_kind === 'rect' ? fp.w : fp.base) + u, cands: dimCands(), color: '#333', own: 'wedge' },
+      { anchor: [(apex[0] + cen[0]) / 2, (apex[1] + cen[1]) / 2], dir: [1, 0], text: fp.height + u, cands: dimCands(), color: '#333', own: 'hedge' }]);
+    return lay;
+  }
+  // ---- cylinder(円柱: 上下楕円+側線2本) ----
+  function cylinderGeom(fp) {
+    var r = Number(fp.r), h = Number(fp.height), sc = Math.min(78 / r, 150 / h, 16);
+    var rx = r * sc; return { r: r, h: h, rx: rx, ry: rx * ELLIPSE_RATIO, H: h * sc, scale: sc };
+  }
+  function cylinderLayout(fp) {
+    var g = cylinderGeom(fp), u = fp.unit || 'cm', lay = newLayout(), rx = g.rx, ry = g.ry;
+    lay.parts.push(ellipseFullEl(0, g.H, rx, ry, C_STROKE, 2, C_FILL));                       // 上面(全楕円)
+    lay.parts.push(lineEl(worldFlip([-rx, g.H]), worldFlip([-rx, 0]), C_STROKE, 2));          // 左側線
+    lay.parts.push(lineEl(worldFlip([rx, g.H]), worldFlip([rx, 0]), C_STROKE, 2));            // 右側線
+    lay.parts.push(ellipseArcEl(0, 0, rx, ry, 'front', C_STROKE, 2));                         // 底面前半(実)
+    lay.parts.push(ellipseArcEl(0, 0, rx, ry, 'back', C_STROKE, 1.4, '4,4'));                 // 底面後半(破)
+    [[-rx, -ry], [rx, ry], [-rx, g.H - ry], [rx, g.H + ry]].forEach(function (p) { lay.pts.push(worldFlip(p)); });
+    lay.segs.push({ id: 'redge', p1: worldFlip([0, g.H]), p2: worldFlip([rx, g.H]) }, { id: 'hedge', p1: worldFlip([rx, g.H]), p2: worldFlip([rx, 0]) });
+    lay.parts.push(lineEl(worldFlip([0, g.H]), worldFlip([rx, g.H]), C_TARGET, 1.4));         // 半径線(上面)
+    finishLabels(lay, [
+      { anchor: worldFlip([rx / 2, g.H]), dir: [0, -1], text: fp.r + u, cands: dimCands(), color: '#333', own: 'redge' },
+      { anchor: worldFlip([rx, g.H / 2]), dir: [1, 0], text: fp.height + u, cands: dimCands(), color: '#333', own: 'hedge' }]);
+    return lay;
+  }
+  // ---- cone(円錐: 底面楕円+頂点+母線2本) ----
+  function coneGeom(fp) {
+    var r = Number(fp.r), h = Number(fp.height), sc = Math.min(78 / r, 150 / h, 16);
+    var rx = r * sc; return { r: r, h: h, rx: rx, ry: rx * ELLIPSE_RATIO, H: h * sc, scale: sc };
+  }
+  function coneLayout(fp) {
+    var g = coneGeom(fp), u = fp.unit || 'cm', lay = newLayout(), rx = g.rx, ry = g.ry, apex = worldFlip([0, g.H]), cen = worldFlip([0, 0]);
+    lay.parts.push(lineEl(apex, worldFlip([-rx, 0]), C_STROKE, 2));                           // 母線左
+    lay.parts.push(lineEl(apex, worldFlip([rx, 0]), C_STROKE, 2));                            // 母線右
+    lay.parts.push(ellipseArcEl(0, 0, rx, ry, 'front', C_STROKE, 2));
+    lay.parts.push(ellipseArcEl(0, 0, rx, ry, 'back', C_STROKE, 1.4, '4,4'));
+    lay.parts.push(lineEl(apex, cen, C_TARGET, 1.4, '5,4'));                                  // 高さ(頂点→底中心・破線)
+    lay.parts.push('<path d="M ' + cen[0].toFixed(2) + ' ' + (cen[1] - 8).toFixed(2) + ' h 8 v 8" fill="none" stroke="' + C_TARGET + '" stroke-width="1.2"/>');
+    [[-rx, -ry], [rx, ry], [0, g.H]].forEach(function (p) { lay.pts.push(worldFlip(p)); });
+    lay.segs.push({ id: 'redge', p1: cen, p2: worldFlip([rx, 0]) }, { id: 'hedge', p1: apex, p2: cen });
+    lay.parts.push(lineEl(cen, worldFlip([rx, 0]), C_TARGET, 1.4));                           // 半径線(底面前)
+    finishLabels(lay, [
+      { anchor: worldFlip([rx / 2, 0]), dir: [0, 1], text: fp.r + u, cands: dimCands(), color: '#333', own: 'redge' },
+      { anchor: worldFlip([0, g.H / 2]), dir: [-1, 0], text: fp.height + u, cands: dimCands(), color: '#333', own: 'hedge' }]);
+    return lay;
+  }
+  // ---- sphere(球: 真円+赤道楕円。真円=corr-0019 / 楕円=corr-0022 の共存初例) ----
+  function sphereGeom(fp) { var r = Number(fp.r), sc = Math.min(84 / r, 18), R = r * sc; return { r: r, R: R, ry: R * ELLIPSE_RATIO, scale: sc }; }
+  function sphereLayout(fp) {
+    var g = sphereGeom(fp), u = fp.unit || 'cm', lay = newLayout(), R = g.R, c = worldFlip([0, 0]);
+    lay.parts.push('<circle cx="' + c[0].toFixed(2) + '" cy="' + c[1].toFixed(2) + '" r="' + R.toFixed(2) + '" fill="' + C_FILL + '" stroke="' + C_STROKE + '" stroke-width="2"/>');   // 外形=真円
+    lay.parts.push(ellipseArcEl(0, 0, R, g.ry, 'front', C_STROKE, 1.6));                      // 赤道前半(実)
+    lay.parts.push(ellipseArcEl(0, 0, R, g.ry, 'back', C_STROKE, 1.3, '4,4'));                // 赤道後半(破)
+    lay.parts.push('<circle cx="' + c[0].toFixed(2) + '" cy="' + c[1].toFixed(2) + '" r="2.2" fill="' + C_STROKE + '"/>');
+    lay.pts.push(worldFlip([-R, -R]), worldFlip([R, R]));
+    lay.segs.push({ id: 'redge', p1: c, p2: worldFlip([R, 0]) });
+    lay.parts.push(lineEl(c, worldFlip([R, 0]), C_TARGET, 1.4));                              // 半径線
+    finishLabels(lay, [{ anchor: worldFlip([R / 2, 0]), dir: [0, -1], text: fp.r + u, cands: dimCands(), color: '#333', own: 'redge' }]);
+    return lay;
+  }
+
   function circleLayout(fp) {
     if (Number(fp.fig_version) === 2) return circleV2Layout(fp);   // v2へ分岐（v1は以下で完全維持）
     var g = circleGeom(fp.given), u = fp.unit || 'cm', r = g.r_px, lay = newLayout();
@@ -1458,6 +1550,7 @@
     tri_angle: triAngleLayout, tri_angle_iso: triAngleIsoLayout, quad_angle: quadAngleLayout,
     para_area: paraAreaLayout, tri_area: triAreaLayout, trap_area: trapAreaLayout,
     rhombus_area: rhombusAreaLayout, circle: circleLayout, cuboid: cuboidLayout, prism: prismLayout,
+    pyramid: pyramidLayout, cylinder: cylinderLayout, cone: coneLayout, sphere: sphereLayout,
     sym_polygon: symPolygonLayout, similar_pair: similarPairLayout, xy_graph: xyGraphLayout, dot_plot: dotPlotLayout, histogram: histogramLayout,
     angle_figure: angleFigureLayout
   };
@@ -1510,6 +1603,7 @@
     poly_interior_arc: polyInteriorArc,          // 頂点iの内角弧[a0,a1](world度)
     right_angle_mark: rightAngleMark,            // G-3.1: 直角マーク(小正方形)頂点座標(vector用)
     congruent_pair: congruentPairGeom,           // 第2波G-4a: 合同2三角形の左右座標(vector用)
+    pyramid: pyramidGeom, cylinder: cylinderGeom, cone: coneGeom, sphere: sphereGeom,   // 第2ブロックS-2: 錐円系(vector用)
     arc_sample_points: arcSamplePoints,          // 弧サンプル点(曲率関門用・頂点からr一定検査)
     // ベクター用の位置引数ラッパ（Python prism_geom(base_kind,a,b,h) と同型）
     prism: function (base_kind, a, b, h) {
