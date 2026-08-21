@@ -2,6 +2,7 @@
  "seed": 20260822,
  "criteria": "quality_criteria v1.0",
  "design": "training_task_design v1.0",
+ "system_version": "確定版(まるこ検収2026-08-22: pedagogy重複削除・参照圧縮使用条件追記)",
  "counts": {
   "t1_total": 386,
   "t1_train": 371,
@@ -32,6 +33,79 @@
    "ref": "jhs_c18_range_02"
   }
  ],
+ "bundle_excluded": {
+  "g05_heikin_reverse_01": "自立内容と判定(まるこ検収確定)"
+ },
+ "figure_notes_selfcontained": {
+  "g05_dec_shift_down_01": {
+   "before": "図なし(同上)。",
+   "after": "図なし(位取り操作・数値のみ)。"
+  },
+  "g05_dec_bai_apply_01": {
+   "before": "図なし(同上)。",
+   "after": "図なし(frac_baiと同じテープ図第2波候補)。"
+  },
+  "g05_tsubun_01": {
+   "before": "図なし(同上)。",
+   "after": "図なし(分数表示はf整形が担う)。"
+  },
+  "g05_heikin_reverse_01": {
+   "before": "図なし(同上)。",
+   "after": "図なし(総量文脈は文で立つ)。"
+  },
+  "g05_speed_minute_01": {
+   "before": "図なし(同上)。",
+   "after": "図なし(速さ文脈は文で立つ。線分図は低学年図kind系の第2波候補)。"
+  },
+  "g05_compare_find_01": {
+   "before": "図なし(同上)。",
+   "after": "図なし(割合は数量関係のみ。帯グラフ・円グラフ読みは別単元の図kind候補)。"
+  },
+  "g05_buai_convert_01": {
+   "before": "図なし(同上)。",
+   "after": "図なし(表記変換・数値のみ)。"
+  },
+  "g05_zougen_01": {
+   "before": "図なし(同上)。",
+   "after": "図なし(数量関係のみ)。"
+  },
+  "g05_zougen_seq_01": {
+   "before": "図なし(同上)。",
+   "after": "図なし(数量関係のみ)。"
+  },
+  "jhs_c06_prop_02": {
+   "before": "図なし(同上。式決定系はグラフを要さない数値処理側の分業)。",
+   "after": "図なし(式決定系はグラフを要さない数値処理側の分業)。"
+  },
+  "jhs_c06_inv_02": {
+   "before": "図なし(同上。反比例の数値処理側の分業)。",
+   "after": "図なし(反比例の数値処理側の分業)。"
+  },
+  "jhs_c07_zoka_02": {
+   "before": "図なし(同上。変化の割合の数値処理側の分業)。",
+   "after": "図なし(変化の割合の数値処理側の分業)。"
+  },
+  "jhs_c08_chusui_02": {
+   "before": "図なし(同上。注水系の数値処理側の分業)。",
+   "after": "図なし(注水系の数値処理側の分業)。"
+  },
+  "jhs_c06_bunsho_02": {
+   "before": "図なし(同上。文章題のテキスト完結型)。",
+   "after": "図なし(文章題のテキスト完結型)。"
+  },
+  "jhs_c06_heniki_02": {
+   "before": "図なし(同上。変域の記号処理側の分業)。",
+   "after": "図なし(変域の記号処理側の分業)。"
+  },
+  "jhs_c07_heniki_02": {
+   "before": "図なし(同上。変域の記号処理側の分業)。",
+   "after": "図なし(変域の記号処理側の分業)。"
+  },
+  "jhs_c18_range_02": {
+   "before": "図なし(同上。変域の記号処理側)。",
+   "after": "図なし(変域の記号処理側)。"
+  }
+ },
  "eval_ids": [
   "g02_addsub_3ko_gappei_01",
   "g03_div_amari_fukubun_01",
