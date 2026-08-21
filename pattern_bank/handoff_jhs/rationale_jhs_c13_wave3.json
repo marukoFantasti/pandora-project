@@ -1,0 +1,76 @@
+{
+ "_meta": {
+  "schema": "rationale_g05_gold.json準拠(pandora2正準・ネスト形)",
+  "scope": "jhs_c13追補3件(G-4b・合同条件識別choice3)。rationale_jhs.jsonへ追補統合(161→164)",
+  "note": "figure_notes正準(図あり=設計記録)。ネイティブ記述 2026-08-21",
+  "order": "バンク順"
+ },
+ "jhs_c13_jouken_sss_01": {
+  "brief": {
+   "semantic_territory": "合同条件の識別(3組の辺・SSS)",
+   "number_domain": "選択式(choice3・内部整数/表示ア-ウ)",
+   "answer_structure": "single",
+   "figure": "congruent_pair(mark_scheme)",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "文字列答えはchoice(合同条件識別)から採点経路を小さく通す・3パターン方式(規約1)・選択肢固定順固定文(教科書標準)——G-4b着工裁可(2026-08-21)",
+     "by": "marko",
+     "date": "2026-08"
+    },
+    {
+     "text": "choice3の内部表現は選択肢番号整数・表示はfmt_choice(ア/イ/ウ)——pi_coef様式の横展開。choiceは経路A初の自動採点型(記号1字照合・未採点時のみ自動・教師上書き可)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "合同条件3種の識別はc13証明単元の入口で、証明記述(経路A対象外)の手前にある判定技能。参照ではマーク付きの図から条件名を選ぶ形が標準。",
+   "representation": "G-4a図資産のmark_scheme構成替え——SSS=対応3辺チョンのみ。角度値ラベルは全role=plain(値を見せない): 条件の判定材料をマークだけに限定し、「値が等しいから」でなく「マークが対応しているから」の読みを強制する。answer_formulaは定数1・表示はfmt_choice。",
+   "constructive_guarantees": "答=固定記号(ア)は相等ドリル類型(単独では自明・混合出題で3種の判定力が立つ——doui/sakka/taichoで確立した裁可済みの型)。図形状はa1,b1で可変(55組・答に無関係の形状供給)。転記概念は選択式に非適用(本文の3/2/1は選択肢文の定数でtnc宣言・内部番号と無関係=corr-0007記号透過を実サンプル確認済み)。",
+   "semantic_position": "choice機構の第1号適用。G-4b棚の残り(ねじれ名指しmulti_symbol・投影図選択)への採点経路の実証台。",
+   "exclusions": "第3角が45未満/100超(G-4b確定値域)。",
+   "figure_notes": "mark_scheme=sss(チョン1/2/3本・角マークなし)。3構成スキャン55組/構成・違反0・マーク-名間隔SSS46.8px(最疎)。",
+   "pedagogy": []
+  }
+ },
+ "jhs_c13_jouken_sas_01": {
+  "brief": {
+   "semantic_territory": "合同条件の識別(2組の辺とその間の角・SAS)",
+   "number_domain": "選択式(choice3)",
+   "answer_structure": "single",
+   "figure": "congruent_pair(mark_scheme)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "「その間の角」——2辺に挟まれた位置の判定が識別の芯で、挟まれていない角(→ASAでも2辺でもない別条件)との区別が定番の誤答点。",
+   "representation": "mark_scheme=sas(2辺チョン+間の角に等角弧1種)。等角弧の位置(チョン2辺の共有頂点)が「間」の視覚定義。",
+   "constructive_guarantees": "SSS/ASAと同一値域・同一形状供給(55組)。3パターンの図構造・文面が完全同型で、マーク構成だけが判定材料——識別問題の統制設計。",
+   "semantic_position": "choice3部作の第2位。SASとASAの混同が最頻誤答のため、混合出題での対比が本パターンの存在価値。",
+   "exclusions": "第3角域外。",
+   "figure_notes": "マーク-名間隔SAS25.2px。等角弧は青系(値弧の緑/赤と三色分担・G-4a確立)。",
+   "pedagogy": []
+  }
+ },
+ "jhs_c13_jouken_asa_01": {
+  "brief": {
+   "semantic_territory": "合同条件の識別(1組の辺とその両端の角・ASA)",
+   "number_domain": "選択式(choice3)",
+   "answer_structure": "single",
+   "figure": "congruent_pair(mark_scheme)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "「両端の角」——1辺の両端点に角マークが付く配置の判定。SASとの対比(角が辺に挟まれるか・辺が角に挟まれるか)が単元の山。",
+   "representation": "mark_scheme=asa(1辺チョン+両端角に等角弧2種)。等角弧6本(左右×2種+対応)の最密構成だが、マークは頂点内側・頂点名は外側の分離配置でclearance余裕(minText23.6)。",
+   "constructive_guarantees": "同一値域・同一統制(55組)。最密構成の悉皆違反0はG-4bスキャンで実証済み。",
+   "semantic_position": "choice3部作の掉尾。3種が揃い、合同条件識別バケツが経路Aで完結——G-4b Phase 1(choice)の完了位置。次はPhase 2(multi_symbol=ねじれ名指し)の見積もり判断。",
+   "exclusions": "第3角域外。",
+   "figure_notes": "マーク-名間隔ASA23.6px(最密)。等角弧2種の弧重数(1重/2重)が対応の識別子。",
+   "pedagogy": []
+  }
+ }
+}

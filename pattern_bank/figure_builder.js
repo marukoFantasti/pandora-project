@@ -1540,7 +1540,7 @@
         SAS: { side_ticks: [1, 2, 0], angle_marks: [{ weight: 1, at: [1] }] },                    // 2辺(e0,e1)チョン+間の角V1に等角弧
         ASA: { side_ticks: [1, 0, 0], angle_marks: [{ weight: 1, at: [0] }, { weight: 2, at: [1] }] } // 1辺(e0)チョン+両端角V0,V1に等角弧2種
       };
-      var ms = MS[fp.mark_scheme];
+      var ms = MS[String(fp.mark_scheme).toUpperCase()];   // 大小非依存(バンクはsss/sas/asa小文字)
       if (!ms) throw new Error('congruent_pair契約違反: 未知mark_scheme ' + fp.mark_scheme);
       if (fp.side_ticks == null) out.side_ticks = ms.side_ticks;
       if (fp.angle_marks == null) out.angle_marks = ms.angle_marks;

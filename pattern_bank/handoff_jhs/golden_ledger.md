@@ -130,6 +130,16 @@
 - clearance悉皆(corr-0020・G-4aスキャン確定域[45,100]採用): goudou_01=受理55・goudou_02=受理46=違反0。
 - furigana「合同(ごうどう)」は既存辞書済=欠落なし。angle_figure族(G-1対頂〜G-4a合同)が c12/c13 で本番完成。
 
+### 2026-08-21 c13第3波(G-4b 合同条件識別choice3 3追補・選択式の本番デビュー・D-2)
+- c13にchoice3の3パターン(jouken_sss/sas/asa)をD-2 append(6→9)。まるこ検収済み(G-4b目視3枚合格)。congruent_pair mark_scheme(sss/sas/asa)+answer_domain choice3。答=固定記号ア/イ/ウ(answer_formula定数1/2/3・fmt_choice表示)。経路A初の選択式・初の自動採点型。
+- 旧md5 ea3af757(6) → **新md5 c1814bc2**(9)。golden PASS 27/27。既存6セクション byte一致(D-2不変証明)。
+- **choice機構**: バンクは answer_domain "choice3"宣言+answer_template {X_choice}のみ。generatorが computed_slot X→{X}_choice(fmt_choice・1→ア/2→イ/3→ウ)を自動生成(JS/Python両・parity照合)。恒等=番号一致・corr-0007記号透過(ア/イ/ウは数値トークン非混入)。
+- **mark_scheme**(G-4a資産の構成替え): sss=対応3辺チョン1/2/3本 / sas=2辺チョン+間の角に等角弧 / asa=1辺チョン+両端角に等角弧2種。角度値は全plain=マークだけで条件判定。大小非依存(バンク小文字sss)。
+- clearance悉皆(corr-0020・確定値域[45,100]): 3構成×55組=違反0。名clearance+マーク-名間隔(SSS46.8/SAS25.2/ASA23.6px・ASA最密)。
+- kanji: 本文「両端」の「端」は教育漢字g1-6外→allowed_extra:"端"を3パターンに追加(錐/軸と同型)。
+- **furigana(furigana_patch_g4b)**: lexicon 5語(条件/組/角/両端/正し)+counter「組」(3組=さんくみ)+増補1語(記号=きごう・設問定型文の取りこぼし・まるこ検収)。3コピー同期・残存漢字0。
+- **tags正規化**: pandora_main の生成出力 tags:[]固定 → entry.pattern.tags を付与。バンクtags→submission→採点analytics観点別集計(合同条件/choice3)へ接続(バンク初のtags使用)。
+
 ### 2026-08-21 c14新設(空間図形・⚡17章目・基準md5 23本目) 第2ブロックS-1
 - c14新設(空間図形・jhs2): 三角柱/四角柱の体積・表面積4パターン(π不要・prism既存kind流用・pi_coefと独立の先行採録)。まるこ検収済み(2026-08-16)。
 - **基準md5 23本目: c14 = bbaed877**(golden PASS 12/12)。BANK_FILES登録・⚡c14点灯(17章目)。figure_paramsはprism実書式(height名・全スロット参照)で正書式=正規化不要。

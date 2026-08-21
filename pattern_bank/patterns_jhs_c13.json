@@ -556,6 +556,315 @@
    },
    "answer_structure": "single",
    "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c13_jouken_sss_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c13_u01",
+   "unit_name": "三角形・平行四辺形",
+   "semantic_category": "合同条件の識別(3組の辺・SSS)",
+   "semantic_note": "対応3辺にチョン1/2/3本のみ・角マークなし→「3組の辺がそれぞれ等しい」(ア)。マーク構成の読み取りが学習内容の全て。答=固定記号は相等ドリル類型(単独自明・混合で判定力)。",
+   "step_count": 1,
+   "operation": "合同条件の識別: 記号選択(答=1)",
+   "answer_formula": "1",
+   "answer_domain": "choice3",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      45,
+      100
+     ],
+     "step": 5
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      45,
+      100
+     ],
+     "step": 5
+    }
+   },
+   "computed_slots": {
+    "c1": {
+     "formula": "180 - a1 - b1"
+    },
+    "C1": {
+     "formula": "1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "third_in_domain",
+     "expr": "180 - a1 - b1 >= 45 and 180 - a1 - b1 <= 100",
+     "why": "第3角も確定値域45〜100°(G-4b 3構成スキャン・55組/構成・違反0)"
+    }
+   ],
+   "sentence_templates": [
+    "図の三角形ABCと三角形DEFは合同である。合同条件として正しいものを、次のア〜ウから1つ選び、記号で答えなさい。　ア 3組の辺がそれぞれ等しい　イ 2組の辺とその間の角がそれぞれ等しい　ウ 1組の辺とその両端の角がそれぞれ等しい"
+   ],
+   "answer_template": "答え {C1_choice}",
+   "figure_params": {
+    "kind": "angle_figure",
+    "subkind": "congruent_pair",
+    "left_vertices": [
+     "A",
+     "B",
+     "C"
+    ],
+    "right_vertices": [
+     "D",
+     "E",
+     "F"
+    ],
+    "mark_scheme": "sss",
+    "angles": [
+     {
+      "v": "{a1}",
+      "left": "plain",
+      "right": "plain"
+     },
+     {
+      "v": "{b1}",
+      "left": "plain",
+      "right": "plain"
+     },
+     {
+      "v": "{c1}",
+      "left": "plain",
+      "right": "plain"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "端"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    3,
+    2,
+    1,
+    1
+   ],
+   "tags": [
+    "choice3",
+    "合同条件"
+   ]
+  },
+  {
+   "pattern_id": "jhs_c13_jouken_sas_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c13_u01",
+   "unit_name": "三角形・平行四辺形",
+   "semantic_category": "合同条件の識別(2組の辺とその間の角・SAS)",
+   "semantic_note": "対応2辺チョン+間の角に等角弧→「2組の辺とその間の角」(イ)。「間の角」の位置判定(2辺に挟まれているか)が識別の芯で、ASAとの混同が定番誤答。",
+   "step_count": 1,
+   "operation": "合同条件の識別: 記号選択(答=2)",
+   "answer_formula": "2",
+   "answer_domain": "choice3",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      45,
+      100
+     ],
+     "step": 5
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      45,
+      100
+     ],
+     "step": 5
+    }
+   },
+   "computed_slots": {
+    "c1": {
+     "formula": "180 - a1 - b1"
+    },
+    "C1": {
+     "formula": "2"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "third_in_domain",
+     "expr": "180 - a1 - b1 >= 45 and 180 - a1 - b1 <= 100",
+     "why": "第3角も確定値域45〜100°(G-4b 3構成スキャン・55組/構成・違反0)"
+    }
+   ],
+   "sentence_templates": [
+    "図の三角形ABCと三角形DEFは合同である。合同条件として正しいものを、次のア〜ウから1つ選び、記号で答えなさい。　ア 3組の辺がそれぞれ等しい　イ 2組の辺とその間の角がそれぞれ等しい　ウ 1組の辺とその両端の角がそれぞれ等しい"
+   ],
+   "answer_template": "答え {C1_choice}",
+   "figure_params": {
+    "kind": "angle_figure",
+    "subkind": "congruent_pair",
+    "left_vertices": [
+     "A",
+     "B",
+     "C"
+    ],
+    "right_vertices": [
+     "D",
+     "E",
+     "F"
+    ],
+    "mark_scheme": "sas",
+    "angles": [
+     {
+      "v": "{a1}",
+      "left": "plain",
+      "right": "plain"
+     },
+     {
+      "v": "{b1}",
+      "left": "plain",
+      "right": "plain"
+     },
+     {
+      "v": "{c1}",
+      "left": "plain",
+      "right": "plain"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "端"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    3,
+    2,
+    1,
+    1
+   ],
+   "tags": [
+    "choice3",
+    "合同条件"
+   ]
+  },
+  {
+   "pattern_id": "jhs_c13_jouken_asa_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c13_u01",
+   "unit_name": "三角形・平行四辺形",
+   "semantic_category": "合同条件の識別(1組の辺とその両端の角・ASA)",
+   "semantic_note": "対応1辺チョン+両端角に等角弧2種→「1組の辺とその両端の角」(ウ)。マーク最密構成(等角弧6本)だが確定値域で余裕(minText23.6)。",
+   "step_count": 1,
+   "operation": "合同条件の識別: 記号選択(答=3)",
+   "answer_formula": "3",
+   "answer_domain": "choice3",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      45,
+      100
+     ],
+     "step": 5
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      45,
+      100
+     ],
+     "step": 5
+    }
+   },
+   "computed_slots": {
+    "c1": {
+     "formula": "180 - a1 - b1"
+    },
+    "C1": {
+     "formula": "3"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "third_in_domain",
+     "expr": "180 - a1 - b1 >= 45 and 180 - a1 - b1 <= 100",
+     "why": "第3角も確定値域45〜100°(G-4b 3構成スキャン・55組/構成・違反0)"
+    }
+   ],
+   "sentence_templates": [
+    "図の三角形ABCと三角形DEFは合同である。合同条件として正しいものを、次のア〜ウから1つ選び、記号で答えなさい。　ア 3組の辺がそれぞれ等しい　イ 2組の辺とその間の角がそれぞれ等しい　ウ 1組の辺とその両端の角がそれぞれ等しい"
+   ],
+   "answer_template": "答え {C1_choice}",
+   "figure_params": {
+    "kind": "angle_figure",
+    "subkind": "congruent_pair",
+    "left_vertices": [
+     "A",
+     "B",
+     "C"
+    ],
+    "right_vertices": [
+     "D",
+     "E",
+     "F"
+    ],
+    "mark_scheme": "asa",
+    "angles": [
+     {
+      "v": "{a1}",
+      "left": "plain",
+      "right": "plain"
+     },
+     {
+      "v": "{b1}",
+      "left": "plain",
+      "right": "plain"
+     },
+     {
+      "v": "{c1}",
+      "left": "plain",
+      "right": "plain"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "端"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    3,
+    2,
+    1,
+    1
+   ],
+   "tags": [
+    "choice3",
+    "合同条件"
+   ]
   }
  ]
 }

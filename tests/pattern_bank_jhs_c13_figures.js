@@ -28,7 +28,12 @@ const DOMAINS = {
   // 左1角既知+右対応角∠x: a1,b1∈[45,100]/5・c1=180−a1−b1∈[45,100]。
   jhs_c13_goudou_01: { expect: 55, envs: () => { const o = []; for (const a1 of rng(45, 100, 5)) for (const b1 of rng(45, 100, 5)) { const c1 = 180 - a1 - b1; if (c1 >= 45 && c1 <= 100) o.push({ a1, b1, c1 }); } return o; } },
   // 左2角既知+右第3角∠x: 同域・xv1=180−a1−b1∈[45,100]∧≠a1,b1(転記排除)。
-  jhs_c13_goudou_02: { expect: 46, envs: () => { const o = []; for (const a1 of rng(45, 100, 5)) for (const b1 of rng(45, 100, 5)) { const xv1 = 180 - a1 - b1; if (xv1 >= 45 && xv1 <= 100 && xv1 !== a1 && xv1 !== b1) o.push({ a1, b1, xv1 }); } return o; } }
+  jhs_c13_goudou_02: { expect: 46, envs: () => { const o = []; for (const a1 of rng(45, 100, 5)) for (const b1 of rng(45, 100, 5)) { const xv1 = 180 - a1 - b1; if (xv1 >= 45 && xv1 <= 100 && xv1 !== a1 && xv1 !== b1) o.push({ a1, b1, xv1 }); } return o; } },
+  // --- G-4b congruent_pair mark_scheme(合同条件識別choice3・角度値全plain=マークで判定) ---
+  // sss/sas/asa: a1,b1∈[45,100]/5・c1=180−a1−b1∈[45,100](3構成とも同域=統制設計)。
+  jhs_c13_jouken_sss_01: { expect: 55, envs: () => { const o = []; for (const a1 of rng(45, 100, 5)) for (const b1 of rng(45, 100, 5)) { const c1 = 180 - a1 - b1; if (c1 >= 45 && c1 <= 100) o.push({ a1, b1, c1 }); } return o; } },
+  jhs_c13_jouken_sas_01: { expect: 55, envs: () => { const o = []; for (const a1 of rng(45, 100, 5)) for (const b1 of rng(45, 100, 5)) { const c1 = 180 - a1 - b1; if (c1 >= 45 && c1 <= 100) o.push({ a1, b1, c1 }); } return o; } },
+  jhs_c13_jouken_asa_01: { expect: 55, envs: () => { const o = []; for (const a1 of rng(45, 100, 5)) for (const b1 of rng(45, 100, 5)) { const c1 = 180 - a1 - b1; if (c1 >= 45 && c1 <= 100) o.push({ a1, b1, c1 }); } return o; } }
 };
 let bad = 0;
 console.log('=== c13 polygon 悉皆図照合(実構成value域・受理組数/描画/clearance) ===');
@@ -50,5 +55,5 @@ for (const p of bank.patterns) {
   if (drawBad) bad += drawBad; if (clBad) bad += clBad;
   console.log('  ' + (countOk && !drawBad && !clBad ? '✅' : '❌') + ' ' + p.pattern_id + ' [' + p.semantic_category.slice(0, 16) + ']: 受理組 ' + envs.length + '/' + dom.expect + ' / 描画不良 ' + drawBad + ' / clearance違反 ' + clBad + ' / min minText ' + minMT.toFixed(2));
 }
-console.log('\n' + (bad === 0 ? 'c13 図照合: 全6パターン合格 ✅(受理組数10/9/8/22 + G-4a合同55/46・直角/等長/平行マーク+対応チョン・描画・clearance悉皆違反0)' : '❌ ' + bad + '件'));
+console.log('\n' + (bad === 0 ? 'c13 図照合: 全9パターン合格 ✅(受理組数10/9/8/22 + G-4a合同55/46 + G-4b合同条件55/55/55・直角/等長/平行/対応チョン/mark_scheme・描画・clearance悉皆違反0)' : '❌ ' + bad + '件'));
 process.exit(bad === 0 ? 0 : 1);

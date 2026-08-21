@@ -69,6 +69,10 @@ const ID = {
   // --- c13 G-4a congruent_pair(合同求角) ---
   jhs_c13_goudou_01: (e, ans) => ans === e.a1,                                   // 対応角相等: ∠x＝a1
   jhs_c13_goudou_02: (e, ans) => ans + e.a1 + e.b1 === 180,                      // 合同+内角和: ∠x＋a1＋b1＝180
+  // G-4b 合同条件識別(choice3・恒等=選択肢番号一致・SSS→1/SAS→2/ASA→3)
+  jhs_c13_jouken_sss_01: (e, ans) => ans === 1,                                  // 3組の辺(ア)
+  jhs_c13_jouken_sas_01: (e, ans) => ans === 2,                                  // 2辺と間の角(イ)
+  jhs_c13_jouken_asa_01: (e, ans) => ans === 3,                                  // 1辺と両端の角(ウ)
   // --- c14 空間図形(prism求積・π不要) ---
   jhs_c14_sankakuchu_vol_01: (e, ans) => ans === Math.floor(e.b1 * e.bh1 / 2) * e.h1,          // 三角柱体積: (底辺×高÷2)×高さ
   jhs_c14_shikakuchu_vol_01: (e, ans) => ans === e.w1 * e.d1 * e.h1,                            // 四角柱体積: w×d×h

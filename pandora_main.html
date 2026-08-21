@@ -1554,7 +1554,9 @@ function generateQuizViaPattern(targetUnits){
         // figure_params(v0.8): 本文と同一envで解決済みの図パラメータ。図付きパターン(g04面積/角度、
         // g05角/面積/体積/円等)のみ非null。生成された student_quiz / 印刷解答用紙で figure_builder.js が描画する。
         figure_params: accepted.figure || null,
-        tags: []
+        // tags正規化(G-4b): バンクパターンの tags を生成出力へ付与(従来[]固定=脱落していた)。
+        // 生成quiz→submission_data.problems[i].tags→採点analytics の観点別集計(合同条件/choice3等)へ接続。
+        tags: entry.pattern.tags || []
       });
     }
 
