@@ -1,0 +1,53 @@
+{
+ "seed": 20260822,
+ "criteria": "quality_criteria v1.0",
+ "design": "training_task_design v1.0",
+ "counts": {
+  "t1_total": 386,
+  "t1_train": 371,
+  "t1_eval": 15,
+  "t2_train": 24,
+  "t5_train": 752,
+  "train_total": 1147
+ },
+ "bundles": [
+  {
+   "anchor": "jhs_c06_bunsho_01",
+   "ref": "jhs_c06_bunsho_02"
+  },
+  {
+   "anchor": "jhs_c06_heniki_01",
+   "ref": "jhs_c06_heniki_02"
+  },
+  {
+   "anchor": "jhs_c07_heniki_01",
+   "ref": "jhs_c07_heniki_02"
+  },
+  {
+   "anchor": "jhs_c15_exp_03",
+   "ref": "jhs_c15_exp_04"
+  },
+  {
+   "anchor": "jhs_c18_range_01",
+   "ref": "jhs_c18_range_02"
+  }
+ ],
+ "eval_ids": [
+  "g02_addsub_3ko_gappei_01",
+  "g03_div_amari_fukubun_01",
+  "g04_rect_area_01",
+  "g05_cube_vol_01",
+  "g05_speed_convert_01",
+  "g05_table_heikin_01",
+  "g06_circle_area_01",
+  "g06_graph_inv_read_01",
+  "g06_prism_height_01",
+  "jhs_c07_taiou_01",
+  "jhs_c10_dice_03",
+  "jhs_c12_isshuu_01",
+  "jhs_c14_kakusui_vol_01",
+  "jhs_c16_intpart_01",
+  "jhs_c17_sq_01"
+ ],
+ "ratio_t1_t5": 1.948
+}
