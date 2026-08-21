@@ -514,6 +514,13 @@ def build_env(pattern, unit_id=None):
     # 派生スロット(数値・文字列とも参照可)
     for name, spec in pattern.get("computed_slots", {}).items():
         env[name] = eval(spec["formula"], SAFE, dict(env))
+    # S-3 正規化層: pi_coef系は computed_slot X → {X}_pi 表示(fmt_pi / fmt_pi_frac(_,3))を自動生成。
+    # (バンクは answer_domain 宣言 + answer_template {X_pi} を書くだけ=表示層をここで吸収)
+    _pidom = pattern.get("answer_domain", "")
+    if _pidom in ("pi_coef", "pi_coef_frac3"):
+        for _n in pattern.get("computed_slots", {}):
+            if isinstance(env.get(_n), int):
+                env[f"{_n}_pi"] = fmt_pi(env[_n]) if _pidom == "pi_coef" else fmt_pi_frac(env[_n], 3)
     # 答え(整数)
     env["ans"] = eval(pattern["answer_formula"], SAFE,
                       {k: v for k, v in env.items() if isinstance(v, int)})
@@ -582,7 +589,7 @@ def verify(pattern, env, problem):
         in_domain = True
     elif dom == "nonzero_int":
         in_domain = a != 0
-    elif dom == "pi_coef":  # S-1: π係数（ans=係数・表示はfmt_pi(ans)）。体積/表面積の係数は正。
+    elif dom in ("pi_coef", "pi_coef_frac3"):  # S-1/S-3: π係数(ans=係数・表示fmt_pi/fmt_pi_frac(_,3))。正。
         in_domain = a > 0
     else:  # positive_int（既定・既存バンク全て）
         in_domain = a > 0

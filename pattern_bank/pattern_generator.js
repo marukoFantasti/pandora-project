@@ -596,6 +596,14 @@
       }
     });
 
+    // S-3 正規化層: pi_coef系は computed_slot X → {X}_pi 表示(fmtPi / fmtPiFrac(_,3))を自動生成。
+    var _pidom = pattern.answer_domain || '';
+    if (_pidom === 'pi_coef' || _pidom === 'pi_coef_frac3') {
+      Object.keys(pattern.computed_slots || {}).forEach(function (nm) {
+        if (typeof env[nm] === 'number' && Number.isInteger(env[nm])) env[nm + '_pi'] = _pidom === 'pi_coef' ? fmtPi(env[nm]) : fmtPiFrac(env[nm], 3);
+      });
+    }
+
     // 答え（整数値のみをformulaに渡す＝Pythonのisinstance(v,int)フィルタと同義）
     var intEnv = {};
     Object.keys(env).forEach(function (k) {
@@ -723,7 +731,7 @@
     var a = env.ans, inDomain;
     if (dom === 'any_int') inDomain = true;
     else if (dom === 'nonzero_int') inDomain = a !== 0;
-    else if (dom === 'pi_coef') inDomain = a > 0;   // S-1: π係数（ans=係数・表示fmt_pi(ans)）。正。
+    else if (dom === 'pi_coef' || dom === 'pi_coef_frac3') inDomain = a > 0;   // S-1/S-3: π係数(表示fmt_pi/fmt_pi_frac(_,3))。正。
     else inDomain = a > 0;   // positive_int（既定・既存バンク全て）
 
     return {

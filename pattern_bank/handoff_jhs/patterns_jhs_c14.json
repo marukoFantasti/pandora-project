@@ -290,6 +290,323 @@
     3,
     2
    ]
+  },
+  {
+   "pattern_id": "jhs_c14_enchu_vol_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c14_u01",
+   "unit_name": "空間図形",
+   "semantic_category": "円柱の体積(πr²h)",
+   "semantic_note": "pi_coef本使用の第1号。答=係数×π(係数=r²h・整数演算のみ)。本文にπ非出現(A-2検証済み)・π表示はフォーマッタ。転記は構造的に不能(係数最小12>スロット上限15と衝突しうるが係数=h1はr²=1で不成立・係数=r1はrh=1で不成立の証明済み)。",
+   "step_count": 1,
+   "operation": "円柱の体積: V＝π×r1²×h1",
+   "answer_formula": "r1 * r1 * h1",
+   "answer_domain": "pi_coef",
+   "slots": {
+    "r1": {
+     "type": "int",
+     "range": [
+      2,
+      10
+     ]
+    },
+    "h1": {
+     "type": "int",
+     "range": [
+      3,
+      15
+     ]
+    }
+   },
+   "computed_slots": {
+    "V1": {
+     "formula": "r1 * r1 * h1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "coef_cap",
+     "expr": "r1 * r1 * h1 <= 600",
+     "why": "係数3桁以内(表示の実物レンジ)"
+    }
+   ],
+   "sentence_templates": [
+    "図の円柱の体積を求めなさい。"
+   ],
+   "answer_template": "答え {V1_pi}cm³",
+   "figure_params": {
+    "kind": "cylinder",
+    "r": "{r1}",
+    "height": "{h1}",
+    "unit": "cm"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "jhs_c14_enchu_hyomen_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c14_u01",
+   "unit_name": "空間図形",
+   "semantic_category": "円柱の表面積(2πr(r+h))",
+   "semantic_note": "S=2πr²+2πrh=2πr(r+h)。展開図(円2+長方形)の思考を因数形が写す。係数2r(r+h)は最小20で転記フリー。定数2はtnc宣言。",
+   "step_count": 1,
+   "operation": "円柱の表面積: S＝2×π×r1²＋2×π×r1×h1",
+   "answer_formula": "2 * r1 * (r1 + h1)",
+   "answer_domain": "pi_coef",
+   "slots": {
+    "r1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    },
+    "h1": {
+     "type": "int",
+     "range": [
+      3,
+      12
+     ]
+    }
+   },
+   "computed_slots": {
+    "S1": {
+     "formula": "2 * r1 * (r1 + h1)"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "図の円柱の表面積を求めなさい。"
+   ],
+   "answer_template": "答え {S1_pi}cm²",
+   "figure_params": {
+    "kind": "cylinder",
+    "r": "{r1}",
+    "height": "{h1}",
+    "unit": "cm"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2
+   ]
+  },
+  {
+   "pattern_id": "jhs_c14_ensui_vol_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c14_u01",
+   "unit_name": "空間図形",
+   "semantic_category": "円錐の体積((1/3)πr²h)",
+   "semantic_note": "fmt_pi_frac初陣。1/3は縛らず機構に任せる——r²hが3の倍数なら整数係数π・非倍数なら(p/q)π表示で、両形とも実物に存在する正答形式(角錐の整数保証と対照的な設計判断: πが既に無理数なので係数の分数性は答えの複雑さを増やさない)。分子r²h・分母3。",
+   "step_count": 1,
+   "operation": "円錐の体積: V＝(1/3)×π×r1²×h1",
+   "answer_formula": "r1 * r1 * h1",
+   "answer_domain": "pi_coef_frac3",
+   "slots": {
+    "r1": {
+     "type": "int",
+     "range": [
+      2,
+      10
+     ]
+    },
+    "h1": {
+     "type": "int",
+     "range": [
+      3,
+      15
+     ]
+    }
+   },
+   "computed_slots": {
+    "V1": {
+     "formula": "r1 * r1 * h1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "coef_cap",
+     "expr": "r1 * r1 * h1 <= 600",
+     "why": "分子3桁以内"
+    }
+   ],
+   "sentence_templates": [
+    "図の円錐の体積を求めなさい。"
+   ],
+   "answer_template": "答え {V1_pi}cm³",
+   "figure_params": {
+    "kind": "cone",
+    "r": "{r1}",
+    "height": "{h1}",
+    "unit": "cm"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "錐"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1,
+    3
+   ]
+  },
+  {
+   "pattern_id": "jhs_c14_kyu_vol_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c14_u01",
+   "unit_name": "空間図形",
+   "semantic_category": "球の体積((4/3)πr³)",
+   "semantic_note": "分子4r³・分母3。r=3の倍数で整数係数π(36π等)・他は(p/q)π——両形正答(円錐と同判断)。球はスロット1個の最疎構成(S-2スキャン(iv))。",
+   "step_count": 1,
+   "operation": "球の体積: V＝(4/3)×π×r1³",
+   "answer_formula": "4 * r1 * r1 * r1",
+   "answer_domain": "pi_coef_frac3",
+   "slots": {
+    "r1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "computed_slots": {
+    "V1": {
+     "formula": "4 * r1 * r1 * r1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "図の球の体積を求めなさい。"
+   ],
+   "answer_template": "答え {V1_pi}cm³",
+   "figure_params": {
+    "kind": "sphere",
+    "r": "{r1}",
+    "unit": "cm"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    4,
+    3
+   ]
+  },
+  {
+   "pattern_id": "jhs_c14_kakusui_vol_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c14_u01",
+   "unit_name": "空間図形",
+   "semantic_category": "四角錐の体積((1/3)×底面積×高さ)",
+   "semantic_note": "π不要の錐——答えが整数のため3の倍数保証((w×d×h)%3==0)が必須(円錐と対照: 表示機構が分数を吸えるπ系は縛らず・整数系は縛る、の使い分けが本便の設計判断の核)。転記は構造的に不能(V最小12だがV=hはw×d=3で不成立・最小w×d=9)。",
+   "step_count": 1,
+   "operation": "角錐の体積: V＝(1/3)×w1×d1×h1",
+   "answer_formula": "w1 * d1 * h1 // 3",
+   "answer_domain": "any_int",
+   "slots": {
+    "w1": {
+     "type": "int",
+     "range": [
+      3,
+      12
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      3,
+      10
+     ]
+    },
+    "h1": {
+     "type": "int",
+     "range": [
+      4,
+      15
+     ]
+    }
+   },
+   "computed_slots": {
+    "V1": {
+     "formula": "w1 * d1 * h1 // 3"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "div3",
+     "expr": "(w1 * d1 * h1) % 3 == 0",
+     "why": "1/3の整数性を構造保証(g03割り切れ設計の錐版)"
+    },
+    {
+     "rule": "vol_cap",
+     "expr": "w1 * d1 * h1 // 3 <= 400",
+     "why": "体積3桁以内"
+    }
+   ],
+   "sentence_templates": [
+    "図の四角錐の体積を求めなさい。"
+   ],
+   "answer_template": "答え {V1}cm³",
+   "figure_params": {
+    "kind": "pyramid",
+    "base_kind": "rect",
+    "w": "{w1}",
+    "d": "{d1}",
+    "height": "{h1}",
+    "unit": "cm"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "錐"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1,
+    3
+   ]
   }
  ]
 }

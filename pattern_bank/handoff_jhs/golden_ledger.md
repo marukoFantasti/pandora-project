@@ -136,3 +136,12 @@
 - ⚠️**verify機構の汎化(computed_slots許可)**: sankakuchu_hyomen_01は本文に直角三角形3辺(computed a1/b1/c1=3k/4k/5k)を明示。verify nums_from_slotsのallowed_numsが従来は基底slots+_dispのみでcomputed_slotsを含まず→FAIL。**computed_slotsをallowed_numsに追加(JS/Python両verify・緩和のみ=非後退)**。既存golden md5全不変(c06 00ba3cf0/c15 a1e38dba/c17 1df8cea7で確認)・parity全一致。
 - clearance悉皆(prism寸法ラベル・観点=ラベル間≥10/ラベル辺重なり≥4/semBad0): 受理613/621/384/30=違反0(min minText 11.3/min minSeg 6.4)。
 - pi_coef機構は先行main反映済(a02d3e2・S-3の前提)。円柱/円錐/球/回転体はS-2/S-3。
+
+### 2026-08-21 c14第2波(S-3 錐円系5追補・π答えの本番デビュー・D-2)
+- c14にπ答え5パターンをD-2 append(4→9)。まるこ検収済み。円柱体積/表面積(pi_coef)・円錐体積/球体積(pi_coef_frac3)・四角錐体積(any_int・π不要)。
+- 旧md5 bbaed877(4)→**新md5 0f139c0f**(9)。golden PASS 27/27。既存4 byte一致(D-2)。
+- **pi_coef正規化層**: バンクは answer_domain(pi_coef/pi_coef_frac3)宣言+answer_template{X_pi}のみ書く。generatorが computed_slot X→{X}_pi(fmt_pi / fmt_pi_frac(_,3))を自動生成(JS/Python両)。表示: 128π/(1372/3)π等。
+- **kanji_policy補填**: 円錐/四角錐の「錐」は教育漢字g1-6外→allowed_extra:"錐"を2パターンに追加(既存機構・ふりがな付き専門用語許可)。
+- **furigana**: 増補パッチ(円柱/円錐/角錐/球+四角錐/三角錐)適用・3コピー同期・残存漢字0。
+- clearance悉皆(prism流儀3観点): 受理91/70/91/8/695=違反0。
+- pi_coef_frac3を両dispatch登録(ans>0)。分数分母3はtemplate_number_constants宣言でcorr-0007除外。
