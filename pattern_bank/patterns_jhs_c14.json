@@ -795,6 +795,264 @@
     4,
     3
    ]
+  },
+  {
+   "pattern_id": "jhs_c14_nejire_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c14_u01",
+   "unit_name": "空間図形",
+   "semantic_category": "位置関係(ねじれの位置・すべて列挙)",
+   "semantic_note": "ねじれ=平行でなく交わらない。答4辺(CG,DH,EH,FG)の完全列挙——「すべて」の網羅性が学習内容で、採点は完全一致のみ○(部分点は教師上書きの領分・裁可済み)。三次元の想像を要する位置関係の最難度。",
+   "step_count": 1,
+   "operation": "位置関係の列挙: edge_rel('AB','skew')",
+   "answer_formula": "edge_rel('AB','skew')",
+   "answer_domain": "edge_set",
+   "slots": {
+    "w1": {
+     "type": "int",
+     "range": [
+      3,
+      12
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      3,
+      10
+     ]
+    },
+    "h1": {
+     "type": "int",
+     "range": [
+      4,
+      15
+     ]
+    }
+   },
+   "computed_slots": {
+    "E1": {
+     "formula": "edge_rel('AB','skew')"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "vol_cap",
+     "expr": "w1 * d1 * h1 <= 500",
+     "why": "スキャン実証域(621組)の踏襲——寸法は非表示だが図形状の可変域として同域を維持"
+    }
+   ],
+   "sentence_templates": [
+    "図の直方体ABCD-EFGHで、辺ABとねじれの位置にある辺をすべて答えなさい。"
+   ],
+   "answer_template": "答え {E1_edges}",
+   "figure_params": {
+    "kind": "prism",
+    "base_kind": "rect",
+    "w": "{w1}",
+    "d": "{d1}",
+    "height": "{h1}",
+    "vertex_labels": [
+     "A",
+     "B",
+     "C",
+     "D",
+     "E",
+     "F",
+     "G",
+     "H"
+    ],
+    "highlight_edge": "AB",
+    "show_dims": false
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "tags": [
+    "edge_set",
+    "位置関係"
+   ]
+  },
+  {
+   "pattern_id": "jhs_c14_heikou_hen_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c14_u01",
+   "unit_name": "空間図形",
+   "semantic_category": "位置関係(平行な辺・すべて列挙)",
+   "semantic_note": "平行3辺(CD,EF,GH)。同一平面内の平行(CD)と別平面の平行(EF,GH)の両方を拾えるかが判定点——「見た目が近い」だけで選ぶ誤答を3次元で正す。",
+   "step_count": 1,
+   "operation": "位置関係の列挙: edge_rel('AB','parallel')",
+   "answer_formula": "edge_rel('AB','parallel')",
+   "answer_domain": "edge_set",
+   "slots": {
+    "w1": {
+     "type": "int",
+     "range": [
+      3,
+      12
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      3,
+      10
+     ]
+    },
+    "h1": {
+     "type": "int",
+     "range": [
+      4,
+      15
+     ]
+    }
+   },
+   "computed_slots": {
+    "E1": {
+     "formula": "edge_rel('AB','parallel')"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "vol_cap",
+     "expr": "w1 * d1 * h1 <= 500",
+     "why": "スキャン実証域(621組)の踏襲——寸法は非表示だが図形状の可変域として同域を維持"
+    }
+   ],
+   "sentence_templates": [
+    "図の直方体ABCD-EFGHで、辺ABと平行な辺をすべて答えなさい。"
+   ],
+   "answer_template": "答え {E1_edges}",
+   "figure_params": {
+    "kind": "prism",
+    "base_kind": "rect",
+    "w": "{w1}",
+    "d": "{d1}",
+    "height": "{h1}",
+    "vertex_labels": [
+     "A",
+     "B",
+     "C",
+     "D",
+     "E",
+     "F",
+     "G",
+     "H"
+    ],
+    "highlight_edge": "AB",
+    "show_dims": false
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "tags": [
+    "edge_set",
+    "位置関係"
+   ]
+  },
+  {
+   "pattern_id": "jhs_c14_suichoku_01",
+   "grade": "jhs",
+   "unit_id": "jhs_c14_u01",
+   "unit_name": "空間図形",
+   "semantic_category": "位置関係(垂直に交わる辺・すべて列挙)",
+   "semantic_note": "垂直4辺(AD,AE,BC,BF)。直方体では交わる辺は全て垂直——その事実自体も学習内容。ねじれとの対比(交わるvs交わらない)で位置関係3分類が完備する。",
+   "step_count": 1,
+   "operation": "位置関係の列挙: edge_rel('AB','perp')",
+   "answer_formula": "edge_rel('AB','perp')",
+   "answer_domain": "edge_set",
+   "slots": {
+    "w1": {
+     "type": "int",
+     "range": [
+      3,
+      12
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      3,
+      10
+     ]
+    },
+    "h1": {
+     "type": "int",
+     "range": [
+      4,
+      15
+     ]
+    }
+   },
+   "computed_slots": {
+    "E1": {
+     "formula": "edge_rel('AB','perp')"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "vol_cap",
+     "expr": "w1 * d1 * h1 <= 500",
+     "why": "スキャン実証域(621組)の踏襲——寸法は非表示だが図形状の可変域として同域を維持"
+    }
+   ],
+   "sentence_templates": [
+    "図の直方体ABCD-EFGHで、辺ABと垂直に交わる辺をすべて答えなさい。"
+   ],
+   "answer_template": "答え {E1_edges}",
+   "figure_params": {
+    "kind": "prism",
+    "base_kind": "rect",
+    "w": "{w1}",
+    "d": "{d1}",
+    "height": "{h1}",
+    "vertex_labels": [
+     "A",
+     "B",
+     "C",
+     "D",
+     "E",
+     "F",
+     "G",
+     "H"
+    ],
+    "highlight_edge": "AB",
+    "show_dims": false
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "tags": [
+    "edge_set",
+    "位置関係"
+   ]
   }
  ]
 }

@@ -1163,6 +1163,13 @@
     "skew"
    ],
    "AD,CD,EH,GH"
+  ],
+  [
+   [
+    "AB",
+    "perp"
+   ],
+   "AD,AE,BC,BF"
   ]
  ],
  "norm_edge_set": [

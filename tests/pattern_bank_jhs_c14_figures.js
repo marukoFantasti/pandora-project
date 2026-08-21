@@ -18,6 +18,9 @@ function cone(r, h) { return { kind: 'cone', r: r, height: h, unit: 'cm' }; }
 function sphere(r) { return { kind: 'sphere', r: r, unit: 'cm' }; }
 function pyr(o) { return Object.assign({ kind: 'pyramid', unit: 'cm' }, o); }
 function rot(sk, r, h) { const o = { kind: 'rotation_source', source_kind: sk, r: r, unit: 'cm' }; if (h != null) o.height = h; return o; }
+// G-4b位置関係(実構成): prism rect + 頂点名8(vertex_labels) + 基準辺AB強調 + 寸法非表示(show_dims:false)。
+function cuboidRel(w, d, h) { return { kind: 'prism', base_kind: 'rect', w: w, d: d, height: h, unit: 'cm', vertex_labels: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'], highlight_edge: 'AB', show_dims: false }; }
+function cuboidDomain() { const o = []; for (const w of rng(3, 12)) for (const d of rng(3, 10)) for (const h of rng(4, 15)) { if (w * d * h > 500) continue; o.push(cuboidRel(w, d, h)); } return o; }
 
 const DOMAINS = {
   // 三角柱の体積: b1∈[4,12]・bh1∈[3,10]・h1∈[4,15]・even(b1·bh1)・V≤500。図=tri(base=b1,base_height=bh1,height=h1)。
@@ -53,7 +56,11 @@ const DOMAINS = {
   // 回転体(直角三角形→円錐): r∈[2,10]・h∈[3,15]・r²h≤600。図=rotation_source(right_tri)。
   jhs_c14_kaiten_ensui_01: { expect: 91, envs: () => { const o = []; for (const r of rng(2, 10)) for (const h of rng(3, 15)) { if (r * r * h > 600) continue; o.push(rot('right_tri', r, h)); } return o; } },
   // 回転体(半円→球): r∈[2,9]・最疎。図=rotation_source(semicircle)。
-  jhs_c14_kaiten_kyu_01: { expect: 8, envs: () => rng(2, 9).map(function (r) { return rot('semicircle', r); }) }
+  jhs_c14_kaiten_kyu_01: { expect: 8, envs: () => rng(2, 9).map(function (r) { return rot('semicircle', r); }) },
+  // --- G-4b Phase2 位置関係(edge_set・実構成=頂点名8/寸法非表示・全AB基準) ---
+  jhs_c14_nejire_01: { expect: 621, envs: cuboidDomain },
+  jhs_c14_heikou_hen_01: { expect: 621, envs: cuboidDomain },
+  jhs_c14_suichoku_01: { expect: 621, envs: cuboidDomain }
 };
 
 let bad = 0;
@@ -74,5 +81,5 @@ for (const [pid, dom] of Object.entries(DOMAINS)) {
   if (drawBad) bad += drawBad; if (clBad) bad += clBad;
   console.log('  ' + (countOk && !drawBad && !clBad ? '✅' : '❌') + ' ' + pid + ': 受理組 ' + envs.length + '/' + dom.expect + ' / 描画不良 ' + drawBad + ' / clearance違反 ' + clBad + ' / min(minText ' + minMT.toFixed(1) + ', minSeg ' + minSeg.toFixed(1) + ')');
 }
-console.log('\n' + (bad === 0 ? 'c14 図照合: 全12パターン合格 ✅(角柱613/621/384/30 + 錐円91/70/91/8/695 + 回転体91/91/8・prism流儀3観点悉皆違反0)' : '❌ ' + bad + '件'));
+console.log('\n' + (bad === 0 ? 'c14 図照合: 全15パターン合格 ✅(角柱613/621/384/30 + 錐円91/70/91/8/695 + 回転体91/91/8 + 位置関係621×3・prism流儀/頂点名8悉皆違反0)' : '❌ ' + bad + '件'));
 process.exit(bad === 0 ? 0 : 1);

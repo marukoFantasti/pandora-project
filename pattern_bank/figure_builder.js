@@ -652,24 +652,27 @@
     // セグメント（ラベル束縛用）
     lay.segs.push({ id: 'wedge', p1: base[0], p2: base[1] }, { id: 'hedge', p1: base[0], p2: top[0] }, { id: 'dedge', p1: base[1], p2: base[2] });
     var specs = [];
-    // 底面寸法ラベル（cuboid規約準拠）
-    if (g.base_kind === 'rect') {
+    // G-4b書式突合(正規化層): vertex_labels(配列/true)=頂点名描画・show_dims:false=寸法ラベル抑制。
+    // 既存prismはこれらのフラグ不在=従来どおり寸法表示・頂点名なし=バイト不変。
+    var wantVertex = fp.vertex_names || fp.vertex_labels, showDims = fp.show_dims !== false;
+    // 底面寸法ラベル（cuboid規約準拠・show_dims:falseで非表示）
+    if (showDims && g.base_kind === 'rect') {
       specs.push({ anchor: [(base[0][0] + base[1][0]) / 2, base[0][1]], dir: [0, 1], text: fp.w + u, cands: dimCands(), color: '#333', own: 'wedge' });
       specs.push({ anchor: [(base[1][0] + base[2][0]) / 2, (base[1][1] + base[2][1]) / 2], dir: [0.7, 0.7], text: fp.d + u, cands: dimCands(), color: '#333', own: 'dedge' });
-    } else {
+    } else if (showDims) {
       specs.push({ anchor: [(base[0][0] + base[1][0]) / 2, base[0][1]], dir: [0, 1], text: fp.base + u, cands: dimCands(), color: '#333', own: 'wedge' });
     }
-    // 高さラベル: 前面左縦辺の左
-    specs.push({ anchor: [(base[0][0] + top[0][0]) / 2, (base[0][1] + top[0][1]) / 2], dir: [-1, 0], text: fp.height + u, cands: dimCands(), color: '#333', own: 'hedge' });
+    // 高さラベル: 前面左縦辺の左（show_dims:falseで非表示）
+    if (showDims) specs.push({ anchor: [(base[0][0] + top[0][0]) / 2, (base[0][1] + top[0][1]) / 2], dir: [-1, 0], text: fp.height + u, cands: dimCands(), color: '#333', own: 'hedge' });
     // G-4b 位置関係(multi_symbol): 頂点名A-H + 基準辺強調(gated=既存prismはフラグ不在でバイト不変)。
     // 直方体ABCD-EFGH: 上面ABCD=top[0..3](FL/FR/BR/BL)・底面EFGH=base[0..3]。pattern_generator の頂点順序規約と一致。
-    if ((fp.vertex_names || fp.highlight_edge) && g.base_kind === 'rect') {
+    if ((wantVertex || fp.highlight_edge) && g.base_kind === 'rect') {
       var VN = { A: top[0], B: top[1], C: top[2], D: top[3], E: base[0], F: base[1], G: base[2], H: base[3] };
       if (fp.highlight_edge) {   // 意匠案: 基準辺=赤太線(C_TARGET・幅3.4)で強調
         var he = String(fp.highlight_edge).toUpperCase(), hp1 = VN[he.charAt(0)], hp2 = VN[he.charAt(1)];
         if (hp1 && hp2) { lay.parts.push(lineEl(hp1, hp2, C_TARGET, 3.4)); lay.pts.push(hp1, hp2); }
       }
-      if (fp.vertex_names) {
+      if (wantVertex) {
         var KS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'], cen8 = [0, 0];
         KS.forEach(function (k) { cen8[0] += VN[k][0] / 8; cen8[1] += VN[k][1] / 8; });
         // 8頂点名は既存prismの寸法ラベルより密。頂点ごとに重心外向きを第一候補とし、8方位へ探索して

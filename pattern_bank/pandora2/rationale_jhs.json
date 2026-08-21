@@ -3938,5 +3938,73 @@
    "figure_notes": "マーク-名間隔ASA23.6px(最密)。等角弧2種の弧重数(1重/2重)が対応の識別子。",
    "pedagogy": []
   }
+ },
+ "jhs_c14_nejire_01": {
+  "brief": {
+   "semantic_territory": "位置関係(ねじれの位置・すべて列挙)",
+   "number_domain": "辺集合(edge_set・内部正規化集合/表示 辺XX読点列挙)",
+   "answer_structure": "single",
+   "figure": "prism(rect・頂点名8+基準辺強調)",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "multi_symbol採点は完全一致主義——「すべて答えよ」の学習内容は網羅性そのもので、過不足は✗・部分点は教師上書きの領分(2026-08-21裁可)。順不同・FB表記・区切りゆれは正規化で吸収",
+     "by": "marko",
+     "date": "2026-08"
+    },
+    {
+     "text": "答固定(AB基準+関係で機械導出)・図可変(寸法スロット非表示)——choice3と同じ統制設計。基準辺バリエーションは第3波在庫",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "「ねじれの位置にある辺をすべて」はc14位置関係の最難度で、平面図(見取図)から3次元の非共面性を読む想像が学習内容。参照の位置関係3問バケツの主形。",
+   "representation": "edge_set機構の第1号。answer_formulaはedge_rel('AB','skew')の決定的式で、答は直方体トポロジから機械導出(寸法非依存・図可変でも答固定)。答集合はFable独立再実装・Code導出器・独立軸オラクルの三重照合で一致確認済み。表示fmt_edge_set(辞書順・読点区切り)。",
+   "constructive_guarantees": "完全一致採点(directives)。図形状621組(c14 prism安全域の踏襲)が見た目の多様性を供給し、答は不変——「同じ答・違う図」で暗記でなく判定を要求。寸法ラベル非表示(位置関係に寸法は無関係・実物標準)。",
+   "semantic_position": "edge_set 3部作の第1位・G-4b Phase 2の主役。将来の集合答え(因数の列挙等)の機構実証台。",
+   "exclusions": "体積500超の形状(スキャン実証域の踏襲)。",
+   "figure_notes": "頂点名8ラベルは24方位×可変距離のplaceLbl探索で密度対策(621組違反0)。基準辺AB=赤太線強調(意匠案採用)。既存prismはvertex_labelsフラグ不在でバイト不変(gated)。",
+   "pedagogy": []
+  }
+ },
+ "jhs_c14_heikou_hen_01": {
+  "brief": {
+   "semantic_territory": "位置関係(平行な辺・すべて列挙)",
+   "number_domain": "辺集合(edge_set)",
+   "answer_structure": "single",
+   "figure": "prism(rect・頂点名8+基準辺強調)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "平行3辺(CD/EF/GH)。同一面内の平行と別平面の平行の両方を拾えるかが判定点で、「隣の面の対応辺」(EF/GH)の見落としが定番誤答。",
+   "representation": "nejire_01と完全同型(edge_relの関係引数のみ相違)——3部作統制設計。答3辺は関係表・独立再実装で照合済み。",
+   "constructive_guarantees": "完全一致採点・図可変621組・答固定。",
+   "semantic_position": "3部作の第2位。ねじれ(交わらず平行でもない)との対比の一翼。",
+   "exclusions": "体積500超。",
+   "figure_notes": "nejire_01と同一図構成。",
+   "pedagogy": []
+  }
+ },
+ "jhs_c14_suichoku_01": {
+  "brief": {
+   "semantic_territory": "位置関係(垂直に交わる辺・すべて列挙)",
+   "number_domain": "辺集合(edge_set)",
+   "answer_structure": "single",
+   "figure": "prism(rect・頂点名8+基準辺強調)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "垂直4辺(AD/AE/BC/BF)。直方体では交わる辺が全て垂直という事実自体も学習内容で、位置関係3分類(平行/交わる/ねじれ)の完備位置。",
+   "representation": "3部作統制の掉尾(関係引数perp=交わる)。基準辺の両端(A側2辺・B側2辺)の対称構造が答集合に現れる。",
+   "constructive_guarantees": "完全一致採点・図可変621組・答固定。",
+   "semantic_position": "3部作の掉尾・G-4b完了位置。合同条件(choice3)と位置関係(edge_set)で文字列系答えの2機構が本番化し、経路A対象の残余は裁可済み対象外(作図・記述証明・展開図・投影図選択=第3波)のみ——訓練前の供給出し切りが完了する。",
+   "exclusions": "体積500超。",
+   "figure_notes": "同一図構成。3部作で図・文面・値域が完全同型、関係引数だけが判定材料——choice3部作(マーク構成のみ相違)と対を成す統制設計の完成形。",
+   "pedagogy": []
+  }
  }
 }

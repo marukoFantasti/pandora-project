@@ -244,7 +244,7 @@
     out.parallel.sort(); out.intersect.sort(); out.skew.sort();
     return out;
   }
-  var REL_ALIAS = { parallel: 'parallel', '平行': 'parallel', intersect: 'intersect', '交わる': 'intersect', '垂直': 'intersect', skew: 'skew', 'ねじれ': 'skew' };
+  var REL_ALIAS = { parallel: 'parallel', '平行': 'parallel', intersect: 'intersect', perp: 'intersect', '交わる': 'intersect', '垂直': 'intersect', skew: 'skew', 'ねじれ': 'skew' };
   // 正規化集合(辞書順のカンマ連結) を返す決定的式。answer_formula/computed_slots から edge_rel('AB','skew') 等で呼ぶ。
   function edgeRel(base, relation) {
     var r = cuboidEdgeRelation(normEdge(base)), key = REL_ALIAS[relation] || relation;

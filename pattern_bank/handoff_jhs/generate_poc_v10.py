@@ -297,7 +297,7 @@ def cuboid_edge_relation(base):
     for k in out:
         out[k].sort()
     return out
-_REL_ALIAS = {"parallel": "parallel", "平行": "parallel", "intersect": "intersect", "交わる": "intersect", "垂直": "intersect", "skew": "skew", "ねじれ": "skew"}
+_REL_ALIAS = {"parallel": "parallel", "平行": "parallel", "intersect": "intersect", "perp": "intersect", "交わる": "intersect", "垂直": "intersect", "skew": "skew", "ねじれ": "skew"}
 def edge_rel(base, relation):
     """正規化集合(辞書順カンマ連結)を返す決定的式。answer_formula/computed_slots から呼ぶ。"""
     r = cuboid_edge_relation(_norm_edge(base))

@@ -161,3 +161,12 @@
 - 旧md5 0f139c0f(9)→**新md5 2ff88dbd**(12)。golden PASS 36/36。既存9(baseline行1-100)byte一致(D-2成立)。
 - **kanji_policy補填**: 本文「直線ℓを軸として」の「軸」は教育漢字g1-6外(中学配当)→allowed_extra:"軸"を3パターンに追加(錐と同型・最小宣言方針・ふりがな付き専門用語許可)。
 - **furigana(furigana_patch_s4)**: lexicon 3語(回転→かいてん/立体→りったい/半円→はんえん)+counter規則表「回転」(digit_readings いっかいてん〜じゅっかいてん)。counter「回転」は「回」より長い単位=reading_engineのUNIT_KEYS長さ降順ソートで先に照合(最長一致)→「1回転=いっかいてん」実レンダ確認。3コピー同期(handoff/assets_global/海外テンプレpg-lex+pg-ct)・残存漢字0。
+
+### 2026-08-21 c14第4波(G-4b Phase2 位置関係edge_set 3追補・G-4b完了便・D-2)
+- c14に位置関係3パターン(nejire/heikou_hen/suichoku)をD-2 append(12→15)。まるこ検収済み(Fable生成の実ファイルは angle_g1_preview_03_unknown_x.svg に誤名で保存されていたのを正名に復旧、svgはgit HEADへ復元=作業ツリー残骸も解消)。全AB基準・edge_rel('AB',skew/parallel/perp)・図可変(621組)答固定のchoice3同型統制設計。
+- 旧md5 2ff88dbd(12)→**新md5 83401fee**(15)。golden PASS 45/45。既存12 byte一致(D-2成立)。
+- **edge_set機構**: バンクは answer_domain "edge_set"宣言+answer_template {X_edges}のみ。answer_formula=edge_rel('AB',rel)が直方体トポロジから正規化集合を機械導出(寸法非依存)。generatorが computed_slot X→{X}_edges(fmt_edge_set・「辺CG、辺DH…」)を自動生成(JS/Python両・parity)。恒等=集合一致・corr-0007記号透過。答: ねじれ{CG,DH,EH,FG}/平行{CD,EF,GH}/垂直{AD,AE,BC,BF}。
+- **書式突合(正規化層)**: figure_params の vertex_labels(配列)→頂点名描画・show_dims:false→寸法ラベル抑制・highlight_edge:"AB"→基準辺赤太線。既存prismはフラグ不在でバイト不変(gated)。REL_ALIASに'perp'→'intersect'追加(両engine)。
+- clearance悉皆(実構成621組×3): show_dims:false=寸法非表示は寸法込み621組より疎=安全側。頂点名8のみで違反0再確認。
+- **furigana(furigana_patch_g4b2)**: lexicon 2語(位置→いち/垂直→すいちょく)。corr-0024 3部悉皆(本文+設問指示文)で全3文GREEN(交=まじ・直方体=ちょくほうたい既収)。3コピー同期・残存漢字0。
+- kanji: 垂/置は教育漢字g1-6内(垂=小6・置=小4)→allowed_extra不要。tags=[edge_set,位置関係]で観点別集計接続。

@@ -88,6 +88,10 @@ const ID = {
   jhs_c14_kaiten_enchu_01: (e, ans) => ans === e.r1 * e.r1 * e.h1,                               // 長方形→円柱: r²h(=enchu_vol同型)
   jhs_c14_kaiten_ensui_01: (e, ans) => ans === e.r1 * e.r1 * e.h1,                               // 直角三角形→円錐: r²h(表示は/3・=ensui_vol同型)
   jhs_c14_kaiten_kyu_01: (e, ans) => ans === 4 * e.r1 * e.r1 * e.r1,                             // 半円→球: 4r³(表示は/3・=kyu_vol同型)
+  // G-4b Phase2 位置関係(edge_set・恒等=正規化集合一致・独立ハードコード=AB基準の直方体トポロジ)
+  jhs_c14_nejire_01: (e, ans) => ans === 'CG,DH,EH,FG',                                          // 辺ABとねじれ
+  jhs_c14_heikou_hen_01: (e, ans) => ans === 'CD,EF,GH',                                         // 辺ABと平行
+  jhs_c14_suichoku_01: (e, ans) => ans === 'AD,AE,BC,BF',                                        // 辺ABと垂直(交わる)
   // --- c15 展開・因数分解：多項式係数の恒等(問題多項式 == 答えの展開) ---
   // 展開5型: 問題=因数積 → 展開係数が答え多項式の係数と一致(答え係数からの復元と等価)
   jhs_c15_exp_01: (e) => e.s1 === e.a1 + e.b1 && e.t1 === e.a1 * e.b1,            // (x+a)(x+b)=x²+(a+b)x+ab
