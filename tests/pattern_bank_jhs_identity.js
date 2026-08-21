@@ -69,6 +69,11 @@ const ID = {
   // --- c13 G-4a congruent_pair(合同求角) ---
   jhs_c13_goudou_01: (e, ans) => ans === e.a1,                                   // 対応角相等: ∠x＝a1
   jhs_c13_goudou_02: (e, ans) => ans + e.a1 + e.b1 === 180,                      // 合同+内角和: ∠x＋a1＋b1＝180
+  // --- c14 空間図形(prism求積・π不要) ---
+  jhs_c14_sankakuchu_vol_01: (e, ans) => ans === Math.floor(e.b1 * e.bh1 / 2) * e.h1,          // 三角柱体積: (底辺×高÷2)×高さ
+  jhs_c14_shikakuchu_vol_01: (e, ans) => ans === e.w1 * e.d1 * e.h1,                            // 四角柱体積: w×d×h
+  jhs_c14_shikakuchu_hyomen_01: (e, ans) => ans === 2 * (e.w1 * e.d1 + e.d1 * e.h1 + e.w1 * e.h1), // 四角柱表面積: 2(wd+dh+wh)
+  jhs_c14_sankakuchu_hyomen_01: (e, ans) => ans === 12 * e.k1 * (e.k1 + e.h1) && e.c1 * e.c1 === e.a1 * e.a1 + e.b1 * e.b1, // 三角柱表面積: 12k(k+h) ∧ 3辺がピタゴラス
   // --- c15 展開・因数分解：多項式係数の恒等(問題多項式 == 答えの展開) ---
   // 展開5型: 問題=因数積 → 展開係数が答え多項式の係数と一致(答え係数からの復元と等価)
   jhs_c15_exp_01: (e) => e.s1 === e.a1 + e.b1 && e.t1 === e.a1 * e.b1,            // (x+a)(x+b)=x²+(a+b)x+ab

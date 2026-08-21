@@ -561,7 +561,7 @@ def verify(pattern, env, problem):
     # 本文数値の照合は「スロット由来の数値+表示分解値+テンプレ定数1」を許可集合とする
     allowed_nums = set(pattern.get("template_number_constants", []))
     for k, v in env.items():
-        if isinstance(v, int) and (k in pattern["slots"] or k in pattern.get("quantity_slots", {})):
+        if isinstance(v, int) and (k in pattern["slots"] or k in pattern.get("quantity_slots", {}) or k in pattern.get("computed_slots", {})):
             # v1.0: 負スロット値対応。本文「−6」は \d+ 抽出で 6 になるため、v と abs(v)
             # の両方を許可集合に加える（既存バンクは全て正値=abs(v)==v で非干渉）。
             allowed_nums.add(v)

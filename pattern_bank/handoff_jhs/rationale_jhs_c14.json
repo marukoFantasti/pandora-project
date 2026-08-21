@@ -1,0 +1,96 @@
+{
+ "_meta": {
+  "schema": "rationale_g05_gold.json準拠(pandora2正準・ネスト形)",
+  "scope": "jhs_c14 第1波4パターン(S-1・角柱求積・π不要)。rationale_jhs.jsonへ追補統合(149→153)。第2ブロック(空間系)開始便",
+  "note": "figure_notes正準(図あり=設計記録)。ネイティブ記述 2026-08-16",
+  "order": "バンク順"
+ },
+ "jhs_c14_sankakuchu_vol_01": {
+  "brief": {
+   "semantic_territory": "三角柱の体積(底面積×高さ)",
+   "number_domain": "整数(cm・cm³)",
+   "answer_structure": "single",
+   "figure": "prism(tri)",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "空間系の実装順裁可(2026-08-16): S-1角柱求積(π不要・prism流用・先行)→S-2錐円系kind(投影楕円は真円関門の別枠)→S-3円求積→S-4回転体。pi_coef機構はa02d3e2で配線済み。位置関係名指し・投影図選択はG-4b見積もり合流・展開図のみ経路A対象外",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "V=底面積×高さの中1求積の主形。角柱は円が絡まずπ機構と独立に採録できる、空間系の先行波として最適な位置。",
+   "representation": "prism kind(g06実績・斜投影45°/深さ0.5・隠れ辺破線)の流用でkind実装ゼロの即バンク化。寸法は全スロット参照、安全域(w3-20/d3-12/h3-20・120組スイープ描画不良0)の内側で値域設計。",
+   "constructive_guarantees": "偶数積制約((b×bh)%2==0)で底面積の整数性を構造保証——g03割り切れ設計の求積版。体積上限500で3桁内。答=積は全既知スロットを常に超える(最小24>スロット上限15)ため転記が構造的に不能——外角定理で確立した転記フリー構造の求積系譜。受理613組を全域証明済み。",
+   "semantic_position": "空間系列の始祖・⚡17章目(c14)の第1号。円柱体積(S-3・pi_coef)は本構造のπ拡張。",
+   "exclusions": "奇数積(底面積非整数)・体積500超。",
+   "figure_notes": "prism流用のためkind側の新規検証なし。寸法ラベル(w/d/h)の辺重なりが角度系semBadに代わる論点で、配線時に実受理組でclearance悉皆(corr-0020)。",
+   "pedagogy": []
+  }
+ },
+ "jhs_c14_shikakuchu_vol_01": {
+  "brief": {
+   "semantic_territory": "四角柱(直方体)の体積(底面積×高さ)",
+   "number_domain": "整数(cm・cm³)",
+   "answer_structure": "single",
+   "figure": "prism(rect)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "縦×横×高さは小5既習だが、中1は「底面積×高さ」への概念の再位置づけが学習内容——同じ計算を柱体一般の公式の特殊例として捉え直す。",
+   "representation": "prism(rect)流用。三角柱と対で「底面が変わっても底面積×高さ」の一般性を混合出題で体感させる。",
+   "constructive_guarantees": "体積上限500。立方体(w=d=h)は許容——退化でなく特殊例で、除外理由がない(除外設計も意味単位で個別、の実例)。転記構造的不能(最小36>上限15)。受理621組。",
+   "semantic_position": "空間系列の第2位。g05直方体体積の上位互換で学年間系譜が直結。",
+   "exclusions": "体積500超のみ。",
+   "figure_notes": "prism(rect)流用。三角柱と同じclearance論点。",
+   "pedagogy": []
+  }
+ },
+ "jhs_c14_shikakuchu_hyomen_01": {
+  "brief": {
+   "semantic_territory": "四角柱(直方体)の表面積",
+   "number_domain": "整数(cm・cm²)",
+   "answer_structure": "single",
+   "figure": "prism(rect)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "表面積は中1初出概念(小学指導要領は体積のみ)。2×(wd+dh+wh)は展開図の「同じ面が2枚×3組」の思考を式が写す——展開図を経路A対象外にした分、その思考は数式側で踏ませる。",
+   "representation": "体積と同一のprism(rect)図・同型スロットでanswer_formulaだけが違う——「同じ図・違う問い」(taicho対の手筋)の空間版。定数2はtemplate_number_constants宣言。",
+   "constructive_guarantees": "値域を体積版よりやや絞り(w≤10/d≤8/h≤10)表面積を520以内に自然収束(cap制約不要——レンジ設計で上限を作る手筋)。転記構造的不能(最小54)。受理384組。",
+   "semantic_position": "表面積系列の第1位。三角柱表面積(ピタゴラス組)・円柱表面積(S-3)への前段。",
+   "exclusions": "なし(レンジ設計が全てを内包)。",
+   "figure_notes": "体積版と同一図。混合出題時に図が同じでも問いで区別される設計。",
+   "pedagogy": []
+  }
+ },
+ "jhs_c14_sankakuchu_hyomen_01": {
+  "brief": {
+   "semantic_territory": "三角柱の表面積(直角三角形底面)",
+   "number_domain": "整数(cm・cm²)",
+   "answer_structure": "single",
+   "figure": "prism(tri)",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "底面はピタゴラス組(3k,4k,5k)に限定——中1は三平方未習のため斜辺を計算対象にせず、整数3辺を構造で供給する(学年制約を値域設計で解く手筋)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "三角柱の表面積は側面積に周×高さが要り、底面3辺が全て必要。実物は3辺明示が標準で、(3,4,5)系の直角三角形が最頻。",
+   "representation": "スロットはk1(倍率)とh1のみ——3辺はcomputed(3k,4k,5k)で、ピタゴラス整合が構造に内在。S=12k(k+h)の因数形はanswer_formulaの簡潔性と検算容易性を兼ねる。図は2辺(直角をはさむ)をprismスロットに、斜辺は本文供給。",
+   "constructive_guarantees": "全域で整数・転記構造的不能(最小48)。受理30組——倍率3値×高さ10値の狭域だが、ピタゴラス組の教育的レンジとして適正(過剰生成より正確な域・二等辺と同判断)。",
+   "semantic_position": "表面積系列の第2位・空間第1波の頂上。三平方(中3・第3波)で斜辺が計算対象になったとき本パターンの制約が外れる、学年進行の受け口。",
+   "exclusions": "非ピタゴラス組(構造が排除)。",
+   "figure_notes": "図の2辺表示+本文の3辺供給の分担——図に斜辺長を描き込まないのは、prismの寸法ラベルが直交3方向(w/d/h相当)用で斜辺表示の位置がないため。図と本文の情報分担を明記した初例。",
+   "pedagogy": []
+  }
+ }
+}

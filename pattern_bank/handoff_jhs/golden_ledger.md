@@ -129,3 +129,10 @@
   angles[i]のleft/right role+label_right→left.show/right.show(at-index) / side_ticks配列[1,2,3]→辺別本数。
 - clearance悉皆(corr-0020・G-4aスキャン確定域[45,100]採用): goudou_01=受理55・goudou_02=受理46=違反0。
 - furigana「合同(ごうどう)」は既存辞書済=欠落なし。angle_figure族(G-1対頂〜G-4a合同)が c12/c13 で本番完成。
+
+### 2026-08-21 c14新設(空間図形・⚡17章目・基準md5 23本目) 第2ブロックS-1
+- c14新設(空間図形・jhs2): 三角柱/四角柱の体積・表面積4パターン(π不要・prism既存kind流用・pi_coefと独立の先行採録)。まるこ検収済み(2026-08-16)。
+- **基準md5 23本目: c14 = bbaed877**(golden PASS 12/12)。BANK_FILES登録・⚡c14点灯(17章目)。figure_paramsはprism実書式(height名・全スロット参照)で正書式=正規化不要。
+- ⚠️**verify機構の汎化(computed_slots許可)**: sankakuchu_hyomen_01は本文に直角三角形3辺(computed a1/b1/c1=3k/4k/5k)を明示。verify nums_from_slotsのallowed_numsが従来は基底slots+_dispのみでcomputed_slotsを含まず→FAIL。**computed_slotsをallowed_numsに追加(JS/Python両verify・緩和のみ=非後退)**。既存golden md5全不変(c06 00ba3cf0/c15 a1e38dba/c17 1df8cea7で確認)・parity全一致。
+- clearance悉皆(prism寸法ラベル・観点=ラベル間≥10/ラベル辺重なり≥4/semBad0): 受理613/621/384/30=違反0(min minText 11.3/min minSeg 6.4)。
+- pi_coef機構は先行main反映済(a02d3e2・S-3の前提)。円柱/円錐/球/回転体はS-2/S-3。

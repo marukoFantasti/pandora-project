@@ -696,7 +696,8 @@
       var v = env[k];
       if (typeof v === 'number' && Number.isInteger(v) &&
         (Object.prototype.hasOwnProperty.call(pattern.slots || {}, k) ||
-          Object.prototype.hasOwnProperty.call(pattern.quantity_slots || {}, k))) {
+          Object.prototype.hasOwnProperty.call(pattern.quantity_slots || {}, k) ||
+          Object.prototype.hasOwnProperty.call(pattern.computed_slots || {}, k))) {
         // v1.0: 負スロット値対応。本文「−6」は \d+ 抽出で 6 になるため v と abs(v) の
         // 両方を許可（既存バンクは全て正値=abs(v)==v で非干渉）。
         allowedNums[v] = true;
