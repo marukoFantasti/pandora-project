@@ -813,6 +813,19 @@ function choiceMatch(studentChoice, answer) {
   var a = choiceSymbol(studentChoice), b = choiceSymbol(answer);
   return a !== '' && a === b;
 }
+// multi_symbol機構(G-4b edge_set): 辺集合の完全一致採点。生徒答・正答から辺記号(頂点2字)を抽出→
+// 正規化(頂点2字辞書順・集合辞書順・重複排除)→集合完全一致のみ○。順不同/FB表記/読点・空白ゆれを吸収。
+// 部分正解なし(過不足は✗)——「すべて答えよ」の網羅性が学習内容で、部分点は教師上書きの領分。
+function edgeSetNorm(s) {
+  if (s == null) return '';
+  var m = String(s).toUpperCase().match(/[A-H][A-H]/g) || [], set = {};
+  m.forEach(function (e) { var a = e.charAt(0), b = e.charAt(1); set[a < b ? a + b : b + a] = 1; });
+  return Object.keys(set).sort().join(',');
+}
+function edgeSetMatch(studentAns, answer) {
+  var a = edgeSetNorm(studentAns), b = edgeSetNorm(answer);
+  return b !== '' && a === b;   // 完全一致のみ(空集合の答は不成立)
+}
 
 // 国語の1問カードを描画（観点タグ・形式ごとに表示を分ける）。
 // 選択式は student_choice と正答の照合で自動採点し gradeState に事前セット、
@@ -997,6 +1010,16 @@ function renderGrading(sub) {
       gs = { result: choiceMatch(p.student_choice, p.answer) ? 'correct' : 'incorrect', note: gs.note || '', auto: true };
       gradeState[pid] = gs;
     }
+    // multi_symbol機構(G-4b Phase2): デジタル辺集合答は完全一致で自動採点(未採点時のみ・教師上書き可)。
+    // 生徒答フィールドは student_choice / student_answer のいずれか(生成quiz形状差を防御的に吸収)。
+    // ガード /辺[A-H][A-H]/: 正答が辺集合形でない問題では発火しない=加法的・非干渉。
+    var studentEdges = p.student_choice != null ? p.student_choice : (p.student_answer != null ? p.student_answer : null);
+    var isDigitalEdgeSet = !isDigitalChoice && studentEdges != null && /辺[A-H][A-H]/.test(String(p.answer || ''));
+    if (!gs.result && isDigitalEdgeSet) {
+      gs = { result: edgeSetMatch(studentEdges, p.answer) ? 'correct' : 'incorrect', note: gs.note || '', auto: true };
+      gradeState[pid] = gs;
+    }
+    var isDigitalAuto = isDigitalChoice || isDigitalEdgeSet;
     var cardClass = gs.result ? ' ' + gs.result : '';
 
     html += '<div class="problem-card' + cardClass + '" id="pc-' + pid + '">';
@@ -1026,10 +1049,10 @@ function renderGrading(sub) {
         p.choices.map(function(c){ return escHtml(String(c)); }).join('<br>') + '</div></div>' : '') +
       '<div><div class="col-label">正解</div>' +
       '<div class="answer-text">' + (p.answer || '-') + '</div></div>' +
-      (isDigitalChoice ?
-        '<div><div class="col-label">生徒の選択</div>' +
+      (isDigitalAuto ?
+        '<div><div class="col-label">' + (isDigitalEdgeSet ? '生徒の解答' : '生徒の選択') + '</div>' +
         '<div style="font-size:16px;font-weight:700;color:' + (gs.result === 'correct' ? 'var(--green)' : 'var(--red)') + '">' +
-        escHtml(String(p.student_choice)) + '</div></div>' : '') +
+        escHtml(String(isDigitalEdgeSet ? studentEdges : p.student_choice)) + '</div></div>' : '') +
     '</div>';
 
     // 右：採点コントロール
@@ -1047,8 +1070,8 @@ function renderGrading(sub) {
 
     html += '</div>'; // problem-top
 
-    // 下段：キャンバス全幅縦並び（デジタル選択式は手書き無し=キャンバス枠を出さない）
-    if (!isDigitalChoice) {
+    // 下段：キャンバス全幅縦並び（デジタル選択式・辺集合は手書き無し=キャンバス枠を出さない）
+    if (!isDigitalAuto) {
     html += '<div class="problem-canvases">';
     html += '<div class="canvas-block"><div class="col-label">✏️ 生徒の式 <span style="font-size:10px;color:#e74c3c;font-weight:normal">（赤ペンで添削できます）</span></div>';
     if (p.equation_canvas && p.equation_canvas !== 'null') {
@@ -1087,7 +1110,7 @@ function renderGrading(sub) {
     }
     html += '</div>';
     html += '</div>'; // problem-canvases
-    } // !isDigitalChoice
+    } // !isDigitalAuto
 
     html += '</div>'; // problem-body
 

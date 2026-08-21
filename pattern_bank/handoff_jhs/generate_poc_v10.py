@@ -266,6 +266,55 @@ def fmt_choice(n):
 
 SAFE.update({"fmt_choice": fmt_choice})
 
+# ===== G-4b multi_symbol機構（edge_set・辺の正規化集合。JS(pattern_generator.js edgeRel/normEdgeSet/fmtEdgeSet)と1:1移植） =====
+# 直方体ABCD-EFGH: 上面ABCD(z=1)・底面EFGH(z=0)・鉛直辺AE/BF/CG/DH。x=右・y=奥・z=上。
+_CUBOID_V = {"A": (0, 0, 1), "B": (1, 0, 1), "C": (1, 1, 1), "D": (0, 1, 1), "E": (0, 0, 0), "F": (1, 0, 0), "G": (1, 1, 0), "H": (0, 1, 0)}
+_CUBOID_EDGES = ["AB", "BC", "CD", "DA", "EF", "FG", "GH", "HE", "AE", "BF", "CG", "DH"]
+def _norm_edge(e):
+    a, b = e[0], e[1]
+    return a + b if a < b else b + a
+def _edge_dir(e):
+    p, q = _CUBOID_V[e[0]], _CUBOID_V[e[1]]
+    return (q[0] - p[0], q[1] - p[1], q[2] - p[2])
+def _share_vertex(e1, e2):
+    return e1[0] in e2 or e1[1] in e2
+def _parallel_dir(d1, d2):
+    return (d1[1] * d2[2] - d1[2] * d2[1]) == 0 and (d1[2] * d2[0] - d1[0] * d2[2]) == 0 and (d1[0] * d2[1] - d1[1] * d2[0]) == 0
+def _edge_relation_one(base, other):
+    if _norm_edge(base) == _norm_edge(other):
+        return "same"
+    if _share_vertex(base, other):
+        return "intersect"
+    if _parallel_dir(_edge_dir(base), _edge_dir(other)):
+        return "parallel"
+    return "skew"
+def cuboid_edge_relation(base):
+    out = {"parallel": [], "intersect": [], "skew": []}
+    for e in _CUBOID_EDGES:
+        r = _edge_relation_one(base, e)
+        if r in out:
+            out[r].append(_norm_edge(e))
+    for k in out:
+        out[k].sort()
+    return out
+_REL_ALIAS = {"parallel": "parallel", "平行": "parallel", "intersect": "intersect", "交わる": "intersect", "垂直": "intersect", "skew": "skew", "ねじれ": "skew"}
+def edge_rel(base, relation):
+    """正規化集合(辞書順カンマ連結)を返す決定的式。answer_formula/computed_slots から呼ぶ。"""
+    r = cuboid_edge_relation(_norm_edge(base))
+    key = _REL_ALIAS.get(relation, relation)
+    return ",".join(r.get(key, []))
+def norm_edge_set(s):
+    """任意の辺集合文字列→正規化集合(辞書順カンマ連結)。順不同・FB表記・区切りゆれを吸収。"""
+    if s is None:
+        return ""
+    edges = re.findall(r"[A-H][A-H]", str(s))
+    return ",".join(sorted({_norm_edge(e) for e in edges}))
+def fmt_edge_set(s):
+    edges = [e for e in norm_edge_set(s).split(",") if e]
+    return "、".join("辺" + e for e in edges)
+
+SAFE.update({"edge_rel": edge_rel, "norm_edge_set": norm_edge_set, "fmt_edge_set": fmt_edge_set})
+
 def sample_domain(lo, hi, step=1):
     """スロット range=[lo,hi](step) の到達可能値ドメインを "件数:先頭:末尾" で返す
     （負域含む JS randRange との一致照合用。JS randRange と同一の値マッピング:
@@ -536,6 +585,11 @@ def build_env(pattern, unit_id=None):
         for _n in pattern.get("computed_slots", {}):
             if isinstance(env.get(_n), int) and not isinstance(env.get(_n), bool):
                 env[f"{_n}_choice"] = fmt_choice(env[_n])
+    # G-4b multi_symbol機構: edge_set系は computed_slot X(正規化集合文字列) → {X}_edges 表示(fmt_edge_set)を自動生成。
+    if _pidom == "edge_set":
+        for _n in pattern.get("computed_slots", {}):
+            if isinstance(env.get(_n), str):
+                env[f"{_n}_edges"] = fmt_edge_set(env[_n])
     # 答え(整数)
     env["ans"] = eval(pattern["answer_formula"], SAFE,
                       {k: v for k, v in env.items() if isinstance(v, int)})
@@ -608,6 +662,8 @@ def verify(pattern, env, problem):
         in_domain = a > 0
     elif dom == "choice3":  # G-4b: 選択肢番号(表示fmt_choice・恒等=番号一致)。
         in_domain = isinstance(a, int) and not isinstance(a, bool) and 1 <= a <= 3
+    elif dom == "edge_set":  # G-4b: 辺の正規化集合(非空・辞書順正規形・恒等=集合一致)。
+        in_domain = isinstance(a, str) and len(a) > 0 and norm_edge_set(a) == a
     else:  # positive_int（既定・既存バンク全て）
         in_domain = a > 0
     return {"kanji_ok": not bad,
@@ -626,6 +682,7 @@ def _run_vectors(path):
             "fmt_termj": fmt_termj, "sgn_str": sgn_str, "sqrt_coef": sqrt_coef,
             "sqrt_rad": sqrt_rad, "fmt_sqrt": fmt_sqrt, "sample_domain": sample_domain,
             "fmt_pi": fmt_pi, "fmt_pi_frac": fmt_pi_frac, "fmt_choice": fmt_choice,
+            "edge_rel": edge_rel, "norm_edge_set": norm_edge_set, "fmt_edge_set": fmt_edge_set,
             "dec2fix": fmt_dec2fix}
     bad = total = covered = 0
     skipped = []

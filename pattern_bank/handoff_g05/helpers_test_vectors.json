@@ -1114,6 +1114,103 @@
    ""
   ]
  ],
+ "edge_rel": [
+  [
+   [
+    "AB",
+    "skew"
+   ],
+   "CG,DH,EH,FG"
+  ],
+  [
+   [
+    "AB",
+    "平行"
+   ],
+   "CD,EF,GH"
+  ],
+  [
+   [
+    "AB",
+    "垂直"
+   ],
+   "AD,AE,BC,BF"
+  ],
+  [
+   [
+    "BC",
+    "ねじれ"
+   ],
+   "AE,DH,EF,GH"
+  ],
+  [
+   [
+    "AE",
+    "intersect"
+   ],
+   "AB,AD,EF,EH"
+  ],
+  [
+   [
+    "EF",
+    "parallel"
+   ],
+   "AB,CD,GH"
+  ],
+  [
+   [
+    "FB",
+    "skew"
+   ],
+   "AD,CD,EH,GH"
+  ]
+ ],
+ "norm_edge_set": [
+  [
+   [
+    "辺FB、辺GC 辺HE"
+   ],
+   "BF,CG,EH"
+  ],
+  [
+   [
+    "CG,DH,EH,FG"
+   ],
+   "CG,DH,EH,FG"
+  ],
+  [
+   [
+    "FB FB"
+   ],
+   "BF"
+  ],
+  [
+   [
+    ""
+   ],
+   ""
+  ]
+ ],
+ "fmt_edge_set": [
+  [
+   [
+    "CG,DH,EH,FG"
+   ],
+   "辺CG、辺DH、辺EH、辺FG"
+  ],
+  [
+   [
+    "FB"
+   ],
+   "辺BF"
+  ],
+  [
+   [
+    ""
+   ],
+   ""
+  ]
+ ],
  "sample_domain": [
   [
    [

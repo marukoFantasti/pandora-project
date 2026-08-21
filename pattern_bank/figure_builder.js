@@ -661,6 +661,28 @@
     }
     // 高さラベル: 前面左縦辺の左
     specs.push({ anchor: [(base[0][0] + top[0][0]) / 2, (base[0][1] + top[0][1]) / 2], dir: [-1, 0], text: fp.height + u, cands: dimCands(), color: '#333', own: 'hedge' });
+    // G-4b 位置関係(multi_symbol): 頂点名A-H + 基準辺強調(gated=既存prismはフラグ不在でバイト不変)。
+    // 直方体ABCD-EFGH: 上面ABCD=top[0..3](FL/FR/BR/BL)・底面EFGH=base[0..3]。pattern_generator の頂点順序規約と一致。
+    if ((fp.vertex_names || fp.highlight_edge) && g.base_kind === 'rect') {
+      var VN = { A: top[0], B: top[1], C: top[2], D: top[3], E: base[0], F: base[1], G: base[2], H: base[3] };
+      if (fp.highlight_edge) {   // 意匠案: 基準辺=赤太線(C_TARGET・幅3.4)で強調
+        var he = String(fp.highlight_edge).toUpperCase(), hp1 = VN[he.charAt(0)], hp2 = VN[he.charAt(1)];
+        if (hp1 && hp2) { lay.parts.push(lineEl(hp1, hp2, C_TARGET, 3.4)); lay.pts.push(hp1, hp2); }
+      }
+      if (fp.vertex_names) {
+        var KS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'], cen8 = [0, 0];
+        KS.forEach(function (k) { cen8[0] += VN[k][0] / 8; cen8[1] += VN[k][1] / 8; });
+        // 8頂点名は既存prismの寸法ラベルより密。頂点ごとに重心外向きを第一候補とし、8方位へ探索して
+        // ラベル間≥10・辺クリア≥4を満たす向きをplaceLblに選ばせる(内側投影の隠れ頂点も空き方位へ逃がす)。
+        var COMPASS = [[0, 1], [0.71, 0.71], [1, 0], [0.71, -0.71], [0, -1], [-0.71, -0.71], [-1, 0], [-0.71, 0.71],
+          [0.38, 0.92], [0.92, 0.38], [0.92, -0.38], [0.38, -0.92], [-0.38, -0.92], [-0.92, -0.38], [-0.92, 0.38], [-0.38, 0.92]];
+        KS.forEach(function (k) {
+          var v = VN[k], dx = v[0] - cen8[0], dy = v[1] - cen8[1], L = Math.hypot(dx, dy);
+          var out = L > 1 ? [dx / L, dy / L] : [-0.71, -0.71];
+          specs.push({ anchor: v, dirs: [out].concat(COMPASS), text: k, cands: [[13, 13], [16, 12], [20, 12], [25, 11], [30, 11], [35, 10], [40, 10]], color: C_STROKE, own: '' });
+        });
+      }
+    }
     finishLabels(lay, specs);
     return lay;
   }

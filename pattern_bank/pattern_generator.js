@@ -222,6 +222,45 @@
     n = Math.trunc(n);
     return (n >= 1 && n <= CHOICE_LABELS.length) ? CHOICE_LABELS.charAt(n - 1) : '';
   }
+  // 辺の集合の整形（multi_symbol機構・choice様式の横展開）。内部=辺の正規化集合(頂点2字辞書順・集合辞書順)・
+  // 表示=fmt_edge_set(「辺BF、辺CG」)。辺記号は数値トークン非混入(corr-0007透過)。
+  // 直方体ABCD-EFGH: 上面ABCD(z=1)・底面EFGH(z=0)・鉛直辺AE/BF/CG/DH。x=右・y=奥・z=上。
+  var CUBOID_V = { A: [0, 0, 1], B: [1, 0, 1], C: [1, 1, 1], D: [0, 1, 1], E: [0, 0, 0], F: [1, 0, 0], G: [1, 1, 0], H: [0, 1, 0] };
+  var CUBOID_EDGES = ['AB', 'BC', 'CD', 'DA', 'EF', 'FG', 'GH', 'HE', 'AE', 'BF', 'CG', 'DH'];
+  function normEdge(e) { var a = e.charAt(0), b = e.charAt(1); return a < b ? a + b : b + a; }   // 頂点2字を辞書順(BF=FB→"BF")
+  function edgeDir(e) { var p = CUBOID_V[e.charAt(0)], q = CUBOID_V[e.charAt(1)]; return [q[0] - p[0], q[1] - p[1], q[2] - p[2]]; }
+  function shareVertex(e1, e2) { return e1.charAt(0) === e2.charAt(0) || e1.charAt(0) === e2.charAt(1) || e1.charAt(1) === e2.charAt(0) || e1.charAt(1) === e2.charAt(1); }
+  function parallelDir(d1, d2) { return (d1[1] * d2[2] - d1[2] * d2[1]) === 0 && (d1[2] * d2[0] - d1[0] * d2[2]) === 0 && (d1[0] * d2[1] - d1[1] * d2[0]) === 0; }
+  // 基準辺と他辺の位置関係: 頂点共有→交わる(垂直)・同方向→平行・それ以外→ねじれ。
+  function edgeRelationOne(base, other) {
+    if (normEdge(base) === normEdge(other)) return 'same';
+    if (shareVertex(base, other)) return 'intersect';
+    if (parallelDir(edgeDir(base), edgeDir(other))) return 'parallel';
+    return 'skew';
+  }
+  function cuboidEdgeRelation(base) {
+    var out = { parallel: [], intersect: [], skew: [] };
+    CUBOID_EDGES.forEach(function (e) { var r = edgeRelationOne(base, e); if (out[r]) out[r].push(normEdge(e)); });
+    out.parallel.sort(); out.intersect.sort(); out.skew.sort();
+    return out;
+  }
+  var REL_ALIAS = { parallel: 'parallel', '平行': 'parallel', intersect: 'intersect', '交わる': 'intersect', '垂直': 'intersect', skew: 'skew', 'ねじれ': 'skew' };
+  // 正規化集合(辞書順のカンマ連結) を返す決定的式。answer_formula/computed_slots から edge_rel('AB','skew') 等で呼ぶ。
+  function edgeRel(base, relation) {
+    var r = cuboidEdgeRelation(normEdge(base)), key = REL_ALIAS[relation] || relation;
+    return (r[key] || []).join(',');
+  }
+  // 任意の辺集合文字列(辺BF、辺CG / FB CG / …)→ 正規化集合(辞書順カンマ連結)。順不同・FB表記・区切りゆれを吸収。
+  function normEdgeSet(s) {
+    if (s == null) return '';
+    var edges = String(s).match(/[A-H][A-H]/g) || [], set = {};
+    edges.forEach(function (e) { set[normEdge(e)] = 1; });
+    return Object.keys(set).sort().join(',');
+  }
+  function fmtEdgeSet(s) {
+    var edges = normEdgeSet(s).split(',').filter(function (x) { return x; });
+    return edges.map(function (e) { return '辺' + e; }).join('、');
+  }
   // スロット range=[lo,hi](step) の到達可能値ドメインを "件数:先頭:末尾" で返す
   // （負域含む Python randrange とのマッピング一致照合用。randRange と同一: n=floor((hi-lo)/step)+1）。
   function sampleDomain(lo, hi, step) {
@@ -388,11 +427,11 @@
     // 許可関数を増やすだけ（abs/max/min と同格）。既存バンクは未参照＝非干渉。
     var fn = new Function('abs', 'max', 'min', 'pymod', 'round_half_up', 'round_range_lower', 'round_range_upper_excl',
       'gcd', 'lcm', 'reduce_num', 'reduce_den',
-      'fmt_signed', 'fmt_coef', 'fmt_coefj', 'fmt_termj', 'sgn_str', 'sqrt_coef', 'sqrt_rad', 'fmt_sqrt', 'fmt_pi', 'fmt_pi_frac', 'fmt_choice', 'dec2fix',
+      'fmt_signed', 'fmt_coef', 'fmt_coefj', 'fmt_termj', 'sgn_str', 'sqrt_coef', 'sqrt_rad', 'fmt_sqrt', 'fmt_pi', 'fmt_pi_frac', 'fmt_choice', 'edge_rel', 'norm_edge_set', 'fmt_edge_set', 'dec2fix',
       keys.join(','), 'return (' + jsExpr + ');');
     return fn.apply(null, [Math.abs, Math.max, Math.min, pymod, roundHalfUp, roundRangeLower, roundRangeUpperExcl,
       gcdInt, lcmInt, reduceNum, reduceDen,
-      fmtSigned, fmtCoef, fmtCoefj, fmtTermj, sgnStr, sqrtCoef, sqrtRad, fmtSqrt, fmtPi, fmtPiFrac, fmtChoice, fmtDec2fix].concat(vals));
+      fmtSigned, fmtCoef, fmtCoefj, fmtTermj, sgnStr, sqrtCoef, sqrtRad, fmtSqrt, fmtPi, fmtPiFrac, fmtChoice, edgeRel, normEdgeSet, fmtEdgeSet, fmtDec2fix].concat(vals));
   }
 
   // ---- スロット解決 ----
@@ -617,6 +656,12 @@
         if (typeof env[nm] === 'number' && Number.isInteger(env[nm])) env[nm + '_choice'] = fmtChoice(env[nm]);
       });
     }
+    // G-4b multi_symbol機構: edge_set系は computed_slot X(正規化集合文字列) → {X}_edges 表示(fmtEdgeSet・「辺BF、辺CG」)を自動生成。
+    if (_pidom === 'edge_set') {
+      Object.keys(pattern.computed_slots || {}).forEach(function (nm) {
+        if (typeof env[nm] === 'string') env[nm + '_edges'] = fmtEdgeSet(env[nm]);
+      });
+    }
 
     // 答え（整数値のみをformulaに渡す＝Pythonのisinstance(v,int)フィルタと同義）
     var intEnv = {};
@@ -747,6 +792,7 @@
     else if (dom === 'nonzero_int') inDomain = a !== 0;
     else if (dom === 'pi_coef' || dom === 'pi_coef_frac3') inDomain = a > 0;   // S-1/S-3: π係数(表示fmt_pi/fmt_pi_frac(_,3))。正。
     else if (dom === 'choice3') inDomain = Number.isInteger(a) && a >= 1 && a <= 3;   // G-4b: 選択肢番号(表示fmt_choice・恒等=番号一致)。
+    else if (dom === 'edge_set') inDomain = typeof a === 'string' && a.length > 0 && normEdgeSet(a) === a;   // G-4b: 辺の正規化集合(非空・辞書順正規形・恒等=集合一致)。
     else inDomain = a > 0;   // positive_int（既定・既存バンク全て）
 
     return {
@@ -840,6 +886,7 @@
     fmtPi: fmtPi,
     fmtPiFrac: fmtPiFrac,
     fmtChoice: fmtChoice,
+    edgeRel: edgeRel, normEdgeSet: normEdgeSet, fmtEdgeSet: fmtEdgeSet, cuboidEdgeRelation: cuboidEdgeRelation,
     fmtDec2fix: fmtDec2fix,
     sampleDomain: sampleDomain,
     resolveFigureParams: resolveFigureParams,
