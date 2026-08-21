@@ -509,7 +509,8 @@
     var slots = effectiveSlots(pattern, unitId);
     var numeric = {};
     Object.keys(slots).forEach(function (k) {
-      if (slots[k].type === 'int' || slots[k].choice_int) numeric[k] = slots[k];
+      // 正規化層: type:'choice_int'(バッチ2書式)は int+choice_int と同義(既存 {type:'int',choice_int:true} 機構へ吸収)
+      if (slots[k].type === 'int' || slots[k].choice_int || slots[k].type === 'choice_int') numeric[k] = slots[k];
     });
     var quants = pattern.quantity_slots || {};
     var constraints = effectiveConstraints(pattern, unitId);

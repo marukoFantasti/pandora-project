@@ -461,7 +461,7 @@ def effective_constraints(pattern, unit_id=None):
 def sample_numeric(pattern, unit_id=None, max_tries=3000):
     slots = effective_slots(pattern, unit_id)
     numeric = {k: sp for k, sp in slots.items()
-               if sp.get("type") == "int" or sp.get("choice_int")}
+               if sp.get("type") == "int" or sp.get("choice_int") or sp.get("type") == "choice_int"}  # 正規化層: choice_int型書式吸収
     quants = pattern.get("quantity_slots", {})
     constraints = effective_constraints(pattern, unit_id)
     for _ in range(max_tries):

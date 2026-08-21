@@ -1,0 +1,113 @@
+{
+ "_meta": {
+  "schema": "rationale_g05_gold.json準拠(pandora2正準・ネスト形)",
+  "scope": "g01追補8件(P-1バッチ2・かずの表現+ならびかた)。rationale_g01正準へ追補統合(23→31)",
+  "note": "figure_notes正準。num_seq(順序保存照合)本使用の初バンク。ネイティブ記述 2026-08-22",
+  "order": "バンク順"
+ },
+ "g01_kurai_kosei_01": {
+  "brief": {"semantic_territory": "位の構成(まとまり+ばら→数)", "number_domain": "整数(11〜99)", "answer_structure": "single", "figure": null, "step_count": 1,
+   "directives": [
+    {"text": "バッチ2は構造確定8で構成。0のかず・表記変換・合成分解列挙形は構造不確定(転記スタブ/実装コスト)のため第3バッチ判断の在庫(2026-08-22)", "by": "marko", "date": "2026-08"}
+   ]},
+  "rationale": {
+   "source_features": "「10のまとまりがXこと ばらがYこ」→数。2桁の位取り理解の合成方向で、位構成4単元の主形。",
+   "representation": "10x+yの直接合成。定数10はtnc宣言。分解方向(bunkai_01)と双方向対。",
+   "constructive_guarantees": "答≧11>x,yの転記自動安全。ばら0は文の不自然のためy≧1(何十ちょうどの構成はhyaku系・tens系の領分)。受理81組。",
+   "semantic_position": "位取り対の合成位。g01_add_tensone(位ごとの計算)の概念的前段。",
+   "exclusions": "y=0(文不自然・別領分)。",
+   "figure_notes": "図なし(まとまりの図解(束の絵)は転記データ上出現せず・テキスト完結が実物準拠)。",
+   "pedagogy": []
+  }
+ },
+ "g01_kurai_bunkai_01": {
+  "brief": {"semantic_territory": "位の分解(数→まとまり+ばら)", "number_domain": "2値列(num_seq・まとまり数/ばら数)", "answer_structure": "single", "figure": null, "step_count": 1,
+   "directives": [
+    {"text": "num_seq(順序保存の数値列照合・15a202f)の本使用第1号。答2値の順序=まとまり、ばらで固定。テンプレ固定数値(10)は採点の接頭辞除外ガードが担保", "by": "marko", "date": "2026-08"}
+   ]},
+  "rationale": {
+   "source_features": "数N→「10のまとまりが□こと ばらが□こ」の分解方向。合成と対で位取りの双方向理解を作る単元構成。",
+   "representation": "N=computed(10x+y)で表示し、答は基底スロット(x,y)の2値列——「答えから問題を構成する」逆算生成の位取り版。answer_formula=先頭要素x1(enumeration分担: 全要素はハーネス照合)。",
+   "constructive_guarantees": "答(x≦9,y≦9)と表示N(≧11)が別値域で転記自動安全。受理81組(kosei_01と同域=双方向の難度統制)。",
+   "semantic_position": "位取り対の分解位・num_seq機構の初適用。",
+   "exclusions": "y=0(kosei_01と同判断)。",
+   "figure_notes": "図なし(同上)。",
+   "pedagogy": []
+  }
+ },
+ "g01_hyaku_kosei_01": {
+  "brief": {"semantic_territory": "100超の位の構成", "number_domain": "整数(110〜210)", "answer_structure": "single", "figure": null, "step_count": 1, "directives": []},
+  "rationale": {
+   "source_features": "1年終盤の「100より大きい数」。100と10の束の合成で、数域が210まで段階拡大する参照構成の写し。",
+   "representation": "100h+10tの2束合成。h∈[1,2]の狭域は参照上限(210)の制約側表現。",
+   "constructive_guarantees": "range_cap(≦210)。答≧110の転記自動安全。受理10組——狭いが1年の100超域の実態(過剰生成しない)。",
+   "semantic_position": "位構成系の上位域。g02の3桁位取りへの前段。",
+   "exclusions": "210超(参照レンジ外)。",
+   "figure_notes": "図なし(純構成)。",
+   "pedagogy": []
+  }
+ },
+ "g01_kurabe_ookii_01": {
+  "brief": {"semantic_territory": "大小比較(大きい数域)", "number_domain": "整数(21〜120)", "answer_structure": "single", "figure": null, "step_count": 1, "directives": []},
+  "rationale": {
+   "source_features": "大きい数域の大小。桁数が違う組(98と103)の比較が本域の学習の山で、位取りの応用としての大小判断。",
+   "representation": "kurabe_01の値域拡張版を新設(既存レンジ改変でなく別単元の別パターン——単元対応の明確化)。同桁強制をしない設計判断を明記。",
+   "constructive_guarantees": "a≠b(弁別の実質化)。答=本文値は比較選択の学習内容=転記例外(kurabe族・要例外登録)。受理9,900組。",
+   "semantic_position": "kurabe_01の上位域対。",
+   "exclusions": "a=b(比較不成立)。",
+   "figure_notes": "図なし(数の大小はテキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g01_seq_tsugi_01": {
+  "brief": {"semantic_territory": "1おおきい かず", "number_domain": "整数(〜120)", "answer_structure": "single", "figure": null, "step_count": 1, "directives": []},
+  "rationale": {
+   "source_features": "「Nより1大きい数」。数の順序(次の数)のテキスト版で、数直線を使わず言語で順序を問う実物形。",
+   "representation": "N+1の最小構成。前(mae_01)と対。",
+   "constructive_guarantees": "答=N+1≠Nの転記自動安全。受理119組。",
+   "semantic_position": "ならびかた系の単値対(次/前)の第1位。",
+   "exclusions": "なし(レンジが内包)。",
+   "figure_notes": "図なし(数直線図は転記データ上出現せず・言語順序のテキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g01_seq_mae_01": {
+  "brief": {"semantic_territory": "1ちいさい かず", "number_domain": "整数(〜120)", "answer_structure": "single", "figure": null, "step_count": 1, "directives": []},
+  "rationale": {
+   "source_features": "「Nより1小さい数」。次の数と逆向きの対。",
+   "representation": "N−1。n≧2で答の正。",
+   "constructive_guarantees": "転記自動安全。受理119組。",
+   "semantic_position": "単値対の第2位。",
+   "exclusions": "n=1(答0は順序文脈で不自然)。",
+   "figure_notes": "図なし(同上)。",
+   "pedagogy": []
+  }
+ },
+ "g01_seq_ana_01": {
+  "brief": {"semantic_territory": "かずの ならび(連続・空欄2)", "number_domain": "2値列(num_seq・連続)", "answer_structure": "single", "figure": null, "step_count": 1,
+   "directives": [
+    {"text": "系列穴埋めは固定2〜3空欄に正規化(参照の2〜22要素は答に数列全体を書き写した転記実態・5空欄超は圧縮——2026-08-22裁可②)", "by": "marko", "date": "2026-08"}
+   ]},
+  "rationale": {
+   "source_features": "連続列の穴埋め(s, s+1, □, □, s+4)。数の並びの規則性理解の基本形。",
+   "representation": "空欄2の固定構成(裁可②)。表示列はcomputed(d1=s+1・e1=s+4)で系列全体が単一スロットsから駆動——系列の整合が構造に内在。num_seq(順序保存・逆順×)。",
+   "constructive_guarantees": "答(s+2,s+3)と表示値(s,s+1,s+4)の非衝突を全域検証済み。受理116組。",
+   "semantic_position": "系列穴埋め対(連続/とび)の第1位。",
+   "exclusions": "s+4>120(数域外)。",
+   "figure_notes": "図なし(数直線非依存の列表記)。",
+   "pedagogy": []
+  }
+ },
+ "g01_seq_tobi_01": {
+  "brief": {"semantic_territory": "とびの ならび(2・5・10とび)", "number_domain": "2値列(num_seq・等差)", "answer_structure": "single", "figure": null, "step_count": 1, "directives": []},
+  "rationale": {
+   "source_features": "2とび・5とび・10とびの等差列。かけ算(九九)の素地となる規則性で、1年ならびかたの発展位。",
+   "representation": "刻みkのchoices(2/5/10)スロット化で3種を1パターンに(裁可②のレンジ帯方式・jhs mult_2step_changeの貨幣choicesと同手筋)。刻み30は実物1例のためchoices外・第3波在庫に記録。",
+   "constructive_guarantees": "s+4k≦120(数域)。空欄値と表示値の非衝突を全域検証済み(等差で構造的に別値)。受理240組。",
+   "semantic_position": "系列穴埋め対の第2位・g02の九九(2・5のだん先行)への数列的前段。",
+   "exclusions": "s+4k>120・刻み30(在庫)。",
+   "figure_notes": "図なし(同上)。",
+   "pedagogy": []
+  }
+ }
+}

@@ -322,6 +322,10 @@
   {
    "pattern_id": "g01_sub_zero_01",
    "code": "SELECTION_ANSWER"
+  },
+  {
+   "pattern_id": "g01_kurabe_ookii_01",
+   "code": "SELECTION_ANSWER"
   }
  ]
 }

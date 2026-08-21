@@ -912,6 +912,368 @@
    },
    "answer_structure": "single",
    "template_number_constants": []
+  },
+  {
+   "pattern_id": "g01_kurai_kosei_01",
+   "grade": "g01",
+   "unit_id": "g01_c04_u04",
+   "unit_name": "10の まとまりと ばら",
+   "semantic_category": "位の構成(まとまり+ばら→数)",
+   "semantic_note": "10のまとまりx個とばらy個→数(10x+y)。位取りの合成方向。答≧11>x,yで転記自動安全。ばら0(何十ちょうど)は文が不自然のためy≧1。",
+   "step_count": 1,
+   "operation": "10x＋y",
+   "answer_formula": "10 * x1 + y1",
+   "answer_domain": "any_int",
+   "slots": {
+    "x1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "y1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "10の まとまりが {x1}こと、ばらが {y1}こ あります。かずは いくつですか。"
+   ],
+   "answer_template": "こたえ {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    10
+   ]
+  },
+  {
+   "pattern_id": "g01_kurai_bunkai_01",
+   "grade": "g01",
+   "unit_id": "g01_c04_u04",
+   "unit_name": "10の まとまりと ばら",
+   "semantic_category": "位の分解(数→まとまり+ばら)",
+   "semantic_note": "数N→10のまとまり数とばら数の2値(分解方向・kosei_01の逆)。num_seq本使用の第1号(順序=まとまり、ばらで固定)。テンプレ固定数値10は採点の接頭辞除外ガードが担保。 answer_formula=先頭要素x1(enumeration分担: 全要素はハーネス照合)。",
+   "step_count": 1,
+   "operation": "N→(x, y)",
+   "answer_formula": "x1",
+   "answer_domain": "num_seq",
+   "slots": {
+    "x1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "y1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{N1}は、10の まとまりが なんこと、ばらが なんこですか。"
+   ],
+   "answer_template": "こたえ 10の まとまりが {x1}こ、ばらが {y1}こ",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    10
+   ],
+   "computed_slots": {
+    "N1": {
+     "formula": "10 * x1 + y1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g01_hyaku_kosei_01",
+   "grade": "g01",
+   "unit_id": "g01_c09_u01",
+   "unit_name": "100より おおきい かず",
+   "semantic_category": "100超の位の構成",
+   "semantic_note": "100がh個と10がt個→数(参照レンジ上限210に整合)。1年終盤の大きい数域。答≧110で転記自動安全。",
+   "step_count": 1,
+   "operation": "100h＋10t",
+   "answer_formula": "100 * h1 + 10 * t1",
+   "answer_domain": "any_int",
+   "slots": {
+    "h1": {
+     "type": "int",
+     "range": [
+      1,
+      2
+     ]
+    },
+    "t1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "range_cap",
+     "expr": "100 * h1 + 10 * t1 <= 210",
+     "why": "参照レンジ上限(210)・1年生の数域"
+    }
+   ],
+   "sentence_templates": [
+    "100が {h1}こと、10が {t1}こ あります。かずは いくつですか。"
+   ],
+   "answer_template": "こたえ {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    100,
+    10
+   ]
+  },
+  {
+   "pattern_id": "g01_kurabe_ookii_01",
+   "grade": "g01",
+   "unit_id": "g01_c09_u01",
+   "unit_name": "100より おおきい かず",
+   "semantic_category": "大小比較(大きい数域)",
+   "semantic_note": "既存kurabe_01(6〜20)の大きい数域拡張(21〜120)。答=本文値は比較選択の学習内容=転記例外(kurabe族・要例外登録)。桁数が違う組(98と103)が本域の学習の山のため、同桁強制はしない。",
+   "step_count": 1,
+   "operation": "max(a, b)",
+   "answer_formula": "max(a1, b1)",
+   "answer_domain": "any_int",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      21,
+      120
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      21,
+      120
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "discriminate",
+     "expr": "a1 != b1",
+     "why": "弁別の実質化(kurabe_01と同型)"
+    }
+   ],
+   "sentence_templates": [
+    "{a1}と {b1}では、どちらが おおきいですか。"
+   ],
+   "answer_template": "こたえ {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g01_seq_tsugi_01",
+   "grade": "g01",
+   "unit_id": "g01_c10_u01",
+   "unit_name": "かずの ならびかた",
+   "semantic_category": "1おおきい かず",
+   "semantic_note": "N+1(次の数)。数直線的な順序理解のテキスト版。答=N+1≠Nで転記自動安全。",
+   "step_count": 1,
+   "operation": "N＋1",
+   "answer_formula": "n1 + 1",
+   "answer_domain": "any_int",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      1,
+      119
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{n1}より 1 おおきい かずは いくつですか。"
+   ],
+   "answer_template": "こたえ {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "g01_seq_mae_01",
+   "grade": "g01",
+   "unit_id": "g01_c10_u01",
+   "unit_name": "かずの ならびかた",
+   "semantic_category": "1ちいさい かず",
+   "semantic_note": "N−1(前の数)。tsugi_01の逆向き対。n≧2で答の正。",
+   "step_count": 1,
+   "operation": "N−1",
+   "answer_formula": "n1 - 1",
+   "answer_domain": "any_int",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      2,
+      120
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{n1}より 1 ちいさい かずは いくつですか。"
+   ],
+   "answer_template": "こたえ {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "g01_seq_ana_01",
+   "grade": "g01",
+   "unit_id": "g01_c10_u01",
+   "unit_name": "かずの ならびかた",
+   "semantic_category": "かずの ならび(連続・空欄2)",
+   "semantic_note": "連続列 s, s+1, □, □, s+4 の2空欄(裁可②=固定2〜3空欄への正規化)。num_seq(順序保存・逆順×)。答は表示値と別値で転記自動安全。",
+   "step_count": 1,
+   "operation": "連続列の穴埋め",
+   "answer_formula": "s1 + 2",
+   "answer_domain": "num_seq",
+   "slots": {
+    "s1": {
+     "type": "int",
+     "range": [
+      1,
+      116
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "かずが じゅんに ならんで います。□に はいる かずを かきましょう。\n{s1}、{d1}、□、□、{e1}"
+   ],
+   "answer_template": "こたえ {n1d}、{n2d}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "d1": {
+     "formula": "s1 + 1"
+    },
+    "n1d": {
+     "formula": "s1 + 2"
+    },
+    "n2d": {
+     "formula": "s1 + 3"
+    },
+    "e1": {
+     "formula": "s1 + 4"
+    }
+   }
+  },
+  {
+   "pattern_id": "g01_seq_tobi_01",
+   "grade": "g01",
+   "unit_id": "g01_c10_u01",
+   "unit_name": "かずの ならびかた",
+   "semantic_category": "とびの ならび(2・5・10とび)",
+   "semantic_note": "刻みk(choices 2/5/10)の等差列 s, s+k, □, □, s+4k。刻みスロット化で1パターン(裁可②のレンジ帯方式)。num_seq。刻み30の転記例は実物1例のためchoices外(第3波在庫)。",
+   "step_count": 1,
+   "operation": "とび列の穴埋め",
+   "answer_formula": "s1 + 2 * k1",
+   "answer_domain": "num_seq",
+   "slots": {
+    "s1": {
+     "type": "int",
+     "range": [
+      1,
+      80
+     ]
+    },
+    "k1": {
+     "choices": [
+      2,
+      5,
+      10
+     ],
+     "type": "choice_int"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "range_cap",
+     "expr": "s1 + 4 * k1 <= 120",
+     "why": "1年生の数域(〜120)"
+    }
+   ],
+   "sentence_templates": [
+    "かずが きまりに したがって ならんで います。□に はいる かずを かきましょう。\n{s1}、{d1}、□、□、{e1}"
+   ],
+   "answer_template": "こたえ {n1d}、{n2d}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "d1": {
+     "formula": "s1 + k1"
+    },
+    "n1d": {
+     "formula": "s1 + 2 * k1"
+    },
+    "n2d": {
+     "formula": "s1 + 3 * k1"
+    },
+    "e1": {
+     "formula": "s1 + 4 * k1"
+    }
+   }
   }
  ]
 }

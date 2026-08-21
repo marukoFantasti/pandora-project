@@ -2481,6 +2481,54 @@
 {"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g01_bunsho_kyuho_01", "grade": "g01", "unit_id": "g01_c06_u05", "kind": null, "text": "文章題新型4部作の掉尾。g02_addsub_kyuho_2digit_01への直系前段で、5意味カテゴリの1年側の入口。"}
 {"doc_type": "rationale", "section": "exclusions", "pattern_id": "g01_bunsho_kyuho_01", "grade": "g01", "unit_id": "g01_c06_u05", "kind": null, "text": "部分1以下・a=2b(転記)。"}
 {"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g01_bunsho_kyuho_01", "grade": "g01", "unit_id": "g01_c06_u05", "kind": null, "text": "図なし(部分-全体のテキスト完結型)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g01_kurai_kosei_01", "grade": "g01", "unit_id": "g01_c04_u04", "kind": null, "text": "「10のまとまりがXこと ばらがYこ」→数。2桁の位取り理解の合成方向で、位構成4単元の主形。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g01_kurai_kosei_01", "grade": "g01", "unit_id": "g01_c04_u04", "kind": null, "text": "10x+yの直接合成。定数10はtnc宣言。分解方向(bunkai_01)と双方向対。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g01_kurai_kosei_01", "grade": "g01", "unit_id": "g01_c04_u04", "kind": null, "text": "答≧11>x,yの転記自動安全。ばら0は文の不自然のためy≧1(何十ちょうどの構成はhyaku系・tens系の領分)。受理81組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g01_kurai_kosei_01", "grade": "g01", "unit_id": "g01_c04_u04", "kind": null, "text": "位取り対の合成位。g01_add_tensone(位ごとの計算)の概念的前段。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g01_kurai_kosei_01", "grade": "g01", "unit_id": "g01_c04_u04", "kind": null, "text": "y=0(文不自然・別領分)。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g01_kurai_kosei_01", "grade": "g01", "unit_id": "g01_c04_u04", "kind": null, "text": "図なし(まとまりの図解(束の絵)は転記データ上出現せず・テキスト完結が実物準拠)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g01_kurai_bunkai_01", "grade": "g01", "unit_id": "g01_c04_u04", "kind": null, "text": "数N→「10のまとまりが□こと ばらが□こ」の分解方向。合成と対で位取りの双方向理解を作る単元構成。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g01_kurai_bunkai_01", "grade": "g01", "unit_id": "g01_c04_u04", "kind": null, "text": "N=computed(10x+y)で表示し、答は基底スロット(x,y)の2値列——「答えから問題を構成する」逆算生成の位取り版。answer_formula=先頭要素x1(enumeration分担: 全要素はハーネス照合)。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g01_kurai_bunkai_01", "grade": "g01", "unit_id": "g01_c04_u04", "kind": null, "text": "答(x≦9,y≦9)と表示N(≧11)が別値域で転記自動安全。受理81組(kosei_01と同域=双方向の難度統制)。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g01_kurai_bunkai_01", "grade": "g01", "unit_id": "g01_c04_u04", "kind": null, "text": "位取り対の分解位・num_seq機構の初適用。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g01_kurai_bunkai_01", "grade": "g01", "unit_id": "g01_c04_u04", "kind": null, "text": "y=0(kosei_01と同判断)。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g01_kurai_bunkai_01", "grade": "g01", "unit_id": "g01_c04_u04", "kind": null, "text": "図なし(同上)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g01_hyaku_kosei_01", "grade": "g01", "unit_id": "g01_c09_u01", "kind": null, "text": "1年終盤の「100より大きい数」。100と10の束の合成で、数域が210まで段階拡大する参照構成の写し。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g01_hyaku_kosei_01", "grade": "g01", "unit_id": "g01_c09_u01", "kind": null, "text": "100h+10tの2束合成。h∈[1,2]の狭域は参照上限(210)の制約側表現。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g01_hyaku_kosei_01", "grade": "g01", "unit_id": "g01_c09_u01", "kind": null, "text": "range_cap(≦210)。答≧110の転記自動安全。受理10組——狭いが1年の100超域の実態(過剰生成しない)。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g01_hyaku_kosei_01", "grade": "g01", "unit_id": "g01_c09_u01", "kind": null, "text": "位構成系の上位域。g02の3桁位取りへの前段。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g01_hyaku_kosei_01", "grade": "g01", "unit_id": "g01_c09_u01", "kind": null, "text": "210超(参照レンジ外)。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g01_hyaku_kosei_01", "grade": "g01", "unit_id": "g01_c09_u01", "kind": null, "text": "図なし(純構成)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g01_kurabe_ookii_01", "grade": "g01", "unit_id": "g01_c09_u01", "kind": null, "text": "大きい数域の大小。桁数が違う組(98と103)の比較が本域の学習の山で、位取りの応用としての大小判断。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g01_kurabe_ookii_01", "grade": "g01", "unit_id": "g01_c09_u01", "kind": null, "text": "kurabe_01の値域拡張版を新設(既存レンジ改変でなく別単元の別パターン——単元対応の明確化)。同桁強制をしない設計判断を明記。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g01_kurabe_ookii_01", "grade": "g01", "unit_id": "g01_c09_u01", "kind": null, "text": "a≠b(弁別の実質化)。答=本文値は比較選択の学習内容=転記例外(kurabe族・要例外登録)。受理9,900組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g01_kurabe_ookii_01", "grade": "g01", "unit_id": "g01_c09_u01", "kind": null, "text": "kurabe_01の上位域対。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g01_kurabe_ookii_01", "grade": "g01", "unit_id": "g01_c09_u01", "kind": null, "text": "a=b(比較不成立)。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g01_kurabe_ookii_01", "grade": "g01", "unit_id": "g01_c09_u01", "kind": null, "text": "図なし(数の大小はテキスト完結)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g01_seq_tsugi_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "「Nより1大きい数」。数の順序(次の数)のテキスト版で、数直線を使わず言語で順序を問う実物形。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g01_seq_tsugi_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "N+1の最小構成。前(mae_01)と対。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g01_seq_tsugi_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "答=N+1≠Nの転記自動安全。受理119組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g01_seq_tsugi_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "ならびかた系の単値対(次/前)の第1位。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g01_seq_tsugi_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "なし(レンジが内包)。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g01_seq_tsugi_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "図なし(数直線図は転記データ上出現せず・言語順序のテキスト完結)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g01_seq_mae_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "「Nより1小さい数」。次の数と逆向きの対。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g01_seq_mae_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "N−1。n≧2で答の正。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g01_seq_mae_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "転記自動安全。受理119組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g01_seq_mae_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "単値対の第2位。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g01_seq_mae_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "n=1(答0は順序文脈で不自然)。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g01_seq_mae_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "図なし(同上)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g01_seq_ana_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "連続列の穴埋め(s, s+1, □, □, s+4)。数の並びの規則性理解の基本形。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g01_seq_ana_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "空欄2の固定構成(裁可②)。表示列はcomputed(d1=s+1・e1=s+4)で系列全体が単一スロットsから駆動——系列の整合が構造に内在。num_seq(順序保存・逆順×)。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g01_seq_ana_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "答(s+2,s+3)と表示値(s,s+1,s+4)の非衝突を全域検証済み。受理116組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g01_seq_ana_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "系列穴埋め対(連続/とび)の第1位。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g01_seq_ana_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "s+4>120(数域外)。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g01_seq_ana_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "図なし(数直線非依存の列表記)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g01_seq_tobi_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "2とび・5とび・10とびの等差列。かけ算(九九)の素地となる規則性で、1年ならびかたの発展位。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g01_seq_tobi_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "刻みkのchoices(2/5/10)スロット化で3種を1パターンに(裁可②のレンジ帯方式・jhs mult_2step_changeの貨幣choicesと同手筋)。刻み30は実物1例のためchoices外・第3波在庫に記録。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g01_seq_tobi_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "s+4k≦120(数域)。空欄値と表示値の非衝突を全域検証済み(等差で構造的に別値)。受理240組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g01_seq_tobi_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "系列穴埋め対の第2位・g02の九九(2・5のだん先行)への数列的前段。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g01_seq_tobi_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "s+4k>120・刻み30(在庫)。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g01_seq_tobi_01", "grade": "g01", "unit_id": "g01_c10_u01", "kind": null, "text": "図なし(同上)。"}
 {"doc_type": "correction", "section": "generalization", "scope": {"type": "kind", "target": "tri_angle, tri_angle_iso, quad_angle"}, "by": "marko", "text": "あ、が離れ過ぎじゃない? → 頂点系の図では未知ラベルも内側が既定。『外側』はangle_sum(頂点から射線が開く図)に固有の慣行であり、閉図形へ転用しない。"}
 {"doc_type": "correction", "section": "generalization", "scope": {"type": "kind", "target": "para_area, tri_area, trap_area, rhombus_area"}, "by": "marko", "text": "数字の1が、縦線と交わったらわかりにくくなるね。 → 数字字形(特に1)と縦線の平行隣接は距離保証と別に水平クリアランスで防ぐ。新kindの仕様段階で『字形と線の紛れ』をチェックリストに含める。"}
 {"doc_type": "correction", "section": "generalization", "scope": {"type": "generator", "target": "pattern_generator.js translateFloorDiv / JS検証関門"}, "by": "marko", "text": "(A)translateFloorDivを根治で修正（//・%の左オペランドが * / % // の連鎖を含むよう、Pythonの同順位・左結合と等価に）。JS verifyパリティ(JS生成の答え==Python評価)を全学年の標準関門に昇格。バンクJSONは触らない(括弧化しない)。 → 式翻訳器は演算子の優先順位・結合性をPython準拠で保証する。生成器変更・バンク追加時は必ずJS↔Python答えパリティ関門を実行する（生成成功チェックだけでは誤訳を検出できない）。"}

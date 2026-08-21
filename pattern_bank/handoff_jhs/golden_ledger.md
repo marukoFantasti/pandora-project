@@ -179,3 +179,12 @@
 - **unit_id突合**: c07/c08新設・c03_u01/c06_u03は既存単元への同居(意味整合確認)。参照側との対応は g01_unit_mapping.md 新設(17単元全対応・偽一致問題の管理台帳)。
 - かな検査: 11×200=2200標本 漢字混入0。恒等検算23パターン(識別子11追加・69000本)。rationale 391→402・integrity 402・pairs_design 402。furigana_coverage 402パターン残存0(g01=全かなで新規流入なし確認)。
 - 配信OFF継続(BANK_FILES登録済み・DEPLOY_EXCLUDE_UNIT_PREFIXES=['g01_']維持)。パリティ 235×40=9400一致。
+
+### 2026-08-22 g01バッチ2(P-1第二波・かずの表現+ならびかた8追補・D-2)
+- g01に8パターンをD-2 append(23→31)。まるこ検収済み(2026-08-22)。位の構成/分解(c04_u04)・100超の構成/大小(c09_u01)・前後/連続穴埋め/とび(c10_u01)。外科的append(既存部バイト不変)。
+- 旧md5 307f9e77(23)→**新md5 e0e3786a**(31)。golden PASS 93/93。既存23 byte一致(D-2成立)。
+- **num_seq本番デビュー2パターン**(kurai_bunkai・seq_ana・seq_tobi=3? → bunkai/ana/tobiの3つがnum_seq…注: bunkai(位の分解)・ana(連続穴埋め)・tobi(とび)。verify=先頭要素(x1/s1+2/s1+2k1)+ハーネス全要素照合(enumeration分担)。助数詞混在形「{x1}こ、ばらが {y1}こ」は採点側の「Nの」修飾定数除去で2値抽出=実地7標本PASS(同形文○/値のみ○/逆順×/10混入×)。
+- **choice_int正規化層**: batch2書式 type:"choice_int" を既存 {type:"int",choice_int:true} 機構へ吸収(両engine1行)。k1∈{2,5,10}受理・制約(≤120)適用確認。
+- **corr-0007例外**: g01_kurabe_ookii_01 を SELECTION_ANSWER(kurabe族3件目)。例外総数 77→**78**・gate残差0。
+- unit_id: c04_u04/c09_u01/c10_u01 新設→g01_unit_mapping.md 追記。かな検査1600標本漢字0。
+- rationale 402→410・integrity 410・pairs_design 410・furigana 410残存0。恒等検算31パターン93000本(num_seq系は全要素恒等込み)。パリティ全一致・全30関門PASS。配信OFF継続。

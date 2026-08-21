@@ -831,6 +831,8 @@ function edgeSetMatch(studentAns, answer) {
 function numSeqNorm(s) {
   if (s == null) return '';
   var t = String(s).replace(/[０-９]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0xFEE0); }).replace(/−/g, '-');
+  // 「Nの」形(10の まとまり 等)は修飾定数=答え値でない→抽出前に除去(正答・生徒答の双方へ対称適用)
+  t = t.replace(/-?\d+\s*の/g, '');
   var m = t.match(/-?\d+/g) || [];
   return m.map(function (x) { return String(parseInt(x, 10)); }).join(',');
 }
