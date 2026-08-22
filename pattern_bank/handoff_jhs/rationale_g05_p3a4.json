@@ -1,0 +1,52 @@
+{
+ "_meta": {
+  "schema": "rationale_g05_gold.json準拠",
+  "scope": "g05追補2件(P-3a第四便・円周拡張)。統合(433→435)",
+  "note": "ネイティブ記述 2026-08-22",
+  "order": "バンク順"
+ },
+ "g05_circle_rad_from_circum_01": {
+  "brief": {
+   "semantic_territory": "円周→半径(逆算2段)",
+   "number_domain": "整数(半径・円周はdec2表示)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "g05円周3は既に図付き(fig v1 given方式)と受領読解で判明——図付き新設は不要。円描画3方式並存(v1 given/v2 radius_label/v2 mode)。g05実欠落=逆算半径版+文章版のみ(2026-08-22)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "円周から半径への逆算。直径版(既存)より1段深く、÷3.14→÷2の2段。",
+   "representation": "円周は構成的にr起点(r×628内部整数)で生成し_disp表示——「答えから問題を構成する」逆算生成の円周版。中間の直径dd1をしきに明示(2段しき・g06 area_reverse前例)。",
+   "constructive_guarantees": "内部整数・逆算の可逆を全域証明(11組)。答=半径は整数(dec2系でも整数表示)。",
+   "semantic_position": "逆算対の半径側(直径版と対で完成)。",
+   "exclusions": "なし。",
+   "figure_notes": "図なし(逆算は数値関係が主眼・既存diam_from_circumもfig null——族内の図なし流儀に整合)。",
+   "pedagogy": []
+  }
+ },
+ "g05_circle_circum_word_01": {
+  "brief": {
+   "semantic_territory": "円周の文章題",
+   "number_domain": "小数2桁(dec2)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "直径→まわりの長さの状況文(花だん・単位m)。計算ドリル(cm)の生活文脈化。",
+   "representation": "circum_diam_01と同数理・文章と単位(m)だけの差——「同じ計算・違う入口」の文章題版。",
+   "constructive_guarantees": "同値証明は既存と共有(d×314)。",
+   "semantic_position": "円周族の文章側・円族第一波の掉尾。複合円(composite_circle)へ。",
+   "exclusions": "なし。",
+   "figure_notes": "図なし(状況文が情報源・既存文章題流儀)。",
+   "pedagogy": []
+  }
+ }
+}

@@ -5367,6 +5367,367 @@
      ]
     }
    }
+  },
+  {
+   "pattern_id": "g05_circle_rad_from_circum_01",
+   "grade": "g05",
+   "unit_id": "g05_c12_u02",
+   "unit_name": "円周",
+   "semantic_category": "円周→半径(逆算2段)",
+   "semantic_note": "円周÷3.14=直径→÷2=半径の2段逆算(既存diam_from_circum_01の半径版・逆算対の完成)。中間の直径(dd1=2r・整数)をしきに明示する2段しき形式(g06 area_reverseの前例踏襲)。円周は構成的にr起点で生成(_disp経由)。",
+   "step_count": 1,
+   "operation": "円周÷3.14÷2",
+   "answer_formula": "r1",
+   "answer_unit_system": "dec2",
+   "slots": {
+    "r1": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    }
+   },
+   "computed_slots": {
+    "c_len1": {
+     "formula": "r1 * 628"
+    },
+    "dd1": {
+     "formula": "2 * r1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "円周の長さが{c_len1_disp}cmの円があります。この円の半径の長さは何cmですか。ただし、円周率は3.14とします。"
+   ],
+   "answer_template": "しき {c_len1_disp}÷3.14={dd1}、{dd1}÷2={ans} 答え {ans}cm",
+   "figure_params": null,
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    3,
+    14,
+    2
+   ]
+  },
+  {
+   "pattern_id": "g05_circle_circum_word_01",
+   "grade": "g05",
+   "unit_id": "g05_c12_u02",
+   "unit_name": "円周",
+   "semantic_category": "円周の文章題(まわりの長さ)",
+   "semantic_note": "「まるい花だんの直径→まわりの長さ」の状況文版(計算ドリルの文章題化・単位m)。図なし(状況文が情報源・既存文章題流儀)。題材は花だん(D4ハイジーン・一般語)。",
+   "step_count": 1,
+   "operation": "d×3.14",
+   "answer_formula": "d1 * 314",
+   "answer_unit_system": "dec2",
+   "slots": {
+    "d1": {
+     "type": "int",
+     "range": [
+      3,
+      25
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "まるい花だんがあります。花だんの直径は{d1}mです。この花だんのまわりの長さは何mですか。ただし、円周率は3.14とします。"
+   ],
+   "answer_template": "しき {d1}×3.14={ans_disp} 答え {ans_disp}m",
+   "figure_params": null,
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    3,
+    14
+   ]
+  },
+  {
+   "pattern_id": "g05_para_base_01",
+   "grade": "g05",
+   "unit_id": "g05_c10_u01",
+   "unit_name": "平行四辺形の面積",
+   "semantic_category": "面積と高さ→底辺(逆算)",
+   "semantic_note": "b=S÷h。既存para_height_01(高さ逆算)の底辺版で順逆対の完成。割り切れ制約・転記S≠h²(答=高さ)はheight版と対称。",
+   "step_count": 1,
+   "operation": "S ÷ h",
+   "answer_formula": "S1 // h1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "h1": {
+     "type": "int",
+     "range": [
+      4,
+      14
+     ]
+    },
+    "S1": {
+     "type": "int",
+     "range": [
+      40,
+      280
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "S1 % h1 == 0",
+     "why": "底辺が整数"
+    },
+    {
+     "rule": "b_range",
+     "expr": "8 <= S1 // h1 <= 16",
+     "why": "底辺を現実的に保つ(既存底辺域と対称)"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "S1 != h1 * h1",
+     "why": "転記型リーク排除(S＝h²で底辺＝高さ)"
+    }
+   ],
+   "sentence_templates": [
+    "高さが{h1}cm、面積が{S1}cm²の平行四辺形の底辺の長さは何cmですか。"
+   ],
+   "answer_template": "しき {S1}÷{h1}={ans} 答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g05_tri_base_01",
+   "grade": "g05",
+   "unit_id": "g05_c11_u01",
+   "unit_name": "三角形の面積",
+   "semantic_category": "面積と高さ→底辺(逆算)",
+   "semantic_note": "b=S×2÷h。三角形は÷2が入るため逆算は×2が先(2段の順序理解)。2S%h割り切れ・転記2S≠h²。",
+   "step_count": 1,
+   "operation": "S × 2 ÷ h",
+   "answer_formula": "S1 * 2 // h1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "h1": {
+     "type": "int",
+     "range": [
+      4,
+      12
+     ]
+    },
+    "S1": {
+     "type": "int",
+     "range": [
+      20,
+      140
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(S1 * 2) % h1 == 0",
+     "why": "底辺が整数"
+    },
+    {
+     "rule": "b_range",
+     "expr": "6 <= S1 * 2 // h1 <= 16",
+     "why": "底辺を現実的に保つ"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "S1 * 2 != h1 * h1",
+     "why": "転記型リーク排除(答=高さ)"
+    }
+   ],
+   "sentence_templates": [
+    "高さが{h1}cm、面積が{S1}cm²の三角形の底辺の長さは何cmですか。"
+   ],
+   "answer_template": "しき {S1}×2÷{h1}={ans} 答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2
+   ]
+  },
+  {
+   "pattern_id": "g05_trap_height_01",
+   "grade": "g05",
+   "unit_id": "g05_c12_u01",
+   "unit_name": "台形の面積",
+   "semantic_category": "面積と上底・下底→高さ(逆算)",
+   "semantic_note": "h=S×2÷(a+b)。台形逆算は和を先に作る括弧の理解が芯。上底<下底・比3:1以内は面積版(trap_area_fig_01)の統制を踏襲。転記2本(答=上底/下底)。",
+   "step_count": 1,
+   "operation": "S × 2 ÷ (a＋b)",
+   "answer_formula": "S1 * 2 // (a1 + b1)",
+   "answer_unit_from": "unit",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      4,
+      14
+     ]
+    },
+    "S1": {
+     "type": "int",
+     "range": [
+      15,
+      150
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "order",
+     "expr": "a1 < b1",
+     "why": "上底<下底(面積版の統制踏襲)"
+    },
+    {
+     "rule": "ratio",
+     "expr": "b1 <= 3 * a1",
+     "why": "上底:下底 3:1以内(同上)"
+    },
+    {
+     "rule": "divisible",
+     "expr": "(S1 * 2) % (a1 + b1) == 0",
+     "why": "高さが整数"
+    },
+    {
+     "rule": "h_range",
+     "expr": "3 <= S1 * 2 // (a1 + b1) <= 10",
+     "why": "高さを現実的に保つ"
+    },
+    {
+     "rule": "no_transcribe_a",
+     "expr": "S1 * 2 != a1 * (a1 + b1)",
+     "why": "転記型リーク排除(答=上底)"
+    },
+    {
+     "rule": "no_transcribe_b",
+     "expr": "S1 * 2 != b1 * (a1 + b1)",
+     "why": "転記型リーク排除(答=下底)"
+    }
+   ],
+   "sentence_templates": [
+    "上底が{a1}cm、下底が{b1}cm、面積が{S1}cm²の台形の高さは何cmですか。"
+   ],
+   "answer_template": "しき {S1}×2÷({a1}+{b1})={ans} 答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2
+   ]
+  },
+  {
+   "pattern_id": "g05_rhombus_diag_01",
+   "grade": "g05",
+   "unit_id": "g05_c13_u01",
+   "unit_name": "ひし形の面積",
+   "semantic_category": "面積と一方の対角線→他方(逆算)",
+   "semantic_note": "d₂=S×2÷d₁。ひし形の対角線×対角線÷2の逆向き。割り切れ・転記2S≠d₁²(答=既知対角線)。",
+   "step_count": 1,
+   "operation": "S × 2 ÷ d",
+   "answer_formula": "S1 * 2 // d1",
+   "answer_unit_from": "unit",
+   "slots": {
+    "d1": {
+     "type": "int",
+     "range": [
+      4,
+      14
+     ]
+    },
+    "S1": {
+     "type": "int",
+     "range": [
+      16,
+      140
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "(S1 * 2) % d1 == 0",
+     "why": "対角線が整数"
+    },
+    {
+     "rule": "d_range",
+     "expr": "4 <= S1 * 2 // d1 <= 16",
+     "why": "対角線を現実的に保つ"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "S1 * 2 != d1 * d1",
+     "why": "転記型リーク排除(答=既知対角線)"
+    }
+   ],
+   "sentence_templates": [
+    "一方の対角線が{d1}cm、面積が{S1}cm²のひし形の、もう一方の対角線の長さは何cmですか。"
+   ],
+   "answer_template": "しき {S1}×2÷{d1}={ans} 答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2
+   ]
   }
  ],
  "schema_changelog": {

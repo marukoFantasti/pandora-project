@@ -1588,5 +1588,131 @@
    "figure_notes": "図なし(換算は数値のみ)。",
    "pedagogy": []
   }
+ },
+ "g05_circle_rad_from_circum_01": {
+  "brief": {
+   "semantic_territory": "円周→半径(逆算2段)",
+   "number_domain": "整数(半径・円周はdec2表示)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "g05円周3は既に図付き(fig v1 given方式)と受領読解で判明——図付き新設は不要。円描画3方式並存(v1 given/v2 radius_label/v2 mode)。g05実欠落=逆算半径版+文章版のみ(2026-08-22)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "円周から半径への逆算。直径版(既存)より1段深く、÷3.14→÷2の2段。",
+   "representation": "円周は構成的にr起点(r×628内部整数)で生成し_disp表示——「答えから問題を構成する」逆算生成の円周版。中間の直径dd1をしきに明示(2段しき・g06 area_reverse前例)。",
+   "constructive_guarantees": "内部整数・逆算の可逆を全域証明(11組)。答=半径は整数(dec2系でも整数表示)。",
+   "semantic_position": "逆算対の半径側(直径版と対で完成)。",
+   "exclusions": "なし。",
+   "figure_notes": "図なし(逆算は数値関係が主眼・既存diam_from_circumもfig null——族内の図なし流儀に整合)。",
+   "pedagogy": []
+  }
+ },
+ "g05_circle_circum_word_01": {
+  "brief": {
+   "semantic_territory": "円周の文章題",
+   "number_domain": "小数2桁(dec2)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "直径→まわりの長さの状況文(花だん・単位m)。計算ドリル(cm)の生活文脈化。",
+   "representation": "circum_diam_01と同数理・文章と単位(m)だけの差——「同じ計算・違う入口」の文章題版。",
+   "constructive_guarantees": "同値証明は既存と共有(d×314)。",
+   "semantic_position": "円周族の文章側・円族第一波の掉尾。複合円(composite_circle)へ。",
+   "exclusions": "なし。",
+   "figure_notes": "図なし(状況文が情報源・既存文章題流儀)。",
+   "pedagogy": []
+  }
+ },
+ "g05_para_base_01": {
+  "brief": {
+   "semantic_territory": "平行四辺形: 面積と高さ→底辺",
+   "number_domain": "整数(cm・割り切れ設計)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "P-3b=面積族。第一便は逆算完備(既存の高さ逆算2に底辺版2+台形+ひし形を加え4図形×順逆の族完成)。図なし=既存逆算族流儀。複合面積9問・文章版は次便在庫(2026-08-22)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "面積と高さから底辺。公式の逆向き適用で、既存height版と問う変数だけが違う順逆対。",
+   "representation": "S直接スロット+割り切れ制約(para_height様式の完全踏襲)。答域8〜16は既存底辺域と対称(順逆で難度統制)。",
+   "constructive_guarantees": "割り切れ・答域・転記S≠h²(height版と対称の同値変形)。受理は全域検証済み。",
+   "semantic_position": "平四逆算対の底辺側(height版と対で完成)。",
+   "exclusions": "非割り切れ・域外・S=h²。",
+   "figure_notes": "図なし(逆算は数値関係が主眼——既存para_height/tri_heightの族内流儀に整合)。",
+   "pedagogy": []
+  }
+ },
+ "g05_tri_base_01": {
+  "brief": {
+   "semantic_territory": "三角形: 面積と高さ→底辺",
+   "number_domain": "整数(cm)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "三角形の底辺逆算。÷2の逆は×2が先——演算順序の理解が平四版との差分。",
+   "representation": "2S%hの割り切れ(×2を式に含めた検査)。しき「S×2÷h」の順序を答案形式で固定。",
+   "constructive_guarantees": "割り切れ・答域6〜16・転記2S≠h²。全域検証済み。",
+   "semantic_position": "三角形逆算対の底辺側。",
+   "exclusions": "非割り切れ・域外・転記。",
+   "figure_notes": "図なし(同上)。",
+   "pedagogy": []
+  }
+ },
+ "g05_trap_height_01": {
+  "brief": {
+   "semantic_territory": "台形: 面積と上底下底→高さ",
+   "number_domain": "整数(cm)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "台形の高さ逆算。(上底+下底)の和を先に作る括弧の扱いが芯で、逆算族の最難度。",
+   "representation": "上底<下底・比3:1以内は面積版(trap_area_fig_01)の統制を踏襲——順逆で同じ図形レンジ。転記2本(答=上底/下底)を(a+b)倍の同値変形で張る。",
+   "constructive_guarantees": "6制約の全域検証済み。",
+   "semantic_position": "台形逆算(面積版と対)。",
+   "exclusions": "順序・比率・非割り切れ・域外・転記2系。",
+   "figure_notes": "図なし(同上)。",
+   "pedagogy": []
+  }
+ },
+ "g05_rhombus_diag_01": {
+  "brief": {
+   "semantic_territory": "ひし形: 面積と対角線→他方",
+   "number_domain": "整数(cm)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "ひし形の対角線逆算。対角線×対角線÷2の逆向きで、逆算族の掉尾。",
+   "representation": "三角形版と同型の2S%d割り切れ。「もう一方の対角線」の言語指定(d₁/d₂の区別は問題文の役割語が担う)。",
+   "constructive_guarantees": "割り切れ・答域4〜16・転記2S≠d²。全域検証済み。",
+   "semantic_position": "逆算族の掉尾——4図形×順逆の完備位置。面積族の残余=複合9・文章版・g04長方形系は次便。",
+   "exclusions": "非割り切れ・域外・転記。",
+   "figure_notes": "図なし(同上)。",
+   "pedagogy": []
+  }
  }
 }

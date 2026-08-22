@@ -844,6 +844,42 @@
 {"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g05_vol_unit_convert_01", "grade": "g05", "unit_id": "g05_c02_u02", "kind": null, "text": "体積クラスタの単位系整備位。capacityのcm³→Lと合わせ、L系換算の2スケール(1000cm³/1m³)を覆う。"}
 {"doc_type": "rationale", "section": "exclusions", "pattern_id": "g05_vol_unit_convert_01", "grade": "g05", "unit_id": "g05_c02_u02", "kind": null, "text": "多段換算(m³→cm³→L)は位取りの桁が6桁動き5年の暗算域を超える。"}
 {"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g05_vol_unit_convert_01", "grade": "g05", "unit_id": "g05_c02_u02", "kind": null, "text": "図なし(換算は数値のみ)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g05_circle_rad_from_circum_01", "grade": "g05", "unit_id": "g05_c12_u02", "kind": null, "text": "円周から半径への逆算。直径版(既存)より1段深く、÷3.14→÷2の2段。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g05_circle_rad_from_circum_01", "grade": "g05", "unit_id": "g05_c12_u02", "kind": null, "text": "円周は構成的にr起点(r×628内部整数)で生成し_disp表示——「答えから問題を構成する」逆算生成の円周版。中間の直径dd1をしきに明示(2段しき・g06 area_reverse前例)。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g05_circle_rad_from_circum_01", "grade": "g05", "unit_id": "g05_c12_u02", "kind": null, "text": "内部整数・逆算の可逆を全域証明(11組)。答=半径は整数(dec2系でも整数表示)。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g05_circle_rad_from_circum_01", "grade": "g05", "unit_id": "g05_c12_u02", "kind": null, "text": "逆算対の半径側(直径版と対で完成)。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g05_circle_rad_from_circum_01", "grade": "g05", "unit_id": "g05_c12_u02", "kind": null, "text": "なし。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g05_circle_rad_from_circum_01", "grade": "g05", "unit_id": "g05_c12_u02", "kind": null, "text": "図なし(逆算は数値関係が主眼・既存diam_from_circumもfig null——族内の図なし流儀に整合)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g05_circle_circum_word_01", "grade": "g05", "unit_id": "g05_c12_u02", "kind": null, "text": "直径→まわりの長さの状況文(花だん・単位m)。計算ドリル(cm)の生活文脈化。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g05_circle_circum_word_01", "grade": "g05", "unit_id": "g05_c12_u02", "kind": null, "text": "circum_diam_01と同数理・文章と単位(m)だけの差——「同じ計算・違う入口」の文章題版。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g05_circle_circum_word_01", "grade": "g05", "unit_id": "g05_c12_u02", "kind": null, "text": "同値証明は既存と共有(d×314)。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g05_circle_circum_word_01", "grade": "g05", "unit_id": "g05_c12_u02", "kind": null, "text": "円周族の文章側・円族第一波の掉尾。複合円(composite_circle)へ。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g05_circle_circum_word_01", "grade": "g05", "unit_id": "g05_c12_u02", "kind": null, "text": "なし。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g05_circle_circum_word_01", "grade": "g05", "unit_id": "g05_c12_u02", "kind": null, "text": "図なし(状況文が情報源・既存文章題流儀)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g05_para_base_01", "grade": "g05", "unit_id": "g05_c10_u01", "kind": null, "text": "面積と高さから底辺。公式の逆向き適用で、既存height版と問う変数だけが違う順逆対。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g05_para_base_01", "grade": "g05", "unit_id": "g05_c10_u01", "kind": null, "text": "S直接スロット+割り切れ制約(para_height様式の完全踏襲)。答域8〜16は既存底辺域と対称(順逆で難度統制)。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g05_para_base_01", "grade": "g05", "unit_id": "g05_c10_u01", "kind": null, "text": "割り切れ・答域・転記S≠h²(height版と対称の同値変形)。受理は全域検証済み。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g05_para_base_01", "grade": "g05", "unit_id": "g05_c10_u01", "kind": null, "text": "平四逆算対の底辺側(height版と対で完成)。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g05_para_base_01", "grade": "g05", "unit_id": "g05_c10_u01", "kind": null, "text": "非割り切れ・域外・S=h²。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g05_para_base_01", "grade": "g05", "unit_id": "g05_c10_u01", "kind": null, "text": "図なし(逆算は数値関係が主眼——既存para_height/tri_heightの族内流儀に整合)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g05_tri_base_01", "grade": "g05", "unit_id": "g05_c11_u01", "kind": null, "text": "三角形の底辺逆算。÷2の逆は×2が先——演算順序の理解が平四版との差分。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g05_tri_base_01", "grade": "g05", "unit_id": "g05_c11_u01", "kind": null, "text": "2S%hの割り切れ(×2を式に含めた検査)。しき「S×2÷h」の順序を答案形式で固定。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g05_tri_base_01", "grade": "g05", "unit_id": "g05_c11_u01", "kind": null, "text": "割り切れ・答域6〜16・転記2S≠h²。全域検証済み。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g05_tri_base_01", "grade": "g05", "unit_id": "g05_c11_u01", "kind": null, "text": "三角形逆算対の底辺側。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g05_tri_base_01", "grade": "g05", "unit_id": "g05_c11_u01", "kind": null, "text": "非割り切れ・域外・転記。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g05_tri_base_01", "grade": "g05", "unit_id": "g05_c11_u01", "kind": null, "text": "図なし(同上)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g05_trap_height_01", "grade": "g05", "unit_id": "g05_c12_u01", "kind": null, "text": "台形の高さ逆算。(上底+下底)の和を先に作る括弧の扱いが芯で、逆算族の最難度。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g05_trap_height_01", "grade": "g05", "unit_id": "g05_c12_u01", "kind": null, "text": "上底<下底・比3:1以内は面積版(trap_area_fig_01)の統制を踏襲——順逆で同じ図形レンジ。転記2本(答=上底/下底)を(a+b)倍の同値変形で張る。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g05_trap_height_01", "grade": "g05", "unit_id": "g05_c12_u01", "kind": null, "text": "6制約の全域検証済み。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g05_trap_height_01", "grade": "g05", "unit_id": "g05_c12_u01", "kind": null, "text": "台形逆算(面積版と対)。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g05_trap_height_01", "grade": "g05", "unit_id": "g05_c12_u01", "kind": null, "text": "順序・比率・非割り切れ・域外・転記2系。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g05_trap_height_01", "grade": "g05", "unit_id": "g05_c12_u01", "kind": null, "text": "図なし(同上)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g05_rhombus_diag_01", "grade": "g05", "unit_id": "g05_c13_u01", "kind": null, "text": "ひし形の対角線逆算。対角線×対角線÷2の逆向きで、逆算族の掉尾。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g05_rhombus_diag_01", "grade": "g05", "unit_id": "g05_c13_u01", "kind": null, "text": "三角形版と同型の2S%d割り切れ。「もう一方の対角線」の言語指定(d₁/d₂の区別は問題文の役割語が担う)。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g05_rhombus_diag_01", "grade": "g05", "unit_id": "g05_c13_u01", "kind": null, "text": "割り切れ・答域4〜16・転記2S≠d²。全域検証済み。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g05_rhombus_diag_01", "grade": "g05", "unit_id": "g05_c13_u01", "kind": null, "text": "逆算族の掉尾——4図形×順逆の完備位置。面積族の残余=複合9・文章版・g04長方形系は次便。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g05_rhombus_diag_01", "grade": "g05", "unit_id": "g05_c13_u01", "kind": null, "text": "非割り切れ・域外・転記。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g05_rhombus_diag_01", "grade": "g05", "unit_id": "g05_c13_u01", "kind": null, "text": "図なし(同上)。"}
 {"doc_type": "rationale", "section": "source_features", "pattern_id": "jhs_c01_asub_01", "grade": "jhs", "unit_id": "jhs_c01_u01", "kind": null, "text": "正負の加法で最初に現れる「加法記号＋負の項」の符号処理型。実物のconfirmation層に単発計算群として存在する型の抽象。"}
 {"doc_type": "rationale", "section": "representation", "pattern_id": "jhs_c01_asub_01", "grade": "jhs", "unit_id": "jhs_c01_u01", "kind": null, "text": "_shared.jhs_c01_sign_design.representation 参照。a1,b1∈[2,9]で暗算域。"}
 {"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "jhs_c01_asub_01", "grade": "jhs", "unit_id": "jhs_c01_u01", "kind": null, "text": "_shared参照。a1=b1のとき答え0となるが、これは符号処理の正当な帰結として許容(any_int)。"}
