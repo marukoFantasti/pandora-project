@@ -1389,7 +1389,7 @@ var MARKED_UNITS = {};
 // 配信OFF（加法）: BANK_FILESに載せてfetchしつつ、unit_id接頭辞が一致するパターンを
 // PATTERN_UNIT_INDEX/allPatternsから除外し⚡自動点灯・経路Aから外す。空配列なら現挙動バイト不変。
 // 需要が出たら該当接頭辞を1行削るだけで解除（例: g01 '加法'）。
-var DEPLOY_EXCLUDE_UNIT_PREFIXES = ['g01_'];
+var DEPLOY_EXCLUDE_UNIT_PREFIXES = [];   // g01配信ON(まるこ裁可2026-08-22・P-1完了43パターン)。除外時は接頭辞を追加
 function isDeployExcludedUnit(uid){
   return DEPLOY_EXCLUDE_UNIT_PREFIXES.some(function(pre){ return typeof uid === 'string' && uid.indexOf(pre) === 0; });
 }

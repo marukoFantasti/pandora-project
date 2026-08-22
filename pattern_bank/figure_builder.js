@@ -1644,12 +1644,55 @@
     throw new Error('angle_figure: 未対応subkind ' + fp.subkind);
   }
 
+  // ==== 小学第2波: clock_face(時計文字盤・読み専用・実需起点第1号) ====
+  // 真円文字盤(<circle>=構造的真円・corr-0019/0022系の要素種別切り分けに整合)+数字1〜12(円周配置)+
+  // 分目盛60(5分毎に長目盛)+針2本(短針=太短・長針=細長)。針角度は決定的:
+  // 短針=30h+0.5m度・長針=6m度(12時方向=0度・時計回り)。契約: h∈[1,12]・m∈[0,59]。
+  var CLOCK_R = 92, CLOCK_NUM_R = 71, CLOCK_HOUR_LEN = 36, CLOCK_MIN_LEN = 56;
+  function clockPos(deg, r) { var t = deg * DEG; return [r * Math.sin(t), r * Math.cos(t)]; }   // world(y上)・12時=+y・時計回り
+  function clockFaceGeom(fp) {
+    var h = Math.floor(Number(fp.h)), m = Math.floor(Number(fp.m));
+    if (!(h >= 1 && h <= 12)) throw new Error('clock_face契約違反: h=' + fp.h + ' は[1,12]');
+    if (!(m >= 0 && m <= 59)) throw new Error('clock_face契約違反: m=' + fp.m + ' は[0,59]');
+    var hourAngle = 30 * h + 0.5 * m, minAngle = 6 * m;
+    return { h: h, m: m, R: CLOCK_R, numR: CLOCK_NUM_R, hourLen: CLOCK_HOUR_LEN, minLen: CLOCK_MIN_LEN,
+      hourAngle: hourAngle, minAngle: minAngle,
+      hourTip: clockPos(hourAngle, CLOCK_HOUR_LEN), minTip: clockPos(minAngle, CLOCK_MIN_LEN),
+      numbers: (function () { var a = []; for (var k = 1; k <= 12; k++) a.push(clockPos(30 * k, CLOCK_NUM_R)); return a; })() };
+  }
+  function clockFaceLayout(fp) {
+    var g = clockFaceGeom(fp), lay = newLayout(), c = worldFlip([0, 0]);
+    // 文字盤(真円)+外周点束縛
+    lay.parts.push('<circle cx="' + c[0].toFixed(2) + '" cy="' + c[1].toFixed(2) + '" r="' + g.R + '" fill="#ffffff" stroke="' + C_STROKE + '" stroke-width="2.4"/>');
+    lay.pts.push(worldFlip([-g.R, 0]), worldFlip([g.R, 0]), worldFlip([0, -g.R]), worldFlip([0, g.R]));
+    // 分目盛60(5分毎=長・太)
+    for (var i = 0; i < 60; i++) {
+      var five = (i % 5 === 0), a = 6 * i;
+      var p1 = worldFlip(clockPos(a, g.R - (five ? 9 : 4.5))), p2 = worldFlip(clockPos(a, g.R - 1.2));
+      lay.parts.push(lineEl(p1, p2, C_STROKE, five ? 1.8 : 1));
+    }
+    // 針2本(描き分け: 短針=太短・長針=細長)。segs登録=数字ラベルとのclearance対象。
+    var ht = worldFlip(g.hourTip), mt = worldFlip(g.minTip);
+    lay.parts.push(lineEl(c, mt, C_STROKE, 2.2)); lay.segs.push({ id: 'mh', p1: c, p2: mt });
+    lay.parts.push(lineEl(c, ht, C_STROKE, 4.6)); lay.segs.push({ id: 'hh', p1: c, p2: ht });
+    lay.parts.push('<circle cx="' + c[0].toFixed(2) + '" cy="' + c[1].toFixed(2) + '" r="3.4" fill="' + C_STROKE + '"/>');
+    // 数字1〜12(固定円周配置・手動label box=針とのclearance検査対象)
+    for (var k = 1; k <= 12; k++) {
+      var np = worldFlip(g.numbers[k - 1]);
+      lay.parts.push(textEl(np[0], np[1], String(k), 14, C_STROKE));
+      var box = textBox([np[0], np[1]], String(k), 14);
+      lay.labels.push({ box: box, own: '', text: String(k) });
+      lay.pts.push([box.x0, box.y0], [box.x1, box.y1]);
+    }
+    return lay;
+  }
+
   var C_LAYOUTS = {
     tri_angle: triAngleLayout, tri_angle_iso: triAngleIsoLayout, quad_angle: quadAngleLayout,
     para_area: paraAreaLayout, tri_area: triAreaLayout, trap_area: trapAreaLayout,
     rhombus_area: rhombusAreaLayout, circle: circleLayout, cuboid: cuboidLayout, prism: prismLayout,
     pyramid: pyramidLayout, cylinder: cylinderLayout, cone: coneLayout, sphere: sphereLayout,
-    rotation_source: rotationSourceLayout,
+    rotation_source: rotationSourceLayout, clock_face: clockFaceLayout,
     sym_polygon: symPolygonLayout, similar_pair: similarPairLayout, xy_graph: xyGraphLayout, dot_plot: dotPlotLayout, histogram: histogramLayout,
     angle_figure: angleFigureLayout
   };
@@ -1705,6 +1748,7 @@
     pyramid: pyramidGeom, cylinder: cylinderGeom, cone: coneGeom, sphere: sphereGeom,   // 第2ブロックS-2: 錐円系(vector用)
     pyramid_visible: pyramidVisible, convex_hull: convexHull,   // S-2.1: 隠線シルエット判定(vector用・corr-0023)
     rotation_source: rotationSourceGeom,   // 第2ブロックS-4: 回転体の源(vector用)
+    clock_face: clockFaceGeom,             // 小学第2波: 時計文字盤(vector用)
     arc_sample_points: arcSamplePoints,          // 弧サンプル点(曲率関門用・頂点からr一定検査)
     // ベクター用の位置引数ラッパ（Python prism_geom(base_kind,a,b,h) と同型）
     prism: function (base_kind, a, b, h) {
