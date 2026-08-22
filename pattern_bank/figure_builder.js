@@ -626,6 +626,69 @@
     lay.pts.push([-r - 2, -r - 2], [r + 2, r + 2]);
     return lay;
   }
+  // ==== P-3a: composite_circle(複合円・求積の受け皿)。外形×内側円×塗りmode(差/環)。 ====
+  // shade=求積対象(網掛け#cfe0fb)・cut=白抜き。真円は<circle>/<path A r r>(corr-0019)。寸法整合を契約検査。
+  var CC_R = 84, CC_SHADE = '#cfe0fb';
+  function ccArcPathFilled(R, topHalf) {   // 半円塗り(直径=x軸・世界y上)。真円弧<path A R R>で閉包。
+    var L = worldFlip([-R, 0]), Rt = worldFlip([R, 0]), sweep = topHalf ? 1 : 0;
+    return '<path d="M ' + L[0].toFixed(2) + ' ' + L[1].toFixed(2) + ' A ' + R + ' ' + R + ' 0 0 ' + sweep + ' ' + Rt[0].toFixed(2) + ' ' + Rt[1].toFixed(2) + ' Z"';
+  }
+  function compositeCircleGeom(fp) {
+    var shape = fp.shape;
+    if (shape === 'square_minus_circle') {
+      var s = Number(fp.s); if (!(s > 0)) throw new Error('composite_circle契約違反: s>0');
+      return { shape: shape, s: s, half: 80, rpx: 80 };   // 正方形辺160px・内接円r=80(辺=直径整合)
+    }
+    var R = Number(fp.R), r = Number(fp.r);
+    if (!(R > 0 && r > 0)) throw new Error('composite_circle契約違反: R,r>0');
+    if (shape === 'circle_minus_circle' || shape === 'half_pair') {
+      if (!(R > r)) throw new Error('composite_circle契約違反: R>r(環/半環の正面積)');
+    } else if (shape === 'circle_in_circle_side') {
+      if (!(2 * r <= R)) throw new Error('composite_circle契約違反: 2r<=R(横並び内接)');
+    } else throw new Error('composite_circle: 未対応shape ' + shape);
+    var Rpx = CC_R, rpx = Math.max(24, Math.min(CC_R - 8, CC_R * r / R));
+    return { shape: shape, R: R, r: r, Rpx: Rpx, rpx: rpx };
+  }
+  function compositeCircleLayout(fp) {
+    var g = compositeCircleGeom(fp), u = fp.unit || 'cm', lay = newLayout(), c = worldFlip([0, 0]);
+    function circ(cx, cy, rr, fill) { var p = worldFlip([cx, cy]); lay.parts.push('<circle cx="' + p[0].toFixed(2) + '" cy="' + p[1].toFixed(2) + '" r="' + rr.toFixed(2) + '" fill="' + fill + '" stroke="' + C_STROKE + '" stroke-width="2"/>'); }
+    var specs = [];
+    if (g.shape === 'square_minus_circle') {
+      var h = g.half;
+      lay.parts.push(polygonEl([[-h, -h], [h, -h], [h, h], [-h, h]].map(worldFlip), CC_SHADE, 2));   // 正方形=網掛け
+      circ(0, 0, g.rpx, '#ffffff');                                                                  // 内接円=白抜き
+      lay.pts.push(worldFlip([-h, -h]), worldFlip([h, h]));
+      lay.segs.push({ id: 'sedge', p1: worldFlip([-h, -h]), p2: worldFlip([h, -h]) });
+      specs.push({ anchor: worldFlip([0, -h]), dir: [0, 1], text: fp.s + u, cands: [[13, 15], [16, 13], [20, 13], [24, 12]], color: '#333', own: 'sedge' });
+    } else if (g.shape === 'circle_minus_circle') {
+      circ(0, 0, g.Rpx, CC_SHADE); circ(0, 0, g.rpx, '#ffffff');                                     // 同心ドーナツ(環=網掛け)
+      lay.pts.push(worldFlip([-g.Rpx, 0]), worldFlip([g.Rpx, 0]), worldFlip([0, g.Rpx]), worldFlip([0, -g.Rpx]));
+      // 外半径R(右)・内半径r(左)の半径線+ラベル
+      lay.parts.push(lineEl(c, worldFlip([g.Rpx, 0]), C_STROKE, 1.4)); lay.segs.push({ id: 'Rline', p1: c, p2: worldFlip([g.Rpx, 0]) });
+      lay.parts.push(lineEl(c, worldFlip([-g.rpx, 0]), C_STROKE, 1.4)); lay.segs.push({ id: 'rline', p1: c, p2: worldFlip([-g.rpx, 0]) });
+      specs.push({ anchor: worldFlip([g.Rpx / 2, 0]), dir: [0, 1], text: fp.R + u, cands: [[12, 14], [15, 13], [19, 12]], color: '#333', own: 'Rline' });
+      specs.push({ anchor: worldFlip([-g.rpx / 2, 0]), dir: [0, -1], text: fp.r + u, cands: [[12, 14], [15, 13], [19, 12]], color: '#333', own: 'rline' });
+    } else if (g.shape === 'half_pair') {
+      lay.parts.push(ccArcPathFilled(g.Rpx, true) + ' fill="' + CC_SHADE + '" stroke="' + C_STROKE + '" stroke-width="2"/>');   // 外半円(網掛け)
+      lay.parts.push(ccArcPathFilled(g.rpx, true) + ' fill="#ffffff" stroke="' + C_STROKE + '" stroke-width="2"/>');            // 内半円(白抜き)
+      lay.parts.push(lineEl(worldFlip([-g.Rpx, 0]), worldFlip([g.Rpx, 0]), C_STROKE, 2));                                        // 直径(底辺)
+      lay.pts.push(worldFlip([-g.Rpx, 0]), worldFlip([g.Rpx, 0]), worldFlip([0, g.Rpx]));
+      lay.segs.push({ id: 'Rline', p1: worldFlip([-g.Rpx, 0]), p2: worldFlip([-g.rpx, 0]) }, { id: 'rline', p1: worldFlip([g.rpx, 0]), p2: worldFlip([g.Rpx, 0]) });
+      specs.push({ anchor: worldFlip([-(g.Rpx + g.rpx) / 2, 0]), dir: [0, 1], text: fp.R + u, cands: [[13, 13], [17, 12], [21, 12]], color: '#333', own: 'Rline' });
+      specs.push({ anchor: worldFlip([g.rpx / 2, 0]), dir: [0, 1], text: fp.r + u, cands: [[13, 13], [17, 12], [21, 12]], color: '#333', own: 'rline' });
+    } else if (g.shape === 'circle_in_circle_side') {
+      circ(0, 0, g.Rpx, CC_SHADE);                                                                   // 大円(網掛け)
+      var off = g.Rpx / 2;
+      circ(-off, 0, g.rpx, '#ffffff'); circ(off, 0, g.rpx, '#ffffff');                               // 横並び小円2(白抜き)
+      lay.pts.push(worldFlip([-g.Rpx, 0]), worldFlip([g.Rpx, 0]), worldFlip([0, g.Rpx]), worldFlip([0, -g.Rpx]));
+      lay.parts.push(lineEl(c, worldFlip([0, g.Rpx]), C_STROKE, 1.4)); lay.segs.push({ id: 'Rline', p1: c, p2: worldFlip([0, g.Rpx]) });
+      lay.parts.push(lineEl(worldFlip([-off, 0]), worldFlip([-off + g.rpx, 0]), C_STROKE, 1.4)); lay.segs.push({ id: 'rline', p1: worldFlip([-off, 0]), p2: worldFlip([-off + g.rpx, 0]) });
+      specs.push({ anchor: worldFlip([0, g.Rpx / 2]), dir: [1, 0], text: fp.R + u, cands: [[12, 13], [15, 12], [19, 12]], color: '#333', own: 'Rline' });
+      specs.push({ anchor: worldFlip([-off + g.rpx / 2, 0]), dir: [0, -1], text: fp.r + u, cands: [[12, 12], [15, 11], [19, 11]], color: '#333', own: 'rline' });
+    }
+    finishLabels(lay, specs);
+    return lay;
+  }
   // ---- prism（角柱・cuboidの平行投影を流用し底面を差し替え）fig_version 1相当(新kind) ----
   var PRISM_D45 = 0.5;
   function prismGeom(fp) {
@@ -1703,7 +1766,7 @@
     para_area: paraAreaLayout, tri_area: triAreaLayout, trap_area: trapAreaLayout,
     rhombus_area: rhombusAreaLayout, circle: circleLayout, cuboid: cuboidLayout, prism: prismLayout,
     pyramid: pyramidLayout, cylinder: cylinderLayout, cone: coneLayout, sphere: sphereLayout,
-    rotation_source: rotationSourceLayout, clock_face: clockFaceLayout,
+    rotation_source: rotationSourceLayout, clock_face: clockFaceLayout, composite_circle: compositeCircleLayout,
     sym_polygon: symPolygonLayout, similar_pair: similarPairLayout, xy_graph: xyGraphLayout, dot_plot: dotPlotLayout, histogram: histogramLayout,
     angle_figure: angleFigureLayout
   };
@@ -1760,6 +1823,7 @@
     pyramid_visible: pyramidVisible, convex_hull: convexHull,   // S-2.1: 隠線シルエット判定(vector用・corr-0023)
     rotation_source: rotationSourceGeom,   // 第2ブロックS-4: 回転体の源(vector用)
     clock_face: clockFaceGeom,             // 小学第2波: 時計文字盤(vector用)
+    composite_circle: compositeCircleGeom, // P-3a: 複合円(vector用)
     arc_sample_points: arcSamplePoints,          // 弧サンプル点(曲率関門用・頂点からr一定検査)
     // ベクター用の位置引数ラッパ（Python prism_geom(base_kind,a,b,h) と同型）
     prism: function (base_kind, a, b, h) {

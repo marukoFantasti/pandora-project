@@ -252,3 +252,10 @@
 - **rationale統合**: g05はインラインdirectives流儀(bank_directives無し)=素材そのまま統合(g06のような正規化不要)。rationale 433→**439**・integrity 439(g05 76/76)・pairs_design 439。
 - **furigana増補4語**(上底→じょうてい/下底→かてい/対角線→たいかくせん/一方→いっぽう・まるこ検収)→3コピー同期・439残存0。
 - スモーク4問・全32関門+パリティPASS。
+
+### 2026-08-22 composite_circle kind実装(複合円19問の受け皿)+furigana自己走査道具(P-3a最終便)
+- **composite_circle**(複合円求積の共通機構): 4構成=(a)square_minus_circle(正方形−内接円・辺=直径)・(b)circle_minus_circle(同心ドーナツ)・(c)half_pair(半環)・(d)circle_in_circle_side(大円−横並び小円2)。塗り#cfe0fb(求積対象)/白抜き(除外)。真円=<circle>(a/b/d)+<path A R R>(c半円)=corr-0019準拠。寸法=半径/直径線(第二便mode流用)+正方形辺。全数値スロット参照・整合違反(R≤r・2r>R・s≤0)はthrow=正面積保証。
+- **corr-0020悉皆**: 4構成×寸法域(正方形s2-20・環/半環R3-12×r<R・横並び2r≤R)=154組・違反0・min(minText 19.0/minSeg 5.0@donut R10r3)。
+- ベクター: composite_circle_vectors.js=167照合(描画要素数・真円rx==ry・内接/同心整合・正面積契約throw5種・ラベル・シード)。全33関門PASS。既存circle系golden不変(g05 d2c262c0/g06 2bb79492/figure_nondestructive)。
+- 目視素材4枚: composite_circle_preview_{a_sq_minus_circle,b_donut,c_half_pair,d_circle_in_side}.svg。バンク(複合面積のg06追補約4)は目視後Fable側。
+- **furigana自己走査道具(恒久修正)**: handoff_jhs/furigana_registered.txt新設(表層形412語・読み不要・更新日2026-08-22)。以後配線ごとに更新し報告に日付記載=Fableが納品前自己走査で突合(まるこ経由受け渡しは初回のみ)。
