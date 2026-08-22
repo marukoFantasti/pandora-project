@@ -57,6 +57,12 @@
    "text": "最大最小の語答え形(どれがいちばん多いか)はword_map動的対応(テーマ依存語)の実装後在庫——第一便は数値答形(いくつか)で採録",
    "by": "marko",
    "date": "2026-08"
+  },
+  {
+   "id": "D9",
+   "text": "円族第一波: 面積系既存4は図付き済みと判明し対は不要。新規はまわりの長さ対(5問域)。g05円周図付きはpatterns_g05受領後の続き便(2026-08-22)",
+   "by": "marko",
+   "date": "2026-08"
   }
  ],
  "g06_moji_shiki_01": {
@@ -1658,6 +1664,46 @@
    "semantic_position": "表族の次元拡張位・第一便の掉尾。合計行付き2次元(周辺和)・穴埋め集計は第二便在庫。",
    "exclusions": "なし。",
    "figure_notes": "2行3列はdosuu(1行4列)より行方向に+1・列方向に−1でclearance同等域の想定——配線時実構成悉皆で確認(corr-0020)。",
+   "pedagogy": []
+  }
+ },
+ "g06_circle_mawari_half_01": {
+  "brief": {
+   "semantic_territory": "半円のまわりの長さ",
+   "number_domain": "小数2桁(dec2・内部整数257倍)",
+   "answer_structure": "single",
+   "figure": "circle(half+直径値)",
+   "step_count": 1,
+   "directives": [
+    "D9"
+   ]
+  },
+  "rationale": {
+   "source_features": "半円の周=曲線+直径。面積との弁別と直線部の足し忘れ(定番誤答)が学習の芯。",
+   "representation": "内部スケール100整数(d×257)・dec2表示——g05面積文化の継承で浮動小数ゼロ。図はsector half+直径値表示のmode新組合せ(circle v2改修の適用第1号)。",
+   "constructive_guarantees": "内部整数式=3.14表示式の同値を全域証明(19組)。小数答は_disp経由でcorr-0007整合(既存機構)。",
+   "semantic_position": "まわり対の半円側。面積half(既存)と「同じ図・違う問い」。",
+   "exclusions": "なし。",
+   "figure_notes": "sector half+mode diameterの組合せは未スキャンのため配線時に実装確認+悉皆(corr-0020)。",
+   "pedagogy": []
+  }
+ },
+ "g06_circle_mawari_quarter_01": {
+  "brief": {
+   "semantic_territory": "四分円のまわりの長さ",
+   "number_domain": "小数2桁(dec2・内部整数357倍)",
+   "answer_structure": "single",
+   "figure": "circle(quarter)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "四分円の周=弧+半径2本。「直線部が何か」の構成読みが半円版(直径1本)との対比で立つ。",
+   "representation": "内部整数r×357。図は既存quarter(radius_label)の完全流用——面積quarterと同図で問いだけ違う。",
+   "constructive_guarantees": "同値全域証明(9組)。",
+   "semantic_position": "まわり対の四分円側・円族第一波g06分の掉尾。複合円(composite_circle)は次便。",
+   "exclusions": "なし。",
+   "figure_notes": "既存quarter図流用でclearance新規論点なし。",
    "pedagogy": []
   }
  }

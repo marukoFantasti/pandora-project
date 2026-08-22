@@ -2379,6 +2379,18 @@
 {"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g06_hyo_2d_yomi_01", "grade": "g06", "unit_id": "g06_c07_u03", "kind": "table", "text": "表族の次元拡張位・第一便の掉尾。合計行付き2次元(周辺和)・穴埋め集計は第二便在庫。"}
 {"doc_type": "rationale", "section": "exclusions", "pattern_id": "g06_hyo_2d_yomi_01", "grade": "g06", "unit_id": "g06_c07_u03", "kind": "table", "text": "なし。"}
 {"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g06_hyo_2d_yomi_01", "grade": "g06", "unit_id": "g06_c07_u03", "kind": "table", "text": "2行3列はdosuu(1行4列)より行方向に+1・列方向に−1でclearance同等域の想定——配線時実構成悉皆で確認(corr-0020)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g06_circle_mawari_half_01", "grade": "g06", "unit_id": "g06_c08_u01", "kind": "circle", "text": "半円の周=曲線+直径。面積との弁別と直線部の足し忘れ(定番誤答)が学習の芯。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g06_circle_mawari_half_01", "grade": "g06", "unit_id": "g06_c08_u01", "kind": "circle", "text": "内部スケール100整数(d×257)・dec2表示——g05面積文化の継承で浮動小数ゼロ。図はsector half+直径値表示のmode新組合せ(circle v2改修の適用第1号)。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g06_circle_mawari_half_01", "grade": "g06", "unit_id": "g06_c08_u01", "kind": "circle", "text": "内部整数式=3.14表示式の同値を全域証明(19組)。小数答は_disp経由でcorr-0007整合(既存機構)。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g06_circle_mawari_half_01", "grade": "g06", "unit_id": "g06_c08_u01", "kind": "circle", "text": "まわり対の半円側。面積half(既存)と「同じ図・違う問い」。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g06_circle_mawari_half_01", "grade": "g06", "unit_id": "g06_c08_u01", "kind": "circle", "text": "なし。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g06_circle_mawari_half_01", "grade": "g06", "unit_id": "g06_c08_u01", "kind": "circle", "text": "sector half+mode diameterの組合せは未スキャンのため配線時に実装確認+悉皆(corr-0020)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g06_circle_mawari_quarter_01", "grade": "g06", "unit_id": "g06_c08_u01", "kind": "circle", "text": "四分円の周=弧+半径2本。「直線部が何か」の構成読みが半円版(直径1本)との対比で立つ。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g06_circle_mawari_quarter_01", "grade": "g06", "unit_id": "g06_c08_u01", "kind": "circle", "text": "内部整数r×357。図は既存quarter(radius_label)の完全流用——面積quarterと同図で問いだけ違う。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g06_circle_mawari_quarter_01", "grade": "g06", "unit_id": "g06_c08_u01", "kind": "circle", "text": "同値全域証明(9組)。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g06_circle_mawari_quarter_01", "grade": "g06", "unit_id": "g06_c08_u01", "kind": "circle", "text": "まわり対の四分円側・円族第一波g06分の掉尾。複合円(composite_circle)は次便。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g06_circle_mawari_quarter_01", "grade": "g06", "unit_id": "g06_c08_u01", "kind": "circle", "text": "なし。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g06_circle_mawari_quarter_01", "grade": "g06", "unit_id": "g06_c08_u01", "kind": "circle", "text": "既存quarter図流用でclearance新規論点なし。"}
 {"doc_type": "rationale", "section": "source_features", "pattern_id": "g01_add_nocarry_01", "grade": "g01", "unit_id": "g01_c01_u01", "kind": null, "text": "加法の基底。1位数どうし・繰り上がりなし。"}
 {"doc_type": "rationale", "section": "representation", "pattern_id": "g01_add_nocarry_01", "grade": "g01", "unit_id": "g01_c01_u01", "kind": null, "text": "_shared正準準拠。「+」記号は算用数字と同格の既習記号。"}
 {"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g01_add_nocarry_01", "grade": "g01", "unit_id": "g01_c01_u01", "kind": null, "text": "和≦9制約(くりあがりは別パターン=1手筋1パターン文化)。和>各項で転記自動安全。"}

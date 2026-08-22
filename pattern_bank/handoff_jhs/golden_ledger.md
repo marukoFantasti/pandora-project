@@ -233,3 +233,12 @@
 - 目視素材2枚: circle_g05_preview_{diameter(12cm),radius(5cm)}.svg。バンク(円周・面積の図付き第一波)は目視後Fable側。
 - **B調査(円面積35問)**: 基本16(v2既存充足=先行可)/複合19(色部分8・ドーナツ5・半円組合せ4・正方形と円2)=composite_circle kind 1つ(外形×内側円×塗りmode)で覆える見込み。寸法与件は半径17/直径9主体。
 - **B5: 3.14書式=既存機構で充足**: af=×314(整数演算)+answer_unit_system:"dec2"(÷100・小数第2位)。浮動小数を答えに使わない確立様式(g05円周・g06面積の実書式)。複合円も本書式踏襲で新機構不要。
+
+### 2026-08-22 g06 P-3a第三便(円まわりの長さ2追補・sector×mode新組合せ・D-2)
+- g06に円周長2パターンをD-2 append(77→79)。まるこ検収済み。半円のまわり(弧+直径・sector:half+mode:diameter=新組合せ)・四分円のまわり(弧+半径2本・sector:quarter+radius_label)。lexicon追加なし。
+- 旧md5 bd369536(77)→**新md5 2bb79492**(79)。golden PASS 237/237。既存77 byte一致(D-2成立)。
+- **tnc正規化**: 素材tnc([2]/[2,4])は3.14の3・14が欠落しnums_from_slots全FAIL→既存circle_area_01流儀([3,14]+ステップ定数)へ正規化([3,14,2]/[3,14,2,4])。100/100通過。
+- **3.14書式**: af=×257(半円=πd/2+d=2.57d)・×357(四分円=2πr/4+2r=3.57r)+answer_unit_system:"dec2"(÷100)。既存円周流儀踏襲・af独立検算一致(20cm→51.4/r3→10.71)。
+- sector:half+mode:diameter は circle v2の直径線描画が半円塗り(polygon)と共存(目視: 弧+直径一体・18cm線下)。描画不良0(半円はpolygon塗りでrim<circle>非保持=正常)。
+- **furigana増補**: 四分円→しぶんえん(半円=はんえん既収・まるこ検収)→3コピー同期・433パターン残存0。
+- rationale正規化: インラインdirective→bank_directives D9(検収文無改変・id参照)。rationale 431→**433**・integrity 433(g06 79/79)・pairs_design 433。全32関門+パリティPASS。

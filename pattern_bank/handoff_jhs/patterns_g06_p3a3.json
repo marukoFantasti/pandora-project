@@ -1,0 +1,111 @@
+{
+ "_meta_append": {
+  "purpose": "patterns_g06.jsonへの追補(P-3a第三便・円まわりの長さ2パターン。g06=77→79)",
+  "date": "2026-08-22",
+  "note": "円族第一波のg06側新規=半円/四分円のまわりの長さ(調査5問域・面積系既存4は図付き済みで対不要と判明)。mawari_halfはsector half+直径値表示の新組合せ(配線時に実装確認+スキャン)・mawari_quarterは既存quarter図流用。g05円周図付き3本はpatterns_g05受領後の続き便。tnc・3.14宣言は既存circle_area_01流儀へ配線時正規化",
+  "batch": "P3a-3"
+ },
+ "patterns": [
+  {
+   "pattern_id": "g06_circle_mawari_half_01",
+   "grade": "g06",
+   "unit_id": "g06_c08_u01",
+   "unit_name": "円の面積",
+   "semantic_category": "半円のまわりの長さ(弧+直径)",
+   "semantic_note": "まわり=曲線部(直径×3.14÷2)+直線部(直径)。「面積でなく周」の弁別と、直線部を足し忘れない構成理解が学習の芯(足し忘れが定番誤答)。内部スケール100整数(d×157+d×100=d×257)・dec2表示のg05面積文化継承。図はsector half+直径値表示(新組合せ)。",
+   "step_count": 1,
+   "operation": "まわり: d×3.14÷2＋d",
+   "answer_formula": "d1 * 257",
+   "answer_unit_system": "dec2",
+   "slots": {
+    "d1": {
+     "type": "int",
+     "range": [
+      2,
+      20
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の半円のまわりの長さを求めなさい。円周率は3.14とします。"
+   ],
+   "answer_template": "しき {d1}×3.14÷2+{d1}={ans_disp} 答え {ans_disp}cm",
+   "figure_params": {
+    "fig_version": 2,
+    "kind": "circle",
+    "sector": "half",
+    "mode": "diameter",
+    "value": "{d1}",
+    "unit": "cm"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    3,
+    14,
+    2
+   ]
+  },
+  {
+   "pattern_id": "g06_circle_mawari_quarter_01",
+   "grade": "g06",
+   "unit_id": "g06_c08_u01",
+   "unit_name": "円の面積",
+   "semantic_category": "四分円のまわりの長さ(弧+半径2本)",
+   "semantic_note": "まわり=弧(半径×2×3.14÷4)+半径×2。半円版との対で「直線部が何か」(直径1本/半径2本)の構成読みを往復させる。内部整数r×157+r×200=r×357・dec2。図は既存quarter(radius_label)流用そのまま。",
+   "step_count": 1,
+   "operation": "まわり: r×2×3.14÷4＋r×2",
+   "answer_formula": "r1 * 357",
+   "answer_unit_system": "dec2",
+   "slots": {
+    "r1": {
+     "type": "int",
+     "range": [
+      2,
+      10
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の四分円(円を4等分した形)のまわりの長さを求めなさい。円周率は3.14とします。"
+   ],
+   "answer_template": "しき {r1}×2×3.14÷4+{r1}×2={ans_disp} 答え {ans_disp}cm",
+   "figure_params": {
+    "fig_version": 2,
+    "kind": "circle",
+    "sector": "quarter",
+    "radius_label": true,
+    "value": "{r1}",
+    "unit": "cm"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    3,
+    14,
+    2,
+    4
+   ]
+  }
+ ]
+}
