@@ -259,3 +259,11 @@
 - ベクター: composite_circle_vectors.js=167照合(描画要素数・真円rx==ry・内接/同心整合・正面積契約throw5種・ラベル・シード)。全33関門PASS。既存circle系golden不変(g05 d2c262c0/g06 2bb79492/figure_nondestructive)。
 - 目視素材4枚: composite_circle_preview_{a_sq_minus_circle,b_donut,c_half_pair,d_circle_in_side}.svg。バンク(複合面積のg06追補約4)は目視後Fable側。
 - **furigana自己走査道具(恒久修正)**: handoff_jhs/furigana_registered.txt新設(表層形412語・読み不要・更新日2026-08-22)。以後配線ごとに更新し報告に日付記載=Fableが納品前自己走査で突合(まるこ経由受け渡しは初回のみ)。
+
+### 2026-08-22 g06 複合面積4パターン配線(P-3a完了便・表族+円族完了)
+- **g06 79→83**: composite_circle kind(0f04461)本使用。g06_comp_{sq_circle(正方形−内接円)/donut(同心ドーナツ)/half_ring(半環)/two_circles(大円−横並び小円2)}_01。3.14=×314/×157整数演算+answer_unit_system:dec2(既存円面積流儀)。
+- **golden md5: g06 2bb79492 → b83b53f0**(既存79件は出力バイト完全不変=D-2 append/prefix一致・追加は末尾4パターン12標本のみ・PASS 237→249 FAIL 0)。g05 d2c262c0 不変。
+- **clearance**: 4パターンの有効スロット全95組(sq9/donut43/half25/two18)を実描画+_compositeCircleMinClearanceで確認・違反0・域内min(minText 19.0/minSeg 5.0@donut R10r3)=composite_circle既存154組スキャン域内。
+- **rationale/integrity/pairs 439→443**(検証OK): g06 rationale 79→83・bank_directives D10(複合面積は全構成で本文寸法明示=まるこ半環目視所見)/D11(furigana自己走査新手順)追加。inline directives→D-id参照へ正規化(load_g06互換)。
+- **furigana**: 自己走査第1号で欠落3語(中心/色/部分)を納品前検出→furigana_patch同梱受領→3コピー同期(handoff/assets_global/pg-lex)+registered.txt 412→415。差戻し往復ゼロ。
+- **corrections_log**: corr-0025(図で語れないなら文で語る=複合図形の与件は本文)・corr-0026(反復差戻しは上流自己走査へ前倒し)追記。全33関門PASS。

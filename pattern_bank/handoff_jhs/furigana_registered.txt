@@ -1,5 +1,5 @@
 # furigana_registered.txt — furigana_lexicon 既収録表層形リスト(読み不要・自己走査突合用)
-# 更新: 2026-08-22 / 語数: 412 / 出所: handoff_jhs/furigana_lexicon.json surfaces
+# 更新: 2026-08-22 / 語数: 415 / 出所: handoff_jhs/furigana_lexicon.json surfaces
 # 用途: Fable納品前の自己走査=本文の残存漢字語が本リストに無ければ増補が必要
 がい数
 一方
@@ -17,6 +17,7 @@
 並
 中
 中央値
+中心
 乗
 乗っ
 乗り
@@ -339,6 +340,7 @@
 自動車
 自然数
 自転車
+色
 色紙
 花
 花びん
@@ -387,6 +389,7 @@
 道
 道のり
 選
+部分
 配
 重
 量

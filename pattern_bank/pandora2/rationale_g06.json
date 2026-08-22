@@ -63,6 +63,18 @@
    "text": "円族第一波: 面積系既存4は図付き済みと判明し対は不要。新規はまわりの長さ対(5問域)。g05円周図付きはpatterns_g05受領後の続き便(2026-08-22)",
    "by": "marko",
    "date": "2026-08"
+  },
+  {
+   "id": "D10",
+   "text": "複合面積は全構成で本文寸法明示を必須とする——半環の図単体では寸法対応が弱い(まるこ目視所見2026-08-22)ため、図は確認役・本文が与件(実物の複合面積標準形とも一致)",
+   "by": "marko",
+   "date": "2026-08"
+  },
+  {
+   "id": "D11",
+   "text": "furigana自己走査(registered突合)の新手順第1号——欠落3語(中心/色/部分)を納品前検出・パッチ同梱(差戻し往復ゼロ化)",
+   "by": "marko",
+   "date": "2026-08"
   }
  ],
  "g06_moji_shiki_01": {
@@ -1704,6 +1716,85 @@
    "semantic_position": "まわり対の四分円側・円族第一波g06分の掉尾。複合円(composite_circle)は次便。",
    "exclusions": "なし。",
    "figure_notes": "既存quarter図流用でclearance新規論点なし。",
+   "pedagogy": []
+  }
+ },
+ "g06_comp_sq_circle_01": {
+  "brief": {
+   "semantic_territory": "複合面積(正方形−内接円)",
+   "number_domain": "小数2桁(dec2・内部整数)",
+   "answer_structure": "single",
+   "figure": "composite_circle(square_minus_circle)",
+   "step_count": 1,
+   "directives": [
+    "D10",
+    "D11"
+   ]
+  },
+  "rationale": {
+   "source_features": "正方形−内接円の四隅。「まわりを引く」複合の代表形で、4−π構造(1辺基準で100−78.5=21.5%)。",
+   "representation": "s偶数(step2)で半径整数(rr=s÷2)を構造化——「ぴったり入る円」の言語が内接(辺=直径)を規定し、寸法与件はsひとつ。内部整数s²×100−rr²×314・dec2のg05面積文化。",
+   "constructive_guarantees": "正面積を全域証明(9組)。契約throw(s>0・内円px=半辺)が図と数理の整合を二重化。",
+   "semantic_position": "複合面積4部作の第1位。composite_circle kindの本使用開始。",
+   "exclusions": "s奇数(半径非整数)。",
+   "figure_notes": "四隅網掛け(#cfe0fb=求積対象)の目視合格(2026-08-22)。スキャン154組域内。",
+   "pedagogy": []
+  }
+ },
+ "g06_comp_donut_01": {
+  "brief": {
+   "semantic_territory": "複合面積(同心ドーナツ)",
+   "number_domain": "小数2桁(dec2)",
+   "answer_structure": "single",
+   "figure": "composite_circle(circle_minus_circle)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "大円−同心小円の環。複合面積の最頻形(調査5問)。",
+   "representation": "2円独立計算のしき(R²×3.14−r²×3.14・実物主流形)。R−r≧2で環の視認を保証。",
+   "constructive_guarantees": "正面積全域(43組)。同心整合は契約throw。",
+   "semantic_position": "複合4部作の第2位・半環(÷2版)の親。",
+   "exclusions": "R−r<2(環が細すぎ)。",
+   "figure_notes": "環塗りの目視合格。donut R10r3でminSeg5.0の最小域確認済み(スキャン)。",
+   "pedagogy": []
+  }
+ },
+ "g06_comp_half_ring_01": {
+  "brief": {
+   "semantic_territory": "複合面積(半環)",
+   "number_domain": "小数2桁(dec2・×157整数)",
+   "answer_structure": "single",
+   "figure": "composite_circle(half_pair)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "外半円−内半円。まわりの長さ(mawari_half)と対になる半円系の面積版。",
+   "representation": "環÷2の順序をしきの括弧で固定——(環全体)÷2の構成理解。×157で整数保証(mawari系と同じ手筋)。本文で両半径を明示(directives=まるこ所見対応・図は確認役)。R−r≧3で内外弧の分離視認。",
+   "constructive_guarantees": "正面積全域(25組)。",
+   "semantic_position": "複合4部作の第3位。",
+   "exclusions": "R−r<3(弧の分離不足——ドーナツより厳しい値は半環の下辺で弧が接近するため)。",
+   "figure_notes": "目視所見「図単体では分かりにくい」を設計(本文明示)で解決した記録——図の改修でなく与件配置の変更で済ませた判断。",
+   "pedagogy": []
+  }
+ },
+ "g06_comp_two_circles_01": {
+  "brief": {
+   "semantic_territory": "複合面積(大円−小円2)",
+   "number_domain": "小数2桁(dec2)",
+   "answer_structure": "single",
+   "figure": "composite_circle(circle_in_circle_side)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "大円内の同半径小円2つを除く色部分。「×2を忘れない」が定番誤答点で、しきに×2を明示。",
+   "representation": "2r≦R(契約throwと同値の制約を生成側にも)で横並び成立を二重保証。",
+   "constructive_guarantees": "正面積(2r≦R→R²≧4r²>2r²で構造的に正)。全域18組。",
+   "semantic_position": "複合4部作の掉尾——円族41問域(円周・面積基本・まわり・複合)の完了位置。P-3a(表+円)完了。",
+   "exclusions": "2r>R(はみ出し)。",
+   "figure_notes": "横並び小円の目視合格。",
    "pedagogy": []
   }
  }
