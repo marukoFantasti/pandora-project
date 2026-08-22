@@ -225,3 +225,11 @@
 - ai条件式(3段ネストternary)=pyTernary対応済み・受理確認。{unit1}参照=lexicon駆動。レンジ(v2-15/u,w2-12)は調査カテゴリ「人数系」域内。clearance=実証域内(1+4列・caption≤12字)のため追加スキャン不要→table_scan自動対象で99/99再確認。
 - **furigana増補5語**(犬=いぬ/小鳥=ことり/春=はる/夏=なつ/冬=ふゆ・2d題材語・まるこ検収)→3コピー同期・431パターン残存0。
 - rationale 425→**431**・integrity 431・pairs_design 431。全31関門+パリティPASS。
+
+### 2026-08-22 circle v2小改修(直径/半径線ラベル)+複合円調査(P-3a第二便)
+- **circle v2 mode**(diameter/radius): 中心通過の水平弦(直径)/中心→円周(半径)の実線+「{value}cm」を線下に配置。全数値スロット参照・真円(<circle> r=90維持=corr-0019)・ラベルは線segにown束縛。既存 radius_label(30°)とは別経路=新フィールドmodeで既存v2(area系4・radius_label)バイト不変。
+- **corr-0020悉皆**: (i)直径d2-20 (ii)半径r1-10=29組・違反0。描画寸法固定(値=ラベル文字のみ変化)・min(円周内側余裕23.2px・中心点間隔5.5px)。目視2枚合格。
+- ベクター: tests/circle_line_vectors.js=33照合(中心通過y=0・端点±r/中心・真円r90・ラベル対rim/中心間隔・シード)。全32関門PASS・既存circle系golden不変(g05 d11f4ea3・g06 bd369536・figure_nondestructive)。
+- 目視素材2枚: circle_g05_preview_{diameter(12cm),radius(5cm)}.svg。バンク(円周・面積の図付き第一波)は目視後Fable側。
+- **B調査(円面積35問)**: 基本16(v2既存充足=先行可)/複合19(色部分8・ドーナツ5・半円組合せ4・正方形と円2)=composite_circle kind 1つ(外形×内側円×塗りmode)で覆える見込み。寸法与件は半径17/直径9主体。
+- **B5: 3.14書式=既存機構で充足**: af=×314(整数演算)+answer_unit_system:"dec2"(÷100・小数第2位)。浮動小数を答えに使わない確立様式(g05円周・g06面積の実書式)。複合円も本書式踏襲で新機構不要。

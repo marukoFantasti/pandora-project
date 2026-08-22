@@ -612,6 +612,17 @@
       finishLabels(lay, [{ anchor: mid, dirs: [[nx / L, ny / L], [-nx / L, -ny / L]], text: fp.value + u,
         cands: [[12, 15], [16, 15], [12, 13], [18, 13], [12, 11]], color: '#333', own: 'rline' }]);
     }
+    // P-3a: 直径/半径の線+長さラベル(mode切替)。全数値スロット参照({value})・真円(<circle>維持)。
+    // 直径=中心を通る水平弦[-r,0]→[r,0]・半径=中心→円周[0,0]→[r,0]。ラベルは線の下側(中心点/円周からの間隔検査対象)。
+    if (fp.mode === 'diameter' || fp.mode === 'radius') {
+      var isD = fp.mode === 'diameter';
+      var lp1 = worldFlip(isD ? [-r, 0] : [0, 0]), lp2 = worldFlip([r, 0]);
+      lay.parts.push(lineEl(lp1, lp2, C_STROKE, 1.8));
+      lay.segs.push({ id: 'dline', p1: lp1, p2: lp2 });
+      var lmid = worldFlip(isD ? [0, 0] : [r / 2, 0]);
+      finishLabels(lay, [{ anchor: lmid, dirs: [[0, 1], [0, -1]], text: fp.value + u,
+        cands: [[13, 15], [16, 15], [13, 13], [19, 13], [13, 11], [22, 11]], color: '#333', own: 'dline' }]);
+    }
     lay.pts.push([-r - 2, -r - 2], [r + 2, r + 2]);
     return lay;
   }
