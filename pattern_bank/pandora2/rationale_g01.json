@@ -947,5 +947,68 @@
    "figure_notes": "図なし(絵の集計は図依存として対象外・判断部分のみテキスト完結)。",
    "pedagogy": []
   }
+ },
+ "g01_tokei_seiji_01": {
+  "brief": {
+   "semantic_territory": "文字盤よみ(正時)",
+   "number_domain": "整数(1〜12時)",
+   "answer_structure": "single",
+   "figure": "clock_face",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "時計は実需前提方針の採録第1号(参照転記にほぼ出現しないが文字盤読みの現場需要が実在——「需要はすべてにある・やれることは先にやる」2026-08-22まるこ)。読み専用・針合わせ側(作図系)は対象外",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "正時の文字盤読み(長針12・短針ちょうど)。時計学習の入口で、短針=時の一対一対応。",
+   "representation": "clock_face kind(針角度決定式30h+0.5m/6m・数字半径71vs針36/56の非交差設計)の適用第1号。本文に数値なし・図が全情報源——「図を読む」型のg01初例(jhs figv2読み取り系の1年版)。",
+   "constructive_guarantees": "答=短針位置は読み取りが学習内容(corr-0007非検出構造・taicho_01類型)。受理12組(全正時)。",
+   "semantic_position": "時計よみ3部作の第1位。テキスト時刻対(jikan_ato/mae)と図/数理の両輪。",
+   "exclusions": "なし(全正時を許容)。",
+   "figure_notes": "clock_face(真円=corr-0019・数字12手動labelbox・スキャン144組違反0)。m=0固定で長針12・視認最良の入口形。",
+   "pedagogy": []
+  }
+ },
+ "g01_tokei_han_01": {
+  "brief": {
+   "semantic_territory": "文字盤よみ(なんじはん)",
+   "number_domain": "整数(1〜12時)",
+   "answer_structure": "single",
+   "figure": "clock_face",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "半(30分)の読み。短針が数字の間に来る初めての形で、「hとh+1のあいだ→hじ台」の読みが正時との差分学習。",
+   "representation": "m=30固定(tnc宣言)。「はん」はテンプレ固定で答は数値のみ——在庫「なんじはん系」の回収を表示形の工夫で実現(はんの文字列答えを作らない)。",
+   "constructive_guarantees": "受理12組。長針6固定で分読みの負荷なし(半の概念に集中)。",
+   "semantic_position": "3部作の第2位・正時と何分の橋。",
+   "exclusions": "なし。",
+   "figure_notes": "スキャン(ii)半×12実証域。7:30の短針位置(7と8の間)はまるこ目視合格(2026-08-22)。",
+   "pedagogy": []
+  }
+ },
+ "g01_tokei_nanpun_01": {
+  "brief": {
+   "semantic_territory": "文字盤よみ(なんじなんぷん)",
+   "number_domain": "2値列(num_seq・時/分)",
+   "answer_structure": "single",
+   "figure": "clock_face",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "5分刻みの何分読み。短針の台読み+長針の数字×5の2段が学習内容で、1年時計の到達点。",
+   "representation": "m=5刻みchoices(0・30除外=正時/半との構造分離)。答=時分の2値num_seq(順序固定)。表記「ふん」固定の割り切りと表記/読み分離(海外版TTSはcounter規則表が音変化を担う)をnoteに記録。",
+   "constructive_guarantees": "受理120組(12時×10分値)。スキャン(iii)実証域(針・数字の最小間隔1:50でも≧4px)。",
+   "semantic_position": "3部作の掉尾・P-1の真の完成位置(g01=46)。g02の時刻と時間(分単位計算)への図側の橋。",
+   "exclusions": "m=0(正時)・m=30(半)——構造分離。",
+   "figure_notes": "2:35のレンダ(長針7・短針2と3の間77.5度)はまるこ目視合格。数字を針が横切らない半径設計(71vs56)が5分刻み全域で効く。",
+   "pedagogy": []
+  }
  }
 }

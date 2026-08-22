@@ -1,0 +1,143 @@
+{
+ "_meta_append": {
+  "purpose": "patterns_g01.jsonへの追補(P-1バッチ4・時計よみ3パターン。g01=43→46・実需起点第1号)",
+  "date": "2026-08-22",
+  "note": "clock_face(6f61afa)本使用の初バンク。実需前提方針(2026-08-22まるこ)による採録——参照転記に時計図はほぼ出現しないが文字盤読みの練習需要が現場に実在。読み専用(針を合わせる側=作図系は対象外)。在庫だった「なんじはん系」も本便で回収",
+  "batch": "P1-batch4"
+ },
+ "patterns": [
+  {
+   "pattern_id": "g01_tokei_seiji_01",
+   "grade": "g01",
+   "unit_id": "g01_c12_u02",
+   "unit_name": "とけいの よみ",
+   "semantic_category": "文字盤よみ(正時)",
+   "semantic_note": "長針12(0分)・短針ちょうどの正時読み。本文に数値なし・図が全情報源(taicho_01と同じくcorr-0007非検出の構造)。答=図の短針位置は読み取りが学習内容そのもの。",
+   "step_count": 1,
+   "operation": "文字盤よみ: 短針の指す数",
+   "answer_formula": "h1",
+   "answer_domain": "any_int",
+   "slots": {
+    "h1": {
+     "type": "int",
+     "range": [
+      1,
+      12
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "とけいを みて、なんじか こたえましょう。"
+   ],
+   "answer_template": "こたえ {h1}じ",
+   "figure_params": {
+    "kind": "clock_face",
+    "h": "{h1}",
+    "m": 0
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    0
+   ]
+  },
+  {
+   "pattern_id": "g01_tokei_han_01",
+   "grade": "g01",
+   "unit_id": "g01_c12_u02",
+   "unit_name": "とけいの よみ",
+   "semantic_category": "文字盤よみ(なんじはん)",
+   "semantic_note": "長針6(30分)・短針が数字の間にある半の読み。「短針は h と h+1 のあいだ→hじ台」の読みが学習の芯(正時との差分)。「はん」はテンプレ固定(答は数値hのみ・在庫のなんじはん系の回収)。",
+   "step_count": 1,
+   "operation": "文字盤よみ: 半(30分)",
+   "answer_formula": "h1",
+   "answer_domain": "any_int",
+   "slots": {
+    "h1": {
+     "type": "int",
+     "range": [
+      1,
+      12
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "とけいを みて、なんじはんか こたえましょう。"
+   ],
+   "answer_template": "こたえ {h1}じはん",
+   "figure_params": {
+    "kind": "clock_face",
+    "h": "{h1}",
+    "m": 30
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    30
+   ]
+  },
+  {
+   "pattern_id": "g01_tokei_nanpun_01",
+   "grade": "g01",
+   "unit_id": "g01_c12_u02",
+   "unit_name": "とけいの よみ",
+   "semantic_category": "文字盤よみ(なんじなんぷん)",
+   "semantic_note": "5分刻みの何分読み(0・30除く=正時/半の別パターンと構造分離)。答=時+分の2値num_seq(順序: じ・ふん)。表記「ふん」固定は割り切り(3ふん等の音変化は表記でなく読みの問題——海外版TTSはcounter規則表の分(ふん/ぷん)が正しく合成する表記/読みの分離)。長針=分の読み(数字×5)が2段の学習内容。",
+   "step_count": 1,
+   "operation": "文字盤よみ: 何時何分",
+   "answer_formula": "h1",
+   "answer_domain": "num_seq",
+   "slots": {
+    "h1": {
+     "type": "int",
+     "range": [
+      1,
+      12
+     ]
+    },
+    "m1": {
+     "choices": [
+      5,
+      10,
+      15,
+      20,
+      25,
+      35,
+      40,
+      45,
+      50,
+      55
+     ],
+     "type": "choice_int"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "とけいを みて、なんじなんぷんか こたえましょう。"
+   ],
+   "answer_template": "こたえ {h1}じ{m1}ふん",
+   "figure_params": {
+    "kind": "clock_face",
+    "h": "{h1}",
+    "m": "{m1}"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  }
+ ]
+}

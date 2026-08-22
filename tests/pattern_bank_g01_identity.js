@@ -1,4 +1,4 @@
-// g01(小1・加法/減法)43パターンの恒等検算(12+バッチ1 11+バッチ2 8+バッチ3 12)(設計側ストレスと同一仕様)。
+// g01(小1・加法/減法)46パターンの恒等検算(12+バッチ1〜4 34)(設計側ストレスと同一仕様)。
 // 各パターンの答え=answer_formula の恒等性 + 制約(転記退化排除・桁上/桁下条件)を高volで悉皆検証。
 //
 // 実行:  node tests/pattern_bank_g01_identity.js [N]
@@ -59,6 +59,10 @@ const ID = {
   g01_katachi_nakama_01: e => e.ans === (e.s1 === 0 ? 1 : 2) && e.c1 !== e.d1 && [0, 1].includes(e.s1),
   g01_katachi_kosei_01: e => e.ans === e.kn1 && [2, 4].includes(e.kn1),
   g01_kazushirabe_ooi_01: e => e.ans === ((e.a1 > e.b1 && e.a1 > e.c1) ? 1 : (e.b1 > e.c1 ? 2 : 3)) && e.a1 !== e.b1 && e.b1 !== e.c1 && e.a1 !== e.c1,
+  // バッチ4(P-1真の完成便・時計よみ3。nanpunはnum_seq=先頭h1+m1をここで照合)
+  g01_tokei_seiji_01: e => e.ans === e.h1 && e.h1 >= 1 && e.h1 <= 12,
+  g01_tokei_han_01: e => e.ans === e.h1 && e.h1 >= 1 && e.h1 <= 12,
+  g01_tokei_nanpun_01: e => e.ans === e.h1 && e.h1 >= 1 && e.h1 <= 12 && [5, 10, 15, 20, 25, 35, 40, 45, 50, 55].includes(e.m1),
 };
 
 let bad = 0, checked = 0;
@@ -77,5 +81,5 @@ for (const p of bank.patterns) {
   }
   console.log('  ' + p.pattern_id.padEnd(24) + ' ' + N + '本 恒等' + (pb === 0 ? 'OK ✅' : 'NG ' + pb + ' ❌'));
 }
-console.log('\n' + (bad === 0 ? 'g01 恒等検算: 全43パターン合格 ✅ (' + checked + '本)' : '❌ ' + bad + '件'));
+console.log('\n' + (bad === 0 ? 'g01 恒等検算: 全46パターン合格 ✅ (' + checked + '本)' : '❌ ' + bad + '件'));
 process.exit(bad === 0 ? 0 : 1);
