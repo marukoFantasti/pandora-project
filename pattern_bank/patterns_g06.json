@@ -188,6 +188,17 @@
     "judge": "線対称でも点対称でもある",
     "jid": 3
    }
+  ],
+  "shirabe_1row": [
+   {"caption":"すきなあそびしらべ","ca":"おにごっこ","cb":"ドッジボール","cc":"なわとび","cd":"てつぼう","ask":"ドッジボール","ai":2,"unit":"人"},
+   {"caption":"すきなくだものしらべ","ca":"りんご","cb":"みかん","cc":"バナナ","cd":"ぶどう","ask":"バナナ","ai":3,"unit":"人"},
+   {"caption":"かりた本しらべ","ca":"ものがたり","cb":"ずかん","cc":"でんき","cd":"かがくの本","ask":"ずかん","ai":2,"unit":"さつ"},
+   {"caption":"すきなきゅうしょくしらべ","ca":"カレーライス","cb":"あげパン","cc":"やきそば","cd":"シチュー","ask":"カレーライス","ai":1,"unit":"人"},
+   {"caption":"すきなスポーツしらべ","ca":"サッカー","cb":"やきゅう","cc":"すいえい","cd":"バスケットボール","ask":"すいえい","ai":3,"unit":"人"}
+  ],
+  "shirabe_2d": [
+   {"caption":"すきなどうぶつしらべ","r1":"1組","r2":"2組","c1":"犬","c2":"ねこ","c3":"小鳥","unit":"人"},
+   {"caption":"すきなきせつしらべ","r1":"1組","r2":"2組","c1":"春","c2":"夏","c3":"冬","unit":"人"}
   ]
  },
  "patterns": [
@@ -5331,6 +5342,755 @@
    "template_number_constants": [
     15,
     20
+   ]
+  },
+  {
+   "pattern_id": "g06_hyo_yomi_01",
+   "grade": "g06",
+   "unit_id": "g06_c07_u03",
+   "unit_name": "表の読み取り",
+   "semantic_category": "1行表の値読み",
+   "semantic_note": "しらべ表の指定項目の値読み。問う列はlexiconのask/ai(テーマごとに別位置)で回し位置暗記を排除——answer_formulaはai条件式(pyTernaryネスト・batch3実装済み)。答=セル値は読み取りが学習内容(図が情報源・本文に数値なし=corr-0007非検出のtokei類型)。読み系はしきなし様式(配線時確認)。",
+   "step_count": 1,
+   "operation": "表のセル読み(ai選択)",
+   "answer_formula": "v1 if ai1 == 1 else (v2 if ai1 == 2 else (v3 if ai1 == 3 else v4))",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "type": "choice_int"
+    },
+    "cap1": {
+     "from": "shirabe_1row[j1].caption"
+    },
+    "ca1": {
+     "from": "shirabe_1row[j1].ca"
+    },
+    "cb1": {
+     "from": "shirabe_1row[j1].cb"
+    },
+    "cc1": {
+     "from": "shirabe_1row[j1].cc"
+    },
+    "cd1": {
+     "from": "shirabe_1row[j1].cd"
+    },
+    "ask1": {
+     "from": "shirabe_1row[j1].ask"
+    },
+    "ai1": {
+     "from": "shirabe_1row[j1].ai"
+    },
+    "unit1": {
+     "from": "shirabe_1row[j1].unit"
+    },
+    "v1": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    },
+    "v2": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    },
+    "v3": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    },
+    "v4": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "右の表は、あるクラスでしらべた結果を整理したものです。{ask1}のかずは、いくつですか。"
+   ],
+   "answer_template": "答え {ans}{unit1}",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "{cap1}",
+    "col_header": [
+     "{ca1}",
+     "{cb1}",
+     "{cc1}",
+     "{cd1}"
+    ],
+    "rows": [
+     {
+      "label": "かず({unit1})",
+      "values": [
+       "{v1}",
+       "{v2}",
+       "{v3}",
+       "{v4}"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_hyo_max_01",
+   "grade": "g06",
+   "unit_id": "g06_c07_u03",
+   "unit_name": "表の読み取り",
+   "semantic_category": "1行表の最大値",
+   "semantic_note": "いちばん多い値(数値答)。4値相異で最大一意。答=セル値の1つは比較読み取りの学習内容=転記例外(kurabe族・要例外登録)。語答え形(どれが多いか)はword_map動的対応後の在庫。",
+   "step_count": 1,
+   "operation": "max(v1..v4)",
+   "answer_formula": "max(v1, v2, v3, v4)",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "type": "choice_int"
+    },
+    "cap1": {
+     "from": "shirabe_1row[j1].caption"
+    },
+    "ca1": {
+     "from": "shirabe_1row[j1].ca"
+    },
+    "cb1": {
+     "from": "shirabe_1row[j1].cb"
+    },
+    "cc1": {
+     "from": "shirabe_1row[j1].cc"
+    },
+    "cd1": {
+     "from": "shirabe_1row[j1].cd"
+    },
+    "unit1": {
+     "from": "shirabe_1row[j1].unit"
+    },
+    "v1": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    },
+    "v2": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    },
+    "v3": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    },
+    "v4": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "distinct_12",
+     "expr": "v1 != v2",
+     "why": "4値相異(最大の一意性)"
+    },
+    {
+     "rule": "distinct_13",
+     "expr": "v1 != v3",
+     "why": "同上"
+    },
+    {
+     "rule": "distinct_14",
+     "expr": "v1 != v4",
+     "why": "同上"
+    },
+    {
+     "rule": "distinct_23",
+     "expr": "v2 != v3",
+     "why": "同上"
+    },
+    {
+     "rule": "distinct_24",
+     "expr": "v2 != v4",
+     "why": "同上"
+    },
+    {
+     "rule": "distinct_34",
+     "expr": "v3 != v4",
+     "why": "同上"
+    }
+   ],
+   "sentence_templates": [
+    "右の表は、あるクラスでしらべた結果を整理したものです。かずがいちばん多いものは、いくつですか。"
+   ],
+   "answer_template": "答え {ans}{unit1}",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "{cap1}",
+    "col_header": [
+     "{ca1}",
+     "{cb1}",
+     "{cc1}",
+     "{cd1}"
+    ],
+    "rows": [
+     {
+      "label": "かず({unit1})",
+      "values": [
+       "{v1}",
+       "{v2}",
+       "{v3}",
+       "{v4}"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_hyo_min_01",
+   "grade": "g06",
+   "unit_id": "g06_c07_u03",
+   "unit_name": "表の読み取り",
+   "semantic_category": "1行表の最小値",
+   "semantic_note": "いちばん少ない値。max_01の対(比較方向の両輪)。同じく転記例外(kurabe族)。",
+   "step_count": 1,
+   "operation": "min(v1..v4)",
+   "answer_formula": "min(v1, v2, v3, v4)",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "type": "choice_int"
+    },
+    "cap1": {
+     "from": "shirabe_1row[j1].caption"
+    },
+    "ca1": {
+     "from": "shirabe_1row[j1].ca"
+    },
+    "cb1": {
+     "from": "shirabe_1row[j1].cb"
+    },
+    "cc1": {
+     "from": "shirabe_1row[j1].cc"
+    },
+    "cd1": {
+     "from": "shirabe_1row[j1].cd"
+    },
+    "unit1": {
+     "from": "shirabe_1row[j1].unit"
+    },
+    "v1": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    },
+    "v2": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    },
+    "v3": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    },
+    "v4": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "distinct_12",
+     "expr": "v1 != v2",
+     "why": "4値相異(最小の一意性)"
+    },
+    {
+     "rule": "distinct_13",
+     "expr": "v1 != v3",
+     "why": "同上"
+    },
+    {
+     "rule": "distinct_14",
+     "expr": "v1 != v4",
+     "why": "同上"
+    },
+    {
+     "rule": "distinct_23",
+     "expr": "v2 != v3",
+     "why": "同上"
+    },
+    {
+     "rule": "distinct_24",
+     "expr": "v2 != v4",
+     "why": "同上"
+    },
+    {
+     "rule": "distinct_34",
+     "expr": "v3 != v4",
+     "why": "同上"
+    }
+   ],
+   "sentence_templates": [
+    "右の表は、あるクラスでしらべた結果を整理したものです。かずがいちばん少ないものは、いくつですか。"
+   ],
+   "answer_template": "答え {ans}{unit1}",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "{cap1}",
+    "col_header": [
+     "{ca1}",
+     "{cb1}",
+     "{cc1}",
+     "{cd1}"
+    ],
+    "rows": [
+     {
+      "label": "かず({unit1})",
+      "values": [
+       "{v1}",
+       "{v2}",
+       "{v3}",
+       "{v4}"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_hyo_sa_01",
+   "grade": "g06",
+   "unit_id": "g06_c07_u03",
+   "unit_name": "表の読み取り",
+   "semantic_category": "1行表の差(2項目比較)",
+   "semantic_note": "2項目の差(cb−cd固定列・テーマと値の回転で暗記排除)。読み取り+減法の複合。列固定は差演算のため位置暗記の実害なし(答は毎回別値)——yomi_01のai可変との使い分けを明記。",
+   "step_count": 1,
+   "operation": "v2−v4",
+   "answer_formula": "v2 - v4",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "type": "choice_int"
+    },
+    "cap1": {
+     "from": "shirabe_1row[j1].caption"
+    },
+    "ca1": {
+     "from": "shirabe_1row[j1].ca"
+    },
+    "cb1": {
+     "from": "shirabe_1row[j1].cb"
+    },
+    "cc1": {
+     "from": "shirabe_1row[j1].cc"
+    },
+    "cd1": {
+     "from": "shirabe_1row[j1].cd"
+    },
+    "unit1": {
+     "from": "shirabe_1row[j1].unit"
+    },
+    "v1": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    },
+    "v2": {
+     "type": "int",
+     "range": [
+      3,
+      15
+     ]
+    },
+    "v3": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    },
+    "v4": {
+     "type": "int",
+     "range": [
+      2,
+      14
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "positive",
+     "expr": "v2 > v4",
+     "why": "差が正(問いの向きと整合)"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "v2 != 2 * v4",
+     "why": "転記型リーク排除(答=v4)"
+    }
+   ],
+   "sentence_templates": [
+    "右の表は、あるクラスでしらべた結果を整理したものです。{cb1}は{cd1}より、いくつ多いですか。"
+   ],
+   "answer_template": "しき {v2}-{v4}={ans} 答え {ans}{unit1}",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "{cap1}",
+    "col_header": [
+     "{ca1}",
+     "{cb1}",
+     "{cc1}",
+     "{cd1}"
+    ],
+    "rows": [
+     {
+      "label": "かず({unit1})",
+      "values": [
+       "{v1}",
+       "{v2}",
+       "{v3}",
+       "{v4}"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_hyo_gokei_01",
+   "grade": "g06",
+   "unit_id": "g06_c07_u03",
+   "unit_name": "表の読み取り",
+   "semantic_category": "1行表の合計",
+   "semantic_note": "4項目の合計(dosuu_total_01の階級表に対する、カテゴリしらべ表の対——同数理・別表形)。転記フリー(和>各項)。",
+   "step_count": 1,
+   "operation": "v1+v2+v3+v4",
+   "answer_formula": "v1 + v2 + v3 + v4",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "type": "choice_int"
+    },
+    "cap1": {
+     "from": "shirabe_1row[j1].caption"
+    },
+    "ca1": {
+     "from": "shirabe_1row[j1].ca"
+    },
+    "cb1": {
+     "from": "shirabe_1row[j1].cb"
+    },
+    "cc1": {
+     "from": "shirabe_1row[j1].cc"
+    },
+    "cd1": {
+     "from": "shirabe_1row[j1].cd"
+    },
+    "unit1": {
+     "from": "shirabe_1row[j1].unit"
+    },
+    "v1": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    },
+    "v2": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    },
+    "v3": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    },
+    "v4": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "右の表は、あるクラスでしらべた結果を整理したものです。しらべたかずは、全部でいくつですか。"
+   ],
+   "answer_template": "しき {v1}+{v2}+{v3}+{v4}={ans} 答え {ans}{unit1}",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "{cap1}",
+    "col_header": [
+     "{ca1}",
+     "{cb1}",
+     "{cc1}",
+     "{cd1}"
+    ],
+    "rows": [
+     {
+      "label": "かず({unit1})",
+      "values": [
+       "{v1}",
+       "{v2}",
+       "{v3}",
+       "{v4}"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g06_hyo_2d_yomi_01",
+   "grade": "g06",
+   "unit_id": "g06_c07_u03",
+   "unit_name": "表の読み取り",
+   "semantic_category": "2次元表のセル読み(行×列指定)",
+   "semantic_note": "2行×3列のクロス表からの指定セル読み(2組×c2固定・テーマ回転)。行と列の交差を言語指定で追うのが学習内容——セル位置固定でも指定は毎回文で行われ、表・値の回転で成立。表族初の複数行rows。",
+   "step_count": 1,
+   "operation": "2次元セル読み(r2×c2)",
+   "answer_formula": "w2",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1
+     ],
+     "type": "choice_int"
+    },
+    "cap1": {
+     "from": "shirabe_2d[j1].caption"
+    },
+    "r1a": {
+     "from": "shirabe_2d[j1].r1"
+    },
+    "r2a": {
+     "from": "shirabe_2d[j1].r2"
+    },
+    "c1a": {
+     "from": "shirabe_2d[j1].c1"
+    },
+    "c2a": {
+     "from": "shirabe_2d[j1].c2"
+    },
+    "c3a": {
+     "from": "shirabe_2d[j1].c3"
+    },
+    "unit1": {
+     "from": "shirabe_2d[j1].unit"
+    },
+    "u1": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    },
+    "u2": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    },
+    "u3": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    },
+    "w1": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    },
+    "w2": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    },
+    "w3": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "右の表は、2つの組でしらべた結果を整理したものです。{r2a}で{c2a}とこたえた人は、何人ですか。"
+   ],
+   "answer_template": "答え {ans}{unit1}",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "{cap1}",
+    "col_header": [
+     "{c1a}",
+     "{c2a}",
+     "{c3a}"
+    ],
+    "rows": [
+     {
+      "label": "{r1a}({unit1})",
+      "values": [
+       "{u1}",
+       "{u2}",
+       "{u3}"
+      ]
+     },
+     {
+      "label": "{r2a}({unit1})",
+      "values": [
+       "{w1}",
+       "{w2}",
+       "{w3}"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2
    ]
   }
  ],

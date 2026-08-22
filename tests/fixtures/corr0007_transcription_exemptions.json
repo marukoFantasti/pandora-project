@@ -326,6 +326,18 @@
   {
    "pattern_id": "g01_kurabe_ookii_01",
    "code": "SELECTION_ANSWER"
+  },
+  {
+   "pattern_id": "g06_hyo_max_01",
+   "code": "SELECTION_ANSWER"
+  },
+  {
+   "pattern_id": "g06_hyo_min_01",
+   "code": "SELECTION_ANSWER"
+  },
+  {
+   "pattern_id": "g06_hyo_2d_yomi_01",
+   "code": "SELECTION_ANSWER"
   }
  ]
 }

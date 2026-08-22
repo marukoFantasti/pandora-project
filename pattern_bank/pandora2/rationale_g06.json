@@ -39,6 +39,24 @@
    "text": "rationale層ネイティブ運用: briefにdirectives、量産時にrationale同時記述、人間訂正はcorrections_log.jsonに必ず記録する。",
    "by": "marko",
    "date": "2026-08"
+  },
+  {
+   "id": "D6",
+   "text": "小学第2波の方針転換(2026-08-22): 需要はすべてのものにある・後回しは考えずやれることは先にやる——参照母数ゼロ=投資不要の判定を撤回。P-3(既存kind拡張415問域)は表族から着工",
+   "by": "marko",
+   "date": "2026-08"
+  },
+  {
+   "id": "D7",
+   "text": "表題材はD4ハイジーン(架空しらべテーマ)・単位は人/さつに統制(ひき/わ等の音変化単位を回避——かな正準規約の単位選定への適用)",
+   "by": "marko",
+   "date": "2026-08"
+  },
+  {
+   "id": "D8",
+   "text": "最大最小の語答え形(どれがいちばん多いか)はword_map動的対応(テーマ依存語)の実装後在庫——第一便は数値答形(いくつか)で採録",
+   "by": "marko",
+   "date": "2026-08"
   }
  ],
  "g06_moji_shiki_01": {
@@ -1522,6 +1540,125 @@
    "exclusions": "最頻階級(argmax文字列解答)・階級幅変更は第2波。棒グラフ(g03)との違い(連続量・柱が接する)の言語化は指導側。",
    "figure_notes": "C層: 本番反映済み5kind(a129c26)を参照。座標規約はkind API表(第5弾報告)を正とする",
    "pedagogy": "軸の階級境界(下端値ラベル)の読みが棒グラフとの差分技能。"
+  }
+ },
+ "g06_hyo_yomi_01": {
+  "brief": {
+   "semantic_territory": "1行表の値読み",
+   "number_domain": "整数(2〜15)",
+   "answer_structure": "single",
+   "figure": "table(1行4列)",
+   "step_count": 1,
+   "directives": [
+    "D6",
+    "D7"
+   ]
+  },
+  "rationale": {
+   "source_features": "しらべ表(カテゴリ×かず)の指定項目読み。表族146問域の最頻形(値読み115問)で、表というデータ形式との初対面ドリル。",
+   "representation": "table kind(g06実績・caption/col_header/rows書式)の完全流用でkind実装ゼロ。問う列はlexiconのask/aiフィールド(テーマごとに別位置)で回し位置暗記を排除——answer_formulaはaiの条件式ネスト(pyTernary・g01 batch3実装済み)。テーマ5本(あそび/くだもの/本/きゅうしょく/スポーツ)。",
+   "constructive_guarantees": "答=セル値そのものは読み取りが学習内容(図が情報源・本文に数値なし=corr-0007非検出のtokei類型——転記概念の適用外)。全域4値独立で受理率100%。",
+   "semantic_position": "表族の始祖。max/min(比較)・sa(演算)・gokei(集約)・2d(次元拡張)が全て本形の発展。dosuu_total_01(度数分布)とはカテゴリ表/階級表の表形対。",
+   "exclusions": "なし(読みに不成立組がない)。",
+   "figure_notes": "table kind改修ゼロ(棚卸し判定どおり)。1行4列はdosuu実証済み構成の内側でclearance新規論点なし——実物レンジ突合のみ配線時二段(corr-0020)。",
+   "pedagogy": []
+  }
+ },
+ "g06_hyo_max_01": {
+  "brief": {
+   "semantic_territory": "1行表の最大値",
+   "number_domain": "整数(2〜15)",
+   "answer_structure": "single",
+   "figure": "table(1行4列)",
+   "step_count": 1,
+   "directives": [
+    "D8"
+   ]
+  },
+  "rationale": {
+   "source_features": "「いちばん多いのはいくつ」。表の比較読みの基本で、値読みの一段上(全セル走査)。",
+   "representation": "max関数の数値答形。4値相異6制約で最大一意。語答え形はdirectives記載の在庫分離。",
+   "constructive_guarantees": "答=セル値の1つは比較読み取りの学習内容=転記例外(kurabe_01/kurabe_ookii族・要例外登録)。相異制約下の受理率62.8%(サンプリング20,000)。",
+   "semantic_position": "比較対の最大側。",
+   "exclusions": "同値を含む組(一意性崩れ)。",
+   "figure_notes": "yomi_01と同一表構成(問いだけ違う「同じ図・違う問い」)。",
+   "pedagogy": []
+  }
+ },
+ "g06_hyo_min_01": {
+  "brief": {
+   "semantic_territory": "1行表の最小値",
+   "number_domain": "整数(2〜15)",
+   "answer_structure": "single",
+   "figure": "table(1行4列)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "「いちばん少ないのはいくつ」。最大と対の比較方向。",
+   "representation": "min関数。max_01と完全同構成の対。",
+   "constructive_guarantees": "同じく転記例外(kurabe族)。受理率同一(62.8%)。",
+   "semantic_position": "比較対の最小側。",
+   "exclusions": "同値組。",
+   "figure_notes": "同一表構成。",
+   "pedagogy": []
+  }
+ },
+ "g06_hyo_sa_01": {
+  "brief": {
+   "semantic_territory": "1行表の差(2項目比較)",
+   "number_domain": "整数(1〜13)",
+   "answer_structure": "single",
+   "figure": "table(1行4列)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "「AはBよりいくつ多いか」。読み取り+減法の複合で、表を計算の情報源として使う入口。",
+   "representation": "列固定(v2−v4)+テーマ・値回転。位置固定の使い分けを明記: yomi(読み自体が学習)はai可変で位置暗記を排除、sa(演算が学習)は固定でも答が毎回別値のため実害なし——可変性はコストなので学習内容が要る所にだけ払う。",
+   "constructive_guarantees": "v2>v4(問いの向き)・転記排除v2≠2v4。受理率49.9%。しき付き様式(演算系)。",
+   "semantic_position": "表族の演算側入口。g02求差文章題の表版。",
+   "exclusions": "v2≦v4・v2=2v4(転記)。",
+   "figure_notes": "同一表構成。",
+   "pedagogy": []
+  }
+ },
+ "g06_hyo_gokei_01": {
+  "brief": {
+   "semantic_territory": "1行表の合計",
+   "number_domain": "整数(8〜60)",
+   "answer_structure": "single",
+   "figure": "table(1行4列)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "しらべ表の総数。集約演算の基本形。",
+   "representation": "dosuu_total_01(階級表の合計)に対するカテゴリ表の対——同数理・別表形で、度数分布(c07_u02)としらべ表(c07_u03)の単元差を表形が担う。",
+   "constructive_guarantees": "和>各項の転記フリー(求積系譜)。受理率100%。しき付き様式。",
+   "semantic_position": "集約側。dosuu_total_01と表形対。",
+   "exclusions": "なし。",
+   "figure_notes": "同一表構成。",
+   "pedagogy": []
+  }
+ },
+ "g06_hyo_2d_yomi_01": {
+  "brief": {
+   "semantic_territory": "2次元表のセル読み(行×列指定)",
+   "number_domain": "整数(2〜12)",
+   "answer_structure": "single",
+   "figure": "table(2行3列)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "2観点クロス表(組×カテゴリ)の指定セル読み。行と列の交差を言語指定で追うのが学習内容で、2次元表の初対面。",
+   "representation": "rows複数(2行)の初使用——table書式のrows配列がそのまま次元拡張を受ける(kind改修ゼロの実証)。セル固定(r2×c2)+テーマ回転: 交差指定は毎回文で行われるため位置固定の実害なし(sa_01と同じ使い分け)。",
+   "constructive_guarantees": "読み系(転記概念適用外・本文に数値なし)。全域受理。",
+   "semantic_position": "表族の次元拡張位・第一便の掉尾。合計行付き2次元(周辺和)・穴埋め集計は第二便在庫。",
+   "exclusions": "なし。",
+   "figure_notes": "2行3列はdosuu(1行4列)より行方向に+1・列方向に−1でclearance同等域の想定——配線時実構成悉皆で確認(corr-0020)。",
+   "pedagogy": []
   }
  }
 }
