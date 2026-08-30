@@ -1,0 +1,946 @@
+{
+ "_meta_append": {
+  "purpose": "patterns_g02.jsonへの追補(P4-1・筆算9+数の構成5=14パターン。g02=21→35)",
+  "date": "2026-08-29",
+  "note": "P-4(g02/g03取りこぼし619+758atom)第一便=最大バケツ(筆算315atom+数構成域)。位スロット合成(g01_add_tensone手筋)・num_seq・転記設計のg01資産全投入。unit_idはg02_p4_*仮採番(配線時に参照単元へ突合・unit_range_overrides統合可否はCode判断委任)。3つの数・たしかめ2単元・漢数字読み書き(漢数字FORMATTERコスト)は在庫記録。ドリル答え様式「答え {ans}」は既存g02様式と配線時整合",
+  "batch": "P4-1"
+ },
+ "patterns": [
+  {
+   "pattern_id": "g02_calc_add_2d_nc_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_calc_add_2d_",
+   "unit_name": "2けたの数のたし算",
+   "semantic_category": "2けた+2けた(くり上がりなし)",
+   "semantic_note": "位ごとの独立加算(一の位B+D≦9・十の位A+C≦9)。位スロット合成で「くり上がりなし」を構造保証(g01_add_tensoneのg02全域版)。和>両項の転記自動安全。",
+   "step_count": 1,
+   "operation": "a＋b(くり上がりなし)",
+   "answer_formula": "10*A1 + B1 + 10*C1 + D1",
+   "slots": {
+    "A1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "B1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "C1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "D1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_carry_ones",
+     "expr": "B1 + D1 <= 9",
+     "why": "一の位くり上がりなし(単元要求)"
+    },
+    {
+     "rule": "no_carry_tens",
+     "expr": "A1 + C1 <= 9",
+     "why": "和が2けた(単元域)"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}+{b1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "a1": {
+     "formula": "10*A1 + B1"
+    },
+    "b1": {
+     "formula": "10*C1 + D1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g02_calc_add_2d_c_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_calc_add_2d_",
+   "unit_name": "くり上がりのあるたし算",
+   "semantic_category": "2けた+2けた(くり上がり1回)",
+   "semantic_note": "一の位B+D≧10のくり上がり(46+29型)。和≦99(A+C+1≦9)で3けた到達は別単元(add_to3d)へ構造分離。",
+   "step_count": 1,
+   "operation": "a＋b(くり上がりあり)",
+   "answer_formula": "10*A1 + B1 + 10*C1 + D1",
+   "slots": {
+    "A1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "B1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "C1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "D1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "carry_ones",
+     "expr": "B1 + D1 >= 10",
+     "why": "一の位くり上がり(単元要求)"
+    },
+    {
+     "rule": "sum_2d",
+     "expr": "A1 + C1 <= 8",
+     "why": "和が2けた(3けた到達は別単元)"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}+{b1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "a1": {
+     "formula": "10*A1 + B1"
+    },
+    "b1": {
+     "formula": "10*C1 + D1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g02_calc_add_to3d_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_calc_add_to3",
+   "unit_name": "答えが3けたになるたし算",
+   "semantic_category": "2けた+2けた=3けた",
+   "semantic_note": "86+57=143型(和が100を超える)。和≧100の制約が単元の定義そのもの。",
+   "step_count": 1,
+   "operation": "a＋b(和が3けた)",
+   "answer_formula": "10*A1 + B1 + 10*C1 + D1",
+   "slots": {
+    "A1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "B1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "C1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "D1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "to_3d",
+     "expr": "10*A1 + B1 + 10*C1 + D1 >= 100",
+     "why": "和が3けた(単元の定義)"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}+{b1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "a1": {
+     "formula": "10*A1 + B1"
+    },
+    "b1": {
+     "formula": "10*C1 + D1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g02_calc_add_3d2d_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_calc_add_3d2",
+   "unit_name": "3けたの数のたし算",
+   "semantic_category": "3けた+2けた",
+   "semantic_note": "214+73型。くり上がり有無は不問(単元が混在)。和≦999。",
+   "step_count": 1,
+   "operation": "a＋b(3けた+2けた)",
+   "answer_formula": "100*E1 + 10*A1 + B1 + 10*C1 + D1",
+   "slots": {
+    "A1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "B1": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "C1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "D1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "E1": {
+     "type": "int",
+     "range": [
+      1,
+      8
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "sum_3d",
+     "expr": "100*E1 + 10*A1 + B1 + 10*C1 + D1 <= 999",
+     "why": "和が3けた内"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}+{b1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "a1": {
+     "formula": "100*E1 + 10*A1 + B1"
+    },
+    "b1": {
+     "formula": "10*C1 + D1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g02_calc_sub_2d_nb_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_calc_sub_2d_",
+   "unit_name": "2けたの数のひき算",
+   "semantic_category": "2けた−2けた(くり下がりなし)",
+   "semantic_note": "36−13型(D≦B・A>C)。差=引く数の転記排除a≠2b。",
+   "step_count": 1,
+   "operation": "a−b(くり下がりなし)",
+   "answer_formula": "10*A1 + B1 - 10*C1 - D1",
+   "slots": {
+    "A1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "B1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "C1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "D1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_borrow",
+     "expr": "D1 <= B1",
+     "why": "一の位くり下がりなし(単元要求)"
+    },
+    {
+     "rule": "positive",
+     "expr": "A1 > C1",
+     "why": "差が正の2けた計算"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "10*A1 + B1 != 2 * (10*C1 + D1)",
+     "why": "転記型リーク排除(差=引く数)"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}-{b1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "a1": {
+     "formula": "10*A1 + B1"
+    },
+    "b1": {
+     "formula": "10*C1 + D1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g02_calc_sub_2d_b_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_calc_sub_2d_",
+   "unit_name": "くり下がりのあるひき算",
+   "semantic_category": "2けた−2けた(くり下がり)",
+   "semantic_note": "52−17型(D>B)。同転記排除。",
+   "step_count": 1,
+   "operation": "a−b(くり下がりあり)",
+   "answer_formula": "10*A1 + B1 - 10*C1 - D1",
+   "slots": {
+    "A1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "B1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "C1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "D1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "borrow",
+     "expr": "D1 > B1",
+     "why": "一の位くり下がり(単元要求)"
+    },
+    {
+     "rule": "positive",
+     "expr": "A1 > C1",
+     "why": "差が正"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "10*A1 + B1 != 2 * (10*C1 + D1)",
+     "why": "転記型リーク排除"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}-{b1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "a1": {
+     "formula": "10*A1 + B1"
+    },
+    "b1": {
+     "formula": "10*C1 + D1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g02_calc_sub_3d2d_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_calc_sub_3d2",
+   "unit_name": "(3けた)-(2けた)のひき算",
+   "semantic_category": "3けた−2けた(くり下がり混在)",
+   "semantic_note": "138−56/132−74型(①②統合・借り回数不問=単元①②を1構造で被覆・unit_range_overridesでの分離はCode判断委任)。差の正は構造自動(3けた>2けた)。転記排除a≠2b(158−79=79型の希少衝突)。",
+   "step_count": 1,
+   "operation": "a−b(3けた−2けた)",
+   "answer_formula": "100*E1 + 10*A1 + B1 - 10*C1 - D1",
+   "slots": {
+    "A1": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "B1": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "C1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "D1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "E1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_transcribe",
+     "expr": "100*E1 + 10*A1 + B1 != 2 * (10*C1 + D1)",
+     "why": "転記型リーク排除(差=引く数)"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}-{b1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "a1": {
+     "formula": "100*E1 + 10*A1 + B1"
+    },
+    "b1": {
+     "formula": "10*C1 + D1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g02_calc_tens_add_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_calc_tens_ad",
+   "unit_name": "何十、何百のたし算とひき算",
+   "semantic_category": "何十/何百のたし算",
+   "semantic_note": "40+70・300+800型(束の加算・スケールchoices)。g01_add_tensの上位互換(百の束+百超え和を許容)。",
+   "step_count": 1,
+   "operation": "束の加算(10/100スケール)",
+   "answer_formula": "t1 * sc1 + t2 * sc1",
+   "slots": {
+    "t1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "t2": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "sc1": {
+     "choices": [
+      10,
+      100
+     ],
+     "type": "choice_int"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}+{b1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "a1": {
+     "formula": "t1 * sc1"
+    },
+    "b1": {
+     "formula": "t2 * sc1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g02_calc_tens_sub_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_calc_tens_su",
+   "unit_name": "何十、何百のたし算とひき算",
+   "semantic_category": "何十/何百のひき算",
+   "semantic_note": "110−40・700−300型。t1>t2・転記t1≠2t2(g01_sub_tensの同値変形)。",
+   "step_count": 1,
+   "operation": "束の減算",
+   "answer_formula": "t1 * sc1 - t2 * sc1",
+   "slots": {
+    "t1": {
+     "type": "int",
+     "range": [
+      2,
+      18
+     ]
+    },
+    "t2": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "sc1": {
+     "choices": [
+      10,
+      100
+     ],
+     "type": "choice_int"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "positive",
+     "expr": "t1 > t2",
+     "why": "差が正"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "t1 != 2 * t2",
+     "why": "転記型リーク排除(差=引く数)"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}-{b1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "a1": {
+     "formula": "t1 * sc1"
+    },
+    "b1": {
+     "formula": "t2 * sc1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g02_kaz_kosei_1000_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_kaz_kosei_10",
+   "unit_name": "1000までの数のしくみ",
+   "semantic_category": "位の構成(100・10・1→数)",
+   "semantic_note": "100をa個、10をb個、1をc個→3桁合成。g01_kurai_kosei(2桁)の3桁版。全項≧1(0こ表示の不自然回避——中間0の学習は分解側が担う役割分担)。",
+   "step_count": 1,
+   "operation": "100a＋10b＋c",
+   "answer_formula": "100*a1 + 10*b1 + c1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "100を{a1}こ、10を{b1}こ、1を{c1}こあわせた数はいくつですか。"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    100,
+    10,
+    1
+   ]
+  },
+  {
+   "pattern_id": "g02_kaz_bunkai_1000_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_kaz_bunkai_1",
+   "unit_name": "1000までの数のしくみ",
+   "semantic_category": "位の分解(数→100・10・1)",
+   "semantic_note": "N→各位の個数3値(num_seq・順序=百・十・一)。b,c∈[0,9]で中間0(608型)を含む——0の位の読みが本単元の学習の山(合成側との役割分担)。",
+   "step_count": 1,
+   "operation": "N→(a, b, c)",
+   "answer_formula": "a1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "not_flat",
+     "expr": "b1 + c1 >= 1",
+     "why": "ちょうど何百(b=c=0)は束表現が別単元(何百)の領分"
+    }
+   ],
+   "sentence_templates": [
+    "{N1}は、100を何こ、10を何こ、1を何こあわせた数ですか。"
+   ],
+   "answer_template": "答え 100を{a1}こ、10を{b1}こ、1を{c1}こ",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    100,
+    10,
+    1
+   ],
+   "answer_domain": "num_seq",
+   "computed_slots": {
+    "N1": {
+     "formula": "100*a1 + 10*b1 + c1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g02_kaz_kosei_10000_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_kaz_kosei_10",
+   "unit_name": "1万までの数のしくみ",
+   "semantic_category": "位の構成(1000・100・10・1→数)",
+   "semantic_note": "4桁合成(1000a+100b+10c+d)。3桁版の上位。全項≧1。",
+   "step_count": 1,
+   "operation": "1000a＋100b＋10c＋d",
+   "answer_formula": "1000*a1 + 100*b1 + 10*c1 + d1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "1000を{a1}こ、100を{b1}こ、10を{c1}こ、1を{d1}こあわせた数はいくつですか。"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1000,
+    100,
+    10,
+    1
+   ]
+  },
+  {
+   "pattern_id": "g02_kaz_kurabe_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_kaz_kurabe_0",
+   "unit_name": "1万までの数の大きさ",
+   "semantic_category": "大小比較(〜9999)",
+   "semantic_note": "4桁域の大小(桁数違い・上位桁比較が学習)。g01_kurabe_ookiiの上位互換。答=本文値=転記例外(kurabe族5件目・要登録)。",
+   "step_count": 1,
+   "operation": "max(a, b)",
+   "answer_formula": "max(a1, b1)",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      121,
+      9999
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      121,
+      9999
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "discriminate",
+     "expr": "a1 != b1",
+     "why": "弁別の実質化(kurabe族同型)"
+    }
+   ],
+   "sentence_templates": [
+    "{a1}と{b1}では、どちらが大きいですか。"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g02_kaz_tobi_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_kaz_tobi_01",
+   "unit_name": "1万までの数の大きさ",
+   "semantic_category": "とびの数のならび(10・100・1000とび)",
+   "semantic_note": "10/100/1000とびの等差列穴埋め(g01_seq_tobiの上位域版・刻みchoices)。num_seq 2値・空欄値と表示値の非衝突は等差で構造保証。",
+   "step_count": 1,
+   "operation": "とび列の穴埋め",
+   "answer_formula": "s1 + 2 * k1",
+   "slots": {
+    "s1": {
+     "type": "int",
+     "range": [
+      1,
+      5999
+     ]
+    },
+    "k1": {
+     "choices": [
+      10,
+      100,
+      1000
+     ],
+     "type": "choice_int"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "range_cap",
+     "expr": "s1 + 4 * k1 <= 9999",
+     "why": "1万までの数域"
+    }
+   ],
+   "sentence_templates": [
+    "数がきまりにしたがってならんでいます。□にはいる数をかきましょう。\n{s1}、{d1}、□、□、{e1}"
+   ],
+   "answer_template": "答え {n1d}、{n2d}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "num_seq",
+   "computed_slots": {
+    "d1": {
+     "formula": "s1 + k1"
+    },
+    "n1d": {
+     "formula": "s1 + 2 * k1"
+    },
+    "n2d": {
+     "formula": "s1 + 3 * k1"
+    },
+    "e1": {
+     "formula": "s1 + 4 * k1"
+    }
+   }
+  }
+ ]
+}

@@ -338,6 +338,10 @@
   {
    "pattern_id": "g06_hyo_2d_yomi_01",
    "code": "SELECTION_ANSWER"
+  },
+  {
+   "pattern_id": "g02_kaz_kurabe_01",
+   "code": "SELECTION_ANSWER"
   }
  ]
 }

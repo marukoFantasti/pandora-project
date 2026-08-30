@@ -1,0 +1,280 @@
+{
+ "_meta": {
+  "schema": "rationale_g05_gold.json準拠",
+  "scope": "g02追補14件(P4-1・筆算+数の構成)。統合(443→457)",
+  "note": "ネイティブ記述 2026-08-29。手続き型の軽量様式(criteria§3)",
+  "order": "バンク順"
+ },
+ "g02_calc_add_2d_nc_01": {
+  "brief": {
+   "semantic_territory": "2けた+2けた(くり上がりなし)",
+   "number_domain": "整数(和≦99)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "P-4着工(g02/g03取りこぼし・棚卸し2026-08-29): 1行=小問束の発見によりatom基準(g02 619/g03 758)。裁可4点=時間の計算復活/径・辺・億allowed_extra/図形かな語word_choice/九九きまり連続設計。P4-1=筆算+数構成14パターン",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "34+15型の位独立加算。2年筆算の入口。",
+   "representation": "位スロット合成(a=10A+B・g01_add_tensone手筋のg02全域版)。B+D≦9とA+C≦9の2制約が「くり上がりなし」を構造保証。",
+   "constructive_guarantees": "和>両項の転記自動安全。受理1,296組。",
+   "semantic_position": "筆算9部作の始祖。carry版・3けた系が本構造の段階拡張。",
+   "exclusions": "くり上がり発生組(別単元)。",
+   "figure_notes": "図なし(計算ドリル・純数値)。",
+   "pedagogy": []
+  }
+ },
+ "g02_calc_add_2d_c_01": {
+  "brief": {
+   "semantic_territory": "2けた+2けた(くり上がり)",
+   "number_domain": "整数(和≦99)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "46+29型。一の位の繰り上がり1回が単元の芯。",
+   "representation": "B+D≧10が単元要求そのもの・A+C≦8で和2けた維持(3けた到達は別単元へ構造分離)。",
+   "constructive_guarantees": "転記自動安全。受理1,260組。",
+   "semantic_position": "nocarry版との対・to3d版への前段。",
+   "exclusions": "和100以上(別単元)。",
+   "figure_notes": "図なし(計算ドリル・純数値)。",
+   "pedagogy": []
+  }
+ },
+ "g02_calc_add_to3d_01": {
+  "brief": {
+   "semantic_territory": "2けた+2けた=3けた",
+   "number_domain": "整数(和100〜198)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "86+57=143型。和が100を超える瞬間が単元の定義。",
+   "representation": "和≧100の1制約が単元定義の直写し——くり上がりの回数は不問(2回繰り上がりも含む自然域)。",
+   "constructive_guarantees": "転記自動安全。受理4,005組。",
+   "semantic_position": "2けた加算の到達点・3けた計算への橋。",
+   "exclusions": "和99以下。",
+   "figure_notes": "図なし(計算ドリル・純数値)。",
+   "pedagogy": []
+  }
+ },
+ "g02_calc_add_3d2d_01": {
+  "brief": {
+   "semantic_territory": "3けた+2けた",
+   "number_domain": "整数(和≦999)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "214+73型。3けたの位取りに2けたを重ねる。",
+   "representation": "5位スロット(E,A,B,C,D)合成。くり上がり有無不問(単元が混在)。",
+   "constructive_guarantees": "転記自動安全。サンプリング30,000全通過。",
+   "semantic_position": "加算系の掉尾。",
+   "exclusions": "和1000以上。",
+   "figure_notes": "図なし(計算ドリル・純数値)。",
+   "pedagogy": []
+  }
+ },
+ "g02_calc_sub_2d_nb_01": {
+  "brief": {
+   "semantic_territory": "2けた−2けた(くり下がりなし)",
+   "number_domain": "整数",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "36−13型(D≦B)。",
+   "representation": "位スロットでD≦B(借りなし)・A>C(差の正)を構造化。",
+   "constructive_guarantees": "転記排除a≠2b(差=引く数)。受理1,604組。",
+   "semantic_position": "減算3部作の入口。",
+   "exclusions": "借り発生・a=2b。",
+   "figure_notes": "図なし(計算ドリル・純数値)。",
+   "pedagogy": []
+  }
+ },
+ "g02_calc_sub_2d_b_01": {
+  "brief": {
+   "semantic_territory": "2けた−2けた(くり下がり)",
+   "number_domain": "整数",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "52−17型(D>B)。借りの操作が単元の芯。",
+   "representation": "D>Bの1制約が単元要求。",
+   "constructive_guarantees": "転記排除同型。受理1,280組。",
+   "semantic_position": "減算3部作の中位。",
+   "exclusions": "同上。",
+   "figure_notes": "図なし(計算ドリル・純数値)。",
+   "pedagogy": []
+  }
+ },
+ "g02_calc_sub_3d2d_01": {
+  "brief": {
+   "semantic_territory": "3けた−2けた(借り混在)",
+   "number_domain": "整数",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "138−56(借り1回)・132−74(2回)型。参照の単元①②を借り回数不問の1構造で被覆。",
+   "representation": "①②統合(unit_range_overridesでの分離はCode委任)。差の正は3けた>2けたで構造自動。",
+   "constructive_guarantees": "転記排除a≠2b(158−79=79型の希少衝突を実捕捉——サンプリングで20/30,000除外)。",
+   "semantic_position": "減算系の掉尾。",
+   "exclusions": "a=2b。",
+   "figure_notes": "図なし(計算ドリル・純数値)。",
+   "pedagogy": []
+  }
+ },
+ "g02_calc_tens_add_01": {
+  "brief": {
+   "semantic_territory": "何十/何百のたし算",
+   "number_domain": "整数(束)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "40+70・300+800型。束の加算のスケール拡張。",
+   "representation": "スケールchoices(10/100)で何十と何百を1パターン化——g01_add_tens(和≦130)の上位互換(百の束+百超え和許容)。",
+   "constructive_guarantees": "転記自動安全。受理162組。",
+   "semantic_position": "束計算対の加法側。",
+   "exclusions": "なし。",
+   "figure_notes": "図なし(計算ドリル・純数値)。",
+   "pedagogy": []
+  }
+ },
+ "g02_calc_tens_sub_01": {
+  "brief": {
+   "semantic_territory": "何十/何百のひき算",
+   "number_domain": "整数(束)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "110−40・700−300型。",
+   "representation": "t1域を[2,18]に広げ110−40(t1=11)型を含む。転記t1≠2t2。",
+   "constructive_guarantees": "受理216組。",
+   "semantic_position": "束計算対の減法側。",
+   "exclusions": "t1≦t2・t1=2t2。",
+   "figure_notes": "図なし(計算ドリル・純数値)。",
+   "pedagogy": []
+  }
+ },
+ "g02_kaz_kosei_1000_01": {
+  "brief": {
+   "semantic_territory": "位の構成(100・10・1→数)",
+   "number_domain": "整数(3桁)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "100をa個…の3桁合成。g01_kurai_kosei(2桁)の上位。",
+   "representation": "全項≧1(0こ表示の不自然回避)——中間0の学習は分解側が担う役割分担を明記。",
+   "constructive_guarantees": "転記自動安全(答≧111>各項)。受理729組。",
+   "semantic_position": "位取り対の合成側(3桁)。",
+   "exclusions": "0を含む項(分解側の領分)。",
+   "figure_notes": "図なし(計算ドリル・純数値)。",
+   "pedagogy": []
+  }
+ },
+ "g02_kaz_bunkai_1000_01": {
+  "brief": {
+   "semantic_territory": "位の分解(数→100・10・1)",
+   "number_domain": "3値列(num_seq)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "N→各位個数の3値。608型(中間0)が学習の山。",
+   "representation": "num_seq 3値(順序=百・十・一)・b,c∈[0,9]で中間0を許容——合成側(全項≧1)との双方向役割分担。",
+   "constructive_guarantees": "b+c≧1(ちょうど何百は束表現の別単元)。受理891組。",
+   "semantic_position": "位取り対の分解側・num_seq 3値の初使用。",
+   "exclusions": "b=c=0。",
+   "figure_notes": "図なし(計算ドリル・純数値)。",
+   "pedagogy": []
+  }
+ },
+ "g02_kaz_kosei_10000_01": {
+  "brief": {
+   "semantic_territory": "位の構成(1000〜1→数)",
+   "number_domain": "整数(4桁)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "4桁合成。3桁版の上位。",
+   "representation": "4項合成・全項≧1。",
+   "constructive_guarantees": "転記自動安全。受理6,561組。",
+   "semantic_position": "位取り系の4桁位。分解4値版は在庫(3桁版の系で必要時)。",
+   "exclusions": "0項。",
+   "figure_notes": "図なし(計算ドリル・純数値)。",
+   "pedagogy": []
+  }
+ },
+ "g02_kaz_kurabe_01": {
+  "brief": {
+   "semantic_territory": "大小比較(〜9999)",
+   "number_domain": "整数",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "4桁域の大小。桁数違い・上位桁比較が学習。",
+   "representation": "g01_kurabe_ookii(〜120)の上位互換。",
+   "constructive_guarantees": "答=本文値=転記例外(kurabe族5件目・要登録)。標本19,998/20,000。",
+   "semantic_position": "kurabe系譜の4桁位。",
+   "exclusions": "a=b。",
+   "figure_notes": "図なし(計算ドリル・純数値)。",
+   "pedagogy": []
+  }
+ },
+ "g02_kaz_tobi_01": {
+  "brief": {
+   "semantic_territory": "とびの数(10・100・1000とび)",
+   "number_domain": "2値列(num_seq)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "大きい数のとび列。位の繰り返し構造の理解。",
+   "representation": "刻みchoices(10/100/1000)——g01_seq_tobi(2/5/10)の上位域版。等差で表示・空欄の非衝突を構造保証。",
+   "constructive_guarantees": "非衝突全域証明(17,997組)。",
+   "semantic_position": "seq系譜の4桁位・P4-1の掉尾。",
+   "exclusions": "s+4k>9999。",
+   "figure_notes": "図なし(計算ドリル・純数値)。",
+   "pedagogy": []
+  }
+ }
+}

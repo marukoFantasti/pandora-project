@@ -267,3 +267,13 @@
 - **rationale/integrity/pairs 439→443**(検証OK): g06 rationale 79→83・bank_directives D10(複合面積は全構成で本文寸法明示=まるこ半環目視所見)/D11(furigana自己走査新手順)追加。inline directives→D-id参照へ正規化(load_g06互換)。
 - **furigana**: 自己走査第1号で欠落3語(中心/色/部分)を納品前検出→furigana_patch同梱受領→3コピー同期(handoff/assets_global/pg-lex)+registered.txt 412→415。差戻し往復ゼロ。
 - **corrections_log**: corr-0025(図で語れないなら文で語る=複合図形の与件は本文)・corr-0026(反復差戻しは上流自己走査へ前倒し)追記。全33関門PASS。
+
+### 2026-08-30 g02 P4-1配線(筆算9+数の構成5)21→35
+- **g02 21→35**: P-4第一便=最大バケツ(筆算315atom+数構成域)。g02_calc_{add_2d_nc/add_2d_c/add_to3d/add_3d2d/sub_2d_nb/sub_2d_b/sub_3d2d/tens_add/tens_sub}_01+g02_kaz_{kosei_1000/bunkai_1000/kosei_10000/kurabe/tobi}_01。位スロット合成(g01_add_tensone手筋のg02全域版)=くり上下を桁制約で構造保証。
+- **golden md5: g02 e064fc27 → 7309bb49**(既存21件出力バイト完全不変=D-2 prefix一致・PASS 63→105 FAIL 0)。g05/g06不変。
+- **unit_id仮採番(g02_p4_*)→参照突合**: c05/c06/c21/c22/c08/c09/c23/c18/c16/c41/c42へ実採番(単元名一致確認済)。
+- **sub_3d2d ①②分離判断**: overridesは置換のみ(effective_constraints)→基底にborrow_shape①(D1≦B1∧A1<C1=十の位のみくり下がり・138−56型)を持たせ、c24をconstraints_replaceで②(D1>B1∧A1−1<C1=連続くり下がり・132−74型)に差し替え。両経路200標本で制約全成立を実証。
+- **kurabe転記例外5件目**: g02_kaz_kurabe_01をSELECTION_ANSWER登録(g01_kurabe/ookii・g06_hyo_max/min前例)。corr-0007 gate残差0。
+- **ドリル様式整合**: 指示文「次の計算」→「つぎの計算」(次=g03配当・g02はかな正準)。答え様式「答え {ans}」=g01「こたえ {ans}」のg02版で整合。
+- **num_seq採点拡張**: numSeqNorm修飾剥がしを「Nの」→「Nの/Nを」へ(bunkaiの「100を3こ」対応・正答/生徒答へ対称適用)。エンジン側normNumSeqは1:1のまま非改変。
+- **rationale/pairs 443→457**(検証OK): g02 master=inline directives流儀・figure:null慣行=素材無修正統合。furigana欠落0(自己走査・registered 415語のまま)。全33関門PASS。
