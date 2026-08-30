@@ -1,7 +1,8 @@
 # furigana_registered.txt — furigana_lexicon 既収録表層形リスト(読み不要・自己走査突合用)
-# 更新: 2026-08-30 / 語数: 418 / 出所: handoff_jhs/furigana_lexicon.json surfaces
+# 更新: 2026-08-30 / 語数: 422 / 出所: handoff_jhs/furigana_lexicon.json surfaces
 # 用途: Fable納品前の自己走査=本文の残存漢字語が本リストに無ければ増補が必要
 がい数
+一万の位
 一方
 万
 万年筆
@@ -114,7 +115,9 @@
 動物園
 北町
 区間
+十万の位
 千
+千万の位
 午前
 午後
 半円
@@ -296,6 +299,7 @@
 白
 白玉
 百
+百万の位
 百分率
 目
 直径

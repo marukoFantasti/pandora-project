@@ -1,0 +1,318 @@
+{
+ "_meta": {
+  "schema": "rationale_g05_gold.json準拠",
+  "scope": "g03追補16件(P4-3)。統合(472→488)",
+  "note": "ネイティブ記述 2026-08-29・軽量様式",
+  "order": "バンク順"
+ },
+ "g03_calc_add_34d_01": {
+  "brief": {
+   "semantic_territory": "3/4けたのたし算",
+   "number_domain": "整数(和≦9999)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "P4-3=g03初のP-4便(筆算8+大きい数4+小数4)。転記が答え要約形のため単元名+答え形式から設計・実物レンジ突合は配線時二段(2026-08-29)。わり算・きまり・時間復活・円球・表グラフ・三角形はP4-4",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "265+433型。3年筆算の広域単元(くり混在不問)。",
+   "representation": "直接レンジスロット——桁区分が単元定義でないため位合成を使わない判断(g02との構造差を様式で写す)。",
+   "constructive_guarantees": "転記自動安全。サンプリング20,000全通過。",
+   "semantic_position": "g02筆算9部作の上位域。",
+   "exclusions": "和10000以上。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_calc_sub_34d_01": {
+  "brief": {
+   "semantic_territory": "3/4けたのひき算",
+   "number_domain": "整数",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "648−235型。",
+   "representation": "差≧12(意味ある大きさ)・転記a≠2b。",
+   "constructive_guarantees": "標本15,118受理。",
+   "semantic_position": "同上位域の減法。",
+   "exclusions": "a=2b。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_calc_mult_2d1d_01": {
+  "brief": {
+   "semantic_territory": "2けた×1けた",
+   "number_domain": "整数(積≦891)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "23×3型。部分積の筆算入口。",
+   "representation": "b≧2で積>両項の転記自動安全(乗法の構造的性質)。",
+   "constructive_guarantees": "受理704組。",
+   "semantic_position": "かけ算筆算4部作の第1位。",
+   "exclusions": "b=1(自明)。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_calc_mult_3d1d_01": {
+  "brief": {
+   "semantic_territory": "3けた×1けた",
+   "number_domain": "整数(積≦8991)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "166×3型。",
+   "representation": "同構造の桁上げ。",
+   "constructive_guarantees": "受理7,184組。",
+   "semantic_position": "4部作の第2位。",
+   "exclusions": "なし。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_calc_mult_x10s_01": {
+  "brief": {
+   "semantic_territory": "×何十",
+   "number_domain": "整数(束)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "23×30型。0を後ろに付ける手筋の理解。",
+   "representation": "B=10tのcomputed(束の可視化)。",
+   "constructive_guarantees": "受理776組。",
+   "semantic_position": "4部作の第3位・2d2dへの橋。",
+   "exclusions": "積10000以上。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_calc_mult_2d2d_01": {
+  "brief": {
+   "semantic_territory": "2けた×2けた",
+   "number_domain": "整数(積≦9999)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "23×34型。部分積2段の筆算本体=3年計算の山。",
+   "representation": "b非10倍数(×何十と構造分離)。",
+   "constructive_guarantees": "受理7,040組。",
+   "semantic_position": "4部作の掉尾。",
+   "exclusions": "b=10の倍数。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_calc_mult_big_01": {
+  "brief": {
+   "semantic_territory": "何百・何千×1けた",
+   "number_domain": "整数(束)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "2700×3型。",
+   "representation": "T=t×sc(choices 100/1000)の束計算——g02_tens系の乗法版。",
+   "constructive_guarantees": "受理128組。",
+   "semantic_position": "束計算系譜の乗法位。",
+   "exclusions": "積6けた。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_calc_mult_box_01": {
+  "brief": {
+   "semantic_territory": "かけ算の□(何十×□)",
+   "number_domain": "整数",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "30×□=90型。かけ算のきまりの適用域。",
+   "representation": "P=A×b起点の構成的生成(g02_kuku_anaの束版)。",
+   "constructive_guarantees": "転記排除t≠b(平方型)。受理56組。",
+   "semantic_position": "□系譜のg03位。わり算(P4-4)の前段。",
+   "exclusions": "t=b。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_kaz_kurai_digit_01": {
+  "brief": {
+   "semantic_territory": "位指定の数字読み",
+   "number_domain": "整数(0〜9)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "38510624の一万の位→1。大きい数の位取り読みの主形。",
+   "representation": "8桁を位スロット8本で合成+ask位(lexicon 4種)の条件式選択——照合表と位スロットの複合(新組合せ)。答=数字は8桁合成表示と別トークンで転記概念適用外。",
+   "constructive_guarantees": "サンプリング20,000全通過。",
+   "semantic_position": "大きい数4部作の始祖。「数字→位」逆方向はword_choice在庫。",
+   "exclusions": "億超(4年寄り域)。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_kaz_man_kosei_01": {
+  "brief": {
+   "semantic_territory": "束の合成(1000×n)",
+   "number_domain": "整数(万域)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "1000を14こ→14000。束が位を繰り上がる合成。",
+   "representation": "n≧11で万到達を保証。",
+   "constructive_guarantees": "転記自動安全(答=1000n≠n)。受理89組。",
+   "semantic_position": "位取り合成系譜の万位。",
+   "exclusions": "n≦10(2年域)。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_kaz_x10_01": {
+  "brief": {
+   "semantic_territory": "10倍・100倍",
+   "number_domain": "整数",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "245×10=2450。位の移動の理解(0付加でなく位が動く)。",
+   "representation": "sc choices(10/100)。",
+   "constructive_guarantees": "転記自動安全。受理1,954組。",
+   "semantic_position": "位移動対の倍側。÷10(1/10)は在庫。",
+   "exclusions": "なし。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_kaz_seq_big_01": {
+  "brief": {
+   "semantic_territory": "とびの数(1000・1万)",
+   "number_domain": "2値列(num_seq)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "大きい数のとび列。",
+   "representation": "g02_kaz_tobiの上位域(刻み1000/10000)。",
+   "constructive_guarantees": "非衝突は等差構造保証。標本20,000。",
+   "semantic_position": "seq系譜の5桁位。",
+   "exclusions": "10万超。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_dec_kasa_01": {
+  "brief": {
+   "semantic_territory": "dL→L(小数表示)",
+   "number_domain": "小数1位(dec1)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "16dL=1.6L。1dL=0.1Lの適用=小数の量的導入。",
+   "representation": "内部dL整数・dec1表示(g05 dec資産の下方展開)。10の倍数除外。",
+   "constructive_guarantees": "受理27組。",
+   "semantic_position": "小数4部作の量側入口。",
+   "exclusions": "ちょうどL。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_dec_add_01": {
+  "brief": {
+   "semantic_territory": "小数のたし算(1位)",
+   "number_domain": "小数1位(dec1)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "0.3+0.4型・和1超え可(0.9+0.6=1.5)。",
+   "representation": "内部10倍整数(浮動小数ゼロの文化)・両項真に小数。",
+   "constructive_guarantees": "転記自動安全。受理729組。",
+   "semantic_position": "小数計算対の加法。",
+   "exclusions": "整数項。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_dec_sub_01": {
+  "brief": {
+   "semantic_territory": "小数のひき算(1位)",
+   "number_domain": "小数1位(dec1)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "1.3−0.5型。",
+   "representation": "a>b・転記a≠2b・両項真に小数。",
+   "constructive_guarantees": "受理338組。",
+   "semantic_position": "計算対の減法。",
+   "exclusions": "a=2b。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_dec_shikumi_01": {
+  "brief": {
+   "semantic_territory": "0.1のいくつ分",
+   "number_domain": "小数1位(dec1)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "0.1を24こ→2.4。小数の構成(位取りの0.1版)。",
+   "representation": "10の倍数を許容(30こ=3——ちょうど整数になる経験も構成理解の一部・dec_kasa除外との使い分けを明記)。",
+   "constructive_guarantees": "受理98組。",
+   "semantic_position": "小数4部作の構成側・P4-3の掉尾。逆方向(2.7は0.1が何こ)は在庫。",
+   "exclusions": "なし。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ }
+}

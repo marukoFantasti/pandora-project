@@ -287,3 +287,12 @@
 - **読み機構修正(corr-0028・目検1周で検出)**: ①counter表に分後/時間後/mm追加(N分後=ふんあと誤読・mm未定義) ②reading_engine最長一致優先(何分の一が何分=なんぷんに食われる)+複数漢字連表層の全体置換 ③lexicon増補「分け=わ」(ぶんけた誤読・まるこ裁可)。各2〜3コピー同期(handoff/pg-ct/pg-engine/assets_global)・固定ベクター23→28で封印。**以後の配線は新規本文の読み目検1周を標準手順化**(coverage関門は誤読を検知できない)。
 - **転記例外7件登録**: fun_go/naga_add/naga_sub/kasa_add/kasa_sub=COMPOUND_UNIT_PRESERVE・kuku_kimari=SELECTION_ANSWER・bunsu_teigi=FRAC_PRESERVE。corr-0007 gate残差0。
 - **furigana**: パッチ2語(何分の一/面)+増補1語(分け)=3コピー同期・registered 415→418。rationale/pairs 457→471(検証OK・jikan_conv除外)。全33関門PASS。
+
+### 2026-08-30 g03 P4-3配線(筆算8+大きい数4+小数4)26→42
+- **g03 26→42**: g03初のP-4便。g02 P4-1様式(位スロット合成・束計算)の上位展開。
+- **golden md5: g03 6e5cd3b0 → 51f56ad6**(既存26件バイト不変・PASS 78→126 FAIL 0)。
+- **受領検証の捕捉**: ①pattern_id衝突: 新dec_add_01が既存(文章題)と衝突→dec_add/sub_calc_01へ改名(g06 _calc/_word前例) ②dec1_L=非実在FORMATTER→aus dec1+テンプレL(既存dec資産突合) ③dec_add/sub_calcのslot _disp参照→quantity_slots(dec1内部整数)へ正準化 ④kurai_digit=位の数字0可→answer_domain any_int(g01 0加減前例) ⑤0.1リテラル→tnc[0,1](3.14=[3,14]前例) ⑥位=g04配当→allowed_extra(辺/面前例)。
+- **kurai_digit条件式受理**: 4段ネスト三項(pyTernary)両エンジン受理・8桁位取り合成。lexicon kurai_names 4件追加。
+- **実物レンジ二段**: 設計域は全単元で参照の入口サブセット=妥当。参照側の上位難度(億の位・3けた×2けた・大きい小数和)は在庫として記録(P4-4以降)。
+- **furigana**: パッチ4語(一万/十万/百万/千万の位=複合表層方針)3コピー同期・registered 418→422。読み目検1周=全16正常(減算のマイナス読みは既存規約)。
+- **転記gate残差0**(新規例外なし=素材のno_transcribe設計が完備)。rationale/pairs 471→487(検証OK・改名キーで統合)。全33関門PASS。

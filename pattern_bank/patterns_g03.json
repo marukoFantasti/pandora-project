@@ -142,7 +142,25 @@
     "unit": "m",
     "noun": "長さ"
    }
-  ]
+  ],
+  "kurai_names": [
+  {
+   "ask": "一万の位",
+   "p": 5
+  },
+  {
+   "ask": "十万の位",
+   "p": 6
+  },
+  {
+   "ask": "百万の位",
+   "p": 7
+  },
+  {
+   "ask": "千万の位",
+   "p": 8
+  }
+ ]
  },
  "patterns": [
   {
@@ -2181,6 +2199,866 @@
     "estimated_lines": 4
    },
    "answer_structure": "two_step_remainder_ceil"
+  },
+  {
+   "pattern_id": "g03_calc_add_34d_01",
+   "grade": "g03",
+   "unit_id": "g03_c09_u01",
+   "unit_name": "3けたや4けたの数のたし算",
+   "semantic_category": "3/4けたのたし算",
+   "semantic_note": "265+433型(くり混在不問=単元が広域)。直接レンジスロット(桁区分が単元定義でないため位合成不要)。和≦9999。転記自動安全。",
+   "step_count": 1,
+   "operation": "a＋b",
+   "answer_formula": "a1 + b1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      123,
+      4999
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      123,
+      4999
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "cap",
+     "expr": "a1 + b1 <= 9999",
+     "why": "4けた内"
+    }
+   ],
+   "sentence_templates": [
+    "つぎの計算をしなさい。\n{a1}+{b1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g03_calc_sub_34d_01",
+   "grade": "g03",
+   "unit_id": "g03_c10_u01",
+   "unit_name": "3けたや4けたの数のひき算",
+   "semantic_category": "3/4けたのひき算",
+   "semantic_note": "648−235型。差の正・転記a≠2b。",
+   "step_count": 1,
+   "operation": "a−b",
+   "answer_formula": "a1 - b1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      234,
+      9999
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      123,
+      4999
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "positive",
+     "expr": "a1 - b1 >= 12",
+     "why": "差が意味ある大きさ"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "a1 != 2 * b1",
+     "why": "転記型リーク排除(差=引く数)"
+    }
+   ],
+   "sentence_templates": [
+    "つぎの計算をしなさい。\n{a1}-{b1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g03_calc_mult_2d1d_01",
+   "grade": "g03",
+   "unit_id": "g03_c18_u01",
+   "unit_name": "(2けたの数)×(1けたの数)のかけ算",
+   "semantic_category": "2けた×1けた",
+   "semantic_note": "23×3型(部分積の筆算入口)。b≧2で積>両項の転記自動安全。",
+   "step_count": 1,
+   "operation": "a×b",
+   "answer_formula": "a1 * b1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      12,
+      99
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "つぎの計算をしなさい。\n{a1}×{b1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g03_calc_mult_3d1d_01",
+   "grade": "g03",
+   "unit_id": "g03_c19_u01",
+   "unit_name": "(3けたの数)×(1けたの数)のかけ算",
+   "semantic_category": "3けた×1けた",
+   "semantic_note": "166×3型。積≦9999(999×9=8991内)。",
+   "step_count": 1,
+   "operation": "a×b",
+   "answer_formula": "a1 * b1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      102,
+      999
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "つぎの計算をしなさい。\n{a1}×{b1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g03_calc_mult_x10s_01",
+   "grade": "g03",
+   "unit_id": "g03_c29_u01",
+   "unit_name": "2けたの数をかけるかけ算",
+   "semantic_category": "×何十",
+   "semantic_note": "4×20・23×30型(×何十の入口——0を後ろに付ける手筋)。B=10tのcomputed。",
+   "step_count": 1,
+   "operation": "a×10t",
+   "answer_formula": "a1 * 10 * t1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      3,
+      99
+     ]
+    },
+    "t1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "cap",
+     "expr": "a1 * 10 * t1 <= 9999",
+     "why": "4けた内"
+    }
+   ],
+   "sentence_templates": [
+    "つぎの計算をしなさい。\n{a1}×{b1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "b1": {
+     "formula": "10 * t1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g03_calc_mult_2d2d_01",
+   "grade": "g03",
+   "unit_id": "g03_c29_u01",
+   "unit_name": "2けたの数をかけるかけ算",
+   "semantic_category": "2けた×2けた",
+   "semantic_note": "23×34型(部分積2段の筆算本体)。b非10倍数(×何十は別パターン)。転記自動安全(積>両項)。",
+   "step_count": 1,
+   "operation": "a×b",
+   "answer_formula": "a1 * b1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      12,
+      99
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      12,
+      99
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "b_not_tens",
+     "expr": "b1 % 10 != 0",
+     "why": "×何十は別パターン(構造分離)"
+    },
+    {
+     "rule": "cap",
+     "expr": "a1 * b1 <= 9999",
+     "why": "4けた内"
+    }
+   ],
+   "sentence_templates": [
+    "つぎの計算をしなさい。\n{a1}×{b1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g03_calc_mult_big_01",
+   "grade": "g03",
+   "unit_id": "g03_c30_u01",
+   "unit_name": "3けたや4けたの数をかけるかけ算",
+   "semantic_category": "何百・何千×1けた",
+   "semantic_note": "2700×3型(束のかけ算)。T=t×sc(sc choices 100/1000)。",
+   "step_count": 1,
+   "operation": "束×1けた",
+   "answer_formula": "t1 * sc1 * b1",
+   "slots": {
+    "t1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "sc1": {
+     "choices": [
+      100,
+      1000
+     ],
+     "type": "choice_int"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "cap",
+     "expr": "t1 * sc1 * b1 <= 99999",
+     "why": "5けた内(3年域)"
+    }
+   ],
+   "sentence_templates": [
+    "つぎの計算をしなさい。\n{a1}×{b1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "a1": {
+     "formula": "t1 * sc1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g03_calc_mult_box_01",
+   "grade": "g03",
+   "unit_id": "g03_c20_u01",
+   "unit_name": "1けたの数をかけるかけ算のり用",
+   "semantic_category": "かけ算の□(何十×□=P)",
+   "semantic_note": "30×□=90型(かけ算のきまりの適用・九九の拡張域)。P=A×b起点の構成的生成。転記排除t≠b(30×□=900で□=30/10系の混同はなし・□=tの平方型排除)。",
+   "step_count": 1,
+   "operation": "A×□=P → □",
+   "answer_formula": "b1",
+   "slots": {
+    "t1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_transcribe",
+     "expr": "t1 != b1",
+     "why": "転記型リーク排除(□=束数の平方型)"
+    }
+   ],
+   "sentence_templates": [
+    "□にあてはまる数をかきましょう。\n{A1}×□={P1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "A1": {
+     "formula": "10 * t1"
+    },
+    "P1": {
+     "formula": "10 * t1 * b1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g03_kaz_kurai_digit_01",
+   "grade": "g03",
+   "unit_id": "g03_c16_u01",
+   "unit_name": "万の位の数、億の位の数",
+   "semantic_category": "位指定の数字読み",
+   "semantic_note": "38510624の一万の位の数字→1。8桁数を位スロット8本で合成し、ask位(lexicon 4種・一万〜千万)の数字を条件式で選択——照合表+位スロットの複合。答=数字は読み取り学習内容(本文の数と別トークン=8桁合成表示)。",
+   "step_count": 1,
+   "operation": "位→数字",
+   "answer_formula": "k5 if pp1 == 5 else (k6 if pp1 == 6 else (k7 if pp1 == 7 else k8))",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "type": "choice_int"
+    },
+    "ask1": {
+     "from": "kurai_names[j1].ask"
+    },
+    "pp1": {
+     "from": "kurai_names[j1].p"
+    },
+    "k1": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "k2": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "k3": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "k4": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "k5": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "k6": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "k7": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "k8": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{N1}という数について、{ask1}の数字を答えなさい。"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json",
+    "allowed_extra": "位"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "N1": {
+     "formula": "k8*10000000 + k7*1000000 + k6*100000 + k5*10000 + k4*1000 + k3*100 + k2*10 + k1"
+    }
+   },
+   "answer_domain": "any_int"
+  },
+  {
+   "pattern_id": "g03_kaz_man_kosei_01",
+   "grade": "g03",
+   "unit_id": "g03_c16_u01",
+   "unit_name": "万の位の数、億の位の数",
+   "semantic_category": "束の合成(1000をn個)",
+   "semantic_note": "1000を14こ集めた数→14000。束の繰り上がり合成(n≧11で万の位へ)。",
+   "step_count": 1,
+   "operation": "1000×n",
+   "answer_formula": "1000 * n1",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      11,
+      99
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "1000を{n1}こあつめた数はいくつですか。"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1000
+   ]
+  },
+  {
+   "pattern_id": "g03_kaz_x10_01",
+   "grade": "g03",
+   "unit_id": "g03_c16_u01",
+   "unit_name": "万の位の数、億の位の数",
+   "semantic_category": "10倍・100倍",
+   "semantic_note": "245を10倍→2450(位の移動)。sc choices 10/100。転記自動安全(積>N)。",
+   "step_count": 1,
+   "operation": "N×sc",
+   "answer_formula": "n1 * sc1",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      23,
+      999
+     ]
+    },
+    "sc1": {
+     "choices": [
+      10,
+      100
+     ],
+     "type": "choice_int"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{n1}を{sc1}倍した数はいくつですか。"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g03_kaz_seq_big_01",
+   "grade": "g03",
+   "unit_id": "g03_c16_u01",
+   "unit_name": "万の位の数、億の位の数",
+   "semantic_category": "とびの数(1000・1万とび)",
+   "semantic_note": "大きい数のとび列(g02_kaz_tobiの上位域・num_seq)。",
+   "step_count": 1,
+   "operation": "とび列",
+   "answer_formula": "s1 + 2 * k1",
+   "slots": {
+    "s1": {
+     "type": "int",
+     "range": [
+      1,
+      59999
+     ]
+    },
+    "k1": {
+     "choices": [
+      1000,
+      10000
+     ],
+     "type": "choice_int"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "cap",
+     "expr": "s1 + 4 * k1 <= 99999",
+     "why": "3年の数域"
+    }
+   ],
+   "sentence_templates": [
+    "数がきまりにしたがってならんでいます。□にはいる数をかきましょう。\n{s1}、{d1}、□、□、{e1}"
+   ],
+   "answer_template": "答え {n1d}、{n2d}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "num_seq",
+   "computed_slots": {
+    "d1": {
+     "formula": "s1 + k1"
+    },
+    "n1d": {
+     "formula": "s1 + 2 * k1"
+    },
+    "n2d": {
+     "formula": "s1 + 3 * k1"
+    },
+    "e1": {
+     "formula": "s1 + 4 * k1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g03_dec_kasa_01",
+   "grade": "g03",
+   "unit_id": "g03_c22_u01",
+   "unit_name": "小数の表し方",
+   "semantic_category": "dL→L(小数表示)",
+   "semantic_note": "16dL=1.6L型(1dL=0.1Lの適用)。内部dL整数・dec1表示(g05 dec資産)。10の倍数除外(2.0Lは小数表現の対象外=整数L)。",
+   "step_count": 1,
+   "operation": "dL→L",
+   "answer_formula": "t1",
+   "slots": {
+    "t1": {
+     "type": "int",
+     "range": [
+      1,
+      29
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "not_whole",
+     "expr": "t1 % 10 != 0",
+     "why": "ちょうどL(整数)は小数表現の対象外"
+    }
+   ],
+   "sentence_templates": [
+    "{t1}dLは何Lですか。小数で答えなさい。"
+   ],
+   "answer_template": "答え {ans_disp}L",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_unit_system": "dec1"
+  },
+  {
+   "pattern_id": "g03_dec_add_calc_01",
+   "grade": "g03",
+   "unit_id": "g03_c24_u01",
+   "unit_name": "小数のたし算とひき算",
+   "semantic_category": "小数のたし算(1位)",
+   "semantic_note": "0.3+0.4型。内部10倍整数(dec1文化)・和が1超え可(0.9+0.6=1.5)。転記自動安全。 既存g03_dec_add_01(文章題)とのID衝突回避で_calc改名(g06 _calc/_word前例)。",
+   "step_count": 1,
+   "operation": "a＋b(0.1位)",
+   "answer_formula": "a1 + b1",
+   "slots": {},
+   "value_constraints": [
+    {
+     "rule": "a_not_whole",
+     "expr": "a1 % 10 != 0",
+     "why": "真に小数(表示側)"
+    },
+    {
+     "rule": "b_not_whole",
+     "expr": "b1 % 10 != 0",
+     "why": "同上"
+    }
+   ],
+   "sentence_templates": [
+    "つぎの計算をしなさい。\n{a1_disp}+{b1_disp}"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_unit_system": "dec1",
+   "quantity_slots": {
+    "a1": {
+     "unit_system": "dec1",
+     "base_range": [
+      1,
+      29
+     ],
+     "role": "0.1単位の内部整数"
+    },
+    "b1": {
+     "unit_system": "dec1",
+     "base_range": [
+      1,
+      29
+     ],
+     "role": "0.1単位の内部整数"
+    }
+   }
+  },
+  {
+   "pattern_id": "g03_dec_sub_calc_01",
+   "grade": "g03",
+   "unit_id": "g03_c24_u01",
+   "unit_name": "小数のたし算とひき算",
+   "semantic_category": "小数のひき算(1位)",
+   "semantic_note": "1.3−0.5型。a>b・転記a≠2b。 既存g03_dec_sub_01(文章題)とのID衝突回避で_calc改名(g06 _calc/_word前例)。",
+   "step_count": 1,
+   "operation": "a−b(0.1位)",
+   "answer_formula": "a1 - b1",
+   "slots": {},
+   "value_constraints": [
+    {
+     "rule": "positive",
+     "expr": "a1 > b1",
+     "why": "差が正"
+    },
+    {
+     "rule": "a_not_whole",
+     "expr": "a1 % 10 != 0",
+     "why": "真に小数"
+    },
+    {
+     "rule": "b_not_whole",
+     "expr": "b1 % 10 != 0",
+     "why": "同上"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "a1 != 2 * b1",
+     "why": "転記型リーク排除"
+    }
+   ],
+   "sentence_templates": [
+    "つぎの計算をしなさい。\n{a1_disp}-{b1_disp}"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_unit_system": "dec1",
+   "quantity_slots": {
+    "a1": {
+     "unit_system": "dec1",
+     "base_range": [
+      3,
+      29
+     ],
+     "role": "0.1単位の内部整数"
+    },
+    "b1": {
+     "unit_system": "dec1",
+     "base_range": [
+      1,
+      27
+     ],
+     "role": "0.1単位の内部整数"
+    }
+   }
+  },
+  {
+   "pattern_id": "g03_dec_shikumi_01",
+   "grade": "g03",
+   "unit_id": "g03_c23_u01",
+   "unit_name": "小数のしくみ",
+   "semantic_category": "0.1のいくつ分",
+   "semantic_note": "0.1を24こ集めた数→2.4。小数の構成理解(位取りの0.1版)。10の倍数含む(30こ=3——ちょうど整数になる経験も学習内容・kosei側で許容する判断はbunkai_1000と逆でこちらは表示が整数になるだけで構成概念は同じ)。",
+   "step_count": 1,
+   "operation": "0.1×n",
+   "answer_formula": "n1",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      2,
+      99
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "0.1を{n1}こあつめた数はいくつですか。"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    0,
+    1
+   ],
+   "answer_unit_system": "dec1"
   }
  ],
  "schema_changelog": {
