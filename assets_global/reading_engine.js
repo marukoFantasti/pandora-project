@@ -74,7 +74,12 @@ function createEngine(lexicon, counterTable) {
   }
 
   // lexicon: 読みは表層の漢字部に対応。かなはそのまま。単一漢字連を読みで置換。
-  function applyReading(surface, reading) { return KANJI.test(surface) ? surface.replace(/[一-鿿々]+/, reading) : surface; }
+  function applyReading(surface, reading) {
+    if (!KANJI.test(surface)) return surface;
+    // 漢字連が複数の表層(例: 何分の一)は読みが中間かな込みの全表層読み=全体置換
+    if ((surface.match(/[一-鿿々]+/g) || []).length > 1) return reading;
+    return surface.replace(/[一-鿿々]+/, reading);
+  }
   // 数値+単位や何+単位の group ruby(漢字を含むときのみ)
   function groupRuby(orig, hira) { return KANJI.test(orig) ? orig + '《' + hira + '》' : orig; }
 
@@ -110,7 +115,10 @@ function createEngine(lexicon, counterTable) {
       if (rest[0] === '何') {                                     // 何+単位(question形)
         let unit = '';
         for (const u of UNIT_KEYS) { if (s.slice(i + 1, i + 1 + u.length) === u) { unit = u; break; } }
-        if (unit) { const e = entryOf(unit), hira = e.question || ('なん' + (e.base || '')); emit('何' + unit, hira, '何' + unit + '《' + hira + '》'); i += 1 + unit.length; continue; }
+        // 最長一致優先: lexicon表層が「何+単位」より長く一致するときはlexiconに譲る(例: 何分の一=なんぶんのいち)
+        let longerSurf = false;
+        if (unit) { for (const key of SURF_KEYS) { if (key.length > 1 + unit.length && rest.slice(0, key.length) === key) { longerSurf = true; break; } if (key.length <= 1 + unit.length) break; } }
+        if (unit && !longerSurf) { const e = entryOf(unit), hira = e.question || ('なん' + (e.base || '')); emit('何' + unit, hira, '何' + unit + '《' + hira + '》'); i += 1 + unit.length; continue; }
       }
       m = rest.match(/^(\d+(?:\.\d+)?)/);                          // 数値(+単位)
       if (m) {
@@ -128,7 +136,12 @@ function createEngine(lexicon, counterTable) {
       }
       let matched = null;                                         // lexicon 最長一致
       for (const key of SURF_KEYS) { if (rest.slice(0, key.length) === key) { matched = key; break; } }
-      if (matched) { const raw = SURF[matched]; emit(matched, applyReading(matched, raw), matched.replace(/([一-鿿々]+)/, '$1《' + raw + '》')); i += matched.length; continue; }
+      if (matched) {
+        const raw = SURF[matched];
+        const multiRun = (matched.match(/[一-鿿々]+/g) || []).length > 1;   // 全表層読み=グループルビ
+        const ruby = multiRun ? matched + '《' + raw + '》' : matched.replace(/([一-鿿々]+)/, '$1《' + raw + '》');
+        emit(matched, applyReading(matched, raw), ruby); i += matched.length; continue;
+      }
       if (KANJI.test(s[i])) throw new Error('残存漢字: "' + s[i] + '" @ …' + s.slice(Math.max(0, i - 6), i + 4));
       emit(s[i], s[i], s[i]); i++;                                // かな・記号・英字
     }

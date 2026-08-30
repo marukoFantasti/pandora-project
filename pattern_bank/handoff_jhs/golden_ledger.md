@@ -277,3 +277,13 @@
 - **ドリル様式整合**: 指示文「次の計算」→「つぎの計算」(次=g03配当・g02はかな正準)。答え様式「答え {ans}」=g01「こたえ {ans}」のg02版で整合。
 - **num_seq採点拡張**: numSeqNorm修飾剥がしを「Nの」→「Nの/Nを」へ(bunkaiの「100を3こ」対応・正答/生徒答へ対称適用)。エンジン側normNumSeqは1:1のまま非改変。
 - **rationale/pairs 443→457**(検証OK): g02 master=inline directives流儀・figure:null慣行=素材無修正統合。furigana欠落0(自己走査・registered 415語のまま)。全33関門PASS。
+
+### 2026-08-30 g02 P4-2配線(時こく2+単位5+図形3+はこ1+九九2+分数1+表1)35→49
+- **g02 35→49**: 素材15中、g02_jikan_conv_01は既存time_conv_hmin_to_min(c03)と問文・方向・値域とも実質重複=受領検証で検出→まるこ裁可で除外・在庫へ(corr-0027: 以後の受領検証報告に次便設計学年の既存一覧同梱を常設)。
+- **golden md5: g02 7309bb49 → c01c598c**(既存35件バイト不変・PASS 105→147 FAIL 0)。unit_id実採番: c02/c04/c14/c20/c44/c27/c28/c48/c37/c51/c01。
+- **lexicon 4キー追加**: zukei_defs/zukei_yoso/hako_yoso(交付)+shirabe_1row(g06から継承コピー=g03 actors前例・共用可判定)。
+- **FORMATTERS宣言正準化**: answer_domain→answer_unit_system(clock/cm_mm/L_dL/m_cm)。frac_unitは非実在→slash正準「1/{n1}」(g03 ans_frac流儀・ぶんの読み正)。fun_goは本文に午前明示(clock接頭と整合)。
+- **関門捕捉と修正**: 辺(g04)/面(g03)=allowed_extra(furigana完備)・zukei_defsの3本/4本=tnc宣言・hyo_yomi本文かな正規化(表/結果/整理=配当外)・指示文つぎ正準。
+- **読み機構修正(corr-0028・目検1周で検出)**: ①counter表に分後/時間後/mm追加(N分後=ふんあと誤読・mm未定義) ②reading_engine最長一致優先(何分の一が何分=なんぷんに食われる)+複数漢字連表層の全体置換 ③lexicon増補「分け=わ」(ぶんけた誤読・まるこ裁可)。各2〜3コピー同期(handoff/pg-ct/pg-engine/assets_global)・固定ベクター23→28で封印。**以後の配線は新規本文の読み目検1周を標準手順化**(coverage関門は誤読を検知できない)。
+- **転記例外7件登録**: fun_go/naga_add/naga_sub/kasa_add/kasa_sub=COMPOUND_UNIT_PRESERVE・kuku_kimari=SELECTION_ANSWER・bunsu_teigi=FRAC_PRESERVE。corr-0007 gate残差0。
+- **furigana**: パッチ2語(何分の一/面)+増補1語(分け)=3コピー同期・registered 415→418。rationale/pairs 457→471(検証OK・jikan_conv除外)。全33関門PASS。

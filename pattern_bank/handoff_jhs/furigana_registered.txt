@@ -1,5 +1,5 @@
 # furigana_registered.txt — furigana_lexicon 既収録表層形リスト(読み不要・自己走査突合用)
-# 更新: 2026-08-22 / 語数: 415 / 出所: handoff_jhs/furigana_lexicon.json surfaces
+# 更新: 2026-08-30 / 語数: 418 / 出所: handoff_jhs/furigana_lexicon.json surfaces
 # 用途: Fable納品前の自己走査=本文の残存漢字語が本リストに無ければ増補が必要
 がい数
 一方
@@ -47,6 +47,7 @@
 体積
 何
 何倍
+何分の一
 何分後
 何年後
 何度
@@ -96,6 +97,7 @@
 出会
 出発
 分
+分け
 分布
 分後
 分数
@@ -405,6 +407,7 @@
 離
 電車
 青
+面
 面積
 頂角
 順

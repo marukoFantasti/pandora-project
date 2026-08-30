@@ -1,0 +1,920 @@
+{
+ "_meta_append": {
+  "purpose": "patterns_g02.jsonへの追補(P4-2・時こく3+単位5+図形3+九九2+分数1+表1=15パターン。g02=35→50)",
+  "date": "2026-08-29",
+  "note": "実務再スコープ: テープ図①〜③は「図を見て式を」=図が本体のため図依存在庫へ(見積の1p差替)・表よみg02版を編入。FORMATTERS(clock/h_min/cm_mm/L_dL/m_cm/frac)全既存資産・word_choice/照合表/ai条件式のg01/g06資産流用。kuku_kimari=転記例外(答=かけられる数が学習内容・要登録)。跨ぎ系(時こく繰り上がり・かさ換算)は在庫",
+  "batch": "P4-2",
+  "shared_lexicon_additions": {
+   "zukei_defs": [
+    {
+     "def": "3本の直線でかこまれた形",
+     "name": "三角形"
+    },
+    {
+     "def": "4本の直線でかこまれた形",
+     "name": "四角形"
+    },
+    {
+     "def": "かどがみんな直角になっている四角形",
+     "name": "長方形"
+    },
+    {
+     "def": "かどがみんな直角で、辺の長さがみんな同じ四角形",
+     "name": "正方形"
+    },
+    {
+     "def": "直角のかどがある三角形",
+     "name": "直角三角形"
+    }
+   ],
+   "zukei_yoso": [
+    {
+     "name": "三角形",
+     "ask": "辺",
+     "n": 3,
+     "unit": "本"
+    },
+    {
+     "name": "三角形",
+     "ask": "ちょう点",
+     "n": 3,
+     "unit": "つ"
+    },
+    {
+     "name": "四角形",
+     "ask": "辺",
+     "n": 4,
+     "unit": "本"
+    },
+    {
+     "name": "四角形",
+     "ask": "ちょう点",
+     "n": 4,
+     "unit": "つ"
+    }
+   ],
+   "hako_yoso": [
+    {
+     "ask": "面",
+     "n": 6,
+     "unit": "つ"
+    },
+    {
+     "ask": "辺",
+     "n": 12,
+     "unit": "本"
+    },
+    {
+     "ask": "ちょう点",
+     "n": 8,
+     "unit": "つ"
+    }
+   ]
+  }
+ },
+ "patterns": [
+  {
+   "pattern_id": "g02_jikoku_fun_go_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_fun_go_01",
+   "unit_name": "時こくと時間",
+   "semantic_category": "時こく(□分後・くり上がりなし)",
+   "semantic_note": "7時10分の20分後→7時30分。分の加算が時を跨がない入口形(m+d≦59)。表示はclock FORMATTER(時・分)想定・内部は時h+分mの2値保持。転記: 答の分=m+d≠m,d自動(両≧5)。",
+   "step_count": 1,
+   "operation": "分後の時こく",
+   "answer_formula": "h1 * 60 + m1 + d1",
+   "slots": {
+    "h1": {
+     "type": "int",
+     "range": [
+      1,
+      11
+     ]
+    },
+    "m1": {
+     "choices": [
+      5,
+      10,
+      15,
+      20,
+      25,
+      30
+     ],
+     "type": "choice_int"
+    },
+    "d1": {
+     "choices": [
+      10,
+      15,
+      20,
+      25
+     ],
+     "type": "choice_int"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_hour_carry",
+     "expr": "m1 + d1 <= 55",
+     "why": "時を跨がない(2年の入口形・跨ぎは在庫)"
+    }
+   ],
+   "sentence_templates": [
+    "いまの時こくは{h1}時{m1}分です。{d1}分後の時こくは何時何分ですか。"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "clock"
+  },
+  {
+   "pattern_id": "g02_jikan_conv_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_conv_01",
+   "unit_name": "時こくと時間",
+   "semantic_category": "時間の換算(□時間□分→分)",
+   "semantic_note": "1時間20分=80分型(1時間=60分の適用)。内部=分総量(60h+m)・答=分の単数値。転記: 答=60h+m≠h,m自動(≧65)。",
+   "step_count": 1,
+   "operation": "時分→分",
+   "answer_formula": "h1 * 60 + m1",
+   "slots": {
+    "h1": {
+     "type": "int",
+     "range": [
+      1,
+      3
+     ]
+    },
+    "m1": {
+     "choices": [
+      5,
+      10,
+      15,
+      20,
+      25,
+      30,
+      35,
+      40,
+      45,
+      50
+     ],
+     "type": "choice_int"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{h1}時間{m1}分は何分ですか。"
+   ],
+   "answer_template": "答え {ans}分",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    60
+   ]
+  },
+  {
+   "pattern_id": "g02_jikoku_go_hour_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_go_hour_01",
+   "unit_name": "時こくと時間",
+   "semantic_category": "時こく(□時間後)",
+   "semantic_note": "3時の4時間後→7時。時単位の経過(g01_jikan_atoの継承・午前午後の跨ぎなし単純形)。転記排除は自動(答=h+d>両項)。",
+   "step_count": 1,
+   "operation": "時間後の時こく",
+   "answer_formula": "h1 + d1",
+   "slots": {
+    "h1": {
+     "type": "int",
+     "range": [
+      1,
+      8
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "day_cap",
+     "expr": "h1 + d1 <= 12",
+     "why": "正午/日を跨がない単純形(跨ぎは在庫)"
+    }
+   ],
+   "sentence_templates": [
+    "いまの時こくは{h1}時です。{d1}時間後の時こくは何時ですか。"
+   ],
+   "answer_template": "答え {ans}時",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g02_naga_add_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_add_01",
+   "unit_name": "長さの計算",
+   "semantic_category": "長さのたし算(cm mm+cm)",
+   "semantic_note": "6cm5mm+3cm型(複合単位+単単位・mm不変)。内部=mm総量・表示cm_mm FORMATTER。cm和は2桁可(9cm5mm+7cm=16cm5mm)。",
+   "step_count": 1,
+   "operation": "長さの加算",
+   "answer_formula": "(a1 * 10 + b1) + c1 * 10",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}cm{b1}mm+{c1}cm"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "cm_mm"
+  },
+  {
+   "pattern_id": "g02_naga_sub_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_sub_01",
+   "unit_name": "長さの計算",
+   "semantic_category": "長さのひき算(cm mm−cm)",
+   "semantic_note": "9cm5mm−7cm型。a>cで差の正・mm不変。転記: 差cm=a−c≠c ⟺ a≠2c排除。",
+   "step_count": 1,
+   "operation": "長さの減算",
+   "answer_formula": "(a1 * 10 + b1) - c1 * 10",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      4,
+      15
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "positive",
+     "expr": "a1 > c1",
+     "why": "差が正"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "a1 != 2 * c1",
+     "why": "転記型リーク排除(差cm=引くcm)"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}cm{b1}mm-{c1}cm"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "cm_mm"
+  },
+  {
+   "pattern_id": "g02_kasa_add_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_add_01",
+   "unit_name": "かさの計算",
+   "semantic_category": "かさのたし算(L dL+L dL)",
+   "semantic_note": "2L4dL+1L2dL型(複合+複合・dL和≦9でくり無し)。内部=dL総量・L_dL FORMATTER。",
+   "step_count": 1,
+   "operation": "かさの加算",
+   "answer_formula": "(a1 * 10 + b1) + (c1 * 10 + d1)",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      1,
+      5
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      1,
+      8
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      1,
+      5
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      1,
+      8
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_carry",
+     "expr": "b1 + d1 <= 9",
+     "why": "dLのくり上がりなし(2年の入口形)"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}L{b1}dL+{c1}L{d1}dL"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "L_dL"
+  },
+  {
+   "pattern_id": "g02_kasa_sub_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_sub_01",
+   "unit_name": "かさの計算",
+   "semantic_category": "かさのひき算(L dL−L dL)",
+   "semantic_note": "2L4dL−1L2dL型(dL引けるD≦b・L引けるc<a…c≦aでdL条件と併せ差正)。転記: 差=引く数(全体2倍)排除。",
+   "step_count": 1,
+   "operation": "かさの減算",
+   "answer_formula": "(a1 * 10 + b1) - (c1 * 10 + d1)",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      6
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      1,
+      5
+     ]
+    },
+    "d1": {
+     "type": "int",
+     "range": [
+      1,
+      8
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_borrow",
+     "expr": "d1 <= b1",
+     "why": "dLくり下がりなし(入口形)"
+    },
+    {
+     "rule": "positive",
+     "expr": "a1 > c1",
+     "why": "差が正(L位)"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "a1 * 10 + b1 != 2 * (c1 * 10 + d1)",
+     "why": "転記型リーク排除(差=引くかさ)"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}L{b1}dL-{c1}L{d1}dL"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "L_dL"
+  },
+  {
+   "pattern_id": "g02_naga_conv_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_conv_01",
+   "unit_name": "長い長さのたんい",
+   "semantic_category": "長さの換算(cm→m cm)",
+   "semantic_note": "430cm=4m30cm型(100cm=1mの適用・分解方向)。内部=cm総量起点の構成的生成・m_cm FORMATTER。端数c≧10(ちょうどm・1桁cmは別形)。",
+   "step_count": 1,
+   "operation": "cm→m cm",
+   "answer_formula": "m1 * 100 + c1",
+   "slots": {
+    "m1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "c1": {
+     "choices": [
+      10,
+      20,
+      30,
+      40,
+      50,
+      60,
+      70,
+      80,
+      90
+     ],
+     "type": "choice_int"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{T1}cmは何m何cmですか。"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    100
+   ],
+   "answer_domain": "m_cm",
+   "computed_slots": {
+    "T1": {
+     "formula": "m1 * 100 + c1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g02_zukei_name_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_name_01",
+   "unit_name": "三角形と四角形",
+   "semantic_category": "図形の定義→名前(word_choice)",
+   "semantic_note": "「3本の直線でかこまれた形」→三角形。定義文→図形名の言語対応(裁可(c)=word_choice)。lexicon zukei_defs 5組・答=名前語。",
+   "step_count": 1,
+   "operation": "定義→図形名",
+   "answer_formula": "j1 + 1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "type": "choice_int"
+    },
+    "def1": {
+     "from": "zukei_defs[j1].def"
+    },
+    "nm1": {
+     "from": "zukei_defs[j1].name"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{def1}を何といいますか。"
+   ],
+   "answer_template": "答え {nm1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "word_choice",
+   "word_map_from": "zukei_defs[].name"
+  },
+  {
+   "pattern_id": "g02_zukei_hen_choten_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_hen_choten_0",
+   "unit_name": "三角形と四角形",
+   "semantic_category": "図形の辺・ちょう点の数",
+   "semantic_note": "三角形の辺は3本・四角形のちょう点は4つ。lexicon ask方式(図形×辺/ちょう点の4エントリ・位置回転)。答=セル値相当の対応表読み(照合表方式・図なし言語知識)。",
+   "step_count": 1,
+   "operation": "図形→構成要素数",
+   "answer_formula": "kn1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "type": "choice_int"
+    },
+    "nm1": {
+     "from": "zukei_yoso[j1].name"
+    },
+    "ask1": {
+     "from": "zukei_yoso[j1].ask"
+    },
+    "kn1": {
+     "from": "zukei_yoso[j1].n"
+    },
+    "un1": {
+     "from": "zukei_yoso[j1].unit"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{nm1}には、{ask1}がいくつありますか。"
+   ],
+   "answer_template": "答え {ans}{un1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g02_hako_kazoe_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_kazoe_01",
+   "unit_name": "はこの形",
+   "semantic_category": "はこの面・辺・ちょう点の数",
+   "semantic_note": "はこの形の面6・辺12・ちょう点8。lexicon hako_yoso 3エントリのask方式。定義的ドリル(照合表)。",
+   "step_count": 1,
+   "operation": "はこ→構成要素数",
+   "answer_formula": "kn1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2
+     ],
+     "type": "choice_int"
+    },
+    "ask1": {
+     "from": "hako_yoso[j1].ask"
+    },
+    "kn1": {
+     "from": "hako_yoso[j1].n"
+    },
+    "un1": {
+     "from": "hako_yoso[j1].unit"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "はこの形には、{ask1}がいくつありますか。"
+   ],
+   "answer_template": "答え {ans}{un1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g02_kuku_ana_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_ana_01",
+   "unit_name": "九九",
+   "semantic_category": "九九の穴埋め(a×□=c)",
+   "semantic_note": "3×□=12型(□を探す九九の逆思考・わり算の前段)。c=a×b起点の構成的生成。転記排除a≠b(平方型9×□=81は答=本文値)。",
+   "step_count": 1,
+   "operation": "a×□=c → □",
+   "answer_formula": "b1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_transcribe",
+     "expr": "a1 != b1",
+     "why": "転記型リーク排除(平方型で答=かけられる数)"
+    }
+   ],
+   "sentence_templates": [
+    "□にあてはまる数をかきましょう。\n{a1}×□={P1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "P1": {
+     "formula": "a1 * b1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g02_kuku_kimari_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_kimari_01",
+   "unit_name": "九九のひょうときまり",
+   "semantic_category": "九九のきまり(かける数+1の増分)",
+   "semantic_note": "「4×7は4×6よりいくつ大きいか」→4(かけられる数)。きまり(かける数が1ふえると答えはかけられる数だけふえる)の数理確認。答=かけられる数a=本文値は学習内容そのもの=転記例外(要登録・裁可(d)のg02側)。g03かけ算のきまりと連続設計(P4-4で対を作る)。",
+   "step_count": 1,
+   "operation": "増分=かけられる数",
+   "answer_formula": "a1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      3,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{a1}×{b1}の答えは、{a1}×{Q1}の答えよりいくつ大きいですか。"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ],
+   "computed_slots": {
+    "Q1": {
+     "formula": "b1 - 1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g02_bunsu_teigi_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_teigi_01",
+   "unit_name": "分数",
+   "semantic_category": "分数の定義(□つに分けた1つ分)",
+   "semantic_note": "同じ大きさにnつに分けた1つ分=1/n。分数の初対面(2年は単位分数のみ)。答=分数表示(g03 frac資産流用・FORMATTER委任)。",
+   "step_count": 1,
+   "operation": "1/n",
+   "answer_formula": "n1",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "同じ大きさに{n1}つに分けた1つ分は、もとの大きさの何分の一ですか。"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ],
+   "answer_domain": "frac_unit"
+  },
+  {
+   "pattern_id": "g02_hyo_yomi_01",
+   "grade": "g02",
+   "unit_id": "g02_p4_yomi_01",
+   "unit_name": "ひょうとグラフ",
+   "semantic_category": "表の値読み(しらべ表・g02版)",
+   "semantic_note": "しらべ表の指定項目読み(g06_hyo_yomi_01の2年版・shirabe_1row lexicon共用)。ai条件式・位置回転。kanji_policyはg02(表題材語はかな寄りに表示——lexicon共用の可否は配線時判定・不可ならg02用かなテーマで複製)。",
+   "step_count": 1,
+   "operation": "表のセル読み",
+   "answer_formula": "v1 if ai1 == 1 else (v2 if ai1 == 2 else (v3 if ai1 == 3 else v4))",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "type": "choice_int"
+    },
+    "cap1": {
+     "from": "shirabe_1row[j1].caption"
+    },
+    "ca1": {
+     "from": "shirabe_1row[j1].ca"
+    },
+    "cb1": {
+     "from": "shirabe_1row[j1].cb"
+    },
+    "cc1": {
+     "from": "shirabe_1row[j1].cc"
+    },
+    "cd1": {
+     "from": "shirabe_1row[j1].cd"
+    },
+    "ask1": {
+     "from": "shirabe_1row[j1].ask"
+    },
+    "ai1": {
+     "from": "shirabe_1row[j1].ai"
+    },
+    "unit1": {
+     "from": "shirabe_1row[j1].unit"
+    },
+    "v1": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    },
+    "v2": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    },
+    "v3": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    },
+    "v4": {
+     "type": "int",
+     "range": [
+      2,
+      12
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "右の表は、しらべた結果を整理したものです。{ask1}のかずはいくつですか。"
+   ],
+   "answer_template": "答え {ans}{unit1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "{cap1}",
+    "col_header": [
+     "{ca1}",
+     "{cb1}",
+     "{cc1}",
+     "{cd1}"
+    ],
+    "rows": [
+     {
+      "label": "かず({unit1})",
+      "values": [
+       "{v1}",
+       "{v2}",
+       "{v3}",
+       "{v4}"
+      ]
+     }
+    ]
+   }
+  }
+ ]
+}

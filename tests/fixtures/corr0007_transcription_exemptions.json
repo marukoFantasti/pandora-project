@@ -342,6 +342,34 @@
   {
    "pattern_id": "g02_kaz_kurabe_01",
    "code": "SELECTION_ANSWER"
+  },
+  {
+   "pattern_id": "g02_jikoku_fun_go_01",
+   "code": "COMPOUND_UNIT_PRESERVE"
+  },
+  {
+   "pattern_id": "g02_naga_add_01",
+   "code": "COMPOUND_UNIT_PRESERVE"
+  },
+  {
+   "pattern_id": "g02_naga_sub_01",
+   "code": "COMPOUND_UNIT_PRESERVE"
+  },
+  {
+   "pattern_id": "g02_kasa_add_01",
+   "code": "COMPOUND_UNIT_PRESERVE"
+  },
+  {
+   "pattern_id": "g02_kasa_sub_01",
+   "code": "COMPOUND_UNIT_PRESERVE"
+  },
+  {
+   "pattern_id": "g02_kuku_kimari_01",
+   "code": "SELECTION_ANSWER"
+  },
+  {
+   "pattern_id": "g02_bunsu_teigi_01",
+   "code": "FRAC_PRESERVE"
   }
  ]
 }

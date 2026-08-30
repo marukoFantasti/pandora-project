@@ -1,0 +1,311 @@
+{
+ "_meta": {
+  "schema": "rationale_g05_gold.json準拠",
+  "scope": "g02追補15件(P4-2)。統合(457→472)",
+  "note": "ネイティブ記述 2026-08-29・軽量様式",
+  "order": "バンク順"
+ },
+ "g02_jikoku_fun_go_01": {
+  "brief": {
+   "semantic_territory": "時こく(□分後・跨ぎなし)",
+   "number_domain": "時分(clock)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "P4-2実務再スコープ: テープ図①〜③は図が本体のため図依存在庫へ・表よみg02版を編入(2026-08-29)。跨ぎ系(時こく繰り上がり・かさ換算・cm_mm換算逆方向)は在庫",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "7時10分の20分後型。分単位の経過が2年時こくの芯。",
+   "representation": "内部=分総量・clock FORMATTER表示。m+d≦55で時を跨がない入口形。5分刻みchoices(時計の実用域)。",
+   "constructive_guarantees": "答分=m+d≠m,d(両≧5で自動)。受理264組。",
+   "semantic_position": "時こく族の順方向。g01_jikan_ato(時のみ)の分解像。分前・跨ぎ版は在庫。",
+   "exclusions": "時跨ぎ。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g02_jikan_conv_01": {
+  "brief": {
+   "semantic_territory": "時間の換算(時分→分)",
+   "number_domain": "整数(分)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "1時間20分=80分型。1時間=60分の適用。",
+   "representation": "内部60h+m。答=分の単数値(FORMATTER不要方向)。",
+   "constructive_guarantees": "答≧65>h,mの転記自動安全。受理30組。",
+   "semantic_position": "換算対の分方向。逆方向(分→時分・h_min)は在庫。",
+   "exclusions": "なし。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g02_jikoku_go_hour_01": {
+  "brief": {
+   "semantic_territory": "時こく(□時間後)",
+   "number_domain": "整数(時)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "3時の4時間後型。",
+   "representation": "g01_jikan_atoの継承(g02域)。h+d≦12の跨ぎなし。",
+   "constructive_guarantees": "転記自動安全。受理37組。",
+   "semantic_position": "時こく族の時間単位側。",
+   "exclusions": "正午跨ぎ。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g02_naga_add_01": {
+  "brief": {
+   "semantic_territory": "長さのたし算(cm mm+cm)",
+   "number_domain": "複合単位(cm_mm)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "6cm5mm+3cm型。複合単位の位ごと加算(mmは不変)。",
+   "representation": "内部=mm総量・cm_mm FORMATTER。cm和2桁許容(16cm5mm)。",
+   "constructive_guarantees": "転記自動安全(和>各項)。受理576組。",
+   "semantic_position": "複合単位計算4部作の第1位。",
+   "exclusions": "なし。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g02_naga_sub_01": {
+  "brief": {
+   "semantic_territory": "長さのひき算(cm mm−cm)",
+   "number_domain": "複合単位(cm_mm)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "9cm5mm−7cm型。",
+   "representation": "a>c(差の正)・転記a≠2c(差cm=引くcm)。",
+   "constructive_guarantees": "受理621組。",
+   "semantic_position": "4部作の第2位。",
+   "exclusions": "a≦c・a=2c。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g02_kasa_add_01": {
+  "brief": {
+   "semantic_territory": "かさのたし算(L dL+L dL)",
+   "number_domain": "複合単位(L_dL)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "2L4dL+1L2dL型。複合+複合の初形。",
+   "representation": "dL和≦9のくり無し入口形・L_dL FORMATTER。",
+   "constructive_guarantees": "転記自動安全。受理900組。",
+   "semantic_position": "4部作の第3位。",
+   "exclusions": "dLくり上がり(在庫)。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g02_kasa_sub_01": {
+  "brief": {
+   "semantic_territory": "かさのひき算(L dL−L dL)",
+   "number_domain": "複合単位(L_dL)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "2L4dL−1L2dL型。",
+   "representation": "d≦b(dL借りなし)・a>c・転記=全体2倍排除。",
+   "constructive_guarantees": "受理648組。",
+   "semantic_position": "4部作の掉尾。",
+   "exclusions": "借り発生・2倍組。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g02_naga_conv_01": {
+  "brief": {
+   "semantic_territory": "長さの換算(cm→m cm)",
+   "number_domain": "複合単位(m_cm)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "430cm=4m30cm型(分解方向)。",
+   "representation": "cm総量起点の構成的生成(T=100m+c)・端数10刻み(ちょうどm・1桁cm端数は別形=在庫)。",
+   "constructive_guarantees": "受理81組。",
+   "semantic_position": "換算族のm_cm位。逆方向(m cm→cm)は在庫。",
+   "exclusions": "端数<10。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g02_zukei_name_01": {
+  "brief": {
+   "semantic_territory": "図形の定義→名前",
+   "number_domain": "語答え(word_choice 5択)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "図形かな語答えはword_choice正準(裁可(c)2026-08-29)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "「3本の直線でかこまれた形」→三角形。定義と名前の対応が2年図形の言語側の芯。",
+   "representation": "lexicon zukei_defs 5組(三角/四角/長方/正方/直角三角)の定義文→名前。word_choice(g01バッチ3資産)。",
+   "constructive_guarantees": "対応表が答を一意決定(照合表方式)。受理5組。",
+   "semantic_position": "図形言語族の始祖。図の弁別(直角三角形選び等)は図依存在庫。",
+   "exclusions": "図の選別型(図依存)。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g02_zukei_hen_choten_01": {
+  "brief": {
+   "semantic_territory": "図形の辺・ちょう点の数",
+   "number_domain": "整数(照合表)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "三角形の辺3本・四角形のちょう点4つ。",
+   "representation": "lexicon ask方式4エントリ(図形×要素の位置回転=g06_hyo_yomiのai手筋)。",
+   "constructive_guarantees": "照合表の一意性。受理4組。",
+   "semantic_position": "図形言語族の構成要素側。",
+   "exclusions": "なし。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g02_hako_kazoe_01": {
+  "brief": {
+   "semantic_territory": "はこの面・辺・ちょう点",
+   "number_domain": "整数(照合表)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "はこの形=面6・辺12・ちょう点8。",
+   "representation": "hako_yoso 3エントリのask方式。定義的ドリル(二等辺流儀の狭さ)。",
+   "constructive_guarantees": "受理3組。",
+   "semantic_position": "はこ族の言語側。展開図・面の形は図依存在庫。",
+   "exclusions": "展開図系。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g02_kuku_ana_01": {
+  "brief": {
+   "semantic_territory": "九九の穴埋め(a×□=c)",
+   "number_domain": "整数",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "3×□=12型。□を探す逆思考=わり算の前段。",
+   "representation": "c=a×b起点の構成的生成(答えから問題を作る)。",
+   "constructive_guarantees": "転記排除a≠b(平方型9×□=81の答=本文値を排除)。受理56組。",
+   "semantic_position": "九九族の逆思考位。g03わり算への橋。",
+   "exclusions": "平方組。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g02_kuku_kimari_01": {
+  "brief": {
+   "semantic_territory": "九九のきまり(増分)",
+   "number_domain": "整数",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "答=かけられる数(本文値)は「かける数が1ふえると答えはかけられる数だけふえる」の学習内容そのもの=転記例外(要登録)。g03かけ算のきまりと連続設計(裁可(d)・P4-4で対)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "4×7は4×6よりいくつ大きいか→4。九九表の構造理解。",
+   "representation": "Q=b−1のcomputed比較形。",
+   "constructive_guarantees": "転記例外(SELECTION_ANSWER登録)。受理56組。",
+   "semantic_position": "きまり族のg02側(g03連続設計の前半)。",
+   "exclusions": "なし。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g02_bunsu_teigi_01": {
+  "brief": {
+   "semantic_territory": "分数の定義(1/n)",
+   "number_domain": "分数(frac_unit)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "nつに分けた1つ分=1/n。分数の初対面(2年は単位分数のみ)。",
+   "representation": "答=1/n表示(g03 frac資産のFORMATTER委任)。n∈[2,8]。",
+   "constructive_guarantees": "転記: 答表示(1/n)は本文nと別トークン形。受理7組。",
+   "semantic_position": "分数系譜の起点。g03分数(真分数)への入口。",
+   "exclusions": "分子2以上(3年領分)。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g02_hyo_yomi_01": {
+  "brief": {
+   "semantic_territory": "表の値読み(g02版)",
+   "number_domain": "整数",
+   "answer_structure": "single",
+   "figure": "table(1行4列)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "しらべ表の指定項目読み。2年ひょうとグラフの言語側。",
+   "representation": "g06_hyo_yomi_01の2年版(shirabe_1row共用・ai条件式)。値域は2年らしく2〜12。lexicon共用可否は配線時判定(不可ならg02用かなテーマ複製)。",
+   "constructive_guarantees": "読み系=転記概念適用外。受理73,205組。",
+   "semantic_position": "表族の学年下方展開・P4-2の掉尾。グラフ(絵グラフ)は図依存在庫。",
+   "exclusions": "グラフ系。",
+   "figure_notes": "table kind流用(g06実証域内の1行4列)。",
+   "pedagogy": []
+  }
+ }
+}

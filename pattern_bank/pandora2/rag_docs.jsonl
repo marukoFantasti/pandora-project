@@ -208,6 +208,90 @@
 {"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g02_kaz_tobi_01", "grade": "g02", "unit_id": "g02_c42_u01", "kind": null, "text": "seq系譜の4桁位・P4-1の掉尾。"}
 {"doc_type": "rationale", "section": "exclusions", "pattern_id": "g02_kaz_tobi_01", "grade": "g02", "unit_id": "g02_c42_u01", "kind": null, "text": "s+4k>9999。"}
 {"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g02_kaz_tobi_01", "grade": "g02", "unit_id": "g02_c42_u01", "kind": null, "text": "図なし(計算ドリル・純数値)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g02_jikoku_fun_go_01", "grade": "g02", "unit_id": "g02_c02_u01", "kind": null, "text": "7時10分の20分後型。分単位の経過が2年時こくの芯。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g02_jikoku_fun_go_01", "grade": "g02", "unit_id": "g02_c02_u01", "kind": null, "text": "内部=分総量・clock FORMATTER表示。m+d≦55で時を跨がない入口形。5分刻みchoices(時計の実用域)。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g02_jikoku_fun_go_01", "grade": "g02", "unit_id": "g02_c02_u01", "kind": null, "text": "答分=m+d≠m,d(両≧5で自動)。受理264組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g02_jikoku_fun_go_01", "grade": "g02", "unit_id": "g02_c02_u01", "kind": null, "text": "時こく族の順方向。g01_jikan_ato(時のみ)の分解像。分前・跨ぎ版は在庫。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g02_jikoku_fun_go_01", "grade": "g02", "unit_id": "g02_c02_u01", "kind": null, "text": "時跨ぎ。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g02_jikoku_fun_go_01", "grade": "g02", "unit_id": "g02_c02_u01", "kind": null, "text": "図なし(テキスト完結)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g02_jikoku_go_hour_01", "grade": "g02", "unit_id": "g02_c04_u01", "kind": null, "text": "3時の4時間後型。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g02_jikoku_go_hour_01", "grade": "g02", "unit_id": "g02_c04_u01", "kind": null, "text": "g01_jikan_atoの継承(g02域)。h+d≦12の跨ぎなし。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g02_jikoku_go_hour_01", "grade": "g02", "unit_id": "g02_c04_u01", "kind": null, "text": "転記自動安全。受理37組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g02_jikoku_go_hour_01", "grade": "g02", "unit_id": "g02_c04_u01", "kind": null, "text": "時こく族の時間単位側。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g02_jikoku_go_hour_01", "grade": "g02", "unit_id": "g02_c04_u01", "kind": null, "text": "正午跨ぎ。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g02_jikoku_go_hour_01", "grade": "g02", "unit_id": "g02_c04_u01", "kind": null, "text": "図なし(テキスト完結)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g02_naga_add_01", "grade": "g02", "unit_id": "g02_c14_u01", "kind": null, "text": "6cm5mm+3cm型。複合単位の位ごと加算(mmは不変)。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g02_naga_add_01", "grade": "g02", "unit_id": "g02_c14_u01", "kind": null, "text": "内部=mm総量・cm_mm FORMATTER。cm和2桁許容(16cm5mm)。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g02_naga_add_01", "grade": "g02", "unit_id": "g02_c14_u01", "kind": null, "text": "転記自動安全(和>各項)。受理576組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g02_naga_add_01", "grade": "g02", "unit_id": "g02_c14_u01", "kind": null, "text": "複合単位計算4部作の第1位。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g02_naga_add_01", "grade": "g02", "unit_id": "g02_c14_u01", "kind": null, "text": "なし。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g02_naga_add_01", "grade": "g02", "unit_id": "g02_c14_u01", "kind": null, "text": "図なし(テキスト完結)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g02_naga_sub_01", "grade": "g02", "unit_id": "g02_c14_u01", "kind": null, "text": "9cm5mm−7cm型。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g02_naga_sub_01", "grade": "g02", "unit_id": "g02_c14_u01", "kind": null, "text": "a>c(差の正)・転記a≠2c(差cm=引くcm)。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g02_naga_sub_01", "grade": "g02", "unit_id": "g02_c14_u01", "kind": null, "text": "受理621組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g02_naga_sub_01", "grade": "g02", "unit_id": "g02_c14_u01", "kind": null, "text": "4部作の第2位。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g02_naga_sub_01", "grade": "g02", "unit_id": "g02_c14_u01", "kind": null, "text": "a≦c・a=2c。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g02_naga_sub_01", "grade": "g02", "unit_id": "g02_c14_u01", "kind": null, "text": "図なし(テキスト完結)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g02_kasa_add_01", "grade": "g02", "unit_id": "g02_c20_u01", "kind": null, "text": "2L4dL+1L2dL型。複合+複合の初形。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g02_kasa_add_01", "grade": "g02", "unit_id": "g02_c20_u01", "kind": null, "text": "dL和≦9のくり無し入口形・L_dL FORMATTER。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g02_kasa_add_01", "grade": "g02", "unit_id": "g02_c20_u01", "kind": null, "text": "転記自動安全。受理900組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g02_kasa_add_01", "grade": "g02", "unit_id": "g02_c20_u01", "kind": null, "text": "4部作の第3位。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g02_kasa_add_01", "grade": "g02", "unit_id": "g02_c20_u01", "kind": null, "text": "dLくり上がり(在庫)。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g02_kasa_add_01", "grade": "g02", "unit_id": "g02_c20_u01", "kind": null, "text": "図なし(テキスト完結)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g02_kasa_sub_01", "grade": "g02", "unit_id": "g02_c20_u01", "kind": null, "text": "2L4dL−1L2dL型。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g02_kasa_sub_01", "grade": "g02", "unit_id": "g02_c20_u01", "kind": null, "text": "d≦b(dL借りなし)・a>c・転記=全体2倍排除。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g02_kasa_sub_01", "grade": "g02", "unit_id": "g02_c20_u01", "kind": null, "text": "受理648組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g02_kasa_sub_01", "grade": "g02", "unit_id": "g02_c20_u01", "kind": null, "text": "4部作の掉尾。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g02_kasa_sub_01", "grade": "g02", "unit_id": "g02_c20_u01", "kind": null, "text": "借り発生・2倍組。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g02_kasa_sub_01", "grade": "g02", "unit_id": "g02_c20_u01", "kind": null, "text": "図なし(テキスト完結)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g02_naga_conv_01", "grade": "g02", "unit_id": "g02_c44_u01", "kind": null, "text": "430cm=4m30cm型(分解方向)。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g02_naga_conv_01", "grade": "g02", "unit_id": "g02_c44_u01", "kind": null, "text": "cm総量起点の構成的生成(T=100m+c)・端数10刻み(ちょうどm・1桁cm端数は別形=在庫)。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g02_naga_conv_01", "grade": "g02", "unit_id": "g02_c44_u01", "kind": null, "text": "受理81組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g02_naga_conv_01", "grade": "g02", "unit_id": "g02_c44_u01", "kind": null, "text": "換算族のm_cm位。逆方向(m cm→cm)は在庫。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g02_naga_conv_01", "grade": "g02", "unit_id": "g02_c44_u01", "kind": null, "text": "端数<10。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g02_naga_conv_01", "grade": "g02", "unit_id": "g02_c44_u01", "kind": null, "text": "図なし(テキスト完結)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g02_zukei_name_01", "grade": "g02", "unit_id": "g02_c27_u01", "kind": null, "text": "「3本の直線でかこまれた形」→三角形。定義と名前の対応が2年図形の言語側の芯。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g02_zukei_name_01", "grade": "g02", "unit_id": "g02_c27_u01", "kind": null, "text": "lexicon zukei_defs 5組(三角/四角/長方/正方/直角三角)の定義文→名前。word_choice(g01バッチ3資産)。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g02_zukei_name_01", "grade": "g02", "unit_id": "g02_c27_u01", "kind": null, "text": "対応表が答を一意決定(照合表方式)。受理5組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g02_zukei_name_01", "grade": "g02", "unit_id": "g02_c27_u01", "kind": null, "text": "図形言語族の始祖。図の弁別(直角三角形選び等)は図依存在庫。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g02_zukei_name_01", "grade": "g02", "unit_id": "g02_c27_u01", "kind": null, "text": "図の選別型(図依存)。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g02_zukei_name_01", "grade": "g02", "unit_id": "g02_c27_u01", "kind": null, "text": "図なし(テキスト完結)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g02_zukei_hen_choten_01", "grade": "g02", "unit_id": "g02_c28_u01", "kind": null, "text": "三角形の辺3本・四角形のちょう点4つ。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g02_zukei_hen_choten_01", "grade": "g02", "unit_id": "g02_c28_u01", "kind": null, "text": "lexicon ask方式4エントリ(図形×要素の位置回転=g06_hyo_yomiのai手筋)。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g02_zukei_hen_choten_01", "grade": "g02", "unit_id": "g02_c28_u01", "kind": null, "text": "照合表の一意性。受理4組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g02_zukei_hen_choten_01", "grade": "g02", "unit_id": "g02_c28_u01", "kind": null, "text": "図形言語族の構成要素側。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g02_zukei_hen_choten_01", "grade": "g02", "unit_id": "g02_c28_u01", "kind": null, "text": "なし。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g02_zukei_hen_choten_01", "grade": "g02", "unit_id": "g02_c28_u01", "kind": null, "text": "図なし(テキスト完結)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g02_hako_kazoe_01", "grade": "g02", "unit_id": "g02_c48_u01", "kind": null, "text": "はこの形=面6・辺12・ちょう点8。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g02_hako_kazoe_01", "grade": "g02", "unit_id": "g02_c48_u01", "kind": null, "text": "hako_yoso 3エントリのask方式。定義的ドリル(二等辺流儀の狭さ)。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g02_hako_kazoe_01", "grade": "g02", "unit_id": "g02_c48_u01", "kind": null, "text": "受理3組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g02_hako_kazoe_01", "grade": "g02", "unit_id": "g02_c48_u01", "kind": null, "text": "はこ族の言語側。展開図・面の形は図依存在庫。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g02_hako_kazoe_01", "grade": "g02", "unit_id": "g02_c48_u01", "kind": null, "text": "展開図系。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g02_hako_kazoe_01", "grade": "g02", "unit_id": "g02_c48_u01", "kind": null, "text": "図なし(テキスト完結)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g02_kuku_ana_01", "grade": "g02", "unit_id": "g02_c37_u01", "kind": null, "text": "3×□=12型。□を探す逆思考=わり算の前段。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g02_kuku_ana_01", "grade": "g02", "unit_id": "g02_c37_u01", "kind": null, "text": "c=a×b起点の構成的生成(答えから問題を作る)。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g02_kuku_ana_01", "grade": "g02", "unit_id": "g02_c37_u01", "kind": null, "text": "転記排除a≠b(平方型9×□=81の答=本文値を排除)。受理56組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g02_kuku_ana_01", "grade": "g02", "unit_id": "g02_c37_u01", "kind": null, "text": "九九族の逆思考位。g03わり算への橋。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g02_kuku_ana_01", "grade": "g02", "unit_id": "g02_c37_u01", "kind": null, "text": "平方組。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g02_kuku_ana_01", "grade": "g02", "unit_id": "g02_c37_u01", "kind": null, "text": "図なし(テキスト完結)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g02_kuku_kimari_01", "grade": "g02", "unit_id": "g02_c37_u01", "kind": null, "text": "4×7は4×6よりいくつ大きいか→4。九九表の構造理解。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g02_kuku_kimari_01", "grade": "g02", "unit_id": "g02_c37_u01", "kind": null, "text": "Q=b−1のcomputed比較形。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g02_kuku_kimari_01", "grade": "g02", "unit_id": "g02_c37_u01", "kind": null, "text": "転記例外(SELECTION_ANSWER登録)。受理56組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g02_kuku_kimari_01", "grade": "g02", "unit_id": "g02_c37_u01", "kind": null, "text": "きまり族のg02側(g03連続設計の前半)。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g02_kuku_kimari_01", "grade": "g02", "unit_id": "g02_c37_u01", "kind": null, "text": "なし。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g02_kuku_kimari_01", "grade": "g02", "unit_id": "g02_c37_u01", "kind": null, "text": "図なし(テキスト完結)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g02_bunsu_teigi_01", "grade": "g02", "unit_id": "g02_c51_u01", "kind": null, "text": "nつに分けた1つ分=1/n。分数の初対面(2年は単位分数のみ)。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g02_bunsu_teigi_01", "grade": "g02", "unit_id": "g02_c51_u01", "kind": null, "text": "答=1/n表示(g03 frac資産のFORMATTER委任)。n∈[2,8]。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g02_bunsu_teigi_01", "grade": "g02", "unit_id": "g02_c51_u01", "kind": null, "text": "転記: 答表示(1/n)は本文nと別トークン形。受理7組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g02_bunsu_teigi_01", "grade": "g02", "unit_id": "g02_c51_u01", "kind": null, "text": "分数系譜の起点。g03分数(真分数)への入口。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g02_bunsu_teigi_01", "grade": "g02", "unit_id": "g02_c51_u01", "kind": null, "text": "分子2以上(3年領分)。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g02_bunsu_teigi_01", "grade": "g02", "unit_id": "g02_c51_u01", "kind": null, "text": "図なし(テキスト完結)。"}
+{"doc_type": "rationale", "section": "source_features", "pattern_id": "g02_hyo_yomi_01", "grade": "g02", "unit_id": "g02_c01_u01", "kind": "table", "text": "しらべ表の指定項目読み。2年ひょうとグラフの言語側。"}
+{"doc_type": "rationale", "section": "representation", "pattern_id": "g02_hyo_yomi_01", "grade": "g02", "unit_id": "g02_c01_u01", "kind": "table", "text": "g06_hyo_yomi_01の2年版(shirabe_1row共用・ai条件式)。値域は2年らしく2〜12。lexicon共用可否は配線時判定(不可ならg02用かなテーマ複製)。"}
+{"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g02_hyo_yomi_01", "grade": "g02", "unit_id": "g02_c01_u01", "kind": "table", "text": "読み系=転記概念適用外。受理73,205組。"}
+{"doc_type": "rationale", "section": "semantic_position", "pattern_id": "g02_hyo_yomi_01", "grade": "g02", "unit_id": "g02_c01_u01", "kind": "table", "text": "表族の学年下方展開・P4-2の掉尾。グラフ(絵グラフ)は図依存在庫。"}
+{"doc_type": "rationale", "section": "exclusions", "pattern_id": "g02_hyo_yomi_01", "grade": "g02", "unit_id": "g02_c01_u01", "kind": "table", "text": "グラフ系。"}
+{"doc_type": "rationale", "section": "figure_notes", "pattern_id": "g02_hyo_yomi_01", "grade": "g02", "unit_id": "g02_c01_u01", "kind": "table", "text": "table kind流用(g06実証域内の1行4列)。"}
 {"doc_type": "rationale", "section": "source_features", "pattern_id": "g03_div_tobun_01", "grade": "g03", "unit_id": "g03_c05_u01", "kind": null, "text": "小3わり算導入単元の第1形。『全体をn人で同じ数ずつ分けると1人分は』が定番の問いで、包含除と対にして『同じ式でも意味が違う』ことを教えるのが単元構成の核。"}
 {"doc_type": "rationale", "section": "representation", "pattern_id": "g03_div_tobun_01", "grade": "g03", "unit_id": "g03_c05_u01", "kind": null, "text": "整数のみ。object/counterはdiv_object_pairsの同一インデックスj共有で対束縛し、『りんごを何まい』型の助数詞不整合を構造的に排除。動詞束縛(verb_use)も同セットが供給源。"}
 {"doc_type": "rationale", "section": "constructive_guarantees", "pattern_id": "g03_div_tobun_01", "grade": "g03", "unit_id": "g03_c05_u01", "kind": null, "text": "n1%n2==0(割り切れ)+商2〜9(quotient_in_kuku)。除数2〜9×商2〜9の全72組が受理域に常在するため棄却は軽く、九九逆算で解ける範囲に厳密に収まる。"}
@@ -2837,3 +2921,5 @@
 {"doc_type": "correction", "section": "generalization", "scope": "furigana_patch_g4b.json / choice選択式(合同条件識別)のfurigana標本", "by": "marko", "text": "記号→きごう を増補適用(まるこ検収)。以後choice選択式のfurigana標本は、選択肢文だけでなく設問の定型文(『次のア〜ウから1つ選び、記号で答えなさい』等の指示文)の語も必ず含めて欠落判定すること。 → 選択式(choice)の文面は『問題本文+選択肢+設問指示文』の3部構成で、furigana網羅判定は3部すべての実レンダ標本で行う。求積系(本文=図の指示1文)の標本感覚のまま選択肢だけ見ると指示文の定型語(記号/選び等)を取りこぼす。標本は最終レンダ文字列の悉皆であって設計者の想定語リストではない。"}
 {"doc_type": "correction", "section": "generalization", "scope": "composite_circle 複合面積4パターン(P-3a完了便) / 半環(half_pair)図の寸法対応 / patterns_g06.json", "by": "marko", "text": "複合面積は全構成で本文に寸法を明示すること——半環に限らず全構成で本文を与件とし、図は確認役に徹する(実物の複合面積の標準形とも一致)。 → 図の視認性が弱い求積構成は、図そのものを歪めて情報を足すのではなく、本文(与件)側に寸法を明示して図を確認役に降格する——『図で語れないなら文で語る』を複合図形の既定とする。"}
 {"doc_type": "correction", "section": "generalization", "scope": "furigana自己走査(registered.txt突合) / 納品前検出フロー / furigana_patch_p3afinal.json", "by": "marko", "text": "furiganaの欠落は納品前にFable側で自己走査(registered.txt突合)し、欠落語をパッチ(furigana_patch)として素材に同梱する。 → 反復する差戻しは、下流(配線時)での検出から上流(納品前)での自己走査に前倒しし、突合基準(registered.txt等の既収録リスト)を恒久ツール化して欠落を素材同梱パッチで先解決する。"}
+{"doc_type": "correction", "section": "generalization", "scope": "P4-2受領検証 / g02_jikan_conv_01の実質重複検出 / 素材設計の事前重複検査フロー", "by": "marko", "text": "当該便は重複を除外して14配線(35→49)・在庫記録へ。以後の受領検証報告に、次便設計対象学年の既存パターン一覧(pattern_id+semantic_category)を常設で同梱する(P4-3ではg03既存26の一覧=P4-4設計の事前重複検査用)。 → 納品前検査の参照資料は下流(バンク)側から上流(設計)側へ先回りで届ける——furigana registered.txt(corr-0026)と同型の『上流への突合基準の常設供給』。設計者が持たない状態情報(既存バンクの意味在庫)は、報告に定型で載せて往復を消す。"}
+{"doc_type": "correction", "section": "generalization", "scope": "P4-2配線 / furigana coverage関門の盲点(誤読) / reading_engine・counter_reading_table・furigana_lexicon", "by": "marko", "text": "誤読は目検でしか出ないため、以後の配線では新規本文の読み解決を目検1周(全新パターンのtoHiragana出力を確認)を標準手順とする。今回分は機構修正+増補で解決。 → 『検出器が沈黙する欠陥クラス』(誤読=可読だが誤り)には人手目検を標準工程として恒久配置し、目検で見つけた各欠陥は固定ベクターに追加して二度目から機械検出に変える——目検は一度きり、封印は永続。"}
