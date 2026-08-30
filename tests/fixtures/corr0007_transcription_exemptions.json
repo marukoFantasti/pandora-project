@@ -370,6 +370,18 @@
   {
    "pattern_id": "g02_bunsu_teigi_01",
    "code": "FRAC_PRESERVE"
+  },
+  {
+   "pattern_id": "g03_kimari_koukan_01",
+   "code": "SELECTION_ANSWER"
+  },
+  {
+   "pattern_id": "g03_kimari_zero_01",
+   "code": "SELECTION_ANSWER"
+  },
+  {
+   "pattern_id": "g03_kimari_zoubun_01",
+   "code": "SELECTION_ANSWER"
   }
  ]
 }

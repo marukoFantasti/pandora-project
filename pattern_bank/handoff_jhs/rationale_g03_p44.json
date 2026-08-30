@@ -1,0 +1,305 @@
+{
+ "_meta": {
+  "schema": "rationale_g05_gold.json準拠",
+  "scope": "g03追補15件(P4-4)。統合(487→502)",
+  "note": "ネイティブ記述 2026-08-29・軽量様式・P-4完結",
+  "order": "バンク順"
+ },
+ "g03_calc_div_01": {
+  "brief": {
+   "semantic_territory": "わり切れるわり算",
+   "number_domain": "整数(九九域)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "P4-4=P-4完結便(g03最終15)。既存42一覧(corr-0027)と突合済み設計——div計算素体/time逆方向・加算・経過/きまり交換・0・束増分が真の新規。時間の計算=裁可(a)復活の実装。転記例外3件(koukan/zoubun=kuku_kimari族・zero=add_zero族)要登録(2026-08-29)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "72÷8型の計算素体(文章題は既存tobun/hogan)。",
+   "representation": "P=a×b起点の構成的生成(kuku_anaのわり算版)。",
+   "constructive_guarantees": "転記排除a≠b(平方型81÷9=9)。受理56組。",
+   "semantic_position": "わり算ドリル対のわり切れ側。",
+   "exclusions": "平方組。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_calc_div_amari_01": {
+  "brief": {
+   "semantic_territory": "あまりのあるわり算",
+   "number_domain": "商+あまり(remainder)",
+   "answer_structure": "remainder",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "35÷4=8あまり3型。",
+   "representation": "P=a×b+r(0<r<a)起点で商・あまりを構成保証——answer_templateに{b1}あまり{r1}直書き(remainder素形式・div_amari_fukubun流儀へ配線時突合)。",
+   "constructive_guarantees": "r<a(定義)・平方排除。受理245組。",
+   "semantic_position": "ドリル対のあまり側。",
+   "exclusions": "r=0(わり切れ側)・平方。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_kimari_koukan_01": {
+  "brief": {
+   "semantic_territory": "交換のきまり",
+   "number_domain": "整数",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "6×4=4×□→6。交換法則の□あてはめ。",
+   "representation": "a≠b(交換の弁別)。答=a=本文値は交換法則の学習内容=転記例外(kuku_kimari族・要登録)。",
+   "constructive_guarantees": "受理56組。",
+   "semantic_position": "きまり3部作の第1位(g02連続設計の本体)。",
+   "exclusions": "a=b。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_kimari_zero_01": {
+  "brief": {
+   "semantic_territory": "0のかけ算",
+   "number_domain": "整数(0含む)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "a×0=0・0×a=0。0の演算性質の乗法版。",
+   "representation": "制約1本(a=0∨b=0)で両形網羅——g01 add_zero/sub_zeroの同手筋・any_int。",
+   "constructive_guarantees": "答0の性質は学習内容(add_zero族の例外に同梱登録)。受理19組。",
+   "semantic_position": "0演算系譜の乗法位。",
+   "exclusions": "両方非0。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_kimari_zoubun_01": {
+  "brief": {
+   "semantic_territory": "束の増分",
+   "number_domain": "整数(束)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "30×6は30×5より30大きい。g02_kuku_kimari(九九域)の束域連続設計(裁可(d))。",
+   "representation": "A=10tのcomputed・Q=b−1比較形(g02版と同構造・上位域)。",
+   "constructive_guarantees": "答=束=本文値=転記例外(同族登録)。受理56組。",
+   "semantic_position": "きまり族の束位・g02との学年間対。",
+   "exclusions": "なし。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_time_min_add_01": {
+  "brief": {
+   "semantic_territory": "分+分(繰り上がり)",
+   "number_domain": "時間分(h_min)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "時間の計算はスコープ外記録を実需前提方針で復活(裁可(a)2026-08-29)——テキスト完結49atom・図0・既存資産のみで成立",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "40分+30分=1時間10分。60分繰り上がりが3年の芯。",
+   "representation": "内部分・h_min FORMATTER・和≧65で繰り上がり保証(ちょうど60は別形)。5分刻みchoices。",
+   "constructive_guarantees": "転記自動安全(表示=時間分の複合形)。受理36組。",
+   "semantic_position": "時間計算3部作の第1位(復活便)。",
+   "exclusions": "和<65。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_time_conv_min_to_hmin_01": {
+  "brief": {
+   "semantic_territory": "分→時間分",
+   "number_domain": "時間分(h_min)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "80分=1時間20分。既存hmin_to_min(順方向)の逆で換算対が完成——P4-2重複除外(jikan_conv)の教訓を経た正しい新規方向。",
+   "representation": "端数≠0(ちょうど時間は別形)。",
+   "constructive_guarantees": "受理118組。",
+   "semantic_position": "換算対の逆方向位。",
+   "exclusions": "60の倍数。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_time_keika_01": {
+  "brief": {
+   "semantic_territory": "経過時間(時跨ぎ)",
+   "number_domain": "整数(分)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "午前9時40分→10時20分=40分。時を跨ぐ経過が3年の到達点。",
+   "representation": "m2<m1の制約で跨ぎを必然化(h2=h1+1のcomputed)——跨がない組は構造的に生成されない。答=60−m1+m2<60分域。",
+   "constructive_guarantees": "転記: 答は時こく4値と別値(差構造)。受理96組。",
+   "semantic_position": "時間計算3部作の掉尾。g02跨ぎなし在庫の解決版。",
+   "exclusions": "同時刻内(跨ぎなし=g02域)。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_en_han_to_choku_01": {
+  "brief": {
+   "semantic_territory": "半径→直径",
+   "number_domain": "整数(cm)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "半径4cm→直径8cm。円の基本関係の順方向。",
+   "representation": "d=2rの最小構成。",
+   "constructive_guarantees": "答=2r≠rの転記自動安全。受理14組。",
+   "semantic_position": "円球3部作の第1位。",
+   "exclusions": "なし。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_en_choku_to_han_01": {
+  "brief": {
+   "semantic_territory": "直径→半径",
+   "number_domain": "整数(cm)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "直径8cm→半径4cm。逆方向。",
+   "representation": "r起点の構成的生成(D=2r表示)でd偶数を構造保証——逆算生成の円版。",
+   "constructive_guarantees": "転記自動安全。受理14組。",
+   "semantic_position": "3部作の第2位(双方向対)。",
+   "exclusions": "d奇数(非整数半径)。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_kyu_hako_01": {
+  "brief": {
+   "semantic_territory": "球の箱詰め",
+   "number_domain": "整数(cm)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "直径6cmのボール3個→箱の横18cm。球の直径の応用(テキスト完結で成立する空間問題)。",
+   "representation": "d×n(n≦4の実物域)。",
+   "constructive_guarantees": "転記排除自動(n≧2で積>両項)。受理27組。",
+   "semantic_position": "3部作の掉尾。切り口(word_choice)・図依存分は在庫。",
+   "exclusions": "n≧5(非実物的)。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_hyo_yomi_01": {
+  "brief": {
+   "semantic_territory": "表の値読み(g03版)",
+   "number_domain": "整数(2〜30)",
+   "answer_structure": "single",
+   "figure": "table(1行4列)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "しらべ表の指定項目読み。3年表とグラフの言語側。",
+   "representation": "g02版クローンのg03域(値2〜30)・shirabe_1row共用(継承コピー前例)。",
+   "constructive_guarantees": "読み系=転記概念適用外。受理3,536,405組。",
+   "semantic_position": "表族の3年位。ぼうグラフは図依存在庫。",
+   "exclusions": "グラフ系。",
+   "figure_notes": "table kind流用(実証域内)。",
+   "pedagogy": []
+  }
+ },
+ "g03_hyo_gokei_01": {
+  "brief": {
+   "semantic_territory": "表の合計(g03版)",
+   "number_domain": "整数",
+   "answer_structure": "single",
+   "figure": "table(1行4列)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "しらべ表の総数(しき付き)。",
+   "representation": "g06_hyo_gokeiの下方展開。",
+   "constructive_guarantees": "転記フリー(和>各項)。受理同域。",
+   "semantic_position": "表族の集約・3年位。",
+   "exclusions": "なし。",
+   "figure_notes": "同上。",
+   "pedagogy": []
+  }
+ },
+ "g03_sankaku_name_01": {
+  "brief": {
+   "semantic_territory": "三角形の定義→名前",
+   "number_domain": "語答え(word_choice 2択)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "「2つの辺の長さが等しい三角形」→二等辺三角形。",
+   "representation": "sankaku_defs 2組(g02_zukei_name方式のg03版)。",
+   "constructive_guarantees": "照合表の一意性。受理2組。",
+   "semantic_position": "図形言語族の3年位。図の弁別(コンパス作図系)は域外/図依存。",
+   "exclusions": "作図系。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g03_sankaku_yoso_01": {
+  "brief": {
+   "semantic_territory": "等しい辺・角の数",
+   "number_domain": "整数(照合表)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "二等辺=辺2本・角2つ/正三角形=3本・3つ。",
+   "representation": "ask方式4エントリ(辺と角の両観点・位置回転)。",
+   "constructive_guarantees": "受理4組。",
+   "semantic_position": "図形言語族の構成要素側・P-4の掉尾(g01〜g03取りこぼし回収完了位置)。",
+   "exclusions": "なし。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ }
+}

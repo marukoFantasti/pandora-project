@@ -143,6 +143,94 @@
     "noun": "長さ"
    }
   ],
+  "sankaku_defs": [
+  {
+   "def": "2つの辺の長さが等しい三角形",
+   "name": "二等辺三角形"
+  },
+  {
+   "def": "3つの辺の長さがみんな等しい三角形",
+   "name": "正三角形"
+  }
+ ],
+  "sankaku_yoso": [
+  {
+   "name": "二等辺三角形",
+   "ask": "長さが等しい辺",
+   "n": 2,
+   "unit": "本"
+  },
+  {
+   "name": "正三角形",
+   "ask": "長さが等しい辺",
+   "n": 3,
+   "unit": "本"
+  },
+  {
+   "name": "二等辺三角形",
+   "ask": "大きさが等しい角",
+   "n": 2,
+   "unit": "つ"
+  },
+  {
+   "name": "正三角形",
+   "ask": "大きさが等しい角",
+   "n": 3,
+   "unit": "つ"
+  }
+ ],
+  "shirabe_1row": [
+  {
+   "caption": "すきなあそびしらべ",
+   "ca": "おにごっこ",
+   "cb": "ドッジボール",
+   "cc": "なわとび",
+   "cd": "てつぼう",
+   "ask": "ドッジボール",
+   "ai": 2,
+   "unit": "人"
+  },
+  {
+   "caption": "すきなくだものしらべ",
+   "ca": "りんご",
+   "cb": "みかん",
+   "cc": "バナナ",
+   "cd": "ぶどう",
+   "ask": "バナナ",
+   "ai": 3,
+   "unit": "人"
+  },
+  {
+   "caption": "かりた本しらべ",
+   "ca": "ものがたり",
+   "cb": "ずかん",
+   "cc": "でんき",
+   "cd": "かがくの本",
+   "ask": "ずかん",
+   "ai": 2,
+   "unit": "さつ"
+  },
+  {
+   "caption": "すきなきゅうしょくしらべ",
+   "ca": "カレーライス",
+   "cb": "あげパン",
+   "cc": "やきそば",
+   "cd": "シチュー",
+   "ask": "カレーライス",
+   "ai": 1,
+   "unit": "人"
+  },
+  {
+   "caption": "すきなスポーツしらべ",
+   "ca": "サッカー",
+   "cb": "やきゅう",
+   "cc": "すいえい",
+   "cd": "バスケットボール",
+   "ask": "すいえい",
+   "ai": 3,
+   "unit": "人"
+  }
+ ],
   "kurai_names": [
   {
    "ask": "一万の位",
@@ -3059,6 +3147,895 @@
     1
    ],
    "answer_unit_system": "dec1"
+  },
+  {
+   "pattern_id": "g03_calc_div_01",
+   "grade": "g03",
+   "unit_id": "g03_c04_u01",
+   "unit_name": "わり算の計算",
+   "semantic_category": "わり切れるわり算(九九域)",
+   "semantic_note": "72÷8型ドリル(文章題は既存tobun/hogan・計算素体が本便)。P=a×b起点の構成的生成。転記排除b≠a(平方型81÷9=9)。",
+   "step_count": 1,
+   "operation": "P÷a",
+   "answer_formula": "b1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_transcribe",
+     "expr": "a1 != b1",
+     "why": "転記型リーク排除(平方型で商=わる数)"
+    }
+   ],
+   "sentence_templates": [
+    "つぎの計算をしなさい。\n{P1}÷{a1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "P1": {
+     "formula": "a1 * b1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g03_calc_div_amari_01",
+   "grade": "g03",
+   "unit_id": "g03_c14_u01",
+   "unit_name": "あまりのあるわり算",
+   "semantic_category": "あまりのあるわり算ドリル",
+   "semantic_note": "35÷4=8あまり3型。P=a×b+r(0<r<a)起点で商・あまりを構成保証。答=商とあまりの2値(remainder素形式=div_amari_fukubun流儀へ配線時突合)。転記: 商b≠a・あまりr<aは構造保証。",
+   "step_count": 1,
+   "operation": "P÷a=bあまりr",
+   "answer_formula": "b1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      3,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "r1": {
+     "type": "int",
+     "range": [
+      1,
+      8
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "r_lt_a",
+     "expr": "r1 < a1",
+     "why": "あまり<わる数(わり算の定義)"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "a1 != b1",
+     "why": "転記型リーク排除(平方型)"
+    }
+   ],
+   "sentence_templates": [
+    "つぎの計算をしなさい。商とあまりを答えなさい。\n{P1}÷{a1}"
+   ],
+   "answer_template": "答え {b1}あまり{r1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "compound_remainder",
+   "template_number_constants": [],
+   "computed_slots": {
+    "P1": {
+     "formula": "a1 * b1 + r1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g03_kimari_koukan_01",
+   "grade": "g03",
+   "unit_id": "g03_c01_u01",
+   "unit_name": "かけ算のきまり",
+   "semantic_category": "交換のきまり(a×b=b×□)",
+   "semantic_note": "6×4=4×□→6。交換法則の□あてはめ(box系)。答=a=本文値は交換法則の学習内容そのもの=転記例外(kuku_kimari族・要登録・裁可(d)連続設計のg03側)。",
+   "step_count": 1,
+   "operation": "a×b=b×□ → □",
+   "answer_formula": "a1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "discriminate",
+     "expr": "a1 != b1",
+     "why": "a=bだと交換の弁別が消える"
+    }
+   ],
+   "sentence_templates": [
+    "□にあてはまる数をかきましょう。\n{a1}×{b1}={b1}×□"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g03_kimari_zero_01",
+   "grade": "g03",
+   "unit_id": "g03_c01_u01",
+   "unit_name": "かけ算のきまり",
+   "semantic_category": "0のかけ算",
+   "semantic_note": "a×0=0・0×a=0(0の演算性質・g01 0加減の乗法版)。制約1本(a=0∨b=0)で両形網羅の同手筋。答0は本文値と別(転記安全・0は表示されない側)——ただし0×0は両方0で表示0あり→答=本文値だが0の性質の学習内容(g01 add_zero族の例外に同梱登録)。",
+   "step_count": 1,
+   "operation": "a×b(一方が0)",
+   "answer_formula": "a1 * b1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "zero_required",
+     "expr": "a1 == 0 or b1 == 0",
+     "why": "0のかけ算の単元要求"
+    }
+   ],
+   "sentence_templates": [
+    "つぎの計算をしなさい。\n{a1}×{b1}"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "any_int"
+  },
+  {
+   "pattern_id": "g03_kimari_zoubun_01",
+   "grade": "g03",
+   "unit_id": "g03_c01_u01",
+   "unit_name": "かけ算のきまり",
+   "semantic_category": "束の増分(g02連続設計)",
+   "semantic_note": "30×6は30×5よりいくつ大きい→30。g02_kuku_kimari(九九域)の束域連続設計(裁可(d))。答=かけられる束=本文値=転記例外(同族登録)。",
+   "step_count": 1,
+   "operation": "増分=かけられる数(束)",
+   "answer_formula": "10 * t1",
+   "slots": {
+    "t1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      3,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{A1}×{b1}の答えは、{A1}×{Q1}の答えよりいくつ大きいですか。"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ],
+   "computed_slots": {
+    "A1": {
+     "formula": "10 * t1"
+    },
+    "Q1": {
+     "formula": "b1 - 1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g03_time_min_add_01",
+   "grade": "g03",
+   "unit_id": "g03_c03_u01",
+   "unit_name": "時間のたし算とひき算",
+   "semantic_category": "分+分(繰り上がり=時間分)",
+   "semantic_note": "40分+30分=1時間10分。60分繰り上がりが3年の芯(裁可(a)復活便)。内部分・h_min FORMATTER。和>60を保証。",
+   "step_count": 1,
+   "operation": "分＋分",
+   "answer_formula": "m1 + n1",
+   "slots": {
+    "m1": {
+     "choices": [
+      15,
+      20,
+      25,
+      30,
+      35,
+      40,
+      45,
+      50
+     ],
+     "type": "choice_int"
+    },
+    "n1": {
+     "choices": [
+      15,
+      20,
+      25,
+      30,
+      35,
+      40,
+      45,
+      50
+     ],
+     "type": "choice_int"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "carry_hour",
+     "expr": "m1 + n1 >= 65",
+     "why": "時間への繰り上がり発生(単元の芯・ちょうど60は別形)"
+    }
+   ],
+   "sentence_templates": [
+    "{m1}分+{n1}分は何時間何分ですか。"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_unit_system": "h_min"
+  },
+  {
+   "pattern_id": "g03_time_conv_min_to_hmin_01",
+   "grade": "g03",
+   "unit_id": "g03_c03_u01",
+   "unit_name": "時間のたし算とひき算",
+   "semantic_category": "分→時間分(換算・逆方向)",
+   "semantic_note": "80分=1時間20分。既存hmin_to_min(順方向)の逆——換算対の完成。内部分・端数≠0(ちょうど時間は別形)。",
+   "step_count": 1,
+   "operation": "分→時分",
+   "answer_formula": "t1",
+   "slots": {
+    "t1": {
+     "type": "int",
+     "range": [
+      61,
+      179
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "not_whole",
+     "expr": "t1 % 60 != 0",
+     "why": "ちょうど時間(端数0)は整数時間の別形"
+    }
+   ],
+   "sentence_templates": [
+    "{t1}分は何時間何分ですか。"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    60
+   ],
+   "answer_unit_system": "h_min"
+  },
+  {
+   "pattern_id": "g03_time_keika_01",
+   "grade": "g03",
+   "unit_id": "g03_c03_u01",
+   "unit_name": "時間のたし算とひき算",
+   "semantic_category": "経過時間(時こく間・時跨ぎ)",
+   "semantic_note": "午前9時40分から午前10時20分まで→40分。時を跨ぐ経過が3年の到達点(g02の跨ぎなし在庫の解決版)。内部分差・答<60分域。",
+   "step_count": 1,
+   "operation": "経過分",
+   "answer_formula": "(h2 * 60 + m2) - (h1 * 60 + m1)",
+   "slots": {
+    "h1": {
+     "type": "int",
+     "range": [
+      7,
+      10
+     ]
+    },
+    "m1": {
+     "choices": [
+      25,
+      30,
+      35,
+      40,
+      45,
+      50
+     ],
+     "type": "choice_int"
+    },
+    "h2t": {
+     "type": "int",
+     "range": [
+      1,
+      1
+     ]
+    },
+    "m2": {
+     "choices": [
+      5,
+      10,
+      15,
+      20
+     ],
+     "type": "choice_int"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "cross_hour",
+     "expr": "m2 < m1",
+     "why": "時を跨ぐ構成(m2<m1で跨ぎ必然・答=60-m1+m2<60)"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "m2 + 60 != 2 * m1",
+     "why": "転記型リーク排除(経過分=開始分: 60+m2-m1==m1)"
+    }
+   ],
+   "sentence_templates": [
+    "午前{h1}時{m1}分から午前{h2}時{m2}分までの時間は何分ですか。"
+   ],
+   "answer_template": "答え {ans}分",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "h2": {
+     "formula": "h1 + h2t"
+    }
+   }
+  },
+  {
+   "pattern_id": "g03_en_han_to_choku_01",
+   "grade": "g03",
+   "unit_id": "g03_c07_u01",
+   "unit_name": "円",
+   "semantic_category": "半径→直径",
+   "semantic_note": "半径4cm→直径8cm(直径=半径×2)。答=2r≠rの転記自動安全。",
+   "step_count": 1,
+   "operation": "d=2r",
+   "answer_formula": "2 * r1",
+   "slots": {
+    "r1": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "半径が{r1}cmの円の直径は何cmですか。"
+   ],
+   "answer_template": "答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json",
+    "allowed_extra": "径"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2
+   ]
+  },
+  {
+   "pattern_id": "g03_en_choku_to_han_01",
+   "grade": "g03",
+   "unit_id": "g03_c07_u01",
+   "unit_name": "円",
+   "semantic_category": "直径→半径",
+   "semantic_note": "直径8cm→半径4cm(逆方向・d偶数の構成的生成)。答=r≠2rの転記自動安全。",
+   "step_count": 1,
+   "operation": "r=d÷2",
+   "answer_formula": "r1",
+   "slots": {
+    "r1": {
+     "type": "int",
+     "range": [
+      2,
+      15
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "直径が{D1}cmの円の半径は何cmですか。"
+   ],
+   "answer_template": "答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json",
+    "allowed_extra": "径"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2
+   ],
+   "computed_slots": {
+    "D1": {
+     "formula": "2 * r1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g03_kyu_hako_01",
+   "grade": "g03",
+   "unit_id": "g03_c08_u01",
+   "unit_name": "球",
+   "semantic_category": "球の箱詰め(直径×個数)",
+   "semantic_note": "直径6cmのボールを横に3個ぴったり並べた箱の横の長さ→18cm。球の直径の応用(テキスト完結・図なし成立)。転記排除: 長さ=d×n≠d,n(n≧2で自動)。",
+   "step_count": 1,
+   "operation": "d×n",
+   "answer_formula": "d1 * n1",
+   "slots": {
+    "d1": {
+     "type": "int",
+     "range": [
+      4,
+      12
+     ]
+    },
+    "n1": {
+     "type": "int",
+     "range": [
+      2,
+      4
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "直径が{d1}cmのボールを、箱の中に横にぴったり{n1}こならべます。箱の横の長さは何cmですか。"
+   ],
+   "answer_template": "答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json",
+    "allowed_extra": "径"
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g03_hyo_yomi_01",
+   "grade": "g03",
+   "unit_id": "g03_c12_u01",
+   "unit_name": "表とグラフ",
+   "semantic_category": "表の値読み(g03版)",
+   "semantic_note": "しらべ表の指定項目読み(g02版クローンのg03域・値2〜30)。shirabe_1row共用(継承コピー前例)。",
+   "step_count": 1,
+   "operation": "表のセル読み",
+   "answer_formula": "v1 if ai1 == 1 else (v2 if ai1 == 2 else (v3 if ai1 == 3 else v4))",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "type": "choice_int"
+    },
+    "cap1": {
+     "from": "shirabe_1row[j1].caption"
+    },
+    "ca1": {
+     "from": "shirabe_1row[j1].ca"
+    },
+    "cb1": {
+     "from": "shirabe_1row[j1].cb"
+    },
+    "cc1": {
+     "from": "shirabe_1row[j1].cc"
+    },
+    "cd1": {
+     "from": "shirabe_1row[j1].cd"
+    },
+    "ask1": {
+     "from": "shirabe_1row[j1].ask"
+    },
+    "ai1": {
+     "from": "shirabe_1row[j1].ai"
+    },
+    "unit1": {
+     "from": "shirabe_1row[j1].unit"
+    },
+    "v1": {
+     "type": "int",
+     "range": [
+      2,
+      30
+     ]
+    },
+    "v2": {
+     "type": "int",
+     "range": [
+      2,
+      30
+     ]
+    },
+    "v3": {
+     "type": "int",
+     "range": [
+      2,
+      30
+     ]
+    },
+    "v4": {
+     "type": "int",
+     "range": [
+      2,
+      30
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "右の表は、しらべたけっかを整理したものです。{ask1}の数はいくつですか。"
+   ],
+   "answer_template": "答え {ans}{unit1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "{cap1}",
+    "col_header": [
+     "{ca1}",
+     "{cb1}",
+     "{cc1}",
+     "{cd1}"
+    ],
+    "rows": [
+     {
+      "label": "数({unit1})",
+      "values": [
+       "{v1}",
+       "{v2}",
+       "{v3}",
+       "{v4}"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "pattern_id": "g03_hyo_gokei_01",
+   "grade": "g03",
+   "unit_id": "g03_c12_u01",
+   "unit_name": "表とグラフ",
+   "semantic_category": "表の合計(g03版)",
+   "semantic_note": "しらべ表の総数(g06_hyo_gokeiの下方展開・しき付き)。転記フリー(和>各項)。",
+   "step_count": 1,
+   "operation": "合計",
+   "answer_formula": "v1 + v2 + v3 + v4",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "type": "choice_int"
+    },
+    "cap1": {
+     "from": "shirabe_1row[j1].caption"
+    },
+    "ca1": {
+     "from": "shirabe_1row[j1].ca"
+    },
+    "cb1": {
+     "from": "shirabe_1row[j1].cb"
+    },
+    "cc1": {
+     "from": "shirabe_1row[j1].cc"
+    },
+    "cd1": {
+     "from": "shirabe_1row[j1].cd"
+    },
+    "unit1": {
+     "from": "shirabe_1row[j1].unit"
+    },
+    "v1": {
+     "type": "int",
+     "range": [
+      2,
+      30
+     ]
+    },
+    "v2": {
+     "type": "int",
+     "range": [
+      2,
+      30
+     ]
+    },
+    "v3": {
+     "type": "int",
+     "range": [
+      2,
+      30
+     ]
+    },
+    "v4": {
+     "type": "int",
+     "range": [
+      2,
+      30
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "右の表は、しらべたけっかを整理したものです。しらべた数は全部でいくつですか。"
+   ],
+   "answer_template": "しき {v1}+{v2}+{v3}+{v4}={ans} 答え {ans}{unit1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "{cap1}",
+    "col_header": [
+     "{ca1}",
+     "{cb1}",
+     "{cc1}",
+     "{cd1}"
+    ],
+    "rows": [
+     {
+      "label": "数({unit1})",
+      "values": [
+       "{v1}",
+       "{v2}",
+       "{v3}",
+       "{v4}"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "pattern_id": "g03_sankaku_name_01",
+   "grade": "g03",
+   "unit_id": "g03_c25_u01",
+   "unit_name": "二等辺三角形、正三角形、角",
+   "semantic_category": "三角形の定義→名前",
+   "semantic_note": "「2つの辺の長さが等しい三角形」→二等辺三角形。word_choice(g02_zukei_name方式のg03版・sankaku_defs 2組)。",
+   "step_count": 1,
+   "operation": "定義→名前",
+   "answer_formula": "j1 + 1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1
+     ],
+     "type": "choice_int"
+    },
+    "def1": {
+     "from": "sankaku_defs[j1].def"
+    },
+    "nm1": {
+     "from": "sankaku_defs[j1].name"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{def1}を何といいますか。"
+   ],
+   "answer_template": "答え {nm1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json",
+    "allowed_extra": "辺"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2,
+    3
+   ],
+   "answer_domain": "word_choice",
+   "word_map_from": "sankaku_defs[].name"
+  },
+  {
+   "pattern_id": "g03_sankaku_yoso_01",
+   "grade": "g03",
+   "unit_id": "g03_c25_u01",
+   "unit_name": "二等辺三角形、正三角形、角",
+   "semantic_category": "二等辺/正三角形の等しい辺・角の数",
+   "semantic_note": "二等辺は辺2本・角2つ/正三角形は3本・3つ。ask方式4エントリ(照合表)。",
+   "step_count": 1,
+   "operation": "図形→等要素数",
+   "answer_formula": "kn1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "type": "choice_int"
+    },
+    "nm1": {
+     "from": "sankaku_yoso[j1].name"
+    },
+    "ask1": {
+     "from": "sankaku_yoso[j1].ask"
+    },
+    "kn1": {
+     "from": "sankaku_yoso[j1].n"
+    },
+    "un1": {
+     "from": "sankaku_yoso[j1].unit"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{nm1}には、{ask1}がいくつありますか。"
+   ],
+   "answer_template": "答え {ans}{un1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ],
+    "check_against": "data/kyoiku_kanji_g1to3.json",
+    "allowed_extra": "辺"
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
   }
  ],
  "schema_changelog": {
