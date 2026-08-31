@@ -1,10 +1,12 @@
 # furigana_registered.txt — furigana_lexicon 既収録表層形リスト(読み不要・自己走査突合用)
-# 更新: 2026-08-31 / 語数: 435 / 出所: handoff_jhs/furigana_lexicon.json surfaces
+# 更新: 2026-08-31 / 語数: 438 / 出所: handoff_jhs/furigana_lexicon.json surfaces
 # 用途: Fable納品前の自己走査=本文の残存漢字語が本リストに無ければ増補が必要
 がい数
 の間の
+ひし形
 一万の位
 一方
+一直線
 万
 万年筆
 三角形
@@ -426,6 +428,7 @@
 青
 面
 面積
+頂点
 頂角
 順
 順番

@@ -1,0 +1,804 @@
+{
+ "_meta_append": {
+  "purpose": "patterns_g04.jsonへの追補(P5-2・c05性質5+面積4+角度3+立体3+小数あまり1=16パターン。g04=37→53想定)",
+  "date": "2026-08-29",
+  "note": "図なし先行73問+資産下位展開の波(76→91%見込)。word_choice(shikaku_defs)・転記例外(平四性質=答が本文値の学習内容)・edge_set(jhs c14下位展開・prism図流用)・小数あまり様式=裁可(b)dec1+あまり直書き。重複検査最優先の運用継続(rect_area系等は自動除外可)",
+  "batch": "P5-2",
+  "shared_lexicon_additions": {
+   "shikaku_defs": [
+    {
+     "def": "向かい合った1組の辺が平行な四角形",
+     "name": "台形"
+    },
+    {
+     "def": "向かい合った2組の辺が平行な四角形",
+     "name": "平行四辺形"
+    },
+    {
+     "def": "4つの辺の長さがみんな等しい四角形",
+     "name": "ひし形"
+    }
+   ]
+  }
+ },
+ "patterns": [
+  {
+   "pattern_id": "g04_shikaku_teigi_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_teigi_01",
+   "unit_name": "台形と平行四辺形",
+   "semantic_category": "四角形の定義→名前",
+   "semantic_note": "「向かい合った2組の辺が平行」→平行四辺形。word_choice(shikaku_defs 3組・g02 zukei_defs方式の4年語彙版=台形/平四/ひし形は4年初出で新規正当)。",
+   "step_count": 1,
+   "operation": "定義→名前",
+   "answer_formula": "j1 + 1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2
+     ],
+     "type": "choice_int"
+    },
+    "def1": {
+     "from": "shikaku_defs[j1].def"
+    },
+    "nm1": {
+     "from": "shikaku_defs[j1].name"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{def1}を何といいますか。"
+   ],
+   "answer_template": "答え {nm1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "word_choice",
+   "word_map_from": "shikaku_defs[].name"
+  },
+  {
+   "pattern_id": "g04_heishi_hen_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_hen_01",
+   "unit_name": "台形と平行四辺形",
+   "semantic_category": "平行四辺形の対辺",
+   "semantic_note": "平四ABCDで辺AB={a}cm→辺CD=同長。答=本文値は「向かい合う辺は等しい」の性質学習そのもの=転記例外(kurabe族同型・要登録)。",
+   "step_count": 1,
+   "operation": "対辺=同長",
+   "answer_formula": "a1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      3,
+      15
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "平行四辺形ABCDがあります。辺ABの長さが{a1}cmのとき、辺CDの長さは何cmですか。"
+   ],
+   "answer_template": "答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_heishi_taikaku_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_taikaku_01",
+   "unit_name": "台形と平行四辺形",
+   "semantic_category": "平行四辺形の対角",
+   "semantic_note": "角A={α}度→角C=同大。答=本文値=対角の性質学習=転記例外(hen_01と同族)。",
+   "step_count": 1,
+   "operation": "対角=同大",
+   "answer_formula": "al1",
+   "slots": {
+    "al1": {
+     "type": "int",
+     "range": [
+      35,
+      145
+     ],
+     "step": 5
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "not_right",
+     "expr": "al1 != 90",
+     "why": "90度は長方形化(平四の一般性が崩れる)"
+    }
+   ],
+   "sentence_templates": [
+    "平行四辺形ABCDがあります。角Aの大きさが{al1}度のとき、角Cの大きさは何度ですか。"
+   ],
+   "answer_template": "答え {ans}度",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_heishi_rinkaku_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_rinkaku_01",
+   "unit_name": "台形と平行四辺形",
+   "semantic_category": "平行四辺形のとなりの角",
+   "semantic_note": "角A={α}度→角B=180−α。同側内角の和180の適用。転記排除α≠90(答=α)。",
+   "step_count": 1,
+   "operation": "180−α",
+   "answer_formula": "180 - al1",
+   "slots": {
+    "al1": {
+     "type": "int",
+     "range": [
+      35,
+      145
+     ],
+     "step": 5
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_transcribe",
+     "expr": "al1 != 90",
+     "why": "転記型リーク排除(答=α)"
+    }
+   ],
+   "sentence_templates": [
+    "平行四辺形ABCDがあります。角Aの大きさが{al1}度のとき、となりの角Bの大きさは何度ですか。"
+   ],
+   "answer_template": "答え {ans}度",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    180
+   ]
+  },
+  {
+   "pattern_id": "g04_hishi_mawari_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_mawari_01",
+   "unit_name": "台形と平行四辺形",
+   "semantic_category": "ひし形のまわりの長さ",
+   "semantic_note": "1辺{a}cm→まわり4a。4辺等長の性質適用。転記自動安全(4a≠a)。",
+   "step_count": 1,
+   "operation": "4a",
+   "answer_formula": "4 * a1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      3,
+      15
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "1辺の長さが{a1}cmのひし形のまわりの長さは何cmですか。"
+   ],
+   "answer_template": "答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    4
+   ]
+  },
+  {
+   "pattern_id": "g04_rect_mawari_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_mawari_01",
+   "unit_name": "長方形や正方形の面積",
+   "semantic_category": "長方形のまわりの長さ",
+   "semantic_note": "たてa・横b→2(a+b)。面積との弁別(まわり/面積の混同が定番誤答)。転記排除: 2(a+b)≠a,b自動(和>各)・a≠b(正方形化)。",
+   "step_count": 1,
+   "operation": "2(a＋b)",
+   "answer_formula": "2 * (a1 + b1)",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      3,
+      12
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      4,
+      15
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "not_square",
+     "expr": "a1 != b1",
+     "why": "正方形は別パターン(構造分離)"
+    }
+   ],
+   "sentence_templates": [
+    "たての長さが{a1}cm、横の長さが{b1}cmの長方形のまわりの長さは何cmですか。"
+   ],
+   "answer_template": "答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2
+   ]
+  },
+  {
+   "pattern_id": "g04_sq_mawari_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_mawari_01",
+   "unit_name": "長方形や正方形の面積",
+   "semantic_category": "正方形のまわりの長さ",
+   "semantic_note": "1辺a→4a。",
+   "step_count": 1,
+   "operation": "4a",
+   "answer_formula": "4 * a1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      3,
+      15
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "1辺の長さが{a1}cmの正方形のまわりの長さは何cmですか。"
+   ],
+   "answer_template": "答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    4
+   ]
+  },
+  {
+   "pattern_id": "g04_sq_gyaku_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_gyaku_01",
+   "unit_name": "面積の問題",
+   "semantic_category": "正方形の面積→1辺",
+   "semantic_note": "64cm²→8cm。a²起点の構成的生成(九九平方域)。転記: 答a≠S自動(a<S)。",
+   "step_count": 1,
+   "operation": "S→a",
+   "answer_formula": "a1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      4,
+      12
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "面積が{S1}cm²の正方形の1辺の長さは何cmですか。"
+   ],
+   "answer_template": "答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "S1": {
+     "formula": "a1 * a1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g04_rect_area_m_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_area_m_01",
+   "unit_name": "面積のいろいろな単位",
+   "semantic_category": "長方形の面積(m単位)",
+   "semantic_note": "たて5m横12m→60m²。m単位域の面積(cm域は既存想定→重複検査委任)。転記排除a≠b・積>各項自動。",
+   "step_count": 1,
+   "operation": "a×b",
+   "answer_formula": "a1 * b1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      3,
+      20
+     ]
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      4,
+      25
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "not_square",
+     "expr": "a1 != b1",
+     "why": "正方形は別形"
+    }
+   ],
+   "sentence_templates": [
+    "たての長さが{a1}m、横の長さが{b1}mの長方形の面積は何m²ですか。"
+   ],
+   "answer_template": "答え {ans}m²",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_kaku_add_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_add_01",
+   "unit_name": "角度の計算",
+   "semantic_category": "角度のたし算",
+   "semantic_note": "40°+40°=80°。角度の合成(分度器測定の後の計算処理)。5度刻み・和≦360。",
+   "step_count": 1,
+   "operation": "α＋β",
+   "answer_formula": "al1 + be1",
+   "slots": {
+    "al1": {
+     "type": "int",
+     "range": [
+      20,
+      180
+     ],
+     "step": 5
+    },
+    "be1": {
+     "type": "int",
+     "range": [
+      20,
+      180
+     ],
+     "step": 5
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "cap",
+     "expr": "al1 + be1 <= 360",
+     "why": "全角以内"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{al1}°+{be1}°"
+   ],
+   "answer_template": "答え {ans}°",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_kaku_sub_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_sub_01",
+   "unit_name": "角度の計算",
+   "semantic_category": "角度のひき算",
+   "semantic_note": "360°−50°=310°。転記排除α≠2β。",
+   "step_count": 1,
+   "operation": "α−β",
+   "answer_formula": "al1 - be1",
+   "slots": {
+    "al1": {
+     "type": "int",
+     "range": [
+      60,
+      360
+     ],
+     "step": 5
+    },
+    "be1": {
+     "type": "int",
+     "range": [
+      15,
+      180
+     ],
+     "step": 5
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "positive",
+     "expr": "al1 > be1",
+     "why": "差が正"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "al1 != 2 * be1",
+     "why": "転記型リーク排除(差=引く角)"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{al1}°-{be1}°"
+   ],
+   "answer_template": "答え {ans}°",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_kaku_hosui_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_hosui_01",
+   "unit_name": "角度の計算",
+   "semantic_category": "一直線までの残り角",
+   "semantic_note": "一直線=180°。{α}度とあと何度で一直線か→180−α。転記排除α≠90。",
+   "step_count": 1,
+   "operation": "180−α",
+   "answer_formula": "180 - al1",
+   "slots": {
+    "al1": {
+     "type": "int",
+     "range": [
+      25,
+      155
+     ],
+     "step": 5
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "no_transcribe",
+     "expr": "al1 != 90",
+     "why": "転記型リーク排除(答=α)"
+    }
+   ],
+   "sentence_templates": [
+    "{al1}度の角に、あと何度をあわせると一直線(180度)になりますか。"
+   ],
+   "answer_template": "答え {ans}度",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    180
+   ]
+  },
+  {
+   "pattern_id": "g04_chokuho_suichoku_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_suichoku_01",
+   "unit_name": "辺や面の垂直と平行",
+   "semantic_category": "直方体の辺と垂直な辺(すべて)",
+   "semantic_note": "直方体ABCDEFGHで辺ABと垂直な辺すべて→AE・AD・BF・BC(4辺)。jhs c14位置関係のedge_set資産の下位展開(4年は垂直/平行のみ・ねじれは中1)。prism図流用・頂点名規約はjhs同一(上面ABCD/下面EFGH)。",
+   "step_count": 1,
+   "operation": "垂直辺の列挙",
+   "answer_formula": "4",
+   "slots": {
+    "dummy1": {
+     "type": "int",
+     "range": [
+      1,
+      1
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "右の直方体ABCDEFGHで、辺ABと垂直な辺をすべて答えなさい。"
+   ],
+   "answer_template": "答え 辺AE、辺AD、辺BF、辺BC",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "edge_set",
+   "figure_params": {
+    "fig_version": 2,
+    "kind": "prism",
+    "base": "rect",
+    "vertex_labels": [
+     "A",
+     "B",
+     "C",
+     "D",
+     "E",
+     "F",
+     "G",
+     "H"
+    ]
+   },
+   "edge_set_answer": [
+    "AE",
+    "AD",
+    "BF",
+    "BC"
+   ],
+   "note_edge": "固定答(基準辺AB固定・答4辺)——基準辺可変はjhs方式の在庫。edge_set採点(順不同)流用"
+  },
+  {
+   "pattern_id": "g04_chokuho_heikou_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_heikou_01",
+   "unit_name": "辺や面の垂直と平行",
+   "semantic_category": "直方体の辺と平行な辺(すべて)",
+   "semantic_note": "辺ABと平行な辺→EF・HG・DC(3辺)。suichoku_01の対。",
+   "step_count": 1,
+   "operation": "平行辺の列挙",
+   "answer_formula": "3",
+   "slots": {
+    "dummy1": {
+     "type": "int",
+     "range": [
+      1,
+      1
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "右の直方体ABCDEFGHで、辺ABと平行な辺をすべて答えなさい。"
+   ],
+   "answer_template": "答え 辺EF、辺HG、辺DC",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "edge_set",
+   "figure_params": {
+    "fig_version": 2,
+    "kind": "prism",
+    "base": "rect",
+    "vertex_labels": [
+     "A",
+     "B",
+     "C",
+     "D",
+     "E",
+     "F",
+     "G",
+     "H"
+    ]
+   },
+   "edge_set_answer": [
+    "EF",
+    "HG",
+    "DC"
+   ],
+   "note_edge": "固定答・同上"
+  },
+  {
+   "pattern_id": "g04_chokuho_yoso_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_yoso_01",
+   "unit_name": "直方体と立方体",
+   "semantic_category": "直方体の面・辺・頂点の数",
+   "semantic_note": "面6・辺12・頂点8。g02_hako_kazoe(はこの形・かな)の4年概念語版(直方体・頂点=漢字表記で概念が別=cross-grade新規正当)。ask方式3エントリ。",
+   "step_count": 1,
+   "operation": "構成要素数",
+   "answer_formula": "kn1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2
+     ],
+     "type": "choice_int"
+    },
+    "ask1": {
+     "from": "chokuho_yoso[j1].ask"
+    },
+    "kn1": {
+     "from": "chokuho_yoso[j1].n"
+    },
+    "un1": {
+     "from": "chokuho_yoso[j1].unit"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "直方体には、{ask1}がいくつありますか。"
+   ],
+   "answer_template": "答え {ans}{un1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "lexicon_local": {
+    "chokuho_yoso": [
+     {
+      "ask": "面",
+      "n": 6,
+      "unit": "つ"
+     },
+     {
+      "ask": "辺",
+      "n": 12,
+      "unit": "本"
+     },
+     {
+      "ask": "頂点",
+      "n": 8,
+      "unit": "つ"
+     }
+    ]
+   }
+  },
+  {
+   "pattern_id": "g04_dec_div_amari_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_div_amari_01",
+   "unit_name": "小数÷整数",
+   "semantic_category": "小数のわり算(整数商+小数あまり)",
+   "semantic_note": "80.3÷3=26あまり2.3。裁可(b)様式=dec1+あまり直書き「{q1}あまり{r1_disp}」。N=10aq+r起点(内部10倍整数・r<10a)の構成保証。転記: 商q・あまりrは合成Nと別値。",
+   "step_count": 1,
+   "operation": "N÷a=qあまりr",
+   "answer_formula": "q1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      3,
+      9
+     ]
+    },
+    "q1": {
+     "type": "int",
+     "range": [
+      11,
+      29
+     ]
+    },
+    "r1": {
+     "type": "int",
+     "range": [
+      1,
+      89
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "r_lt_a",
+     "expr": "r1 < 10 * a1",
+     "why": "あまり<わる数(わり算の定義・内部10倍)"
+    },
+    {
+     "rule": "r_dec",
+     "expr": "r1 % 10 != 0",
+     "why": "あまりが真に小数(単元の芯)"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。商は整数で求め、あまりも出しなさい。\n{N1_disp}÷{a1}"
+   ],
+   "answer_template": "答え {q1}あまり{r1_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "computed_slots": {
+    "N1": {
+     "formula": "10 * a1 * q1 + r1"
+    }
+   },
+   "quantity_slots": {
+    "N1": {
+     "unit_system": "dec1"
+    },
+    "r1": {
+     "unit_system": "dec1"
+    }
+   }
+  }
+ ]
+}

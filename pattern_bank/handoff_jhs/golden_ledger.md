@@ -313,3 +313,12 @@
 - **読み目検の検出と修正(corr-0028運用)**: ①readNumber億/兆拡張(12〜14桁の正読・2エンジンコピー) ②m²/cm²/km² counter追加(へいほう読み・複合キー無衝突) ③**a/haはcounter登録禁止**(jhs文字式3a汚染)→men_unitsカタカナ表記へ正規化=corr-0029 ④lexicon増補2語(回る=まわ・の間の=あいだ・裁可済)。固定ベクター28→35封印・3コピー同期(assets_global/pg-ct/pg-engine/pg-lex)。
 - **furigana**: パッチ11語+増補2語=registered 422→435。rationale/pairs 502→515(検証OK・shisha除外)。全33関門PASS。
 - **g04被覆率更新: 63%→76%**(単元27/37・問題259/339)。次: P5-2(図なし先行73問≈18p→91%見込)。
+
+### 2026-08-31 g04 P5-2配線(c05性質5+面積4+角度3+立体3+小数あまり1)37→53
+- **g04 37→53**: 図なし先行波。重複検査=除外0(rect_area_m=m²単位域・sq_gyaku=平方逆算・kaku_add/sub=記法ドリルとも既存と構造別を確認)。
+- **golden md5: g04 ad524756 → 33ae6859**(既存37件バイト不変・PASS 111→159 FAIL 0)。lexicon 2キー(shikaku_defs交付+**chokuho_yoso=素材参照欠落を受領検証で検出しg02 hako_yoso継承で補完**・頂点=漢字表記)。
+- **edge_set正準化**: chokuho垂直/平行の固定答テキストを**edge_rel導出**(jhs c14 nejire流儀=af/computed E1/{E1_edges}表示/prism base_kind+w,d,h+highlight_edge)へ正準化——幾何正当性をエンジン保証・採点はedgeSetMatch完全一致流用。固定答はエンジン照合で正しかったが導出形が正(図寸法可変・スキャン域vol_cap≦500踏襲)。
+- **小数あまり様式(裁可b)**: dec_div_amariのqs stub→r1=真quantity(dec1)+N1=computed+**aus dec1でN1_disp自動生成**(computed×ausの既存機構=エンジン無変更)。159.4÷9=17あまり6.4。
+- **転記例外2登録**(想定3→実2): heishi_hen/taikaku=SELECTION_ANSWER(平行四辺形の対辺/対角=本文値保存が学習内容)。rinkakuはal≠90制約で残差なし。gate残差0。
+- **読み修正**: °記号=counter追加(alias_of 度・2コピー)・「ひし形=がた」増補(裁可済・registered 438)。**「〜形」族一括点検(まるこ指示・予防措置): 12語全正読**=ひし形のみが欠落だった。固定ベクター35→39封印。
+- rationale/pairs 515→531(検証OK)。全33関門PASS。**g04被覆率: 76%→86%**(単元31/37・問題291/339)。残: c02グラフ族25行+c13変わり方7行+c10_u02求め方6行+部分残=P5-3(図依存)。

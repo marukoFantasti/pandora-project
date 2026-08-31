@@ -99,6 +99,9 @@
   }
  },
  "counters": {
+  "°": {
+   "alias_of": "度"
+  },
   "cm²": {
    "base": "へいほうセンチメートル",
    "mutation_free": true,

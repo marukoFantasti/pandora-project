@@ -1,0 +1,318 @@
+{
+ "_meta": {
+  "schema": "rationale_g05_gold.json準拠",
+  "scope": "g04追補16件(P5-2)。統合(515→531)",
+  "note": "ネイティブ記述 2026-08-29・軽量様式",
+  "order": "バンク順"
+ },
+ "g04_shikaku_teigi_01": {
+  "brief": {
+   "semantic_territory": "四角形の定義→名前",
+   "number_domain": "語答え(word_choice 3択)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "P5-2=図なし先行73問+資産下位展開の波(76→91%見込)。平四性質3件=答が本文値の性質学習=転記例外(要登録)。edge_set 2件=jhs c14下位展開(固定答・基準辺可変はjhs方式在庫)。小数あまり=裁可(b)様式の実装(2026-08-29)",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "「2組の辺が平行」→平行四辺形。台形/平四/ひし形は4年初出(g02 zukei_defsと概念域が別=新規正当)。",
+   "representation": "shikaku_defs 3組の照合表(word_choice)。",
+   "constructive_guarantees": "一意対応。受理3組。",
+   "semantic_position": "四角形言語族の4年位。",
+   "exclusions": "図の弁別型(P5-3)。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_heishi_hen_01": {
+  "brief": {
+   "semantic_territory": "平行四辺形の対辺",
+   "number_domain": "整数(cm)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "辺AB=aなら辺CD=a。向かい合う辺は等しい、の性質適用。",
+   "representation": "答=本文値は性質学習そのもの=転記例外(要登録)。言語版(図なし)——jhs c13角度図族の4年言語前段。",
+   "constructive_guarantees": "受理13組。",
+   "semantic_position": "平四性質3部作の辺位。",
+   "exclusions": "なし。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_heishi_taikaku_01": {
+  "brief": {
+   "semantic_territory": "平行四辺形の対角",
+   "number_domain": "整数(度)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "角A=αなら角C=α。",
+   "representation": "同転記例外・α≠90(長方形化排除)。",
+   "constructive_guarantees": "受理22組。",
+   "semantic_position": "3部作の対角位。",
+   "exclusions": "α=90。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_heishi_rinkaku_01": {
+  "brief": {
+   "semantic_territory": "平行四辺形のとなりの角",
+   "number_domain": "整数(度)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "角B=180−α。同側内角和180。",
+   "representation": "転記排除α≠90(答=α)。jhs c13台形同側内角の前段。",
+   "constructive_guarantees": "受理22組。",
+   "semantic_position": "3部作の隣角位。",
+   "exclusions": "α=90。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_hishi_mawari_01": {
+  "brief": {
+   "semantic_territory": "ひし形のまわりの長さ",
+   "number_domain": "整数(cm)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "4辺等長→4a。",
+   "representation": "転記自動安全。",
+   "constructive_guarantees": "受理13組。",
+   "semantic_position": "四角形性質族の計算適用位。",
+   "exclusions": "なし。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_rect_mawari_01": {
+  "brief": {
+   "semantic_territory": "長方形のまわりの長さ",
+   "number_domain": "整数(cm)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "2(a+b)。面積との弁別(定番誤答点)。",
+   "representation": "a≠b(正方形分離)。",
+   "constructive_guarantees": "転記自動安全。受理111組。",
+   "semantic_position": "まわり対の長方形側。",
+   "exclusions": "a=b。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_sq_mawari_01": {
+  "brief": {
+   "semantic_territory": "正方形のまわりの長さ",
+   "number_domain": "整数(cm)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "4a。",
+   "representation": "hishi_mawariと同式・別図形(定義差を単元が担う)。",
+   "constructive_guarantees": "受理13組。",
+   "semantic_position": "まわり対の正方形側。",
+   "exclusions": "なし。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_sq_gyaku_01": {
+  "brief": {
+   "semantic_territory": "正方形の面積→1辺",
+   "number_domain": "整数(cm)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "64cm²→8cm。",
+   "representation": "a²起点の構成的生成(九九平方域・逆算生成)。",
+   "constructive_guarantees": "答<Sの転記自動安全。受理9組。",
+   "semantic_position": "面積逆算の正方形位(men_gyakuの対)。",
+   "exclusions": "非平方数。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_rect_area_m_01": {
+  "brief": {
+   "semantic_territory": "長方形の面積(m単位)",
+   "number_domain": "整数(m²)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "5m×12m=60m²。m単位域(cm域既存想定=重複検査委任)。",
+   "representation": "a≠b。",
+   "constructive_guarantees": "転記自動安全。受理379組。",
+   "semantic_position": "面積族のm域。",
+   "exclusions": "a=b。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_kaku_add_01": {
+  "brief": {
+   "semantic_territory": "角度のたし算",
+   "number_domain": "整数(度)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "40°+40°。角度の計算処理(測定後の合成)。",
+   "representation": "5度刻みstep・和≦360。",
+   "constructive_guarantees": "転記自動安全。受理1,089組。",
+   "semantic_position": "角度計算対の加法。",
+   "exclusions": "360超。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_kaku_sub_01": {
+  "brief": {
+   "semantic_territory": "角度のひき算",
+   "number_domain": "整数(度)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "360°−50°。",
+   "representation": "転記排除α≠2β。",
+   "constructive_guarantees": "受理1,718組。",
+   "semantic_position": "計算対の減法。",
+   "exclusions": "α=2β。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_kaku_hosui_01": {
+  "brief": {
+   "semantic_territory": "一直線までの残り角",
+   "number_domain": "整数(度)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "180−α。一直線=180度の適用。",
+   "representation": "転記排除α≠90。",
+   "constructive_guarantees": "受理26組。",
+   "semantic_position": "角度計算の補角位・jhs c12直線角の前段。",
+   "exclusions": "α=90。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_chokuho_suichoku_01": {
+  "brief": {
+   "semantic_territory": "直方体の辺と垂直な辺",
+   "number_domain": "辺集合(edge_set 4辺)",
+   "answer_structure": "single",
+   "figure": "prism(rect・頂点8)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "辺ABと垂直な辺すべて(AE/AD/BF/BC)。空間の垂直の初対面。",
+   "representation": "jhs c14 edge_set採点(順不同)+prism図の下位展開——固定答(基準辺AB)・基準可変はjhs方式在庫。4年は垂直/平行のみ(ねじれ=中1との学年分担)。",
+   "constructive_guarantees": "固定答の構造一意。",
+   "semantic_position": "立体3部作の垂直位・jhs c14への直系前段。",
+   "exclusions": "ねじれ(中1)。",
+   "figure_notes": "prism流用(実証域)。",
+   "pedagogy": []
+  }
+ },
+ "g04_chokuho_heikou_01": {
+  "brief": {
+   "semantic_territory": "直方体の辺と平行な辺",
+   "number_domain": "辺集合(edge_set 3辺)",
+   "answer_structure": "single",
+   "figure": "prism(rect・頂点8)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "辺ABと平行な辺(EF/HG/DC)。",
+   "representation": "suichoku_01の対。",
+   "constructive_guarantees": "同上。",
+   "semantic_position": "3部作の平行位。",
+   "exclusions": "同上。",
+   "figure_notes": "同上。",
+   "pedagogy": []
+  }
+ },
+ "g04_chokuho_yoso_01": {
+  "brief": {
+   "semantic_territory": "直方体の面・辺・頂点の数",
+   "number_domain": "整数(照合表)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "面6・辺12・頂点8。",
+   "representation": "g02_hako_kazoe(はこ・かな)の4年概念語版(直方体・頂点=漢字で概念が別=cross-grade新規正当)。ask方式。",
+   "constructive_guarantees": "受理3組。",
+   "semantic_position": "立体3部作の要素位。",
+   "exclusions": "見取図・展開図(図依存)。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_dec_div_amari_01": {
+  "brief": {
+   "semantic_territory": "小数のわり算(整数商+小数あまり)",
+   "number_domain": "商整数+あまりdec1",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "80.3÷3=26あまり2.3。4年小数わり算の山。",
+   "representation": "裁可(b)様式=dec1+あまり直書き「{q1}あまり{r1_disp}」。N=10aq+r起点(内部10倍整数)で商・あまりを構成保証・r<10a(定義)・rが真に小数(単元の芯)。quantity_slots(dec1)×2。",
+   "constructive_guarantees": "受理7,182組。",
+   "semantic_position": "小数わり算族のあまり位・P5-2の掉尾。わり進み(小数商)は在庫。",
+   "exclusions": "r=0・あまり整数。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ }
+}

@@ -382,6 +382,14 @@
   {
    "pattern_id": "g03_kimari_zoubun_01",
    "code": "SELECTION_ANSWER"
+  },
+  {
+   "pattern_id": "g04_heishi_hen_01",
+   "code": "SELECTION_ANSWER"
+  },
+  {
+   "pattern_id": "g04_heishi_taikaku_01",
+   "code": "SELECTION_ANSWER"
   }
  ]
 }
