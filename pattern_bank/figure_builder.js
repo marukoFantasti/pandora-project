@@ -1040,7 +1040,84 @@
     return { unit: U, xaxis: [[0, 0], [xmax, 0]], yaxis: [[0, 0], [0, ymax]], W: xmax * U, H: ymax * U,
       curve: curve, ends: [curve[0], curve[curve.length - 1]], lattice: lattice };
   }
+  // ---- P5-3 Kind A: xy_graph mode="polyline"(折れ線グラフ・1〜2系列・draw対応) ----
+  // v1(prop/inv)/v2(jhs4象限)へ一切触れない独立分岐。日本語ハードコード禁止(表示文字列は全てfp由来)。
+  var PL_W = 264, PL_H = 190, PL_FS = 11;
+  function plNiceTick(span) {
+    var cands = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000];
+    for (var i = 0; i < cands.length; i++) { if (span / cands[i] <= 10) return cands[i]; }
+    return cands[cands.length - 1];
+  }
+  function xyGraphPolylineLayout(fp) {
+    var series = fp.series;
+    if (!Array.isArray(series) || series.length < 1 || series.length > 2) throw new Error('xy_graph polyline: seriesは1〜2(契約違反)');
+    var xl = fp.x_labels;
+    if (!Array.isArray(xl) || xl.length < 2) throw new Error('xy_graph polyline: x_labelsは2点以上(契約違反)');
+    series.forEach(function (s) {
+      if (!Array.isArray(s.y) || s.y.length !== xl.length) throw new Error('xy_graph polyline: series.y長とx_labels長の不一致(契約違反)');
+    });
+    var allY = [];
+    series.forEach(function (s) { s.y.forEach(function (v) { allY.push(Number(v)); }); });
+    var lo = 0, hi = Math.max.apply(null, allY);
+    if (fp.y_range) { lo = Number(fp.y_range[0]); hi = Number(fp.y_range[1]); }
+    var tick = fp.y_tick ? Number(fp.y_tick) : plNiceTick((hi - lo) || 1);
+    hi = Math.ceil(hi / tick) * tick;
+    if (hi <= lo) throw new Error('xy_graph polyline: y_range不正(契約違反)');
+    allY.forEach(function (v) { if (v < lo || v > hi) throw new Error('xy_graph polyline: y値がy_range外(契約違反)'); });
+    var n = xl.length, draw = !!fp.draw, lay = newLayout();
+    function X(i) { return i * (PL_W / (n - 1)); }
+    function Y(v) { return PL_H - (v - lo) / (hi - lo) * PL_H; }
+    // 方眼: 主目盛=薄実線・補助(1/2目盛)=さらに薄く
+    for (var t = lo; t <= hi + 1e-9; t += tick) {
+      lay.parts.push(lineEl([0, Y(t)], [PL_W, Y(t)], '#d5deea', 1));
+      if (t + tick / 2 < hi) lay.parts.push(lineEl([0, Y(t + tick / 2)], [PL_W, Y(t + tick / 2)], '#eaeff6', 0.7));
+      lay.parts.push(textEl(-16, Y(t), String(t), PL_FS, '#333'));
+    }
+    for (var xi = 0; xi < n; xi++) {
+      lay.parts.push(lineEl([X(xi), 0], [X(xi), PL_H], '#d5deea', 1));
+      lay.parts.push(textEl(X(xi), PL_H + 12, String(xl[xi]), PL_FS, '#333'));
+    }
+    // 軸(左・下)
+    lay.parts.push(lineEl([0, -8], [0, PL_H], C_STROKE, 1.6));
+    lay.parts.push(lineEl([0, PL_H], [PL_W + 8, PL_H], C_STROKE, 1.6));
+    // 省略波線: y_range下端>0 のとき軸下端に「〜」二重波
+    if (lo > 0) {
+      var yb = PL_H - 12;
+      lay.parts.push('<rect x="-7" y="' + (yb - 5).toFixed(1) + '" width="14" height="10" fill="#fff"/>');
+      [yb - 3, yb + 3].forEach(function (yw) {
+        lay.parts.push('<path d="M -7 ' + yw.toFixed(1) + ' q 3.5 -4 7 0 t 7 0" fill="none" stroke="' + C_STROKE + '" stroke-width="1.4"/>');
+      });
+    }
+    // タイトル・軸題(全てfp由来・省略可)
+    if (fp.title) lay.parts.push(textEl(PL_W / 2, -22, String(fp.title), 12, '#333'));
+    if (fp.y_title) lay.parts.push(textEl(0, -16, String(fp.y_title), PL_FS, '#333'));
+    if (fp.x_title) lay.parts.push(textEl(PL_W + 24, PL_H, String(fp.x_title), PL_FS, '#333'));
+    // 系列: 実線●(第1)/破線○(第2)。draw:trueでは描かない
+    if (!draw) {
+      series.forEach(function (s, si) {
+        var pts = s.y.map(function (v, i) { return [X(i), Y(Number(v))]; });
+        lay.parts.push('<polyline points="' + pts.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ') +
+          '" fill="none" stroke="' + C_TARGET + '" stroke-width="2"' + (si === 1 ? ' stroke-dasharray="6 3"' : '') + '/>');
+        pts.forEach(function (p) {
+          lay.parts.push(si === 0
+            ? '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="3" fill="' + C_TARGET + '"/>'
+            : '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="3" fill="#fff" stroke="' + C_TARGET + '" stroke-width="1.6"/>');
+        });
+      });
+      if (series.length === 2) {   // 凡例(右上・実線/破線見本+系列名)
+        series.forEach(function (s, si) {
+          var ly = -14 + si * 14, lx = PL_W - 64;
+          lay.parts.push(lineEl([lx, ly], [lx + 20, ly], C_TARGET, 2, si === 1 ? '6 3' : null));
+          lay.parts.push('<text x="' + (lx + 25) + '" y="' + (ly + PL_FS * 0.34).toFixed(1) + '" font-size="' + PL_FS + '" fill="#333">' + esc(String(s.name || '')) + '</text>');
+        });
+      }
+    }
+    lay.pts.push([-34, -34], [PL_W + 52, PL_H + 20]);
+    return lay;
+  }
+
   function xyGraphLayout(fp) {
+    if (fp.mode === 'polyline') return xyGraphPolylineLayout(fp);   // P5-3折れ線モード(独立分岐)
     if (Number(fp.fig_version) === 2) return xyGraphV2Layout(fp);   // v2へ分岐（v1は以下で完全維持・非破壊）
     var mode = fp.mode || 'prop', k = Number(fp.k), xmax = Number(fp.xmax) || 6, ymax = Number(fp.ymax) || 6;
     var g = xyGraphGeom(mode, k, xmax, ymax), U = g.unit, lay = newLayout();
