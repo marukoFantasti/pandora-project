@@ -477,7 +477,20 @@
   "一万の位": "いちまんのくらい",
   "十万の位": "じゅうまんのくらい",
   "百万の位": "ひゃくまんのくらい",
-  "千万の位": "せんまんのくらい"
+  "千万の位": "せんまんのくらい",
+  "小数第一位": "しょうすうだいいちい",
+  "小数第二位": "しょうすうだいにい",
+  "小数第三位": "しょうすうだいさんい",
+  "兆": "ちょう",
+  "億の位": "おくのくらい",
+  "十億の位": "じゅうおくのくらい",
+  "百億の位": "ひゃくおくのくらい",
+  "千億の位": "せんおくのくらい",
+  "時計": "とけい",
+  "針": "はり",
+  "集め": "あつ",
+  "回る": "まわ",
+  "の間の": "あいだ"
  }
 }
 </script>
@@ -583,6 +596,21 @@
   }
  },
  "counters": {
+  "cm²": {
+   "base": "へいほうセンチメートル",
+   "mutation_free": true,
+   "question": "なんへいほうセンチメートル"
+  },
+  "km²": {
+   "base": "へいほうキロメートル",
+   "mutation_free": true,
+   "question": "なんへいほうキロメートル"
+  },
+  "m²": {
+   "base": "へいほうメートル",
+   "mutation_free": true,
+   "question": "なんへいほうメートル"
+  },
   "分後": {
    "base": "ふんご",
    "digit_readings": {
@@ -1007,6 +1035,8 @@ function createEngine(lexicon, counterTable) {
   function readNumber(n) {
     n = Math.trunc(Math.abs(n));
     if (n === 0) return NC.digits['0'];
+    if (n >= 1000000000000) { const cho = Math.floor(n / 1000000000000); const rem = n % 1000000000000; return readNumber(cho) + 'ちょう' + (rem ? readNumber(rem) : ''); }
+    if (n >= 100000000) { const oku = Math.floor(n / 100000000); const rem = n % 100000000; return readNumber(oku) + 'おく' + (rem ? readNumber(rem) : ''); }
     if (n >= 10000) { const man = Math.floor(n / 10000); const rem = n % 10000; return readNumber(man) + 'まん' + (rem ? readNumber(rem) : ''); }
     let s = '';
     const th = Math.floor(n / 1000) % 10, h = Math.floor(n / 100) % 10, t = Math.floor(n / 10) % 10, o = n % 10;

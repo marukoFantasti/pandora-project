@@ -305,3 +305,11 @@
 - **cross-grade注記**: g03_time_conv_min_to_hminはg02_time_conv_min_to_hminと同形だが別学年単元(スパイラル)=バンクは学年別出題のため正当(P4-2のjikan_conv=同一学年内重複とは区別)。
 - 読み目検1周=15全正常(直径=ちょっけい・二等辺・商とも正)。rationale/pairs 487→502(検証OK)。全33関門PASS。
 - **P-4完結・被覆率再計測**(単元所属ベース・調査時50%→**88%**): g01 329/332(99%・P-1完成/図3行残)・g02 231/325(71%)・g03 405/445(91%)・g04 213/339(63%)・g05 495/522(95%)・g06 1021/1102(93%)。残余: g02 15単元94行(たしかめ・はかり方・あらわし方系=P-4圏外の小骨格群)・g03 3単元40行(きまりとり用・ぼうグラフ・大きい数のり用)・図依存群。※g01_unit_mapping.mdにバッチ3行の追記漏れあり(挙動影響なし・次便で整備)。
+
+### 2026-08-31 g04 P5-1配線(小数しくみ4+角3+時計角2+面積2+大きい数2+順序1)24→37
+- **g04 24→37**: P5-1(テキスト完結+部分収録残)。素材14中、gaisu_shishaは既存gaisu_round_01の真部分集合=**重複自動除外**(裁可不要運用の初適用)。junjo_kakko(a+(b−c))と kaz_tanigo(兆億域)は既存order/bignum_writeと構造別=採用。
+- **golden md5: g04 45650beb → ad524756**(既存24件バイト不変・PASS 72→111 FAIL 0)。lexicon 3キー(dec_kurai_names/big_kurai_names/men_units)。
+- **受理正準化**: quantity_slotsハイブリッド形(slots+qs stub)は生成器受理不可(sample_slot_valueがbase_range必須)→qs一本化2件(dec2/dec1)。**桁直書き合成**(3.407・12桁)は本文token(407/12桁全体)をcomputed宣言(F1/N1)で受理=新手筋確立。dec_atsume=aus dec2化・針=allowed_extra2件・junjo_kakko転記2制約(a≠c・a+b≠2c)追加でgate残差0。
+- **読み目検の検出と修正(corr-0028運用)**: ①readNumber億/兆拡張(12〜14桁の正読・2エンジンコピー) ②m²/cm²/km² counter追加(へいほう読み・複合キー無衝突) ③**a/haはcounter登録禁止**(jhs文字式3a汚染)→men_unitsカタカナ表記へ正規化=corr-0029 ④lexicon増補2語(回る=まわ・の間の=あいだ・裁可済)。固定ベクター28→35封印・3コピー同期(assets_global/pg-ct/pg-engine/pg-lex)。
+- **furigana**: パッチ11語+増補2語=registered 422→435。rationale/pairs 502→515(検証OK・shisha除外)。全33関門PASS。
+- **g04被覆率更新: 63%→76%**(単元27/37・問題259/339)。次: P5-2(図なし先行73問≈18p→91%見込)。

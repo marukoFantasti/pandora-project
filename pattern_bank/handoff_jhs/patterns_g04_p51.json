@@ -1,0 +1,822 @@
+{
+ "_meta_append": {
+  "purpose": "patterns_g04.jsonへの追補(P5-1・テキスト完結+部分収録残=14パターン。g04=24→38想定)",
+  "date": "2026-08-29",
+  "note": "g04攻略第一波(63→72%見込)。裁可4点適用: 兆=allowed_extra・小数あまり様式は本便対象外・c05はP5-2・kind系はP5-3。既存24一覧はFable未読のため重複検査を受領検証の最優先とし、重複は自動除外+報告(裁可不要・jikan_conv前例の運用)。本文小数表示はquantity_slots(dec2)委任・小数位/大位読みは桁スロット直書き合成(FORMATTER不要の新手筋)",
+  "batch": "P5-1",
+  "shared_lexicon_additions": {
+   "dec_kurai_names": [
+    {
+     "ask": "小数第一位",
+     "p": 1
+    },
+    {
+     "ask": "小数第二位",
+     "p": 2
+    },
+    {
+     "ask": "小数第三位",
+     "p": 3
+    }
+   ],
+   "big_kurai_names": [
+    {
+     "ask": "億の位",
+     "p": 9
+    },
+    {
+     "ask": "十億の位",
+     "p": 10
+    },
+    {
+     "ask": "百億の位",
+     "p": 11
+    },
+    {
+     "ask": "千億の位",
+     "p": 12
+    }
+   ],
+   "men_units": [
+    {
+     "fr": "m²",
+     "to": "cm²",
+     "k": 10000
+    },
+    {
+     "fr": "a",
+     "to": "m²",
+     "k": 100
+    },
+    {
+     "fr": "ha",
+     "to": "a",
+     "k": 100
+    },
+    {
+     "fr": "km²",
+     "to": "ha",
+     "k": 100
+    }
+   ]
+  }
+ },
+ "patterns": [
+  {
+   "pattern_id": "g04_dec_ikutsu_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_ikutsu_01",
+   "unit_name": "小数のしくみ",
+   "semantic_category": "0.01のいくつ分(数→個数)",
+   "semantic_note": "2.87は0.01を287こ。内部100倍整数n起点・本文表示はquantity_slots(dec2)委任({n1_disp})。答=整数個数(表示不要方向)。g03_dec_shikumi(0.1)の上位展開。",
+   "step_count": 1,
+   "operation": "N→個数",
+   "answer_formula": "n1",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      101,
+      999
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "not_whole",
+     "expr": "n1 % 100 != 0",
+     "why": "真に小数第二位まで(ちょうど整数は別形)"
+    }
+   ],
+   "sentence_templates": [
+    "{n1_disp}は、0.01を何こ集めた数ですか。"
+   ],
+   "answer_template": "答え {ans}こ",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    0,
+    1
+   ],
+   "quantity_slots": {
+    "n1": {
+     "unit_system": "dec2"
+    }
+   }
+  },
+  {
+   "pattern_id": "g04_dec_atsume_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_atsume_01",
+   "unit_name": "小数のしくみ",
+   "semantic_category": "0.01のいくつ分(個数→数)",
+   "semantic_note": "0.01を287こ→2.87。ikutsu_01の逆方向対(dec2表示)。",
+   "step_count": 1,
+   "operation": "個数→N",
+   "answer_formula": "n1",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      101,
+      999
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "not_whole",
+     "expr": "n1 % 100 != 0",
+     "why": "同上"
+    }
+   ],
+   "sentence_templates": [
+    "0.01を{n1}こ集めた数はいくつですか。"
+   ],
+   "answer_template": "答え {ans_disp}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    0,
+    1
+   ],
+   "answer_domain": "dec2"
+  },
+  {
+   "pattern_id": "g04_dec_kurai_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_kurai_01",
+   "unit_name": "小数のしくみ",
+   "semantic_category": "小数の位指定の数字読み",
+   "semantic_note": "3.462の小数第二位→6。整数部+小数3桁を桁スロット直書き合成({ki1}.{k1}{k2}{k3})——FORMATTER不要の表示手筋。ask位(lexicon 3種)の条件式選択(kurai_digit手筋の小数版)。",
+   "step_count": 1,
+   "operation": "位→数字",
+   "answer_formula": "k1 if pp1 == 1 else (k2 if pp1 == 2 else k3)",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2
+     ],
+     "type": "choice_int"
+    },
+    "ask1": {
+     "from": "dec_kurai_names[j1].ask"
+    },
+    "pp1": {
+     "from": "dec_kurai_names[j1].p"
+    },
+    "ki1": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    },
+    "k1": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "k2": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "k3": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{ki1}.{k1}{k2}{k3}という数について、{ask1}の数字を答えなさい。"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "any_int"
+  },
+  {
+   "pattern_id": "g04_dec_10bai_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_10bai_01",
+   "unit_name": "小数のしくみ",
+   "semantic_category": "小数の10倍・100倍",
+   "semantic_note": "2.5を10倍→25。1位小数(内部10倍整数)×sc(choices 10/100)→答=整数(sc=10)または整数×10(sc=100)。位の移動理解のg03_kaz_x10小数版。本文表示quantity_slots(dec1)。",
+   "step_count": 1,
+   "operation": "N×sc",
+   "answer_formula": "n1 * sc1 // 10",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      11,
+      99
+     ]
+    },
+    "sc1": {
+     "choices": [
+      10,
+      100
+     ],
+     "type": "choice_int"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "not_whole",
+     "expr": "n1 % 10 != 0",
+     "why": "真に小数"
+    }
+   ],
+   "sentence_templates": [
+    "{n1_disp}を{sc1}倍した数はいくつですか。"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "quantity_slots": {
+    "n1": {
+     "unit_system": "dec1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g04_kaku_chokkaku_do_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_chokkaku_do_",
+   "unit_name": "角の大きさ",
+   "semantic_category": "直角→度",
+   "semantic_note": "2直角は180度。1直角=90度の適用(n∈[1,4])。答=90n≠nの転記自動安全。",
+   "step_count": 1,
+   "operation": "n直角→度",
+   "answer_formula": "90 * n1",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      1,
+      4
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{n1}直角は何度ですか。"
+   ],
+   "answer_template": "答え {ans}度",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    90
+   ]
+  },
+  {
+   "pattern_id": "g04_kaku_do_chokkaku_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_do_chokkaku_",
+   "unit_name": "角の大きさ",
+   "semantic_category": "度→直角",
+   "semantic_note": "180度は直角2こ分。90n起点の構成的生成(逆方向対)。",
+   "step_count": 1,
+   "operation": "度→n直角",
+   "answer_formula": "n1",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      1,
+      4
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{D1}度は、直角何こ分ですか。"
+   ],
+   "answer_template": "答え 直角{ans}こ分",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    90
+   ],
+   "computed_slots": {
+    "D1": {
+     "formula": "90 * n1"
+    }
+   }
+  },
+  {
+   "pattern_id": "g04_men_conv_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_conv_01",
+   "unit_name": "面積のいろいろな単位",
+   "semantic_category": "面積の単位換算",
+   "semantic_note": "3m²=30000cm²。単位対lexicon(m²→cm²/a→m²/ha→a/km²→ha・換算率k)×倍数a。答=a×k。単位記号のfurigana(平方メートル等)は要確認——欠落ならパッチ同梱想定。",
+   "step_count": 1,
+   "operation": "a単位→下位単位",
+   "answer_formula": "a1 * kk1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "type": "choice_int"
+    },
+    "fr1": {
+     "from": "men_units[j1].fr"
+    },
+    "to1": {
+     "from": "men_units[j1].to"
+    },
+    "kk1": {
+     "from": "men_units[j1].k"
+    },
+    "a1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{a1}{fr1}は何{to1}ですか。"
+   ],
+   "answer_template": "答え {ans}{to1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_men_gyaku_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_gyaku_01",
+   "unit_name": "面積の問題",
+   "semantic_category": "長方形の面積逆算(横=S÷たて)",
+   "semantic_note": "面積48cm²・たて6cm→横8cm。長方形逆算(g05_para_base流儀の4年版=S直接+割り切れ+答域+転記S≠a²)。",
+   "step_count": 1,
+   "operation": "S÷a",
+   "answer_formula": "S1 // a1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      3,
+      12
+     ]
+    },
+    "S1": {
+     "type": "int",
+     "range": [
+      24,
+      144
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "divisible",
+     "expr": "S1 % a1 == 0",
+     "why": "横が整数"
+    },
+    {
+     "rule": "b_range",
+     "expr": "5 <= S1 // a1 <= 16",
+     "why": "横を現実的に保つ"
+    },
+    {
+     "rule": "no_transcribe",
+     "expr": "S1 != a1 * a1",
+     "why": "転記型リーク排除(正方形型で横=たて)"
+    }
+   ],
+   "sentence_templates": [
+    "面積が{S1}cm²の長方形があります。たての長さが{a1}cmのとき、横の長さは何cmですか。"
+   ],
+   "answer_template": "答え {ans}cm",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_kaz_tanigo_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_tanigo_01",
+   "unit_name": "大きい数の表し方",
+   "semantic_category": "単位語形→数字(兆・億)",
+   "semantic_note": "48兆6520億を数字で→48652000000000。束スロット(兆t・億o)の合成——漢数字の表示合成が不要な単位語混じり形(純漢数字はFORMATTERコストで在庫)。兆=allowed_extra(裁可(a))。答14桁級any_int・合成で本文値と別値。",
+   "step_count": 1,
+   "operation": "t兆o億→N",
+   "answer_formula": "t1 * 1000000000000 + o1 * 100000000",
+   "slots": {
+    "t1": {
+     "type": "int",
+     "range": [
+      1,
+      99
+     ]
+    },
+    "o1": {
+     "type": "int",
+     "range": [
+      1,
+      9999
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{t1}兆{o1}億を数字で書きなさい。"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "any_int"
+  },
+  {
+   "pattern_id": "g04_kaz_kurai_big_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_kurai_big_01",
+   "unit_name": "大きい数の表し方",
+   "semantic_category": "位指定の数字読み(億域)",
+   "semantic_note": "12桁数の億〜千億の位読み。桁スロット12本直書き合成+ask位(lexicon 4種)条件式——g03_kaz_kurai_digitの上位域(cross-grade同形でなく桁域が別=億域はg04配当)。",
+   "step_count": 1,
+   "operation": "位→数字",
+   "answer_formula": "k9 if pp1 == 9 else (k10 if pp1 == 10 else (k11 if pp1 == 11 else k12))",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "type": "choice_int"
+    },
+    "ask1": {
+     "from": "big_kurai_names[j1].ask"
+    },
+    "pp1": {
+     "from": "big_kurai_names[j1].p"
+    },
+    "k1": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "k2": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "k3": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "k4": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "k5": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "k6": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "k7": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "k8": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "k9": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "k10": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "k11": {
+     "type": "int",
+     "range": [
+      0,
+      9
+     ]
+    },
+    "k12": {
+     "type": "int",
+     "range": [
+      1,
+      9
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{k12}{k11}{k10}{k9}{k8}{k7}{k6}{k5}{k4}{k3}{k2}{k1}という数について、{ask1}の数字を答えなさい。"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "any_int"
+  },
+  {
+   "pattern_id": "g04_gaisu_shisha_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_shisha_01",
+   "unit_name": "がい数",
+   "semantic_category": "四捨五入(千の位までのがい数)",
+   "semantic_note": "87432→87000(千の位まで=百の位を四捨五入)。千の位固定形(位可変はlexicon化の次便判断・まず主形)。N=abcde直書き合成・答=千丸め。転記: 答≠N(d≠0∨e≠0で保証——丸め不動の組(百位以下0)を除外)。",
+   "step_count": 1,
+   "operation": "千の位までの丸め",
+   "answer_formula": "(n1 + 500) // 1000 * 1000",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      10001,
+      99999
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "changes",
+     "expr": "n1 % 1000 != 0",
+     "why": "丸めで値が動く(答=本文値の転記排除を兼ねる)"
+    }
+   ],
+   "sentence_templates": [
+    "{n1}を四捨五入して、千の位までのがい数にしなさい。"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_tokei_choshin_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_choshin_01",
+   "unit_name": "角の大きさ",
+   "semantic_category": "長針の回転角(分→度)",
+   "semantic_note": "長針が10分間に回る角→60度。360÷60=6度/分の適用(clock_face数理のテキスト流用・図なし成立)。",
+   "step_count": 1,
+   "operation": "分→度",
+   "answer_formula": "6 * m1",
+   "slots": {
+    "m1": {
+     "choices": [
+      5,
+      10,
+      15,
+      20,
+      25,
+      30
+     ],
+     "type": "choice_int"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "時計の長い針が、{m1}分間に回る角度は何度ですか。"
+   ],
+   "answer_template": "答え {ans}度",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    6
+   ]
+  },
+  {
+   "pattern_id": "g04_tokei_seiji_kaku_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_seiji_kaku_0",
+   "unit_name": "角の大きさ",
+   "semantic_category": "正時の針の間の角",
+   "semantic_note": "3時の長針と短針の間の角→90度。短針=30度/時の適用(h∈[1,6]で0〜180度域)。",
+   "step_count": 1,
+   "operation": "正時の針角",
+   "answer_formula": "30 * h1",
+   "slots": {
+    "h1": {
+     "type": "int",
+     "range": [
+      1,
+      6
+     ]
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{h1}時ちょうどのとき、時計の長い針と短い針の間の角度は何度ですか。"
+   ],
+   "answer_template": "答え {ans}度",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    30
+   ]
+  },
+  {
+   "pattern_id": "g04_junjo_kakko_01",
+   "grade": "g04",
+   "unit_id": "g04_p5_kakko_01",
+   "unit_name": "計算のじゅんじょ",
+   "semantic_category": "かっこ優先(a○(b○c))",
+   "semantic_note": "600+(700−250)型。かっこの中を先に計算する順序規則。中間値正・答域制約・暗算域の値はstepスロット(50/50/10刻み)で構造化(制約でなくスロット側=受理率の設計)。転記: 和>a・中間値と各項の衝突は値域で希薄。",
+   "step_count": 1,
+   "operation": "a＋(b−c)",
+   "answer_formula": "a1 + b1 - c1",
+   "slots": {
+    "a1": {
+     "type": "int",
+     "range": [
+      100,
+      900
+     ],
+     "step": 50
+    },
+    "b1": {
+     "type": "int",
+     "range": [
+      200,
+      900
+     ],
+     "step": 50
+    },
+    "c1": {
+     "type": "int",
+     "range": [
+      110,
+      850
+     ],
+     "step": 10
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "mid_positive",
+     "expr": "b1 - c1 >= 50",
+     "why": "かっこ内が意味ある正の値"
+    }
+   ],
+   "sentence_templates": [
+    "次の計算をしなさい。\n{a1}+({b1}-{c1})"
+   ],
+   "answer_template": "答え {ans}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  }
+ ]
+}

@@ -25,6 +25,8 @@ function createEngine(lexicon, counterTable) {
   function readNumber(n) {
     n = Math.trunc(Math.abs(n));
     if (n === 0) return NC.digits['0'];
+    if (n >= 1000000000000) { const cho = Math.floor(n / 1000000000000); const rem = n % 1000000000000; return readNumber(cho) + 'ちょう' + (rem ? readNumber(rem) : ''); }
+    if (n >= 100000000) { const oku = Math.floor(n / 100000000); const rem = n % 100000000; return readNumber(oku) + 'おく' + (rem ? readNumber(rem) : ''); }
     if (n >= 10000) { const man = Math.floor(n / 10000); const rem = n % 10000; return readNumber(man) + 'まん' + (rem ? readNumber(rem) : ''); }
     let s = '';
     const th = Math.floor(n / 1000) % 10, h = Math.floor(n / 100) % 10, t = Math.floor(n / 10) % 10, o = n % 10;

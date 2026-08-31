@@ -1,0 +1,280 @@
+{
+ "_meta": {
+  "schema": "rationale_g05_gold.json準拠",
+  "scope": "g04追補14件(P5-1)。統合(502→516)",
+  "note": "ネイティブ記述 2026-08-29・軽量様式",
+  "order": "バンク順"
+ },
+ "g04_dec_ikutsu_01": {
+  "brief": {
+   "semantic_territory": "0.01のいくつ分(数→個数)",
+   "number_domain": "整数(個数)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "P5-1=g04攻略第一波(63→72%見込・裁可4点2026-08-29適用)。既存24一覧Fable未読のため重複検査を受領検証最優先・重複は自動除外+報告(裁可不要)。棚卸し発見「g04の欠落はしくみ・性質・図系(計算素体は既存)」に沿う設計",
+     "by": "marko",
+     "date": "2026-08"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "2.87は0.01を287こ。小数のしくみの構成理解(g03 0.1系の上位)。",
+   "representation": "内部100倍整数起点・本文小数表示はquantity_slots(dec2)委任({n1_disp})——P4-3捕捉cの機構の設計時宣言。",
+   "constructive_guarantees": "真に小数(100の倍数除外)。受理891組。",
+   "semantic_position": "小数しくみ4部作の第1位・g03_dec_shikumiとの学年間対。",
+   "exclusions": "ちょうど整数。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_dec_atsume_01": {
+  "brief": {
+   "semantic_territory": "0.01のいくつ分(個数→数)",
+   "number_domain": "小数2位(dec2)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "0.01を287こ→2.87。",
+   "representation": "ikutsu_01の逆方向対(dec2表示=エンジン既存・g04初使用)。",
+   "constructive_guarantees": "受理891組。",
+   "semantic_position": "4部作の第2位。",
+   "exclusions": "同上。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_dec_kurai_01": {
+  "brief": {
+   "semantic_territory": "小数の位指定の数字読み",
+   "number_domain": "整数(0〜9)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "3.462の小数第二位→6。",
+   "representation": "桁スロット直書き合成({ki1}.{k1}{k2}{k3})——FORMATTER不要の表示手筋(新規)。ask位条件式(kurai_digit手筋の小数版)。",
+   "constructive_guarantees": "サンプリング24,300受理。",
+   "semantic_position": "しくみ4部作の第3位。",
+   "exclusions": "第4位以下(4年域外)。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_dec_10bai_01": {
+  "brief": {
+   "semantic_territory": "小数の10倍・100倍",
+   "number_domain": "整数",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "2.5×10=25。位の移動(g03_kaz_x10の小数版)。",
+   "representation": "内部10倍整数×sc//10で答の整数性を構造保証(dec1×10=必ず整数)。",
+   "constructive_guarantees": "真に小数の制約。受理162組。",
+   "semantic_position": "4部作の掉尾。1/10方向は在庫。",
+   "exclusions": "整数元。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_kaku_chokkaku_do_01": {
+  "brief": {
+   "semantic_territory": "直角→度",
+   "number_domain": "整数(度)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "2直角=180度。1直角=90度の適用。",
+   "representation": "90n(n≦4)。",
+   "constructive_guarantees": "転記自動安全。受理4組。",
+   "semantic_position": "角の基礎対の順方向。",
+   "exclusions": "n≧5。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_kaku_do_chokkaku_01": {
+  "brief": {
+   "semantic_territory": "度→直角",
+   "number_domain": "整数(こ分)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "180度=直角2こ分。",
+   "representation": "90n起点の構成的生成(逆方向対)。",
+   "constructive_guarantees": "受理4組。",
+   "semantic_position": "基礎対の逆方向。",
+   "exclusions": "同上。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_men_conv_01": {
+  "brief": {
+   "semantic_territory": "面積の単位換算",
+   "number_domain": "整数",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "3m²=30000cm²。面積単位系(m²/a/ha/km²)の換算。",
+   "representation": "単位対lexicon(4組・換算率k)×倍数——単位系をデータで持つ照合表方式。",
+   "constructive_guarantees": "転記自動安全(答=a×k≠a)。受理32組。",
+   "semantic_position": "面積単位系の言語側。",
+   "exclusions": "複合換算(2段)。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_men_gyaku_01": {
+  "brief": {
+   "semantic_territory": "長方形の面積逆算",
+   "number_domain": "整数(cm)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "48cm²÷たて6cm→横8cm。",
+   "representation": "g05_para_base流儀の4年版(S直接+割り切れ+答域+転記S≠a²=正方形型排除)。",
+   "constructive_guarantees": "全域検証済み。受理99組。",
+   "semantic_position": "面積逆算系譜の4年位(g05逆算族の前段)。",
+   "exclusions": "正方形型・非割り切れ。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_kaz_tanigo_01": {
+  "brief": {
+   "semantic_territory": "単位語形→数字(兆・億)",
+   "number_domain": "整数(14桁級)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "48兆6520億→48652000000000。大きい数の表記変換。",
+   "representation": "束スロット(兆t・億o)合成——純漢数字の表示合成(FORMATTERコスト)を避けた単位語混じり形の設計判断。兆=allowed_extra(裁可(a))。",
+   "constructive_guarantees": "合成で本文値と別値(転記自動安全)。サンプリング20,000。",
+   "semantic_position": "大きい数対の合成側。",
+   "exclusions": "純漢数字形(在庫)。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_kaz_kurai_big_01": {
+  "brief": {
+   "semantic_territory": "位指定の数字読み(億域)",
+   "number_domain": "整数(0〜9)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "12桁数の千億の位読み。",
+   "representation": "桁スロット12本直書き合成+ask位4種——g03_kurai_digit(8桁)の上位域(億域=g04配当で桁域が別=cross-grade同形でない)。",
+   "constructive_guarantees": "サンプリング20,000。",
+   "semantic_position": "大きい数対の読み側。",
+   "exclusions": "兆の位以上(表示13桁超)。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_gaisu_shisha_01": {
+  "brief": {
+   "semantic_territory": "四捨五入(千の位まで)",
+   "number_domain": "整数(千丸め)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "87432→87000。がい数の主形。",
+   "representation": "(n+500)//1000×1000の丸め式・千の位固定(位可変lexicon化は次便判断)。",
+   "constructive_guarantees": "丸め不動組(1000の倍数)除外=転記排除を兼ねる。受理19,984標本。",
+   "semantic_position": "がい数族の入口。以上以下未満(round_range既存様式)・上から□けたは在庫。",
+   "exclusions": "丸め不動。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_tokei_choshin_01": {
+  "brief": {
+   "semantic_territory": "長針の回転角",
+   "number_domain": "整数(度)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "10分間→60度。360÷60=6度/分。",
+   "representation": "clock_face数理(6m)のテキスト流用——図なし成立の針角(棚卸し判定どおり)。",
+   "constructive_guarantees": "受理6組。",
+   "semantic_position": "時計角対の長針側。",
+   "exclusions": "31分以上(180度超は4年入口外)。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_tokei_seiji_kaku_01": {
+  "brief": {
+   "semantic_territory": "正時の針の間の角",
+   "number_domain": "整数(度)",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "3時→90度。短針30度/時。",
+   "representation": "30h(h≦6で0〜180度域)。",
+   "constructive_guarantees": "受理6組。",
+   "semantic_position": "時計角対の両針側。7時以降(優角側)は在庫。",
+   "exclusions": "h≧7。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ },
+ "g04_junjo_kakko_01": {
+  "brief": {
+   "semantic_territory": "かっこ優先の計算",
+   "number_domain": "整数",
+   "answer_structure": "single",
+   "figure": null,
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "600+(700−250)型。かっこの中を先に、の順序規則。",
+   "representation": "stepスロット(50/50/10刻み)で暗算域の値を構造化——制約でなくスロット側に置く受理率の設計(受理0の自己捕捉から修正)。",
+   "constructive_guarantees": "中間値≧50。受理2,269組。",
+   "semantic_position": "計算のじゅんじょ族の加算外形。×÷絡み形は在庫。",
+   "exclusions": "中間値負・細かい端数。",
+   "figure_notes": "図なし(テキスト完結)。",
+   "pedagogy": []
+  }
+ }
+}
