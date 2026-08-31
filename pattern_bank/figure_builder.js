@@ -1040,6 +1040,177 @@
     return { unit: U, xaxis: [[0, 0], [xmax, 0]], yaxis: [[0, 0], [0, ymax]], W: xmax * U, H: ymax * U,
       curve: curve, ends: [curve[0], curve[curve.length - 1]], lattice: lattice };
   }
+  // ---- P5-3 Kind B: composite_area(かぎ型/L字/コの字/くりぬき/複合)。追補A cuts一般化 ----
+  // cuts 1〜3(角4種 / 辺+offset / hole)。§2.1 cut単数はcuts1個の糖衣。世界座標=左下原点y上向き。
+  // 輪郭=外形辺から切欠き接触区間を除いた線分+各切欠きの内側辺(補助線・塗りなし=§2.3(4))。
+  var CA_MAXW = 200, CA_MAXH = 160, CA_MARK = 7;
+  function compositeAreaGeom(fp) {
+    var o = fp.outer || {}, W = Number(o.w), H = Number(o.h);
+    if (!(W > 0) || !(H > 0)) throw new Error('composite_area: outer寸法不正(契約違反)');
+    var cuts = fp.cuts;
+    if (!cuts && fp.cut) cuts = [{ w: fp.cut.w, h: fp.cut.h, at: fp.cut.corner || 'top_right' }];   // §2.1糖衣
+    if (!Array.isArray(cuts) || cuts.length < 1 || cuts.length > 3) throw new Error('composite_area: cutsは1〜3(契約違反)');
+    var rects = cuts.map(function (c) {
+      var w = Number(c.w), h = Number(c.h), at = c.at || 'top_right', off = Number(c.offset) || 0, x, y;
+      if (!(w > 0) || !(h > 0)) throw new Error('composite_area: cut寸法不正(契約違反)');
+      if (at === 'top_left') { x = 0; y = H - h; }
+      else if (at === 'top_right') { x = W - w; y = H - h; }
+      else if (at === 'bottom_left') { x = 0; y = 0; }
+      else if (at === 'bottom_right') { x = W - w; y = 0; }
+      else if (at === 'top') { x = off; y = H - h; }
+      else if (at === 'bottom') { x = off; y = 0; }
+      else if (at === 'left') { x = 0; y = off; }
+      else if (at === 'right') { x = W - w; y = off; }
+      else if (at === 'hole') { x = (c.x !== undefined) ? Number(c.x) : (W - w) / 2; y = (c.y !== undefined) ? Number(c.y) : (H - h) / 2; }
+      else throw new Error('composite_area: at不正(契約違反)');
+      if (x < 0 || y < 0 || x + w > W + 1e-9 || y + h > H + 1e-9) throw new Error('composite_area: cutが外形外(契約違反)');
+      if (at === 'hole' && !(x > 0 && y > 0 && x + w < W && y + h < H)) throw new Error('composite_area: holeが外周接触(契約違反)');
+      return { x: x, y: y, w: w, h: h, at: at };
+    });
+    for (var i = 0; i < rects.length; i++) for (var j = i + 1; j < rects.length; j++) {
+      var a = rects[i], b = rects[j];
+      if (a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h) throw new Error('composite_area: cuts交差(契約違反)');
+    }
+    var area = W * H - rects.reduce(function (s, r) { return s + r.w * r.h; }, 0);
+    if (!(area > 0)) throw new Error('composite_area: 残面積非正(契約違反)');
+    return { W: W, H: H, rects: rects, area: area };
+  }
+  function caInside(g, x, y) {   // 領域内判定(境界除く近傍テスト用)
+    if (x <= 0 || y <= 0 || x >= g.W || y >= g.H) return false;
+    for (var i = 0; i < g.rects.length; i++) {
+      var r = g.rects[i];
+      if (x > r.x && x < r.x + r.w && y > r.y && y < r.y + r.h) return false;
+    }
+    return true;
+  }
+  function caSubtractIntervals(lo, hi, cuts) {   // 1次元区間[lo,hi]からcuts区間群を除いた区間列
+    var segs = [[lo, hi]];
+    cuts.forEach(function (c) {
+      var out = [];
+      segs.forEach(function (s) {
+        var a = Math.max(s[0], c[0]), b = Math.min(s[1], c[1]);
+        if (a >= b) { out.push(s); return; }
+        if (s[0] < a) out.push([s[0], a]);
+        if (b < s[1]) out.push([b, s[1]]);
+      });
+      segs = out;
+    });
+    return segs.filter(function (s) { return s[1] - s[0] > 1e-9; });
+  }
+  function compositeAreaLayout(fp) {
+    var g = compositeAreaGeom(fp), lay = newLayout();
+    var sx = CA_MAXW / g.W, sy = CA_MAXH / g.H;
+    var s = Math.min(sx, sy);
+    sx = s; sy = s;
+    // 最小辺クランプ(§2.3(1): 判読不能回避のため縦横独立に下限拡大可)
+    var minW = g.W, minH = g.H;
+    g.rects.forEach(function (r) { minW = Math.min(minW, r.w); minH = Math.min(minH, r.h); });
+    if (minW * sx < 30) sx = Math.min(30 / minW, CA_MAXW * 1.6 / g.W);
+    if (minH * sy < 30) sy = Math.min(30 / minH, CA_MAXH * 1.6 / g.H);
+    function pt(x, y) { return [x * sx, (g.H - y) * sy]; }   // 左下原点→svg(y下向き)
+    var segsOut = [];   // [p1,p2,id]
+    // 外形4辺(切欠き接触区間を除く)
+    var edges = [
+      { lo: 0, hi: g.W, fix: 0, horiz: true, id: 'bottom', cuts: g.rects.filter(function (r) { return r.y <= 1e-9; }).map(function (r) { return [r.x, r.x + r.w]; }) },
+      { lo: 0, hi: g.W, fix: g.H, horiz: true, id: 'top', cuts: g.rects.filter(function (r) { return r.y + r.h >= g.H - 1e-9; }).map(function (r) { return [r.x, r.x + r.w]; }) },
+      { lo: 0, hi: g.H, fix: 0, horiz: false, id: 'left', cuts: g.rects.filter(function (r) { return r.x <= 1e-9; }).map(function (r) { return [r.y, r.y + r.h]; }) },
+      { lo: 0, hi: g.H, fix: g.W, horiz: false, id: 'right', cuts: g.rects.filter(function (r) { return r.x + r.w >= g.W - 1e-9; }).map(function (r) { return [r.y, r.y + r.h]; }) }
+    ];
+    edges.forEach(function (e) {
+      caSubtractIntervals(e.lo, e.hi, e.cuts).forEach(function (sgm, k) {
+        var p1 = e.horiz ? pt(sgm[0], e.fix) : pt(e.fix, sgm[0]);
+        var p2 = e.horiz ? pt(sgm[1], e.fix) : pt(e.fix, sgm[1]);
+        segsOut.push([p1, p2, e.id + k]);
+      });
+    });
+    // 切欠きの内側辺(外形境界上に載る辺は描かない)
+    g.rects.forEach(function (r, ri) {
+      var E = [
+        [[r.x, r.y], [r.x + r.w, r.y], r.y > 1e-9],
+        [[r.x, r.y + r.h], [r.x + r.w, r.y + r.h], r.y + r.h < g.H - 1e-9],
+        [[r.x, r.y], [r.x, r.y + r.h], r.x > 1e-9],
+        [[r.x + r.w, r.y], [r.x + r.w, r.y + r.h], r.x + r.w < g.W - 1e-9]
+      ];
+      E.forEach(function (ed, k) { if (ed[2]) segsOut.push([pt(ed[0][0], ed[0][1]), pt(ed[1][0], ed[1][1]), 'cut' + ri + '_' + k]); });
+    });
+    segsOut.forEach(function (sg) {
+      lay.parts.push(lineEl(sg[0], sg[1], C_STROKE, 2));
+      lay.segs.push({ id: sg[2], p1: sg[0], p2: sg[1] });
+    });
+    // 直角マーク(輪郭頂点: 外形角のうち切欠かれていない角 + 切欠きの内側頂点)
+    function mark(vx, vy) {
+      var e = 0.35;   // 世界座標での内側テスト距離
+      var dirs = [[1, 1], [1, -1], [-1, 1], [-1, -1]];
+      for (var di = 0; di < 4; di++) {
+        var d = dirs[di];
+        if (caInside(g, vx + d[0] * e, vy + d[1] * e)) {
+          var m = CA_MARK, p0 = pt(vx, vy);
+          var ux = d[0] * m, uy = -d[1] * m;   // svg y反転
+          lay.parts.push('<path d="M ' + (p0[0] + ux).toFixed(1) + ' ' + p0[1].toFixed(1) + ' L ' + (p0[0] + ux).toFixed(1) + ' ' + (p0[1] + uy).toFixed(1) + ' L ' + p0[0].toFixed(1) + ' ' + (p0[1] + uy).toFixed(1) + '" fill="none" stroke="#888" stroke-width="1"/>');
+          return;
+        }
+      }
+    }
+    [[0, 0], [g.W, 0], [0, g.H], [g.W, g.H]].forEach(function (c) {
+      var covered = g.rects.some(function (r) { return c[0] >= r.x - 1e-9 && c[0] <= r.x + r.w + 1e-9 && c[1] >= r.y - 1e-9 && c[1] <= r.y + r.h + 1e-9; });
+      if (!covered) mark(c[0], c[1]);
+    });
+    g.rects.forEach(function (r) {
+      [[r.x, r.y], [r.x + r.w, r.y], [r.x, r.y + r.h], [r.x + r.w, r.y + r.h]].forEach(function (c) { mark(c[0], c[1]); });
+    });
+    // 寸法ラベル(showで選択・labelsで上書き。既定=外形w/h+各cut w/h)
+    var u = fp.unit || '';
+    var showList = fp.show || (function () {
+      var d = ['outer.w', 'outer.h'];
+      g.rects.forEach(function (_, i) { d.push('cuts.' + i + '.w', 'cuts.' + i + '.h'); });
+      return d;
+    })();
+    var lbls = [];
+    function addLbl(key, text, anchor, dirs, own, ownMin) {
+      if (showList.indexOf(key) < 0) return;
+      var txt = (fp.labels && fp.labels[key]) || text;
+      lbls.push({ anchor: anchor, dirs: dirs, text: txt, cands: [[12, 13], [16, 12], [20, 12], [24, 11], [30, 11], [38, 11], [46, 10]], color: '#333', own: own, ownMin: ownMin || 0 });
+    }
+    // 外形: 下辺の外側/左辺の外側。切欠き寸法: ボイド内・自辺隣接(sem整合)。
+    addLbl('outer.w', g.W + u, pt(g.W / 2, 0), [[0, 1]], 'bottom0');
+    addLbl('outer.h', g.H + u, pt(0, g.H / 2), [[-1, 0]], 'left0');
+    g.rects.forEach(function (r, ri) {
+      var topAtt = r.y + r.h >= g.H - 1e-9 && r.at !== 'hole';
+      var botAtt = r.y <= 1e-9 && r.at !== 'hole';
+      var leftAtt = r.x <= 1e-9 && r.at !== 'hole';
+      var rightAtt = r.x + r.w >= g.W - 1e-9 && r.at !== 'hole';
+      var small = Math.min(r.w * sx, r.h * sy) < 56;   // 小ボイド=外側・開口部前へ(ownMin=sem免除の強不変)
+      var wEdgeK = botAtt ? 1 : 0, hEdgeK = leftAtt ? 3 : 2;
+      if (small && r.at === 'hole') {
+        // 小hole: 中心から上下へ振り分け(own=近接する水平辺=proximity束縛)
+        var cAnchor = pt(r.x + r.w / 2, r.y + r.h / 2);
+        addLbl('cuts.' + ri + '.w', r.w + u, cAnchor, [[0, -1]], 'cut' + ri + '_1');
+        addLbl('cuts.' + ri + '.h', r.h + u, cAnchor, [[0, 1]], 'cut' + ri + '_0');
+      } else if (small && (topAtt || botAtt || leftAtt || rightAtt)) {
+        var oAnchor, oDir;
+        if (topAtt) { oAnchor = pt(r.x + r.w / 2, g.H); oDir = [0, -1]; }
+        else if (botAtt) { oAnchor = pt(r.x + r.w / 2, 0); oDir = [0, 1]; }
+        else if (rightAtt) { oAnchor = pt(g.W, r.y + r.h / 2); oDir = [1, 0]; }
+        else { oAnchor = pt(0, r.y + r.h / 2); oDir = [-1, 0]; }
+        addLbl('cuts.' + ri + '.w', r.w + u, oAnchor, [oDir], 'cut' + ri + '_' + wEdgeK, 4);
+        addLbl('cuts.' + ri + '.h', r.h + u, oAnchor, [oDir], 'cut' + ri + '_' + hEdgeK, 4);
+      } else {
+        // w: 内側水平辺からボイドへ / h: 可視縦辺からボイドへ(sem整合の通常経路)。
+        // アンカーはh辺/w辺から遠い側へ0.72寄せ=2ラベルの対角分離(共有角の衝突回避)
+        var mwx = 22 / sx, mhy = 22 / sy;   // 反対辺へのpx余白22のクランプ(狭ボイド対策)
+        var fwx = (hEdgeK === 3 ? 0.28 : 0.72) * r.w;
+        var fhy = (wEdgeK === 1 ? 0.28 : 0.72) * r.h;
+        var wx = r.x + (r.w <= 2 * mwx ? r.w / 2 : Math.min(Math.max(fwx, mwx), r.w - mwx));
+        var hy = r.y + (r.h <= 2 * mhy ? r.h / 2 : Math.min(Math.max(fhy, mhy), r.h - mhy));
+        addLbl('cuts.' + ri + '.w', r.w + u, pt(wx, botAtt ? r.y + r.h : r.y), [[0, botAtt ? 1 : -1]], 'cut' + ri + '_' + wEdgeK);
+        addLbl('cuts.' + ri + '.h', r.h + u, pt(leftAtt ? r.x + r.w : r.x, hy), [[leftAtt ? -1 : 1, 0]], 'cut' + ri + '_' + hEdgeK);
+      }
+    });
+    finishLabels(lay, lbls);
+    lay.pts.push([-26, -14], [g.W * sx + 26, g.H * sy + 18]);
+    return lay;
+  }
+
   // ---- P5-3 Kind A: xy_graph mode="polyline"(折れ線グラフ・1〜2系列・draw対応) ----
   // v1(prop/inv)/v2(jhs4象限)へ一切触れない独立分岐。日本語ハードコード禁止(表示文字列は全てfp由来)。
   var PL_W = 264, PL_H = 190, PL_FS = 11;
@@ -1843,7 +2014,7 @@
     para_area: paraAreaLayout, tri_area: triAreaLayout, trap_area: trapAreaLayout,
     rhombus_area: rhombusAreaLayout, circle: circleLayout, cuboid: cuboidLayout, prism: prismLayout,
     pyramid: pyramidLayout, cylinder: cylinderLayout, cone: coneLayout, sphere: sphereLayout,
-    rotation_source: rotationSourceLayout, clock_face: clockFaceLayout, composite_circle: compositeCircleLayout,
+    rotation_source: rotationSourceLayout, clock_face: clockFaceLayout, composite_circle: compositeCircleLayout, composite_area: compositeAreaLayout,
     sym_polygon: symPolygonLayout, similar_pair: similarPairLayout, xy_graph: xyGraphLayout, dot_plot: dotPlotLayout, histogram: histogramLayout,
     angle_figure: angleFigureLayout
   };
@@ -1900,7 +2071,7 @@
     pyramid_visible: pyramidVisible, convex_hull: convexHull,   // S-2.1: 隠線シルエット判定(vector用・corr-0023)
     rotation_source: rotationSourceGeom,   // 第2ブロックS-4: 回転体の源(vector用)
     clock_face: clockFaceGeom,             // 小学第2波: 時計文字盤(vector用)
-    composite_circle: compositeCircleGeom, // P-3a: 複合円(vector用)
+    composite_circle: compositeCircleGeom, composite_area: compositeAreaGeom, // P-3a: 複合円(vector用)
     arc_sample_points: arcSamplePoints,          // 弧サンプル点(曲率関門用・頂点からr一定検査)
     // ベクター用の位置引数ラッパ（Python prism_geom(base_kind,a,b,h) と同型）
     prism: function (base_kind, a, b, h) {
