@@ -1,0 +1,21 @@
+{
+ "_comment": "P5-3 §2.2/§2.4: c10_u02かぎ型6行の機械抽出正規化(Code作業・原文非引用=数値と構造のみ)。verify=検算対象(外形−Σ切欠き==期待面積)。struct_only=寸法欠落(転記が解式/答のみ)で構造分類のみ・検算対象外。skip=不適合。",
+ "rows": [
+  { "id": "p53_r0s1", "verify": true, "note": "L字(分割加算9×6+4×2を外形−切欠きへ正規化)",
+    "fp": { "kind": "composite_area", "unit": "cm", "outer": { "w": 9, "h": 8 }, "cuts": [ { "w": 5, "h": 2, "at": "top_right" } ] },
+    "expected_area": 62 },
+  { "id": "p53_r0s2", "verify": true, "note": "L字(分割加算5×6+4×8を外形−切欠きへ正規化)",
+    "fp": { "kind": "composite_area", "unit": "cm", "outer": { "w": 9, "h": 8 }, "cuts": [ { "w": 5, "h": 2, "at": "top_left" } ] },
+    "expected_area": 62 },
+  { "id": "p53_r3s1", "verify": true, "note": "くりぬき(15×20−9×9)",
+    "fp": { "kind": "composite_area", "unit": "cm", "outer": { "w": 15, "h": 20 }, "cuts": [ { "w": 9, "h": 9, "at": "hole" } ] },
+    "expected_area": 219 },
+  { "id": "p53_r3s2", "verify": true, "note": "くりぬき(18×25−7×8)",
+    "fp": { "kind": "composite_area", "unit": "cm", "outer": { "w": 18, "h": 25 }, "cuts": [ { "w": 7, "h": 8, "at": "hole" } ] },
+    "expected_area": 394 },
+  { "id": "p53_r1", "verify": false, "struct": "hole", "note": "くりぬき2小問(61/780cm²)——寸法欠落(転記が解式言及のみ)=検算対象外・スキーマ受容は構造で確認" },
+  { "id": "p53_r2", "verify": false, "struct": "l_shape+edge_offset", "note": "L字(56)+コの字(174)——寸法欠落(答のみ)=検算対象外" },
+  { "id": "p53_r4", "verify": false, "struct": "multi_cuts", "note": "複合3小問(48/118/256)——寸法欠落=検算対象外" },
+  { "id": "p53_r5", "verify": false, "skip": true, "note": "(5+8)×(8+12)−正方形3個=260−73: 3正方形の辺が一意に定まらず抽出不能=skip(追補A.2想定≦1行に合致)" }
+ ]
+}

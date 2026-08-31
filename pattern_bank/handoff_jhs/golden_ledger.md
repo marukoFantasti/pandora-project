@@ -322,3 +322,11 @@
 - **転記例外2登録**(想定3→実2): heishi_hen/taikaku=SELECTION_ANSWER(平行四辺形の対辺/対角=本文値保存が学習内容)。rinkakuはal≠90制約で残差なし。gate残差0。
 - **読み修正**: °記号=counter追加(alias_of 度・2コピー)・「ひし形=がた」増補(裁可済・registered 438)。**「〜形」族一括点検(まるこ指示・予防措置): 12語全正読**=ひし形のみが欠落だった。固定ベクター35→39封印。
 - rationale/pairs 515→531(検証OK)。全33関門PASS。**g04被覆率: 76%→86%**(単元31/37・問題291/339)。残: c02グラフ族25行+c13変わり方7行+c10_u02求め方6行+部分残=P5-3(図依存)。
+
+### 2026-08-31 P5-3第1便: xy_graph折れ線モード+composite_area新設+検算ゲート(kind受け皿便)
+- **指示書**: P5-3_実装指示書_第1便_r2.md(Fable設計・まるこ検収済・追補A cuts一般化)。棚卸し16行=Fable見込みと完全一致(line_graph6+draw1+double3+かぎ型6)・c02_u03は既存table kindで受容可判定(第2便=配線のみ・まるこ承認)。
+- **Kind A(xy_graph mode:polyline)**: v1/v2非破壊の独立分岐。1〜2系列・1-2-5自動目盛(6〜10)・非ゼロ下端の省略波線・draw:true作図用・実線●/破線○+凡例(グレースケール)・日本語ハードコード0(§3.1)・ガード5種throw。17照合関門。
+- **Kind B(composite_area)**: cuts一般化(角4/辺+offset/hole・1〜3個)。輪郭線分合成・直角マーク(内側判定)・ラベル=ボイド内自辺隣接/対角分離/小ボイド開口部外側(ownMin)/小hole中心振り分け。契約6種throw=正面積保証。1972照合(clearance悉皆1960組違反0・minText10.2/minSeg6.6)。
+- **検算ゲート(§2.4新設・先行実装)**: composite_area_gate.js=①fixture検算(c10_u02正規化4行: 外形−Σ切欠き==answer面積・全一致)+②バンク悉皆(composite_area図パターンの答え照合・現0件でも常走=将来配線の自動監視)。
+- **c10_u02正規化結果**: 検算可4小問(L字2=分割加算式から外形−切欠きへ変換・くりぬき2)・寸法欠落3行(転記が解式/答のみ=構造分類のみ: hole/コの字/複合)・skip1行((a+b)²−正方形3個=辺が一意に定まらず・追補A.2想定≦1行に合致)。
+- **関門33→36**(xy_polyline_vectors/composite_area_vectors/composite_area_gate)・全GREEN。golden不変(g04 33ae6859/g05 d2c262c0/g06 b83b53f0)。furigana追加0(§4=表示文字列は全てバンク由来)。目視素材7枚(p53_*.svg)。バンク+rationaleはFable次便(composite_circle前例)。コミット3分割(§5-3): xy_graph拡張/composite_area新設/ゲート登録。
