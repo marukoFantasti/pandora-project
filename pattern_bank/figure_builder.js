@@ -1137,76 +1137,88 @@
       lay.parts.push(lineEl(sg[0], sg[1], C_STROKE, 2));
       lay.segs.push({ id: sg[2], p1: sg[0], p2: sg[1] });
     });
-    // 直角マーク(輪郭頂点: 外形角のうち切欠かれていない角 + 切欠きの内側頂点)
-    function mark(vx, vy) {
-      var e = 0.35;   // 世界座標での内側テスト距離
-      var dirs = [[1, 1], [1, -1], [-1, 1], [-1, -1]];
-      for (var di = 0; di < 4; di++) {
-        var d = dirs[di];
-        if (caInside(g, vx + d[0] * e, vy + d[1] * e)) {
-          var m = CA_MARK, p0 = pt(vx, vy);
-          var ux = d[0] * m, uy = -d[1] * m;   // svg y反転
-          lay.parts.push('<path d="M ' + (p0[0] + ux).toFixed(1) + ' ' + p0[1].toFixed(1) + ' L ' + (p0[0] + ux).toFixed(1) + ' ' + (p0[1] + uy).toFixed(1) + ' L ' + p0[0].toFixed(1) + ' ' + (p0[1] + uy).toFixed(1) + '" fill="none" stroke="#888" stroke-width="1"/>');
-          return;
-        }
-      }
-    }
-    [[0, 0], [g.W, 0], [0, g.H], [g.W, g.H]].forEach(function (c) {
-      var covered = g.rects.some(function (r) { return c[0] >= r.x - 1e-9 && c[0] <= r.x + r.w + 1e-9 && c[1] >= r.y - 1e-9 && c[1] <= r.y + r.h + 1e-9; });
-      if (!covered) mark(c[0], c[1]);
+    // 直角マーク(検収差し戻しr2): 頂点から出る2辺方向ベクトルが張る90°扇形の内側に描画。
+    // 凸=図形内・凹=開口側・穴=穴内に自動一致(向き固定の場合分けを廃止)。
+    var vmap = {};
+    function vkey(p) { return p[0].toFixed(2) + ',' + p[1].toFixed(2); }
+    lay.segs.forEach(function (s) {
+      [[s.p1, s.p2], [s.p2, s.p1]].forEach(function (e) {
+        var k = vkey(e[0]); (vmap[k] = vmap[k] || []).push(e[1]);
+      });
     });
-    g.rects.forEach(function (r) {
-      [[r.x, r.y], [r.x + r.w, r.y], [r.x, r.y + r.h], [r.x + r.w, r.y + r.h]].forEach(function (c) { mark(c[0], c[1]); });
+    var caMarks = [];
+    Object.keys(vmap).forEach(function (k) {
+      var ends = vmap[k];
+      if (ends.length !== 2) return;                       // 輪郭頂点=2辺が会する点のみ
+      var v = k.split(',').map(Number);
+      var ds = ends.map(function (q) {
+        // 頂点キーと同じ2桁丸めで方向を出す(生floatとの混在で直交フィルタが微小dotで誤爆するのを防ぐ)
+        var dx = Number(q[0].toFixed(2)) - v[0], dy = Number(q[1].toFixed(2)) - v[1], L = Math.hypot(dx, dy);
+        return [dx / L, dy / L];
+      });
+      if (Math.abs(ds[0][0] * ds[1][0] + ds[0][1] * ds[1][1]) > 1e-6) return;   // 直交頂点のみ(直角図形では常に成立)
+      var m = CA_MARK, a = [v[0] + ds[0][0] * m, v[1] + ds[0][1] * m];
+      var c = [v[0] + (ds[0][0] + ds[1][0]) * m, v[1] + (ds[0][1] + ds[1][1]) * m];
+      var b = [v[0] + ds[1][0] * m, v[1] + ds[1][1] * m];
+      lay.parts.push('<path d="M ' + a[0].toFixed(1) + ' ' + a[1].toFixed(1) + ' L ' + c[0].toFixed(1) + ' ' + c[1].toFixed(1) + ' L ' + b[0].toFixed(1) + ' ' + b[1].toFixed(1) + '" fill="none" stroke="#888" stroke-width="1"/>');
+      caMarks.push({ v: v, d1: ds[0], d2: ds[1], center: c });
     });
-    // 寸法ラベル(showで選択・labelsで上書き。既定=外形w/h+各cut w/h)
+    // 寸法ラベル(検収差し戻しr2): 担当辺の中点へ垂直オフセットで帰属配置。
+    // 外形辺=外側・切欠き辺=開口内(=切欠き矩形内)・穴辺=穴内。開口幅が不足する辺のみ外置き+リーダー線。
     var u = fp.unit || '';
     var showList = fp.show || (function () {
       var d = ['outer.w', 'outer.h'];
       g.rects.forEach(function (_, i) { d.push('cuts.' + i + '.w', 'cuts.' + i + '.h'); });
       return d;
     })();
-    var lbls = [];
-    function addLbl(key, text, anchor, dirs, own, ownMin) {
+    var lbls = [], caLabelAudit = [];
+    var CANDS = [[12, 13], [12, 11], [14, 10], [16, 12], [20, 11], [24, 11], [30, 10]];
+    function addLbl(key, text, anchor, dirs, own, ownMin, leader) {
       if (showList.indexOf(key) < 0) return;
       var txt = (fp.labels && fp.labels[key]) || text;
-      lbls.push({ anchor: anchor, dirs: dirs, text: txt, cands: [[12, 13], [16, 12], [20, 12], [24, 11], [30, 11], [38, 11], [46, 10]], color: '#333', own: own, ownMin: ownMin || 0 });
+      lbls.push({ anchor: anchor, dirs: dirs, text: txt, cands: CANDS, color: '#333', own: own, ownMin: ownMin || 0 });
+      caLabelAudit.push({ key: key, own: own, leader: !!leader });
+      if (leader) lay.parts.push(lineEl(leader[0], leader[1], '#888', 1, '3 2'));
     }
-    // 外形: 下辺の外側/左辺の外側。切欠き寸法: ボイド内・自辺隣接(sem整合)。
     addLbl('outer.w', g.W + u, pt(g.W / 2, 0), [[0, 1]], 'bottom0');
     addLbl('outer.h', g.H + u, pt(0, g.H / 2), [[-1, 0]], 'left0');
+    var LBL_NEED = 26;   // 開口の垂直方向余地がこれ未満なら外置き+リーダー
     g.rects.forEach(function (r, ri) {
       var topAtt = r.y + r.h >= g.H - 1e-9 && r.at !== 'hole';
       var botAtt = r.y <= 1e-9 && r.at !== 'hole';
       var leftAtt = r.x <= 1e-9 && r.at !== 'hole';
-      var rightAtt = r.x + r.w >= g.W - 1e-9 && r.at !== 'hole';
-      var small = Math.min(r.w * sx, r.h * sy) < 56;   // 小ボイド=外側・開口部前へ(ownMin=sem免除の強不変)
       var wEdgeK = botAtt ? 1 : 0, hEdgeK = leftAtt ? 3 : 2;
-      if (small && r.at === 'hole') {
-        // 小hole: 中心から上下へ振り分け(own=近接する水平辺=proximity束縛)
-        var cAnchor = pt(r.x + r.w / 2, r.y + r.h / 2);
-        addLbl('cuts.' + ri + '.w', r.w + u, cAnchor, [[0, -1]], 'cut' + ri + '_1');
-        addLbl('cuts.' + ri + '.h', r.h + u, cAnchor, [[0, 1]], 'cut' + ri + '_0');
-      } else if (small && (topAtt || botAtt || leftAtt || rightAtt)) {
-        var oAnchor, oDir;
-        if (topAtt) { oAnchor = pt(r.x + r.w / 2, g.H); oDir = [0, -1]; }
-        else if (botAtt) { oAnchor = pt(r.x + r.w / 2, 0); oDir = [0, 1]; }
-        else if (rightAtt) { oAnchor = pt(g.W, r.y + r.h / 2); oDir = [1, 0]; }
-        else { oAnchor = pt(0, r.y + r.h / 2); oDir = [-1, 0]; }
-        addLbl('cuts.' + ri + '.w', r.w + u, oAnchor, [oDir], 'cut' + ri + '_' + wEdgeK, 4);
-        addLbl('cuts.' + ri + '.h', r.h + u, oAnchor, [oDir], 'cut' + ri + '_' + hEdgeK, 4);
-      } else {
-        // w: 内側水平辺からボイドへ / h: 可視縦辺からボイドへ(sem整合の通常経路)。
-        // アンカーはh辺/w辺から遠い側へ0.72寄せ=2ラベルの対角分離(共有角の衝突回避)
-        var mwx = 22 / sx, mhy = 22 / sy;   // 反対辺へのpx余白22のクランプ(狭ボイド対策)
-        var fwx = (hEdgeK === 3 ? 0.28 : 0.72) * r.w;
-        var fhy = (wEdgeK === 1 ? 0.28 : 0.72) * r.h;
-        var wx = r.x + (r.w <= 2 * mwx ? r.w / 2 : Math.min(Math.max(fwx, mwx), r.w - mwx));
-        var hy = r.y + (r.h <= 2 * mhy ? r.h / 2 : Math.min(Math.max(fhy, mhy), r.h - mhy));
-        addLbl('cuts.' + ri + '.w', r.w + u, pt(wx, botAtt ? r.y + r.h : r.y), [[0, botAtt ? 1 : -1]], 'cut' + ri + '_' + wEdgeK);
-        addLbl('cuts.' + ri + '.h', r.h + u, pt(leftAtt ? r.x + r.w : r.x, hy), [[leftAtt ? -1 : 1, 0]], 'cut' + ri + '_' + hEdgeK);
+      // 担当辺の中点(world)と開口内への垂直方向(world)
+      var wMid = [r.x + r.w / 2, botAtt ? r.y + r.h : r.y];
+      var wPerpWorld = botAtt ? -1 : 1;                    // 開口(=切欠き矩形内)へ: 下接触なら下向き(-y)、他は上向き
+      var hMid = [leftAtt ? r.x + r.w : r.x, r.y + r.h / 2];
+      var hPerpWorld = leftAtt ? -1 : 1;                   // 左接触なら左向き(-x)、他は右向き(+x)
+      // svg方向へ変換(y反転)
+      var wDir = [0, -wPerpWorld], hDir = [hPerpWorld, 0];
+      // 開口余地(px): 担当辺から切欠き反対辺までの垂直距離
+      // in-void条件: 垂直余地(担当辺→対辺)とラベル幅方向余地の両立(帰属=最近傍辺が担当辺になる幾何保証)
+      var wRoomOK = (r.h * sy >= LBL_NEED) && (r.w * sx >= 40);
+      var hRoomOK = (r.w * sx >= LBL_NEED) && (r.h * sy >= 40);
+      // 2枚同居はボイド最小辺≥64pxのときのみ(中点+垂直オフセット同士の衝突回避)。不足時はhを外置きへ
+      if (wRoomOK && hRoomOK && Math.min(r.w * sx, r.h * sy) < 64) hRoomOK = false;
+      if (wRoomOK) addLbl('cuts.' + ri + '.w', r.w + u, pt(wMid[0], wMid[1]), [wDir], 'cut' + ri + '_' + wEdgeK);
+      else {
+        // 外置き+リーダー: 開口の垂直延長で外形境界の外へ
+        var exitY = botAtt ? 0 : g.H;
+        var oAnchor = pt(wMid[0], exitY);
+        var leader = [pt(wMid[0], wMid[1]), [oAnchor[0], oAnchor[1] + (botAtt ? 8 : -8)]];
+        addLbl('cuts.' + ri + '.w', r.w + u, oAnchor, [[0, botAtt ? 1 : -1]], 'cut' + ri + '_' + wEdgeK, 4, leader);
+      }
+      if (hRoomOK) addLbl('cuts.' + ri + '.h', r.h + u, pt(hMid[0], hMid[1]), [hDir], 'cut' + ri + '_' + hEdgeK);
+      else {
+        var exitX = leftAtt ? 0 : g.W;
+        var oAnchor2 = pt(exitX, hMid[1]);
+        var leader2 = [pt(hMid[0], hMid[1]), [oAnchor2[0] + (leftAtt ? -8 : 8), oAnchor2[1]]];
+        addLbl('cuts.' + ri + '.h', r.h + u, oAnchor2, [[leftAtt ? -1 : 1, 0]], 'cut' + ri + '_' + hEdgeK, 4, leader2);
       }
     });
     finishLabels(lay, lbls);
+    lay._caAudit = { marks: caMarks, labels: caLabelAudit };
     lay.pts.push([-26, -14], [g.W * sx + 26, g.H * sy + 18]);
     return lay;
   }
@@ -2051,6 +2063,27 @@
   }
 
   var FigureBuilder = { build: build, BUILDERS: BUILDERS, _angleSumMinClearance: angleSumMinClearance, _tableMinClearance: tableMinClearance };
+  // P5-3検収差し戻しr2: composite_areaの帰属/マーク監査(ラベル最近傍辺・マーク中心の90°扇形内判定)
+  FigureBuilder._compositeAreaAudit = function (fp) {
+    var lay = compositeAreaLayout(fp);
+    var out = { labels: [], marks: [] };
+    lay._caAudit.labels.forEach(function (a, i) {
+      var lb = lay.labels[i + 0];
+      // finishLabelsはlbls順にlayout.labelsへ積む(先行labelsは無い前提=composite_area専用layout)
+      var nearest = null, nd = 1e9;
+      lay.segs.forEach(function (s) {
+        var dd = boxSeg(lb.box, s.p1, s.p2);
+        if (dd < nd) { nd = dd; nearest = s.id; }
+      });
+      out.labels.push({ key: a.key, own: a.own, nearest: nearest, leader: a.leader });
+    });
+    lay._caAudit.marks.forEach(function (m) {
+      var rel = [m.center[0] - m.v[0], m.center[1] - m.v[1]];
+      var c1 = rel[0] * m.d1[0] + rel[1] * m.d1[1], c2 = rel[0] * m.d2[0] + rel[1] * m.d2[1];
+      out.marks.push({ v: m.v, inSector: c1 > 0 && c2 > 0 });
+    });
+    return out;
+  };
   // C層kindの機械検査関数を _<kind>MinClearance 形式で公開（受け入れテスト用・table と同形式）
   Object.keys(C_LAYOUTS).forEach(function (k) {
     FigureBuilder['_' + k.replace(/_([a-z])/g, function (m, c) { return c.toUpperCase(); }) + 'MinClearance'] = makeCClearance(k);

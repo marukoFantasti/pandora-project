@@ -12,19 +12,19 @@ const clr = FB._compositeAreaMinClearance;
 
 console.log('=== (1) 構成別の面積・線分・直角マーク ===');
 [
-  ['L字(角)', { outer: { w: 9, h: 8 }, cuts: [{ w: 5, h: 2, at: 'top_right' }] }, { area: 62, lines: 6, marks: 6 }],
-  ['コの字(辺+offset)', { outer: { w: 12, h: 8 }, cuts: [{ w: 4, h: 3, at: 'top', offset: 4 }] }, { area: 84, lines: 8, marks: 8 }],
+  ['L字(角)', { outer: { w: 9, h: 8 }, cuts: [{ w: 5, h: 2, at: 'top_right' }] }, { area: 62, lines: 7, marks: 6 }],
+  ['コの字(辺+offset)', { outer: { w: 12, h: 8 }, cuts: [{ w: 4, h: 3, at: 'top', offset: 4 }] }, { area: 84, lines: 9, marks: 8 }],
   ['くりぬき(hole)', { outer: { w: 15, h: 20 }, cuts: [{ w: 9, h: 9, at: 'hole' }] }, { area: 219, lines: 8, marks: 8 }],
-  ['複合2切欠き', { outer: { w: 14, h: 10 }, cuts: [{ w: 4, h: 3, at: 'top_left' }, { w: 5, h: 2, at: 'bottom_right' }] }, { area: 118, lines: 8, marks: 8 }],
-  ['3切欠き(角+辺+hole)', { outer: { w: 16, h: 12 }, cuts: [{ w: 3, h: 3, at: 'top_left' }, { w: 4, h: 2, at: 'bottom', offset: 6 }, { w: 2, h: 2, at: 'hole', x: 10, y: 7 }] }, { area: 171, lines: 14, marks: 14 }],
-  ['§2.1糖衣cut単数', { outer: { w: 8, h: 6 }, cut: { w: 3, h: 2, corner: 'top_right' } }, { area: 42, lines: 6, marks: 6 }]
+  ['複合2切欠き', { outer: { w: 14, h: 10 }, cuts: [{ w: 4, h: 3, at: 'top_left' }, { w: 5, h: 2, at: 'bottom_right' }] }, { area: 118, lines: 10, marks: 8 }],
+  ['3切欠き(角+辺+hole)', { outer: { w: 16, h: 12 }, cuts: [{ w: 3, h: 3, at: 'top_left' }, { w: 4, h: 2, at: 'bottom', offset: 6 }, { w: 2, h: 2, at: 'hole', x: 10, y: 7 }] }, { area: 171, lines: 18, marks: 14 }],
+  ['§2.1糖衣cut単数', { outer: { w: 8, h: 6 }, cut: { w: 3, h: 2, corner: 'top_right' } }, { area: 42, lines: 7, marks: 6 }]
 ].forEach(function (t) {
   cases++; let e = 0;
   const g = FB._geom.composite_area(fp(t[1]));
   const svg = FB.build(fp(t[1]));
   if (g.area !== t[2].area) e++;
   if ((svg.match(/<line/g) || []).length !== t[2].lines) e++;
-  if ((svg.match(/stroke="#888"/g) || []).length !== t[2].marks) e++;
+  if ((svg.match(/<path [^>]*stroke="#888"/g) || []).length !== t[2].marks) e++;   // マークはpath(リーダー線lineと区別)
   if (svg.indexOf('undefined') >= 0 || svg.indexOf('NaN') >= 0) e++;
   if (FB.build(fp(t[1])) !== svg) e++;
   if (e) { bad += e; console.log('  ❌ ' + t[0] + ' (' + e + ')'); }
@@ -69,5 +69,39 @@ console.log('=== (3) clearance悉皆(L字/コの字/hole×寸法域) ===');
   console.log('  組' + n + ' / 違反' + viol + ' / min(minText ' + minMT.toFixed(1) + ', minSeg ' + minSeg.toFixed(1) + ') ' + (viol === 0 ? '✅' : '❌'));
 })();
 
-console.log('\n' + (bad === 0 ? 'composite_area: 全' + cases + '照合 一致 ✅(6構成・契約throw・clearance悉皆・シード非依存)' : '❌ ' + bad + '件'));
+console.log('=== (4) ラベル帰属検査(最近傍辺=担当辺・リーダー例外) ・ (5) マーク向き検査(中心∈90°扇形) ===');
+(function () {
+  const b4 = bad;
+  let nl = 0, nm = 0, nleader = 0;
+  const audits = [
+    { outer: { w: 9, h: 8 }, cuts: [{ w: 5, h: 2, at: 'top_right' }] },
+    { outer: { w: 12, h: 8 }, cuts: [{ w: 4, h: 3, at: 'top', offset: 4 }] },
+    { outer: { w: 15, h: 20 }, cuts: [{ w: 9, h: 9, at: 'hole' }] },
+    { outer: { w: 14, h: 10 }, cuts: [{ w: 4, h: 3, at: 'top_left' }, { w: 5, h: 2, at: 'bottom_right' }] },
+    { outer: { w: 16, h: 12 }, cuts: [{ w: 3, h: 3, at: 'top_left' }, { w: 4, h: 2, at: 'bottom', offset: 6 }, { w: 2, h: 2, at: 'hole', x: 10, y: 7 }] },
+    { outer: { w: 8, h: 6 }, cuts: [{ w: 2, h: 1, at: 'top_right' }] }
+  ];
+  // 悉皆域(clearanceと同domain)でも帰属+マークを全数検査
+  for (let W = 6; W <= 20; W += 2) for (let H = 5; H <= 15; H += 2)
+    for (let cw = 2; cw < W - 1; cw += 2) for (let ch = 2; ch < H - 1; ch += 2) {
+      audits.push({ outer: { w: W, h: H }, cuts: [{ w: cw, h: ch, at: 'top_right' }] });
+      if (cw + 4 <= W) audits.push({ outer: { w: W, h: H }, cuts: [{ w: cw, h: ch, at: 'top', offset: 2 }] });
+      if (cw >= 4 && ch >= 4 && cw + 4 <= W && ch + 4 <= H) audits.push({ outer: { w: W, h: H }, cuts: [{ w: cw, h: ch, at: 'hole' }] });
+    }
+  audits.forEach(function (co) {
+    const a = FB._compositeAreaAudit(fp(co));
+    a.labels.forEach(function (l) {
+      cases++; nl++;
+      if (l.leader) { nleader++; return; }                 // 外置き+リーダーは帰属検査の例外(リーダー線が帰属を明示)
+      if (l.nearest !== l.own) { bad++; if (bad - b4 <= 5) console.log('  ❌帰属 ' + JSON.stringify(co) + ' ' + l.key + ': own=' + l.own + ' nearest=' + l.nearest); }
+    });
+    a.marks.forEach(function (m) {
+      cases++; nm++;
+      if (!m.inSector) { bad++; if (bad - b4 <= 5) console.log('  ❌マーク ' + JSON.stringify(co) + ' v=' + m.v); }
+    });
+  });
+  console.log('  ラベル' + nl + '(うちリーダー' + nleader + ') / マーク' + nm + ' ' + (bad === b4 ? '✅' : '❌'));
+})();
+
+console.log('\n' + (bad === 0 ? 'composite_area: 全' + cases + '照合 一致 ✅(6構成・契約throw・clearance悉皆・帰属・マーク向き・シード非依存)' : '❌ ' + bad + '件'));
 process.exit(bad === 0 ? 0 : 1);
