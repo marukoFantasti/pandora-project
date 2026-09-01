@@ -92,7 +92,12 @@ console.log('=== (4) ラベル帰属検査(最近傍辺=担当辺・リーダー
     const a = FB._compositeAreaAudit(fp(co));
     a.labels.forEach(function (l) {
       cases++; nl++;
-      if (l.leader) { nleader++; return; }                 // 外置き+リーダーは帰属検査の例外(リーダー線が帰属を明示)
+      if (l.leader) {                                      // リーダー: 起点=担当辺中点±ε・長さ≦出口+8px・45°象限
+        nleader++; cases += 2;
+        if (!l.startOnMid) { bad++; if (bad - b4 <= 5) console.log('  ❌リーダー起点 ' + JSON.stringify(co) + ' ' + l.key); }
+        if (!l.lenOK || !l.diag45) { bad++; if (bad - b4 <= 5) console.log('  ❌リーダー長/角 ' + JSON.stringify(co) + ' ' + l.key); }
+        return;
+      }
       if (l.nearest !== l.own) { bad++; if (bad - b4 <= 5) console.log('  ❌帰属 ' + JSON.stringify(co) + ' ' + l.key + ': own=' + l.own + ' nearest=' + l.nearest); }
     });
     a.marks.forEach(function (m) {

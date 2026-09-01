@@ -1173,12 +1173,16 @@
     })();
     var lbls = [], caLabelAudit = [];
     var CANDS = [[12, 13], [12, 11], [14, 10], [16, 12], [20, 11], [24, 11], [30, 10]];
+    var LEADER_CANDS = [[10, 12], [10, 10], [22, 11], [34, 11], [46, 10], [58, 10], [70, 10]];   // リーダー先は長梯子(並走2本の分離)
     function addLbl(key, text, anchor, dirs, own, ownMin, leader) {
       if (showList.indexOf(key) < 0) return;
       var txt = (fp.labels && fp.labels[key]) || text;
-      lbls.push({ anchor: anchor, dirs: dirs, text: txt, cands: CANDS, color: '#333', own: own, ownMin: ownMin || 0 });
-      caLabelAudit.push({ key: key, own: own, leader: !!leader });
-      if (leader) lay.parts.push(lineEl(leader[0], leader[1], '#888', 1, '3 2'));
+      lbls.push({ anchor: anchor, dirs: dirs, text: txt, cands: leader ? LEADER_CANDS : CANDS, color: '#333', own: own, ownMin: ownMin || 0 });
+      caLabelAudit.push({ key: key, own: own, leader: leader || null });
+      if (leader) {   // 再差し戻しr3: 実線細線+起点●(担当辺中点)。破線と垂直延長経路は廃止
+        lay.parts.push(lineEl(leader.start, leader.end, '#888', 1));
+        lay.parts.push('<circle cx="' + leader.start[0].toFixed(1) + '" cy="' + leader.start[1].toFixed(1) + '" r="2.5" fill="#888"/>');
+      }
     }
     addLbl('outer.w', g.W + u, pt(g.W / 2, 0), [[0, 1]], 'bottom0');
     addLbl('outer.h', g.H + u, pt(0, g.H / 2), [[-1, 0]], 'left0');
@@ -1201,20 +1205,28 @@
       var hRoomOK = (r.w * sx >= LBL_NEED) && (r.h * sy >= 40);
       // 2枚同居はボイド最小辺≥64pxのときのみ(中点+垂直オフセット同士の衝突回避)。不足時はhを外置きへ
       if (wRoomOK && hRoomOK && Math.min(r.w * sx, r.h * sy) < 64) hRoomOK = false;
+      // リーダー(再差し戻しr3): 起点=担当辺中点(●)・45°斜め外向き(最短で外形bboxを出る象限)・実線・長さ=出口+8px
+      var BW = g.W * sx, BH = g.H * sy, RT = Math.SQRT1_2;
+      function caLeader(midPx) {
+        var best = null;
+        [[RT, -RT], [-RT, -RT], [RT, RT], [-RT, RT]].forEach(function (d) {
+          var tx = d[0] > 0 ? (BW - midPx[0]) / d[0] : (0 - midPx[0]) / d[0];
+          var ty = d[1] > 0 ? (BH - midPx[1]) / d[1] : (0 - midPx[1]) / d[1];
+          var t = Math.min(tx, ty);
+          if (best === null || t < best.t - 1e-9) best = { d: d, t: t };
+        });
+        var len = best.t + 8;
+        return { start: midPx, end: [midPx[0] + best.d[0] * len, midPx[1] + best.d[1] * len], d: best.d, len: len, exit: best.t };
+      }
       if (wRoomOK) addLbl('cuts.' + ri + '.w', r.w + u, pt(wMid[0], wMid[1]), [wDir], 'cut' + ri + '_' + wEdgeK);
       else {
-        // 外置き+リーダー: 開口の垂直延長で外形境界の外へ
-        var exitY = botAtt ? 0 : g.H;
-        var oAnchor = pt(wMid[0], exitY);
-        var leader = [pt(wMid[0], wMid[1]), [oAnchor[0], oAnchor[1] + (botAtt ? 8 : -8)]];
-        addLbl('cuts.' + ri + '.w', r.w + u, oAnchor, [[0, botAtt ? 1 : -1]], 'cut' + ri + '_' + wEdgeK, 4, leader);
+        var Lw = caLeader(pt(wMid[0], wMid[1]));
+        addLbl('cuts.' + ri + '.w', r.w + u, Lw.end, [Lw.d], 'cut' + ri + '_' + wEdgeK, 4, Lw);
       }
       if (hRoomOK) addLbl('cuts.' + ri + '.h', r.h + u, pt(hMid[0], hMid[1]), [hDir], 'cut' + ri + '_' + hEdgeK);
       else {
-        var exitX = leftAtt ? 0 : g.W;
-        var oAnchor2 = pt(exitX, hMid[1]);
-        var leader2 = [pt(hMid[0], hMid[1]), [oAnchor2[0] + (leftAtt ? -8 : 8), oAnchor2[1]]];
-        addLbl('cuts.' + ri + '.h', r.h + u, oAnchor2, [[leftAtt ? -1 : 1, 0]], 'cut' + ri + '_' + hEdgeK, 4, leader2);
+        var Lh = caLeader(pt(hMid[0], hMid[1]));
+        addLbl('cuts.' + ri + '.h', r.h + u, Lh.end, [Lh.d], 'cut' + ri + '_' + hEdgeK, 4, Lh);
       }
     });
     finishLabels(lay, lbls);
@@ -2067,6 +2079,12 @@
   FigureBuilder._compositeAreaAudit = function (fp) {
     var lay = compositeAreaLayout(fp);
     var out = { labels: [], marks: [] };
+    // 外形bbox(リーダー出口の独立再計算用)
+    var bx0 = 1e9, by0 = 1e9, bx1 = -1e9, by1 = -1e9;
+    lay.segs.forEach(function (s) {
+      if (!/^(top|bottom|left|right)/.test(s.id)) return;
+      [s.p1, s.p2].forEach(function (p) { bx0 = Math.min(bx0, p[0]); by0 = Math.min(by0, p[1]); bx1 = Math.max(bx1, p[0]); by1 = Math.max(by1, p[1]); });
+    });
     lay._caAudit.labels.forEach(function (a, i) {
       var lb = lay.labels[i + 0];
       // finishLabelsはlbls順にlayout.labelsへ積む(先行labelsは無い前提=composite_area専用layout)
@@ -2075,7 +2093,24 @@
         var dd = boxSeg(lb.box, s.p1, s.p2);
         if (dd < nd) { nd = dd; nearest = s.id; }
       });
-      out.labels.push({ key: a.key, own: a.own, nearest: nearest, leader: a.leader });
+      var rec = { key: a.key, own: a.own, nearest: nearest, leader: !!a.leader };
+      if (a.leader) {
+        var L = a.leader;
+        // 起点=担当辺の中点±ε(担当セグメントから独立再計算)
+        var ownSeg = null;
+        lay.segs.forEach(function (s) { if (s.id === a.own) ownSeg = s; });
+        var mid = ownSeg ? [(ownSeg.p1[0] + ownSeg.p2[0]) / 2, (ownSeg.p1[1] + ownSeg.p2[1]) / 2] : null;
+        rec.startOnMid = !!mid && Math.hypot(L.start[0] - mid[0], L.start[1] - mid[1]) <= 0.5;
+        // 長さ=出口+8pxキャップ(bboxから独立再計算)
+        var d = L.d;
+        var tx = d[0] > 0 ? (bx1 - L.start[0]) / d[0] : (bx0 - L.start[0]) / d[0];
+        var ty = d[1] > 0 ? (by1 - L.start[1]) / d[1] : (by0 - L.start[1]) / d[1];
+        var texit = Math.min(tx, ty);
+        var len = Math.hypot(L.end[0] - L.start[0], L.end[1] - L.start[1]);
+        rec.lenOK = len <= texit + 8 + 0.5;
+        rec.diag45 = Math.abs(Math.abs(d[0]) - Math.abs(d[1])) <= 1e-9;   // 45°象限
+      }
+      out.labels.push(rec);
     });
     lay._caAudit.marks.forEach(function (m) {
       var rel = [m.center[0] - m.v[0], m.center[1] - m.v[1]];
