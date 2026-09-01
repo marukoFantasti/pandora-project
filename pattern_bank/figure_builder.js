@@ -1263,14 +1263,20 @@
     function X(i) { return i * (PL_W / (n - 1)); }
     function Y(v) { return PL_H - (v - lo) / (hi - lo) * PL_H; }
     // 方眼: 主目盛=薄実線・補助(1/2目盛)=さらに薄く
-    for (var t = lo; t <= hi + 1e-9; t += tick) {
+    var nTicks = Math.round((hi - lo) / tick);
+    for (var ti = 0; ti <= nTicks; ti++) {
+      var t = lo + ti * tick, tr = Math.round(t * 10000) / 10000;   // 小数目盛の浮動小数蓄積対策(整数は不変)
       lay.parts.push(lineEl([0, Y(t)], [PL_W, Y(t)], '#d5deea', 1));
-      if (t + tick / 2 < hi) lay.parts.push(lineEl([0, Y(t + tick / 2)], [PL_W, Y(t + tick / 2)], '#eaeff6', 0.7));
-      lay.parts.push(textEl(-16, Y(t), String(t), PL_FS, '#333'));
+      if (ti < nTicks) lay.parts.push(lineEl([0, Y(t + tick / 2)], [PL_W, Y(t + tick / 2)], '#eaeff6', 0.7));
+      lay.parts.push(textEl(-16, Y(t), String(tr), PL_FS, '#333'));
     }
+    var maxXL = 0;
+    xl.forEach(function (v) { maxXL = Math.max(maxXL, String(v).length); });
+    var pitch = PL_W / (n - 1);
+    var xfs = Math.max(7, Math.min(PL_FS, Math.floor(pitch / (maxXL * 0.62))));   // ピッチ不足時は縮小(§1.3-6・下限7)
     for (var xi = 0; xi < n; xi++) {
       lay.parts.push(lineEl([X(xi), 0], [X(xi), PL_H], '#d5deea', 1));
-      lay.parts.push(textEl(X(xi), PL_H + 12, String(xl[xi]), PL_FS, '#333'));
+      lay.parts.push(textEl(X(xi), PL_H + 12, String(xl[xi]), xfs, '#333'));
     }
     // 軸(左・下)
     lay.parts.push(lineEl([0, -8], [0, PL_H], C_STROKE, 1.6));

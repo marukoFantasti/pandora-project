@@ -1,0 +1,1329 @@
+{
+ "_meta_append": {
+  "purpose": "patterns_g04.jsonへの追補(P5-3第2便・折れ線10+composite_area2=12パターン。g04=53→65)",
+  "date": "2026-09-01",
+  "note": "設計書P5-3_第2便_バンク設計書.md(裁可f済)+rationale本文の転写。可変化=系列平行移動(u01_003/u02_005はanchor固定・u01_009はΣ56保存の補償スロット)。区間答=位置固定制約の静的文字列。カット3件(A.3)適用済。",
+  "batch": "P5-3b"
+ },
+ "patterns": [
+  {
+   "pattern_id": "g04_line_ondo_01",
+   "grade": "g04",
+   "unit_id": "g04_c02_u01",
+   "unit_name": "折れ線グラフ",
+   "semantic_category": "折れ線の読み取り(値読み・最小・平坦・上昇最大)",
+   "semantic_note": "設計書u01_001。可変化=系列平行移動s1(y_range同幅シフト・全制約が構造保存)。区間答は位置固定制約により静的文字列。",
+   "step_count": 1,
+   "answer_formula": "14 + s1",
+   "slots": {
+    "s1": {
+     "type": "int",
+     "range": [
+      0,
+      4
+     ]
+    }
+   },
+   "computed_slots": {
+    "yc1": {
+     "formula": "11 + s1"
+    },
+    "yc2": {
+     "formula": "12 + s1"
+    },
+    "yc3": {
+     "formula": "14 + s1"
+    },
+    "yc4": {
+     "formula": "15 + s1"
+    },
+    "yc5": {
+     "formula": "18 + s1"
+    },
+    "yc6": {
+     "formula": "19 + s1"
+    },
+    "yc7": {
+     "formula": "20 + s1"
+    },
+    "yc8": {
+     "formula": "20 + s1"
+    },
+    "yc9": {
+     "formula": "17 + s1"
+    },
+    "yc10": {
+     "formula": "14 + s1"
+    },
+    "yc11": {
+     "formula": "12 + s1"
+    },
+    "a1": {
+     "formula": "14 + s1"
+    },
+    "b1": {
+     "formula": "11 + s1"
+    },
+    "yr1": {
+     "formula": "20 + s1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "右の折れ線グラフは、地面の温度をしらべたものです。\n① 午前10時の温度は何度ですか。\n② 温度がいちばん低いのは何時ですか。また、それは何度ですか。\n③ 温度が変わっていないのは、何時と何時の間ですか。\n④ 温度がいちばん大きく上がったのは、何時と何時の間ですか。"
+   ],
+   "answer_template": "答え ① {a1}度 ② 午前8時、{b1}度 ③ 午後2時と午後3時の間 ④ 午前11時と午前12時の間",
+   "figure_params": {
+    "kind": "xy_graph",
+    "mode": "polyline",
+    "series": [
+     {
+      "y": [
+       "{yc1}",
+       "{yc2}",
+       "{yc3}",
+       "{yc4}",
+       "{yc5}",
+       "{yc6}",
+       "{yc7}",
+       "{yc8}",
+       "{yc9}",
+       "{yc10}",
+       "{yc11}"
+      ]
+     }
+    ],
+    "x_labels": [
+     "午前8時",
+     "午前9時",
+     "午前10時",
+     "午前11時",
+     "午前12時",
+     "午後1時",
+     "午後2時",
+     "午後3時",
+     "午後4時",
+     "午後5時",
+     "午後6時"
+    ],
+    "x_title": "時こく",
+    "y_title": "度",
+    "y_range": [
+     "{s1}",
+     "{yr1}"
+    ],
+    "title": "地面の温度"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    10,
+    8,
+    2,
+    3,
+    11,
+    12
+   ]
+  },
+  {
+   "pattern_id": "g04_line_draw_01",
+   "grade": "g04",
+   "unit_id": "g04_c02_u01",
+   "unit_name": "折れ線グラフ",
+   "semantic_category": "折れ線の作図(方眼+軸のみ・打点列挙答)",
+   "semantic_note": "設計書u01_002。解答図機構は未整備(報告済)のため打点値の列挙を答えとする。系列はu01_001と同形+独自シフト。",
+   "step_count": 1,
+   "answer_formula": "11 + s1",
+   "slots": {
+    "s1": {
+     "type": "int",
+     "range": [
+      0,
+      4
+     ]
+    }
+   },
+   "computed_slots": {
+    "yc1": {
+     "formula": "11 + s1"
+    },
+    "yc2": {
+     "formula": "12 + s1"
+    },
+    "yc3": {
+     "formula": "14 + s1"
+    },
+    "yc4": {
+     "formula": "15 + s1"
+    },
+    "yc5": {
+     "formula": "18 + s1"
+    },
+    "yc6": {
+     "formula": "19 + s1"
+    },
+    "yc7": {
+     "formula": "20 + s1"
+    },
+    "yc8": {
+     "formula": "20 + s1"
+    },
+    "yc9": {
+     "formula": "17 + s1"
+    },
+    "yc10": {
+     "formula": "14 + s1"
+    },
+    "yc11": {
+     "formula": "12 + s1"
+    },
+    "yr1": {
+     "formula": "20 + s1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "下の表は、地面の温度をしらべたものです。表を見て、折れ線グラフをかきましょう。\n時こく: 午前8時 午前9時 午前10時 午前11時 午前12時 午後1時 午後2時 午後3時 午後4時 午後5時 午後6時\n温度(度): {yc1} {yc2} {yc3} {yc4} {yc5} {yc6} {yc7} {yc8} {yc9} {yc10} {yc11}"
+   ],
+   "answer_template": "答え 各時こくに {yc1}、{yc2}、{yc3}、{yc4}、{yc5}、{yc6}、{yc7}、{yc8}、{yc9}、{yc10}、{yc11} の点を打ち、左から順に直線でつなぐ",
+   "figure_params": {
+    "kind": "xy_graph",
+    "mode": "polyline",
+    "series": [
+     {
+      "y": [
+       "{yc1}",
+       "{yc2}",
+       "{yc3}",
+       "{yc4}",
+       "{yc5}",
+       "{yc6}",
+       "{yc7}",
+       "{yc8}",
+       "{yc9}",
+       "{yc10}",
+       "{yc11}"
+      ]
+     }
+    ],
+    "x_labels": [
+     "午前8時",
+     "午前9時",
+     "午前10時",
+     "午前11時",
+     "午前12時",
+     "午後1時",
+     "午後2時",
+     "午後3時",
+     "午後4時",
+     "午後5時",
+     "午後6時"
+    ],
+    "x_title": "時こく",
+    "y_title": "度",
+    "y_range": [
+     "{s1}",
+     "{yr1}"
+    ],
+    "title": "地面の温度",
+    "draw": true
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    8,
+    9,
+    10,
+    11,
+    12,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ]
+  },
+  {
+   "pattern_id": "g04_line_fukasa_01",
+   "grade": "g04",
+   "unit_id": "g04_c02_u01",
+   "unit_name": "折れ線グラフ",
+   "semantic_category": "折れ線の読み取り(最大・しきい値超の連続区間)",
+   "semantic_note": "設計書u01_003。しきい値30が静的テキストのためシフト対象外・anchor固定(裁可3)。y_range下端25>0=波線自動。",
+   "step_count": 1,
+   "answer_formula": "38",
+   "slots": {},
+   "computed_slots": {},
+   "value_constraints": [],
+   "sentence_templates": [
+    "右の折れ線グラフは、小川の水の深さをしらべたものです。\n① 水の深さがいちばん深いのは何日ですか。また、それは何cmですか。\n② 水の深さが30cmより深いのは、何日から何日までですか。"
+   ],
+   "answer_template": "答え ① 5日、38cm ② 3日から6日まで",
+   "figure_params": {
+    "kind": "xy_graph",
+    "mode": "polyline",
+    "series": [
+     {
+      "y": [
+       28,
+       29,
+       32,
+       35,
+       38,
+       34,
+       30
+      ]
+     }
+    ],
+    "x_labels": [
+     "1日",
+     "2日",
+     "3日",
+     "4日",
+     "5日",
+     "6日",
+     "7日"
+    ],
+    "x_title": "日",
+    "y_title": "cm",
+    "y_range": [
+     25,
+     40
+    ],
+    "title": "小川の水の深さ"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    30
+   ]
+  },
+  {
+   "pattern_id": "g04_line_tsukibetsu_01",
+   "grade": "g04",
+   "unit_id": "g04_c02_u01",
+   "unit_name": "折れ線グラフ",
+   "semantic_category": "折れ線の読み取り(最大最小・2月差・上昇最大・最大最小差)",
+   "semantic_note": "設計書u01_005。③は設問補正済(10月と11月の差=裁可f-2)。差答(4度/23度)はシフト不変=静的。",
+   "step_count": 1,
+   "answer_formula": "26 + s1",
+   "slots": {
+    "s1": {
+     "type": "int",
+     "range": [
+      0,
+      4
+     ]
+    }
+   },
+   "computed_slots": {
+    "yc1": {
+     "formula": "4 + s1"
+    },
+    "yc2": {
+     "formula": "5 + s1"
+    },
+    "yc3": {
+     "formula": "8 + s1"
+    },
+    "yc4": {
+     "formula": "13 + s1"
+    },
+    "yc5": {
+     "formula": "17 + s1"
+    },
+    "yc6": {
+     "formula": "21 + s1"
+    },
+    "yc7": {
+     "formula": "24 + s1"
+    },
+    "yc8": {
+     "formula": "26 + s1"
+    },
+    "yc9": {
+     "formula": "23 + s1"
+    },
+    "yc10": {
+     "formula": "17 + s1"
+    },
+    "yc11": {
+     "formula": "13 + s1"
+    },
+    "yc12": {
+     "formula": "3 + s1"
+    },
+    "a1": {
+     "formula": "26 + s1"
+    },
+    "yr1": {
+     "formula": "30 + s1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "右の折れ線グラフは、ある市の月ごとの気温を表したものです。\n① 気温がいちばん高いのは何月で、何度ですか。\n② 気温がいちばん低いのは何月ですか。\n③ 10月と11月の気温の差は何度ですか。\n④ 気温がいちばん大きく上がったのは、何月と何月の間ですか。\n⑤ いちばん高い気温といちばん低い気温の差は何度ですか。"
+   ],
+   "answer_template": "答え ① 8月、{a1}度 ② 12月 ③ 4度 ④ 3月と4月の間 ⑤ 23度",
+   "figure_params": {
+    "kind": "xy_graph",
+    "mode": "polyline",
+    "series": [
+     {
+      "y": [
+       "{yc1}",
+       "{yc2}",
+       "{yc3}",
+       "{yc4}",
+       "{yc5}",
+       "{yc6}",
+       "{yc7}",
+       "{yc8}",
+       "{yc9}",
+       "{yc10}",
+       "{yc11}",
+       "{yc12}"
+      ]
+     }
+    ],
+    "x_labels": [
+     "1月",
+     "2月",
+     "3月",
+     "4月",
+     "5月",
+     "6月",
+     "7月",
+     "8月",
+     "9月",
+     "10月",
+     "11月",
+     "12月"
+    ],
+    "x_title": "月",
+    "y_title": "度",
+    "y_range": [
+     "{s1}",
+     "{yr1}"
+    ],
+    "title": "月ごとの気温"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    10,
+    11
+   ]
+  },
+  {
+   "pattern_id": "g04_line_tokuten_01",
+   "grade": "g04",
+   "unit_id": "g04_c02_u01",
+   "unit_name": "折れ線グラフ",
+   "semantic_category": "折れ線の読み取り(波線60始まり・値読み・上昇最大)",
+   "semantic_note": "設計書u01_006。転記答(1)2点はy_range矛盾で破棄・computed再生成(裁可f-1)。s1はきりのよい5刻み。",
+   "step_count": 1,
+   "answer_formula": "65 + s1",
+   "slots": {
+    "s1": {
+     "type": "choice_int",
+     "choices": [
+      0,
+      5
+     ]
+    }
+   },
+   "computed_slots": {
+    "yc1": {
+     "formula": "65 + s1"
+    },
+    "yc2": {
+     "formula": "70 + s1"
+    },
+    "yc3": {
+     "formula": "85 + s1"
+    },
+    "yc4": {
+     "formula": "80 + s1"
+    },
+    "yc5": {
+     "formula": "90 + s1"
+    },
+    "a1": {
+     "formula": "65 + s1"
+    },
+    "lo1": {
+     "formula": "60 + s1"
+    },
+    "yr1": {
+     "formula": "100 + s1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "右の折れ線グラフは、りょうさんのテストのとく点を表したものです。\n① 1回目のとく点は何点ですか。\n② とく点がいちばん大きく上がったのは、何回目と何回目の間ですか。"
+   ],
+   "answer_template": "答え ① {a1}点 ② 2回目と3回目の間",
+   "figure_params": {
+    "kind": "xy_graph",
+    "mode": "polyline",
+    "series": [
+     {
+      "y": [
+       "{yc1}",
+       "{yc2}",
+       "{yc3}",
+       "{yc4}",
+       "{yc5}"
+      ]
+     }
+    ],
+    "x_labels": [
+     "1回",
+     "2回",
+     "3回",
+     "4回",
+     "5回"
+    ],
+    "x_title": "回",
+    "y_title": "点",
+    "y_range": [
+     "{lo1}",
+     "{yr1}"
+    ],
+    "y_tick": 5,
+    "title": "テストのとく点"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "g04_line_omocha_01",
+   "grade": "g04",
+   "unit_id": "g04_c02_u01",
+   "unit_name": "折れ線グラフ",
+   "semantic_category": "折れ線の読み取り(大目盛・最小最大・下降/上昇最大)",
+   "semantic_note": "設計書u01_008。転記答のmin/max逆転は破棄・computed再生成(裁可f-1)。s1は100刻み。",
+   "step_count": 1,
+   "answer_formula": "300 + s1",
+   "slots": {
+    "s1": {
+     "type": "choice_int",
+     "choices": [
+      0,
+      100,
+      200
+     ]
+    }
+   },
+   "computed_slots": {
+    "yc1": {
+     "formula": "2800 + s1"
+    },
+    "yc2": {
+     "formula": "2600 + s1"
+    },
+    "yc3": {
+     "formula": "1400 + s1"
+    },
+    "yc4": {
+     "formula": "1200 + s1"
+    },
+    "yc5": {
+     "formula": "900 + s1"
+    },
+    "yc6": {
+     "formula": "600 + s1"
+    },
+    "yc7": {
+     "formula": "400 + s1"
+    },
+    "yc8": {
+     "formula": "300 + s1"
+    },
+    "yc9": {
+     "formula": "1500 + s1"
+    },
+    "yc10": {
+     "formula": "1800 + s1"
+    },
+    "yc11": {
+     "formula": "2100 + s1"
+    },
+    "yc12": {
+     "formula": "2500 + s1"
+    },
+    "a1": {
+     "formula": "300 + s1"
+    },
+    "b1": {
+     "formula": "2800 + s1"
+    },
+    "yr1": {
+     "formula": "3000 + s1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "右の折れ線グラフは、ある店で月ごとに売れたおもちゃの数を表したものです。\n① 売れた数がいちばん少ないのは何月で、何こですか。\n② 売れた数がいちばん多いのは何月で、何こですか。\n③ 売れた数がいちばん大きくへったのは、何月と何月の間ですか。\n④ 売れた数がいちばん大きくふえたのは、何月と何月の間ですか。"
+   ],
+   "answer_template": "答え ① 8月、{a1}こ ② 1月、{b1}こ ③ 2月と3月の間 ④ 8月と9月の間",
+   "figure_params": {
+    "kind": "xy_graph",
+    "mode": "polyline",
+    "series": [
+     {
+      "y": [
+       "{yc1}",
+       "{yc2}",
+       "{yc3}",
+       "{yc4}",
+       "{yc5}",
+       "{yc6}",
+       "{yc7}",
+       "{yc8}",
+       "{yc9}",
+       "{yc10}",
+       "{yc11}",
+       "{yc12}"
+      ]
+     }
+    ],
+    "x_labels": [
+     "1月",
+     "2月",
+     "3月",
+     "4月",
+     "5月",
+     "6月",
+     "7月",
+     "8月",
+     "9月",
+     "10月",
+     "11月",
+     "12月"
+    ],
+    "x_title": "月",
+    "y_title": "こ",
+    "y_range": [
+     "{s1}",
+     "{yr1}"
+    ],
+    "y_tick": 500,
+    "title": "売れたおもちゃの数"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_line_kankyaku_01",
+   "grade": "g04",
+   "unit_id": "g04_c02_u01",
+   "unit_name": "折れ線グラフ",
+   "semantic_category": "折れ線の読み取り(千人単位・値読み・合計の換算)",
+   "semantic_note": "設計書u01_009。①設問は単位整合補正済(何千人・裁可f-2)。③かきなさい=カット①(A.3)。Σ=56固定は補償スロットy4=56−y1−y2−y3で構造保存。",
+   "step_count": 1,
+   "answer_formula": "y1",
+   "slots": {
+    "y1": {
+     "type": "int",
+     "range": [
+      9,
+      11
+     ]
+    },
+    "y2": {
+     "type": "int",
+     "range": [
+      14,
+      16
+     ]
+    },
+    "y3": {
+     "type": "int",
+     "range": [
+      12,
+      14
+     ]
+    }
+   },
+   "computed_slots": {
+    "y4": {
+     "formula": "56 - y1 - y2 - y3"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "y4_range",
+     "expr": "15 <= 56 - y1 - y2 - y3 <= 20",
+     "why": "4日目が目盛域内(y_range[8,20])"
+    }
+   ],
+   "sentence_templates": [
+    "右の折れ線グラフは、野球大会の観客数を表したものです。たてのじくの目もりは千人です。\n① 1日目の観客数は何千人ですか。\n② 4日間の観客数の合計は何万何千人ですか。"
+   ],
+   "answer_template": "答え ① {y1}千人 ② 5万6千人",
+   "figure_params": {
+    "kind": "xy_graph",
+    "mode": "polyline",
+    "series": [
+     {
+      "y": [
+       "{y1}",
+       "{y2}",
+       "{y3}",
+       "{y4}"
+      ]
+     }
+    ],
+    "x_labels": [
+     "1日目",
+     "2日目",
+     "3日目",
+     "4日目"
+    ],
+    "x_title": "日",
+    "y_title": "千人",
+    "y_range": [
+     8,
+     20
+    ],
+    "y_tick": 2,
+    "title": "野球大会の観客数"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1,
+    4
+   ]
+  },
+  {
+   "pattern_id": "g04_line2_cd_01",
+   "grade": "g04",
+   "unit_id": "g04_c02_u02",
+   "unit_name": "いろいろな折れ線グラフ",
+   "semantic_category": "2系列折れ線(上がり続ける/下がり続ける)",
+   "semantic_note": "設計書u02_001。単調性はシフト不変=peak/bottom月が静的答。実線/破線+凡例で系列弁別(グレースケール)。",
+   "step_count": 1,
+   "answer_formula": "7",
+   "slots": {
+    "s1": {
+     "type": "int",
+     "range": [
+      -2,
+      2
+     ]
+    }
+   },
+   "computed_slots": {
+    "yc1": {
+     "formula": "5 + s1"
+    },
+    "yc2": {
+     "formula": "7 + s1"
+    },
+    "yc3": {
+     "formula": "10 + s1"
+    },
+    "yc4": {
+     "formula": "14 + s1"
+    },
+    "yc5": {
+     "formula": "18 + s1"
+    },
+    "yc6": {
+     "formula": "22 + s1"
+    },
+    "yc7": {
+     "formula": "26 + s1"
+    },
+    "yc8": {
+     "formula": "25 + s1"
+    },
+    "yc9": {
+     "formula": "21 + s1"
+    },
+    "yc10": {
+     "formula": "16 + s1"
+    },
+    "yc11": {
+     "formula": "10 + s1"
+    },
+    "yc12": {
+     "formula": "6 + s1"
+    },
+    "zc1": {
+     "formula": "26 + s1"
+    },
+    "zc2": {
+     "formula": "24 + s1"
+    },
+    "zc3": {
+     "formula": "20 + s1"
+    },
+    "zc4": {
+     "formula": "16 + s1"
+    },
+    "zc5": {
+     "formula": "12 + s1"
+    },
+    "zc6": {
+     "formula": "9 + s1"
+    },
+    "zc7": {
+     "formula": "7 + s1"
+    },
+    "zc8": {
+     "formula": "6 + s1"
+    },
+    "zc9": {
+     "formula": "10 + s1"
+    },
+    "zc10": {
+     "formula": "15 + s1"
+    },
+    "zc11": {
+     "formula": "20 + s1"
+    },
+    "zc12": {
+     "formula": "24 + s1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "右の折れ線グラフは、C市とD市の月ごとの気温を表したものです。\n① C市の気温が上がり続けているのは何月までですか。\n② D市の気温が下がり続けているのは何月までですか。"
+   ],
+   "answer_template": "答え ① 7月まで ② 8月まで",
+   "figure_params": {
+    "kind": "xy_graph",
+    "mode": "polyline",
+    "series": [
+     {
+      "name": "C市",
+      "y": [
+       "{yc1}",
+       "{yc2}",
+       "{yc3}",
+       "{yc4}",
+       "{yc5}",
+       "{yc6}",
+       "{yc7}",
+       "{yc8}",
+       "{yc9}",
+       "{yc10}",
+       "{yc11}",
+       "{yc12}"
+      ]
+     },
+     {
+      "name": "D市",
+      "y": [
+       "{zc1}",
+       "{zc2}",
+       "{zc3}",
+       "{zc4}",
+       "{zc5}",
+       "{zc6}",
+       "{zc7}",
+       "{zc8}",
+       "{zc9}",
+       "{zc10}",
+       "{zc11}",
+       "{zc12}"
+      ]
+     }
+    ],
+    "x_labels": [
+     "1月",
+     "2月",
+     "3月",
+     "4月",
+     "5月",
+     "6月",
+     "7月",
+     "8月",
+     "9月",
+     "10月",
+     "11月",
+     "12月"
+    ],
+    "x_title": "月",
+    "y_title": "度",
+    "title": "C市とD市の気温"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_line2_gh_01",
+   "grade": "g04",
+   "unit_id": "g04_c02_u02",
+   "unit_name": "いろいろな折れ線グラフ",
+   "semantic_category": "2系列折れ線(下がり続ける/上がり続ける)",
+   "semantic_note": "設計書u02_003。①かきなさい=カット②(A.3・番号詰め)。u02_001と同型の単調性制約。",
+   "step_count": 1,
+   "answer_formula": "7",
+   "slots": {
+    "s1": {
+     "type": "int",
+     "range": [
+      -2,
+      2
+     ]
+    }
+   },
+   "computed_slots": {
+    "yc1": {
+     "formula": "24 + s1"
+    },
+    "yc2": {
+     "formula": "22 + s1"
+    },
+    "yc3": {
+     "formula": "18 + s1"
+    },
+    "yc4": {
+     "formula": "14 + s1"
+    },
+    "yc5": {
+     "formula": "10 + s1"
+    },
+    "yc6": {
+     "formula": "7 + s1"
+    },
+    "yc7": {
+     "formula": "5 + s1"
+    },
+    "yc8": {
+     "formula": "6 + s1"
+    },
+    "yc9": {
+     "formula": "9 + s1"
+    },
+    "yc10": {
+     "formula": "14 + s1"
+    },
+    "yc11": {
+     "formula": "19 + s1"
+    },
+    "yc12": {
+     "formula": "23 + s1"
+    },
+    "zc1": {
+     "formula": "3 + s1"
+    },
+    "zc2": {
+     "formula": "5 + s1"
+    },
+    "zc3": {
+     "formula": "9 + s1"
+    },
+    "zc4": {
+     "formula": "13 + s1"
+    },
+    "zc5": {
+     "formula": "17 + s1"
+    },
+    "zc6": {
+     "formula": "21 + s1"
+    },
+    "zc7": {
+     "formula": "25 + s1"
+    },
+    "zc8": {
+     "formula": "24 + s1"
+    },
+    "zc9": {
+     "formula": "20 + s1"
+    },
+    "zc10": {
+     "formula": "15 + s1"
+    },
+    "zc11": {
+     "formula": "9 + s1"
+    },
+    "zc12": {
+     "formula": "4 + s1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "右の折れ線グラフは、G市とH市の月ごとの気温を表したものです。\n① G市の気温が下がり続けているのは何月までですか。\n② H市の気温が上がり続けているのは何月までですか。"
+   ],
+   "answer_template": "答え ① 7月まで ② 7月まで",
+   "figure_params": {
+    "kind": "xy_graph",
+    "mode": "polyline",
+    "series": [
+     {
+      "name": "G市",
+      "y": [
+       "{yc1}",
+       "{yc2}",
+       "{yc3}",
+       "{yc4}",
+       "{yc5}",
+       "{yc6}",
+       "{yc7}",
+       "{yc8}",
+       "{yc9}",
+       "{yc10}",
+       "{yc11}",
+       "{yc12}"
+      ]
+     },
+     {
+      "name": "H市",
+      "y": [
+       "{zc1}",
+       "{zc2}",
+       "{zc3}",
+       "{zc4}",
+       "{zc5}",
+       "{zc6}",
+       "{zc7}",
+       "{zc8}",
+       "{zc9}",
+       "{zc10}",
+       "{zc11}",
+       "{zc12}"
+      ]
+     }
+    ],
+    "x_labels": [
+     "1月",
+     "2月",
+     "3月",
+     "4月",
+     "5月",
+     "6月",
+     "7月",
+     "8月",
+     "9月",
+     "10月",
+     "11月",
+     "12月"
+    ],
+    "x_title": "月",
+    "y_title": "度",
+    "title": "G市とH市の気温"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_line2_taion_01",
+   "grade": "g04",
+   "unit_id": "g04_c02_u02",
+   "unit_name": "いろいろな折れ線グラフ",
+   "semantic_category": "2系列折れ線(0.1刻み目盛・最大最小差)",
+   "semantic_note": "設計書u02_005。①かきなさい=カット③(A.3・単問化→①②)。小数系列は図スロット解決が整数前提のためanchor固定(裁可3所見2)。y目盛は0.1刻み指定をラベル過密回避で主目盛0.5に(§1.3-6の縮小規則相当・報告)。",
+   "step_count": 1,
+   "answer_formula": "6",
+   "answer_unit_system": "dec1",
+   "slots": {},
+   "computed_slots": {},
+   "value_constraints": [],
+   "sentence_templates": [
+    "右の折れ線グラフは、はるかさんの健康なときと病気のときの体温を表したものです。\n① 健康なときの体温の、いちばん高い温度といちばん低い温度の差は何度ですか。\n② 病気のときの体温の差は何度ですか。"
+   ],
+   "answer_template": "答え ① 0.6度 ② 1.3度",
+   "figure_params": {
+    "kind": "xy_graph",
+    "mode": "polyline",
+    "series": [
+     {
+      "name": "健康",
+      "y": [
+       36.2,
+       36.6,
+       36.8,
+       36.5,
+       36.2
+      ]
+     },
+     {
+      "name": "病気",
+      "y": [
+       37.3,
+       38.0,
+       38.5,
+       37.9,
+       37.2
+      ]
+     }
+    ],
+    "x_labels": [
+     "午前6時",
+     "午前10時",
+     "午後2時",
+     "午後6時",
+     "午後10時"
+    ],
+    "x_title": "時こく",
+    "y_title": "度",
+    "y_range": [
+     36,
+     39
+    ],
+    "y_tick": 0.5,
+    "title": "体温しらべ"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_comp_lshape_01",
+   "grade": "g04",
+   "unit_id": "g04_c10_u02",
+   "unit_name": "面積の求め方",
+   "semantic_category": "かぎ型複合面積(外形−切欠き)",
+   "semantic_note": "設計書§2。D10(本文寸法明示)適用・図は確認役。answers=検算ゲート式そのもの。anchor(9×8−5×2=62)は生成域内。",
+   "step_count": 1,
+   "answer_formula": "ow1 * oh1 - cw1 * ch1",
+   "slots": {
+    "ow1": {
+     "type": "int",
+     "range": [
+      6,
+      12
+     ]
+    },
+    "oh1": {
+     "type": "int",
+     "range": [
+      5,
+      10
+     ]
+    },
+    "cw1": {
+     "type": "int",
+     "range": [
+      2,
+      10
+     ]
+    },
+    "ch1": {
+     "type": "int",
+     "range": [
+      2,
+      8
+     ]
+    }
+   },
+   "computed_slots": {},
+   "value_constraints": [
+    {
+     "rule": "cut_w",
+     "expr": "cw1 <= ow1 - 2",
+     "why": "切欠きが横に収まる(縁2以上)"
+    },
+    {
+     "rule": "cut_h",
+     "expr": "ch1 <= oh1 - 2",
+     "why": "切欠きがたてに収まる"
+    },
+    {
+     "rule": "area_cap",
+     "expr": "ow1 * oh1 <= 500",
+     "why": "面積上限500(prism vol_cap前例)"
+    }
+   ],
+   "sentence_templates": [
+    "たて{oh1}cm、横{ow1}cmの長方形から、たて{ch1}cm、横{cw1}cmの長方形がかけた形があります。図のかけたところのある形の面積を求めなさい。"
+   ],
+   "answer_template": "しき {ow1}×{oh1}-{cw1}×{ch1}={ans} 答え {ans}cm²",
+   "figure_params": {
+    "kind": "composite_area",
+    "unit": "cm",
+    "outer": {
+     "w": "{ow1}",
+     "h": "{oh1}"
+    },
+    "cuts": [
+     {
+      "w": "{cw1}",
+      "h": "{ch1}",
+      "at": "top_right"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_comp_hole_01",
+   "grade": "g04",
+   "unit_id": "g04_c10_u02",
+   "unit_name": "面積の求め方",
+   "semantic_category": "くりぬき複合面積(外形−穴)",
+   "semantic_note": "設計書§2。anchor(15×20−9×9=219 / 18×25−7×8=394)は生成域内。穴は中央配置(x,y省略=engine既定)。",
+   "step_count": 1,
+   "answer_formula": "ow1 * oh1 - cw1 * ch1",
+   "slots": {
+    "ow1": {
+     "type": "int",
+     "range": [
+      10,
+      20
+     ]
+    },
+    "oh1": {
+     "type": "int",
+     "range": [
+      12,
+      25
+     ]
+    },
+    "cw1": {
+     "type": "int",
+     "range": [
+      5,
+      12
+     ]
+    },
+    "ch1": {
+     "type": "int",
+     "range": [
+      5,
+      12
+     ]
+    }
+   },
+   "computed_slots": {},
+   "value_constraints": [
+    {
+     "rule": "hole_w",
+     "expr": "cw1 <= ow1 - 2",
+     "why": "穴が横に収まる(外周非接触)"
+    },
+    {
+     "rule": "hole_h",
+     "expr": "ch1 <= oh1 - 2",
+     "why": "穴がたてに収まる"
+    },
+    {
+     "rule": "area_cap",
+     "expr": "ow1 * oh1 <= 500",
+     "why": "面積上限500"
+    }
+   ],
+   "sentence_templates": [
+    "たて{oh1}cm、横{ow1}cmの長方形から、たて{ch1}cm、横{cw1}cmの長方形をくりぬいた形があります。図のくりぬいた形の面積を求めなさい。"
+   ],
+   "answer_template": "しき {ow1}×{oh1}-{cw1}×{ch1}={ans} 答え {ans}cm²",
+   "figure_params": {
+    "kind": "composite_area",
+    "unit": "cm",
+    "outer": {
+     "w": "{ow1}",
+     "h": "{oh1}"
+    },
+    "cuts": [
+     {
+      "w": "{cw1}",
+      "h": "{ch1}",
+      "at": "hole"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  }
+ ]
+}
