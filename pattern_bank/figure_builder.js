@@ -1267,8 +1267,16 @@
     for (var ti = 0; ti <= nTicks; ti++) {
       var t = lo + ti * tick, tr = Math.round(t * 10000) / 10000;   // 小数目盛の浮動小数蓄積対策(整数は不変)
       lay.parts.push(lineEl([0, Y(t)], [PL_W, Y(t)], '#d5deea', 1));
-      if (ti < nTicks) lay.parts.push(lineEl([0, Y(t + tick / 2)], [PL_W, Y(t + tick / 2)], '#eaeff6', 0.7));
+      if (!fp.y_minor && ti < nTicks) lay.parts.push(lineEl([0, Y(t + tick / 2)], [PL_W, Y(t + tick / 2)], '#eaeff6', 0.7));
       lay.parts.push(textEl(-16, Y(t), String(tr), PL_FS, '#333'));
+    }
+    if (fp.y_minor) {   // 補助目盛の刻み指定(例: 主0.5+補助0.1)。主目盛位置は重複描画しない
+      var mstep = Number(fp.y_minor), nm = Math.round((hi - lo) / mstep);
+      for (var mi = 0; mi <= nm; mi++) {
+        var mt = lo + mi * mstep;
+        if (Math.abs(mt / tick - Math.round(mt / tick)) < 1e-9) continue;
+        lay.parts.push(lineEl([0, Y(mt)], [PL_W, Y(mt)], '#eaeff6', 0.7));
+      }
     }
     var maxXL = 0;
     xl.forEach(function (v) { maxXL = Math.max(maxXL, String(v).length); });

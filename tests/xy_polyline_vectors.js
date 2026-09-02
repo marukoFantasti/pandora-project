@@ -47,6 +47,15 @@ const b2 = bad;
 });
 console.log('  1-2-5目盛 ' + (bad === b2 ? '✅' : '❌'));
 
+console.log('=== (2b) y_minor補助目盛(主0.5+補助0.1) ===');
+(function () {
+  cases++;
+  const svg = FB.build(fp({ series: [{ y: [36.2, 36.8] }], x_labels: ['a', 'b'], y_range: [36, 39], y_tick: 0.5, y_minor: 0.1 }));
+  const minor = (svg.match(/stroke="#eaeff6"/g) || []).length;
+  if (minor !== 24) { bad++; console.log('  ❌ 補助目盛' + minor + ' (期待24)'); }
+  else console.log('  補助24本(31位置−主7) ✅');
+})();
+
 console.log('=== (3) ガードthrow(契約違反5種) ===');
 const b3 = bad;
 [

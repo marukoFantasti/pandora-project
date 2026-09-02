@@ -4301,6 +4301,7 @@
      39
     ],
     "y_tick": 0.5,
+    "y_minor": 0.1,
     "title": "体温しらべ"
    },
    "kanji_policy": {
