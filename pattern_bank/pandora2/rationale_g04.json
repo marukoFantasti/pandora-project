@@ -1,7 +1,7 @@
 {
  "_meta": {
   "schema": "rationale_g05_gold.json準拠",
-  "scope": "g04全24パターン完全版(遡及・統一遡及③ g04完了 2026-08-12) +P5-1追補13(2026-08-31。gaisu_shishaは既存round_01の真部分集合=重複自動除外) +P5-2追補16(c05性質/面積/角度/立体/小数あまり 2026-08-31) +P5-3第2便12(折れ線10+composite_area2 2026-09-01。pedagogy=Fable rationale本文の逐語転写・anchor可変文は「例: 」例示化=裁可1) +P5-3第3便9(表族c02_u03 2026-09-02。pedagogy=設計書rationale4種の逐語転写・例示化適用済)",
+  "scope": "g04全24パターン完全版(遡及・統一遡及③ g04完了 2026-08-12) +P5-1追補13(2026-08-31。gaisu_shishaは既存round_01の真部分集合=重複自動除外) +P5-2追補16(c05性質/面積/角度/立体/小数あまり 2026-08-31) +P5-3第2便12(折れ線10+composite_area2 2026-09-01。pedagogy=Fable rationale本文の逐語転写・anchor可変文は「例: 」例示化=裁可1) +P5-3第3便9(表族c02_u03 2026-09-02。pedagogy=設計書rationale4種の逐語転写・例示化適用済) +P5-3第4便7(c13変わり方 2026-09-02。pedagogy=設計書rationale5種の逐語転写)",
   "note": "figure_notes正準=ゴールド流儀(null不使用)。",
   "order": "バンク順"
  },
@@ -1675,6 +1675,221 @@
     },
     {
      "text": "例: 全体18人で、両方が6人・かたほうずつが5人と3人なら、どちらもしなかった人は18−6−5−3=4人です。",
+     "by": "fable",
+     "date": "2026-09"
+    }
+   ]
+  }
+ },
+ "g04_kawari_dai_01": {
+  "brief": {
+   "semantic_territory": "ともなって変わる量(単価×個数)",
+   "number_domain": "整数(単価4択)",
+   "answer_structure": "single",
+   "figure": "table(1行6列・□空欄)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "設計書row0。",
+   "representation": "単価スロット・代金computed。式答は立式=FORMULA_TRANSCRIBE例外。",
+   "constructive_guarantees": "—",
+   "semantic_position": "変わり方族の入口。",
+   "exclusions": "なし。",
+   "figure_notes": "1行表。",
+   "pedagogy": [
+    {
+     "text": "一方が変わるともう一方も変わる2つの量は、表に整理してから、きまりを式に表します。",
+     "by": "fable",
+     "date": "2026-09"
+    },
+    {
+     "text": "例: 1こ90円の消しゴムなら、代金はいつも 90×個数 です。",
+     "by": "fable",
+     "date": "2026-09"
+    },
+    {
+     "text": "表のとなり合う数がいくつずつ変わっているかを見ると、きまりが見つけやすくなります。まわりの長さが決まった長方形では、たてと横の和がいつも同じ（まわり÷2）になります。",
+     "by": "fable",
+     "date": "2026-09"
+    }
+   ]
+  }
+ },
+ "g04_kawari_naga_01": {
+  "brief": {
+   "semantic_territory": "ともなって変わる量(和一定)",
+   "number_domain": "整数(まわり長6択)",
+   "answer_structure": "single",
+   "figure": "table(1行7列・□空欄)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "設計書row1。",
+   "representation": "半分computed(まわり÷2)・導出はpedagogyで明示。",
+   "constructive_guarantees": "—",
+   "semantic_position": "和一定型。",
+   "exclusions": "なし。",
+   "figure_notes": "1行表。",
+   "pedagogy": [
+    {
+     "text": "一方が変わるともう一方も変わる2つの量は、表に整理してから、きまりを式に表します。",
+     "by": "fable",
+     "date": "2026-09"
+    },
+    {
+     "text": "例: 1こ90円の消しゴムなら、代金はいつも 90×個数 です。",
+     "by": "fable",
+     "date": "2026-09"
+    },
+    {
+     "text": "表のとなり合う数がいくつずつ変わっているかを見ると、きまりが見つけやすくなります。まわりの長さが決まった長方形では、たてと横の和がいつも同じ（まわり÷2）になります。",
+     "by": "fable",
+     "date": "2026-09"
+    }
+   ]
+  }
+ },
+ "g04_kawari_dan_01": {
+  "brief": {
+   "semantic_territory": "きまりの式化(□×2+2)",
+   "number_domain": "整数(適用だん数15〜40)",
+   "answer_structure": "single",
+   "figure": "table(1行5列)+例示図(固定ベクター)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "設計書row3(裁可h-1)。形一意化で「または形による」解消・21だん44cm保存。",
+   "representation": "本文が形を自立記述(D10流儀)・例示図p53_dan_example.svg。",
+   "constructive_guarantees": "適用答=computed。",
+   "semantic_position": "きまり発見型。",
+   "exclusions": "なし。",
+   "figure_notes": "例示図は封印(p53_static_assets)。",
+   "pedagogy": [
+    {
+     "text": "図がふえていくときは、1つふえると何がいくつふえるかを数えます。",
+     "by": "fable",
+     "date": "2026-09"
+    },
+    {
+     "text": "例: 正方形を1だん積み上げるごとに、まわりの長さは2cmずつふえるので、□×2＋2と表せます。ようじの正方形は、さいしょの1個に4本、あとは1個ごとに3本ずつふえるので、□×3＋1です。",
+     "by": "fable",
+     "date": "2026-09"
+    },
+    {
+     "text": "式ができたら、表の数を入れてたしかめてから、大きい数にあてはめます。",
+     "by": "fable",
+     "date": "2026-09"
+    }
+   ]
+  }
+ },
+ "g04_kawari_yoji_01": {
+  "brief": {
+   "semantic_territory": "きまりの式化(□×3+1)",
+   "number_domain": "整数(適用個数10〜30)",
+   "answer_structure": "single",
+   "figure": "table(1行5列)+例示図(固定ベクター)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "設計書row5(裁可h-2)。14個43本保存。",
+   "representation": "個はかな回避・例示図p53_yoji_example.svg。",
+   "constructive_guarantees": "適用答=computed。",
+   "semantic_position": "きまり発見型の対。",
+   "exclusions": "なし。",
+   "figure_notes": "同上。",
+   "pedagogy": [
+    {
+     "text": "図がふえていくときは、1つふえると何がいくつふえるかを数えます。",
+     "by": "fable",
+     "date": "2026-09"
+    },
+    {
+     "text": "例: 正方形を1だん積み上げるごとに、まわりの長さは2cmずつふえるので、□×2＋2と表せます。ようじの正方形は、さいしょの1個に4本、あとは1個ごとに3本ずつふえるので、□×3＋1です。",
+     "by": "fable",
+     "date": "2026-09"
+    },
+    {
+     "text": "式ができたら、表の数を入れてたしかめてから、大きい数にあてはめます。",
+     "by": "fable",
+     "date": "2026-09"
+    }
+   ]
+  }
+ },
+ "g04_kawari_mizu_01": {
+  "brief": {
+   "semantic_territory": "グラフ外挿(増加直線)",
+   "number_domain": "整数(anchor固定)",
+   "answer_structure": "single",
+   "figure": "xy_graph(polyline・11点)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "設計書row2(裁可h-3)。y=x+5再設計——①保存・②再生成。",
+   "representation": "保存答の系列再導出をp53_static_assetsでassert。",
+   "constructive_guarantees": "直線性・外挿値をテストで封印。",
+   "semantic_position": "外挿型。",
+   "exclusions": "可変化(系列スロット化=在庫)。",
+   "figure_notes": "y_tick2。",
+   "pedagogy": [
+    {
+     "text": "グラフの線がまっすぐなときは、同じ調子で変わり続けると考えて、線をのばした先を読むことができます。まず1分でいくつ変わるかをグラフから見つけ、そのきまりを大きい時間にあてはめます。",
+     "by": "fable",
+     "date": "2026-09"
+    }
+   ]
+  }
+ },
+ "g04_kawari_senko_01": {
+  "brief": {
+   "semantic_territory": "減少グラフ(x切片)",
+   "number_domain": "整数(anchor固定)",
+   "answer_structure": "single",
+   "figure": "xy_graph(polyline・8点)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "設計書row4(裁可h-3)。y=70−2x再設計——②保存・①再生成。",
+   "representation": "同上assert。",
+   "constructive_guarantees": "同上。",
+   "semantic_position": "減少型。",
+   "exclusions": "同上。",
+   "figure_notes": "5分刻み。",
+   "pedagogy": [
+    {
+     "text": "右下がりの直線は、量が同じ調子で減っていることを表します。線が横の軸（0のところ）とぶつかる点が、なくなる時間です。",
+     "by": "fable",
+     "date": "2026-09"
+    }
+   ]
+  }
+ },
+ "g04_kawari_futatsu_01": {
+  "brief": {
+   "semantic_territory": "2本のグラフ(差と交点)",
+   "number_domain": "整数(anchor固定)",
+   "answer_structure": "single",
+   "figure": "xy_graph(polyline・2系列)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "設計書row6(裁可h-4)。A=20+x/B=2+3x=両答厳密保存。",
+   "representation": "交点前後の大小逆転をassert。",
+   "constructive_guarantees": "同上。",
+   "semantic_position": "2系列比較の掉尾。",
+   "exclusions": "同上。",
+   "figure_notes": "凡例A/B。",
+   "pedagogy": [
+    {
+     "text": "2本のグラフの差は、同じ時間のところでのたての間かくです。2本が交わった点では、2つの量が等しくなっています。交わる前と後で、どちらが多いかが入れかわることにも注目します。",
      "by": "fable",
      "date": "2026-09"
     }

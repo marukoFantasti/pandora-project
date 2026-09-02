@@ -5554,6 +5554,541 @@
    "template_number_constants": [
     24
    ]
+  },
+  {
+   "pattern_id": "g04_kawari_dai_01",
+   "grade": "g04",
+   "unit_id": "g04_c13_u01",
+   "unit_name": "変わり方",
+   "semantic_category": "ともなって変わる量(単価×個数・表+式)",
+   "semantic_note": "設計書row0。単価スロット(10円台4択)・代金computed。空欄=4〜6こ。式は単価スロット参照の構造文字列。",
+   "step_count": 1,
+   "answer_formula": "u1 * 6",
+   "slots": {
+    "u1": {
+     "type": "choice_int",
+     "choices": [
+      60,
+      70,
+      80,
+      90
+     ]
+    }
+   },
+   "computed_slots": {
+    "d1": {
+     "formula": "u1"
+    },
+    "d2": {
+     "formula": "u1 * 2"
+    },
+    "d3": {
+     "formula": "u1 * 3"
+    },
+    "d4": {
+     "formula": "u1 * 4"
+    },
+    "d5": {
+     "formula": "u1 * 5"
+    },
+    "d6": {
+     "formula": "u1 * 6"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "1こ{u1}円の消しゴムの数と代金の関係を、右の表に整理します。\n① 表のあいているところにあてはまる数を書きましょう。\n② 代金を求める式を書きましょう。"
+   ],
+   "answer_template": "答え ① {d4}、{d5}、{d6} ② 代金={u1}×個数",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "消しゴムの数と代金",
+    "col_header": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6"
+    ],
+    "rows": [
+     {
+      "label": "代金(円)",
+      "values": [
+       "{d1}",
+       "{d2}",
+       "{d3}",
+       "□",
+       "□",
+       "□"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ],
+    "allowed_extra": "個"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ]
+  },
+  {
+   "pattern_id": "g04_kawari_naga_01",
+   "grade": "g04",
+   "unit_id": "g04_c13_u01",
+   "unit_name": "変わり方",
+   "semantic_category": "ともなって変わる量(和一定・表+式)",
+   "semantic_note": "設計書row1。まわり長スロット(偶数20〜36)・半分computed。□+○=まわり÷2の関係。空欄=横行の後半3つ。",
+   "step_count": 1,
+   "answer_formula": "m1 // 2",
+   "slots": {
+    "m1": {
+     "type": "choice_int",
+     "choices": [
+      20,
+      24,
+      28,
+      30,
+      32,
+      36
+     ]
+    }
+   },
+   "computed_slots": {
+    "h1": {
+     "formula": "m1 // 2"
+    },
+    "c1": {
+     "formula": "m1 // 2 - 1"
+    },
+    "c2": {
+     "formula": "m1 // 2 - 2"
+    },
+    "c3": {
+     "formula": "m1 // 2 - 3"
+    },
+    "c4": {
+     "formula": "m1 // 2 - 4"
+    },
+    "c5": {
+     "formula": "m1 // 2 - 5"
+    },
+    "c6": {
+     "formula": "m1 // 2 - 6"
+    },
+    "c7": {
+     "formula": "m1 // 2 - 7"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "まわりの長さが{m1}cmの長方形の、たての長さ□cmと横の長さ○cmの関係を、右の表に整理します。\n① 表のあいているところにあてはまる数を書きましょう。\n② □と○の関係を式に表しましょう。"
+   ],
+   "answer_template": "答え ① {c5}、{c6}、{c7} ② □+○={h1}",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "たての長さ□と横の長さ○",
+    "col_header": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7"
+    ],
+    "rows": [
+     {
+      "label": "○(cm)",
+      "values": [
+       "{c1}",
+       "{c2}",
+       "{c3}",
+       "{c4}",
+       "□",
+       "□",
+       "□"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_kawari_dan_01",
+   "grade": "g04",
+   "unit_id": "g04_c13_u01",
+   "unit_name": "変わり方",
+   "semantic_category": "きまりを見つけて式にする(だん積み・□×2+2)",
+   "semantic_note": "設計書row3(裁可h-1)。形を「1辺1cmの正方形をたてに□だん積み上げた形」に一意化(転記答「または形による」を解消・21だん44cm保存)。例示図は固定ベクター(p53_dan_example.svg)=目視素材・本文が形を自立記述(D10流儀)。",
+   "step_count": 1,
+   "answer_formula": "2 * n1 + 2",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      15,
+      40
+     ]
+    }
+   },
+   "computed_slots": {
+    "a1": {
+     "formula": "2 * n1 + 2"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "1辺が1cmの正方形を、たてに□だん積み上げた形を作ります。だんの数□とまわりの長さ○cmの関係を、右の表に整理しました。\n① □と○の関係を式に表しましょう。\n② {n1}だんのときのまわりの長さは何cmですか。"
+   ],
+   "answer_template": "答え ① □×2+2=○ ② {a1}cm",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "だんの数□とまわりの長さ○",
+    "col_header": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5"
+    ],
+    "rows": [
+     {
+      "label": "○(cm)",
+      "values": [
+       "4",
+       "6",
+       "8",
+       "10",
+       "12"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1,
+    2
+   ]
+  },
+  {
+   "pattern_id": "g04_kawari_yoji_01",
+   "grade": "g04",
+   "unit_id": "g04_c13_u01",
+   "unit_name": "変わり方",
+   "semantic_category": "きまりを見つけて式にする(ようじ正方形・□×3+1)",
+   "semantic_note": "設計書row5(裁可h-2)。14個43本保存。例示図=固定ベクター(p53_yoji_example.svg)・本文自立記述。個はかな「こ」で回避。",
+   "step_count": 1,
+   "answer_formula": "3 * n1 + 1",
+   "slots": {
+    "n1": {
+     "type": "int",
+     "range": [
+      10,
+      30
+     ]
+    }
+   },
+   "computed_slots": {
+    "a1": {
+     "formula": "3 * n1 + 1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "ようじをならべて正方形を作り、横に□こつなげた形を作ります。正方形の数□とようじの数○本の関係を、右の表に整理しました。\n① □と○の関係を式に表しましょう。\n② 正方形が{n1}このとき、ようじは何本ですか。"
+   ],
+   "answer_template": "答え ① ○=□×3+1 ② {a1}本",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "正方形の数□とようじの数○",
+    "col_header": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5"
+    ],
+    "rows": [
+     {
+      "label": "○(本)",
+      "values": [
+       "4",
+       "7",
+       "10",
+       "13",
+       "16"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    3,
+    1
+   ]
+  },
+  {
+   "pattern_id": "g04_kawari_mizu_01",
+   "grade": "g04",
+   "unit_id": "g04_c13_u01",
+   "unit_name": "変わり方",
+   "semantic_category": "グラフをのばして読む(増加直線)",
+   "semantic_note": "設計書row2(裁可h-3)。系列y=x+5(毎分1L・初期5L)に再設計——①7分後12L=転記答保存・②35分後40L=再生成。規則発見→適用で導く。",
+   "step_count": 1,
+   "answer_formula": "12",
+   "slots": {},
+   "computed_slots": {},
+   "value_constraints": [],
+   "sentence_templates": [
+    "右のグラフは、水そうに水を入れたときの、時間と水の量を表したものです。\n① 7分後の水の量は何Lですか。\n② グラフをのばすと、35分後の水の量は何Lになりますか。"
+   ],
+   "answer_template": "答え ① 12L ② 40L",
+   "figure_params": {
+    "kind": "xy_graph",
+    "mode": "polyline",
+    "series": [
+     {
+      "y": [
+       5,
+       6,
+       7,
+       8,
+       9,
+       10,
+       11,
+       12,
+       13,
+       14,
+       15
+      ]
+     }
+    ],
+    "x_labels": [
+     "0",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10"
+    ],
+    "x_title": "分",
+    "y_title": "L",
+    "y_range": [
+     0,
+     16
+    ],
+    "y_tick": 2,
+    "title": "水そうの水の量"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    7,
+    35
+   ]
+  },
+  {
+   "pattern_id": "g04_kawari_senko_01",
+   "grade": "g04",
+   "unit_id": "g04_c13_u01",
+   "unit_name": "変わり方",
+   "semantic_category": "減っていくグラフ(x切片=なくなる時間)",
+   "semantic_note": "設計書row4(裁可h-3)。系列y=70−2x(5分刻み8点)に再設計——②なくなる35分後=転記答保存・①20分後30mm=再生成。",
+   "step_count": 1,
+   "answer_formula": "30",
+   "slots": {},
+   "computed_slots": {},
+   "value_constraints": [],
+   "sentence_templates": [
+    "右のグラフは、火をつけたせんこうの長さの変わり方を表したものです。\n① 20分後のせんこうの長さは何mmですか。\n② せんこうがなくなるのは、火をつけてから何分後ですか。"
+   ],
+   "answer_template": "答え ① 30mm ② 35分後",
+   "figure_params": {
+    "kind": "xy_graph",
+    "mode": "polyline",
+    "series": [
+     {
+      "y": [
+       70,
+       60,
+       50,
+       40,
+       30,
+       20,
+       10,
+       0
+      ]
+     }
+    ],
+    "x_labels": [
+     "0",
+     "5",
+     "10",
+     "15",
+     "20",
+     "25",
+     "30",
+     "35"
+    ],
+    "x_title": "分",
+    "y_title": "mm",
+    "y_range": [
+     0,
+     80
+    ],
+    "y_tick": 10,
+    "title": "せんこうの長さ"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    20
+   ]
+  },
+  {
+   "pattern_id": "g04_kawari_futatsu_01",
+   "grade": "g04",
+   "unit_id": "g04_c13_u01",
+   "unit_name": "変わり方",
+   "semantic_category": "2本のグラフの差と交点",
+   "semantic_note": "設計書row6(裁可h-4)。A=20+x・B=2+3x=両転記答厳密保存(差10L@4分・等値@9分)。交点前後の大小逆転が学習点。",
+   "step_count": 1,
+   "answer_formula": "4",
+   "slots": {},
+   "computed_slots": {},
+   "value_constraints": [],
+   "sentence_templates": [
+    "右のグラフは、2つの水そうAとBに水を入れたときの、時間と水の量を表したものです。\n① AとBの水の量の差が10Lになるのは何分後ですか。\n② AとBの水の量が等しくなるのは何分後ですか。"
+   ],
+   "answer_template": "答え ① 4分後 ② 9分後",
+   "figure_params": {
+    "kind": "xy_graph",
+    "mode": "polyline",
+    "series": [
+     {
+      "name": "A",
+      "y": [
+       20,
+       21,
+       22,
+       23,
+       24,
+       25,
+       26,
+       27,
+       28,
+       29,
+       30
+      ]
+     },
+     {
+      "name": "B",
+      "y": [
+       2,
+       5,
+       8,
+       11,
+       14,
+       17,
+       20,
+       23,
+       26,
+       29,
+       32
+      ]
+     }
+    ],
+    "x_labels": [
+     "0",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10"
+    ],
+    "x_title": "分",
+    "y_title": "L",
+    "y_range": [
+     0,
+     35
+    ],
+    "y_tick": 5,
+    "title": "水そうAとBの水の量"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2,
+    10
+   ]
   }
  ],
  "schema_changelog": {

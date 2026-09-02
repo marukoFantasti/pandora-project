@@ -1,5 +1,5 @@
 # furigana_registered.txt — furigana_lexicon 既収録表層形リスト(読み不要・自己走査突合用)
-# 更新: 2026-09-02 / 語数: 490 / 出所: handoff_jhs/furigana_lexicon.json surfaces
+# 更新: 2026-09-02 / 語数: 493 / 出所: handoff_jhs/furigana_lexicon.json surfaces
 # 用途: Fable納品前の自己走査=本文の残存漢字語が本リストに無ければ増補が必要
 がい数
 の間の
@@ -16,6 +16,7 @@
 上
 上がっ
 上がり
+上げ
 上底
 下
 下がっ
@@ -74,6 +75,7 @@
 作
 使
 個
+個数
 倍
 借り
 値
@@ -333,6 +335,7 @@
 温度
 測定
 満水
+火
 点
 点対称
 点数

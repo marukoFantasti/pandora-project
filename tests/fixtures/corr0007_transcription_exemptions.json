@@ -398,6 +398,10 @@
   {
    "pattern_id": "g04_hyo_nyujo_01",
    "code": "SELECTION_ANSWER"
+  },
+  {
+   "pattern_id": "g04_kawari_dai_01",
+   "code": "FORMULA_TRANSCRIBE"
   }
  ]
 }
