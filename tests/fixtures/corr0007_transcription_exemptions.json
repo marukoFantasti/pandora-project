@@ -394,6 +394,10 @@
   {
    "pattern_id": "g04_line_draw_01",
    "code": "SELECTION_ANSWER"
+  },
+  {
+   "pattern_id": "g04_hyo_nyujo_01",
+   "code": "SELECTION_ANSWER"
   }
  ]
 }

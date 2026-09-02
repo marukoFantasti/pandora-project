@@ -48,8 +48,9 @@ function createEngine(lexicon, counterTable) {
     if (!dr) return readNumber(n) + e.base;
     if (n >= 1 && n <= 10 && dr[String(n)]) return dr[String(n)];
     const num0 = k => (k ? readNumber(k) : '');                   // 上位部0は空(れい前置を防ぐ)
+    const gt = e.digit_readings_gt10 || {};                       // 複合時の差替(11人=じゅういちにん等)
     const o = n % 10;
-    if (o !== 0) return num0(n - o) + dr[String(o)];              // 末尾=一の位
+    if (o !== 0) return num0(n - o) + (gt[String(o)] || dr[String(o)]);   // 末尾=一の位
     if (n % 100 !== 0) {                                          // 末尾=十の位
       const hundredsPart = n - (n % 100), t = (n % 100) / 10;
       return num0(hundredsPart) + NC.tens_prefix[String(t)] + dr['10'];

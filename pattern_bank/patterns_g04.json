@@ -4488,6 +4488,1072 @@
    },
    "answer_structure": "single",
    "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_hyo_gakunen_01",
+   "grade": "g04",
+   "unit_id": "g04_c02_u03",
+   "unit_name": "整理のしかた",
+   "semantic_category": "二次元表の完成と読み取り(学年×場所・行合計最大)",
+   "semantic_note": "設計書001。公園列はanchor固定(列計8=②保存)・他12セル±1ジッター。③は設問補正済(いちばん多い=裁可g-2)・行合計max一意制約で4年生が静的答。",
+   "step_count": 1,
+   "answer_formula": "b4 + 3 + b5 + b6",
+   "slots": {
+    "b1": {
+     "type": "int",
+     "range": [
+      1,
+      3
+     ]
+    },
+    "b2": {
+     "type": "int",
+     "range": [
+      2,
+      4
+     ]
+    },
+    "b3": {
+     "type": "int",
+     "range": [
+      1,
+      2
+     ]
+    },
+    "b4": {
+     "type": "int",
+     "range": [
+      2,
+      4
+     ]
+    },
+    "b5": {
+     "type": "int",
+     "range": [
+      1,
+      3
+     ]
+    },
+    "b6": {
+     "type": "int",
+     "range": [
+      1,
+      3
+     ]
+    },
+    "b7": {
+     "type": "int",
+     "range": [
+      1,
+      3
+     ]
+    },
+    "b8": {
+     "type": "int",
+     "range": [
+      3,
+      5
+     ]
+    },
+    "b9": {
+     "type": "int",
+     "range": [
+      1,
+      2
+     ]
+    },
+    "b10": {
+     "type": "int",
+     "range": [
+      1,
+      2
+     ]
+    },
+    "b11": {
+     "type": "int",
+     "range": [
+      2,
+      4
+     ]
+    },
+    "b12": {
+     "type": "int",
+     "range": [
+      1,
+      3
+     ]
+    }
+   },
+   "computed_slots": {
+    "s3": {
+     "formula": "b1 + 1 + b2 + b3"
+    },
+    "s4": {
+     "formula": "b4 + 3 + b5 + b6"
+    },
+    "s5": {
+     "formula": "b7 + 2 + b8 + b9"
+    },
+    "s6": {
+     "formula": "b10 + 2 + b11 + b12"
+    },
+    "c1": {
+     "formula": "b1 + b4 + b7 + b10"
+    },
+    "c3": {
+     "formula": "b2 + b5 + b8 + b11"
+    },
+    "c4": {
+     "formula": "b3 + b6 + b9 + b12"
+    },
+    "T1": {
+     "formula": "b1 + b2 + b3 + b4 + b5 + b6 + b7 + b8 + b9 + b10 + b11 + b12 + 8"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "rowmax_3",
+     "expr": "b4 + 3 + b5 + b6 > b1 + 1 + b2 + b3",
+     "why": "4年行合計が最大(vs3年)"
+    },
+    {
+     "rule": "rowmax_5",
+     "expr": "b4 + 3 + b5 + b6 > b7 + 2 + b8 + b9",
+     "why": "vs5年"
+    },
+    {
+     "rule": "rowmax_6",
+     "expr": "b4 + 3 + b5 + b6 > b10 + 2 + b11 + b12",
+     "why": "vs6年"
+    }
+   ],
+   "sentence_templates": [
+    "右の表は、学年と遊んだ場所をしらべて整理したものです。\n① 表のあいているところにあてはまる数を書きましょう。\n② 公園で遊んだ人は何人ですか。\n③ 遊んだ人がいちばん多いのは何年生ですか。"
+   ],
+   "answer_template": "答え ① {s3}、3、{s4}、{b8}、{s5}、{b12}、{s6}、{c1}、8、{c3}、{c4}、{T1} ② 8人 ③ 4年生",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "学年と場所しらべ(人)",
+    "col_header": [
+     "家のまわり",
+     "公園",
+     "学校",
+     "あき地",
+     "合計"
+    ],
+    "rows": [
+     {
+      "label": "3年",
+      "values": [
+       "{b1}",
+       "1",
+       "{b2}",
+       "{b3}",
+       "□"
+      ]
+     },
+     {
+      "label": "4年",
+      "values": [
+       "{b4}",
+       "□",
+       "{b5}",
+       "{b6}",
+       "□"
+      ]
+     },
+     {
+      "label": "5年",
+      "values": [
+       "{b7}",
+       "2",
+       "□",
+       "{b9}",
+       "□"
+      ]
+     },
+     {
+      "label": "6年",
+      "values": [
+       "{b10}",
+       "2",
+       "{b11}",
+       "□",
+       "□"
+      ]
+     },
+     {
+      "label": "合計",
+      "values": [
+       "□",
+       "□",
+       "□",
+       "□",
+       "□"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_hyo_sukikirai_01",
+   "grade": "g04",
+   "unit_id": "g04_c02_u03",
+   "unit_name": "整理のしかた",
+   "semantic_category": "二次元表の読み取り(好ききらい2way)",
+   "semantic_note": "設計書002。全答がセル直読み+周辺和=制約なし・±1ジッター。",
+   "step_count": 1,
+   "answer_formula": "kb1",
+   "slots": {
+    "ka1": {
+     "type": "int",
+     "range": [
+      3,
+      5
+     ]
+    },
+    "kb1": {
+     "type": "int",
+     "range": [
+      6,
+      8
+     ]
+    },
+    "kc1": {
+     "type": "int",
+     "range": [
+      1,
+      3
+     ]
+    },
+    "kd1": {
+     "type": "int",
+     "range": [
+      3,
+      5
+     ]
+    }
+   },
+   "computed_slots": {
+    "T1": {
+     "formula": "ka1 + kb1 + kc1 + kd1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "右の表は、肉と魚の好ききらいをしらべて整理したものです。\n① 肉が好きで、魚がきらいな人は何人ですか。\n② 肉も魚も好きな人は何人ですか。\n③ しらべた人はぜんぶで何人ですか。"
+   ],
+   "answer_template": "答え ① {kb1}人 ② {ka1}人 ③ {T1}人",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "肉と魚の好ききらいしらべ(人)",
+    "col_header": [
+     "魚が好き",
+     "魚がきらい"
+    ],
+    "rows": [
+     {
+      "label": "肉が好き",
+      "values": [
+       "{ka1}",
+       "{kb1}"
+      ]
+     },
+     {
+      "label": "肉がきらい",
+      "values": [
+       "{kc1}",
+       "{kd1}"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_hyo_nyujo_01",
+   "grade": "g04",
+   "unit_id": "g04_c02_u03",
+   "unit_name": "整理のしかた",
+   "semantic_category": "二次元表への整理(文章→表完成+読み取り)",
+   "semantic_note": "設計書003。本文に4値を文章で与え表は全空欄→完成。答えは行優先の値列挙+設問。",
+   "step_count": 1,
+   "answer_formula": "na1 + nb1 + nc1 + nd1",
+   "slots": {
+    "na1": {
+     "type": "int",
+     "range": [
+      43,
+      47
+     ]
+    },
+    "nb1": {
+     "type": "int",
+     "range": [
+      56,
+      60
+     ]
+    },
+    "nc1": {
+     "type": "int",
+     "range": [
+      50,
+      54
+     ]
+    },
+    "nd1": {
+     "type": "int",
+     "range": [
+      54,
+      58
+     ]
+    }
+   },
+   "computed_slots": {
+    "sa1": {
+     "formula": "na1 + nb1"
+    },
+    "sc1": {
+     "formula": "nc1 + nd1"
+    },
+    "ca1": {
+     "formula": "na1 + nc1"
+    },
+    "cb1": {
+     "formula": "nb1 + nd1"
+    },
+    "T1": {
+     "formula": "na1 + nb1 + nc1 + nd1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "ゆうえん地に入場した人をしらべると、午前に入場した大人は{na1}人、子どもは{nc1}人、午後に入場した大人は{nb1}人、子どもは{nd1}人でした。右の表に整理して答えなさい。\n① 入場した人はぜんぶで何人ですか。\n② 午後に入場した大人は何人ですか。"
+   ],
+   "answer_template": "答え 表: {na1}、{nb1}、{sa1}、{nc1}、{nd1}、{sc1}、{ca1}、{cb1}、{T1} ① {T1}人 ② {nb1}人",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "入場した人しらべ(人)",
+    "col_header": [
+     "午前",
+     "午後",
+     "合計"
+    ],
+    "rows": [
+     {
+      "label": "大人",
+      "values": [
+       "□",
+       "□",
+       "□"
+      ]
+     },
+     {
+      "label": "子ども",
+      "values": [
+       "□",
+       "□",
+       "□"
+      ]
+     },
+     {
+      "label": "合計",
+      "values": [
+       "□",
+       "□",
+       "□"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_hyo_hon_01",
+   "grade": "g04",
+   "unit_id": "g04_c02_u03",
+   "unit_name": "整理のしかた",
+   "semantic_category": "二次元表の完成と読み取り(組×本・行/列最大)",
+   "semantic_note": "設計書004。物語列はanchor固定(列計11=②保存)。行max(1組)・列max(社会)一意制約で③④は静的答。",
+   "step_count": 1,
+   "answer_formula": "4 + h1 + h2 + h3",
+   "slots": {
+    "h1": {
+     "type": "int",
+     "range": [
+      1,
+      3
+     ]
+    },
+    "h2": {
+     "type": "int",
+     "range": [
+      4,
+      6
+     ]
+    },
+    "h3": {
+     "type": "int",
+     "range": [
+      2,
+      4
+     ]
+    },
+    "h4": {
+     "type": "int",
+     "range": [
+      2,
+      4
+     ]
+    },
+    "h5": {
+     "type": "int",
+     "range": [
+      3,
+      5
+     ]
+    },
+    "h6": {
+     "type": "int",
+     "range": [
+      1,
+      3
+     ]
+    },
+    "h7": {
+     "type": "int",
+     "range": [
+      1,
+      3
+     ]
+    },
+    "h8": {
+     "type": "int",
+     "range": [
+      2,
+      4
+     ]
+    },
+    "h9": {
+     "type": "int",
+     "range": [
+      3,
+      5
+     ]
+    },
+    "h10": {
+     "type": "int",
+     "range": [
+      3,
+      5
+     ]
+    },
+    "h11": {
+     "type": "int",
+     "range": [
+      4,
+      6
+     ]
+    },
+    "h12": {
+     "type": "int",
+     "range": [
+      1,
+      2
+     ]
+    }
+   },
+   "computed_slots": {
+    "s1": {
+     "formula": "4 + h1 + h2 + h3"
+    },
+    "s2": {
+     "formula": "3 + h4 + h5 + h6"
+    },
+    "s3": {
+     "formula": "2 + h7 + h8 + h9"
+    },
+    "s4": {
+     "formula": "2 + h10 + h11 + h12"
+    },
+    "d1": {
+     "formula": "h1 + h4 + h7 + h10"
+    },
+    "d2": {
+     "formula": "h2 + h5 + h8 + h11"
+    },
+    "d3": {
+     "formula": "h3 + h6 + h9 + h12"
+    },
+    "T1": {
+     "formula": "11 + h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8 + h9 + h10 + h11 + h12"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "rowmax_2",
+     "expr": "4 + h1 + h2 + h3 > 3 + h4 + h5 + h6",
+     "why": "1組行合計が最大"
+    },
+    {
+     "rule": "rowmax_3",
+     "expr": "4 + h1 + h2 + h3 > 2 + h7 + h8 + h9",
+     "why": "vs3組"
+    },
+    {
+     "rule": "rowmax_4",
+     "expr": "4 + h1 + h2 + h3 > 2 + h10 + h11 + h12",
+     "why": "vs4組"
+    },
+    {
+     "rule": "colmax_mono",
+     "expr": "h2 + h5 + h8 + h11 > 11",
+     "why": "社会列計>物語列計(11)"
+    },
+    {
+     "rule": "colmax_den",
+     "expr": "h2 + h5 + h8 + h11 > h1 + h4 + h7 + h10",
+     "why": "社会列計>伝記列計"
+    },
+    {
+     "rule": "colmax_kag",
+     "expr": "h2 + h5 + h8 + h11 > h3 + h6 + h9 + h12",
+     "why": "社会列計>科学列計"
+    }
+   ],
+   "sentence_templates": [
+    "右の表は、組ごとに借りた本の種類をしらべて整理したものです。\n① 表のあいているところにあてはまる数を書きましょう。\n② 物語の本は、ぜんぶで何さつ借りられましたか。\n③ いちばん多く本を借りたのは何組ですか。\n④ いちばん多く借りられた本の種類は何ですか。"
+   ],
+   "answer_template": "答え ① {s1}、{h5}、{s2}、{h9}、{s3}、{h10}、{s4}、{d1}、11、{d2}、{d3}、{T1} ② 11さつ ③ 1くみ ④ 社会",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "借りた本しらべ(さつ)",
+    "col_header": [
+     "物語",
+     "伝記",
+     "社会",
+     "科学",
+     "合計"
+    ],
+    "rows": [
+     {
+      "label": "1組",
+      "values": [
+       "4",
+       "{h1}",
+       "{h2}",
+       "{h3}",
+       "□"
+      ]
+     },
+     {
+      "label": "2組",
+      "values": [
+       "3",
+       "{h4}",
+       "□",
+       "{h6}",
+       "□"
+      ]
+     },
+     {
+      "label": "3組",
+      "values": [
+       "2",
+       "{h7}",
+       "{h8}",
+       "□",
+       "□"
+      ]
+     },
+     {
+      "label": "4組",
+      "values": [
+       "2",
+       "□",
+       "{h11}",
+       "{h12}",
+       "□"
+      ]
+     },
+     {
+      "label": "合計",
+      "values": [
+       "□",
+       "□",
+       "□",
+       "□",
+       "□"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_hyo_tsurimushi_01",
+   "grade": "g04",
+   "unit_id": "g04_c02_u03",
+   "unit_name": "整理のしかた",
+   "semantic_category": "二次元表の読み取り(重なりの整理)",
+   "semantic_note": "設計書005。対角ます(両方/どちらも)の読み。±1ジッター。",
+   "step_count": 1,
+   "answer_formula": "ta1",
+   "slots": {
+    "ta1": {
+     "type": "int",
+     "range": [
+      5,
+      7
+     ]
+    },
+    "tb1": {
+     "type": "int",
+     "range": [
+      4,
+      6
+     ]
+    },
+    "tc1": {
+     "type": "int",
+     "range": [
+      2,
+      4
+     ]
+    },
+    "td1": {
+     "type": "int",
+     "range": [
+      3,
+      5
+     ]
+    }
+   },
+   "computed_slots": {
+    "T1": {
+     "formula": "ta1 + tb1 + tc1 + td1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "右の表は、つりと虫とりをしたかどうかをしらべて整理したものです。\n① つりも虫とりもした人は何人ですか。\n② つりも虫とりもしなかった人は何人ですか。"
+   ],
+   "answer_template": "答え ① {ta1}人 ② {td1}人",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "つりと虫とりしらべ(人)",
+    "col_header": [
+     "虫とりをした",
+     "虫とりをしなかった"
+    ],
+    "rows": [
+     {
+      "label": "つりをした",
+      "values": [
+       "{ta1}",
+       "{tb1}"
+      ]
+     },
+     {
+      "label": "つりをしなかった",
+      "values": [
+       "{tc1}",
+       "{td1}"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_hyo_nyujo2_01",
+   "grade": "g04",
+   "unit_id": "g04_c02_u03",
+   "unit_name": "整理のしかた",
+   "semantic_category": "二次元表の読み取り(総計固定)",
+   "semantic_note": "設計書006。総計211=①保存のためnd1=211−Σの補償スロット(u01_009手筋)。",
+   "step_count": 1,
+   "answer_formula": "ma1 + mb1 + mc1 + md1",
+   "slots": {
+    "ma1": {
+     "type": "int",
+     "range": [
+      58,
+      62
+     ]
+    },
+    "mb1": {
+     "type": "int",
+     "range": [
+      56,
+      60
+     ]
+    },
+    "mc1": {
+     "type": "int",
+     "range": [
+      46,
+      50
+     ]
+    }
+   },
+   "computed_slots": {
+    "md1": {
+     "formula": "211 - ma1 - mb1 - mc1"
+    },
+    "T1": {
+     "formula": "211"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "md_range",
+     "expr": "43 <= 211 - ma1 - mb1 - mc1 <= 47",
+     "why": "子ども午後がanchor近傍"
+    }
+   ],
+   "sentence_templates": [
+    "右の表は、ゆうえん地に入場した人をしらべて整理したものです。\n① 入場した人はぜんぶで何人ですか。\n② 午後に入場した大人は何人ですか。"
+   ],
+   "answer_template": "答え ① 211人 ② {mb1}人",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "入場した人しらべ(人)",
+    "col_header": [
+     "午前",
+     "午後"
+    ],
+    "rows": [
+     {
+      "label": "大人",
+      "values": [
+       "{ma1}",
+       "{mb1}"
+      ]
+     },
+     {
+      "label": "子ども",
+      "values": [
+       "{mc1}",
+       "{md1}"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    211
+   ]
+  },
+  {
+   "pattern_id": "g04_hyo_irokatachi_01",
+   "grade": "g04",
+   "unit_id": "g04_c02_u03",
+   "unit_name": "整理のしかた",
+   "semantic_category": "数えて整理(2×3+合計・表完成)",
+   "semantic_note": "設計書007。転記実在値のためanchor固定(裁可g)・computed一致確認のみ。",
+   "step_count": 1,
+   "answer_formula": "2",
+   "slots": {},
+   "computed_slots": {},
+   "value_constraints": [],
+   "sentence_templates": [
+    "右の表は、色と形のちがうカードの数を整理したとちゅうのものです。\n① 表のあいているところにあてはまる数を書きましょう。\n② 白い四角のカードは何まいですか。\n③ 黒い丸のカードは何まいですか。\n④ カードはぜんぶで何まいですか。"
+   ],
+   "answer_template": "答え ① 2、1、6、5、3、12 ② 2まい ③ 1まい ④ 12まい",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "色と形しらべ(まい)",
+    "col_header": [
+     "丸",
+     "四角",
+     "三角",
+     "合計"
+    ],
+    "rows": [
+     {
+      "label": "白",
+      "values": [
+       "3",
+       "□",
+       "1",
+       "6"
+      ]
+     },
+     {
+      "label": "黒",
+      "values": [
+       "□",
+       "3",
+       "2",
+       "□"
+      ]
+     },
+     {
+      "label": "合計",
+      "values": [
+       "4",
+       "□",
+       "□",
+       "□"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": []
+  },
+  {
+   "pattern_id": "g04_hyo_kanbin_01",
+   "grade": "g04",
+   "unit_id": "g04_c02_u03",
+   "unit_name": "整理のしかた",
+   "semantic_category": "二次元表の読み取り(マーカーセル+重なり)",
+   "semantic_note": "設計書008。②は設問補正済(裁可g-2)。マーカーは丸数字小問との衝突回避で「あ」使用(①指定からの記号置換・報告)。あ=4固定。",
+   "step_count": 1,
+   "answer_formula": "4",
+   "slots": {
+    "pa1": {
+     "type": "int",
+     "range": [
+      4,
+      6
+     ]
+    },
+    "pc1": {
+     "type": "int",
+     "range": [
+      2,
+      4
+     ]
+    },
+    "pd1": {
+     "type": "int",
+     "range": [
+      5,
+      7
+     ]
+    }
+   },
+   "computed_slots": {
+    "T1": {
+     "formula": "pa1 + 4 + pc1 + pd1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "右の表は、かんとびんを拾ったかどうかをしらべて整理したものです。\n① 表の「あ」にあてはまる数は何ですか。\n② かんもびんも拾っていない人は何人ですか。"
+   ],
+   "answer_template": "答え ① 4 ② {pd1}人",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "かんとびんしらべ(人)",
+    "col_header": [
+     "びんを拾った",
+     "びんを拾っていない"
+    ],
+    "rows": [
+     {
+      "label": "かんを拾った",
+      "values": [
+       "{pa1}",
+       "あ"
+      ]
+     },
+     {
+      "label": "かんを拾っていない",
+      "values": [
+       "{pc1}",
+       "{pd1}"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    4
+   ]
+  },
+  {
+   "pattern_id": "g04_hyo_sansu_01",
+   "grade": "g04",
+   "unit_id": "g04_c02_u03",
+   "unit_name": "整理のしかた",
+   "semantic_category": "二次元表の完成(固定セル+合計行列)",
+   "semantic_note": "設計書010。両方できた=24固定(②保存)。合計行列の完成。",
+   "step_count": 1,
+   "answer_formula": "24 + qb1 + qc1 + qd1",
+   "slots": {
+    "qb1": {
+     "type": "int",
+     "range": [
+      7,
+      9
+     ]
+    },
+    "qc1": {
+     "type": "int",
+     "range": [
+      5,
+      7
+     ]
+    },
+    "qd1": {
+     "type": "int",
+     "range": [
+      1,
+      3
+     ]
+    }
+   },
+   "computed_slots": {
+    "s1": {
+     "formula": "24 + qb1"
+    },
+    "s2": {
+     "formula": "qc1 + qd1"
+    },
+    "d1": {
+     "formula": "24 + qc1"
+    },
+    "d2": {
+     "formula": "qb1 + qd1"
+    },
+    "T1": {
+     "formula": "24 + qb1 + qc1 + qd1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "右の表は、算数と国語の問題ができたかどうかをしらべて整理したものです。\n① 表のあいているところにあてはまる数を書きましょう。\n② 算数も国語もできた人は何人ですか。"
+   ],
+   "answer_template": "答え ① 24、{s1}、{s2}、{d1}、{d2}、{T1} ② 24人",
+   "figure_params": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "算数と国語しらべ(人)",
+    "col_header": [
+     "国語ができた",
+     "国語ができなかった",
+     "合計"
+    ],
+    "rows": [
+     {
+      "label": "算数ができた",
+      "values": [
+       "□",
+       "{qb1}",
+       "□"
+      ]
+     },
+     {
+      "label": "算数ができなかった",
+      "values": [
+       "{qc1}",
+       "{qd1}",
+       "□"
+      ]
+     },
+     {
+      "label": "合計",
+      "values": [
+       "□",
+       "□",
+       "□"
+      ]
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    24
+   ]
   }
  ],
  "schema_changelog": {

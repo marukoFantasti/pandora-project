@@ -1,7 +1,7 @@
 {
  "_meta": {
   "schema": "rationale_g05_gold.json準拠",
-  "scope": "g04全24パターン完全版(遡及・統一遡及③ g04完了 2026-08-12) +P5-1追補13(2026-08-31。gaisu_shishaは既存round_01の真部分集合=重複自動除外) +P5-2追補16(c05性質/面積/角度/立体/小数あまり 2026-08-31) +P5-3第2便12(折れ線10+composite_area2 2026-09-01。pedagogy=Fable rationale本文の逐語転写・anchor可変文は「例: 」例示化=裁可1)",
+  "scope": "g04全24パターン完全版(遡及・統一遡及③ g04完了 2026-08-12) +P5-1追補13(2026-08-31。gaisu_shishaは既存round_01の真部分集合=重複自動除外) +P5-2追補16(c05性質/面積/角度/立体/小数あまり 2026-08-31) +P5-3第2便12(折れ線10+composite_area2 2026-09-01。pedagogy=Fable rationale本文の逐語転写・anchor可変文は「例: 」例示化=裁可1) +P5-3第3便9(表族c02_u03 2026-09-02。pedagogy=設計書rationale4種の逐語転写・例示化適用済)",
   "note": "figure_notes正準=ゴールド流儀(null不使用)。",
   "order": "バンク順"
  },
@@ -1385,6 +1385,296 @@
    "pedagogy": [
     {
      "text": "まわりの長方形の面積から、中のあなの長方形の面積を引きます。たとえば、たて20cm・横15cmの長方形から、1辺9cmの正方形をくりぬいた形なら、20×15−9×9=300−81=219cm²です。あなの場所がまん中でもはしのほうでも、引く面積は変わらないので、答えは同じです。",
+     "by": "fable",
+     "date": "2026-09"
+    }
+   ]
+  }
+ },
+ "g04_hyo_gakunen_01": {
+  "brief": {
+   "semantic_territory": "二次元表の完成と読み取り(4×4+合計・行最大)",
+   "number_domain": "整数(±1ジッター・公園列固定)",
+   "answer_structure": "single",
+   "figure": "table(5×5・□空欄)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "設計書001。表完成+列計+行合計argmax。③設問補正済(裁可g-2)。",
+   "representation": "公園列anchor固定(②=8保存)・行合計max一意制約で③=4年生が静的。空欄はnum_seq様式の値列挙(多小問混在のため自動採点は教師主・報告)。",
+   "constructive_guarantees": "行合計max一意はvalue_constraintsで悉皆保証。",
+   "semantic_position": "表族(g04)の第1号。",
+   "exclusions": "なし。",
+   "figure_notes": "table kind・rows5(合計行)・□文字列セル。",
+   "pedagogy": [
+    {
+     "text": "表のたてとよこの合計は、その列や行の数をぜんぶたした数です。空いているところは、合計から分かっている数を引いて求めます。",
+     "by": "fable",
+     "date": "2026-09"
+    },
+    {
+     "text": "例: 白のだんの合計が6で、3と1が分かっていれば、残りは6−3−1=2です。",
+     "by": "fable",
+     "date": "2026-09"
+    },
+    {
+     "text": "「いちばん多い」をきかれたら、合計のらんをくらべます。",
+     "by": "fable",
+     "date": "2026-09"
+    }
+   ]
+  }
+ },
+ "g04_hyo_sukikirai_01": {
+  "brief": {
+   "semantic_territory": "二次元表の読み取り(2way)",
+   "number_domain": "整数(±1)",
+   "answer_structure": "single",
+   "figure": "table(2×2)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "設計書002。交わりますの直読み+総計。",
+   "representation": "制約なし(全答が直読み/周辺和)。",
+   "constructive_guarantees": "—",
+   "semantic_position": "2way読みの入口。",
+   "exclusions": "なし。",
+   "figure_notes": "2×2フル表示。",
+   "pedagogy": [
+    {
+     "text": "2つのことがらを1つの表にまとめたものが二次元の表です。たての見出しとよこの見出しが交わったますが、「両方にあてはまる数」です。",
+     "by": "fable",
+     "date": "2026-09"
+    },
+    {
+     "text": "例: 肉が好きで魚がきらいな人は、「好き」の行と「きらい」の列の交わったますを読みます。",
+     "by": "fable",
+     "date": "2026-09"
+    },
+    {
+     "text": "合計のらんは、たてに見てもよこに見ても同じ総計になります。",
+     "by": "fable",
+     "date": "2026-09"
+    }
+   ]
+  }
+ },
+ "g04_hyo_nyujo_01": {
+  "brief": {
+   "semantic_territory": "二次元表への整理(文章→表完成)",
+   "number_domain": "整数(±2)",
+   "answer_structure": "single",
+   "figure": "table(3×3全□)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "設計書003。文章の4値を表へ整理。",
+   "representation": "表は全空欄・答=行優先の値列挙+設問。答=本文値の写し=SELECTION_ANSWER例外(表整理の学習内容)。",
+   "constructive_guarantees": "—",
+   "semantic_position": "整理型の代表。",
+   "exclusions": "なし。",
+   "figure_notes": "全□+合計。",
+   "pedagogy": [
+    {
+     "text": "2つのことがらを1つの表にまとめたものが二次元の表です。たての見出しとよこの見出しが交わったますが、「両方にあてはまる数」です。",
+     "by": "fable",
+     "date": "2026-09"
+    },
+    {
+     "text": "例: 肉が好きで魚がきらいな人は、「好き」の行と「きらい」の列の交わったますを読みます。",
+     "by": "fable",
+     "date": "2026-09"
+    },
+    {
+     "text": "合計のらんは、たてに見てもよこに見ても同じ総計になります。",
+     "by": "fable",
+     "date": "2026-09"
+    }
+   ]
+  }
+ },
+ "g04_hyo_hon_01": {
+  "brief": {
+   "semantic_territory": "二次元表の完成と読み取り(4×4・行/列最大)",
+   "number_domain": "整数(±1・物語列固定)",
+   "answer_structure": "single",
+   "figure": "table(5×5・□空欄)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "設計書004。行max(1組)+列max(社会)の二重argmax。",
+   "representation": "物語列固定(②=11保存)・二重一意制約で③④静的。③答は組名の読み弁別(クラス=いちくみ)のため「1くみ」表記(報告)。",
+   "constructive_guarantees": "二重max一意を6制約で保証。",
+   "semantic_position": "表族の最重行。",
+   "exclusions": "なし。",
+   "figure_notes": "5×5。",
+   "pedagogy": [
+    {
+     "text": "表のたてとよこの合計は、その列や行の数をぜんぶたした数です。空いているところは、合計から分かっている数を引いて求めます。",
+     "by": "fable",
+     "date": "2026-09"
+    },
+    {
+     "text": "例: 白のだんの合計が6で、3と1が分かっていれば、残りは6−3−1=2です。",
+     "by": "fable",
+     "date": "2026-09"
+    },
+    {
+     "text": "「いちばん多い」をきかれたら、合計のらんをくらべます。",
+     "by": "fable",
+     "date": "2026-09"
+    }
+   ]
+  }
+ },
+ "g04_hyo_tsurimushi_01": {
+  "brief": {
+   "semantic_territory": "二次元表の読み取り(重なり・対角)",
+   "number_domain": "整数(±1)",
+   "answer_structure": "single",
+   "figure": "table(2×2)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "設計書005。対角ます(両方/どちらも)。",
+   "representation": "—",
+   "constructive_guarantees": "—",
+   "semantic_position": "重なり整理の入口。",
+   "exclusions": "なし。",
+   "figure_notes": "2×2。",
+   "pedagogy": [
+    {
+     "text": "「どちらもした」「どちらもしなかった」は、二次元の表の対角のますに入ります。4つのますをぜんぶたすと全体の人数になるので、3つ分かれば残りの1つは引き算で求められます。",
+     "by": "fable",
+     "date": "2026-09"
+    },
+    {
+     "text": "例: 全体18人で、両方が6人・かたほうずつが5人と3人なら、どちらもしなかった人は18−6−5−3=4人です。",
+     "by": "fable",
+     "date": "2026-09"
+    }
+   ]
+  }
+ },
+ "g04_hyo_nyujo2_01": {
+  "brief": {
+   "semantic_territory": "二次元表の読み取り(総計固定)",
+   "number_domain": "整数(補償スロット)",
+   "answer_structure": "single",
+   "figure": "table(2×2)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "設計書006。総計211=①保存。",
+   "representation": "md1=211−Σの補償スロット(u01_009手筋)。",
+   "constructive_guarantees": "md域はvalue_constraintで保証。",
+   "semantic_position": "003の対(読み取り版)。",
+   "exclusions": "なし。",
+   "figure_notes": "2×2。",
+   "pedagogy": [
+    {
+     "text": "2つのことがらを1つの表にまとめたものが二次元の表です。たての見出しとよこの見出しが交わったますが、「両方にあてはまる数」です。",
+     "by": "fable",
+     "date": "2026-09"
+    },
+    {
+     "text": "例: 肉が好きで魚がきらいな人は、「好き」の行と「きらい」の列の交わったますを読みます。",
+     "by": "fable",
+     "date": "2026-09"
+    },
+    {
+     "text": "合計のらんは、たてに見てもよこに見ても同じ総計になります。",
+     "by": "fable",
+     "date": "2026-09"
+    }
+   ]
+  }
+ },
+ "g04_hyo_irokatachi_01": {
+  "brief": {
+   "semantic_territory": "数えて整理(2×3+合計・表完成)",
+   "number_domain": "整数(anchor固定)",
+   "answer_structure": "single",
+   "figure": "table(3×4・□空欄)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "設計書007。転記実在値=anchor固定(裁可g)。",
+   "representation": "全静的・computed一致確認のみ。",
+   "constructive_guarantees": "—",
+   "semantic_position": "数え整理の代表。",
+   "exclusions": "可変化(数え対象の語彙束が必要=在庫)。",
+   "figure_notes": "部分空欄。",
+   "pedagogy": [
+    {
+     "text": "数えたものを表に整理するときは、1つのものを2回数えないように、行と列の見出しで場所を決めてから書き入れます。合計が数えたものの総数と合うかどうかで、たしかめができます。",
+     "by": "fable",
+     "date": "2026-09"
+    }
+   ]
+  }
+ },
+ "g04_hyo_kanbin_01": {
+  "brief": {
+   "semantic_territory": "二次元表の読み取り(マーカーセル)",
+   "number_domain": "整数(±1・あ=4固定)",
+   "answer_structure": "single",
+   "figure": "table(2×2・あマーカー)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "設計書008。②設問補正済(裁可g-2)。",
+   "representation": "マーカーは丸数字小問との記号衝突回避で「あ」(①指定から置換・報告)。",
+   "constructive_guarantees": "あ=4は固定表示で保証。",
+   "semantic_position": "マーカー参照型。",
+   "exclusions": "なし。",
+   "figure_notes": "あセル。",
+   "pedagogy": [
+    {
+     "text": "「どちらもした」「どちらもしなかった」は、二次元の表の対角のますに入ります。4つのますをぜんぶたすと全体の人数になるので、3つ分かれば残りの1つは引き算で求められます。",
+     "by": "fable",
+     "date": "2026-09"
+    },
+    {
+     "text": "例: 全体18人で、両方が6人・かたほうずつが5人と3人なら、どちらもしなかった人は18−6−5−3=4人です。",
+     "by": "fable",
+     "date": "2026-09"
+    }
+   ]
+  }
+ },
+ "g04_hyo_sansu_01": {
+  "brief": {
+   "semantic_territory": "二次元表の完成(固定セル+合計行列)",
+   "number_domain": "整数(±1・両方24固定)",
+   "answer_structure": "single",
+   "figure": "table(3×4・□空欄)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "設計書010。両方できた=24固定(②保存)。",
+   "representation": "合計行列の完成が主作業。",
+   "constructive_guarantees": "24固定はリテラル表示。",
+   "semantic_position": "表族の掉尾(第3便)。",
+   "exclusions": "なし。",
+   "figure_notes": "3×4。",
+   "pedagogy": [
+    {
+     "text": "「どちらもした」「どちらもしなかった」は、二次元の表の対角のますに入ります。4つのますをぜんぶたすと全体の人数になるので、3つ分かれば残りの1つは引き算で求められます。",
+     "by": "fable",
+     "date": "2026-09"
+    },
+    {
+     "text": "例: 全体18人で、両方が6人・かたほうずつが5人と3人なら、どちらもしなかった人は18−6−5−3=4人です。",
      "by": "fable",
      "date": "2026-09"
     }
