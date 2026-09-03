@@ -1235,6 +1235,148 @@
     return lay;
   }
 
+  // ---- e-2 Kind: line_set(直線散布・垂直/平行の組合せ選択)。裁可(i)・設計書e-2 §1 ----
+  // labels(バンク由来記号)+pairs(正答ペア=転記保存)+seed → 合成規則(§1.2)で配置を決定的生成。
+  // lines[]明示も受理(anchor固定)。日本語ハードコードなし。ラベル=線分一端の外側(自線分束縛)。
+  var LS_W = 260, LS_H = 200, LS_MARGIN = 0.06, LS_TRIES = 600;
+  function lsRand(seed) {   // mulberry32(決定的)
+    var a = (Number(seed) >>> 0) || 1;
+    return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  }
+  function lsAngDiff(a, b) { var d = Math.abs(a - b) % 180; return Math.min(d, 180 - d); }   // 直線の角度差[0,90]
+  function lsEnds(l) {   // 中点・角度・長さ→両端(正規化)
+    var r = l.angle * DEG, hx = Math.cos(r) * l.len / 2, hy = Math.sin(r) * l.len / 2;
+    return [[l.cx - hx, l.cy - hy], [l.cx + hx, l.cy + hy]];
+  }
+  function lsSegInter(a, b) {   // 線分交点(正規化)。無ければnull
+    var p = lsEnds(a), q = lsEnds(b);
+    var x1 = p[0][0], y1 = p[0][1], x2 = p[1][0], y2 = p[1][1], x3 = q[0][0], y3 = q[0][1], x4 = q[1][0], y4 = q[1][1];
+    var den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+    if (Math.abs(den) < 1e-9) return null;
+    var t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / den, u = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / den;
+    if (t < 0 || t > 1 || u < 0 || u > 1) return null;
+    return { x: x1 + t * (x2 - x1), y: y1 + t * (y2 - y1), t: t, u: u };
+  }
+  function lsPtSeg(p, a, b) {   // 点-線分距離(正規化)
+    var vx = b[0] - a[0], vy = b[1] - a[1], wx = p[0] - a[0], wy = p[1] - a[1];
+    var L2 = vx * vx + vy * vy, t = L2 ? Math.max(0, Math.min(1, (wx * vx + wy * vy) / L2)) : 0;
+    return Math.hypot(p[0] - (a[0] + t * vx), p[1] - (a[1] + t * vy));
+  }
+  function lsLabelEnd(lines, i) {   // ラベル端=他線分からの余地が大きい端(描画・検査で同じ導出)
+    var e = lsEnds(lines[i]), best = 0, bestD = -1;
+    for (var k = 0; k < 2; k++) {
+      var d = 1e9;
+      for (var j = 0; j < lines.length; j++) { if (j === i) continue; var q = lsEnds(lines[j]); d = Math.min(d, lsPtSeg(e[k], q[0], q[1])); }
+      if (d > bestD + 1e-9) { bestD = d; best = k; }
+    }
+    return { idx: best, room: bestD };
+  }
+  var LS_LABEL_ROOM = 0.12;
+  function lsValidate(lines, pairs) {   // §1.2/§1.4の幾何ガード(描画と同じ導出で独立検査可)
+    var byL = {}; lines.forEach(function (l) { byL[l.label] = l; });
+    var issues = [];
+    lines.forEach(function (l, i) { if (lsLabelEnd(lines, i).room < LS_LABEL_ROOM) issues.push('label_room:' + l.label); });
+    lines.forEach(function (l) {
+      lsEnds(l).forEach(function (e) { if (e[0] < LS_MARGIN || e[0] > 1 - LS_MARGIN || e[1] < LS_MARGIN || e[1] > 1 - LS_MARGIN) issues.push('out:' + l.label); });
+    });
+    var isPair = {};
+    (pairs.perpendicular || []).forEach(function (p) { isPair[p[0] + p[1]] = isPair[p[1] + p[0]] = 'perp'; });
+    (pairs.parallel || []).forEach(function (p) { isPair[p[0] + p[1]] = isPair[p[1] + p[0]] = 'para'; });
+    var inters = [];
+    for (var i = 0; i < lines.length; i++) for (var j = i + 1; j < lines.length; j++) {
+      var a = lines[i], b = lines[j], d = lsAngDiff(a.angle, b.angle), rel = isPair[a.label + b.label];
+      if (rel === 'perp') { if (Math.abs(d - 90) >= 0.5) issues.push('perp_angle:' + a.label + b.label); }
+      else if (rel === 'para') { if (d >= 0.5) issues.push('para_angle:' + a.label + b.label); }
+      else if (!(d >= 12 && d <= 78)) issues.push('margin:' + a.label + b.label + ':' + d.toFixed(1));   // [12,78]∪[102,168]は直線角度差で[12,78]
+      var X = lsSegInter(a, b);
+      if (rel === 'perp' && !X) issues.push('perp_nointer:' + a.label + b.label);
+      if (X) {
+        if (X.t < 0.08 || X.t > 0.92 || X.u < 0.08 || X.u > 0.92) issues.push('inter_near_end:' + a.label + b.label);
+        inters.push(X);
+      }
+    }
+    for (var m = 0; m < inters.length; m++) for (var n = m + 1; n < inters.length; n++) {
+      if (Math.hypot(inters[m].x - inters[n].x, inters[m].y - inters[n].y) < 0.05) issues.push('triple_or_close');
+    }
+    return issues;
+  }
+  function lsSynthesize(labels, pairs, seed) {   // §1.2 合成規則(決定的乱択・増分配置=要素ごと局所リトライ)
+    var rnd = lsRand(seed);
+    var R = function (lo, hi) { return lo + rnd() * (hi - lo); };
+    function partialOk(lines) { return lsValidate(lines, pairs).length === 0; }
+    for (var tri = 0; tri < 40; tri++) {
+      var lines = [], angles = [], placed = {}, bad = false;
+      function okAngle(th) { for (var k = 0; k < angles.length; k++) { var d = lsAngDiff(th, angles[k]); if (!(d >= 12 && d <= 78)) return false; } return true; }
+      function tryAdd(makers) {   // makers: () => 追加候補配列。成立まで最大80回
+        for (var k = 0; k < 80; k++) {
+          var cand = makers(); if (!cand) continue;
+          var test = lines.concat(cand);
+          if (partialOk(test)) { cand.forEach(function (c) { lines.push(c); angles.push(c.angle); placed[c.label] = true; }); return true; }
+        }
+        return false;
+      }
+      function rnd3(v) { return Math.round(v * 1000) / 1000; }
+      (pairs.parallel || []).forEach(function (p) {
+        if (bad) return;
+        bad = !tryAdd(function () {
+          var th = Math.floor(R(0, 180)); if (!okAngle(th)) return null;
+          var nx = -Math.sin(th * DEG), ny = Math.cos(th * DEG), gap = R(0.25, 0.35), cx = R(0.32, 0.68), cy = R(0.32, 0.68);
+          return [{ label: p[0], angle: th, cx: rnd3(cx - nx * gap / 2), cy: rnd3(cy - ny * gap / 2), len: rnd3(R(0.5, 0.6)) },
+                  { label: p[1], angle: th, cx: rnd3(cx + nx * gap / 2), cy: rnd3(cy + ny * gap / 2), len: rnd3(R(0.5, 0.6)) }];
+        });
+      });
+      (pairs.perpendicular || []).forEach(function (p) {
+        if (bad) return;
+        bad = !tryAdd(function () {
+          var th = Math.floor(R(0, 180)), th2 = (th + 90) % 180; if (!okAngle(th) || !okAngle(th2)) return null;
+          var X = [R(0.3, 0.7), R(0.3, 0.7)];
+          return [[p[0], th], [p[1], th2]].map(function (q) {
+            var r = q[1] * DEG, off = R(-0.12, 0.12);
+            return { label: q[0], angle: q[1], cx: rnd3(X[0] + Math.cos(r) * off), cy: rnd3(X[1] + Math.sin(r) * off), len: rnd3(R(0.5, 0.6)) };
+          });
+        });
+      });
+      if (bad) continue;
+      labels.forEach(function (lb) {
+        if (bad || placed[lb]) return;
+        bad = !tryAdd(function () {
+          var th = Math.floor(R(0, 180)); if (!okAngle(th)) return null;
+          return [{ label: lb, angle: th, cx: rnd3(R(0.22, 0.78)), cy: rnd3(R(0.22, 0.78)), len: rnd3(R(0.45, 0.6)) }];
+        });
+      });
+      if (bad) continue;
+      if (partialOk(lines)) return lines;
+    }
+    throw new Error('line_set: 合成規則を満たす配置が得られない(契約違反: seed=' + seed + ')');
+  }
+  function lineSetGeom(fp) {
+    var labels = fp.labels || [], pairs = fp.pairs || {};
+    if (!Array.isArray(labels) || labels.length < 2) throw new Error('line_set: labelsは2本以上(契約違反)');
+    var lines = fp.lines ? fp.lines.map(function (l) { return { label: l.label, angle: Number(l.angle), cx: Number(l.cx), cy: Number(l.cy), len: Number(l.len) }; })
+                         : lsSynthesize(labels, pairs, fp.seed !== undefined ? fp.seed : 1);
+    var issues = lsValidate(lines, pairs);
+    if (issues.length) throw new Error('line_set: 幾何ガード違反 ' + issues.slice(0, 3).join(','));
+    return { lines: lines, pairs: pairs, issues: issues };
+  }
+  function lineSetLayout(fp) {
+    var g = lineSetGeom(fp), lay = newLayout();
+    function px(p) { return [p[0] * LS_W, (1 - p[1]) * LS_H]; }
+    var specs = [];
+    g.lines.forEach(function (l) {
+      var e = lsEnds(l), p1 = px(e[0]), p2 = px(e[1]);
+      lay.parts.push(lineEl(p1, p2, C_STROKE, 2));
+      lay.segs.push({ id: 'ln_' + l.label, p1: p1, p2: p2 });
+      // ラベル: 余地の大きい端の外側(lsLabelEnd=検査と同じ導出・自線分束縛・衝突回避配置資産流用)
+      var le = lsLabelEnd(g.lines, g.lines.indexOf(l)).idx;
+      var end = le === 1 ? p2 : p1, other = le === 1 ? p1 : p2;
+      var dx = end[0] - other[0], dy = end[1] - other[1], L = Math.hypot(dx, dy);
+      specs.push({ anchor: end, dirs: [[dx / L, dy / L]], text: String(l.label), cands: [[10, 13], [14, 12], [18, 12], [22, 11]], color: '#333', own: 'ln_' + l.label });
+    });
+    finishLabels(lay, specs);
+    lay.pts.push([-4, -4], [LS_W + 4, LS_H + 4]);
+    return lay;
+  }
+
   // ---- P5-3 Kind A: xy_graph mode="polyline"(折れ線グラフ・1〜2系列・draw対応) ----
   // v1(prop/inv)/v2(jhs4象限)へ一切触れない独立分岐。日本語ハードコード禁止(表示文字列は全てfp由来)。
   var PL_W = 264, PL_H = 190, PL_FS = 11;
@@ -2052,7 +2194,7 @@
     para_area: paraAreaLayout, tri_area: triAreaLayout, trap_area: trapAreaLayout,
     rhombus_area: rhombusAreaLayout, circle: circleLayout, cuboid: cuboidLayout, prism: prismLayout,
     pyramid: pyramidLayout, cylinder: cylinderLayout, cone: coneLayout, sphere: sphereLayout,
-    rotation_source: rotationSourceLayout, clock_face: clockFaceLayout, composite_circle: compositeCircleLayout, composite_area: compositeAreaLayout,
+    rotation_source: rotationSourceLayout, clock_face: clockFaceLayout, composite_circle: compositeCircleLayout, composite_area: compositeAreaLayout, line_set: lineSetLayout,
     sym_polygon: symPolygonLayout, similar_pair: similarPairLayout, xy_graph: xyGraphLayout, dot_plot: dotPlotLayout, histogram: histogramLayout,
     angle_figure: angleFigureLayout
   };
@@ -2089,6 +2231,17 @@
   }
 
   var FigureBuilder = { build: build, BUILDERS: BUILDERS, _angleSumMinClearance: angleSumMinClearance, _tableMinClearance: tableMinClearance };
+  // e-2: line_setの監査(角度差/包含/交点/ラベル帰属を描画と同じ導出で独立再計算)
+  FigureBuilder._lineSetAudit = function (fp) {
+    var g = lineSetGeom(fp), lay = lineSetLayout(fp);
+    var out = { issues: lsValidate(g.lines, g.pairs), labels: [] };
+    lay.labels.forEach(function (lb) {
+      var nearest = null, nd = 1e9;
+      lay.segs.forEach(function (s) { var dd = boxSeg(lb.box, s.p1, s.p2); if (dd < nd) { nd = dd; nearest = s.id; } });
+      out.labels.push({ own: lb.own, nearest: nearest, ok: nearest === lb.own });
+    });
+    return out;
+  };
   // P5-3検収差し戻しr2: composite_areaの帰属/マーク監査(ラベル最近傍辺・マーク中心の90°扇形内判定)
   FigureBuilder._compositeAreaAudit = function (fp) {
     var lay = compositeAreaLayout(fp);
@@ -2153,7 +2306,7 @@
     pyramid_visible: pyramidVisible, convex_hull: convexHull,   // S-2.1: 隠線シルエット判定(vector用・corr-0023)
     rotation_source: rotationSourceGeom,   // 第2ブロックS-4: 回転体の源(vector用)
     clock_face: clockFaceGeom,             // 小学第2波: 時計文字盤(vector用)
-    composite_circle: compositeCircleGeom, composite_area: compositeAreaGeom, // P-3a: 複合円(vector用)
+    composite_circle: compositeCircleGeom, composite_area: compositeAreaGeom, line_set: lineSetGeom, // P-3a: 複合円(vector用)
     arc_sample_points: arcSamplePoints,          // 弧サンプル点(曲率関門用・頂点からr一定検査)
     // ベクター用の位置引数ラッパ（Python prism_geom(base_kind,a,b,h) と同型）
     prism: function (base_kind, a, b, h) {
