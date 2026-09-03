@@ -6089,6 +6089,86 @@
     2,
     10
    ]
+  },
+  {
+   "pattern_id": "g04_heikou_kaku_01",
+   "grade": "g04",
+   "unit_id": "g04_c05_u01",
+   "unit_name": "垂直と平行",
+   "semantic_category": "平行線と交わる角(同位角・補角)",
+   "semantic_note": "裁可(e)案A e-1。jhs c12 parallel_linesの下位展開(kind改修ゼロ・g04は同位角+補角のみ=錯角なし)。う=同位角の相等=転記カタログ適用外(jhs doui裁可済類型・SELECTION_ANSWER)。90°除外は直交退化(jhs前例)。",
+   "step_count": 1,
+   "answer_formula": "180 - al1",
+   "slots": {
+    "al1": {
+     "type": "int",
+     "range": [
+      35,
+      145
+     ],
+     "step": 5
+    }
+   },
+   "computed_slots": {
+    "b1": {
+     "formula": "180 - al1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "not_right",
+     "expr": "al1 != 90",
+     "why": "直交は全角相等で角関係の視認が退化(jhs前例)"
+    }
+   ],
+   "sentence_templates": [
+    "右の図のように、2本の平行な直線に、1本の直線が交わっています。あの角度が{al1}度のとき、いとうの角度を求めなさい。"
+   ],
+   "answer_template": "答え い {b1}度 う {al1}度",
+   "figure_params": {
+    "kind": "angle_figure",
+    "subkind": "parallel_lines",
+    "transversal": {
+     "angle": "{al1}"
+    },
+    "angles": [
+     {
+      "at": "upper",
+      "pos": 0,
+      "v": "{al1}",
+      "role": "known",
+      "label": "あ"
+     },
+     {
+      "at": "upper",
+      "pos": 1,
+      "v": "{b1}",
+      "role": "unknown",
+      "label": "い"
+     },
+     {
+      "at": "lower",
+      "pos": 0,
+      "v": "{al1}",
+      "role": "unknown",
+      "label": "う"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2,
+    1,
+    180
+   ]
   }
  ],
  "schema_changelog": {

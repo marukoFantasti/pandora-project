@@ -1,7 +1,7 @@
 {
  "_meta": {
   "schema": "rationale_g05_gold.json準拠",
-  "scope": "g04全24パターン完全版(遡及・統一遡及③ g04完了 2026-08-12) +P5-1追補13(2026-08-31。gaisu_shishaは既存round_01の真部分集合=重複自動除外) +P5-2追補16(c05性質/面積/角度/立体/小数あまり 2026-08-31) +P5-3第2便12(折れ線10+composite_area2 2026-09-01。pedagogy=Fable rationale本文の逐語転写・anchor可変文は「例: 」例示化=裁可1) +P5-3第3便9(表族c02_u03 2026-09-02。pedagogy=設計書rationale4種の逐語転写・例示化適用済) +P5-3第4便7(c13変わり方 2026-09-02。pedagogy=設計書rationale5種の逐語転写)",
+  "scope": "g04全24パターン完全版(遡及・統一遡及③ g04完了 2026-08-12) +P5-1追補13(2026-08-31。gaisu_shishaは既存round_01の真部分集合=重複自動除外) +P5-2追補16(c05性質/面積/角度/立体/小数あまり 2026-08-31) +P5-3第2便12(折れ線10+composite_area2 2026-09-01。pedagogy=Fable rationale本文の逐語転写・anchor可変文は「例: 」例示化=裁可1) +P5-3第3便9(表族c02_u03 2026-09-02。pedagogy=設計書rationale4種の逐語転写・例示化適用済) +P5-3第4便7(c13変わり方 2026-09-02。pedagogy=設計書rationale5種の逐語転写) +e-1(平行線と角 2026-09-03)",
   "note": "figure_notes正準=ゴールド流儀(null不使用)。",
   "order": "バンク順"
  },
@@ -1890,6 +1890,31 @@
    "pedagogy": [
     {
      "text": "2本のグラフの差は、同じ時間のところでのたての間かくです。2本が交わった点では、2つの量が等しくなっています。交わる前と後で、どちらが多いかが入れかわることにも注目します。",
+     "by": "fable",
+     "date": "2026-09"
+    }
+   ]
+  }
+ },
+ "g04_heikou_kaku_01": {
+  "brief": {
+   "semantic_territory": "平行線と交わる角(同位角・補角)",
+   "number_domain": "整数(5刻み・90除外)",
+   "answer_structure": "single",
+   "figure": "angle_figure(parallel_lines・jhs下位展開)",
+   "step_count": 1,
+   "directives": []
+  },
+  "rationale": {
+   "source_features": "c05_u01の角度2行(55°/60°系)。平行線に1本の直線が交わるときの角の相等と補角。",
+   "representation": "jhs c12 parallel_linesのkind改修ゼロ下位展開——g04は同位角+補角のみ(錯角はjhs領分)。あ=known label・い=補角(computed)・う=同位角(相等)。",
+   "constructive_guarantees": "v整合はkind契約(隣接和180/対頂相等/平行輸送)が全標本で検査。90°除外=直交退化(jhs前例)。",
+   "semantic_position": "c05_u01の入口(g04最後の未被覆単元)。直線組合せ選択6行はe-2受け皿設計待ち。",
+   "exclusions": "錯角(jhs)・組合せ選択(e-2)。",
+   "figure_notes": "parallel_lines専用ベクター24ケース関門が既検査。",
+   "pedagogy": [
+    {
+     "text": "平行な2本の直線に1本の直線が交わるとき、同じ側にできる角(同位角)は等しくなります。となり合う角は、あわせて180度です。例: あの角が55度なら、いの角は180−55=125度、うの角はあと同じ55度です。",
      "by": "fable",
      "date": "2026-09"
     }
