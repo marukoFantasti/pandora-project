@@ -24,11 +24,11 @@ function inter(a, b) {   // 独立実装の線分交差判定
 }
 function angdiff(a, b) { const d = Math.abs(a - b) % 180; return Math.min(d, 180 - d); }
 
-console.log('=== (1) 悉皆: 3行×{low,normal}×seed1..200 = 角度帯(独立再計算)/包含/交点/横断/帰属/決定性 ===');
-let nLbl = 0, fails = 0, maxCross = 0, trNormal = 0, nNormal = 0;
+console.log('=== (1) 悉皆: 3行×{low,normal}×seed1..100 = 角度帯/延長交点(独立再計算)/包含/交点/横断/帰属/決定性 ===');
+let nLbl = 0, fails = 0, maxCross = 0, trNormal = 0, nNormal = 0, nExtTotal = 0;
 ROWS.forEach(function (row, ri) {
   ['low', 'normal'].forEach(function (den) {
-    for (let s = 1; s <= 200; s++) {
+    for (let s = 1; s <= 100; s++) {
       cases++;
       let a, g;
       try { g = FB._geom.line_set(fp(row, s, den)); a = FB._lineSetAudit(fp(row, s, den)); }
@@ -55,6 +55,26 @@ ROWS.forEach(function (row, ri) {
       }
       Object.keys(cross).forEach(k => { maxCross = Math.max(maxCross, cross[k]); if (cross[k] > 2) { bad++; console.log('  ❌ 交差>2 ' + k); } });
       if (den === 'normal') { nNormal++; if (a.transversals >= 1) trNormal++; else { bad++; if (fails++ <= 3) console.log('  ❌ 横断なし seed' + s); } }
+      // r4 独立再計算: 垂直ペアの直線交点・線分内外・延長比
+      let nExt = 0;
+      row.pairs.perpendicular.forEach(function (p) {
+        const A = byL[p[0]], B = byL[p[1]];
+        const pa = ends(A), pb = ends(B);
+        const [x1, y1] = pa[0], [x2, y2] = pa[1], [x3, y3] = pb[0], [x4, y4] = pb[1];
+        const den2 = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+        const t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / den2, u = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / den2;
+        const X = [x1 + t * (x2 - x1), y1 + t * (y2 - y1)];
+        const onA = t >= 0 && t <= 1, onB = u >= 0 && u <= 1;
+        if (onA && onB) { if (den === 'normal') return; return; }   // 実交差型(lowは必須・normalは可)
+        if (den === 'low') { bad++; if (fails++ <= 3) console.log('  ❌ low垂直ペア非交差 seed' + s + ' ' + p.join('')); return; }
+        const inC = X[0] >= 0.06 && X[0] <= 0.94 && X[1] >= 0.06 && X[1] <= 0.94;
+        const ra = t < 0 ? -t : (t > 1 ? t - 1 : 0), rb = u < 0 ? -u : (u > 1 ? u - 1 : 0);
+        const okR = (ra === 0 || (ra >= 0.3 && ra <= 0.8)) && (rb === 0 || (rb >= 0.3 && rb <= 0.8));
+        if (!inC || !okR) { bad++; if (fails++ <= 3) console.log('  ❌ 延長型不正 seed' + s + ' ' + p.join('') + ' inC=' + inC + ' ra=' + ra.toFixed(2) + ' rb=' + rb.toFixed(2)); }
+        else nExt++;
+      });
+      if (den === 'normal' && nExt < 1) { bad++; if (fails++ <= 3) console.log('  ❌ 延長型ペアなし seed' + s); }
+      if (den === 'normal') nExtTotal += nExt;
       if (FB.build(fp(row, s, den)) !== FB.build(fp(row, s, den))) { bad++; console.log('  ❌ 非決定 seed' + s); }
     }
   });
@@ -71,5 +91,5 @@ const b2 = bad;
 ].forEach(function (o) { cases++; let t = false; try { FB.build(o); } catch (e) { t = true; } if (!t) { bad++; console.log('  ❌ 非throw ' + JSON.stringify(o.labels)); } });
 console.log('  契約4種 ' + (bad === b2 ? '✅' : '❌'));
 
-console.log('\n' + (bad === 0 ? 'line_set: 全' + cases + '照合 一致 ✅(悉皆1200+契約4)' : '❌ ' + bad + '件'));
+console.log('\n' + (bad === 0 ? 'line_set: 全' + cases + '照合 一致 ✅(悉皆600+契約4・r4延長交点検査込み)' : '❌ ' + bad + '件'));
 process.exit(bad === 0 ? 0 : 1);

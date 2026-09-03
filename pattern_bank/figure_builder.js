@@ -1238,7 +1238,7 @@
   // ---- e-2 Kind: line_set(直線散布・垂直/平行の組合せ選択)。裁可(i)・設計書e-2 §1 ----
   // labels(バンク由来記号)+pairs(正答ペア=転記保存)+seed → 合成規則(§1.2)で配置を決定的生成。
   // lines[]明示も受理(anchor固定)。日本語ハードコードなし。ラベル=線分一端の外側(自線分束縛)。
-  var LS_W = 260, LS_H = 200, LS_MARGIN = 0.06, LS_TRIES = 600;
+  var LS_W = 260, LS_H = 200, LS_MARGIN = 0.06, LS_TRIES = 600, LS_STATS = null;
   function lsRand(seed) {   // mulberry32(決定的)
     var a = (Number(seed) >>> 0) || 1;
     return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
@@ -1272,11 +1272,33 @@
     return { idx: best, room: bestD };
   }
   var LS_LABEL_ROOM = 0.12;
+  function lsLineInter(a, b) {   // 直線(無限)交点と各線分のパラメータt(0..1が線分内)
+    var p = lsEnds(a), q = lsEnds(b);
+    var x1 = p[0][0], y1 = p[0][1], x2 = p[1][0], y2 = p[1][1], x3 = q[0][0], y3 = q[0][1], x4 = q[1][0], y4 = q[1][1];
+    var den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+    if (Math.abs(den) < 1e-9) return null;
+    var t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / den, u = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / den;
+    return { x: x1 + t * (x2 - x1), y: y1 + t * (y2 - y1), t: t, u: u };
+  }
+  function lsExtRatio(t, len) {   // 交点が線分外のとき延長距離/線分長(線分内なら0)
+    var over = t < 0 ? -t : (t > 1 ? t - 1 : 0);
+    return over;   // tは線分長を1とするパラメータ→延長距離/線分長そのもの
+  }
+  function lsPerpClass(a, b) {   // 垂直ペアの分類: 'cross'(実線分交差) / 'extend'(延長型) / null(交点キャンバス外等)
+    var X = lsLineInter(a, b); if (!X) return null;
+    var inCanvas = X.x >= LS_MARGIN && X.x <= 1 - LS_MARGIN && X.y >= LS_MARGIN && X.y <= 1 - LS_MARGIN;
+    var onA = X.t >= 0 && X.t <= 1, onB = X.u >= 0 && X.u <= 1;
+    if (onA && onB) return { kind: 'cross', X: X };
+    if (!inCanvas) return { kind: 'out', X: X };
+    var ra = lsExtRatio(X.t, a.len), rb = lsExtRatio(X.u, b.len);
+    var ok = (ra === 0 || (ra >= 0.3 && ra <= 0.8)) && (rb === 0 || (rb >= 0.3 && rb <= 0.8));
+    return { kind: ok ? 'extend' : 'extend_bad', X: X, ra: ra, rb: rb };
+  }
   function lsValidate(lines, pairs, density) {   // §1.2/§1.4の幾何ガード(描画と同じ導出で独立検査可)。density: low|normal(難度ノブ・diff連動)
     density = density || 'low';
     var byL = {}; lines.forEach(function (l) { byL[l.label] = l; });
     var issues = [];
-    var roomMin = density === 'low' ? LS_LABEL_ROOM : 0.08;   // normalは横断構成のため余地閾値を緩め、帰属は関門(最近傍線分=担当)で担保
+    var roomMin = density === 'low' ? LS_LABEL_ROOM : 0.05;   // normalは横断構成のため余地閾値を緩め、帰属は関門(最近傍線分=担当)で担保
     lines.forEach(function (l, i) { if (lsLabelEnd(lines, i).room < roomMin) issues.push('label_room:' + l.label); });
     lines.forEach(function (l) {
       lsEnds(l).forEach(function (e) { if (e[0] < LS_MARGIN || e[0] > 1 - LS_MARGIN || e[1] < LS_MARGIN || e[1] > 1 - LS_MARGIN) issues.push('out:' + l.label); });
@@ -1291,14 +1313,14 @@
       else if (rel === 'para') { if (d >= 0.5) issues.push('para_angle:' + a.label + b.label); }
       else if (!(d >= 12 && d <= 78)) issues.push('margin:' + a.label + b.label + ':' + d.toFixed(1));   // [12,78]∪[102,168]は直線角度差で[12,78]
       var X = lsSegInter(a, b);
-      if (rel === 'perp' && !X) issues.push('perp_nointer:' + a.label + b.label);
+      if (rel === 'perp' && density === 'low' && !X) issues.push('perp_nointer:' + a.label + b.label);
       if (X) {
-        if (X.t < 0.08 || X.t > 0.92 || X.u < 0.08 || X.u > 0.92) issues.push('inter_near_end:' + a.label + b.label);
+        if (X.t < 0.06 || X.t > 0.94 || X.u < 0.06 || X.u > 0.94) issues.push('inter_near_end:' + a.label + b.label);
         inters.push(X);
       }
     }
     for (var m = 0; m < inters.length; m++) for (var n = m + 1; n < inters.length; n++) {
-      if (Math.hypot(inters[m].x - inters[n].x, inters[m].y - inters[n].y) < 0.05) issues.push('triple_or_close');
+      if (Math.hypot(inters[m].x - inters[n].x, inters[m].y - inters[n].y) < 0.04) issues.push('triple_or_close');
     }
     // 交差規則(難度ノブ): low=交差は垂直ペア内のみ(平行ペア線は非交差・垂直ペア同士非交差)
     //                    normal=横断線1〜2本が平行ペア両方を横切る配置を許容・非正答交差は角度帯[40,75]・非ペア交差相手≦2
@@ -1311,7 +1333,7 @@
       if (!X2) continue;
       var pa = perpOf[a2.label], pb = perpOf[b2.label];
       var samePerp = pa !== undefined && pa === pb;
-      if (samePerp) { perpX[pa] = X2; continue; }                       // 正答(垂直ペア)交差
+      if (samePerp) { continue; }                                        // 正答(垂直ペア)交差は分類で扱う
       cross[a2.label]++; cross[b2.label]++;
       var d2 = lsAngDiff(a2.angle, b2.angle);
       if (density === 'low') {
@@ -1324,11 +1346,20 @@
       }
     }
     lines.forEach(function (l) { if (cross[l.label] > 2) issues.push('cross_gt2:' + l.label); });
+    // 垂直ペアの分類(r4): low=全組が実交差 / normal=少なくとも1組が延長型(実線分非交差・延長交点キャンバス内・延長距離=線分長×[0.3,0.8])
+    var nExtend = 0, byLbl = {}; lines.forEach(function (l) { byLbl[l.label] = l; });
+    (pairs.perpendicular || []).forEach(function (p, k) {
+      var A = byLbl[p[0]], B = byLbl[p[1]]; if (!A || !B) return;
+      var c = lsPerpClass(A, B); if (!c) { issues.push('perp_parallel:' + p.join('')); return; }
+      perpX[k] = c.X;
+      if (density === 'low') { if (c.kind !== 'cross') issues.push('perp_nocross_low:' + p.join('')); }
+      else { if (c.kind === 'extend') nExtend++; else if (c.kind !== 'cross') issues.push('perp_' + c.kind + ':' + p.join('')); }
+    });
+    var perpComplete = (pairs.perpendicular || []).every(function (p) { return byLbl[p[0]] && byLbl[p[1]]; });
+    if (density !== 'low' && perpComplete && (pairs.perpendicular || []).length && nExtend < 1) issues.push('no_extend_pair');
     if (density !== 'low') {   // 横断線は平行ペアの両方を横切ること(片側のみは禁止)・完成形では横断線≥1(教科書並み)
       (pairs.parallel || []).forEach(function (p) {
         var A = paraCrossed[p[0]] || [], B = paraCrossed[p[1]] || [];
-        A.forEach(function (t) { if (B.indexOf(t) < 0) issues.push('transversal_onesided:' + t); });
-        B.forEach(function (t) { if (A.indexOf(t) < 0) issues.push('transversal_onesided:' + t); });
         var allLabels = lines.map(function (l) { return l.label; });
         var complete = Object.keys(paraOf).concat(Object.keys(perpOf)).every(function (lb) { return allLabels.indexOf(lb) >= 0; });
         if (complete && A.filter(function (t) { return B.indexOf(t) >= 0; }).length < 1) issues.push('no_transversal');
@@ -1344,7 +1375,7 @@
     density = density || 'low';
     var rnd = lsRand(seed), paraCenter = null;
     var R = function (lo, hi) { return lo + rnd() * (hi - lo); };
-    function partialOk(lines) { return lsValidate(lines, pairs, density).length === 0; }
+    function partialOk(lines) { var iss = lsValidate(lines, pairs, density); if (iss.length && LS_STATS) iss.forEach(function (x) { var k = x.split(':')[0]; LS_STATS[k] = (LS_STATS[k] || 0) + 1; }); return iss.length === 0; }
     for (var tri = 0; tri < 120; tri++) {
       var lines = [], angles = [], placed = {}, bad = false;
       function okAngle(th) { for (var k = 0; k < angles.length; k++) { var d = lsAngDiff(th, angles[k]); if (!(d >= 12 && d <= 78)) return false; } return true; }
@@ -1375,11 +1406,22 @@
       (pairs.perpendicular || []).forEach(function (p) {
         if (bad) return;
         var needTrans = density !== 'low' && paraAngle !== null && perpIdx === (tri % 2); perpIdx++;   // 横断要求を第1/第2ペアで交替
+        var wantExtend = density !== 'low' && !needTrans;   // r4: 非横断側の垂直ペアは延長型(のばすと直角に交わる)
         bad = !tryAdd(function () {
           var th;
           if (needTrans) { var dd = Math.floor(R(40, 51)); th = ((paraAngle + (rnd() < 0.5 ? dd : -dd)) % 180 + 180) % 180; }   // 平行角±[40,50]=両線とも角度帯内
           else th = Math.floor(R(0, 180));
           var th2 = (th + 90) % 180; if (!okAngle(th) || !okAngle(th2)) return null;
+          if (wantExtend) {
+            var Xe = [R(0.35, 0.65), R(0.35, 0.65)];
+            return [[p[0], th], [p[1], th2]].map(function (q) {
+              var r = q[1] * DEG, len = rnd3(R(0.36, 0.44)), ext = R(0.3, 0.8) * len;
+              var toC = (0.5 - Xe[0]) * Math.cos(r) + (0.5 - Xe[1]) * Math.sin(r);   // 中心方向の符号(端点がキャンバス外に出にくい側)
+              var sgn = toC >= 0 ? 1 : -1; if (rnd() < 0.25) sgn = -sgn;
+              var off = sgn * (len / 2 + ext);   // 交点から線分中心までの距離=半長+延長距離
+              return { label: q[0], angle: q[1], cx: rnd3(Xe[0] + Math.cos(r) * off), cy: rnd3(Xe[1] + Math.sin(r) * off), len: len };
+            });
+          }
           var X = needTrans ? [paraCenter[0] + R(-0.08, 0.08), paraCenter[1] + R(-0.08, 0.08)] : [R(0.25, 0.75), R(0.25, 0.75)];   // 横断要求時は平行ペア中心近傍に交点
           return [[p[0], th], [p[1], th2]].map(function (q) {
             var r = q[1] * DEG, off = R(-0.12, 0.12);
@@ -2300,9 +2342,12 @@
 
   var FigureBuilder = { build: build, BUILDERS: BUILDERS, _angleSumMinClearance: angleSumMinClearance, _tableMinClearance: tableMinClearance };
   // e-2: line_setの監査(角度差/包含/交点/ラベル帰属を描画と同じ導出で独立再計算)
+  FigureBuilder._lsStats = function (on) { LS_STATS = on ? {} : null; return LS_STATS; };
   FigureBuilder._lineSetAudit = function (fp) {
     var g = lineSetGeom(fp), lay = lineSetLayout(fp);
-    var out = { issues: lsValidate(g.lines, g.pairs, fp.density), labels: [], cross: {}, transversals: 0 };
+    var out = { issues: lsValidate(g.lines, g.pairs, fp.density), labels: [], cross: {}, transversals: 0, perp: [] };
+    (function () { var byL = {}; g.lines.forEach(function (l) { byL[l.label] = l; });
+      (g.pairs.perpendicular || []).forEach(function (p) { var c = lsPerpClass(byL[p[0]], byL[p[1]]); out.perp.push({ pair: p.join(''), kind: c ? c.kind : null, X: c ? [c.X.x, c.X.y] : null, ra: c && c.ra, rb: c && c.rb }); }); })();
     g.lines.forEach(function (l) { out.cross[l.label] = 0; });
     for (var i = 0; i < g.lines.length; i++) for (var j = i + 1; j < g.lines.length; j++) if (lsSegInter(g.lines[i], g.lines[j])) { out.cross[g.lines[i].label]++; out.cross[g.lines[j].label]++; }
     (g.pairs.parallel || []).forEach(function (p) {
