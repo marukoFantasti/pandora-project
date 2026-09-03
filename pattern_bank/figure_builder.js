@@ -1272,10 +1272,12 @@
     return { idx: best, room: bestD };
   }
   var LS_LABEL_ROOM = 0.12;
-  function lsValidate(lines, pairs) {   // §1.2/§1.4の幾何ガード(描画と同じ導出で独立検査可)
+  function lsValidate(lines, pairs, density) {   // §1.2/§1.4の幾何ガード(描画と同じ導出で独立検査可)。density: low|normal(難度ノブ・diff連動)
+    density = density || 'low';
     var byL = {}; lines.forEach(function (l) { byL[l.label] = l; });
     var issues = [];
-    lines.forEach(function (l, i) { if (lsLabelEnd(lines, i).room < LS_LABEL_ROOM) issues.push('label_room:' + l.label); });
+    var roomMin = density === 'low' ? LS_LABEL_ROOM : 0.08;   // normalは横断構成のため余地閾値を緩め、帰属は関門(最近傍線分=担当)で担保
+    lines.forEach(function (l, i) { if (lsLabelEnd(lines, i).room < roomMin) issues.push('label_room:' + l.label); });
     lines.forEach(function (l) {
       lsEnds(l).forEach(function (e) { if (e[0] < LS_MARGIN || e[0] > 1 - LS_MARGIN || e[1] < LS_MARGIN || e[1] > 1 - LS_MARGIN) issues.push('out:' + l.label); });
     });
@@ -1298,37 +1300,56 @@
     for (var m = 0; m < inters.length; m++) for (var n = m + 1; n < inters.length; n++) {
       if (Math.hypot(inters[m].x - inters[n].x, inters[m].y - inters[n].y) < 0.05) issues.push('triple_or_close');
     }
-    // 交差最小化(まるこ目視条件): 平行ペア線は他線と非交差・各線の交差相手≦2・垂直ペア同士は非交差かつ交点離間≥0.3
-    var cross = {}; lines.forEach(function (l) { cross[l.label] = 0; });
+    // 交差規則(難度ノブ): low=交差は垂直ペア内のみ(平行ペア線は非交差・垂直ペア同士非交差)
+    //                    normal=横断線1〜2本が平行ペア両方を横切る配置を許容・非正答交差は角度帯[40,75]・非ペア交差相手≦2
+    var cross = {}; lines.forEach(function (l) { cross[l.label] = 0; });   // 非ペア(非正答)交差相手数
     var perpOf = {}; (pairs.perpendicular || []).forEach(function (p, k) { perpOf[p[0]] = k; perpOf[p[1]] = k; });
-    var paraMember = {}; (pairs.parallel || []).forEach(function (p) { paraMember[p[0]] = paraMember[p[1]] = true; });
-    var perpX = {};
+    var paraOf = {}; (pairs.parallel || []).forEach(function (p, k) { paraOf[p[0]] = k; paraOf[p[1]] = k; });
+    var perpX = {}, paraCrossed = {};
     for (var i2 = 0; i2 < lines.length; i2++) for (var j2 = i2 + 1; j2 < lines.length; j2++) {
       var a2 = lines[i2], b2 = lines[j2], X2 = lsSegInter(a2, b2);
       if (!X2) continue;
-      cross[a2.label]++; cross[b2.label]++;
-      if (paraMember[a2.label] || paraMember[b2.label]) issues.push('para_cross:' + a2.label + b2.label);
       var pa = perpOf[a2.label], pb = perpOf[b2.label];
-      if (pa !== undefined && pb !== undefined) {
-        if (pa === pb) perpX[pa] = X2; else issues.push('perp_pairs_cross:' + a2.label + b2.label);
+      var samePerp = pa !== undefined && pa === pb;
+      if (samePerp) { perpX[pa] = X2; continue; }                       // 正答(垂直ペア)交差
+      cross[a2.label]++; cross[b2.label]++;
+      var d2 = lsAngDiff(a2.angle, b2.angle);
+      if (density === 'low') {
+        if (paraOf[a2.label] !== undefined || paraOf[b2.label] !== undefined) issues.push('para_cross:' + a2.label + b2.label);
+        if (pa !== undefined && pb !== undefined) issues.push('perp_pairs_cross:' + a2.label + b2.label);
+      } else {
+        if (!(d2 >= 40 && d2 <= 75)) issues.push('cross_band:' + a2.label + b2.label + ':' + d2.toFixed(1));   // [40,75]∪[105,140]
+        if (paraOf[a2.label] !== undefined) (paraCrossed[a2.label] = paraCrossed[a2.label] || []).push(b2.label);
+        if (paraOf[b2.label] !== undefined) (paraCrossed[b2.label] = paraCrossed[b2.label] || []).push(a2.label);
       }
     }
     lines.forEach(function (l) { if (cross[l.label] > 2) issues.push('cross_gt2:' + l.label); });
+    if (density !== 'low') {   // 横断線は平行ペアの両方を横切ること(片側のみは禁止)・完成形では横断線≥1(教科書並み)
+      (pairs.parallel || []).forEach(function (p) {
+        var A = paraCrossed[p[0]] || [], B = paraCrossed[p[1]] || [];
+        A.forEach(function (t) { if (B.indexOf(t) < 0) issues.push('transversal_onesided:' + t); });
+        B.forEach(function (t) { if (A.indexOf(t) < 0) issues.push('transversal_onesided:' + t); });
+        var allLabels = lines.map(function (l) { return l.label; });
+        var complete = Object.keys(paraOf).concat(Object.keys(perpOf)).every(function (lb) { return allLabels.indexOf(lb) >= 0; });
+        if (complete && A.filter(function (t) { return B.indexOf(t) >= 0; }).length < 1) issues.push('no_transversal');
+      });
+    }
     var pk = Object.keys(perpX);
     for (var u = 0; u < pk.length; u++) for (var v = u + 1; v < pk.length; v++) {
       if (Math.hypot(perpX[pk[u]].x - perpX[pk[v]].x, perpX[pk[u]].y - perpX[pk[v]].y) < 0.3) issues.push('perp_pairs_close');
     }
     return issues;
   }
-  function lsSynthesize(labels, pairs, seed) {   // §1.2 合成規則(決定的乱択・増分配置=要素ごと局所リトライ)
-    var rnd = lsRand(seed);
+  function lsSynthesize(labels, pairs, seed, density) {   // §1.2 合成規則(決定的乱択・増分配置)。density=難度ノブ
+    density = density || 'low';
+    var rnd = lsRand(seed), paraCenter = null;
     var R = function (lo, hi) { return lo + rnd() * (hi - lo); };
-    function partialOk(lines) { return lsValidate(lines, pairs).length === 0; }
+    function partialOk(lines) { return lsValidate(lines, pairs, density).length === 0; }
     for (var tri = 0; tri < 120; tri++) {
       var lines = [], angles = [], placed = {}, bad = false;
       function okAngle(th) { for (var k = 0; k < angles.length; k++) { var d = lsAngDiff(th, angles[k]); if (!(d >= 12 && d <= 78)) return false; } return true; }
       function tryAdd(makers) {   // makers: () => 追加候補配列。成立まで最大80回
-        for (var k = 0; k < 80; k++) {
+        for (var k = 0; k < 140; k++) {
           var cand = makers(); if (!cand) continue;
           var test = lines.concat(cand);
           if (partialOk(test)) { cand.forEach(function (c) { lines.push(c); angles.push(c.angle); placed[c.label] = true; }); return true; }
@@ -1340,18 +1361,26 @@
         if (bad) return;
         bad = !tryAdd(function () {
           var th = Math.floor(R(0, 180)); if (!okAngle(th)) return null;
-          // 端側配置: 4帯(左/右/上/下)から中心を取る(他線と非交差にしやすい)
-          var band = Math.floor(R(0, 4)), cx = band === 0 ? R(0.2, 0.3) : band === 1 ? R(0.7, 0.8) : R(0.3, 0.7), cy = band === 2 ? R(0.2, 0.3) : band === 3 ? R(0.7, 0.8) : R(0.3, 0.7);
+          // low: 端側4帯配置(非交差にしやすい) / normal: 中央帯(横断線を受ける)
+          var band = Math.floor(R(0, 4)), cx, cy;
+          if (density === 'low') { cx = band === 0 ? R(0.2, 0.3) : band === 1 ? R(0.7, 0.8) : R(0.3, 0.7); cy = band === 2 ? R(0.2, 0.3) : band === 3 ? R(0.7, 0.8) : R(0.3, 0.7); }
+          else { cx = R(0.35, 0.65); cy = R(0.35, 0.65); }
+          paraCenter = [cx, cy];
           var nx = -Math.sin(th * DEG), ny = Math.cos(th * DEG), gap = R(0.18, 0.26);
           return [{ label: p[0], angle: th, cx: rnd3(cx - nx * gap / 2), cy: rnd3(cy - ny * gap / 2), len: rnd3(R(0.36, 0.44)) },
                   { label: p[1], angle: th, cx: rnd3(cx + nx * gap / 2), cy: rnd3(cy + ny * gap / 2), len: rnd3(R(0.36, 0.44)) }];
         });
       });
+      var paraAngle = angles.length ? angles[0] : null, perpIdx = 0;
       (pairs.perpendicular || []).forEach(function (p) {
         if (bad) return;
+        var needTrans = density !== 'low' && paraAngle !== null && perpIdx === (tri % 2); perpIdx++;   // 横断要求を第1/第2ペアで交替
         bad = !tryAdd(function () {
-          var th = Math.floor(R(0, 180)), th2 = (th + 90) % 180; if (!okAngle(th) || !okAngle(th2)) return null;
-          var X = [R(0.25, 0.75), R(0.25, 0.75)];
+          var th;
+          if (needTrans) { var dd = Math.floor(R(40, 51)); th = ((paraAngle + (rnd() < 0.5 ? dd : -dd)) % 180 + 180) % 180; }   // 平行角±[40,50]=両線とも角度帯内
+          else th = Math.floor(R(0, 180));
+          var th2 = (th + 90) % 180; if (!okAngle(th) || !okAngle(th2)) return null;
+          var X = needTrans ? [paraCenter[0] + R(-0.08, 0.08), paraCenter[1] + R(-0.08, 0.08)] : [R(0.25, 0.75), R(0.25, 0.75)];   // 横断要求時は平行ペア中心近傍に交点
           return [[p[0], th], [p[1], th2]].map(function (q) {
             var r = q[1] * DEG, off = R(-0.12, 0.12);
             return { label: q[0], angle: q[1], cx: rnd3(X[0] + Math.cos(r) * off), cy: rnd3(X[1] + Math.sin(r) * off), len: rnd3(R(0.36, 0.44)) };
@@ -1371,33 +1400,50 @@
     }
     throw new Error('line_set: 合成規則を満たす配置が得られない(契約違反: seed=' + seed + ')');
   }
-  function lineSetGeom(fp) {
-    var labels = fp.labels || [], pairs = fp.pairs || {};
-    if (!Array.isArray(labels) || labels.length < 2) throw new Error('line_set: labelsは2本以上(契約違反)');
-    var lines = fp.lines ? fp.lines.map(function (l) { return { label: l.label, angle: Number(l.angle), cx: Number(l.cx), cy: Number(l.cy), len: Number(l.len) }; })
-                         : lsSynthesize(labels, pairs, fp.seed !== undefined ? fp.seed : 1);
-    var issues = lsValidate(lines, pairs);
-    if (issues.length) throw new Error('line_set: 幾何ガード違反 ' + issues.slice(0, 3).join(','));
-    return { lines: lines, pairs: pairs, issues: issues };
-  }
-  function lineSetLayout(fp) {
-    var g = lineSetGeom(fp), lay = newLayout();
+  function lsLayoutFromLines(lines) {   // 線分+ラベル配置(帰属自己検査にも使う)
+    var lay = newLayout();
     function px(p) { return [p[0] * LS_W, (1 - p[1]) * LS_H]; }
     var specs = [];
-    g.lines.forEach(function (l) {
+    lines.forEach(function (l, li) {
       var e = lsEnds(l), p1 = px(e[0]), p2 = px(e[1]);
       lay.parts.push(lineEl(p1, p2, C_STROKE, 2));
       lay.segs.push({ id: 'ln_' + l.label, p1: p1, p2: p2 });
-      // ラベル: 余地の大きい端の外側(lsLabelEnd=検査と同じ導出・自線分束縛・衝突回避配置資産流用)
-      var le = lsLabelEnd(g.lines, g.lines.indexOf(l)).idx;
+      var le = lsLabelEnd(lines, li).idx;
       var end = le === 1 ? p2 : p1, other = le === 1 ? p1 : p2;
       var dx = end[0] - other[0], dy = end[1] - other[1], L = Math.hypot(dx, dy);
-      specs.push({ anchor: end, dirs: [[dx / L, dy / L]], text: String(l.label), cands: [[10, 13], [14, 12], [18, 12], [22, 11]], color: '#333', own: 'ln_' + l.label });
+      var ux = dx / L, uy = dy / L, c35 = Math.cos(35 * DEG), s35 = Math.sin(35 * DEG);
+      var dirs = [[ux, uy], [ux * c35 - uy * s35, ux * s35 + uy * c35], [ux * c35 + uy * s35, -ux * s35 + uy * c35]];   // 外向き・±35°
+      specs.push({ anchor: end, dirs: dirs, text: String(l.label), cands: [[10, 13], [14, 12], [18, 12], [22, 11], [26, 11]], color: '#333', own: 'ln_' + l.label });
     });
     finishLabels(lay, specs);
     lay.pts.push([-4, -4], [LS_W + 4, LS_H + 4]);
     return lay;
   }
+  function lsAttributionOk(lay) {   // 最近傍線分=担当線分(関門と同一導出)
+    return lay.labels.every(function (lb) {
+      var nearest = null, nd = 1e9;
+      lay.segs.forEach(function (s) { var dd = boxSeg(lb.box, s.p1, s.p2); if (dd < nd) { nd = dd; nearest = s.id; } });
+      return nearest === lb.own;
+    });
+  }
+  function lineSetGeom(fp) {
+    var labels = fp.labels || [], pairs = fp.pairs || {}, density = fp.density || 'low';
+    if (!Array.isArray(labels) || labels.length < 2) throw new Error('line_set: labelsは2本以上(契約違反)');
+    if (fp.lines) {
+      var lines0 = fp.lines.map(function (l) { return { label: l.label, angle: Number(l.angle), cx: Number(l.cx), cy: Number(l.cy), len: Number(l.len) }; });
+      var iss0 = lsValidate(lines0, pairs, density);
+      if (iss0.length) throw new Error('line_set: 幾何ガード違反 ' + iss0.slice(0, 3).join(','));
+      return { lines: lines0, pairs: pairs, density: density, sub: -1 };
+    }
+    var seed = fp.seed !== undefined ? Number(fp.seed) : 1;
+    for (var sub = 0; sub < 24; sub++) {   // サブシード探索(決定的): 合成成功+ラベル帰属自己検査の両立まで
+      var lines;
+      try { lines = lsSynthesize(labels, pairs, seed * 1000 + sub, density); } catch (e) { continue; }
+      if (lsAttributionOk(lsLayoutFromLines(lines))) return { lines: lines, pairs: pairs, density: density, sub: sub };
+    }
+    throw new Error('line_set: 合成規則+帰属を満たす配置が得られない(契約違反: seed=' + seed + ')');
+  }
+  function lineSetLayout(fp) { return lsLayoutFromLines(lineSetGeom(fp).lines); }
 
   // ---- P5-3 Kind A: xy_graph mode="polyline"(折れ線グラフ・1〜2系列・draw対応) ----
   // v1(prop/inv)/v2(jhs4象限)へ一切触れない独立分岐。日本語ハードコード禁止(表示文字列は全てfp由来)。
@@ -2256,9 +2302,13 @@
   // e-2: line_setの監査(角度差/包含/交点/ラベル帰属を描画と同じ導出で独立再計算)
   FigureBuilder._lineSetAudit = function (fp) {
     var g = lineSetGeom(fp), lay = lineSetLayout(fp);
-    var out = { issues: lsValidate(g.lines, g.pairs), labels: [], cross: {} };
+    var out = { issues: lsValidate(g.lines, g.pairs, fp.density), labels: [], cross: {}, transversals: 0 };
     g.lines.forEach(function (l) { out.cross[l.label] = 0; });
     for (var i = 0; i < g.lines.length; i++) for (var j = i + 1; j < g.lines.length; j++) if (lsSegInter(g.lines[i], g.lines[j])) { out.cross[g.lines[i].label]++; out.cross[g.lines[j].label]++; }
+    (g.pairs.parallel || []).forEach(function (p) {
+      var A = g.lines.filter(function (l) { return l.label === p[0]; })[0], B = g.lines.filter(function (l) { return l.label === p[1]; })[0];
+      g.lines.forEach(function (l) { if (l.label !== p[0] && l.label !== p[1] && lsSegInter(l, A) && lsSegInter(l, B)) out.transversals++; });
+    });
     lay.labels.forEach(function (lb) {
       var nearest = null, nd = 1e9;
       lay.segs.forEach(function (s) { var dd = boxSeg(lb.box, s.p1, s.p2); if (dd < nd) { nd = dd; nearest = s.id; } });
