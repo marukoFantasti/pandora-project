@@ -15,7 +15,7 @@ const ROWS = [
 function fp(row, seed) { return Object.assign({ kind: 'line_set', seed: seed }, row); }
 
 console.log('=== (1) 悉皆: 3行構成×seed1..200 = 角度差/包含/交点/ラベル帰属/決定性 ===');
-let nLbl = 0, fails = 0;
+let nLbl = 0, fails = 0, maxCross = 0;
 ROWS.forEach(function (row, ri) {
   for (let s = 1; s <= 200; s++) {
     cases++;
@@ -23,10 +23,11 @@ ROWS.forEach(function (row, ri) {
     try { a = FB._lineSetAudit(fp(row, s)); } catch (e) { fails++; bad++; if (fails <= 3) console.log('  ❌ row' + ri + ' seed' + s + ' ' + e.message.slice(0, 60)); continue; }
     if (a.issues.length) { bad++; if (fails++ <= 3) console.log('  ❌ row' + ri + ' seed' + s + ' issues=' + a.issues.slice(0, 2)); }
     a.labels.forEach(function (l) { nLbl++; if (!l.ok) { bad++; if (fails++ <= 3) console.log('  ❌ 帰属 row' + ri + ' seed' + s + ' ' + l.own + '→' + l.nearest); } });
+    Object.keys(a.cross).forEach(function (k) { if (a.cross[k] > 2) { bad++; if (fails++ <= 3) console.log('  ❌ 交差>2 row' + ri + ' seed' + s + ' ' + k); } maxCross = Math.max(maxCross, a.cross[k]); });
     if (FB.build(fp(row, s)) !== FB.build(fp(row, s))) { bad++; console.log('  ❌ 非決定 seed' + s); }
   }
 });
-console.log('  ' + cases + '構成 / ラベル' + nLbl + ' ' + (bad === 0 ? '✅' : '❌' + bad));
+console.log('  ' + cases + '構成 / ラベル' + nLbl + ' / 交差相手max' + maxCross + '(上限2) ' + (bad === 0 ? '✅' : '❌' + bad));
 
 console.log('=== (2) 契約throw(labels不足・明示linesの角度違反・余白違反) ===');
 const b2 = bad;
