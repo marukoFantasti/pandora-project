@@ -54,6 +54,20 @@ ROWS.forEach(function (row, ri) {
         }
       }
       Object.keys(cross).forEach(k => { maxCross = Math.max(maxCross, cross[k]); if (cross[k] > 2) { bad++; console.log('  ❌ 交差>2 ' + k); } });
+      // r5 独立再計算: 端点間≥0.10・端点→他線分≥0.06・交点端寄り≥0.08
+      function ptSeg(p, a, b) { const vx = b[0] - a[0], vy = b[1] - a[1], wx = p[0] - a[0], wy = p[1] - a[1]; const L2 = vx * vx + vy * vy; const t = L2 ? Math.max(0, Math.min(1, (wx * vx + wy * vy) / L2)) : 0; return Math.hypot(p[0] - (a[0] + t * vx), p[1] - (a[1] + t * vy)); }
+      for (let i = 0; i < g.lines.length; i++) for (let j = i + 1; j < g.lines.length; j++) {
+        const ea = ends(g.lines[i]), eb = ends(g.lines[j]);
+        for (const pa of ea) for (const pb of eb) { const dd = Math.hypot(pa[0] - pb[0], pa[1] - pb[1]); if (dd < 0.10) { bad++; if (fails++ <= 3) console.log('  ❌ 端点間<0.10 seed' + s + ' ' + g.lines[i].label + g.lines[j].label + ' ' + dd.toFixed(3)); } }
+        for (const pa of ea) if (ptSeg(pa, eb[0], eb[1]) < 0.06) { bad++; if (fails++ <= 3) console.log('  ❌ 端が他線に接近 seed' + s + ' ' + g.lines[i].label + '>' + g.lines[j].label); }
+        for (const pb of eb) if (ptSeg(pb, ea[0], ea[1]) < 0.06) { bad++; if (fails++ <= 3) console.log('  ❌ 端が他線に接近 seed' + s + ' ' + g.lines[j].label + '>' + g.lines[i].label); }
+        if (inter(g.lines[i], g.lines[j])) {
+          const [x1, y1] = ea[0], [x2, y2] = ea[1], [x3, y3] = eb[0], [x4, y4] = eb[1];
+          const den3 = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+          const t3 = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / den3, u3 = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / den3;
+          if (t3 < 0.08 || t3 > 0.92 || u3 < 0.08 || u3 > 0.92) { bad++; if (fails++ <= 3) console.log('  ❌ 交点端寄り seed' + s + ' ' + g.lines[i].label + g.lines[j].label); }
+        }
+      }
       if (den === 'normal') { nNormal++; if (a.transversals >= 1) trNormal++; else { bad++; if (fails++ <= 3) console.log('  ❌ 横断なし seed' + s); } }
       // r4 独立再計算: 垂直ペアの直線交点・線分内外・延長比
       let nExt = 0;
@@ -91,5 +105,5 @@ const b2 = bad;
 ].forEach(function (o) { cases++; let t = false; try { FB.build(o); } catch (e) { t = true; } if (!t) { bad++; console.log('  ❌ 非throw ' + JSON.stringify(o.labels)); } });
 console.log('  契約4種 ' + (bad === b2 ? '✅' : '❌'));
 
-console.log('\n' + (bad === 0 ? 'line_set: 全' + cases + '照合 一致 ✅(悉皆600+契約4・r4延長交点検査込み)' : '❌ ' + bad + '件'));
+console.log('\n' + (bad === 0 ? 'line_set: 全' + cases + '照合 一致 ✅(悉皆600+契約4・r4延長交点/r5端点規則の独立再計算込み)' : '❌ ' + bad + '件'));
 process.exit(bad === 0 ? 0 : 1);

@@ -1303,6 +1303,15 @@
     lines.forEach(function (l) {
       lsEnds(l).forEach(function (e) { if (e[0] < LS_MARGIN || e[0] > 1 - LS_MARGIN || e[1] < LS_MARGIN || e[1] > 1 - LS_MARGIN) issues.push('out:' + l.label); });
     });
+    // r5: 端点規則——任意2線分の端点間距離≥0.10・端点から他線分への距離≥0.06(端が他線に乗らない=折れ線/角の見え方を排除)
+    for (var e1 = 0; e1 < lines.length; e1++) for (var e2 = e1 + 1; e2 < lines.length; e2++) {
+      var ea = lsEnds(lines[e1]), eb = lsEnds(lines[e2]);
+      for (var ka = 0; ka < 2; ka++) for (var kb = 0; kb < 2; kb++) {
+        if (Math.hypot(ea[ka][0] - eb[kb][0], ea[ka][1] - eb[kb][1]) < 0.10) issues.push('end_end:' + lines[e1].label + lines[e2].label);
+      }
+      for (var ka2 = 0; ka2 < 2; ka2++) { if (lsPtSeg(ea[ka2], eb[0], eb[1]) < 0.06) issues.push('end_on_line:' + lines[e1].label + '>' + lines[e2].label); }
+      for (var kb2 = 0; kb2 < 2; kb2++) { if (lsPtSeg(eb[kb2], ea[0], ea[1]) < 0.06) issues.push('end_on_line:' + lines[e2].label + '>' + lines[e1].label); }
+    }
     var isPair = {};
     (pairs.perpendicular || []).forEach(function (p) { isPair[p[0] + p[1]] = isPair[p[1] + p[0]] = 'perp'; });
     (pairs.parallel || []).forEach(function (p) { isPair[p[0] + p[1]] = isPair[p[1] + p[0]] = 'para'; });
@@ -1315,7 +1324,7 @@
       var X = lsSegInter(a, b);
       if (rel === 'perp' && density === 'low' && !X) issues.push('perp_nointer:' + a.label + b.label);
       if (X) {
-        if (X.t < 0.06 || X.t > 0.94 || X.u < 0.06 || X.u > 0.94) issues.push('inter_near_end:' + a.label + b.label);
+        if (X.t < 0.08 || X.t > 0.92 || X.u < 0.08 || X.u > 0.92) issues.push('inter_near_end:' + a.label + b.label);
         inters.push(X);
       }
     }
@@ -1397,7 +1406,7 @@
           if (density === 'low') { cx = band === 0 ? R(0.2, 0.3) : band === 1 ? R(0.7, 0.8) : R(0.3, 0.7); cy = band === 2 ? R(0.2, 0.3) : band === 3 ? R(0.7, 0.8) : R(0.3, 0.7); }
           else { cx = R(0.35, 0.65); cy = R(0.35, 0.65); }
           paraCenter = [cx, cy];
-          var nx = -Math.sin(th * DEG), ny = Math.cos(th * DEG), gap = R(0.18, 0.26);
+          var nx = -Math.sin(th * DEG), ny = Math.cos(th * DEG), gap = density === 'low' ? R(0.18, 0.26) : R(0.14, 0.18);   // normal: 横断線の端が両平行線の外側(≥0.06)に届く間隔
           return [{ label: p[0], angle: th, cx: rnd3(cx - nx * gap / 2), cy: rnd3(cy - ny * gap / 2), len: rnd3(R(0.36, 0.44)) },
                   { label: p[1], angle: th, cx: rnd3(cx + nx * gap / 2), cy: rnd3(cy + ny * gap / 2), len: rnd3(R(0.36, 0.44)) }];
         });
@@ -1405,27 +1414,28 @@
       var paraAngle = angles.length ? angles[0] : null, perpIdx = 0;
       (pairs.perpendicular || []).forEach(function (p) {
         if (bad) return;
-        var needTrans = density !== 'low' && paraAngle !== null && perpIdx === (tri % 2); perpIdx++;   // 横断要求を第1/第2ペアで交替
-        var wantExtend = density !== 'low' && !needTrans;   // r4: 非横断側の垂直ペアは延長型(のばすと直角に交わる)
+        // normal: 第1組=延長型ペアの一員Tが平行ペアを横断(急角[58,75])・相棒T2は帯の外で延長交点 / 第2組=交差型を離して配置
+        var wantTrans = density !== 'low' && paraAngle !== null && perpIdx === 0; perpIdx++;
         bad = !tryAdd(function () {
-          var th;
-          if (needTrans) { var dd = Math.floor(R(40, 51)); th = ((paraAngle + (rnd() < 0.5 ? dd : -dd)) % 180 + 180) % 180; }   // 平行角±[40,50]=両線とも角度帯内
-          else th = Math.floor(R(0, 180));
-          var th2 = (th + 90) % 180; if (!okAngle(th) || !okAngle(th2)) return null;
-          if (wantExtend) {
-            var Xe = [R(0.35, 0.65), R(0.35, 0.65)];
-            return [[p[0], th], [p[1], th2]].map(function (q) {
-              var r = q[1] * DEG, len = rnd3(R(0.36, 0.44)), ext = R(0.3, 0.8) * len;
-              var toC = (0.5 - Xe[0]) * Math.cos(r) + (0.5 - Xe[1]) * Math.sin(r);   // 中心方向の符号(端点がキャンバス外に出にくい側)
-              var sgn = toC >= 0 ? 1 : -1; if (rnd() < 0.25) sgn = -sgn;
-              var off = sgn * (len / 2 + ext);   // 交点から線分中心までの距離=半長+延長距離
-              return { label: q[0], angle: q[1], cx: rnd3(Xe[0] + Math.cos(r) * off), cy: rnd3(Xe[1] + Math.sin(r) * off), len: len };
-            });
+          if (wantTrans) {
+            var dd = Math.floor(R(58, 76)), thT = ((paraAngle + (rnd() < 0.5 ? dd : -dd)) % 180 + 180) % 180, thT2 = (thT + 90) % 180;
+            if (!okAngle(thT) || !okAngle(thT2)) return null;
+            var lenT = rnd3(R(0.40, 0.44)), rT = thT * DEG;
+            var cT = [paraCenter[0] + R(-0.04, 0.04), paraCenter[1] + R(-0.04, 0.04)];
+            var T = { label: p[0], angle: thT, cx: rnd3(cT[0]), cy: rnd3(cT[1]), len: lenT };
+            // 延長交点X: Tの一端の外側(延長比[0.3,0.5])・キャンバス中心へ近い側の端を選ぶ
+            var sE = (0.5 - cT[0]) * Math.cos(rT) + (0.5 - cT[1]) * Math.sin(rT) >= 0 ? 1 : -1;
+            var extT = R(0.3, 0.5) * lenT, X = [cT[0] + Math.cos(rT) * sE * (lenT / 2 + extT), cT[1] + Math.sin(rT) * sE * (lenT / 2 + extT)];
+            var r2 = thT2 * DEG, len2 = rnd3(R(0.36, 0.44)), ext2 = R(0.3, 0.8) * len2;
+            var toC = (0.5 - X[0]) * Math.cos(r2) + (0.5 - X[1]) * Math.sin(r2) >= 0 ? 1 : -1;
+            var T2 = { label: p[1], angle: thT2, cx: rnd3(X[0] + Math.cos(r2) * toC * (len2 / 2 + ext2)), cy: rnd3(X[1] + Math.sin(r2) * toC * (len2 / 2 + ext2)), len: len2 };
+            return [T, T2];
           }
-          var X = needTrans ? [paraCenter[0] + R(-0.08, 0.08), paraCenter[1] + R(-0.08, 0.08)] : [R(0.25, 0.75), R(0.25, 0.75)];   // 横断要求時は平行ペア中心近傍に交点
+          var th = Math.floor(R(0, 180)), th2 = (th + 90) % 180; if (!okAngle(th) || !okAngle(th2)) return null;
+          var Xc = [R(0.22, 0.78), R(0.22, 0.78)];
           return [[p[0], th], [p[1], th2]].map(function (q) {
-            var r = q[1] * DEG, off = R(-0.12, 0.12);
-            return { label: q[0], angle: q[1], cx: rnd3(X[0] + Math.cos(r) * off), cy: rnd3(X[1] + Math.sin(r) * off), len: rnd3(R(0.36, 0.44)) };
+            var r = q[1] * DEG, off = R(-0.10, 0.10);
+            return { label: q[0], angle: q[1], cx: rnd3(Xc[0] + Math.cos(r) * off), cy: rnd3(Xc[1] + Math.sin(r) * off), len: rnd3(R(0.36, 0.44)) };
           });
         });
       });
