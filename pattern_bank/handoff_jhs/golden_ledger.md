@@ -463,3 +463,7 @@
 - **reading_engine前処理**: 「X」(1字記号: ひらがな/カタカナ/英字)を読み対象外=原文のまま通す(3コピー同期: handoff/assets_global/pg-engine)。固定ベクター+4(51件)。
 - **接続先**: ①算数・数学バンク全学年(関門41 hiragana_label_brackets・悉皆) ②国語教材静的JSON(japanese_handoff+samples・同関門41) ③homeworkビルダー(jio課題)=homework/*.json 存在時に同関門41で静的走査+`hyoki_rules.py` CLI(build.pyは未追跡=まるこ側で1行接続) ④実行時AI生成4経路=pandora_main(checkConsistency・警告)/Japanese_question_generator(verifyNotes)/Japanese_story_generator・pandora_global_generator(checkFacts結果に通知)へインライン接続。**関門42 hyoki_rules_drift**: 4経路のインライン==正典・挙動一致・py LABELS一致。
 - 全42関門GREEN・run_acceptance JS前処理OK・golden不変(g04 b7a48203/g05 5f6ee326/g06 b83b53f0)。
+
+### 2026-09-05 e-9クローズ(まるこ目視OK・713472d系)+解説backfill棚卸し(g04/g03)+対称第1便棚卸し先出し
+- e-9 kaisetsu_template=クローズ。**解説backfill**はg04→g03の順: `kaisetsu_backfill_g04.md`(53パターン)・`kaisetsu_backfill_g03.md`(57)をFable向けに書き出し(1パターン=id・単元・本文テンプレ{slot}・答え式・computed・density/diff(バンク欄なし)・図kind)。
+- 対称第1便の棚卸し先出しを `対称第1便_棚卸し先出し.md` に固定(94行=figure51/shapes22/grid18/なし3・設問型8分類・sym_polygon実装範囲・提案順)。設計書(Fable)待ち。
