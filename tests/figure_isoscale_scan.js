@@ -79,6 +79,7 @@ for (const bf of fs.readdirSync(path.join(ROOT, 'pattern_bank')).filter(f => /^p
         for (let i = 1; i < segs.length; i++) dev = Math.max(dev, angdiff(segs[i], segs[0]));
         note(kind, dev);
       }
+      else if (fp.kind === 'sym_figure') { const g = FB._geom.sym_figure(fp); const pg = PG[0]; let dev = 0; if (!pg || pg.length !== g.V.length) dev = 999; else { const gi = interior(g.V.map(v => [v[0], -v[1]])), di = interior(pg); for (let i = 0; i < gi.length; i++) dev = Math.max(dev, Math.abs(gi[i] - di[i])); } note(kind, dev); }
       else if (fp.kind === 'line_set') { const g = FB._geom.line_set(fp); let dev = 0; L.slice(0, g.lines.length).forEach((l, i) => { dev = Math.max(dev, angdiff(ang(l[2] - l[0], l[3] - l[1]), g.lines[i].angle)); }); note(kind, dev); }
       if (!r.env || Object.keys(fp).length === 0) break;
     }

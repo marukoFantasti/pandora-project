@@ -820,7 +820,7 @@ function choiceMatch(studentChoice, answer) {
 // 辺が1つでもあれば従来どおり辺のみ=既存の辺ペア採点は全件不変(pattern_generator.js normEdgeSetと1:1・関門 edge_set_vectors(5))。
 function edgeSetNorm(s) {
   if (s == null) return '';
-  var str = String(s).toUpperCase(), m = str.match(/[A-H][A-H]/g) || [], set = {};
+  var str = String(s).toUpperCase(), m = str.match(/[A-N][A-N]/g) || [], set = {};   // 対称第1便: 頂点記号A-N
   if (m.length === 0) m = str.match(/[ア-ン]/g) || [];
   m.forEach(function (e) { if (e.length === 2) { var a = e.charAt(0), b = e.charAt(1); set[a < b ? a + b : b + a] = 1; } else set[e] = 1; });
   return Object.keys(set).sort().join(',');

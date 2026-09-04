@@ -308,7 +308,7 @@ def norm_edge_set(s):
     e-2拡張(カタカナ単記号): 頂点2字の辺が1つも無い文字列に限りカタカナ1字(ア〜ン)を記号として抽出(JS normEdgeSetと1:1)。"""
     if s is None:
         return ""
-    edges = re.findall(r"[A-H][A-H]", str(s))
+    edges = re.findall(r"[A-N][A-N]", str(s))   # 対称第1便: 頂点記号をA-Nへ拡張(既存A-H答は不変)
     if not edges:
         edges = re.findall(r"[ア-ン]", str(s))
     return ",".join(sorted({_norm_edge(e) if len(e) == 2 else e for e in edges}))
@@ -702,6 +702,8 @@ def verify(pattern, env, problem):
         in_domain = isinstance(a, int) and not isinstance(a, bool) and 1 <= a <= 3
     elif dom == "edge_set":  # G-4b: 辺の正規化集合(非空・辞書順正規形・恒等=集合一致)。
         in_domain = isinstance(a, str) and len(a) > 0 and norm_edge_set(a) == a
+    elif dom == "label":  # 対称第1便: 記号ラベル答(点F/角C/直線OF等・非空文字列・恒等=文字列一致)
+        in_domain = isinstance(a, str) and len(a) > 0
     elif dom == "num_seq":  # P-1: 数値列(表示=要素slot直書き・verify=先頭要素/全要素はハーネス照合)。
         in_domain = isinstance(a, int) and not isinstance(a, bool)
     elif dom == "word_choice":  # P-1: 語答え(内部=番号・表示=語マップ/位置解決)。

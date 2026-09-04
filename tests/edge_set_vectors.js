@@ -118,7 +118,7 @@ console.log('=== (5) e-2 カタカナ単記号拡張: 既存辺ペア採点の�
   const fs = require('fs');
   const ROOT = path.join(__dirname, '..');
   // 凍結オラクル=拡張前の正規化(頂点2字のみ)。拡張後は「辺が1つも無い文字列」でしか挙動が変わらないことを悉皆で照合。
-  function frozenNorm(s) {
+  function frozenNorm(s) {   // 凍結オラクル=拡張前(A-H・カタカナ無し)。A-H答のコーパスでは A-N 拡張後も同一
     if (s == null) return '';
     const m = String(s).match(/[A-H][A-H]/g) || [], set = {};
     m.forEach(e => { const a = e.charAt(0), b = e.charAt(1); set[a < b ? a + b : b + a] = 1; });

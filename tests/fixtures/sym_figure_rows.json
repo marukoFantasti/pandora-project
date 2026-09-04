@@ -1,0 +1,445 @@
+{
+ "_comment": "対称第1便 sym_figure 行台帳(転記記号のみ・原文非引用)。grp=同一図形共有。skip=不適合(理由)",
+ "rows": [
+  {
+   "row": "u01_005",
+   "grp": "u01_a",
+   "sym": "line",
+   "n": 8,
+   "k": 6,
+   "ask": "ten",
+   "x": "B",
+   "ans": "F"
+  },
+  {
+   "row": "u01_006",
+   "grp": "u01_a",
+   "sym": "line",
+   "n": 8,
+   "k": 6,
+   "ask": "hen",
+   "x": "GH",
+   "ans": "AH"
+  },
+  {
+   "row": "u01_007",
+   "grp": "u01_a",
+   "sym": "line",
+   "n": 8,
+   "k": 6,
+   "ask": "kaku",
+   "x": "E",
+   "ans": "C"
+  },
+  {
+   "row": "u01_008",
+   "grp": "u01_b",
+   "sym": "line",
+   "n": 10,
+   "k": 0,
+   "ask": "ten",
+   "x": "G",
+   "ans": "E"
+  },
+  {
+   "row": "u01_009",
+   "grp": "u01_b",
+   "sym": "line",
+   "n": 10,
+   "k": 0,
+   "ask": "hen",
+   "x": "CD",
+   "ans": "IH"
+  },
+  {
+   "row": "u01_010",
+   "grp": "u01_b",
+   "sym": "line",
+   "n": 10,
+   "k": 0,
+   "ask": "kaku",
+   "x": "J",
+   "ans": "B"
+  },
+  {
+   "row": "u01_011",
+   "grp": "u01_b",
+   "sym": "line",
+   "n": 10,
+   "k": 0,
+   "ask": "hen",
+   "x": "EF",
+   "ans": "GF"
+  },
+  {
+   "row": "u01_017",
+   "grp": "u01_c",
+   "sym": "line",
+   "n": 14,
+   "k": 0,
+   "ask": "ten",
+   "x": "B",
+   "ans": "N"
+  },
+  {
+   "row": "u01_018",
+   "grp": "u01_c",
+   "sym": "line",
+   "n": 14,
+   "k": 0,
+   "ask": "ten",
+   "x": "I",
+   "ans": "G"
+  },
+  {
+   "row": "u01_019",
+   "grp": "u01_c",
+   "sym": "line",
+   "n": 14,
+   "k": 0,
+   "ask": "hen",
+   "x": "CD",
+   "ans": "ML"
+  },
+  {
+   "row": "u01_020",
+   "grp": "u01_c",
+   "sym": "line",
+   "n": 14,
+   "k": 0,
+   "ask": "hen",
+   "x": "KJ",
+   "ans": "EF"
+  },
+  {
+   "row": "u01_021",
+   "grp": "u01_c",
+   "sym": "line",
+   "n": 14,
+   "k": 0,
+   "ask": "kaku",
+   "x": "L",
+   "ans": "D"
+  },
+  {
+   "row": "u01_022",
+   "grp": "u01_c",
+   "sym": "line",
+   "n": 14,
+   "k": 0,
+   "ask": "kaku",
+   "x": "G",
+   "ans": "I"
+  },
+  {
+   "row": "u01_028",
+   "grp": "u01_d",
+   "sym": "line",
+   "n": 14,
+   "k": 13,
+   "ask": "kaku_eq",
+   "x": "G",
+   "ans": "H",
+   "grid": true
+  },
+  {
+   "row": "u01_030",
+   "grp": "u01_d",
+   "sym": "line",
+   "n": 14,
+   "k": 13,
+   "ask": "perp",
+   "x": "BM",
+   "ans": "垂直",
+   "grid": true
+  },
+  {
+   "row": "u01_031",
+   "grp": "u01_d",
+   "sym": "line",
+   "n": 14,
+   "k": 13,
+   "ask": "len_diff",
+   "x": "DK,FI",
+   "ans": "FI:12",
+   "grid": true,
+   "cell_cm": 2
+  },
+  {
+   "row": "u02_001",
+   "grp": "u02_a",
+   "sym": "point",
+   "n": 8,
+   "k": 0,
+   "ask": "ten",
+   "x": "A",
+   "ans": "E"
+  },
+  {
+   "row": "u02_002",
+   "grp": "u02_a",
+   "sym": "point",
+   "n": 8,
+   "k": 0,
+   "ask": "hen",
+   "x": "CD",
+   "ans": "GH"
+  },
+  {
+   "row": "u02_003",
+   "grp": "u02_a",
+   "sym": "point",
+   "n": 8,
+   "k": 0,
+   "ask": "kaku",
+   "x": "F",
+   "ans": "B"
+  },
+  {
+   "row": "u02_004",
+   "grp": "u02_a",
+   "sym": "point",
+   "n": 8,
+   "k": 0,
+   "ask": "o_eq",
+   "x": "B",
+   "ans": "F"
+  },
+  {
+   "row": "u02_005",
+   "grp": "u02_b",
+   "sym": "point",
+   "n": 10,
+   "k": 0,
+   "ask": "ten",
+   "x": "B",
+   "ans": "G"
+  },
+  {
+   "row": "u02_006",
+   "grp": "u02_b",
+   "sym": "point",
+   "n": 10,
+   "k": 0,
+   "ask": "hen",
+   "x": "JI",
+   "ans": "ED"
+  },
+  {
+   "row": "u02_007",
+   "grp": "u02_b",
+   "sym": "point",
+   "n": 10,
+   "k": 0,
+   "ask": "kaku",
+   "x": "F",
+   "ans": "A"
+  },
+  {
+   "row": "u02_008",
+   "grp": "u02_b",
+   "sym": "point",
+   "n": 10,
+   "k": 0,
+   "ask": "o_eq",
+   "x": "C",
+   "ans": "H"
+  },
+  {
+   "row": "u02_015",
+   "grp": "u02_c",
+   "sym": "point",
+   "n": 12,
+   "k": 0,
+   "ask": "ten",
+   "x": "K",
+   "ans": "E"
+  },
+  {
+   "row": "u02_016",
+   "grp": "u02_c",
+   "sym": "point",
+   "n": 12,
+   "k": 0,
+   "ask": "ten",
+   "x": "F",
+   "ans": "L"
+  },
+  {
+   "row": "u02_017",
+   "grp": "u02_c",
+   "sym": "point",
+   "n": 12,
+   "k": 0,
+   "ask": "hen",
+   "x": "GH",
+   "ans": "AB"
+  },
+  {
+   "row": "u02_018",
+   "grp": "u02_c",
+   "sym": "point",
+   "n": 12,
+   "k": 0,
+   "ask": "hen",
+   "x": "CD",
+   "ans": "IJ"
+  },
+  {
+   "row": "u02_019",
+   "grp": "u02_c",
+   "sym": "point",
+   "n": 12,
+   "k": 0,
+   "ask": "kaku",
+   "x": "B",
+   "ans": "H"
+  },
+  {
+   "row": "u02_020",
+   "grp": "u02_c",
+   "sym": "point",
+   "n": 12,
+   "k": 0,
+   "ask": "kaku",
+   "x": "J",
+   "ans": "D"
+  },
+  {
+   "row": "u02_021",
+   "grp": "u02_c",
+   "sym": "point",
+   "n": 12,
+   "k": 0,
+   "ask": "o_eq",
+   "x": "C",
+   "ans": "I"
+  },
+  {
+   "row": "u02_027",
+   "grp": "u02_d",
+   "sym": "point",
+   "n": 12,
+   "k": 0,
+   "ask": "kaku_eq",
+   "x": "C",
+   "ans": "I",
+   "grid": true
+  },
+  {
+   "row": "u02_028",
+   "grp": "u02_d",
+   "sym": "point",
+   "n": 12,
+   "k": 0,
+   "ask": "len",
+   "x": "EK",
+   "ans": "14",
+   "grid": true,
+   "cell_cm": 2
+  },
+  {
+   "row": "u02_029",
+   "grp": "u02_d",
+   "sym": "point",
+   "n": 12,
+   "k": 0,
+   "ask": "cut",
+   "x": "",
+   "ans": "点Oを通る直線",
+   "grid": true
+  },
+  {
+   "row": "u03_020",
+   "grp": "u03_a",
+   "sym": "line",
+   "n": 5,
+   "k": 2,
+   "ask": "hen",
+   "x": "AE",
+   "ans": "CD",
+   "regular": true
+  },
+  {
+   "row": "u03_021",
+   "grp": "u03_a",
+   "sym": "line",
+   "n": 5,
+   "k": 2,
+   "ask": "perp_len",
+   "x": "ED",
+   "ans": "垂直、5",
+   "regular": true,
+   "extra": "P"
+  },
+  {
+   "row": "u03_025",
+   "grp": "u03_b",
+   "sym": "point",
+   "n": 6,
+   "k": 0,
+   "ask": "ten",
+   "x": "C",
+   "ans": "F",
+   "regular": true
+  }
+ ],
+ "skips": [
+  [
+   "u01_029",
+   "補助点Sが未定義(転記依存)"
+  ],
+  [
+   "u03_011",
+   "円(非多角形)=第2便テキスト/circle"
+  ],
+  [
+   "u03_012",
+   "円(非多角形)=第2便"
+  ],
+  [
+   "u03_013",
+   "正五角形2個組合せ(非格子図形・素材図依存)"
+  ],
+  [
+   "u03_014",
+   "同上"
+  ],
+  [
+   "u03_015",
+   "表型=第2便"
+  ],
+  [
+   "u03_019",
+   "表型=第2便"
+  ],
+  [
+   "u03_017",
+   "作図=域外(d)"
+  ],
+  [
+   "u03_018",
+   "作図=域外(d)"
+  ],
+  [
+   "u03_024",
+   "作図=域外(d)"
+  ],
+  [
+   "u03_028",
+   "円の交差図(非対称多角形・素材図依存)"
+  ],
+  [
+   "u03_029",
+   "図依存(直線の関係・図未転記)"
+  ],
+  [
+   "u03_030",
+   "折り紙(図依存・テキスト形の候補=第2便)"
+  ],
+  [
+   "u03_031",
+   "折り紙の面積(図依存)"
+  ]
+ ]
+}

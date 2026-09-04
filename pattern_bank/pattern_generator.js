@@ -255,7 +255,7 @@
   // (直線ア〜コの組合せ選択=「カ、ケ」型)。辺が1つでもあれば従来どおり辺のみ=既存辺ペア採点は全件不変(関門: edge_set_vectors(5))。
   function normEdgeSet(s) {
     if (s == null) return '';
-    var str = String(s), edges = str.match(/[A-H][A-H]/g) || [], set = {};
+    var str = String(s), edges = str.match(/[A-N][A-N]/g) || [], set = {};   // 対称第1便: 頂点記号をA-Nへ拡張(既存A-H答は不変)
     if (edges.length === 0) edges = str.match(/[ア-ン]/g) || [];
     edges.forEach(function (e) { set[e.length === 2 ? normEdge(e) : e] = 1; });
     return Object.keys(set).sort().join(',');
@@ -853,6 +853,7 @@
     else if (dom === 'pi_coef' || dom === 'pi_coef_frac3') inDomain = a > 0;   // S-1/S-3: π係数(表示fmt_pi/fmt_pi_frac(_,3))。正。
     else if (dom === 'choice3') inDomain = Number.isInteger(a) && a >= 1 && a <= 3;   // G-4b: 選択肢番号(表示fmt_choice・恒等=番号一致)。
     else if (dom === 'edge_set') inDomain = typeof a === 'string' && a.length > 0 && normEdgeSet(a) === a;   // G-4b: 辺の正規化集合(非空・辞書順正規形・恒等=集合一致)。
+    else if (dom === 'label') inDomain = typeof a === 'string' && a.length > 0;   // 対称第1便: 記号ラベル答(点F/角C/直線OF等・非空文字列・恒等=文字列一致・採点は教師主)
     else if (dom === 'num_seq') inDomain = Number.isInteger(a);   // P-1: 数値列(表示=要素slot直書き・verify=先頭要素/全要素はハーネス照合=enumeration分担)。
     else if (dom === 'word_choice') inDomain = Number.isInteger(a) && a >= 1 && (!pattern.word_map || a <= Object.keys(pattern.word_map).length);   // P-1: 語答え(内部=番号・表示=語マップ/位置解決)。
     else inDomain = a > 0;   // positive_int（既定・既存バンク全て）
