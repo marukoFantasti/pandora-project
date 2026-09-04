@@ -17,12 +17,13 @@
   .card-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
   .qnum { background: #1a9fd4; color: #fff; border-radius: 6px; padding: 2px 9px; font-size: 12px; font-weight: bold; }
   .unit { background: #f5f5f5; color: #666; border-radius: 6px; padding: 2px 9px; font-size: 11px; }
-  .badge { border-radius: 20px; padding: 3px 12px; font-size: 12px; font-weight: bold; margin-left: auto; }
+  .badge { border-radius: 20px; padding: 3px 12px; font-size: 12px; font-weight: bold; }
+  .result-row { display: flex; justify-content: flex-end; margin: 10px 0 8px; }   /* 正誤バッジ: 問題文→生徒の答え→正誤→解説 の順(まるこ修正) */
   .question-block { margin-bottom: 10px; }
   .question-text { font-size: 14px; line-height: 1.5; margin-bottom: 4px; }
   .answer-text { font-size: 12px; color: #999; }
   /* e-9 kaisetsu: 採点結果(正誤)の直下に自動展開する生徒向け解説。本文と同じフォント・行間(question-textと同一) */
-  .kaisetsu { background: #fffbe6; border: 1px solid #f5d76e; border-radius: 10px; padding: 8px 10px; margin-bottom: 10px; }
+  .kaisetsu { background: #fffbe6; border: 1px solid #f5d76e; border-radius: 10px; padding: 8px 10px; margin: 0 0 10px; }
   .kaisetsu-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
   .kaisetsu-head .label { font-size: 11px; color: #b7791f; font-weight: bold; }
   .kaisetsu-toggle { font-size: 11px; color: #b7791f; background: #fff; border: 1px solid #f5d76e; border-radius: 6px; padding: 1px 8px; cursor: pointer; }
@@ -188,16 +189,7 @@ async function main() {
     html += '<div class="card-head">' +
       '<span class="qnum">Q' + (i + 1) + '</span>' +
       (p.unit || p.chapter ? '<span class="unit">' + esc(p.unit || p.chapter) + '</span>' : '') +
-      '<span class="badge" style="background:' + badge.bg + ';color:' + badge.color + '">' + badge.label + '</span>' +
     '</div>';
-
-    // e-9 kaisetsu: 正誤表示の直下に自動展開(正解・不正解とも)。「とじる」で折りたたみ可(既定=開)。無い問題は非表示(フォールバック無し)。
-    if (p.kaisetsu) {
-      html += '<div class="kaisetsu">' +
-        '<div class="kaisetsu-head"><span class="label">💡 かいせつ</span><button type="button" class="kaisetsu-toggle">とじる</button></div>' +
-        '<div class="kaisetsu-text">' + esc(String(p.kaisetsu)) + '</div>' +
-      '</div>';
-    }
 
     if (p.question) {
       html += '<div class="question-block">' +
@@ -210,6 +202,15 @@ async function main() {
     html += renderCanvasBlock('✏️ 式', p.equation_canvas, redPen.equation);
     html += renderCanvasBlock('🔢 答え', p.answer_canvas, redPen.answer);
     html += '</div>';
+
+    // 正誤バッジ(生徒の答えの直後)→ e-9 kaisetsu(正誤の直下に自動展開・正解/不正解とも・「とじる」で折りたたみ可・既定=開・無い問題は非表示)
+    html += '<div class="result-row"><span class="badge" style="background:' + badge.bg + ';color:' + badge.color + '">' + badge.label + '</span></div>';
+    if (p.kaisetsu) {
+      html += '<div class="kaisetsu">' +
+        '<div class="kaisetsu-head"><span class="label">💡 かいせつ</span><button type="button" class="kaisetsu-toggle">とじる</button></div>' +
+        '<div class="kaisetsu-text">' + esc(String(p.kaisetsu)) + '</div>' +
+      '</div>';
+    }
 
     if (r && r.teacher_canvas) {
       html += '<div class="teacher-block">' +
