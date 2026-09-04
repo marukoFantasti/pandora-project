@@ -1238,7 +1238,7 @@
   // ---- e-2 Kind: line_set(直線散布・垂直/平行の組合せ選択)。裁可(i)・設計書e-2 §1 ----
   // labels(バンク由来記号)+pairs(正答ペア=転記保存)+seed → 合成規則(§1.2)で配置を決定的生成。
   // lines[]明示も受理(anchor固定)。日本語ハードコードなし。ラベル=線分一端の外側(自線分束縛)。
-  var LS_W = 260, LS_H = 200, LS_MARGIN = 0.06, LS_TRIES = 600, LS_STATS = null;
+  var LS_W = 240, LS_H = 240, LS_MARGIN = 0.06, LS_TRIES = 600, LS_STATS = null;   // r6④: 等スケール(正方形viewBox=角度保存)。260×200の非等方写像は垂直ペアを78°/102°に歪めていた(型B目視差し戻しの原因)
   function lsRand(seed) {   // mulberry32(決定的)
     var a = (Number(seed) >>> 0) || 1;
     return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
@@ -1349,7 +1349,7 @@
         if (paraOf[a2.label] !== undefined || paraOf[b2.label] !== undefined) issues.push('para_cross:' + a2.label + b2.label);
         if (pa !== undefined && pb !== undefined) issues.push('perp_pairs_cross:' + a2.label + b2.label);
       } else {
-        if (!(d2 >= 40 && d2 <= 75)) issues.push('cross_band:' + a2.label + b2.label + ':' + d2.toFixed(1));   // [40,75]∪[105,140]
+        if (!(d2 >= 40 && d2 <= 60)) issues.push('cross_band:' + a2.label + b2.label + ':' + d2.toFixed(1));   // r6③: [40,60]∪[120,140](75°は直角と紛れる)。横断線の角度帯①もこれに包含
         if (paraOf[a2.label] !== undefined) (paraCrossed[a2.label] = paraCrossed[a2.label] || []).push(b2.label);
         if (paraOf[b2.label] !== undefined) (paraCrossed[b2.label] = paraCrossed[b2.label] || []).push(a2.label);
       }
@@ -1361,6 +1361,7 @@
       var A = byLbl[p[0]], B = byLbl[p[1]]; if (!A || !B) return;
       var c = lsPerpClass(A, B); if (!c) { issues.push('perp_parallel:' + p.join('')); return; }
       perpX[k] = c.X;
+      if (c.kind === 'cross' && (c.X.t < 0.25 || c.X.t > 0.75 || c.X.u < 0.25 || c.X.u > 0.75)) issues.push('perp_cross_offcenter:' + p.join(''));   // r6②: 十字に見える最小はみ出し
       if (density === 'low') { if (c.kind !== 'cross') issues.push('perp_nocross_low:' + p.join('')); }
       else { if (c.kind === 'extend') nExtend++; else if (c.kind !== 'cross') issues.push('perp_' + c.kind + ':' + p.join('')); }
     });
@@ -1408,7 +1409,7 @@
           if (density === 'low') { cx = band === 0 ? R(0.2, 0.3) : band === 1 ? R(0.7, 0.8) : R(0.3, 0.7); cy = band === 2 ? R(0.2, 0.3) : band === 3 ? R(0.7, 0.8) : R(0.3, 0.7); }
           else { cx = R(0.35, 0.65); cy = R(0.35, 0.65); }
           paraCenter = [cx, cy];
-          var nx = -Math.sin(th * DEG), ny = Math.cos(th * DEG), gap = density === 'low' ? R(0.18, 0.26) : (template === 'B' ? R(0.11, 0.13) : R(0.14, 0.18));   // normal: 横断線の端が両平行線の外側(≥0.06)に届く間隔(型Bは交点X+端点規則の余地のため狭め)
+          var nx = -Math.sin(th * DEG), ny = Math.cos(th * DEG), gap = density === 'low' ? R(0.18, 0.26) : (template === 'B' ? R(0.16, 0.18) : R(0.14, 0.18));   // normal: 横断線の端が両平行線の外側(≥0.06)に届く間隔(型BはT2の帯内余地のため広め)
           return [{ label: p[0], angle: th, cx: rnd3(cx - nx * gap / 2), cy: rnd3(cy - ny * gap / 2), len: rnd3(R(0.36, 0.44)) },
                   { label: p[1], angle: th, cx: rnd3(cx + nx * gap / 2), cy: rnd3(cy + ny * gap / 2), len: rnd3(R(0.36, 0.44)) }];
         });
@@ -1421,19 +1422,27 @@
         var wantExtB = density !== 'low' && paraAngle !== null && perpIdx === 1 && template === 'B'; perpIdx++;
         bad = !tryAdd(function () {
           if (wantTrans && template === 'B') {
-            // 型B: T=急角[66,75]で平行ペアを横断・相棒T2はTの帯外部分でTと交差(Tの端寄り・T2の端寄り)し帯から離れる向きへ延びる
-            var ddB = Math.floor(R(72, 76)), thTB = ((paraAngle + (rnd() < 0.5 ? ddB : -ddB)) % 180 + 180) % 180, thT2B = (thTB + 90) % 180;
+            // 型B(r6): T=角度帯[40,50]で平行ペアを横断・相棒T2はTの帯内部分で交差(交点は両線分とも両端から≥0.25=十字)・
+            // T2は平行線P1のみを横切り(交差角90−dd∈[40,50]=帯内)・P2の手前(≥0.06)で止まる。第2組=延長型を帯外に配置
+            var ddB = Math.floor(R(40, 51)), sgnB = rnd() < 0.5 ? 1 : -1, thTB = ((paraAngle + sgnB * ddB) % 180 + 180) % 180, thT2B = (thTB + 90) % 180;
             if (!okAngle(thTB) || !okAngle(thT2B)) return null;
             var lenTB = rnd3(R(0.42, 0.44)), rTB = thTB * DEG;
-            var cTB = [paraCenter[0] + R(-0.03, 0.03), paraCenter[1] + R(-0.03, 0.03)];
+            var cTB = [paraCenter[0] + R(-0.02, 0.02), paraCenter[1] + R(-0.02, 0.02)];
             var TB = { label: p[0], angle: thTB, cx: rnd3(cTB[0]), cy: rnd3(cTB[1]), len: lenTB };
-            var sB = (0.5 - cTB[0]) * Math.cos(rTB) + (0.5 - cTB[1]) * Math.sin(rTB) >= 0 ? 1 : -1;   // 交点XはTの中心寄り側の端
-            var tX = R(0.17, 0.19);   // Tの端からの比: Tの端→T2の距離(端点規則≥0.06)と端点間(≥0.10)を満たす距離0.075域
-            var XB = [cTB[0] + Math.cos(rTB) * sB * (lenTB / 2 - tX * lenTB), cTB[1] + Math.sin(rTB) * sB * (lenTB / 2 - tX * lenTB)];
-            var r2B = thT2B * DEG, len2B = rnd3(R(0.36, 0.44)), uX = R(0.07, 0.08) / len2B;   // T2の端からXまで0.07〜0.08(端点規則の余地)
-            // T2の長い側=帯(平行ペア中心)から離れる向き
-            var awayB = (XB[0] - paraCenter[0]) * Math.cos(r2B) + (XB[1] - paraCenter[1]) * Math.sin(r2B) >= 0 ? 1 : -1;
-            var T2B = { label: p[1], angle: thT2B, cx: rnd3(XB[0] + Math.cos(r2B) * awayB * (len2B / 2 - uX * len2B)), cy: rnd3(XB[1] + Math.sin(r2B) * awayB * (len2B / 2 - uX * len2B)), len: len2B };
+            var P1 = lines[0], P2 = lines[1]; if (rnd() < 0.5) { var tmpP = P1; P1 = P2; P2 = tmpP; }
+            var XP1 = lsLineInter(TB, P1), XP2 = lsLineInter(TB, P2); if (!XP1 || !XP2) return null;
+            var gapB = Math.hypot(XP2.x - XP1.x, XP2.y - XP1.y) * Math.sin(ddB * DEG);   // 平行線間隔(法線距離)
+            var aB = R(0.03, 0.06);                                                       // XのP1からの法線距離
+            var fB = aB / Math.sin(ddB * DEG) / Math.hypot(XP2.x - XP1.x, XP2.y - XP1.y);  // T上でP1交点からP2側へ
+            var XB = [XP1.x + (XP2.x - XP1.x) * fB, XP1.y + (XP2.y - XP1.y) * fB];
+            var sinE = Math.sin((90 - ddB) * DEG), r2B = thT2B * DEG;
+            var len2B = rnd3(R(0.36, 0.44)), LqMax = (gapB - aB - 0.06) / sinE, Lq = R(0.25, 0.4) * len2B;
+            if (Lq > LqMax) return null;
+            var Lp = len2B - Lq; if (Lp < aB / sinE + 0.08 || Lq < 0.25 * len2B || Lp < 0.25 * len2B) return null;
+            // T2の向き: P1側へ長さLp・P2側へLq。P1側の符号=Xから見てP1交点方向の法線成分
+            var toP1 = (XP1.x - XB[0]) * Math.cos(r2B) + (XP1.y - XB[1]) * Math.sin(r2B) >= 0 ? 1 : -1;
+            var c2 = [XB[0] + Math.cos(r2B) * toP1 * (Lp - Lq) / 2, XB[1] + Math.sin(r2B) * toP1 * (Lp - Lq) / 2];
+            var T2B = { label: p[1], angle: thT2B, cx: rnd3(c2[0]), cy: rnd3(c2[1]), len: len2B };
             return [TB, T2B];
           }
           if (wantExtB) {
@@ -1447,7 +1456,7 @@
             });
           }
           if (wantTrans) {
-            var dd = Math.floor(R(58, 76)), thT = ((paraAngle + (rnd() < 0.5 ? dd : -dd)) % 180 + 180) % 180, thT2 = (thT + 90) % 180;
+            var dd = Math.floor(R(40, 61)), thT = ((paraAngle + (rnd() < 0.5 ? dd : -dd)) % 180 + 180) % 180, thT2 = (thT + 90) % 180;   // r6①: 直角から30°以上離す
             if (!okAngle(thT) || !okAngle(thT2)) return null;
             var lenT = rnd3(R(0.40, 0.44)), rT = thT * DEG;
             var cT = [paraCenter[0] + R(-0.04, 0.04), paraCenter[1] + R(-0.04, 0.04)];
@@ -1463,7 +1472,7 @@
           var th = Math.floor(R(0, 180)), th2 = (th + 90) % 180; if (!okAngle(th) || !okAngle(th2)) return null;
           var Xc = [R(0.22, 0.78), R(0.22, 0.78)];
           return [[p[0], th], [p[1], th2]].map(function (q) {
-            var r = q[1] * DEG, off = R(-0.10, 0.10);
+            var r = q[1] * DEG, off = R(-0.08, 0.08);   // r6②: 交点が両端から≥0.25(len≥0.36→t∈[0.28,0.72])
             return { label: q[0], angle: q[1], cx: rnd3(Xc[0] + Math.cos(r) * off), cy: rnd3(Xc[1] + Math.sin(r) * off), len: rnd3(R(0.36, 0.44)) };
           });
         });

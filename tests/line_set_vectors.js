@@ -1,6 +1,6 @@
 // line_set_vectors.js — e-2 Kind: line_set(直線散布・垂直/平行組合せ)の関門(設計書§1.4・corr-0030原則・目視条件r2)。
 // density難度ノブ(low=交差は垂直ペア内のみ / normal=横断線≥1が平行ペア両方を横切る・非正答交差は角度帯[40°,75°]∪[105°,140°]・
-// 非ペア交差相手≦2)。角度帯は幾何(lines)から独立再計算。包含/交点/ラベル帰属/決定性。悉皆域=3行×2density×seed200=1200構成。
+// 非ペア交差相手≦2)。角度帯は幾何(lines)から独立再計算。r6: 角度帯[40,60]・交差型交点≥0.25・等スケール(viewBox正方形・描画角度=幾何角度)。包含/交点/ラベル帰属/決定性。悉皆域=3行×2density×seed200=1200構成。
 //
 // 実行:  node tests/line_set_vectors.js
 'use strict';
@@ -50,7 +50,7 @@ ROWS.forEach(function (row, ri) {
         if (!samePerp && inter(A, B)) {
           cross[A.label]++; cross[B.label]++;
           if (den === 'low') { bad++; if (fails++ <= 3) console.log('  ❌ low交差 seed' + s + ' ' + A.label + B.label); }
-          else if (!(d >= 40 && d <= 75)) { bad++; if (fails++ <= 3) console.log('  ❌ 交差角度帯 seed' + s + ' ' + A.label + B.label + ' ' + d.toFixed(1)); }
+          else if (!(d >= 40 && d <= 60)) { bad++; if (fails++ <= 3) console.log('  ❌ 交差角度帯[40,60] seed' + s + ' ' + A.label + B.label + ' ' + d.toFixed(1)); }
         }
       }
       Object.keys(cross).forEach(k => { maxCross = Math.max(maxCross, cross[k]); if (cross[k] > 2) { bad++; console.log('  ❌ 交差>2 ' + k); } });
@@ -105,7 +105,23 @@ ROWS.forEach(function (row, ri) {
       });
       if (den === 'normal' && nExt < 1) { bad++; if (fails++ <= 3) console.log('  ❌ 延長型ペアなし seed' + s); }
       if (den === 'normal') nExtTotal += nExt;
-      if (FB.build(fp(row, s, den)) !== FB.build(fp(row, s, den))) { bad++; console.log('  ❌ 非決定 seed' + s); }
+      // r6②: 交差型垂直ペアは交点が両線分とも両端から≥0.25(独立再計算)
+      row.pairs.perpendicular.forEach(function (p) {
+        const A = byL[p[0]], B = byL[p[1]]; if (!inter(A, B)) return;
+        const pa = ends(A), pb = ends(B); const [x1, y1] = pa[0], [x2, y2] = pa[1], [x3, y3] = pb[0], [x4, y4] = pb[1];
+        const dn = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+        const t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / dn, u = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / dn;
+        if (t < 0.25 || t > 0.75 || u < 0.25 || u > 0.75) { bad++; if (fails++ <= 3) console.log('  ❌ 交差型交点が端寄り(<0.25) seed' + s + ' ' + p.join('') + ' t=' + t.toFixed(2) + ' u=' + u.toFixed(2)); }
+      });
+      // r6④: 等スケール検査——viewBox縦横比=1・描画線分の角度が幾何角度と一致(y反転を考慮)
+      const svg = FB.build(fp(row, s, den));
+      const vb = svg.match(/viewBox="([-\d.]+) ([-\d.]+) ([-\d.]+) ([-\d.]+)"/), wh = svg.match(/width="([-\d.]+)" height="([-\d.]+)"/);
+      if (!vb || Math.abs(+vb[3] - +vb[4]) > 1e-6 || !wh || Math.abs(+wh[1] - +wh[2]) > 1e-6) { bad++; if (fails++ <= 3) console.log('  ❌ 非正方形viewBox seed' + s + ' ' + (vb && vb[0])); }
+      const reL = /<line x1="([-\d.]+)" y1="([-\d.]+)" x2="([-\d.]+)" y2="([-\d.]+)"/g; let mm; const drawn = [];
+      while ((mm = reL.exec(svg))) drawn.push(((Math.atan2(-(+mm[4] - +mm[2]), +mm[3] - +mm[1]) * 180 / Math.PI) % 180 + 180) % 180);
+      if (drawn.length !== g.lines.length) { bad++; if (fails++ <= 3) console.log('  ❌ 描画線分数 seed' + s + ' ' + drawn.length); }
+      else g.lines.forEach((l, i) => { if (angdiff(drawn[i], l.angle) > 0.05) { bad++; if (fails++ <= 3) console.log('  ❌ 描画角度不一致 seed' + s + ' ' + l.label + ' geom=' + l.angle + ' drawn=' + drawn[i].toFixed(2)); } });
+      if (svg !== FB.build(fp(row, s, den))) { bad++; console.log('  ❌ 非決定 seed' + s); }
     }
   });
 });
