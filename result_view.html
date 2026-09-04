@@ -76,7 +76,8 @@ function gradeOf(r) {
   return 'incorrect';
 }
 
-function achievementMessage(rate) {
+function achievementMessage(rate) {   // 帯: 100=完璧 / 90-99=ほぼ完璧 / 70-89 / 50-69 / <50(まるこ閾値修正 2026-09-04)
+  if (rate >= 100) return '🌟 素晴らしい！完璧だね！';
   if (rate >= 90) return '🌟 素晴らしい！ほぼ完璧だね！';
   if (rate >= 70) return '😊 よくできました！';
   if (rate >= 50) return '💪 もう少し復習してみよう';
