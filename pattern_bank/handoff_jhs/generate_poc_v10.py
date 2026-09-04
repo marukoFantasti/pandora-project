@@ -304,14 +304,17 @@ def edge_rel(base, relation):
     key = _REL_ALIAS.get(relation, relation)
     return ",".join(r.get(key, []))
 def norm_edge_set(s):
-    """任意の辺集合文字列→正規化集合(辞書順カンマ連結)。順不同・FB表記・区切りゆれを吸収。"""
+    """任意の辺集合文字列→正規化集合(辞書順カンマ連結)。順不同・FB表記・区切りゆれを吸収。
+    e-2拡張(カタカナ単記号): 頂点2字の辺が1つも無い文字列に限りカタカナ1字(ア〜ン)を記号として抽出(JS normEdgeSetと1:1)。"""
     if s is None:
         return ""
     edges = re.findall(r"[A-H][A-H]", str(s))
-    return ",".join(sorted({_norm_edge(e) for e in edges}))
+    if not edges:
+        edges = re.findall(r"[ア-ン]", str(s))
+    return ",".join(sorted({_norm_edge(e) if len(e) == 2 else e for e in edges}))
 def fmt_edge_set(s):
     edges = [e for e in norm_edge_set(s).split(",") if e]
-    return "、".join("辺" + e for e in edges)
+    return "、".join(("辺" + e) if len(e) == 2 else e for e in edges)
 
 SAFE.update({"edge_rel": edge_rel, "norm_edge_set": norm_edge_set, "fmt_edge_set": fmt_edge_set})
 
@@ -614,9 +617,9 @@ def build_env(pattern, unit_id=None):
         if _m and env.get(_m.group(1)) == int(_m.group(2)):
             for _nm, _ref in _binds.items():
                 env[_nm] = env[_ref]
-    # 答え(整数)
+    # 答え(整数)。e-2: computed_slots の文字列値(edge_set正規化集合等)は参照可(JS側と1:1・既存バンクは未参照=非干渉)
     env["ans"] = eval(pattern["answer_formula"], SAFE,
-                      {k: v for k, v in env.items() if isinstance(v, int)})
+                      {k: v for k, v in env.items() if isinstance(v, int) or (isinstance(v, str) and k in pattern.get("computed_slots", {}))})
     # P-1 word_choice正規化層(choice3様式の語版): ans→{W1_word}(word_map/位置解決)。
     if _pidom == "word_choice":
         if pattern.get("word_map"):

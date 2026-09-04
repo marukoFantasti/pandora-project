@@ -816,10 +816,13 @@ function choiceMatch(studentChoice, answer) {
 // multi_symbol機構(G-4b edge_set): 辺集合の完全一致採点。生徒答・正答から辺記号(頂点2字)を抽出→
 // 正規化(頂点2字辞書順・集合辞書順・重複排除)→集合完全一致のみ○。順不同/FB表記/読点・空白ゆれを吸収。
 // 部分正解なし(過不足は✗)——「すべて答えよ」の網羅性が学習内容で、部分点は教師上書きの領分。
+// e-2拡張(カタカナ単記号): 頂点2字の辺が1つも無い答に限り、カタカナ1字(ア〜ン)を記号として抽出(「カ、ケ」型=直線の組合せ選択)。
+// 辺が1つでもあれば従来どおり辺のみ=既存の辺ペア採点は全件不変(pattern_generator.js normEdgeSetと1:1・関門 edge_set_vectors(5))。
 function edgeSetNorm(s) {
   if (s == null) return '';
-  var m = String(s).toUpperCase().match(/[A-H][A-H]/g) || [], set = {};
-  m.forEach(function (e) { var a = e.charAt(0), b = e.charAt(1); set[a < b ? a + b : b + a] = 1; });
+  var str = String(s).toUpperCase(), m = str.match(/[A-H][A-H]/g) || [], set = {};
+  if (m.length === 0) m = str.match(/[ア-ン]/g) || [];
+  m.forEach(function (e) { if (e.length === 2) { var a = e.charAt(0), b = e.charAt(1); set[a < b ? a + b : b + a] = 1; } else set[e] = 1; });
   return Object.keys(set).sort().join(',');
 }
 function edgeSetMatch(studentAns, answer) {
@@ -1040,7 +1043,8 @@ function renderGrading(sub) {
     var gs = gradeState[pid] || {};
     // choice機構(G-4b Phase1): デジタル選択式は表示記号(ア/イ/ウ)1字照合で自動採点(未採点時のみ・教師上書き可)。
     // ガード choiceSymbol(p.answer): 正答にア/イ/ウが無い通常の数値/手書き問題では発火しない=加法的・非干渉。
-    var isDigitalChoice = p.student_choice != null && choiceSymbol(p.answer) !== '';
+    // e-2: edge_set宣言(直線ア〜コの組合せ選択=正答にア〜オが混在)ではchoice機構を発火させない(宣言が無い旧quiz形状は従来どおり)。
+    var isDigitalChoice = p.student_choice != null && choiceSymbol(p.answer) !== '' && p.answer_domain !== 'edge_set';
     if (!gs.result && isDigitalChoice) {
       gs = { result: choiceMatch(p.student_choice, p.answer) ? 'correct' : 'incorrect', note: gs.note || '', auto: true };
       gradeState[pid] = gs;
@@ -1049,7 +1053,8 @@ function renderGrading(sub) {
     // 生徒答フィールドは student_choice / student_answer のいずれか(生成quiz形状差を防御的に吸収)。
     // ガード /辺[A-H][A-H]/: 正答が辺集合形でない問題では発火しない=加法的・非干渉。
     var studentEdges = p.student_choice != null ? p.student_choice : (p.student_answer != null ? p.student_answer : null);
-    var isDigitalEdgeSet = !isDigitalChoice && studentEdges != null && /辺[A-H][A-H]/.test(String(p.answer || ''));
+    // e-2: answer_domain==='edge_set' 宣言があればカタカナ単記号ペア(「カ、ケ」型)も辺集合として自動採点(edgeSetNorm拡張)。
+    var isDigitalEdgeSet = !isDigitalChoice && studentEdges != null && (/辺[A-H][A-H]/.test(String(p.answer || '')) || p.answer_domain === 'edge_set');
     if (!gs.result && isDigitalEdgeSet) {
       gs = { result: edgeSetMatch(studentEdges, p.answer) ? 'correct' : 'incorrect', note: gs.note || '', auto: true };
       gradeState[pid] = gs;

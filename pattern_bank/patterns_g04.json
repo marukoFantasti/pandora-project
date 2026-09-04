@@ -188,6 +188,138 @@
    "to": "ヘクタール",
    "k": 100
   }
+ ],
+  "lineset_rows": [
+  {
+   "lb": "ウ、エ、オ、カ、ク、ケ",
+   "labels": [
+    "ウ",
+    "エ",
+    "オ",
+    "カ",
+    "ク",
+    "ケ"
+   ],
+   "pairs": {
+    "perpendicular": [
+     [
+      "カ",
+      "ケ"
+     ],
+     [
+      "ウ",
+      "エ"
+     ]
+    ],
+    "parallel": [
+     [
+      "オ",
+      "ク"
+     ]
+    ]
+   },
+   "density": "low",
+   "q1": "垂直",
+   "q2": "平行",
+   "q3": "垂直",
+   "a1": "カ,ケ",
+   "a2": "オ,ク",
+   "a3": "ウ,エ"
+  },
+  {
+   "lb": "ウ、エ、オ、カ、ク、ケ",
+   "labels": [
+    "ウ",
+    "エ",
+    "オ",
+    "カ",
+    "ク",
+    "ケ"
+   ],
+   "pairs": {
+    "perpendicular": [
+     [
+      "オ",
+      "ケ"
+     ],
+     [
+      "ウ",
+      "エ"
+     ]
+    ],
+    "parallel": [
+     [
+      "カ",
+      "ク"
+     ]
+    ]
+   },
+   "density": "normal",
+   "q1": "垂直",
+   "q2": "平行",
+   "q3": "垂直",
+   "a1": "オ,ケ",
+   "a2": "カ,ク",
+   "a3": "ウ,エ"
+  },
+  {
+   "lb": "ウ、エ、オ、ク、ケ、コ",
+   "labels": [
+    "ウ",
+    "エ",
+    "オ",
+    "ク",
+    "ケ",
+    "コ"
+   ],
+   "pairs": {
+    "perpendicular": [
+     [
+      "オ",
+      "ケ"
+     ],
+     [
+      "ウ",
+      "エ"
+     ]
+    ],
+    "parallel": [
+     [
+      "ク",
+      "コ"
+     ]
+    ]
+   },
+   "density": "normal",
+   "q1": "垂直",
+   "q2": "垂直",
+   "q3": "平行",
+   "a1": "オ,ケ",
+   "a2": "ウ,エ",
+   "a3": "ク,コ"
+  }
+ ],
+  "rect_hen_asks": [
+  {
+   "edge": "DC",
+   "para": "AB",
+   "perp": "AD,BC"
+  },
+  {
+   "edge": "AB",
+   "para": "CD",
+   "perp": "AD,BC"
+  },
+  {
+   "edge": "AD",
+   "para": "BC",
+   "perp": "AB,CD"
+  },
+  {
+   "edge": "BC",
+   "para": "AD",
+   "perp": "AB,CD"
+  }
  ]
  },
  "patterns": [
@@ -6169,6 +6301,157 @@
     1,
     180
    ]
+  },
+  {
+   "pattern_id": "g04_chokusen_kumi_01",
+   "grade": "g04",
+   "unit_id": "g04_c05_u01",
+   "unit_name": "垂直と平行",
+   "semantic_category": "直線の垂直な組・平行な組の選択",
+   "semantic_note": "裁可(i) e-2。同一フォーマット3行(例/確認❶/練習❶)を1パターン=行別レコード(lineset_rows)で保持。転記の正答ペア記号はそのまま垂直/平行ペアに保存(再生成ゼロ)・直線の配置(角度・座標)は未転記のためline_set kindの合成規則(r5: 端点規則・延長型垂直ペア・横断線・角度帯)で決定的乱択(seed=sd1)。density=難度ノブ(例=low/確認・練習=normal)。多小問(①②③)混在のためans=①のみ=edge_set自動採点は①・②③は教師採点主(表族と同流儀)。答=カタカナ単記号ペア(edge_set拡張・順不同集合一致)。",
+   "step_count": 1,
+   "operation": "垂直/平行の判別",
+   "answer_formula": "A1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2
+     ],
+     "type": "choice_int"
+    },
+    "lb1": {
+     "from": "lineset_rows[j1].lb"
+    },
+    "q1": {
+     "from": "lineset_rows[j1].q1"
+    },
+    "q2": {
+     "from": "lineset_rows[j1].q2"
+    },
+    "q3": {
+     "from": "lineset_rows[j1].q3"
+    },
+    "a1": {
+     "from": "lineset_rows[j1].a1"
+    },
+    "a2": {
+     "from": "lineset_rows[j1].a2"
+    },
+    "a3": {
+     "from": "lineset_rows[j1].a3"
+    },
+    "lab1": {
+     "from": "lineset_rows[j1].labels"
+    },
+    "pr1": {
+     "from": "lineset_rows[j1].pairs"
+    },
+    "den1": {
+     "from": "lineset_rows[j1].density"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    }
+   },
+   "computed_slots": {
+    "A1": {
+     "formula": "a1"
+    },
+    "A2": {
+     "formula": "a2"
+    },
+    "A3": {
+     "formula": "a3"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "右の図の直線{lb1}のうち、垂直な組み合わせと平行な組み合わせを答えなさい。\n① {q1}な組み合わせ ② {q2}な組み合わせ ③ {q3}な組み合わせ"
+   ],
+   "answer_template": "答え ① {A1_edges} ② {A2_edges} ③ {A3_edges}",
+   "figure_params": {
+    "kind": "line_set",
+    "labels": "{lab1}",
+    "pairs": "{pr1}",
+    "density": "{den1}",
+    "seed": "{sd1}"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ],
+    "allowed_extra": "垂"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "edge_set",
+   "note_edge": "正答ペア=転記保存(lineset_rows[].a1〜a3=正規化集合)。seedはsd1(1〜100=関門悉皆域)。"
+  },
+  {
+   "pattern_id": "g04_chohokei_hen_01",
+   "grade": "g04",
+   "unit_id": "g04_c05_u01",
+   "unit_name": "垂直と平行",
+   "semantic_category": "長方形の辺の平行・垂直",
+   "semantic_note": "裁可(i) e-2 row4。長方形ABCDの辺の関係(平行な辺1・垂直な辺2)。転記答(1)「辺DCに平行=辺DC」は自明破損→辺AB(裁可i-2)。転記(2)は「辺ADに垂直=辺AD、辺BC」で設問側破損→基準辺をDCに揃え「辺DCに垂直な辺=辺AD、辺BC」として転写。基準辺4択(rect_hen_asks)・答は長方形の構造から静的(edge_set正規化集合・表示は辞書順=DC→辺CD)。図は自明のため無し(設計書§1.5)。",
+   "step_count": 1,
+   "operation": "平行辺/垂直辺の列挙",
+   "answer_formula": "P1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "type": "choice_int"
+    },
+    "e1": {
+     "from": "rect_hen_asks[j1].edge"
+    },
+    "p1": {
+     "from": "rect_hen_asks[j1].para"
+    },
+    "v1": {
+     "from": "rect_hen_asks[j1].perp"
+    }
+   },
+   "computed_slots": {
+    "P1": {
+     "formula": "p1"
+    },
+    "V1": {
+     "formula": "v1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "長方形ABCDについて、次の辺を答えなさい。\n① 辺{e1}に平行な辺 ② 辺{e1}に垂直な辺"
+   ],
+   "answer_template": "答え ① {P1_edges} ② {V1_edges}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ],
+    "allowed_extra": "垂"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "edge_set",
+   "note_edge": "多小問(①②)のためans=①(edge_set自動採点)・②は教師採点主。"
   }
  ],
  "schema_changelog": {

@@ -31,11 +31,12 @@ for (const bf of bankFiles) {
     for (const [k, v] of Object.entries(p.computed_slots || {})) csFormulas[k] = v.formula;
     for (let s = 0; s < N; s++) {
       let r; try { r = P.makeProblem(p, null, lex); } catch (e) { console.log('GEN-ERR', bf, p.pattern_id, e.message); process.exit(2); }
-      // computed_slots は Python 側で全env(int+文字列)で eval、answer_formula は int のみ（generate_poc準拠）。
+      // computed_slots は Python 側で全env(int+文字列)で eval、answer_formula は int + computed文字列（generate_poc準拠・e-2）。
       const fullEnv = {}, intEnv = {};
       for (const [k, v] of Object.entries(r.env)) {
         if (typeof v === 'string' || (typeof v === 'number' && Number.isInteger(v))) fullEnv[k] = v;
         if (typeof v === 'number' && Number.isInteger(v)) intEnv[k] = v;
+        else if (typeof v === 'string' && Object.prototype.hasOwnProperty.call(csFormulas, k)) intEnv[k] = v;   // e-2: computed文字列はans名前空間に含む(生成器準拠)
       }
       const jsCs = {};
       for (const k of Object.keys(csFormulas)) jsCs[k] = r.env[k];

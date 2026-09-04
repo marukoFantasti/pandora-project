@@ -251,15 +251,18 @@
     return (r[key] || []).join(',');
   }
   // 任意の辺集合文字列(辺BF、辺CG / FB CG / …)→ 正規化集合(辞書順カンマ連結)。順不同・FB表記・区切りゆれを吸収。
+  // e-2拡張(カタカナ単記号): 頂点2字の辺が1つも無い文字列に限り、カタカナ1字(ア〜ン)を記号として抽出
+  // (直線ア〜コの組合せ選択=「カ、ケ」型)。辺が1つでもあれば従来どおり辺のみ=既存辺ペア採点は全件不変(関門: edge_set_vectors(5))。
   function normEdgeSet(s) {
     if (s == null) return '';
-    var edges = String(s).match(/[A-H][A-H]/g) || [], set = {};
-    edges.forEach(function (e) { set[normEdge(e)] = 1; });
+    var str = String(s), edges = str.match(/[A-H][A-H]/g) || [], set = {};
+    if (edges.length === 0) edges = str.match(/[ア-ン]/g) || [];
+    edges.forEach(function (e) { set[e.length === 2 ? normEdge(e) : e] = 1; });
     return Object.keys(set).sort().join(',');
   }
   function fmtEdgeSet(s) {
     var edges = normEdgeSet(s).split(',').filter(function (x) { return x; });
-    return edges.map(function (e) { return '辺' + e; }).join('、');
+    return edges.map(function (e) { return e.length === 2 ? '辺' + e : e; }).join('、');
   }
   // 数値列の正規化(num_seq機構・edgeSet様式の順序保存版)。数値トークンを出現順に抽出し
   // カンマ連結(区切り・空白ゆれ吸収/順序は保存=順序違いは別値)。−(U+2212)/-両対応・全角数字→半角。
@@ -711,9 +714,11 @@
     });
 
     // 答え（整数値のみをformulaに渡す＝Pythonのisinstance(v,int)フィルタと同義）
+    // e-2: computed_slots の文字列値(edge_set正規化集合等)は answer_formula から参照可(Python側と1:1・既存バンクは未参照=非干渉)
     var intEnv = {};
     Object.keys(env).forEach(function (k) {
       if (typeof env[k] === 'number' && Number.isInteger(env[k])) intEnv[k] = env[k];
+      else if (typeof env[k] === 'string' && Object.prototype.hasOwnProperty.call(pattern.computed_slots || {}, k)) intEnv[k] = env[k];
     });
     env.ans = evalExpr(pattern.answer_formula, intEnv);
     // P-1 word_choice正規化層(choice3様式の語版): ans(番号int)→ {W1_word}。word_map宣言があれば語マップ、

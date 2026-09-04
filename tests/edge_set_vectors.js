@@ -113,5 +113,63 @@ console.log('=== (4) clearance悉皆(corr-0020): 頂点名8+寸法ラベル・c1
   console.log('  受理組 ' + n + ' / 描画不良 ' + drawBad + ' / clearance違反 ' + viol + ' / min(minText ' + minMT.toFixed(1) + ', minSeg ' + minSeg.toFixed(1) + ') ' + (viol === 0 && drawBad === 0 ? '✅' : '❌'));
 })();
 
-console.log('\n' + (bad === 0 ? 'edge_set/辺関係ベクター: 全' + cases + '照合 一致 ✅(関係表12×独立オラクル・正規化・fmt・記号透過・図頂点整合・8頂点名clearance悉皆・シード非依存)' : '❌ ' + bad + '件'));
+console.log('=== (5) e-2 カタカナ単記号拡張: 既存辺ペア採点の全件不変(凍結オラクル) + 3実装一致(JS/採点HTML/Python) ===');
+(function () {
+  const fs = require('fs');
+  const ROOT = path.join(__dirname, '..');
+  // 凍結オラクル=拡張前の正規化(頂点2字のみ)。拡張後は「辺が1つも無い文字列」でしか挙動が変わらないことを悉皆で照合。
+  function frozenNorm(s) {
+    if (s == null) return '';
+    const m = String(s).match(/[A-H][A-H]/g) || [], set = {};
+    m.forEach(e => { const a = e.charAt(0), b = e.charAt(1); set[a < b ? a + b : b + a] = 1; });
+    return Object.keys(set).sort().join(',');
+  }
+  function frozenFmt(s) { return frozenNorm(s).split(',').filter(x => x).map(e => '辺' + e).join('、'); }
+  // 採点HTML(pandora_grading.html)の edgeSetNorm を抽出して同一挙動を照合(テスト用再実装はドリフトするため実体を使う。HTML側は入力を大文字化=既存挙動)
+  const html = fs.readFileSync(path.join(ROOT, 'pandora_grading.html'), 'utf-8');
+  const m0 = html.match(/function edgeSetNorm\(s\) \{[\s\S]*?\n\}/);
+  if (!m0) { bad++; console.log('  ❌ pandora_grading.html edgeSetNorm 抽出不可'); return; }
+  const gradingNorm = new Function('return (' + m0[0] + ')')();
+  // コーパス: 既存edge_set正答(全バンク・辺2字系)×表記ゆれ + 生徒答ゆれ + カタカナ系(拡張域)
+  const corpus = [], kataBank = [];
+  fs.readdirSync(path.join(ROOT, 'pattern_bank')).filter(f => /^patterns_.*\.json$/.test(f)).forEach(f => {
+    const bank = JSON.parse(fs.readFileSync(path.join(ROOT, 'pattern_bank', f), 'utf-8'));
+    bank.patterns.forEach(p => {
+      if (p.answer_domain !== 'edge_set') return;
+      for (let sd = 1; sd <= 5; sd++) {
+        let r; try { r = P.makeProblem(p, null, bank.shared_lexicon || {}); } catch (e) { return; }
+        const ans = r.answer || r.answer_text || JSON.stringify(r);
+        if (!/[A-H][A-H]/.test(String(ans))) { kataBank.push(String(ans), String(r.env.ans)); continue; }   // e-2カタカナ型(拡張域)は3実装一致のみ
+        corpus.push(String(ans));
+        const fm = P.fmtEdgeSet(r.ans !== undefined ? String(r.ans) : String(ans));
+        corpus.push(fm, fm.replace(/辺/g, ''), fm.replace(/、/g, ' '), fm.split('、').reverse().join(','), fm.replace(/([A-H])([A-H])/g, '$2$1'));
+      }
+    });
+  });
+  const variants = ['辺FB、辺GC 辺HE', 'CG,DH,EH,FG', 'FB FB BF', '辺DH,辺CG', '', '辺AB', 'ab', 'AB CD ef', '辺AB と 辺CD', 'AE,AD,BF,BC', '辺BC、辺BF、辺AD、辺AE', 'ABCD', 'A B', 'AZ', 'ネジレ AB', '辺AB、ケ'];
+  const kata = ['カ、ケ', 'ケ カ', '直線オと直線ク', 'ウ、エ、ウ', 'ア', 'コ,ク', 'カとケです', 'カ・ケ'];
+  kataBank.forEach(s => { cases++; if (gradingNorm(s) !== P.normEdgeSet(String(s).toUpperCase())) { bad++; console.log('  ❌ カタカナ型バンク答 採点HTML不一致: ' + s); } });
+  let n = 0, inv = 0, par = 0;
+  corpus.concat(variants).forEach(s => {
+    n++; cases++;
+    if (frozenNorm(s) !== P.normEdgeSet(s) || frozenFmt(s) !== P.fmtEdgeSet(s)) { inv++; bad++; if (inv <= 3) console.log('  ❌ 既存不変違反: ' + JSON.stringify(s) + ' 凍結=' + frozenNorm(s) + ' 現=' + P.normEdgeSet(s)); }
+    if (gradingNorm(s) !== P.normEdgeSet(String(s).toUpperCase())) { par++; bad++; if (par <= 3) console.log('  ❌ 採点HTML不一致: ' + JSON.stringify(s)); }
+  });
+  // 既存正答に対する採点判定(一致/不一致)も凍結オラクルと同一
+  corpus.forEach(s => { corpus.slice(0, 40).forEach(t => { cases++; if ((frozenNorm(s) === frozenNorm(t)) !== (P.normEdgeSet(s) === P.normEdgeSet(t))) { bad++; inv++; } }); });
+  // カタカナ拡張域: 期待値+3実装一致
+  const expect = { 'カ、ケ': 'カ,ケ', 'ケ カ': 'カ,ケ', '直線オと直線ク': 'オ,ク', 'ウ、エ、ウ': 'ウ,エ', 'ア': 'ア', 'コ,ク': 'ク,コ', 'カとケです': 'カ,ケ', 'カ・ケ': 'カ,ケ' };
+  kata.forEach(s => { cases++; if (P.normEdgeSet(s) !== expect[s] || gradingNorm(s) !== expect[s]) { bad++; console.log('  ❌ カタカナ ' + s + ' → ' + P.normEdgeSet(s) + '/' + gradingNorm(s)); } });
+  cases++; if (P.fmtEdgeSet('ケ カ') !== 'カ、ケ' || P.fmtEdgeSet('辺AB、ケ') !== '辺AB') { bad++; console.log('  ❌ fmt カタカナ/混在'); }
+  // Python(generate_poc_v10.py)の norm_edge_set/fmt_edge_set と同一(コーパス+カタカナ全件)
+  const { execFileSync } = require('child_process');
+  const all = corpus.concat(variants, kata, kataBank);
+  const py = 'import sys,json\nsys.argv=["x","--vectors"]\nsys.path.insert(0,"pattern_bank/handoff_jhs")\nimport importlib.util\nsp=importlib.util.spec_from_file_location("g","pattern_bank/handoff_jhs/generate_poc_v10.py")\ng=importlib.util.module_from_spec(sp)\nsp.loader.exec_module(g)\nxs=json.load(sys.stdin)\nprint(json.dumps([[g.norm_edge_set(x),g.fmt_edge_set(x)] for x in xs]))';
+  let pyOut; try { pyOut = JSON.parse(execFileSync('python3', ['-c', py], { cwd: ROOT, input: JSON.stringify(all) }).toString()); } catch (e) { bad++; console.log('  ❌ Python照合 実行不可: ' + e.message.slice(0, 80)); pyOut = null; }
+  let pyBad = 0;
+  if (pyOut) all.forEach((s, i) => { cases++; if (pyOut[i][0] !== P.normEdgeSet(s) || pyOut[i][1] !== P.fmtEdgeSet(s)) { pyBad++; bad++; if (pyBad <= 3) console.log('  ❌ Python不一致 ' + JSON.stringify(s) + ' py=' + pyOut[i][0]); } });
+  console.log('  コーパス ' + n + '件(既存edge_set正答由来 ' + corpus.length + ' + ゆれ ' + variants.length + ') 既存不変違反 ' + inv + ' / 採点HTML不一致 ' + par + ' / Python不一致 ' + pyBad + ' / カタカナ ' + kata.length + '+バンク' + kataBank.length + '件 ' + (inv === 0 && par === 0 && pyBad === 0 ? '✅' : '❌'));
+})();
+
+console.log('\n' + (bad === 0 ? 'edge_set/辺関係ベクター: 全' + cases + '照合 一致 ✅(関係表12×独立オラクル・正規化・fmt・記号透過・図頂点整合・8頂点名clearance悉皆・シード非依存・e-2既存不変+3実装一致)' : '❌ ' + bad + '件'));
 process.exit(bad === 0 ? 0 : 1);
