@@ -431,3 +431,8 @@
 - **r6実装**: ④描画を240×240の等スケールへ(viewBox正方形=角度保存)。①横断線角度帯[40,60](型A/B共通) ②交差型垂直ペア=交点が両線分とも両端から≥0.25(lsValidate perp_cross_offcenter・全density) ③非直角交差の角度帯[40,60](cross_band)。型Bは相棒T2がTの帯内部分で十字に交差し平行線の一方のみを[40,50]で横切る構成へ再設計(帯外交差は②と両立不能)。
 - **関門**: 等スケール(viewBox縦横比=1・width=height・描画線分角度=幾何角度±0.05°を全600構成)+交点中央の独立再計算+角度帯[40,60]。600構成GREEN(A150/B150・7s)・**全38関門GREEN・golden 3学年不変**(合成/描画はJS層)。corr-0036登録・pairs検証OK。
 - 再出力5枚: row3/row7(型A・seed22/36)・row3_t2/row7_t2(型B・seed23/37)・row0(low・等スケール化のため参考)→まるこ再目視待ち。
+
+### 2026-09-04 corr-0036横展開: 角度依存kindの「描画角=幾何角」一括再計測(まるこ指示)→歪みなし・関門39常設
+- **結果**: 描画層(layoutToSvg)を通る全kindで再計測——角度v5(tri_angle/tri_angle_iso/quad_angle: 多角形内角 vs a1/a2/apex)・angle_figure全subkind(parallel_lines=g04 heikou+jhs c12: 平行角差/横断角 vs al1・angle_around_point: 射線間隔 vs v・polygon/congruent_pair: 内角 vs v)・composite_area(輪郭全辺=0°/90°)・prism(rect)/cuboid(正面矩形の直角・斜辺の平行)・line_set(描画角 vs 幾何角)。**最大偏差≤0.012°(座標2桁丸め由来)=歪みなし**。line_setだけが正規化座標→非等方px写像を独自に持っていた(他kindはpx直計算)。
+- **viewport**: 全バンク図で preserveAspectRatio=none/非一様scaleは0。width/heightはviewBoxの生値ceil(≤1px差・meetで一様吸収=角度不変)。angle_figureのみ厳密一致(matchViewportAspect)——全kindへの厳密化は出力バイト変更を伴うため未実施(要望あれば別便)。
+- **関門39 tests/figure_isoscale_scan.js**: 上記(A)viewport整合+(B)描画角再計測を全バンク図×seed12で常設(±0.05°)。golden不変(検査のみ)。
