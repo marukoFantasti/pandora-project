@@ -50,8 +50,8 @@ for (const bf of fs.readdirSync(path.join(ROOT, 'pattern_bank')).filter(f => /^p
       const vb = svg.match(/viewBox="([-\d.]+) ([-\d.]+) ([-\d.]+) ([-\d.]+)"/), wh = svg.match(/width="([-\d.]+)" height="([-\d.]+)"/);
       const par = (svg.match(/preserveAspectRatio="([^"]+)"/) || [])[1] || 'meet';
       const nonUni = (svg.match(/scale\(\s*([-\d.]+)\s*,\s*([-\d.]+)\s*\)/g) || []).filter(t => { const m = t.match(/scale\(\s*([-\d.]+)\s*,\s*([-\d.]+)\s*\)/); return Math.abs(+m[1] - +m[2]) > 1e-9; });
-      // width/height は viewBox の w,h と一致(angle_figure様式)か ceil丸め(≤1px)のみ。preserveAspectRatio=meet(既定)なら丸め差は一様スケールで吸収=角度不変。none/非一様scaleは不可
-      const whOk = vb && wh && ((Math.abs(+wh[1] - +vb[3]) < 1e-6 && Math.abs(+wh[2] - +vb[4]) < 1e-6) || (+wh[1] >= +vb[3] - 1e-6 && +wh[1] <= Math.ceil(+vb[3]) + 1 && +wh[2] >= +vb[4] - 1e-6 && +wh[2] <= Math.ceil(+vb[4]) + 1)   // viewBox=小数1桁表示・width/height=生値のceil→差は最大1px(meetで一様吸収));
+      // width/height は viewBox の w,h と一致(angle_figure様式)か ceil丸め(viewBoxは小数1桁表示・生値のceilとの差≤1px)のみ。preserveAspectRatio=meet(既定)なら丸め差は一様スケールで吸収=角度不変。none/非一様scaleは不可
+      const whOk = vb && wh && ((Math.abs(+wh[1] - +vb[3]) < 1e-6 && Math.abs(+wh[2] - +vb[4]) < 1e-6) || (+wh[1] >= +vb[3] - 1e-6 && +wh[1] <= Math.ceil(+vb[3]) + 1 && +wh[2] >= +vb[4] - 1e-6 && +wh[2] <= Math.ceil(+vb[4]) + 1));
       if (!whOk || /none/.test(par) || nonUni.length) { bad++; console.log('  ❌ viewport ' + p.pattern_id + ' vb=' + (vb && vb[0]) + ' wh=' + (wh && wh[0]) + ' par=' + par + ' nonUniform=' + nonUni.length); }
       // (B) 角度再計測
       const L = linesOf(svg), PG = polys(svg);
