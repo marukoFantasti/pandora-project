@@ -25,7 +25,7 @@ function inter(a, b) {   // 独立実装の線分交差判定
 function angdiff(a, b) { const d = Math.abs(a - b) % 180; return Math.min(d, 180 - d); }
 
 console.log('=== (1) 悉皆: 3行×{low,normal}×seed1..100 = 角度帯/延長交点(独立再計算)/包含/交点/横断/帰属/決定性 ===');
-let nLbl = 0, fails = 0, maxCross = 0, trNormal = 0, nNormal = 0, nExtTotal = 0;
+let nLbl = 0, fails = 0, maxCross = 0, trNormal = 0, nNormal = 0, nExtTotal = 0; const tmplCount = { A: 0, B: 0 };
 ROWS.forEach(function (row, ri) {
   ['low', 'normal'].forEach(function (den) {
     for (let s = 1; s <= 100; s++) {
@@ -69,6 +69,22 @@ ROWS.forEach(function (row, ri) {
         }
       }
       if (den === 'normal') { nNormal++; if (a.transversals >= 1) trNormal++; else { bad++; if (fails++ <= 3) console.log('  ❌ 横断なし seed' + s); } }
+      // 第2テンプレート(型A/B): normalはseed偶数=A(横断線∈延長型ペア=実線分非交差)・奇数=B(横断線∈交差型ペア=実線分交差)を独立再計算
+      if (den === 'normal') {
+        const want = s % 2 === 0 ? 'A' : 'B';
+        if (a.template !== want) { bad++; if (fails++ <= 3) console.log('  ❌ 型不一致 seed' + s + ' ' + a.template); }
+        const paraP = row.pairs.parallel[0], PA = byL[paraP[0]], PB = byL[paraP[1]];
+        const trans = g.lines.filter(l => l.label !== paraP[0] && l.label !== paraP[1] && inter(l, PA) && inter(l, PB));
+        const partnerOf = {}; row.pairs.perpendicular.forEach(p => { partnerOf[p[0]] = p[1]; partnerOf[p[1]] = p[0]; });
+        const transInPerp = trans.filter(t => partnerOf[t.label]);
+        if (transInPerp.length < 1) { bad++; if (fails++ <= 3) console.log('  ❌ 横断線が垂直ペア構成員でない seed' + s); }
+        else {
+          const crossing = transInPerp.some(t => inter(t, byL[partnerOf[t.label]]));
+          if (want === 'B' && !crossing) { bad++; if (fails++ <= 3) console.log('  ❌ 型B: 横断線と相棒が非交差 seed' + s); }
+          if (want === 'A' && crossing) { bad++; if (fails++ <= 3) console.log('  ❌ 型A: 横断線と相棒が交差 seed' + s); }
+        }
+        tmplCount[want]++;
+      }
       // r4 独立再計算: 垂直ペアの直線交点・線分内外・延長比
       let nExt = 0;
       row.pairs.perpendicular.forEach(function (p) {
@@ -93,6 +109,8 @@ ROWS.forEach(function (row, ri) {
     }
   });
 });
+console.log('  第2テンプレート(normal): 型A ' + tmplCount.A + ' / 型B ' + tmplCount.B + ' (seed偶奇で交互・横断線の相棒=非交差/交差を独立再計算) ' + (tmplCount.A > 0 && tmplCount.B > 0 ? '✅' : '❌'));
+if (!(tmplCount.A > 0 && tmplCount.B > 0)) bad++;
 console.log('  ' + cases + '構成 / ラベル' + nLbl + ' / 非ペア交差相手max' + maxCross + '(上限2) / normal横断≥1: ' + trNormal + '/' + nNormal + ' ' + (bad === 0 ? '✅' : '❌' + bad));
 
 console.log('=== (2) 契約throw(labels不足・明示linesの角度違反・余白違反・キャンバス外) ===');

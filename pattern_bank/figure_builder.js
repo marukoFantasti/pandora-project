@@ -1380,8 +1380,10 @@
     }
     return issues;
   }
-  function lsSynthesize(labels, pairs, seed, density) {   // §1.2 合成規則(決定的乱択・増分配置)。density=難度ノブ
-    density = density || 'low';
+  // 第2テンプレート(まるこ前倒し指示・2026-09-04): normalは seed偶数=型A(横断線T∈延長型ペア) / seed奇数=型B(横断線T∈交差型ペア:
+  // 相棒T2は帯の外でTの端寄りに交わり帯から離れる向きへ・第2組=延長型を帯外に配置)。規則(lsValidate)・関門は両型共通。
+  function lsSynthesize(labels, pairs, seed, density, template) {   // §1.2 合成規則(決定的乱択・増分配置)。density=難度ノブ
+    density = density || 'low'; template = template || 'A';
     var rnd = lsRand(seed), paraCenter = null;
     var R = function (lo, hi) { return lo + rnd() * (hi - lo); };
     function partialOk(lines) { var iss = lsValidate(lines, pairs, density); if (iss.length && LS_STATS) iss.forEach(function (x) { var k = x.split(':')[0]; LS_STATS[k] = (LS_STATS[k] || 0) + 1; }); return iss.length === 0; }
@@ -1406,7 +1408,7 @@
           if (density === 'low') { cx = band === 0 ? R(0.2, 0.3) : band === 1 ? R(0.7, 0.8) : R(0.3, 0.7); cy = band === 2 ? R(0.2, 0.3) : band === 3 ? R(0.7, 0.8) : R(0.3, 0.7); }
           else { cx = R(0.35, 0.65); cy = R(0.35, 0.65); }
           paraCenter = [cx, cy];
-          var nx = -Math.sin(th * DEG), ny = Math.cos(th * DEG), gap = density === 'low' ? R(0.18, 0.26) : R(0.14, 0.18);   // normal: 横断線の端が両平行線の外側(≥0.06)に届く間隔
+          var nx = -Math.sin(th * DEG), ny = Math.cos(th * DEG), gap = density === 'low' ? R(0.18, 0.26) : (template === 'B' ? R(0.11, 0.13) : R(0.14, 0.18));   // normal: 横断線の端が両平行線の外側(≥0.06)に届く間隔(型Bは交点X+端点規則の余地のため狭め)
           return [{ label: p[0], angle: th, cx: rnd3(cx - nx * gap / 2), cy: rnd3(cy - ny * gap / 2), len: rnd3(R(0.36, 0.44)) },
                   { label: p[1], angle: th, cx: rnd3(cx + nx * gap / 2), cy: rnd3(cy + ny * gap / 2), len: rnd3(R(0.36, 0.44)) }];
         });
@@ -1415,8 +1417,35 @@
       (pairs.perpendicular || []).forEach(function (p) {
         if (bad) return;
         // normal: 第1組=延長型ペアの一員Tが平行ペアを横断(急角[58,75])・相棒T2は帯の外で延長交点 / 第2組=交差型を離して配置
-        var wantTrans = density !== 'low' && paraAngle !== null && perpIdx === 0; perpIdx++;
+        var wantTrans = density !== 'low' && paraAngle !== null && perpIdx === 0;
+        var wantExtB = density !== 'low' && paraAngle !== null && perpIdx === 1 && template === 'B'; perpIdx++;
         bad = !tryAdd(function () {
+          if (wantTrans && template === 'B') {
+            // 型B: T=急角[66,75]で平行ペアを横断・相棒T2はTの帯外部分でTと交差(Tの端寄り・T2の端寄り)し帯から離れる向きへ延びる
+            var ddB = Math.floor(R(72, 76)), thTB = ((paraAngle + (rnd() < 0.5 ? ddB : -ddB)) % 180 + 180) % 180, thT2B = (thTB + 90) % 180;
+            if (!okAngle(thTB) || !okAngle(thT2B)) return null;
+            var lenTB = rnd3(R(0.42, 0.44)), rTB = thTB * DEG;
+            var cTB = [paraCenter[0] + R(-0.03, 0.03), paraCenter[1] + R(-0.03, 0.03)];
+            var TB = { label: p[0], angle: thTB, cx: rnd3(cTB[0]), cy: rnd3(cTB[1]), len: lenTB };
+            var sB = (0.5 - cTB[0]) * Math.cos(rTB) + (0.5 - cTB[1]) * Math.sin(rTB) >= 0 ? 1 : -1;   // 交点XはTの中心寄り側の端
+            var tX = R(0.17, 0.19);   // Tの端からの比: Tの端→T2の距離(端点規則≥0.06)と端点間(≥0.10)を満たす距離0.075域
+            var XB = [cTB[0] + Math.cos(rTB) * sB * (lenTB / 2 - tX * lenTB), cTB[1] + Math.sin(rTB) * sB * (lenTB / 2 - tX * lenTB)];
+            var r2B = thT2B * DEG, len2B = rnd3(R(0.36, 0.44)), uX = R(0.07, 0.08) / len2B;   // T2の端からXまで0.07〜0.08(端点規則の余地)
+            // T2の長い側=帯(平行ペア中心)から離れる向き
+            var awayB = (XB[0] - paraCenter[0]) * Math.cos(r2B) + (XB[1] - paraCenter[1]) * Math.sin(r2B) >= 0 ? 1 : -1;
+            var T2B = { label: p[1], angle: thT2B, cx: rnd3(XB[0] + Math.cos(r2B) * awayB * (len2B / 2 - uX * len2B)), cy: rnd3(XB[1] + Math.sin(r2B) * awayB * (len2B / 2 - uX * len2B)), len: len2B };
+            return [TB, T2B];
+          }
+          if (wantExtB) {
+            // 型B 第2組: 延長型(のばすと直角に交わる)を帯の外に配置。延長交点X2はキャンバス内・延長比[0.3,0.8]
+            var thE = Math.floor(R(0, 180)), thE2 = (thE + 90) % 180; if (!okAngle(thE) || !okAngle(thE2)) return null;
+            var X2 = [R(0.2, 0.8), R(0.2, 0.8)];
+            return [[p[0], thE], [p[1], thE2]].map(function (q) {
+              var r = q[1] * DEG, len = rnd3(R(0.36, 0.44)), ext = R(0.3, 0.8) * len;
+              var toC = (0.5 - X2[0]) * Math.cos(r) + (0.5 - X2[1]) * Math.sin(r) >= 0 ? 1 : -1;
+              return { label: q[0], angle: q[1], cx: rnd3(X2[0] + Math.cos(r) * toC * (len / 2 + ext)), cy: rnd3(X2[1] + Math.sin(r) * toC * (len / 2 + ext)), len: len };
+            });
+          }
           if (wantTrans) {
             var dd = Math.floor(R(58, 76)), thT = ((paraAngle + (rnd() < 0.5 ? dd : -dd)) % 180 + 180) % 180, thT2 = (thT + 90) % 180;
             if (!okAngle(thT) || !okAngle(thT2)) return null;
@@ -1488,10 +1517,11 @@
       return { lines: lines0, pairs: pairs, density: density, sub: -1 };
     }
     var seed = fp.seed !== undefined ? Number(fp.seed) : 1;
+    var template = fp.template || (density === 'normal' ? (seed % 2 === 0 ? 'A' : 'B') : 'A');   // 型はseedで交互(normal)・明示指定も受理
     for (var sub = 0; sub < 24; sub++) {   // サブシード探索(決定的): 合成成功+ラベル帰属自己検査の両立まで
       var lines;
-      try { lines = lsSynthesize(labels, pairs, seed * 1000 + sub, density); } catch (e) { continue; }
-      if (lsAttributionOk(lsLayoutFromLines(lines))) return { lines: lines, pairs: pairs, density: density, sub: sub };
+      try { lines = lsSynthesize(labels, pairs, seed * 1000 + sub, density, template); } catch (e) { continue; }
+      if (lsAttributionOk(lsLayoutFromLines(lines))) return { lines: lines, pairs: pairs, density: density, sub: sub, template: template };
     }
     throw new Error('line_set: 合成規則+帰属を満たす配置が得られない(契約違反: seed=' + seed + ')');
   }
@@ -2355,7 +2385,7 @@
   FigureBuilder._lsStats = function (on) { LS_STATS = on ? {} : null; return LS_STATS; };
   FigureBuilder._lineSetAudit = function (fp) {
     var g = lineSetGeom(fp), lay = lineSetLayout(fp);
-    var out = { issues: lsValidate(g.lines, g.pairs, fp.density), labels: [], cross: {}, transversals: 0, perp: [] };
+    var out = { issues: lsValidate(g.lines, g.pairs, fp.density), labels: [], cross: {}, transversals: 0, perp: [], template: g.template };
     (function () { var byL = {}; g.lines.forEach(function (l) { byL[l.label] = l; });
       (g.pairs.perpendicular || []).forEach(function (p) { var c = lsPerpClass(byL[p[0]], byL[p[1]]); out.perp.push({ pair: p.join(''), kind: c ? c.kind : null, X: c ? [c.X.x, c.X.y] : null, ra: c && c.ra, rb: c && c.rb }); }); })();
     g.lines.forEach(function (l) { out.cross[l.label] = 0; });
