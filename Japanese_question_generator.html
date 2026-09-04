@@ -778,6 +778,12 @@ function furiganaPromptSectionFor(r){
 // （本文側のverifyFuriganaと同じ「AIに数えさせず実測する」思想。仕様question編§3タスク1-4。
 // 警告のみ・生成はブロックしない）。texts は question_text／choices／instruction等の配列。
 // globalモードでない、またはr.allowedKanjiListが無いレコードでは null を返し検証をスキップする。
+// >>> hyoki_rules inline (D10 表記規則・正典=pattern_bank/hyoki_rules.js INLINE_SNIPPET・tests/hyoki_rules_drift.js で同一性検査)
+var HYOKI_LABELS='あいうえおかきくけこ';
+var HYOKI_RE=new RegExp("(^|[^ぁ-んァ-ン一-鿿「]|の)([あいうえおかきくけこ])(?=(角|点|直線)|の(角|点|直線))|(^|[^ぁ-んァ-ン一-鿿「])([あいうえおかきくけこ])(?=と[あいうえおかきくけこ]|度|[、 ]|$)",'gm');
+function hyokiFindUnbracketedLabels(text,figLabels){var out=[],t=String(text==null?'':text),m;HYOKI_RE.lastIndex=0;var has={};(figLabels||[]).forEach(function(c){has[c]=true;});
+while((m=HYOKI_RE.exec(t))){var lab=m[2]||m[5],strong=!!m[2];if(!strong&&!has[lab])continue;out.push({label:lab,index:m.index,context:t.slice(Math.max(0,m.index-6),m.index+10)});}return out;}
+// <<< hyoki_rules inline
 function verifyQuestionFurigana(texts, r){
   if(!r) return null;
   // 条件1：許可漢字集合の導出は「allowedKanjiList があれば global 優先、無ければ学年累積 KANJI_CUMULATIVE[gradeNum]」の順。
@@ -1530,6 +1536,11 @@ choicesは選択式・穴埋めのみ${maxChoices}個。抜き出し・抜き出
       if(furiCheck.extra) parts.push(`フリガナ付けすぎの可能性${furiCheck.extra}件`);
       if(furiCheck.outOfLevel) parts.push(`許可漢字リスト外の漢字${furiCheck.outOfLevel}件`);
       verifyNotes.push(`設問文・選択肢・帯2・帯3のフリガナ検証：${parts.join('・')}（自動修正はしていません。手動でご確認ください）。`);
+    }
+    // D10 表記規則(ひらがな記号の「」規則): 設問文・選択肢・帯2・帯3を機械検査(警告のみ)
+    const hyokiHits = furiganaCheckTexts.flatMap(t=>hyokiFindUnbracketedLabels(t,[]));
+    if(hyokiHits.length){
+      verifyNotes.push(`表記規則D10：ひらがな記号（あ・い等）の「」未囲み ${hyokiHits.length}件（${hyokiHits.slice(0,3).map(h=>'…'+h.context+'…').join(' / ')}）。「あ」のように「」で囲んでください。`);
     }
 
     currentQuestions = {

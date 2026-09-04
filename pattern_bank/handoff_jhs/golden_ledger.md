@@ -457,3 +457,9 @@
 - **D12 ひらがな記号の「」規則**(bank_directives追記): 角や点のひらがな1字ラベルは本文・正解表示・解説の全箇所で「」囲み(国内・海外共通・図中ラベル対象外・カタカナ記号は現状維持)。**全バンク走査→5パターン一括修正**: g04_angle_sum_01(本文)・g04_heikou_kaku_01(本文・答え・解説)・g05_tri_angle_01/g05_tri_iso_angle_01/g05_quad_angle_01(本文)。
 - **関門41 hiragana_label_brackets.js**: 本文/答え/kaisetsuの表示文字列で「未囲みラベル+(角|点|直線)/の(角|点|直線)」(直前が語の一部でない/助詞の)・「未囲みラベル+と+ラベル/度/区切り」(図ラベル所持パターン)の出現ゼロ。契約8件(旧様式検出4・囲み済み/非ラベル非検出4)・11240標本。
 - **golden md5: g04 faa09237→b7a48203・g05 d2c262c0→5f6ee326(本文変更分のみ)・g06不変。図golden(figure_params 562件)不変を照合**。corr-0037登録・pairs検証OK。**全41関門GREEN**。スクショ2枚(正解時100%/不正解時)再出力→まるこ目視待ち。
+
+### 2026-09-04 D10 表記規則層(共通)への昇格——ひらがな記号「」規則+reading_engine前処理+全経路接続(関門41拡張・関門42新設)
+- **D10_表記規則.md新設**(handoff_jhs・共通表記規則層の恒久記載。リポジトリにD10表記規則文書は存在しなかったため新規作成)。正典実装=`pattern_bank/hyoki_rules.js`(+Python同等 `hyoki_rules.py`)。
+- **reading_engine前処理**: 「X」(1字記号: ひらがな/カタカナ/英字)を読み対象外=原文のまま通す(3コピー同期: handoff/assets_global/pg-engine)。固定ベクター+4(51件)。
+- **接続先**: ①算数・数学バンク全学年(関門41 hiragana_label_brackets・悉皆) ②国語教材静的JSON(japanese_handoff+samples・同関門41) ③homeworkビルダー(jio課題)=homework/*.json 存在時に同関門41で静的走査+`hyoki_rules.py` CLI(build.pyは未追跡=まるこ側で1行接続) ④実行時AI生成4経路=pandora_main(checkConsistency・警告)/Japanese_question_generator(verifyNotes)/Japanese_story_generator・pandora_global_generator(checkFacts結果に通知)へインライン接続。**関門42 hyoki_rules_drift**: 4経路のインライン==正典・挙動一致・py LABELS一致。
+- 全42関門GREEN・run_acceptance JS前処理OK・golden不変(g04 b7a48203/g05 5f6ee326/g06 b83b53f0)。

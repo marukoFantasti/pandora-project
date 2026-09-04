@@ -2328,6 +2328,12 @@ JSON以外の文字は一切出力しないこと。前置き・説明・コー�
   }
 }
 
+// >>> hyoki_rules inline (D10 表記規則・正典=pattern_bank/hyoki_rules.js INLINE_SNIPPET・tests/hyoki_rules_drift.js で同一性検査)
+var HYOKI_LABELS='あいうえおかきくけこ';
+var HYOKI_RE=new RegExp("(^|[^ぁ-んァ-ン一-鿿「]|の)([あいうえおかきくけこ])(?=(角|点|直線)|の(角|点|直線))|(^|[^ぁ-んァ-ン一-鿿「])([あいうえおかきくけこ])(?=と[あいうえおかきくけこ]|度|[、 ]|$)",'gm');
+function hyokiFindUnbracketedLabels(text,figLabels){var out=[],t=String(text==null?'':text),m;HYOKI_RE.lastIndex=0;var has={};(figLabels||[]).forEach(function(c){has[c]=true;});
+while((m=HYOKI_RE.exec(t))){var lab=m[2]||m[5],strong=!!m[2];if(!strong&&!has[lab])continue;out.push({label:lab,index:m.index,context:t.slice(Math.max(0,m.index-6),m.index+10)});}return out;}
+// <<< hyoki_rules inline
 async function checkFacts(areaId, resultAreaId, source){
   const apiKey = getApiKey();
   if(!apiKey){
@@ -2409,7 +2415,11 @@ ${text}
     window.__lastCheck = window.__lastCheck || {};
     window.__lastCheck[source] = { sourceText: text, findings: checkResult };
 
-    resultBox.innerHTML = `
+    // D10 表記規則(ひらがな記号の「」規則): 本文を機械検査(AI確認とは独立・警告のみ)
+    const hyokiHits = hyokiFindUnbracketedLabels(text, []);
+    const hyokiNotice = hyokiHits.length ? `<div class="notice notice-err">表記規則D10：ひらがな記号（あ・い等）の「」未囲み ${hyokiHits.length}件（${hyokiHits.slice(0,3).map(h=>('…'+h.context+'…').replace(/</g,'&lt;')).join(' / ')}）。「あ」のように「」で囲んでください。</div>` : '';
+
+    resultBox.innerHTML = `${hyokiNotice}
       <div class="notice notice-info" style="white-space:pre-wrap; line-height:1.7;">${checkResult.replace(/</g,'&lt;')}</div>
       <div style="font-size:11px; color:var(--text3); margin:10px 0 5px;">✍️ 人間の指摘（任意）：気になった表現・言葉づかいなどを書いてください</div>
       <textarea id="humanFeedback_${source}" oninput="resetSaveLessonBtn('${source}')" placeholder="例：「えにし」は小2には難しい。「きっかけ」などの日常語にしてほしい。" style="min-height:70px;"></textarea>

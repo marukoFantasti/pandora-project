@@ -700,6 +700,12 @@ function findOutOfGradeKanji(problemsArr, grades){
 // kanji_quiz は一切見ないため、選択肢の重複（例：「宇宙・宇宙・字宙」で宇宙が2つ）はLLMでは
 // 検出できない。ここで前処理として確実に検出し、見つかった場合はNG確定させて再生成に回す。
 // 全角/半角スペースを除去して比較する（見た目が同一なら重複とみなす）。
+// >>> hyoki_rules inline (D10 表記規則・正典=pattern_bank/hyoki_rules.js INLINE_SNIPPET・tests/hyoki_rules_drift.js で同一性検査)
+var HYOKI_LABELS='あいうえおかきくけこ';
+var HYOKI_RE=new RegExp("(^|[^ぁ-んァ-ン一-鿿「]|の)([あいうえおかきくけこ])(?=(角|点|直線)|の(角|点|直線))|(^|[^ぁ-んァ-ン一-鿿「])([あいうえおかきくけこ])(?=と[あいうえおかきくけこ]|度|[、 ]|$)",'gm');
+function hyokiFindUnbracketedLabels(text,figLabels){var out=[],t=String(text==null?'':text),m;HYOKI_RE.lastIndex=0;var has={};(figLabels||[]).forEach(function(c){has[c]=true;});
+while((m=HYOKI_RE.exec(t))){var lab=m[2]||m[5],strong=!!m[2];if(!strong&&!has[lab])continue;out.push({label:lab,index:m.index,context:t.slice(Math.max(0,m.index-6),m.index+10)});}return out;}
+// <<< hyoki_rules inline
 function findDuplicateKanjiChoices(kanjiArr){
   var issues=[];
   (kanjiArr||[]).forEach(function(k,i){
@@ -1969,6 +1975,13 @@ function generateQuizViaAI(){
       if(!dupCheck.ok){
         regenerateAndRetry(dupCheck.issues.join(' / '));
         return;
+      }
+      // D10 表記規則(ひらがな記号の「」規則): AI生成経路の問題文・正解を機械検査。警告のみ(生成は止めない・手動で「」囲みへ)。
+      var hyokiHits = [];
+      (problemsArr||[]).forEach(function(p,i){ ['question','problem','answer','kaisetsu'].forEach(function(k){ hyokiFindUnbracketedLabels(p[k],[]).forEach(function(h){ hyokiHits.push('問'+(i+1)+':…'+h.context+'…'); }); }); });
+      if(hyokiHits.length){
+        console.warn('[D10 表記規則] ひらがな記号の未囲み', hyokiHits);
+        var hs=document.getElementById('q-status'); if(hs) hs.innerHTML += '<div style="color:var(--orange);font-size:12px">⚠️ 表記規則D10: ひらがな記号の未囲み '+hyokiHits.length+'件（'+hyokiHits.slice(0,3).join(' / ')+'）→ 「あ」のように「」で囲んでください</div>';
       }
 
       // 基準11の残り（不自然な造語表現等、漢字リスト照合だけでは判定できない語彙の

@@ -94,6 +94,9 @@ function createEngine(lexicon, counterTable) {
     const BUAI = SP.buai_composite || null;
     while (i < s.length) {
       const rest = s.slice(i);
+      // (表記規則D10: ひらがな記号の「」規則) 「X」(1字記号: あ・い・カ・A 等)は読み対象外=原文のまま通す(ルビ無し・かな化でも不変)
+      const km = rest.match(/^「([^「」\s])」/);
+      if (km) { emit(km[0], km[0], km[0]); i += km[0].length; continue; }
       // (歩合の複合規則) 一般の数値+単位より先。分が割/厘と同一結合列で隣接共起する場合のみ 分=ぶ。
       if (BUAI) {
         const bm = rest.match(/^((?:\d+[割分厘])+)/);
