@@ -1564,13 +1564,14 @@
     return sfOnSeg(a, b, c) || sfOnSeg(a, b, d) || sfOnSeg(c, d, a) || sfOnSeg(c, d, b);
   }
   // 幾何ガード(§1.3/§1.5): 対称性(厳密)・単純多角形・辺方向0/45/90・内角{90,135,270}・頂点相異・格子域・最小辺長≥1
-  function sfValidate(V, n, sym, k) {
+  function sfValidate(V, n, sym, k, half) {
+    half = half || SF_HALF;
     var issues = [];
     if (V.length !== n) { issues.push('n_mismatch'); return issues; }
     for (var i = 0; i < n; i++) {
       var img = sfImage(V[i], sym), j = sfMapIdx(n, sym, k, i);
       if (V[j][0] !== img[0] || V[j][1] !== img[1]) issues.push('symmetry:' + i);
-      if (Math.abs(V[i][0]) > SF_HALF || Math.abs(V[i][1]) > SF_HALF) issues.push('out:' + i);
+      if (Math.abs(V[i][0]) > half || Math.abs(V[i][1]) > half) issues.push('out:' + i);
       for (var j2 = i + 1; j2 < n; j2++) if (V[i][0] === V[j2][0] && V[i][1] === V[j2][1]) issues.push('dup:' + i + ',' + j2);
       var q = V[(i + 1) % n], dx = q[0] - V[i][0], dy = q[1] - V[i][1];
       if (!sfDirOk(dx, dy)) issues.push('dir:' + i);
@@ -1592,7 +1593,8 @@
     var turns = [-2, -1, 2], t = turns[Math.floor(rnd() * 3)], nh = sfMod(hd + t, 8), d = SF_DIRS[nh], L = 1 + Math.floor(rnd() * maxLen);
     return { hd: nh, d: [d[0] * L, d[1] * L] };
   }
-  function sfSynthLine(n, k, rnd) {   // 線対称: 右側(x>0)の頂点列を乱択→鏡映
+  function sfSynthLine(n, k, rnd, half) {   // 線対称: 右側(x>0)の頂点列を乱択→鏡映
+    half = half || SF_HALF;
     var fixed = [], crossed = [];
     for (var i = 0; i < n; i++) { if (sfMod(2 * i - k, n) === 0) fixed.push(i); if (sfMod(2 * i - (k - 1), n) === 0) crossed.push(i); }
     var startFixed = fixed.length > 0, c0 = startFixed ? fixed[0] : sfMod(crossed[0] + 1, n);
@@ -1616,7 +1618,7 @@
         } else {
           var st2 = (j === 1) ? { hd: hd, d: [SF_DIRS[hd][0] * (1 + Math.floor(rnd() * 3)), SF_DIRS[hd][1] * (1 + Math.floor(rnd() * 3))] } : sfTurnStep(rnd, hd, 3);
           hd = st2.hd; nx = [prev[0] + st2.d[0], prev[1] + st2.d[1]];
-          if (nx[0] <= 0 || nx[0] > SF_HALF || Math.abs(nx[1]) > SF_HALF) { ok = false; break; }
+          if (nx[0] <= 0 || nx[0] > half || Math.abs(nx[1]) > half) { ok = false; break; }
         }
         pts.push(nx);
       }
@@ -1625,11 +1627,12 @@
       chain.forEach(function (ci, j2) { V[ci] = pts[j2]; var mi = sfMapIdx(n, 'line', k, ci); V[mi] = [-pts[j2][0], pts[j2][1]]; });
       if (V.some(function (x) { return !x; })) continue;
       if (sfArea2(V) > 0) V = V.map(function (q) { return [-q[0], q[1]]; });   // 時計回りへ(鏡映は写像を保つ)
-      if (sfValidate(V, n, 'line', k).length === 0) return V;
+      if (sfValidate(V, n, 'line', k, half).length === 0) return V;
     }
     return null;
   }
-  function sfSynthPoint(n, rnd) {   // 点対称: 半周(v0..v_{n/2})を乱択→180°回転
+  function sfSynthPoint(n, rnd, half) {   // 点対称: 半周(v0..v_{n/2})を乱択→180°回転
+    half = half || SF_HALF;
     var h = n / 2;
     for (var t = 0; t < SF_TRIES; t++) {
       var P = [Math.floor(rnd() * 9) - 4, Math.floor(rnd() * 9) - 4]; if (P[0] === 0 && P[1] === 0) continue;
@@ -1637,14 +1640,14 @@
       for (var j = 1; j < h; j++) {
         var st2 = (j === 1) ? { hd: hd, d: [SF_DIRS[hd][0] * (1 + Math.floor(rnd() * 3)), SF_DIRS[hd][1] * (1 + Math.floor(rnd() * 3))] } : sfTurnStep(rnd, hd, 3);
         hd = st2.hd; var nx = [pts[j - 1][0] + st2.d[0], pts[j - 1][1] + st2.d[1]];
-        if (Math.abs(nx[0]) > SF_HALF || Math.abs(nx[1]) > SF_HALF) { ok = false; break; } pts.push(nx);
+        if (Math.abs(nx[0]) > half || Math.abs(nx[1]) > half) { ok = false; break; } pts.push(nx);
       }
       if (!ok) continue;
       var Q = pts[h - 1], dd = [-P[0] - Q[0], -P[1] - Q[1]];
       if (!sfDirOk(dd[0], dd[1]) || Math.max(Math.abs(dd[0]), Math.abs(dd[1])) > 4) continue;
       var V = []; for (var i = 0; i < h; i++) { V[i] = pts[i]; V[i + h] = [-pts[i][0], -pts[i][1]]; }
       if (sfArea2(V) > 0) V = V.map(function (q) { return [-q[0], q[1]]; });
-      if (sfValidate(V, n, 'point', 0).length === 0) return V;
+      if (sfValidate(V, n, 'point', 0, half).length === 0) return V;
     }
     return null;
   }
@@ -1661,12 +1664,13 @@
       V = V.map(function (q) { return [Math.round(q[0] * 1e6) / 1e6, Math.round(q[1] * 1e6) / 1e6]; });
     } else if (fp.vertices) {   // anchor固定(整数格子)
       V = fp.vertices.map(function (q) { return [Number(q[0]), Number(q[1])]; });
-      var iss = sfValidate(V, n, sym, k); if (iss.length) throw new Error('sym_figure: 幾何ガード違反 ' + iss.slice(0, 3).join(','));
+      var iss = sfValidate(V, n, sym, k, Math.min(7, Number(fp.half) || SF_HALF)); if (iss.length) throw new Error('sym_figure: 幾何ガード違反 ' + iss.slice(0, 3).join(','));
     } else {
       var seed = fp.seed !== undefined ? Number(fp.seed) : 1;
       for (sub = 0; sub < 24; sub++) {
         var rnd = lsRand(seed * 1000 + sub);
-        V = sym === 'line' ? sfSynthLine(n, k, rnd) : sfSynthPoint(n, rnd);
+        var half = Math.min(7, Number(fp.half) || SF_HALF);
+        V = sym === 'line' ? sfSynthLine(n, k, rnd, half) : sfSynthPoint(n, rnd, half);
         if (V && sfAttributionOk(sfLayoutFromGeom({ V: V, n: n, sym: sym, k: k, labels: labels }, fp))) break;
         V = null;
       }
@@ -2589,7 +2593,7 @@
   FigureBuilder._lsStats = function (on) { LS_STATS = on ? {} : null; return LS_STATS; };
   FigureBuilder._symFigureAudit = function (fp) {   // 対称第1便 関門用: 写像・幾何ガード・ラベル帰属・辺長を独立導出で返す
     var g = symFigureGeom(fp), lay = sfLayoutFromGeom(g, fp);
-    var iss = g.regular ? [] : sfValidate(g.V, g.n, g.sym, g.k);
+    var iss = g.regular ? [] : sfValidate(g.V, g.n, g.sym, g.k, Math.min(7, Number(fp.half) || SF_HALF));
     if (g.regular) for (var ri = 0; ri < g.n; ri++) { var im = sfImage(g.V[ri], g.sym), rj = sfMapIdx(g.n, g.sym, g.k, ri); if (Math.hypot(g.V[rj][0] - im[0], g.V[rj][1] - im[1]) > 1e-6) iss.push('symmetry:' + ri); }
     var out = { issues: iss, map: g.map, n: g.n, sym: g.sym, k: g.k, labels: [], angles: sfInteriorAngles(g.V), V: g.V, sub: g.sub };
     lay.labels.forEach(function (lb) {

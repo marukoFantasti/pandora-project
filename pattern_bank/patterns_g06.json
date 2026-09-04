@@ -199,7 +199,1378 @@
   "shirabe_2d": [
    {"caption":"すきなどうぶつしらべ","r1":"1組","r2":"2組","c1":"犬","c2":"ねこ","c3":"小鳥","unit":"人"},
    {"caption":"すきなきせつしらべ","r1":"1組","r2":"2組","c1":"春","c2":"夏","c3":"冬","unit":"人"}
-  ]
+  ],
+  "symrows_sen_taiou_ten": [
+  {
+   "row": "u01_005",
+   "q": "右の線対称な図形（直線アイが対称の軸）で、点Bに対応する点はどれですか。",
+   "sy": "line",
+   "n": 8,
+   "k": 6,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "B",
+   "y": "F"
+  },
+  {
+   "row": "u01_008",
+   "q": "右の線対称な図形（直線アイが対称の軸）で、点Gに対応する点はどれですか。",
+   "sy": "line",
+   "n": 10,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "G",
+   "y": "E"
+  },
+  {
+   "row": "u01_017",
+   "q": "右の線対称な図形（直線アイが対称の軸）で、点Bに対応する点はどれですか。",
+   "sy": "line",
+   "n": 14,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "B",
+   "y": "N"
+  },
+  {
+   "row": "u01_018",
+   "q": "右の線対称な図形（直線アイが対称の軸）で、点Iに対応する点はどれですか。",
+   "sy": "line",
+   "n": 14,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "I",
+   "y": "G"
+  }
+ ],
+  "symrows_sen_taiou_hen": [
+  {
+   "row": "u01_006",
+   "q": "右の線対称な図形（直線アイが対称の軸）で、辺GHに対応する辺はどれですか。",
+   "sy": "line",
+   "n": 8,
+   "k": 6,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "GH",
+   "e": "AH"
+  },
+  {
+   "row": "u01_009",
+   "q": "右の線対称な図形（直線アイが対称の軸）で、辺CDに対応する辺はどれですか。",
+   "sy": "line",
+   "n": 10,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "CD",
+   "e": "HI"
+  },
+  {
+   "row": "u01_011",
+   "q": "右の線対称な図形（直線アイが対称の軸）で、辺EFに対応する辺はどれですか。",
+   "sy": "line",
+   "n": 10,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "EF",
+   "e": "FG"
+  },
+  {
+   "row": "u01_019",
+   "q": "右の線対称な図形（直線アイが対称の軸）で、辺CDに対応する辺はどれですか。",
+   "sy": "line",
+   "n": 14,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "CD",
+   "e": "LM"
+  },
+  {
+   "row": "u01_020",
+   "q": "右の線対称な図形（直線アイが対称の軸）で、辺KJに対応する辺はどれですか。",
+   "sy": "line",
+   "n": 14,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "KJ",
+   "e": "EF"
+  }
+ ],
+  "symrows_sen_taiou_kaku": [
+  {
+   "row": "u01_007",
+   "q": "右の線対称な図形（直線アイが対称の軸）で、角Eに対応する角はどれですか。",
+   "sy": "line",
+   "n": 8,
+   "k": 6,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "E",
+   "y": "C"
+  },
+  {
+   "row": "u01_010",
+   "q": "右の線対称な図形（直線アイが対称の軸）で、角Jに対応する角はどれですか。",
+   "sy": "line",
+   "n": 10,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "J",
+   "y": "B"
+  },
+  {
+   "row": "u01_021",
+   "q": "右の線対称な図形（直線アイが対称の軸）で、角Lに対応する角はどれですか。",
+   "sy": "line",
+   "n": 14,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "L",
+   "y": "D"
+  },
+  {
+   "row": "u01_022",
+   "q": "右の線対称な図形（直線アイが対称の軸）で、角Gに対応する角はどれですか。",
+   "sy": "line",
+   "n": 14,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "G",
+   "y": "I"
+  }
+ ],
+  "symrows_sen_seishitsu": [
+  {
+   "row": "u01_028",
+   "q": "右の線対称な図形で、角Gと大きさの等しい角はどれですか。",
+   "sy": "line",
+   "n": 14,
+   "k": 13,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N"
+   ],
+   "gr": true,
+   "rg": false,
+   "vt": [
+    [
+     -3,
+     -1
+    ],
+    [
+     -3,
+     -3
+    ],
+    [
+     -1,
+     -3
+    ],
+    [
+     -1,
+     -4
+    ],
+    [
+     -4,
+     -4
+    ],
+    [
+     -4,
+     -1
+    ],
+    [
+     -3,
+     0
+    ],
+    [
+     3,
+     0
+    ],
+    [
+     4,
+     -1
+    ],
+    [
+     4,
+     -4
+    ],
+    [
+     1,
+     -4
+    ],
+    [
+     1,
+     -3
+    ],
+    [
+     3,
+     -3
+    ],
+    [
+     3,
+     -1
+    ]
+   ],
+   "ex": null,
+   "hf": 6,
+   "cc": 2,
+   "a": "角H"
+  },
+  {
+   "row": "u01_030",
+   "q": "右の線対称な図形で、直線BMは対称の軸とどのように交わりますか。",
+   "sy": "line",
+   "n": 14,
+   "k": 13,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N"
+   ],
+   "gr": true,
+   "rg": false,
+   "vt": [
+    [
+     -3,
+     -1
+    ],
+    [
+     -3,
+     -3
+    ],
+    [
+     -1,
+     -3
+    ],
+    [
+     -1,
+     -4
+    ],
+    [
+     -4,
+     -4
+    ],
+    [
+     -4,
+     -1
+    ],
+    [
+     -3,
+     0
+    ],
+    [
+     3,
+     0
+    ],
+    [
+     4,
+     -1
+    ],
+    [
+     4,
+     -4
+    ],
+    [
+     1,
+     -4
+    ],
+    [
+     1,
+     -3
+    ],
+    [
+     3,
+     -3
+    ],
+    [
+     3,
+     -1
+    ]
+   ],
+   "ex": null,
+   "hf": 6,
+   "cc": 2,
+   "a": "垂直"
+  }
+ ],
+  "symrows_sen_nagasa": [
+  {
+   "row": "u01_031",
+   "q": "右の線対称な図形で、直線DKと直線FIでは、どちらが何cm長いですか。",
+   "sy": "line",
+   "n": 14,
+   "k": 13,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N"
+   ],
+   "gr": true,
+   "rg": false,
+   "vt": [
+    [
+     -3,
+     -1
+    ],
+    [
+     -3,
+     -3
+    ],
+    [
+     -1,
+     -3
+    ],
+    [
+     -1,
+     -4
+    ],
+    [
+     -4,
+     -4
+    ],
+    [
+     -4,
+     -1
+    ],
+    [
+     -3,
+     0
+    ],
+    [
+     3,
+     0
+    ],
+    [
+     4,
+     -1
+    ],
+    [
+     4,
+     -4
+    ],
+    [
+     1,
+     -4
+    ],
+    [
+     1,
+     -3
+    ],
+    [
+     3,
+     -3
+    ],
+    [
+     3,
+     -1
+    ]
+   ],
+   "ex": null,
+   "hf": 6,
+   "cc": 2,
+   "d": 12,
+   "a": "直線FIが12cm長い"
+  }
+ ],
+  "symrows_tensym_taiou_ten": [
+  {
+   "row": "u02_001",
+   "q": "右の点対称な図形（点Oが対称の中心）で、点Aに対応する点はどれですか。",
+   "sy": "point",
+   "n": 8,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "A",
+   "y": "E"
+  },
+  {
+   "row": "u02_005",
+   "q": "右の点対称な図形（点Oが対称の中心）で、点Bに対応する点はどれですか。",
+   "sy": "point",
+   "n": 10,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "B",
+   "y": "G"
+  },
+  {
+   "row": "u02_015",
+   "q": "右の点対称な図形（点Oが対称の中心）で、点Kに対応する点はどれですか。",
+   "sy": "point",
+   "n": 12,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "K",
+   "y": "E"
+  },
+  {
+   "row": "u02_016",
+   "q": "右の点対称な図形（点Oが対称の中心）で、点Fに対応する点はどれですか。",
+   "sy": "point",
+   "n": 12,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "F",
+   "y": "L"
+  }
+ ],
+  "symrows_tensym_taiou_hen": [
+  {
+   "row": "u02_002",
+   "q": "右の点対称な図形（点Oが対称の中心）で、辺CDに対応する辺はどれですか。",
+   "sy": "point",
+   "n": 8,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "CD",
+   "e": "GH"
+  },
+  {
+   "row": "u02_006",
+   "q": "右の点対称な図形（点Oが対称の中心）で、辺JIに対応する辺はどれですか。",
+   "sy": "point",
+   "n": 10,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "JI",
+   "e": "DE"
+  },
+  {
+   "row": "u02_017",
+   "q": "右の点対称な図形（点Oが対称の中心）で、辺GHに対応する辺はどれですか。",
+   "sy": "point",
+   "n": 12,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "GH",
+   "e": "AB"
+  },
+  {
+   "row": "u02_018",
+   "q": "右の点対称な図形（点Oが対称の中心）で、辺CDに対応する辺はどれですか。",
+   "sy": "point",
+   "n": 12,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "CD",
+   "e": "IJ"
+  }
+ ],
+  "symrows_tensym_taiou_kaku": [
+  {
+   "row": "u02_003",
+   "q": "右の点対称な図形（点Oが対称の中心）で、角Fに対応する角はどれですか。",
+   "sy": "point",
+   "n": 8,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "F",
+   "y": "B"
+  },
+  {
+   "row": "u02_007",
+   "q": "右の点対称な図形（点Oが対称の中心）で、角Fに対応する角はどれですか。",
+   "sy": "point",
+   "n": 10,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "F",
+   "y": "A"
+  },
+  {
+   "row": "u02_019",
+   "q": "右の点対称な図形（点Oが対称の中心）で、角Bに対応する角はどれですか。",
+   "sy": "point",
+   "n": 12,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "B",
+   "y": "H"
+  },
+  {
+   "row": "u02_020",
+   "q": "右の点対称な図形（点Oが対称の中心）で、角Jに対応する角はどれですか。",
+   "sy": "point",
+   "n": 12,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "J",
+   "y": "D"
+  }
+ ],
+  "symrows_tensym_seishitsu": [
+  {
+   "row": "u02_004",
+   "q": "右の点対称な図形（点Oが対称の中心）で、直線OBと長さが等しい直線はどこですか。",
+   "sy": "point",
+   "n": 8,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "a": "直線OF"
+  },
+  {
+   "row": "u02_008",
+   "q": "右の点対称な図形（点Oが対称の中心）で、直線OCと長さが等しい直線はどこですか。",
+   "sy": "point",
+   "n": 10,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "a": "直線OH"
+  },
+  {
+   "row": "u02_021",
+   "q": "右の点対称な図形（点Oが対称の中心）で、直線OCと長さが等しい直線はどこですか。",
+   "sy": "point",
+   "n": 12,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L"
+   ],
+   "gr": false,
+   "rg": false,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "a": "直線OI"
+  },
+  {
+   "row": "u02_027",
+   "q": "右の点対称な図形（点Oが対称の中心）で、角Cと大きさの等しい角はどれですか。",
+   "sy": "point",
+   "n": 12,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L"
+   ],
+   "gr": true,
+   "rg": false,
+   "vt": [
+    [
+     -1,
+     3
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     5,
+     3
+    ],
+    [
+     7,
+     3
+    ],
+    [
+     7,
+     0
+    ],
+    [
+     4,
+     -3
+    ],
+    [
+     1,
+     -3
+    ],
+    [
+     -2,
+     0
+    ],
+    [
+     -5,
+     -3
+    ],
+    [
+     -7,
+     -3
+    ],
+    [
+     -7,
+     0
+    ],
+    [
+     -4,
+     3
+    ]
+   ],
+   "ex": null,
+   "hf": 7,
+   "cc": 1,
+   "a": "角I"
+  },
+  {
+   "row": "u02_029",
+   "q": "この図形を1本の直線で切り分けます。切り分けてできる2つの図形が合同になるようにするには、どのような直線で切り分ければよいですか。",
+   "sy": "point",
+   "n": 12,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L"
+   ],
+   "gr": true,
+   "rg": false,
+   "vt": [
+    [
+     -1,
+     3
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     5,
+     3
+    ],
+    [
+     7,
+     3
+    ],
+    [
+     7,
+     0
+    ],
+    [
+     4,
+     -3
+    ],
+    [
+     1,
+     -3
+    ],
+    [
+     -2,
+     0
+    ],
+    [
+     -5,
+     -3
+    ],
+    [
+     -7,
+     -3
+    ],
+    [
+     -7,
+     0
+    ],
+    [
+     -4,
+     3
+    ]
+   ],
+   "ex": null,
+   "hf": 7,
+   "cc": 1,
+   "a": "点Oを通る直線"
+  }
+ ],
+  "symrows_tensym_nagasa": [
+  {
+   "row": "u02_028",
+   "q": "右の点対称な図形（点Oが対称の中心）で、直線EKの長さは何cmですか。",
+   "sy": "point",
+   "n": 12,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L"
+   ],
+   "gr": true,
+   "rg": false,
+   "vt": [
+    [
+     -1,
+     3
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     5,
+     3
+    ],
+    [
+     7,
+     3
+    ],
+    [
+     7,
+     0
+    ],
+    [
+     4,
+     -3
+    ],
+    [
+     1,
+     -3
+    ],
+    [
+     -2,
+     0
+    ],
+    [
+     -5,
+     -3
+    ],
+    [
+     -7,
+     -3
+    ],
+    [
+     -7,
+     0
+    ],
+    [
+     -4,
+     3
+    ]
+   ],
+   "ex": null,
+   "hf": 7,
+   "cc": 1,
+   "d": 14,
+   "a": "14cm"
+  }
+ ],
+  "symrows_tak_taiou_ten": [
+  {
+   "row": "u03_025",
+   "q": "右の正六角形で、点対称な図形とみるとき、点Cに対応する点はどれですか。",
+   "sy": "point",
+   "n": 6,
+   "k": 0,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "gr": false,
+   "rg": true,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "C",
+   "y": "F"
+  }
+ ],
+  "symrows_tak_taiou_hen": [
+  {
+   "row": "u03_020",
+   "q": "右の正五角形（1辺10cm）で、辺AEに対応する辺はどれですか。",
+   "sy": "line",
+   "n": 5,
+   "k": 2,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "gr": false,
+   "rg": true,
+   "vt": null,
+   "ex": null,
+   "hf": null,
+   "cc": 1,
+   "x": "AE",
+   "e": "CD"
+  }
+ ],
+  "symrows_tak_seishitsu": [
+  {
+   "row": "u03_021",
+   "q": "右の正五角形（1辺10cm）で、直線EDと直線アイはどのように交わりますか。また、直線EPの長さを求めなさい。",
+   "sy": "line",
+   "n": 5,
+   "k": 2,
+   "lb": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "gr": false,
+   "rg": true,
+   "vt": null,
+   "ex": [
+    {
+     "label": "P",
+     "mid": [
+      "E",
+      "D"
+     ]
+    }
+   ],
+   "hf": null,
+   "cc": 1,
+   "a": "垂直、5cm"
+  }
+ ]
  },
  "patterns": [
   {
@@ -6436,6 +7807,1369 @@
     14,
     2
    ]
+  },
+  {
+   "pattern_id": "g06_sen_taiou_ten_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u01",
+   "unit_name": "線対称",
+   "semantic_category": "線対称: 対応する点(sym_figure)",
+   "semantic_note": "裁可(j) 対称第1便。行別レコード(symrows_sen_taiou_ten 4行)=転記記号保存+図形合成。対応する点=写像 i→(k−i)/(i+n/2) を転記ペアで照合(関門43)。答は記号(label)・記号は転記保存・図形はsym_figure合成(seed)。",
+   "step_count": 1,
+   "operation": "対応する点",
+   "answer_formula": "Y1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "symrows_sen_taiou_ten[j1].q"
+    },
+    "sy1": {
+     "from": "symrows_sen_taiou_ten[j1].sy"
+    },
+    "n1": {
+     "from": "symrows_sen_taiou_ten[j1].n"
+    },
+    "k1": {
+     "from": "symrows_sen_taiou_ten[j1].k"
+    },
+    "lb1": {
+     "from": "symrows_sen_taiou_ten[j1].lb"
+    },
+    "gr1": {
+     "from": "symrows_sen_taiou_ten[j1].gr"
+    },
+    "rg1": {
+     "from": "symrows_sen_taiou_ten[j1].rg"
+    },
+    "vt1": {
+     "from": "symrows_sen_taiou_ten[j1].vt"
+    },
+    "ex1": {
+     "from": "symrows_sen_taiou_ten[j1].ex"
+    },
+    "hf1": {
+     "from": "symrows_sen_taiou_ten[j1].hf"
+    },
+    "cc1": {
+     "from": "symrows_sen_taiou_ten[j1].cc"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    },
+    "x1": {
+     "from": "symrows_sen_taiou_ten[j1].x"
+    },
+    "y1": {
+     "from": "symrows_sen_taiou_ten[j1].y"
+    }
+   },
+   "computed_slots": {
+    "Y1": {
+     "formula": "y1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え 点{Y1}",
+   "figure_params": {
+    "kind": "sym_figure",
+    "sym": "{sy1}",
+    "n": "{n1}",
+    "k": "{k1}",
+    "labels": "{lb1}",
+    "grid": "{gr1}",
+    "regular": "{rg1}",
+    "vertices": "{vt1}",
+    "extra_points": "{ex1}",
+    "half": "{hf1}",
+    "cell_cm": "{cc1}",
+    "seed": "{sd1}"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "label"
+  },
+  {
+   "pattern_id": "g06_sen_taiou_hen_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u01",
+   "unit_name": "線対称",
+   "semantic_category": "線対称: 対応する辺(sym_figure)",
+   "semantic_note": "裁可(j) 対称第1便。行別レコード(symrows_sen_taiou_hen 5行)=転記記号保存+図形合成。対応する辺=両端の写像。答はedge_set(記号A-N・順不同)・表示は辞書順(転記「辺IH」=辺HI)。",
+   "step_count": 1,
+   "operation": "対応する辺",
+   "answer_formula": "E1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "symrows_sen_taiou_hen[j1].q"
+    },
+    "sy1": {
+     "from": "symrows_sen_taiou_hen[j1].sy"
+    },
+    "n1": {
+     "from": "symrows_sen_taiou_hen[j1].n"
+    },
+    "k1": {
+     "from": "symrows_sen_taiou_hen[j1].k"
+    },
+    "lb1": {
+     "from": "symrows_sen_taiou_hen[j1].lb"
+    },
+    "gr1": {
+     "from": "symrows_sen_taiou_hen[j1].gr"
+    },
+    "rg1": {
+     "from": "symrows_sen_taiou_hen[j1].rg"
+    },
+    "vt1": {
+     "from": "symrows_sen_taiou_hen[j1].vt"
+    },
+    "ex1": {
+     "from": "symrows_sen_taiou_hen[j1].ex"
+    },
+    "hf1": {
+     "from": "symrows_sen_taiou_hen[j1].hf"
+    },
+    "cc1": {
+     "from": "symrows_sen_taiou_hen[j1].cc"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    },
+    "x1": {
+     "from": "symrows_sen_taiou_hen[j1].x"
+    },
+    "e1": {
+     "from": "symrows_sen_taiou_hen[j1].e"
+    }
+   },
+   "computed_slots": {
+    "E1": {
+     "formula": "e1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {E1_edges}",
+   "figure_params": {
+    "kind": "sym_figure",
+    "sym": "{sy1}",
+    "n": "{n1}",
+    "k": "{k1}",
+    "labels": "{lb1}",
+    "grid": "{gr1}",
+    "regular": "{rg1}",
+    "vertices": "{vt1}",
+    "extra_points": "{ex1}",
+    "half": "{hf1}",
+    "cell_cm": "{cc1}",
+    "seed": "{sd1}"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "edge_set"
+  },
+  {
+   "pattern_id": "g06_sen_taiou_kaku_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u01",
+   "unit_name": "線対称",
+   "semantic_category": "線対称: 対応する角(sym_figure)",
+   "semantic_note": "裁可(j) 対称第1便。行別レコード(symrows_sen_taiou_kaku 4行)=転記記号保存+図形合成。対応する角=頂点の写像。答は記号(label)。",
+   "step_count": 1,
+   "operation": "対応する角",
+   "answer_formula": "Y1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "symrows_sen_taiou_kaku[j1].q"
+    },
+    "sy1": {
+     "from": "symrows_sen_taiou_kaku[j1].sy"
+    },
+    "n1": {
+     "from": "symrows_sen_taiou_kaku[j1].n"
+    },
+    "k1": {
+     "from": "symrows_sen_taiou_kaku[j1].k"
+    },
+    "lb1": {
+     "from": "symrows_sen_taiou_kaku[j1].lb"
+    },
+    "gr1": {
+     "from": "symrows_sen_taiou_kaku[j1].gr"
+    },
+    "rg1": {
+     "from": "symrows_sen_taiou_kaku[j1].rg"
+    },
+    "vt1": {
+     "from": "symrows_sen_taiou_kaku[j1].vt"
+    },
+    "ex1": {
+     "from": "symrows_sen_taiou_kaku[j1].ex"
+    },
+    "hf1": {
+     "from": "symrows_sen_taiou_kaku[j1].hf"
+    },
+    "cc1": {
+     "from": "symrows_sen_taiou_kaku[j1].cc"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    },
+    "x1": {
+     "from": "symrows_sen_taiou_kaku[j1].x"
+    },
+    "y1": {
+     "from": "symrows_sen_taiou_kaku[j1].y"
+    }
+   },
+   "computed_slots": {
+    "Y1": {
+     "formula": "y1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え 角{Y1}",
+   "figure_params": {
+    "kind": "sym_figure",
+    "sym": "{sy1}",
+    "n": "{n1}",
+    "k": "{k1}",
+    "labels": "{lb1}",
+    "grid": "{gr1}",
+    "regular": "{rg1}",
+    "vertices": "{vt1}",
+    "extra_points": "{ex1}",
+    "half": "{hf1}",
+    "cell_cm": "{cc1}",
+    "seed": "{sd1}"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "label"
+  },
+  {
+   "pattern_id": "g06_sen_seishitsu_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u01",
+   "unit_name": "線対称",
+   "semantic_category": "線対称: 対称の性質(等しい角/直線・軸との関係・中心)(sym_figure)",
+   "semantic_note": "裁可(j) 対称第1便。行別レコード(symrows_sen_seishitsu 2行)=転記記号保存+図形合成。性質(等しい角/中心を通る直線の等長/軸との垂直/切り分け)。答は転記文字列(label)・図は行群共有(anchor固定の行は図も固定)。",
+   "step_count": 1,
+   "operation": "対称の性質(等しい角/直線・軸との関係・中心)",
+   "answer_formula": "A1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "symrows_sen_seishitsu[j1].q"
+    },
+    "sy1": {
+     "from": "symrows_sen_seishitsu[j1].sy"
+    },
+    "n1": {
+     "from": "symrows_sen_seishitsu[j1].n"
+    },
+    "k1": {
+     "from": "symrows_sen_seishitsu[j1].k"
+    },
+    "lb1": {
+     "from": "symrows_sen_seishitsu[j1].lb"
+    },
+    "gr1": {
+     "from": "symrows_sen_seishitsu[j1].gr"
+    },
+    "rg1": {
+     "from": "symrows_sen_seishitsu[j1].rg"
+    },
+    "vt1": {
+     "from": "symrows_sen_seishitsu[j1].vt"
+    },
+    "ex1": {
+     "from": "symrows_sen_seishitsu[j1].ex"
+    },
+    "hf1": {
+     "from": "symrows_sen_seishitsu[j1].hf"
+    },
+    "cc1": {
+     "from": "symrows_sen_seishitsu[j1].cc"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    },
+    "a1": {
+     "from": "symrows_sen_seishitsu[j1].a"
+    }
+   },
+   "computed_slots": {
+    "A1": {
+     "formula": "a1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {A1}",
+   "figure_params": {
+    "kind": "sym_figure",
+    "sym": "{sy1}",
+    "n": "{n1}",
+    "k": "{k1}",
+    "labels": "{lb1}",
+    "grid": "{gr1}",
+    "regular": "{rg1}",
+    "vertices": "{vt1}",
+    "extra_points": "{ex1}",
+    "half": "{hf1}",
+    "cell_cm": "{cc1}",
+    "seed": "{sd1}"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "label"
+  },
+  {
+   "pattern_id": "g06_sen_nagasa_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u01",
+   "unit_name": "線対称",
+   "semantic_category": "線対称: 対応する点を結ぶ直線の長さ(sym_figure)",
+   "semantic_note": "裁可(j) 対称第1便。行別レコード(symrows_sen_nagasa 1行)=転記記号保存+図形合成。長さ=anchor固定の頂点座標×1目盛cmで検算(関門43で座標から再計算)。答は転記数値保存。",
+   "step_count": 1,
+   "operation": "対応する点を結ぶ直線の長さ",
+   "answer_formula": "d1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "symrows_sen_nagasa[j1].q"
+    },
+    "sy1": {
+     "from": "symrows_sen_nagasa[j1].sy"
+    },
+    "n1": {
+     "from": "symrows_sen_nagasa[j1].n"
+    },
+    "k1": {
+     "from": "symrows_sen_nagasa[j1].k"
+    },
+    "lb1": {
+     "from": "symrows_sen_nagasa[j1].lb"
+    },
+    "gr1": {
+     "from": "symrows_sen_nagasa[j1].gr"
+    },
+    "rg1": {
+     "from": "symrows_sen_nagasa[j1].rg"
+    },
+    "vt1": {
+     "from": "symrows_sen_nagasa[j1].vt"
+    },
+    "ex1": {
+     "from": "symrows_sen_nagasa[j1].ex"
+    },
+    "hf1": {
+     "from": "symrows_sen_nagasa[j1].hf"
+    },
+    "cc1": {
+     "from": "symrows_sen_nagasa[j1].cc"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    },
+    "a1": {
+     "from": "symrows_sen_nagasa[j1].a"
+    },
+    "d1": {
+     "from": "symrows_sen_nagasa[j1].d"
+    }
+   },
+   "computed_slots": {
+    "A1": {
+     "formula": "a1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {A1}",
+   "figure_params": {
+    "kind": "sym_figure",
+    "sym": "{sy1}",
+    "n": "{n1}",
+    "k": "{k1}",
+    "labels": "{lb1}",
+    "grid": "{gr1}",
+    "regular": "{rg1}",
+    "vertices": "{vt1}",
+    "extra_points": "{ex1}",
+    "half": "{hf1}",
+    "cell_cm": "{cc1}",
+    "seed": "{sd1}"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "positive_int"
+  },
+  {
+   "pattern_id": "g06_tensym_taiou_ten_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u02",
+   "unit_name": "点対称",
+   "semantic_category": "点対称: 対応する点(sym_figure)",
+   "semantic_note": "裁可(j) 対称第1便。行別レコード(symrows_tensym_taiou_ten 4行)=転記記号保存+図形合成。対応する点=写像 i→(k−i)/(i+n/2) を転記ペアで照合(関門43)。答は記号(label)・記号は転記保存・図形はsym_figure合成(seed)。",
+   "step_count": 1,
+   "operation": "対応する点",
+   "answer_formula": "Y1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "symrows_tensym_taiou_ten[j1].q"
+    },
+    "sy1": {
+     "from": "symrows_tensym_taiou_ten[j1].sy"
+    },
+    "n1": {
+     "from": "symrows_tensym_taiou_ten[j1].n"
+    },
+    "k1": {
+     "from": "symrows_tensym_taiou_ten[j1].k"
+    },
+    "lb1": {
+     "from": "symrows_tensym_taiou_ten[j1].lb"
+    },
+    "gr1": {
+     "from": "symrows_tensym_taiou_ten[j1].gr"
+    },
+    "rg1": {
+     "from": "symrows_tensym_taiou_ten[j1].rg"
+    },
+    "vt1": {
+     "from": "symrows_tensym_taiou_ten[j1].vt"
+    },
+    "ex1": {
+     "from": "symrows_tensym_taiou_ten[j1].ex"
+    },
+    "hf1": {
+     "from": "symrows_tensym_taiou_ten[j1].hf"
+    },
+    "cc1": {
+     "from": "symrows_tensym_taiou_ten[j1].cc"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    },
+    "x1": {
+     "from": "symrows_tensym_taiou_ten[j1].x"
+    },
+    "y1": {
+     "from": "symrows_tensym_taiou_ten[j1].y"
+    }
+   },
+   "computed_slots": {
+    "Y1": {
+     "formula": "y1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え 点{Y1}",
+   "figure_params": {
+    "kind": "sym_figure",
+    "sym": "{sy1}",
+    "n": "{n1}",
+    "k": "{k1}",
+    "labels": "{lb1}",
+    "grid": "{gr1}",
+    "regular": "{rg1}",
+    "vertices": "{vt1}",
+    "extra_points": "{ex1}",
+    "half": "{hf1}",
+    "cell_cm": "{cc1}",
+    "seed": "{sd1}"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "label"
+  },
+  {
+   "pattern_id": "g06_tensym_taiou_hen_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u02",
+   "unit_name": "点対称",
+   "semantic_category": "点対称: 対応する辺(sym_figure)",
+   "semantic_note": "裁可(j) 対称第1便。行別レコード(symrows_tensym_taiou_hen 4行)=転記記号保存+図形合成。対応する辺=両端の写像。答はedge_set(記号A-N・順不同)・表示は辞書順(転記「辺IH」=辺HI)。",
+   "step_count": 1,
+   "operation": "対応する辺",
+   "answer_formula": "E1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "symrows_tensym_taiou_hen[j1].q"
+    },
+    "sy1": {
+     "from": "symrows_tensym_taiou_hen[j1].sy"
+    },
+    "n1": {
+     "from": "symrows_tensym_taiou_hen[j1].n"
+    },
+    "k1": {
+     "from": "symrows_tensym_taiou_hen[j1].k"
+    },
+    "lb1": {
+     "from": "symrows_tensym_taiou_hen[j1].lb"
+    },
+    "gr1": {
+     "from": "symrows_tensym_taiou_hen[j1].gr"
+    },
+    "rg1": {
+     "from": "symrows_tensym_taiou_hen[j1].rg"
+    },
+    "vt1": {
+     "from": "symrows_tensym_taiou_hen[j1].vt"
+    },
+    "ex1": {
+     "from": "symrows_tensym_taiou_hen[j1].ex"
+    },
+    "hf1": {
+     "from": "symrows_tensym_taiou_hen[j1].hf"
+    },
+    "cc1": {
+     "from": "symrows_tensym_taiou_hen[j1].cc"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    },
+    "x1": {
+     "from": "symrows_tensym_taiou_hen[j1].x"
+    },
+    "e1": {
+     "from": "symrows_tensym_taiou_hen[j1].e"
+    }
+   },
+   "computed_slots": {
+    "E1": {
+     "formula": "e1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {E1_edges}",
+   "figure_params": {
+    "kind": "sym_figure",
+    "sym": "{sy1}",
+    "n": "{n1}",
+    "k": "{k1}",
+    "labels": "{lb1}",
+    "grid": "{gr1}",
+    "regular": "{rg1}",
+    "vertices": "{vt1}",
+    "extra_points": "{ex1}",
+    "half": "{hf1}",
+    "cell_cm": "{cc1}",
+    "seed": "{sd1}"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "edge_set"
+  },
+  {
+   "pattern_id": "g06_tensym_taiou_kaku_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u02",
+   "unit_name": "点対称",
+   "semantic_category": "点対称: 対応する角(sym_figure)",
+   "semantic_note": "裁可(j) 対称第1便。行別レコード(symrows_tensym_taiou_kaku 4行)=転記記号保存+図形合成。対応する角=頂点の写像。答は記号(label)。",
+   "step_count": 1,
+   "operation": "対応する角",
+   "answer_formula": "Y1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "symrows_tensym_taiou_kaku[j1].q"
+    },
+    "sy1": {
+     "from": "symrows_tensym_taiou_kaku[j1].sy"
+    },
+    "n1": {
+     "from": "symrows_tensym_taiou_kaku[j1].n"
+    },
+    "k1": {
+     "from": "symrows_tensym_taiou_kaku[j1].k"
+    },
+    "lb1": {
+     "from": "symrows_tensym_taiou_kaku[j1].lb"
+    },
+    "gr1": {
+     "from": "symrows_tensym_taiou_kaku[j1].gr"
+    },
+    "rg1": {
+     "from": "symrows_tensym_taiou_kaku[j1].rg"
+    },
+    "vt1": {
+     "from": "symrows_tensym_taiou_kaku[j1].vt"
+    },
+    "ex1": {
+     "from": "symrows_tensym_taiou_kaku[j1].ex"
+    },
+    "hf1": {
+     "from": "symrows_tensym_taiou_kaku[j1].hf"
+    },
+    "cc1": {
+     "from": "symrows_tensym_taiou_kaku[j1].cc"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    },
+    "x1": {
+     "from": "symrows_tensym_taiou_kaku[j1].x"
+    },
+    "y1": {
+     "from": "symrows_tensym_taiou_kaku[j1].y"
+    }
+   },
+   "computed_slots": {
+    "Y1": {
+     "formula": "y1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え 角{Y1}",
+   "figure_params": {
+    "kind": "sym_figure",
+    "sym": "{sy1}",
+    "n": "{n1}",
+    "k": "{k1}",
+    "labels": "{lb1}",
+    "grid": "{gr1}",
+    "regular": "{rg1}",
+    "vertices": "{vt1}",
+    "extra_points": "{ex1}",
+    "half": "{hf1}",
+    "cell_cm": "{cc1}",
+    "seed": "{sd1}"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "label"
+  },
+  {
+   "pattern_id": "g06_tensym_seishitsu_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u02",
+   "unit_name": "点対称",
+   "semantic_category": "点対称: 対称の性質(等しい角/直線・軸との関係・中心)(sym_figure)",
+   "semantic_note": "裁可(j) 対称第1便。行別レコード(symrows_tensym_seishitsu 5行)=転記記号保存+図形合成。性質(等しい角/中心を通る直線の等長/軸との垂直/切り分け)。答は転記文字列(label)・図は行群共有(anchor固定の行は図も固定)。",
+   "step_count": 1,
+   "operation": "対称の性質(等しい角/直線・軸との関係・中心)",
+   "answer_formula": "A1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "symrows_tensym_seishitsu[j1].q"
+    },
+    "sy1": {
+     "from": "symrows_tensym_seishitsu[j1].sy"
+    },
+    "n1": {
+     "from": "symrows_tensym_seishitsu[j1].n"
+    },
+    "k1": {
+     "from": "symrows_tensym_seishitsu[j1].k"
+    },
+    "lb1": {
+     "from": "symrows_tensym_seishitsu[j1].lb"
+    },
+    "gr1": {
+     "from": "symrows_tensym_seishitsu[j1].gr"
+    },
+    "rg1": {
+     "from": "symrows_tensym_seishitsu[j1].rg"
+    },
+    "vt1": {
+     "from": "symrows_tensym_seishitsu[j1].vt"
+    },
+    "ex1": {
+     "from": "symrows_tensym_seishitsu[j1].ex"
+    },
+    "hf1": {
+     "from": "symrows_tensym_seishitsu[j1].hf"
+    },
+    "cc1": {
+     "from": "symrows_tensym_seishitsu[j1].cc"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    },
+    "a1": {
+     "from": "symrows_tensym_seishitsu[j1].a"
+    }
+   },
+   "computed_slots": {
+    "A1": {
+     "formula": "a1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {A1}",
+   "figure_params": {
+    "kind": "sym_figure",
+    "sym": "{sy1}",
+    "n": "{n1}",
+    "k": "{k1}",
+    "labels": "{lb1}",
+    "grid": "{gr1}",
+    "regular": "{rg1}",
+    "vertices": "{vt1}",
+    "extra_points": "{ex1}",
+    "half": "{hf1}",
+    "cell_cm": "{cc1}",
+    "seed": "{sd1}"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1,
+    2
+   ],
+   "answer_domain": "label"
+  },
+  {
+   "pattern_id": "g06_tensym_nagasa_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u02",
+   "unit_name": "点対称",
+   "semantic_category": "点対称: 対応する点を結ぶ直線の長さ(sym_figure)",
+   "semantic_note": "裁可(j) 対称第1便。行別レコード(symrows_tensym_nagasa 1行)=転記記号保存+図形合成。長さ=anchor固定の頂点座標×1目盛cmで検算(関門43で座標から再計算)。答は転記数値保存。",
+   "step_count": 1,
+   "operation": "対応する点を結ぶ直線の長さ",
+   "answer_formula": "d1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "symrows_tensym_nagasa[j1].q"
+    },
+    "sy1": {
+     "from": "symrows_tensym_nagasa[j1].sy"
+    },
+    "n1": {
+     "from": "symrows_tensym_nagasa[j1].n"
+    },
+    "k1": {
+     "from": "symrows_tensym_nagasa[j1].k"
+    },
+    "lb1": {
+     "from": "symrows_tensym_nagasa[j1].lb"
+    },
+    "gr1": {
+     "from": "symrows_tensym_nagasa[j1].gr"
+    },
+    "rg1": {
+     "from": "symrows_tensym_nagasa[j1].rg"
+    },
+    "vt1": {
+     "from": "symrows_tensym_nagasa[j1].vt"
+    },
+    "ex1": {
+     "from": "symrows_tensym_nagasa[j1].ex"
+    },
+    "hf1": {
+     "from": "symrows_tensym_nagasa[j1].hf"
+    },
+    "cc1": {
+     "from": "symrows_tensym_nagasa[j1].cc"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    },
+    "a1": {
+     "from": "symrows_tensym_nagasa[j1].a"
+    },
+    "d1": {
+     "from": "symrows_tensym_nagasa[j1].d"
+    }
+   },
+   "computed_slots": {
+    "A1": {
+     "formula": "a1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {A1}",
+   "figure_params": {
+    "kind": "sym_figure",
+    "sym": "{sy1}",
+    "n": "{n1}",
+    "k": "{k1}",
+    "labels": "{lb1}",
+    "grid": "{gr1}",
+    "regular": "{rg1}",
+    "vertices": "{vt1}",
+    "extra_points": "{ex1}",
+    "half": "{hf1}",
+    "cell_cm": "{cc1}",
+    "seed": "{sd1}"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "positive_int"
+  },
+  {
+   "pattern_id": "g06_tak_taiou_ten_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u03",
+   "unit_name": "多角形と対称",
+   "semantic_category": "多角形と対称: 対応する点(sym_figure)",
+   "semantic_note": "裁可(j) 対称第1便。行別レコード(symrows_tak_taiou_ten 1行)=転記記号保存+図形合成。対応する点=写像 i→(k−i)/(i+n/2) を転記ペアで照合(関門43)。答は記号(label)・記号は転記保存・図形はsym_figure合成(seed)。",
+   "step_count": 1,
+   "operation": "対応する点",
+   "answer_formula": "Y1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "symrows_tak_taiou_ten[j1].q"
+    },
+    "sy1": {
+     "from": "symrows_tak_taiou_ten[j1].sy"
+    },
+    "n1": {
+     "from": "symrows_tak_taiou_ten[j1].n"
+    },
+    "k1": {
+     "from": "symrows_tak_taiou_ten[j1].k"
+    },
+    "lb1": {
+     "from": "symrows_tak_taiou_ten[j1].lb"
+    },
+    "gr1": {
+     "from": "symrows_tak_taiou_ten[j1].gr"
+    },
+    "rg1": {
+     "from": "symrows_tak_taiou_ten[j1].rg"
+    },
+    "vt1": {
+     "from": "symrows_tak_taiou_ten[j1].vt"
+    },
+    "ex1": {
+     "from": "symrows_tak_taiou_ten[j1].ex"
+    },
+    "hf1": {
+     "from": "symrows_tak_taiou_ten[j1].hf"
+    },
+    "cc1": {
+     "from": "symrows_tak_taiou_ten[j1].cc"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    },
+    "x1": {
+     "from": "symrows_tak_taiou_ten[j1].x"
+    },
+    "y1": {
+     "from": "symrows_tak_taiou_ten[j1].y"
+    }
+   },
+   "computed_slots": {
+    "Y1": {
+     "formula": "y1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え 点{Y1}",
+   "figure_params": {
+    "kind": "sym_figure",
+    "sym": "{sy1}",
+    "n": "{n1}",
+    "k": "{k1}",
+    "labels": "{lb1}",
+    "grid": "{gr1}",
+    "regular": "{rg1}",
+    "vertices": "{vt1}",
+    "extra_points": "{ex1}",
+    "half": "{hf1}",
+    "cell_cm": "{cc1}",
+    "seed": "{sd1}"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "label"
+  },
+  {
+   "pattern_id": "g06_tak_taiou_hen_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u03",
+   "unit_name": "多角形と対称",
+   "semantic_category": "多角形と対称: 対応する辺(sym_figure)",
+   "semantic_note": "裁可(j) 対称第1便。行別レコード(symrows_tak_taiou_hen 1行)=転記記号保存+図形合成。対応する辺=両端の写像。答はedge_set(記号A-N・順不同)・表示は辞書順(転記「辺IH」=辺HI)。",
+   "step_count": 1,
+   "operation": "対応する辺",
+   "answer_formula": "E1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "symrows_tak_taiou_hen[j1].q"
+    },
+    "sy1": {
+     "from": "symrows_tak_taiou_hen[j1].sy"
+    },
+    "n1": {
+     "from": "symrows_tak_taiou_hen[j1].n"
+    },
+    "k1": {
+     "from": "symrows_tak_taiou_hen[j1].k"
+    },
+    "lb1": {
+     "from": "symrows_tak_taiou_hen[j1].lb"
+    },
+    "gr1": {
+     "from": "symrows_tak_taiou_hen[j1].gr"
+    },
+    "rg1": {
+     "from": "symrows_tak_taiou_hen[j1].rg"
+    },
+    "vt1": {
+     "from": "symrows_tak_taiou_hen[j1].vt"
+    },
+    "ex1": {
+     "from": "symrows_tak_taiou_hen[j1].ex"
+    },
+    "hf1": {
+     "from": "symrows_tak_taiou_hen[j1].hf"
+    },
+    "cc1": {
+     "from": "symrows_tak_taiou_hen[j1].cc"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    },
+    "x1": {
+     "from": "symrows_tak_taiou_hen[j1].x"
+    },
+    "e1": {
+     "from": "symrows_tak_taiou_hen[j1].e"
+    }
+   },
+   "computed_slots": {
+    "E1": {
+     "formula": "e1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {E1_edges}",
+   "figure_params": {
+    "kind": "sym_figure",
+    "sym": "{sy1}",
+    "n": "{n1}",
+    "k": "{k1}",
+    "labels": "{lb1}",
+    "grid": "{gr1}",
+    "regular": "{rg1}",
+    "vertices": "{vt1}",
+    "extra_points": "{ex1}",
+    "half": "{hf1}",
+    "cell_cm": "{cc1}",
+    "seed": "{sd1}"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1,
+    10
+   ],
+   "answer_domain": "edge_set"
+  },
+  {
+   "pattern_id": "g06_tak_seishitsu_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u03",
+   "unit_name": "多角形と対称",
+   "semantic_category": "多角形と対称: 対称の性質(等しい角/直線・軸との関係・中心)(sym_figure)",
+   "semantic_note": "裁可(j) 対称第1便。行別レコード(symrows_tak_seishitsu 1行)=転記記号保存+図形合成。性質(等しい角/中心を通る直線の等長/軸との垂直/切り分け)。答は転記文字列(label)・図は行群共有(anchor固定の行は図も固定)。",
+   "step_count": 1,
+   "operation": "対称の性質(等しい角/直線・軸との関係・中心)",
+   "answer_formula": "A1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "symrows_tak_seishitsu[j1].q"
+    },
+    "sy1": {
+     "from": "symrows_tak_seishitsu[j1].sy"
+    },
+    "n1": {
+     "from": "symrows_tak_seishitsu[j1].n"
+    },
+    "k1": {
+     "from": "symrows_tak_seishitsu[j1].k"
+    },
+    "lb1": {
+     "from": "symrows_tak_seishitsu[j1].lb"
+    },
+    "gr1": {
+     "from": "symrows_tak_seishitsu[j1].gr"
+    },
+    "rg1": {
+     "from": "symrows_tak_seishitsu[j1].rg"
+    },
+    "vt1": {
+     "from": "symrows_tak_seishitsu[j1].vt"
+    },
+    "ex1": {
+     "from": "symrows_tak_seishitsu[j1].ex"
+    },
+    "hf1": {
+     "from": "symrows_tak_seishitsu[j1].hf"
+    },
+    "cc1": {
+     "from": "symrows_tak_seishitsu[j1].cc"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    },
+    "a1": {
+     "from": "symrows_tak_seishitsu[j1].a"
+    }
+   },
+   "computed_slots": {
+    "A1": {
+     "formula": "a1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {A1}",
+   "figure_params": {
+    "kind": "sym_figure",
+    "sym": "{sy1}",
+    "n": "{n1}",
+    "k": "{k1}",
+    "labels": "{lb1}",
+    "grid": "{gr1}",
+    "regular": "{rg1}",
+    "vertices": "{vt1}",
+    "extra_points": "{ex1}",
+    "half": "{hf1}",
+    "cell_cm": "{cc1}",
+    "seed": "{sd1}"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1,
+    10
+   ],
+   "answer_domain": "label"
   }
  ],
  "schema_changelog": {

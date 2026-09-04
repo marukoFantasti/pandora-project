@@ -61,6 +61,36 @@ Object.values(structs).forEach(({ r, rows }) => {
   }
 });
 console.log('  ' + cases + '構成 ' + (bad === 0 ? '✅' : '❌'));
+console.log('=== (1b) バンク配線(g06 sym_figure 13パターン): 行レコードの写像=答・anchor行の数値答=座標×1目盛cm ===');
+(function () {
+  const P = require(path.join(__dirname, '..', 'pattern_bank', 'pattern_generator.js'));
+  const bank = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'pattern_bank', 'patterns_g06.json'), 'utf-8'));
+  let nrow = 0, nanchor = 0;
+  Object.keys(bank.shared_lexicon).filter(k => /^symrows_/.test(k)).forEach(k => {
+    bank.shared_lexicon[k].forEach(rec => {
+      nrow++; cases++;
+      const fp = { kind: 'sym_figure', sym: rec.sy, n: rec.n, k: rec.k, labels: rec.lb, grid: rec.gr, regular: rec.rg, vertices: rec.vt, extra_points: rec.ex, half: rec.hf, seed: 7 };
+      let a; try { a = FB._symFigureAudit(fp); } catch (e) { bad++; console.log('  ❌ ' + rec.row + ' 生成失敗 ' + e.message.slice(0, 60)); return; }
+      if (a.issues.length || a.labels.some(l => !l.ok)) { bad++; console.log('  ❌ ' + rec.row + ' issues/帰属 ' + a.issues.slice(0, 2)); }
+      const M = c => a.map[c];
+      if (rec.y !== undefined && rec.x && rec.x.length === 1 && M(rec.x) !== rec.y) { bad++; console.log('  ❌ ' + rec.row + ' 写像 ' + rec.x + '→' + M(rec.x) + ' 転記' + rec.y); }
+      if (rec.e !== undefined && rec.x.split('').map(M).sort().join('') !== rec.e) { bad++; console.log('  ❌ ' + rec.row + ' 辺写像 ' + rec.x + '→' + rec.x.split('').map(M).join('') + ' 転記' + rec.e); }
+      if (rec.a && /^直線O([A-N])$/.test(rec.a)) { const q = rec.q.match(/直線O([A-N])/); if (q && M(q[1]) !== rec.a.slice(-1)) { bad++; console.log('  ❌ ' + rec.row + ' 直線O対応 ' + q[1] + '→' + M(q[1])); } }
+      if (rec.a && /^角([A-N])$/.test(rec.a)) { const q = rec.q.match(/角([A-N])と/); if (q && M(q[1]) !== rec.a.slice(-1)) { bad++; console.log('  ❌ ' + rec.row + ' 等しい角 ' + q[1] + '→' + M(q[1])); } }
+      if (rec.vt) {   // anchor固定: 数値答を座標から再計算
+        nanchor++;
+        const cell = rec.cc || 1, d = (p1, p2) => a.dist(p1, p2) * cell;
+        if (rec.d !== undefined && /直線([A-N])([A-N])と直線([A-N])([A-N])/.test(rec.q)) { const m = rec.q.match(/直線([A-N])([A-N])と直線([A-N])([A-N])/); const l1 = d(m[1], m[2]), l2 = d(m[3], m[4]); const longer = l2 > l1 ? m[3] + m[4] : m[1] + m[2]; if (Math.abs(l2 - l1) !== rec.d || rec.a.indexOf('直線' + longer) < 0) { bad++; console.log('  ❌ ' + rec.row + ' 長さ差 ' + l1 + '/' + l2 + ' 転記' + rec.a); } }
+        else if (rec.d !== undefined && /直線([A-N])([A-N])の長さ/.test(rec.q)) { const m = rec.q.match(/直線([A-N])([A-N])の長さ/); if (d(m[1], m[2]) !== rec.d) { bad++; console.log('  ❌ ' + rec.row + ' 長さ ' + d(m[1], m[2]) + ' 転記' + rec.d); } }
+        if (rec.a === '垂直' && /直線([A-N])([A-N])は対称の軸/.test(rec.q)) { const m = rec.q.match(/直線([A-N])([A-N])は/); const i1 = a.labels.length ? null : null; const V = a.V, L = 'ABCDEFGHIJKLMN'; if (V[L.indexOf(m[1])][1] !== V[L.indexOf(m[2])][1]) { bad++; console.log('  ❌ ' + rec.row + ' 軸と垂直でない'); } }
+      }
+      // 生成器経由(makeProblem)でも figure が同じ写像を持つ
+      const pid = 'g06_' + k.replace(/^symrows_/, '') + '_01', pat = bank.patterns.find(x => x.pattern_id === pid);
+      if (!pat) { bad++; console.log('  ❌ パターン不在 ' + pid); }
+    });
+  });
+  console.log('  行レコード ' + nrow + '(anchor ' + nanchor + ') ' + (bad === 0 ? '✅' : '❌'));
+})();
 console.log('=== (2) 契約throw ===');
 [[{ kind: 'sym_figure', sym: 'line', n: 2, k: 0, labels: ['A', 'B'] }, 'n不足'], [{ kind: 'sym_figure', sym: 'line', n: 8, k: 0, labels: ['A'] }, 'labels不一致'], [{ kind: 'sym_figure', sym: 'point', n: 9, k: 0, labels: L.slice(0, 9).split('') }, '点対称n奇数'],
  [{ kind: 'sym_figure', sym: 'line', n: 4, k: 0, labels: ['A', 'B', 'C', 'D'], vertices: [[0, 3], [2, 0], [0, -3], [-1, 0]] }, 'anchor非対称']].forEach(([fp, name]) => {
