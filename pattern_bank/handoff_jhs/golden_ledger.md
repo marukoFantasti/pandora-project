@@ -436,3 +436,6 @@
 - **結果**: 描画層(layoutToSvg)を通る全kindで再計測——角度v5(tri_angle/tri_angle_iso/quad_angle: 多角形内角 vs a1/a2/apex)・angle_figure全subkind(parallel_lines=g04 heikou+jhs c12: 平行角差/横断角 vs al1・angle_around_point: 射線間隔 vs v・polygon/congruent_pair: 内角 vs v)・composite_area(輪郭全辺=0°/90°)・prism(rect)/cuboid(正面矩形の直角・斜辺の平行)・line_set(描画角 vs 幾何角)。**最大偏差≤0.012°(座標2桁丸め由来)=歪みなし**。line_setだけが正規化座標→非等方px写像を独自に持っていた(他kindはpx直計算)。
 - **viewport**: 全バンク図で preserveAspectRatio=none/非一様scaleは0。width/heightはviewBoxの生値ceil(≤1px差・meetで一様吸収=角度不変)。angle_figureのみ厳密一致(matchViewportAspect)——全kindへの厳密化は出力バイト変更を伴うため未実施(要望あれば別便)。
 - **関門39 tests/figure_isoscale_scan.js**: 上記(A)viewport整合+(B)描画角再計測を全バンク図×seed12で常設(±0.05°)。golden不変(検査のみ)。
+
+### 2026-09-04 line_set r6 再目視OK(まるこ)——型A/Bクローズ
+- 5枚(row3/row7=型A・row3_t2/row7_t2=型B・row0=low)目視合格。e-2(配線+第2テンプレート+r6)は全クローズ。次=e-9 kaisetsu_template独立便(仕様書着弾待ち)。
