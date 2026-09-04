@@ -216,6 +216,7 @@ function App() {
             tags:q.tags||[],
             question:q.question||null,
             answer:q.answer||null,
+            kaisetsu:q.kaisetsu||null,   // e-9: 生徒向け解説(採点結果画面 result_view で正誤の直下に自動表示)
             equation_canvas:eqRefs.current[q.id]?.current?.toDataURL()||null,
             answer_canvas:ansRefs.current[q.id]?.current?.toDataURL()||null,
           })),

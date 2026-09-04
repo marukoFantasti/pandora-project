@@ -664,6 +664,11 @@ def make_problem(pattern, unit_id=None):
     figure = resolve_figure_params(fp, env) if fp else None
     return env, problem, answer, figure
 
+def make_kaisetsu(pattern, env):
+    """e-9 kaisetsu(生徒向け解説): sentence_templates と同一リゾルバ(str.format(**env))で解決。無ければ None(JS makeProblem.kaisetsu と1:1)。"""
+    k = pattern.get("kaisetsu")
+    return k.format(**env) if isinstance(k, str) else None
+
 def verify(pattern, env, problem):
     bad = kanji_check(problem, allowed_kanji(pattern))
     # 数量スロットは表示文字列(9cm5mm)経由で数字が出るため、
@@ -768,5 +773,8 @@ if __name__ == "__main__":
             print("-" * 72)
             print(f" [{flag}] 問題:", problem)
             print("        解答:", answer)
+            _k = make_kaisetsu(p, env)   # e-9: kaisetsu があるパターンのみ出力(無いパターンはバイト不変)
+            if _k is not None:
+                print("        解説:", _k)
     print("=" * 72)
     print(f"合計: PASS {n_pass} / FAIL {n_fail}")

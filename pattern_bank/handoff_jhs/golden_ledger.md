@@ -439,3 +439,11 @@
 
 ### 2026-09-04 line_set r6 再目視OK(まるこ)——型A/Bクローズ
 - 5枚(row3/row7=型A・row3_t2/row7_t2=型B・row0=low)目視合格。e-2(配線+第2テンプレート+r6)は全クローズ。次=e-9 kaisetsu_template独立便(仕様書着弾待ち)。
+
+### 2026-09-04 e-9 kaisetsu_template(生徒向け解説の実行時レンダ)——独立便・単独コミット
+- **データ側**: パターン新フィールド`kaisetsu`(文字列)。JS makeProblem.kaisetsu / Python make_kaisetsu が sentence_templates と同一リゾルバ(formatTemplate / str.format)で解決・computed文字列も参照可。無いパターンはnull(pedagogyフォールバック禁止)。Python golden出力は kaisetsu ありのパターンのみ「解説:」行を追加(無いパターンはバイト不変を照合済)。
+- **表示側(設計判断)**: 生成quiz HTMLは手書きキャンバス提出=自動採点なし(正誤は教師採点後)。よって「採点直後の正誤表示の直下」=**result_view.html(採点結果ページ)**に解説ブロックを実装(正解・不正解とも自動展開・「とじる/ひらく」・既定=開・本文と同フォント/行間・reading_engineでルビ/かな)。搬送: pandora_main(問題JSONに`kaisetsu`同梱+プロンプト2箇所に省略禁止)→quizテンプレート2種のhandleSubmit(`kaisetsu:q.kaisetsu||null`)→submission_data.problems[i].kaisetsu→result_view。**国内テンプレの基準md5を更新**(4cbebc7f→47800226・kaisetsu搬送1行=意図的変更)。
+- **初期投入(retrofit)31**: P5-3以降のpedagogy(Fable本文)を逐語移送+slot戻し10文(tsukibetsu/tokuten/kankyaku/comp_lshape/comp_hole/tsurimushi/kanbin/sansu/kawari_dai/heikou_kaku)。comp_lshape/holeへcomputed S1/S2(中間の積)を追加(本文・答え不変)。e-2の2件は設計ノート(Code起草)を接頭辞除去+です調でそのまま投入=Fable差し替え待ち。
+- **関門**: kaisetsu_resolve.js新設(関門40: 解決/未解決{}ゼロ・JS=Python 930標本・retrofit完全性・backfill在庫計数)・furigana_coverageに`kaisetsu`包含(残存0)。furiganaパッチ21語(線/急/打/引/先/見/手前/迷/変/例/二次元/両方/決/総数/考/減/注目/側/幅/基準/挙)=3コピー同期・registered 493→517(重複2=折れ線/実線は登録済)。**全40関門GREEN**。
+- **golden md5: g04 b3f03491 → 9d909fc0**(解説93行の追加のみ・他行バイト不変)・g05/g06不変。**解説backfill在庫=531パターン**(kaisetsu無し: g01 46/g02 49/g03 57/g04 53/g05 76/g06 83/jhs 187)。
+- 目視素材: e9_shot_correct.png / e9_shot_incorrect.png(result_viewをモックデータで描画・海外モード=ルビ)→まるこ目視待ち。

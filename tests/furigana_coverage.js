@@ -1,5 +1,5 @@
 // furigana_coverage.js — pandora_global算数編 読み合成の網羅関門。
-// (1) 全356パターンを高volサンプルし、問題文+答えの表示文字列を reading_engine.toHiragana に通す。
+// (1) 全パターンを高volサンプルし、問題文+答え+解説(e-9 kaisetsu)の表示文字列を reading_engine.toHiragana に通す。
 //     残存漢字(例外)が出たら pattern_id + 残存文字列を列挙して失敗(握りつぶし禁止)。
 //     図内SVGテキストは裁可②によりv1対象外につき除外。
 // (2) 読み合成の固定ベクター20件(変音/和語数詞/複名数/小数/分数/負数/question形)を golden照合。
@@ -60,7 +60,7 @@ for (const f of files) {
     for (let k = 0; k < N; k++) {
       let r; try { r = P.makeProblem(p, null, lex); } catch (e) { continue; }
       sampled++;
-      for (const field of ['problem', 'answer']) {
+      for (const field of ['problem', 'answer', 'kaisetsu']) {   // e-9: 解説本文も包含(残存0を維持)
         const txt = r[field]; if (!txt) continue;
         try { E.toHiragana(String(txt)); }
         catch (e) {

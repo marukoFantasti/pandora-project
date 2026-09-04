@@ -804,7 +804,9 @@
     var problem = formatTemplate(tmpl, env);
     var answer = formatTemplate(pattern.answer_template, env);
     var figure = pattern.figure_params ? resolveFigureParams(pattern.figure_params, env) : null;
-    return { env: env, problem: problem, answer: answer, figure: figure };
+    // e-9 kaisetsu(生徒向け解説): sentence_templates と同一リゾルバ(formatTemplate)で解決。無ければ null(pedagogyへのフォールバック禁止)。
+    var kaisetsu = typeof pattern.kaisetsu === 'string' ? formatTemplate(pattern.kaisetsu, env) : null;
+    return { env: env, problem: problem, answer: answer, figure: figure, kaisetsu: kaisetsu };
   }
 
   // ---- 検証（漢字/本文数値の由来/答えの正値性） ----
@@ -915,6 +917,15 @@
         }
       });
     });
+    // e-9 kaisetsu: スロット・computed・ans・表示派生(_disp/_edges/_choice/_pi/_word)のみ参照可
+    if (typeof pattern.kaisetsu === 'string') {
+      var kOk = Object.assign({ ans: true, ans_disp: true, W1_word: true }, allowed);
+      Object.keys(pattern.computed_slots || {}).forEach(function (name) { kOk[name] = true; });
+      (pattern.kaisetsu.match(/\{(\w+)\}/g) || []).forEach(function (ph) {
+        var name = ph.slice(1, -1), base = name.replace(/_(disp|edges|choice|pi|word|min)$/, '');
+        if (!kOk[name] && !kOk[base]) issues.push('kaisetsuに未宣言のプレースホルダ{' + name + '}が含まれています');
+      });
+    }
 
     return { ok: issues.length === 0, issues: issues };
   }

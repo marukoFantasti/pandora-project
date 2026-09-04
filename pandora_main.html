@@ -1304,7 +1304,7 @@ function showPreview(mode, theme, levelBreakdown, outputJson){
       '紙面の隅に目視用テキストで\n'+
       '「assignment_id: '+outputJson.meta.assignment_id+' | '+(outputJson.meta.student_name||'')+'('+(outputJson.meta.student_id||'')+') | {page}/{total_pages}ページ」も併記してください。\n'+
       '印刷を想定したCSS（@pageルール、白黒印刷でも見やすい配色）にしてください。\n'+
-      'questions配列は必ず { id, problem_id, question, answer, unit, chapter, level, tags } の形式で組み立てること。\n'+
+      'questions配列は必ず { id, problem_id, question, answer, unit, chapter, level, tags, kaisetsu } の形式で組み立てること。\n'+
       '（answer/chapter/tagsは紙面には印刷しないが、QRコードと紐づけてSupabaseのanswer_sheetsテーブルに保存され、後で写真を撮って取り込む際に採点データとして使われるため省略しないこと。levelは\'example_follow\'|\'confirmation\'|\'practice\'のいずれか。）\n\n'+
       '========== ②Web閲覧用問題画面HTML ==========\n'+
       '生徒はこの画面で問題文を読み、式と答えは別途配布される紙の解答用紙に手書きします。この画面自体はSupabaseへの送信を一切行いません。\n\n'+
@@ -1320,6 +1320,7 @@ function showPreview(mode, theme, levelBreakdown, outputJson){
       themeVocabRulesText(mode)+
       '- SVGイラストはテーマに合わせたオリジナルキャラを作り、questions配列の全ての問題についてillustrationsオブジェクトに72×72pxのSVGを必ず用意すること（省略不可）。\n'+
       '- 単元バッジ・問題レベルバッジ（例題:紫/確認:青/練習:橙）はWeb提出用と同じ仕様のまま維持する\n'+
+      '- JSONの各問題にある kaisetsu（生徒向け解説）は questions配列の各要素に省略せずそのまま含めること（採点結果画面で正誤の直下に表示する。null の問題は null のまま）\n'+
       (mode==='overseas'
         ?'- 📖ことば / 🇬🇧English hint ボタンを各問題に付ける\n'
         :'- 🌍 ＋Englishボタン（english_phrase・vocab_word表示）を各問題に付ける\n')+
@@ -1335,6 +1336,7 @@ function showPreview(mode, theme, levelBreakdown, outputJson){
   promptTemplate=
     '以下のJSONをもとに、student_quizのHTMLを作ってください。\n\n'+
     'HTMLを作成する際は、必ず以下のテンプレートを先に読み込み、その骨格構造（DrawCanvas、+Englishパネル、レベルバッジ、Supabase送信ロジック等）を一切変更せず、questions・illustrations・QUIZ_METAの中身だけを差し込むこと。\n'+
+      '- JSONの各問題にある kaisetsu（生徒向け解説）は questions配列の各要素に省略せずそのまま含めること（提出後の採点結果画面で正誤の直下に表示する。null の問題は null のまま）\n'+
     'テンプレートURL（'+mode+'モード）: '+templateUrl+'\n'+
     'テンプレートのDrawCanvasのcanvas width={1200}は絶対に変更しないこと（変更すると採点UI側で画像が歪んで表示される）。\n'+
     'Supabase送信データには必ずstudent_id・student_nameの両方を含めること。\n\n'+
@@ -1554,6 +1556,9 @@ function generateQuizViaPattern(targetUnits){
         // figure_params(v0.8): 本文と同一envで解決済みの図パラメータ。図付きパターン(g04面積/角度、
         // g05角/面積/体積/円等)のみ非null。生成された student_quiz / 印刷解答用紙で figure_builder.js が描画する。
         figure_params: accepted.figure || null,
+        // kaisetsu(e-9): 本文と同一envで解決済みの生徒向け解説。バンクにkaisetsuが無いパターンはnull(pedagogyへのフォールバック禁止)。
+        // 生成quiz→submission_data.problems[i].kaisetsu→result_view(採点結果画面)で正誤の直下に自動表示。
+        kaisetsu: accepted.kaisetsu || null,
         // tags正規化(G-4b): バンクパターンの tags を生成出力へ付与(従来[]固定=脱落していた)。
         // 生成quiz→submission_data.problems[i].tags→採点analytics の観点別集計(合同条件/choice3等)へ接続。
         tags: entry.pattern.tags || []

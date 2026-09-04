@@ -21,6 +21,13 @@
   .question-block { margin-bottom: 10px; }
   .question-text { font-size: 14px; line-height: 1.5; margin-bottom: 4px; }
   .answer-text { font-size: 12px; color: #999; }
+  /* e-9 kaisetsu: 採点結果(正誤)の直下に自動展開する生徒向け解説。本文と同じフォント・行間(question-textと同一) */
+  .kaisetsu { background: #fffbe6; border: 1px solid #f5d76e; border-radius: 10px; padding: 8px 10px; margin-bottom: 10px; }
+  .kaisetsu-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+  .kaisetsu-head .label { font-size: 11px; color: #b7791f; font-weight: bold; }
+  .kaisetsu-toggle { font-size: 11px; color: #b7791f; background: #fff; border: 1px solid #f5d76e; border-radius: 6px; padding: 1px 8px; cursor: pointer; }
+  .kaisetsu-text { font-size: 14px; line-height: 1.5; white-space: pre-wrap; }
+  .kaisetsu.closed .kaisetsu-text { display: none; }
   .canvases { display: flex; flex-direction: column; gap: 10px; }
   .canvas-block .label { font-size: 11px; color: #5c6bc0; font-weight: bold; margin-bottom: 4px; }
   .stack { position: relative; line-height: 0; }
@@ -184,6 +191,14 @@ async function main() {
       '<span class="badge" style="background:' + badge.bg + ';color:' + badge.color + '">' + badge.label + '</span>' +
     '</div>';
 
+    // e-9 kaisetsu: 正誤表示の直下に自動展開(正解・不正解とも)。「とじる」で折りたたみ可(既定=開)。無い問題は非表示(フォールバック無し)。
+    if (p.kaisetsu) {
+      html += '<div class="kaisetsu">' +
+        '<div class="kaisetsu-head"><span class="label">💡 かいせつ</span><button type="button" class="kaisetsu-toggle">とじる</button></div>' +
+        '<div class="kaisetsu-text">' + esc(String(p.kaisetsu)) + '</div>' +
+      '</div>';
+    }
+
     if (p.question) {
       html += '<div class="question-block">' +
         '<div class="question-text">' + esc(p.question) + '</div>' +
@@ -208,6 +223,12 @@ async function main() {
 
   html += '</div>';
   app.innerHTML = html;
+  app.addEventListener('click', function (ev) {   // e-9: 解説の開閉
+    var b = ev.target && ev.target.classList && ev.target.classList.contains('kaisetsu-toggle') ? ev.target : null;
+    if (!b) return;
+    var box = b.closest('.kaisetsu'); box.classList.toggle('closed');
+    b.textContent = box.classList.contains('closed') ? 'ひらく' : 'とじる';
+  });
 
   // ── pandora_global 算数編: 海外生徒のみ、描画後に本文/答えへ読み(ruby/kana)を後付け ──
   // 国内レコードは isGlobalStudent=false でこのブロックに入らず、engine/辞書のロードも発生しない(バイト不変)。
@@ -250,8 +271,11 @@ async function applyGlobalReading(app, sub, sd, problems) {
   var MD = await loadGlobalAssets();
   var qEls = app.querySelectorAll('.question-text');
   var aEls = app.querySelectorAll('.answer-text');
-  var qi = 0, ai = 0;
+  var kEls = app.querySelectorAll('.kaisetsu-text');
+  var qi = 0, ai = 0, ki = 0;
   problems.forEach(function (p) {
+    // e-9: 解説本文も本文と同じ読み(ruby/kana)を通す(問題文の有無に関わらず、kaisetsuがあるカードの順に対応)
+    if (p.kaisetsu) { var kEl = kEls[ki++]; if (kEl) kEl.innerHTML = MD.processMathText(String(p.kaisetsu), { mode: mode, unitSystem: unitSystemHint(p) }); }
     if (!p.question) return;
     var hint = unitSystemHint(p);
     var qEl = qEls[qi++]; if (qEl) qEl.innerHTML = MD.processMathText(p.question, { mode: mode, unitSystem: hint });
