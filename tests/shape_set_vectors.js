@@ -13,6 +13,30 @@ let bad = 0, cases = 0, fails = 0;
 console.log('=== (0) カタログ ' + Object.keys(CAT).length + '形: 対称性の独立再計算 ===');
 Object.keys(CAT).forEach(id => { cases++; const s = FB._geom.ss_symmetry(FB._geom.ss_outline(id)), c = CAT[id]; if (s.line !== c.line || s.point !== c.point || (isFinite(c.axes) && s.axes !== c.axes)) { bad++; console.log('  ❌ ' + id + ' cat=' + [c.line, c.point, c.axes] + ' calc=' + [s.line, s.point, s.axes]); } });
 console.log('  ' + (bad === 0 ? '✅' : '❌'));
+console.log('=== (0b) r2 紛らわしさ検査: どちらでもない形=どの軸で折っても重なり率(IoU)<85%・点対称でない形=180°回転の重なり率<85%・線対称の形=最良軸で100% ===');
+(function () {
+  function inside(P, x, y) { let c = false; for (let i = 0, j = P.length - 1; i < P.length; j = i++) { const xi = P[i][0], yi = P[i][1], xj = P[j][0], yj = P[j][1]; if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) c = !c; } return c; }
+  function centroid(P) { let x = 0, y = 0; P.forEach(p => { x += p[0]; y += p[1]; }); return [x / P.length, y / P.length]; }
+  function iou(P, Q) { let a = 0, b = 0; for (let x = -1.1; x <= 1.1; x += 0.02) for (let y = -1.1; y <= 1.1; y += 0.02) { const p = inside(P, x, y), q = inside(Q, x, y); if (p && q) a++; if (p || q) b++; } return b ? a / b : 0; }
+  function reflect(P, th, c) { const r = th * Math.PI / 180, cs = Math.cos(2 * r), sn = Math.sin(2 * r); return P.map(p => { const x = p[0] - c[0], y = p[1] - c[1]; return [x * cs + y * sn + c[0], x * sn - y * cs + c[1]]; }); }
+  Object.keys(CAT).forEach(id => {
+    cases++; const P = FB._geom.ss_outline(id), c = centroid(P), cat = CAT[id];
+    let best = 0; for (let th = 0; th < 180; th += 1) best = Math.max(best, iou(P, reflect(P, th, c)));
+    const rot = iou(P, P.map(p => [2 * c[0] - p[0], 2 * c[1] - p[1]]));
+    if (cat.line && best < 0.999) { bad++; console.log('  ❌ 線対称の形の最良軸重なり<100% ' + id + ' ' + best.toFixed(3)); }
+    if (!cat.line && best >= 0.85) { bad++; console.log('  ❌ 紛らわしい(線) ' + id + ' ' + cat.name + ' 最良軸IoU=' + best.toFixed(3)); }
+    if (cat.point && rot < 0.999) { bad++; console.log('  ❌ 点対称の形の回転重なり<100% ' + id); }
+    if (!cat.point && rot >= 0.85) { bad++; console.log('  ❌ 紛らわしい(点) ' + id + ' ' + cat.name + ' 回転IoU=' + rot.toFixed(3)); }
+    // r2②: 一般の四角形=辺長差≥30%・全て非直角(±10°)／一般の台形=直角台形または脚の傾き差≥25°
+    if (id === 'quad' || id === 'trap') {
+      const n = P.length, L = P.map((p, i) => Math.hypot(P[(i + 1) % n][0] - p[0], P[(i + 1) % n][1] - p[1]));
+      const ang = P.map((p, i) => { const a = P[(i - 1 + n) % n], b = P[(i + 1) % n]; const v1 = [a[0] - p[0], a[1] - p[1]], v2 = [b[0] - p[0], b[1] - p[1]]; return Math.acos((v1[0] * v2[0] + v1[1] * v2[1]) / (Math.hypot(v1[0], v1[1]) * Math.hypot(v2[0], v2[1]))) * 180 / Math.PI; });
+      if (id === 'quad' && (Math.max(...L) / Math.min(...L) - 1 < 0.3 || ang.some(a => Math.abs(a - 90) < 10))) { bad++; console.log('  ❌ 一般の四角形が正方形/長方形に見える ' + JSON.stringify(ang.map(a => a.toFixed(0)))); }
+      if (id === 'trap') { const legs = [[P[0], P[3]], [P[1], P[2]]].map(([a, b]) => Math.abs(Math.atan2(b[1] - a[1], b[0] - a[0]) * 180 / Math.PI)); const hasRight = ang.some(a => Math.abs(a - 90) < 0.5); if (!hasRight && Math.abs(legs[0] - legs[1]) < 25) { bad++; console.log('  ❌ 一般の台形が等脚に見える 脚角=' + legs.map(x => x.toFixed(0))); } }
+    }
+  });
+  console.log('  ' + (bad === 0 ? '✅' : '❌'));
+})();
 console.log('=== (1) 悉皆: ' + LED.rows.length + '行 × seed1..100 ===');
 LED.rows.forEach(r => {
   for (let s = 1; s <= 100; s++) {
@@ -20,6 +44,7 @@ LED.rows.forEach(r => {
     const fp = { kind: 'shape_set', labels: r.labels, require: r.require, families: r.fam || null, seed: s };
     let a; try { a = FB._shapeSetAudit(fp); } catch (e) { bad++; if (fails++ < 3) console.log('  ❌ 生成失敗 ' + r.row + ' seed' + s + ' ' + e.message.slice(0, 60)); continue; }
     if (a.dup) { bad++; if (fails++ < 3) console.log('  ❌ 重複 ' + r.row + ' seed' + s); }
+    if (a.excl) { bad++; if (fails++ < 3) console.log('  ❌ 同居禁止(等脚台形+台形) ' + r.row + ' seed' + s); }
     a.shapes.forEach(x => { if (!x.ok) { bad++; if (fails++ < 3) console.log('  ❌ 真偽表 ' + r.row + ' ' + x.id); } if (r.fam && r.fam.indexOf(CAT[x.id].fam) < 0) { bad++; if (fails++ < 3) console.log('  ❌ 族 ' + r.row + ' ' + x.id); } });
     a.labels.forEach(l => { if (!l.ok) { bad++; if (fails++ < 3) console.log('  ❌ 帰属 ' + r.row + ' seed' + s + ' ' + l.own); } });
     // 正答集合の再導出(座標から再計算した対称性で)

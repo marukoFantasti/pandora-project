@@ -1754,12 +1754,13 @@
     para:       { name: '平行四辺形', fam: 'quad', line: false, point: true,  axes: 0, verts: [[-0.9, -0.55], [0.5, -0.55], [0.9, 0.55], [-0.5, 0.55]] },
     zshape:     { name: 'Z字',        fam: 'poly', line: false, point: true,  axes: 0, verts: [[-0.9, 0.9], [0.9, 0.9], [0.9, 0.4], [-0.15, 0.4], [0.9, -0.4], [0.9, -0.9], [-0.9, -0.9], [-0.9, -0.4], [0.15, -0.4], [-0.9, 0.4]] },
     pinwheel:   { name: '風車形',     fam: 'poly', line: false, point: true,  axes: 0, verts: [[0, 0], [0.9, 0], [0.9, 0.6], [0.3, 0.6], [0, 0], [-0.9, 0], [-0.9, -0.6], [-0.3, -0.6]] },
-    trap:       { name: '台形',       fam: 'quad', line: false, point: false, axes: 0, verts: [[-0.9, -0.6], [0.9, -0.6], [0.3, 0.6], [-0.6, 0.6]] },
-    lshape:     { name: 'L字',        fam: 'poly', line: false, point: false, axes: 0, verts: [[-0.8, -0.9], [0.9, -0.9], [0.9, -0.35], [-0.2, -0.35], [-0.2, 0.9], [-0.8, 0.9]] },
-    scalene:    { name: '三角形',     fam: 'tri',  line: false, point: false, axes: 0, verts: [[-0.9, -0.7], [0.8, -0.7], [-0.3, 0.8]] },
-    quad:       { name: '四角形',     fam: 'quad', line: false, point: false, axes: 0, verts: [[-0.9, -0.6], [0.7, -0.8], [0.9, 0.5], [-0.4, 0.8]] }
+    trap:       { name: '台形',       fam: 'quad', line: false, point: false, axes: 0, verts: [[-0.9, -0.6], [0.9, -0.6], [0.0, 0.6], [-0.9, 0.6]] },   // r2②: 直角台形(脚の傾き差37°)
+    lshape:     { name: 'L字',        fam: 'poly', line: false, point: false, axes: 0, verts: [[-0.9, -0.9], [0.9, -0.9], [0.9, -0.5], [-0.2, -0.5], [-0.2, 0.9], [-0.9, 0.9]] },   // r2②: 腕の太さを変えて非対称を明示
+    scalene:    { name: '三角形',     fam: 'tri',  line: false, point: false, axes: 0, verts: [[-0.9, -0.35], [0.9, -0.85], [-0.75, 0.9]] },   // r2②: 不等辺(辺長差91%・角99/31/50)
+    quad:       { name: '四角形',     fam: 'quad', line: false, point: false, axes: 0, verts: [[-0.9, -0.85], [0, -0.9], [0.9, -0.05], [-0.4, 0.9]] }   // r2②: 辺長差102%・角77/133/80/70(直角なし)
   };
   var SS_CELL = 84, SS_INNER = 30;   // セル1辺px・図形の半径px(等スケール)
+  var SS_EXCL = [['iso_trap', 'trap']];   // r2①: 同一図に同居させない組(等脚台形と一般の台形)
   function ssOutline(id) {   // 対称性の再計算用の輪郭点列(単位ボックス)
     var c = SS_CAT[id]; if (!c) return null;
     if (c.regular) return regularPoly(c.regular, 0.9);
@@ -1799,6 +1800,7 @@
         var cand = ids.filter(function (id) { return !used[id] && ok(id, req[labels[i]]); });
         if (!cand.length) { good = false; break; }
         var pick = cand[Math.floor(rnd() * cand.length)]; used[pick] = true; out.push({ label: labels[i], id: pick });
+        SS_EXCL.forEach(function (grp) { if (grp.indexOf(pick) >= 0) grp.forEach(function (g2) { used[g2] = true; }); });   // 同居禁止
       }
       if (good) return out;
     }
@@ -2689,6 +2691,7 @@
       out.shapes.push({ label: x.label, id: x.id, cat: { line: c.line, point: c.point, axes: c.axes }, calc: sym, ok: sym.line === c.line && sym.point === c.point && (!isFinite(c.axes) || sym.axes === c.axes) });
       if (seen[x.id]) out.dup = true; seen[x.id] = true;
     });
+    out.excl = SS_EXCL.some(function (grp) { return grp.filter(function (g2) { return seen[g2]; }).length > 1; });
     lay.labels.forEach(function (lb) {
       var cx = (lb.box.x0 + lb.box.x1) / 2, cy = (lb.box.y0 + lb.box.y1) / 2, cell = lay._cells.find(function (c) { return cx >= c.x0 && cx <= c.x1 && cy >= c.y0 && cy <= c.y1; });
       out.labels.push({ own: lb.own, cell: cell ? 's_' + cell.i : null, ok: !!cell && 's_' + cell.i === lb.own });
