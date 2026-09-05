@@ -364,6 +364,7 @@
     "次の計算をしなさい。{n1}{unit}+{n2}{unit}"
    ],
    "answer_template": "しき {n1}{unit}+{n2}{unit}={ans}{unit} 答え {ans}{unit}",
+   "kaisetsu": "{unit}のついた数どうしのたし算は、{unit}をそろえたまま、前の数字だけをたします。{n1}+{n2}={ans}なので、答えは{ans}{unit}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -417,6 +418,7 @@
     "次の計算をしなさい。{n1}÷{n2}"
    ],
    "answer_template": "しき {n1}÷{n2}={ans}あまり{r} 答え {ans}あまり{r}",
+   "kaisetsu": "わり算は、わられる数を大きい位から順にわっていきます。{n1}÷{n2}の商は{ans}、あまりは{r}です。あまりは、わる数の{n2}より小さくなっているかをたしかめましょう。「わる数×商＋あまり」がわられる数にもどれば正しく計算できています。",
    "computed_slots": {
     "r": {
      "formula": "n1 % n2"
@@ -475,6 +477,7 @@
     "次の計算をしなさい。{n1}÷{n2}"
    ],
    "answer_template": "しき {n1}÷{n2}={ans}あまり{r} 答え {ans}あまり{r}",
+   "kaisetsu": "2けたの数でわるときは、商の見当をつけてからかけて、ひきます。{n1}÷{n2}は、商を{ans}と見当をつけて{n2}×{ans}を{n1}からひくと、あまりは{r}になります。あまりが{n2}より大きくなったら、商を1大きくしてやり直します。",
    "computed_slots": {
     "r": {
      "formula": "n1 % n2"
@@ -540,6 +543,7 @@
     "{add_a}{q1_disp}{unit}、{add_b}{q2_disp}{unit}あります。あわせて何{unit}ありますか。"
    ],
    "answer_template": "しき {q1_disp}+{q2_disp}={ans_disp} 答え {ans_disp}{unit}",
+   "kaisetsu": "小数のたし算は、小数点の位置をそろえて、同じ位どうしをたします。{q1_disp}+{q2_disp}={ans_disp}なので、あわせて{ans_disp}{unit}です。答えの小数点は、たされる数の小数点の真下におろします。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -600,6 +604,7 @@
     "1{mc}{q1_disp}{unit}の{noun}が{n}{mc}あります。ぜんぶで何{unit}ありますか。"
    ],
    "answer_template": "しき {q1_disp}×{n}={ans_disp} 答え {ans_disp}{unit}",
+   "kaisetsu": "小数×整数は、小数を整数と同じように計算してから、小数点をつけます。{q1_disp}×{n}={ans_disp}なので、ぜんぶで{ans_disp}{unit}です。かけられる数の小数点の位置をそのまま答えにうつします。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -679,6 +684,7 @@
     "{q1_disp}{unit}の{noun}を、{n}{dvc}{dvv}に同じ{dvq}ずつ{dvverb}。{dvper}は何{unit}ですか。"
    ],
    "answer_template": "しき {q1_disp}÷{n}={ans_disp} 答え {ans_disp}{unit}",
+   "kaisetsu": "同じ量ずつ分けるときは、全体の量を分ける数でわります。{q1_disp}÷{n}={ans_disp}なので、{dvper}は{ans_disp}{unit}です。商の小数点は、わられる数の小数点の真上です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -736,6 +742,7 @@
     "次の計算をしなさい。（{n1}+{n2}）×{n3}"
    ],
    "answer_template": "しき {n1}+{n2}={mid} {mid}×{n3}={ans} 答え {ans}",
+   "kaisetsu": "（ ）のある式は、（ ）の中を先に計算します。{n1}+{n2}={mid}を先に求めてから、{mid}×{n3}={ans}です。",
    "computed_slots": {
     "mid": {
      "formula": "n1 + n2"
@@ -795,6 +802,7 @@
     "次の□にあてはまる数を求めなさい。□+{a}={b}"
    ],
    "answer_template": "しき □={b}-{a}={ans} 答え {ans}",
+   "kaisetsu": "□+{a}={b}の□は、{b}から{a}をひけば求められます。たし算の答えから一方の数をひくと、もう一方の数がわかります。□={b}−{a}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -854,6 +862,7 @@
     "次の□にあてはまる数を求めなさい。□×{a}={b}"
    ],
    "answer_template": "しき □={b}÷{a}={ans} 答え {ans}",
+   "kaisetsu": "□×{a}={b}の□は、{b}を{a}でわれば求められます。かけ算の答えを一方の数でわると、もう一方の数がわかります。□={b}÷{a}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -907,6 +916,7 @@
     "{n}を四捨五入して、{place_name}の位までのがい数にしなさい。"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "{place_name}の位までのがい数にするには、{place_name}の位のすぐ下の位の数字を見ます。その数字が0〜4なら切り捨て、5〜9なら切り上げて、{place_name}の位より下をすべて0にします。{n}は{ans}になります。",
    "computed_slots": {
     "place_name": {
      "formula": "'百' if place == 100 else '千'"
@@ -963,6 +973,7 @@
     "四捨五入して千の位までのがい数が{target}になる整数のはんいを答えなさい。"
    ],
    "answer_template": "答え {lo}以上{hi_excl}未満",
+   "kaisetsu": "四捨五入して{target}になる整数は、百の位が5以上で切り上がった数から、百の位が4以下で切り捨てられた数までです。いちばん小さい数は{lo}、{hi_excl}になると{target}より大きいがい数になってしまうので、{lo}以上{hi_excl}未満です。「未満」はその数を入れません。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1155,6 +1166,7 @@
     "{object}が{n1}{counter}あります。{n2}人で同じ数ずつ分けると、1人分は何{counter}になりますか。"
    ],
    "answer_template": "しき {n1}÷{n2}={ans} 答え {ans}{counter}",
+   "kaisetsu": "「同じ数ずつ分ける」ときはわり算です。全部の数{n1}{counter}を、分ける人数{n2}人でわると、1人分の{ans}{counter}が求められます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1205,6 +1217,7 @@
     "図のような長方形の面積を求めなさい。"
    ],
    "answer_template": "しき {h}×{w}={ans} 答え {ans}cm²",
+   "kaisetsu": "長方形の面積は、たて×横で求めます。{h}×{w}={ans}なので、{ans}cm²です。1辺1cmの正方形が{ans}こ分あると考えられます。",
    "figure_params": {
     "fig_version": 1,
     "kind": "rect_area",
@@ -1268,6 +1281,7 @@
     "図の「あ」の角度を求めなさい。"
    ],
    "answer_template": "しき {a1}+{a2}={ans} 答え {ans}度",
+   "kaisetsu": "「あ」の角は、2つの角をあわせた大きさです。{a1}度と{a2}度をたして、{a1}+{a2}={ans}度です。角の大きさはたし算・ひき算で求められます。",
    "figure_params": {
     "fig_version": 1,
     "kind": "angle_sum",
@@ -1333,6 +1347,7 @@
     "次の計算をしなさい。{n1}÷{n2}"
    ],
    "answer_template": "しき {n1}÷{n2}={ans}あまり{r} 答え {ans}あまり{r}",
+   "kaisetsu": "わられる数の上の2けたから、わる数{n2}がいくつ入るかを考えます。商が2けたになるので、十の位の商を立ててからひき、次の位をおろして一の位の商を立てます。{n1}÷{n2}={ans}あまり{r}です。",
    "computed_slots": {
     "r": {
      "formula": "n1 % n2"
@@ -1391,6 +1406,7 @@
     "{a}と{b}を、それぞれ百の位までのがい数にして、和を見積もりなさい。"
    ],
    "answer_template": "しき {ra}+{rb}={ans} 答え およそ{ans}",
+   "kaisetsu": "見積もりは、それぞれの数をがい数にしてから計算します。{a}はおよそ{ra}、{b}はおよそ{rb}なので、和はおよそ{ra}+{rb}={ans}です。",
    "computed_slots": {
     "ra": {
      "formula": "round_half_up(a, 100)"
@@ -1454,6 +1470,7 @@
     "くふうして計算しなさい。{a}×{c}+{b}×{c}"
    ],
    "answer_template": "しき （{a}+{b}）×{c}={sum}×{c}={ans} 答え {ans}",
+   "kaisetsu": "同じ数をかけているたし算は、先にたしてからかけることができます。{a}×{c}+{b}×{c}=（{a}+{b}）×{c}なので、{sum}×{c}={ans}です。{a}+{b}がきりのよい数になるので、計算が楽になります。",
    "computed_slots": {
     "sum": {
      "formula": "a + b"
@@ -1500,6 +1517,7 @@
     "くふうして計算しなさい。{a}×99"
    ],
    "answer_template": "しき {a}×100-{a}={h}-{a}={ans} 答え {ans}",
+   "kaisetsu": "99は100より1小さい数です。{a}×99は、{a}×100から{a}を1回分ひけばよいので、{h}−{a}={ans}です。",
    "computed_slots": {
     "h": {
      "formula": "a * 100"
@@ -1564,6 +1582,7 @@
     "次の計算をしなさい。{q1_disp}÷{n}"
    ],
    "answer_template": "しき {q1_disp}÷{n}={ans_disp} 答え {ans_disp}",
+   "kaisetsu": "小数÷整数は、整数のわり算と同じようにわり、商の小数点はわられる数の小数点の真上につけます。{q1_disp}÷{n}={ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1612,6 +1631,7 @@
     "{n1}万{n2}を数字で書きなさい。"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "「万」の左側が万の位から上、右側が千の位から下の4けたです。{n1}万{n2}は、{n1}のうしろに{n2}を4けたで書きます。{n2}が4けたにたりないときは、たりない分だけ0を入れます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1653,6 +1673,7 @@
     "{n}を10倍した数を書きなさい。"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "数を10倍すると、それぞれの数字の位が1つずつ上がります。数字はそのままで、右はしに0を1つつけると、{n}の10倍の{ans}になります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1713,6 +1734,7 @@
     "赤いテープが{a}cm、青いテープが{b}cmあります。赤いテープは青いテープの何倍ですか。"
    ],
    "answer_template": "しき {a}÷{b}={ans} 答え {ans}倍",
+   "kaisetsu": "「何倍か」をきかれたら、もとにする量でわります。ここでは青いテープの{b}cmがもとなので、{a}÷{b}={ans}で、赤いテープは青いテープの{ans}倍です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1746,6 +1768,7 @@
     "{n1_disp}は、0.01を何こ集めた数ですか。"
    ],
    "answer_template": "答え {ans}こ",
+   "kaisetsu": "0.01は1を100等分した1つ分です。{n1_disp}のような小数は、0.01を何こ集めたかで考えると、小数点をとった{ans}こ分になります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1800,6 +1823,7 @@
     "0.01を{n1}こ集めた数はいくつですか。"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "0.01を{n1}こ集めると、100こで1になるので、100こ分ごとに1の位が1ふえます。{n1}こでは{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1874,6 +1898,7 @@
     "{ki1}.{k1}{k2}{k3}という数について、{ask1}の数字を答えなさい。"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "小数点の右は、順に小数第一位・小数第二位・小数第三位です。{ki1}.{k1}{k2}{k3}の{ask1}を、小数点のすぐ右から数えて見つけます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1922,6 +1947,7 @@
     "{n1_disp}を{sc1}倍した数はいくつですか。"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "小数を10倍すると小数点が右へ1つ、100倍すると右へ2つ動きます。{n1_disp}を{sc1}倍すると{ans}になります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1967,6 +1993,7 @@
     "{n1}直角は何度ですか。"
    ],
    "answer_template": "答え {ans}度",
+   "kaisetsu": "1直角は90度です。{n1}直角は90度の{n1}こ分なので、90×{n1}={ans}度です。2直角で一直線の180度、4直角で1回りの360度になります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2004,6 +2031,7 @@
     "{D1}度は、直角何こ分ですか。"
    ],
    "answer_template": "答え 直角{ans}こ分",
+   "kaisetsu": "90度が直角1こ分です。{D1}度は90度がいくつ分かを考えて、直角{ans}こ分です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2064,6 +2092,7 @@
     "{a1}{fr1}は何{to1}ですか。"
    ],
    "answer_template": "答え {ans}{to1}",
+   "kaisetsu": "面積の単位は、1辺の長さが10倍になると面積は100倍になります。1{fr1}は{kk1}{to1}なので、{a1}{fr1}は{a1}×{kk1}={ans}{to1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2122,6 +2151,7 @@
     "面積が{S1}cm²の長方形があります。たての長さが{a1}cmのとき、横の長さは何cmですか。"
    ],
    "answer_template": "答え {ans}cm",
+   "kaisetsu": "長方形の面積＝たて×横なので、面積をたてでわると横が求められます。{S1}÷{a1}={ans}なので、横の長さは{ans}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2164,6 +2194,7 @@
     "{t1}兆{o1}億を数字で書きなさい。"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "大きい数は、右から4けたずつ「万・億・兆」の区切りで読みます。{t1}兆{o1}億は、兆の区切りに{t1}、億の区切りに{o1}を書き、万の区切りと一の区切りは0を4けたずつ書きます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2292,6 +2323,7 @@
     "{k12}{k11}{k10}{k9}{k8}{k7}{k6}{k5}{k4}{k3}{k2}{k1}という数について、{ask1}の数字を答えなさい。"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "大きい数は、右から4けたずつ区切ると位がわかりやすくなります。一・十・百・千のあとに万が4つ、そのあとに億が4つ続きます。{ask1}がどこかを右から数えて、その位の数字を答えます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2338,6 +2370,7 @@
     "時計の長い針が、{m1}分間に回る角度は何度ですか。"
    ],
    "answer_template": "答え {ans}度",
+   "kaisetsu": "時計の長い針は、60分で1回り（360度）回ります。1分では360÷60=6度回るので、{m1}分間では6×{m1}={ans}度です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2376,6 +2409,7 @@
     "{h1}時ちょうどのとき、時計の長い針と短い針の間の角度は何度ですか。"
    ],
    "answer_template": "答え {ans}度",
+   "kaisetsu": "時計の文字ばんは、1時間分（数字1つ分）が360÷12=30度です。{h1}時ちょうどのとき、長い針は12、短い針は{h1}をさしているので、間の角は30×{h1}={ans}度です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2447,6 +2481,7 @@
     "つぎの計算をしなさい。\n{a1}+({b1}-{c1})"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "（ ）の中を先に計算します。{b1}−{c1}を先に求めてから、{a1}にたして{ans}になります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2489,6 +2524,7 @@
     "{def1}を何といいますか。"
    ],
    "answer_template": "答え {nm1}",
+   "kaisetsu": "四角形は、辺の平行の様子で名前が決まります。向かい合った1組の辺だけが平行なら台形、2組とも平行なら平行四辺形、さらに4つの辺の長さがすべて等しければひし形です。{def1}のは{nm1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2530,6 +2566,7 @@
     "平行四辺形ABCDがあります。辺ABの長さが{a1}cmのとき、辺CDの長さは何cmですか。"
    ],
    "answer_template": "答え {ans}cm",
+   "kaisetsu": "平行四辺形では、向かい合った辺の長さは等しくなります。辺ABと辺CDは向かい合った辺なので、辺CDも{ans}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2572,6 +2609,7 @@
     "平行四辺形ABCDがあります。角Aの大きさが{al1}度のとき、角Cの大きさは何度ですか。"
    ],
    "answer_template": "答え {ans}度",
+   "kaisetsu": "平行四辺形では、向かい合った角の大きさは等しくなります。角Aと角Cは向かい合った角なので、角Cも{ans}度です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2614,6 +2652,7 @@
     "平行四辺形ABCDがあります。角Aの大きさが{al1}度のとき、となりの角Bの大きさは何度ですか。"
    ],
    "answer_template": "答え {ans}度",
+   "kaisetsu": "平行四辺形では、となり合った2つの角をあわせると180度になります。角Aが{al1}度なので、角Bは180−{al1}={ans}度です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2651,6 +2690,7 @@
     "1辺の長さが{a1}cmのひし形のまわりの長さは何cmですか。"
    ],
    "answer_template": "答え {ans}cm",
+   "kaisetsu": "ひし形は、4つの辺の長さがすべて等しい四角形です。まわりの長さは1辺の長さの4つ分なので、{a1}×4={ans}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2702,6 +2742,7 @@
     "たての長さが{a1}cm、横の長さが{b1}cmの長方形のまわりの長さは何cmですか。"
    ],
    "answer_template": "答え {ans}cm",
+   "kaisetsu": "まわりの長さは、4つの辺の長さの合計です。長方形はたてと横が2本ずつあるので、（{a1}+{b1}）×2={ans}cmです。面積（たて×横）とまちがえないようにしましょう。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2739,6 +2780,7 @@
     "1辺の長さが{a1}cmの正方形のまわりの長さは何cmですか。"
    ],
    "answer_template": "答え {ans}cm",
+   "kaisetsu": "正方形は4つの辺の長さがすべて等しいので、まわりの長さは1辺の4つ分です。{a1}×4={ans}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2777,6 +2819,7 @@
     "面積が{S1}cm²の正方形の1辺の長さは何cmですか。"
    ],
    "answer_template": "答え {ans}cm",
+   "kaisetsu": "正方形の面積は1辺×1辺です。同じ数を2回かけて{S1}になる数をさがすと、{ans}×{ans}={S1}なので、1辺は{ans}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2832,6 +2875,7 @@
     "たての長さが{a1}m、横の長さが{b1}mの長方形の面積は何m²ですか。"
    ],
    "answer_template": "答え {ans}m²",
+   "kaisetsu": "mの単位でも、長方形の面積はたて×横です。{a1}×{b1}={ans}なので、{ans}m²です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2882,6 +2926,7 @@
     "つぎの計算をしなさい。\n{al1}°+{be1}°"
    ],
    "answer_template": "答え {ans}°",
+   "kaisetsu": "角度も、ふつうの数と同じようにたし算ができます。{al1}°+{be1}°={ans}°です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2937,6 +2982,7 @@
     "つぎの計算をしなさい。\n{al1}°-{be1}°"
    ],
    "answer_template": "答え {ans}°",
+   "kaisetsu": "角度のひき算も、ふつうの数と同じように計算します。{al1}°−{be1}°={ans}°です。1回りは360°なので、答えが360°をこえることはありません。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2979,6 +3025,7 @@
     "{al1}度の角に、あと何度をあわせると一直線(180度)になりますか。"
    ],
    "answer_template": "答え {ans}度",
+   "kaisetsu": "一直線の角は180度です。{al1}度の角とあわせて180度になる角は、180−{al1}={ans}度です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3036,6 +3083,7 @@
     "右の直方体ABCDEFGHで、辺ABと垂直な辺をすべて答えなさい。"
    ],
    "answer_template": "答え {E1_edges}",
+   "kaisetsu": "直方体では、1つの辺に交わっている辺は、その辺と垂直です。辺ABの両はしの頂点AとBに集まっている辺をさがすと、{E1_edges}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3124,6 +3172,7 @@
     "右の直方体ABCDEFGHで、辺ABと平行な辺をすべて答えなさい。"
    ],
    "answer_template": "答え {E1_edges}",
+   "kaisetsu": "直方体では、向かい合った面の同じ向きの辺どうしが平行です。辺ABと同じ向きの辺を、同じ面と向かい合った面からさがすと、{E1_edges}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3201,6 +3250,7 @@
     "直方体には、{ask1}がいくつありますか。"
    ],
    "answer_template": "答え {ans}{un1}",
+   "kaisetsu": "直方体は、6つの長方形の面でかこまれた形です。面が6つ、辺が12本、頂点が8つあります。{ask1}は{ans}{un1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3274,6 +3324,7 @@
     "つぎの計算をしなさい。商は整数で求め、あまりも出しなさい。\n{N1_disp}÷{a1}"
    ],
    "answer_template": "答え {q1}あまり{r1_disp}",
+   "kaisetsu": "商を整数で求めるときは、一の位までわって止め、残りをあまりとします。あまりの小数点は、わられる数の小数点と同じ位置にそろえます。{N1_disp}÷{a1}={q1}あまり{r1_disp}です。「わる数×商＋あまり」でたしかめましょう。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
