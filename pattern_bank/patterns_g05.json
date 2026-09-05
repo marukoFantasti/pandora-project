@@ -129,6 +129,7 @@
     "{a_disp}を{k}倍した数を書きなさい。"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "小数を10倍すると小数点が右へ1つ、100倍で2つ、1000倍で3つ動きます。{a_disp}を{k}倍すると{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -183,6 +184,7 @@
     "{a_disp}を1/{k}にした数を書きなさい。"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "小数を1/10にすると小数点が左へ1つ、1/100で2つ動きます。動かす先に数字がないときは0を書きます。{a_disp}を1/{k}にすると{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -239,6 +241,7 @@
     "次の計算をしなさい。{n1}×{d1_disp}"
    ],
    "answer_template": "しき {n1}×{d1_disp}={ans_disp} 答え {ans_disp}",
+   "kaisetsu": "整数×小数は、小数点がないものとして整数のかけ算をしてから、かける数の小数点の位置に合わせて答えに小数点をつけます。{n1}×{d1_disp}={ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -304,6 +307,7 @@
     "1{unit}のねだんが{n1}円の{obj}を、{d1_disp}{unit}買いました。代金はいくらですか。"
    ],
    "answer_template": "しき {n1}×{d1_disp}={ans} 答え {ans}円",
+   "kaisetsu": "1{unit}あたりのねだんに、買った長さをかけると代金になります。買った長さが小数でも、式の形は整数のときと同じです。{n1}×{d1_disp}={ans}なので、代金は{ans}円です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -355,6 +359,7 @@
     "次の計算をしなさい。{a1_disp}×{b1_disp}"
    ],
    "answer_template": "しき {a1_disp}×{b1_disp}={ans_disp} 答え {ans_disp}",
+   "kaisetsu": "小数×小数は、両方の小数点をないものとして整数のかけ算をし、2つの数の小数点より右のけた数をあわせた分だけ、答えの小数点を左に打ちます。{a1_disp}×{b1_disp}={ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -416,6 +421,7 @@
     "1Lの重さが{a1_disp}kgの{liq}があります。この{liq}{b1_disp}Lの重さは何kgですか。"
    ],
    "answer_template": "しき {a1_disp}×{b1_disp}={ans_disp} 答え {ans_disp}kg",
+   "kaisetsu": "1Lの重さに、かさ（L）をかけると全体の重さになります。{a1_disp}×{b1_disp}={ans_disp}なので、{ans_disp}kgです。かさが1より小さいときは、答えは1Lの重さより軽くなります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -488,6 +494,7 @@
     "次の計算をしなさい。{n1}÷{d1_disp}"
    ],
    "answer_template": "しき {n1}÷{d1_disp}={ans} 答え {ans}",
+   "kaisetsu": "整数÷小数は、わる数の小数点を右に動かして整数にし、わられる数の小数点も同じ数だけ右に動かしてから計算します。{n1}÷{d1_disp}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -568,6 +575,7 @@
     "{obj}を{d1_disp}{unit}買ったら、代金は{n1}円でした。この{obj}1{unit}のねだんはいくらですか。"
    ],
    "answer_template": "しき {n1}÷{d1_disp}={ans} 答え {ans}円",
+   "kaisetsu": "1{unit}のねだんは、代金を買った長さでわって求めます。{n1}÷{d1_disp}={ans}なので、1{unit}あたり{ans}円です。わる数が小数でも「1あたり」を求める式はわり算です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -636,6 +644,7 @@
     "次の計算をしなさい。{a1_disp}÷{b1_disp}"
    ],
    "answer_template": "しき {a1_disp}÷{b1_disp}={ans_disp} 答え {ans_disp}",
+   "kaisetsu": "小数÷小数は、わる数が整数になるように両方の小数点を同じ数だけ右に動かしてから、整数÷小数と同じように計算します。{a1_disp}÷{b1_disp}={ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -716,6 +725,7 @@
     "{b1_disp}mの重さが{a1_disp}kgの{obj}があります。この{obj}1mの重さは何kgですか。"
    ],
    "answer_template": "しき {a1_disp}÷{b1_disp}={ans_disp} 答え {ans_disp}kg",
+   "kaisetsu": "1mあたりの重さは、全体の重さを長さでわって求めます。{a1_disp}÷{b1_disp}={ans_disp}なので、1mの重さは{ans_disp}kgです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -817,6 +827,7 @@
     "1{unit}のねだんが{n1}円の{obj}を{d1_disp}{unit}買って、{m1}円を出しました。おつりはいくらですか。"
    ],
    "answer_template": "しき {n1}×{d1_disp}、{m1}−(代金) 答え {ans}円",
+   "kaisetsu": "まず代金を求めます。1{unit}のねだん{n1}円に、買った長さ{d1_disp}{unit}をかけます。次に、出したお金{m1}円から代金をひくと、おつりは{ans}円です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -880,6 +891,7 @@
     "{liq}が{a1_disp}L、{liq2}が{b1_disp}Lあります。{liq}のかさは、{liq2}のかさの何倍ですか。"
    ],
    "answer_template": "しき {a1_disp}÷{b1_disp}={ans_disp} 答え {ans_disp}倍",
+   "kaisetsu": "「何倍か」は、もとにする量でわって求めます。{liq}のかさ{a1_disp}Lを、もとにする{liq2}のかさ{b1_disp}Lでわって、{a1_disp}÷{b1_disp}={ans_disp}倍です。答えが1より小さいときは、もとより少ないという意味です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -953,6 +965,7 @@
     "白い{obj}の長さは{b1}{unit}です。赤い{obj}の長さは、白い{obj}の長さの{k1_disp}倍です。赤い{obj}は何{unit}ですか。"
    ],
    "answer_template": "しき {b1}×{k1_disp}={ans_disp} 答え {ans_disp}{unit}",
+   "kaisetsu": "「もとの長さの{k1_disp}倍」は、もとの長さに{k1_disp}をかけて求めます。{b1}×{k1_disp}={ans_disp}なので、赤い{obj}は{ans_disp}{unit}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1000,6 +1013,7 @@
     "{n1}は、偶数と奇数のどちらですか。"
    ],
    "answer_template": "答え {parity}",
+   "kaisetsu": "2でわり切れる整数が偶数、わり切れない整数が奇数です。一の位が0・2・4・6・8なら偶数、1・3・5・7・9なら奇数です。{n1}は{parity}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1066,6 +1080,7 @@
     "（{a1}、{b1}）の最小公倍数を求めなさい。また、（{a1}、{b1}）の公倍数を小さいほうから順に3つ書きなさい。"
    ],
    "answer_template": "答え 最小公倍数 {ans}、公倍数 {ans}、{m2}、{m3}",
+   "kaisetsu": "公倍数は、2つの数のどちらの倍数にもなっている数で、いちばん小さいものが最小公倍数です。大きいほうの数の倍数を順に書いていき、小さいほうの数でもわり切れるものを探すと、最小公倍数は{ans}です。公倍数は最小公倍数の倍数なので、{ans}、{m2}、{m3}と続きます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1136,6 +1151,7 @@
     "（{a1}、{b1}）の最大公約数を求めなさい。"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "公約数は、2つの数のどちらもわり切れる数で、いちばん大きいものが最大公約数です。小さいほうの数の約数を大きい順に調べ、大きいほうの数もわり切れるものを探すと、最大公約数は{ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1234,6 +1250,7 @@
     "あるバス停では、{dest_a}行きのバスが{a1}分ごとに、{dest_b}行きのバスが{b1}分ごとに出発します。{t0_disp}に{dest_a}行きと{dest_b}行きのバスが同時に出発しました。次に2つのバスが同時に出発するのは何時何分ですか。"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "次に同時に出発するのは、{a1}分と{b1}分の両方の倍数になる時間がたったときです。それは最小公倍数の分後なので、{t0_disp}にその分をたして{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1326,6 +1343,7 @@
     "たて{a1}cm、横{b1}cmの長方形の紙を、同じ向きにすきまなくしきつめて、できるだけ小さい正方形をつくります。正方形の1辺の長さは何cmになりますか。"
    ],
    "answer_template": "しき （{a1}と{b1}の最小公倍数） 答え {ans}cm",
+   "kaisetsu": "正方形の1辺の長さは、たて{a1}cmの倍数でもあり、横{b1}cmの倍数でもある必要があります。できるだけ小さくするので、{a1}と{b1}の最小公倍数の{ans}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1395,6 +1413,7 @@
     "{obj_a}が{a1}{cnt_a}と{obj_b}が{b1}{cnt_b}あります。これを何人かの子どもに、それぞれ同じ数ずつ、あまりが出ないように分けます。できるだけ多くの子どもに分けるとき、何人に分けることができますか。"
    ],
    "answer_template": "しき （{a1}と{b1}の最大公約数） 答え {ans}人",
+   "kaisetsu": "あまりが出ないように分けるには、人数が{a1}の約数でもあり{b1}の約数でもある必要があります。できるだけ多くの人に分けるので、最大公約数の{ans}人です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1460,6 +1479,7 @@
     "次の分数を約分しなさい。{raw1}"
    ],
    "answer_template": "答え {red1}",
+   "kaisetsu": "約分は、分母と分子を同じ数でわって、簡単な分数にすることです。分母と分子の最大公約数でわると、1回でいちばん簡単な形になります。{raw1}を約分すると{red1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1580,6 +1600,7 @@
     "次の分数を通分しなさい。{f1}、{f2}"
    ],
    "answer_template": "答え {g1}、{g2}",
+   "kaisetsu": "通分は、分母のちがう分数を、同じ分母の分数になおすことです。分母を{b1}と{d1}の最小公倍数{L1}にそろえ、分母を何倍したかと同じ倍だけ分子もかけます。{f1}、{f2}を通分すると{g1}、{g2}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1664,6 +1685,7 @@
     "次のわり算の商を分数で表しなさい。{a1}÷{b1}"
    ],
    "answer_template": "答え {f1}",
+   "kaisetsu": "わり算の商は分数で表せます。わられる数が分子、わる数が分母になります。{a1}÷{b1}の商は{f1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1731,6 +1753,7 @@
     "{liq}が{a1}L、{liq2}が{b1}Lあります。{liq}のかさは、{liq2}のかさの何倍ですか。分数で答えなさい。"
    ],
    "answer_template": "しき {a1}÷{b1} 答え {red1}倍",
+   "kaisetsu": "「何倍か」は、もとにする量でわります。{a1}÷{b1}の商を分数で表すと、分子が{a1}、分母が{b1}です。約分できるときは約分して、{red1}倍です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1840,6 +1863,7 @@
     "次の計算をしなさい。{f1}+{f2}"
    ],
    "answer_template": "答え {res1}",
+   "kaisetsu": "分母がちがう分数のたし算は、まず通分して分母をそろえてから、分子どうしをたします。分母は{L1}にそろえます。答えが約分できるときは約分して、{res1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1972,6 +1996,7 @@
     "次の計算をしなさい。{f1}−{f2}"
    ],
    "answer_template": "答え {res1}",
+   "kaisetsu": "分母がちがう分数のひき算も、まず通分して分母を{L1}にそろえてから、分子どうしをひきます。答えが約分できるときは約分して、{res1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2102,6 +2127,7 @@
     "次の計算をしなさい。{mx1}+{f2}"
    ],
    "answer_template": "答え {res1}",
+   "kaisetsu": "帯分数のたし算は、帯分数を仮分数になおすか、整数部分と分数部分を分けて計算します。分母を{L1}に通分してから分子をたし、答えは{res1}です。仮分数になったら帯分数になおします。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2253,6 +2279,7 @@
     "次の計算をしなさい。{f_a}+{f_b}−{f_c}"
    ],
    "answer_template": "答え {res1}",
+   "kaisetsu": "3つの分数の計算は、3つの分母の最小公倍数{L1}で一度に通分すると計算が楽です。分子を左から順にたしたりひいたりして、答えは{res1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2370,6 +2397,7 @@
     "次の4つのテストの点数の平均を求めなさい。{v1}点、{v2}点、{v3}点、{v4}点"
    ],
    "answer_template": "しき （{v1}+{v2}+{v3}+{v4}）÷4={ans} 答え {ans}点",
+   "kaisetsu": "平均は、合計を個数でわって求めます。4つの点数をぜんぶたして、4でわります。（{v1}+{v2}+{v3}+{v4}）÷4={ans}なので、平均{ans}点です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2427,6 +2455,7 @@
     "{p1}ページの本を{d1}日間で読み終えました。1日に平均何ページ読んだことになりますか。"
    ],
    "answer_template": "しき {p1}÷{d1}={ans} 答え {ans}ページ",
+   "kaisetsu": "1日に平均何ページ読んだかは、全体のページ数を日数でわって求めます。{p1}÷{d1}={ans}なので、1日平均{ans}ページです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2486,6 +2515,7 @@
     "ある家では、1日に平均{a1}gのお米を食べます。{d1}日間では、何kg何gのお米を食べることになりますか。ちょうどのときはkgだけで答えなさい。"
    ],
    "answer_template": "しき {a1}×{d1}={ans}(g) 答え {ans_disp}",
+   "kaisetsu": "平均が分かっているとき、合計は「平均×個数」で求められます。1日に平均{a1}gなので、{d1}日間では{a1}×{d1}={ans}gです。1000gが1kgなので、{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2545,6 +2575,7 @@
     "{d1}mで{w1}gのはり金があります。このはり金1mあたりの重さは何gですか。"
    ],
    "answer_template": "しき {w1}÷{d1}={ans} 答え {ans}g",
+   "kaisetsu": "「1mあたりの重さ」は、全体の重さを長さでわって求めます。{w1}÷{d1}={ans}なので、1mあたり{ans}gです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2644,6 +2675,7 @@
     "A店では{item}{na}{cnt}を{pa}円、B店では{item}{nb}{cnt}を{pb}円で売っています。1{cnt}あたりのねだんで比べると、どちらの店の{item}のほうが安いといえますか。"
    ],
    "answer_template": "しき A店 {pa}÷{na}={ua}、B店 {pb}÷{nb}={ub} 答え {winner}のほうが安い",
+   "kaisetsu": "1{cnt}あたりのねだんを比べるには、それぞれの店で「ねだん÷個数」を計算します。A店は{pa}÷{na}={ua}円、B店は{pb}÷{nb}={ub}円なので、{winner}のほうが安いです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2714,6 +2746,7 @@
     "ある町の面積は{s1}km²で、人口は{p1}人です。この町の人口密度を求めなさい。"
    ],
    "answer_template": "しき {p1}÷{s1}={ans} 答え 1km²あたり{ans}人",
+   "kaisetsu": "人口密度は、1km²あたりの人口です。人口を面積でわって、{p1}÷{s1}={ans}なので、1km²あたり{ans}人です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2773,6 +2806,7 @@
     "自動車で、{dist}kmの道のりを{t1}時間かかって走りました。この自動車の時速を求めなさい。"
    ],
    "answer_template": "しき {dist}÷{t1}={ans} 答え 時速{ans}km",
+   "kaisetsu": "速さは、道のりを時間でわって求めます。{dist}÷{t1}={ans}なので、時速{ans}kmです。時速は「1時間あたりに進む道のり」です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2829,6 +2863,7 @@
     "{dist}mの道のりを{t1}分で歩きました。分速を求めなさい。"
    ],
    "answer_template": "しき {dist}÷{t1}={ans} 答え 分速{ans}m",
+   "kaisetsu": "分速は「1分あたりに進む道のり」です。道のりを時間（分）でわって、{dist}÷{t1}={ans}なので、分速{ans}mです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2871,6 +2906,7 @@
     "分速{v1}mで進む電車があります。この電車の秒速は何mですか。また、時速は何kmですか。"
    ],
    "answer_template": "しき {v1}÷60、{v1}×60 答え 秒速{sec}m、時速{hkm}km",
+   "kaisetsu": "分速を秒速になおすには60でわり（1分＝60秒）、時速になおすには60をかけます（1時間＝60分）。分速{v1}mは、秒速{sec}m、時速は{v1}×60mを1000でわって時速{hkm}kmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2926,6 +2962,7 @@
     "時速{v1}kmで走る電車が、{t1}時間に進む道のりは何kmですか。"
    ],
    "answer_template": "しき {v1}×{t1}={ans} 答え {ans}km",
+   "kaisetsu": "道のりは、速さ×時間で求めます。時速{v1}kmで{t1}時間走るので、{v1}×{t1}={ans}kmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2986,6 +3023,7 @@
     "{dist}kmの道のりを、自転車で時速{v1}kmで走ります。かかる時間は何時間ですか。"
    ],
    "answer_template": "しき {dist}÷{v1}={ans} 答え {ans}時間",
+   "kaisetsu": "時間は、道のりを速さでわって求めます。{dist}÷{v1}={ans}なので、{ans}時間かかります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3083,6 +3121,7 @@
     "{actor_a}は自転車で{ta}分間に{la}m走り、{actor_b}は自転車で{tb}分間に{lb}m走りました。どちらのほうが速いですか。"
    ],
    "answer_template": "しき {actor_a} {la}÷{ta}={ua}、{actor_b} {lb}÷{tb}={ub} 答え {winner}のほうが速い",
+   "kaisetsu": "速さを比べるには、同じ時間（1分）あたりに進む道のりにそろえます。{actor_a}は{la}÷{ta}={ua}m、{actor_b}は{lb}÷{tb}={ub}mなので、1分あたりの道のりが長い{winner}のほうが速いです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3157,6 +3196,7 @@
     "ある小学校の児童数は{m1}人で、そのうち{c1}人がスポーツクラブに入っています。スポーツクラブに入っている人数は、児童数全体のどれだけの割合ですか。小数で答えなさい。"
    ],
    "answer_template": "しき {c1}÷{m1}={ans_disp} 答え {ans_disp}",
+   "kaisetsu": "割合は、比べる量÷もとにする量で求めます。もとにする量は児童数全体の{m1}人、比べる量はクラブの{c1}人なので、{c1}÷{m1}={ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3203,6 +3243,7 @@
     "持っているお金が{m1}円あります。このうち、{p1_disp}の割合にあたるお金を使いました。使ったお金はいくらですか。"
    ],
    "answer_template": "しき {m1}×{p1_disp}={ans} 答え {ans}円",
+   "kaisetsu": "比べる量は、もとにする量×割合で求めます。もとにする量は持っているお金{m1}円なので、{m1}×{p1_disp}={ans}円です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3272,6 +3313,7 @@
     "バスに{c1}人が乗っています。これは、このバスの定員の{p1_disp}にあたります。バスの定員は何人ですか。"
    ],
    "answer_template": "しき {c1}÷{p_dec}={ans} 答え {ans}人",
+   "kaisetsu": "もとにする量は、比べる量÷割合で求めます。{p1_disp}を小数で表すと{p_dec}なので、{c1}÷{p_dec}={ans}人が定員です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3344,6 +3386,7 @@
     "ある品物を{p1_disp}引きのねだんで買ったら、代金は{c1}円でした。この品物のもとのねだんはいくらですか。"
    ],
    "answer_template": "しき {c1}÷(1−{p_dec})={ans} 答え {ans}円",
+   "kaisetsu": "{p1_disp}引きということは、もとのねだんの（1−{p_dec}）にあたる金額をはらったということです。代金÷（1−{p_dec}）で、もとのねだんは{ans}円です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3403,6 +3446,7 @@
     "次の割合を百分率で表しなさい。{p1_disp}"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "百分率は、割合を100倍して%をつけたものです。小数の割合0.01が1%にあたります。{p1_disp}は{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3455,6 +3499,7 @@
     "次の割合を歩合で表しなさい。{p1_disp}"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "歩合は、割合0.1を1割、0.01を1分、0.001を1厘と表す言い方です。{p1_disp}は{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3550,6 +3595,7 @@
     "{c1}gは、{m1}gの何%ですか。"
    ],
    "answer_template": "しき {c1}÷{m1} 答え {ans_disp}",
+   "kaisetsu": "何%かをきかれたら、まず割合を小数で求め、100倍して%をつけます。{c1}÷{m1}の割合を百分率になおすと{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3596,6 +3642,7 @@
     "ある小学校の去年の児童数は{n1}人でした。今年は去年より{p1_disp}増えたそうです。今年の児童数は何人ですか。"
    ],
    "answer_template": "しき {n1}×(1+{p_dec})={ans} 答え {ans}人",
+   "kaisetsu": "{p1_disp}増えたということは、去年を1とすると今年は（1+{p_dec}）にあたります。{n1}×（1+{p_dec}）={ans}なので、今年は{ans}人です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3670,6 +3717,7 @@
     "あるクラブの去年の人数は{n1}人でした。今年は去年より{pa_disp}増え、来年はさらに今年より{pb_disp}増える予定です。来年の人数は何人になりますか。"
    ],
    "answer_template": "しき {n1}×(1+{pa_dec})×(1+{pb_dec})={ans} 答え {ans}人",
+   "kaisetsu": "増える割合を2回続けて考えます。今年は去年の（1+{pa_dec}）倍、来年はさらに今年の（1+{pb_dec}）倍です。{n1}×（1+{pa_dec}）×（1+{pb_dec}）={ans}なので、来年は{ans}人です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3778,6 +3826,7 @@
     "右の表は、ある図書館の月曜日から木曜日までの入館者数を表しています。入館者数は1日平均何人ですか。"
    ],
    "answer_template": "しき （{v1}+{v2}+{v3}+{v4}）÷4={ans} 答え {ans}人",
+   "kaisetsu": "表の4日分の入館者数をぜんぶたして、日数の4でわります。（{v1}+{v2}+{v3}+{v4}）÷4={ans}なので、1日平均{ans}人です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3892,6 +3941,7 @@
     "右の表は、A、Bの2つのにわとり小屋の面積と、そこにいるにわとりの数を表したものです。1m²あたりのにわとりの数で比べると、どちらの小屋のほうがこんでいますか。"
    ],
    "answer_template": "しき A {ca}÷{sa}={ua}、B {cb}÷{sb}={ub} 答え {winner}の小屋のほうがこんでいる",
+   "kaisetsu": "こみぐあいは、1m²あたりのにわとりの数で比べます。Aは{ca}÷{sa}={ua}わ、Bは{cb}÷{sb}={ub}わなので、{winner}の小屋のほうがこんでいます。面積や数が大きいほうがこんでいるとは限らないので、必ず「1あたり」にそろえて比べます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4019,6 +4069,7 @@
     "右の表は、A、Bの2台のバスの定員と乗客の数を表したものです。定員をもとにした乗客の数の割合で比べると、どちらのバスのほうがこんでいるといえますか。"
    ],
    "answer_template": "しき A {ca}÷{ma}={ua_disp}、B {cb}÷{mb}={ub_disp} 答え {winner}のバスのほうがこんでいる",
+   "kaisetsu": "こみぐあいを割合で比べるには、乗客の数÷定員を計算します。Aは{ca}÷{ma}={ua_disp}、Bは{cb}÷{mb}={ub_disp}なので、割合が大きい{winner}のバスのほうがこんでいます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4120,6 +4171,7 @@
     "まわりの長さが{L1}cmの長方形をつくります。右の表は、たての長さと横の長さの関係を表したものです。たての長さが{x1}cmのとき、横の長さは何cmですか。"
    ],
    "answer_template": "しき {L1}÷2−{x1}={ans} 答え {ans}cm",
+   "kaisetsu": "長方形のまわりの長さは（たて＋横）×2なので、たて＋横はいつも{L1}÷2です。たてが{x1}cmのとき、横は{L1}÷2−{x1}={ans}cmです。表を見ると、たてが1cmふえるごとに横が1cmへることが分かります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4215,6 +4267,7 @@
     "たてが{h1_disp}cm、横が{w1_disp}cmの長方形の面積を求めなさい。"
    ],
    "answer_template": "しき {h1_disp}×{w1_disp}={ans_disp} 答え {ans_disp}cm²",
+   "kaisetsu": "長さが小数でも、長方形の面積はたて×横で求めます。{h1_disp}×{w1_disp}={ans_disp}なので、{ans_disp}cm²です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4295,6 +4348,7 @@
     "次の図の三角形で、「あ」の角度は何度ですか。"
    ],
    "answer_template": "しき 180−{a1}−{a2}={ans} 答え {ans}°",
+   "kaisetsu": "三角形の3つの角の大きさをたすと180°になります。180から分かっている2つの角をひいて、180−{a1}−{a2}={ans}なので、「あ」の角度は{ans}°です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4346,6 +4400,7 @@
     "次の図の二等辺三角形は、頂角の大きさが{t1}°です。「あ」の角度は何度ですか。"
    ],
    "answer_template": "しき (180−{t1})÷2={ans} 答え {ans}°",
+   "kaisetsu": "二等辺三角形では、底辺の両はしの2つの角（底角）が等しくなります。3つの角の合計180°から頂角{t1}°をひき、残りを2つに分けて、（180−{t1}）÷2={ans}°です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4410,6 +4465,7 @@
     "次の図の四角形で、「あ」の角度は何度ですか。"
    ],
    "answer_template": "しき 360−{a1}−{a2}−{a3}={ans} 答え {ans}°",
+   "kaisetsu": "四角形の4つの角の大きさをたすと360°になります。四角形は対角線で2つの三角形に分けられ、180°×2＝360°だからです。360−{a1}−{a2}−{a3}={ans}なので、「あ」の角度は{ans}°です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4483,6 +4539,7 @@
     "次の平行四辺形の面積を求めなさい。"
    ],
    "answer_template": "しき {b1}×{h1}={ans} 答え {ans}cm²",
+   "kaisetsu": "平行四辺形の面積は、底辺×高さで求めます。高さは、底辺に垂直な長さで、ななめの辺の長さではありません。{b1}×{h1}={ans}なので、{ans}cm²です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4552,6 +4609,7 @@
     "底辺の長さが{b1}cm、面積が{S1}cm²の平行四辺形の高さは何cmですか。"
    ],
    "answer_template": "しき {S1}÷{b1}={ans} 答え {ans}cm",
+   "kaisetsu": "平行四辺形の面積＝底辺×高さなので、面積を底辺でわると高さが求められます。{S1}÷{b1}={ans}なので、高さは{ans}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4623,6 +4681,7 @@
     "次の三角形の面積を求めなさい。"
    ],
    "answer_template": "しき {b1}×{h1}÷2={ans} 答え {ans}cm²",
+   "kaisetsu": "三角形の面積は、底辺×高さ÷2で求めます。同じ三角形を2つ合わせると平行四辺形になるので、その半分と考えます。{b1}×{h1}÷2={ans}なので、{ans}cm²です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4692,6 +4751,7 @@
     "底辺の長さが{b1}cm、面積が{S1}cm²の三角形の高さは何cmですか。"
    ],
    "answer_template": "しき {S1}×2÷{b1}={ans} 答え {ans}cm",
+   "kaisetsu": "三角形の面積＝底辺×高さ÷2なので、面積を2倍してから底辺でわると高さが求められます。{S1}×2÷{b1}={ans}なので、高さは{ans}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4775,6 +4835,7 @@
     "次の台形の面積を求めなさい。"
    ],
    "answer_template": "しき ({a1}+{b1})×{h1}÷2={ans} 答え {ans}cm²",
+   "kaisetsu": "台形の面積は、（上底＋下底）×高さ÷2で求めます。同じ台形を2つ合わせると平行四辺形になるので、その半分です。（{a1}+{b1}）×{h1}÷2={ans}なので、{ans}cm²です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4849,6 +4910,7 @@
     "次のひし形の面積を求めなさい。"
    ],
    "answer_template": "しき {d1}×{d2}÷2={ans} 答え {ans}cm²",
+   "kaisetsu": "ひし形の面積は、対角線×対角線÷2で求めます。ひし形を囲む長方形の半分になるからです。{d1}×{d2}÷2={ans}なので、{ans}cm²です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4893,6 +4955,7 @@
     "次の円の円周の長さを求めなさい。ただし、円周率は3.14とします。"
    ],
    "answer_template": "しき {d1}×3.14={ans_disp} 答え {ans_disp}cm",
+   "kaisetsu": "円周の長さは、直径×円周率で求めます。円周率は約3.14です。{d1}×3.14={ans_disp}なので、円周は{ans_disp}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4941,6 +5004,7 @@
     "次の円の円周の長さを求めなさい。ただし、円周率は3.14とします。"
    ],
    "answer_template": "しき {r1}×2×3.14={ans_disp} 答え {ans_disp}cm",
+   "kaisetsu": "直径は半径の2倍なので、円周は半径×2×3.14で求めます。{r1}×2×3.14={ans_disp}なので、円周は{ans_disp}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4989,6 +5053,7 @@
     "円周の長さが{c_len_disp}cmの円があります。この円の直径の長さは何cmですか。ただし、円周率は3.14とします。"
    ],
    "answer_template": "しき {c_len_disp}÷3.14={ans} 答え {ans}cm",
+   "kaisetsu": "円周＝直径×3.14なので、円周を3.14でわると直径が求められます。{c_len_disp}÷3.14={ans}なので、直径は{ans}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5055,6 +5120,7 @@
     "次の直方体の体積は何cm³ですか。"
    ],
    "answer_template": "しき {d1}×{w1}×{h1}={ans} 答え {ans}cm³",
+   "kaisetsu": "直方体の体積は、たて×横×高さで求めます。1辺1cmの立方体がいくつ分あるかを表しています。{d1}×{w1}×{h1}={ans}なので、{ans}cm³です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5101,6 +5167,7 @@
     "次の立方体の体積は何cm³ですか。"
    ],
    "answer_template": "しき {a1}×{a1}×{a1}={ans} 答え {ans}cm³",
+   "kaisetsu": "立方体は、たて・横・高さがすべて同じ長さです。1辺×1辺×1辺で、{a1}×{a1}×{a1}={ans}なので、{ans}cm³です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5196,6 +5263,7 @@
     "右の図のような直方体の形をした水そうがあります。内のりは、たて{d1}cm、横{w1}cm、深さ{h1}cmです。この水そうの容積は何Lですか。"
    ],
    "answer_template": "しき {d1}×{w1}×{h1}÷1000={ans} 答え {ans}L",
+   "kaisetsu": "容積は、入れ物の内側の体積です。内のりのたて×横×深さで体積をcm³で求め、1000cm³＝1Lなので1000でわります。{d1}×{w1}×{h1}÷1000={ans}なので、{ans}Lです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5305,6 +5373,7 @@
     "右の図のような直方体の形をした水そうがあります。内のりは、たて{d1}cm、横{w1}cm、深さ{h1}cmです。この水そうに{VL}Lの水を入れると、水の深さは何cmになりますか。"
    ],
    "answer_template": "しき {VL}×1000÷({d1}×{w1})={ans} 答え {ans}cm",
+   "kaisetsu": "水の体積＝たて×横×深さなので、水の体積を底面積（たて×横）でわると深さが求められます。{VL}Lをcm³になおすと{VL}×1000cm³なので、{VL}×1000÷（{d1}×{w1}）={ans}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5345,6 +5414,7 @@
     "{v1_disp}m³は何Lですか。"
    ],
    "answer_template": "しき {v1_disp}×1000={ans} 答え {ans}L",
+   "kaisetsu": "1m³は1000Lです（1m³＝100cm×100cm×100cm＝1000000cm³、1L＝1000cm³）。{v1_disp}m³は{v1_disp}×1000={ans}Lです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5401,6 +5471,7 @@
     "円周の長さが{c_len1_disp}cmの円があります。この円の半径の長さは何cmですか。ただし、円周率は3.14とします。"
    ],
    "answer_template": "しき {c_len1_disp}÷3.14={dd1}、{dd1}÷2={ans} 答え {ans}cm",
+   "kaisetsu": "円周を3.14でわると直径が求められ、直径を2でわると半径になります。{c_len1_disp}÷3.14={dd1}、{dd1}÷2={ans}なので、半径は{ans}cmです。",
    "figure_params": null,
    "kanji_policy": {
     "allowed_grades": [
@@ -5444,6 +5515,7 @@
     "まるい花だんがあります。花だんの直径は{d1}mです。この花だんのまわりの長さは何mですか。ただし、円周率は3.14とします。"
    ],
    "answer_template": "しき {d1}×3.14={ans_disp} 答え {ans_disp}m",
+   "kaisetsu": "まるい花だんのまわりの長さは円周なので、直径×3.14で求めます。{d1}×3.14={ans_disp}なので、{ans_disp}mです。",
    "figure_params": null,
    "kanji_policy": {
     "allowed_grades": [
@@ -5509,6 +5581,7 @@
     "高さが{h1}cm、面積が{S1}cm²の平行四辺形の底辺の長さは何cmですか。"
    ],
    "answer_template": "しき {S1}÷{h1}={ans} 答え {ans}cm",
+   "kaisetsu": "面積を高さでわると底辺が求められます。{S1}÷{h1}={ans}なので、底辺は{ans}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5569,6 +5642,7 @@
     "高さが{h1}cm、面積が{S1}cm²の三角形の底辺の長さは何cmですか。"
    ],
    "answer_template": "しき {S1}×2÷{h1}={ans} 答え {ans}cm",
+   "kaisetsu": "面積を2倍してから高さでわると底辺が求められます。{S1}×2÷{h1}={ans}なので、底辺は{ans}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5653,6 +5727,7 @@
     "上底が{a1}cm、下底が{b1}cm、面積が{S1}cm²の台形の高さは何cmですか。"
    ],
    "answer_template": "しき {S1}×2÷({a1}+{b1})={ans} 答え {ans}cm",
+   "kaisetsu": "台形の面積＝（上底＋下底）×高さ÷2なので、面積を2倍してから（上底＋下底）でわると高さが求められます。{S1}×2÷（{a1}+{b1}）={ans}なので、高さは{ans}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5715,6 +5790,7 @@
     "一方の対角線が{d1}cm、面積が{S1}cm²のひし形の、もう一方の対角線の長さは何cmですか。"
    ],
    "answer_template": "しき {S1}×2÷{d1}={ans} 答え {ans}cm",
+   "kaisetsu": "ひし形の面積＝対角線×対角線÷2なので、面積を2倍してから分かっている対角線でわると、もう一方の対角線が求められます。{S1}×2÷{d1}={ans}なので、{ans}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
