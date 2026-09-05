@@ -2656,6 +2656,7 @@
     "1{ct1}x円の{it1}を{k1}{ct1}買います。代金を求める式を、xを使って書きなさい。"
    ],
    "answer_template": "答え x×{k1}",
+   "kaisetsu": "数がまだ分からないところを、xのような文字で表して式を作ることができます。代金は「1{ct1}のねだん×{ct1}数」なので、x×{k1}です。文字も数と同じように式に入れられます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2709,6 +2710,7 @@
     "x×{k1}の式で、xの値が{v1}のときの式の値を求めなさい。"
    ],
    "answer_template": "しき {v1}×{k1}={ans} 答え {ans}",
+   "kaisetsu": "式の値は、文字のところに数をあてはめて計算します。xに{v1}を入れて、{v1}×{k1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2765,6 +2767,7 @@
     "次の式で、xにあてはまる数を求めなさい。x+{a1}={b1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "x+{a1}={b1}のxは、たし算の答えから{a1}をひけば求められます。x={b1}−{a1}={ans}です。求めたxを式にもどして、{b1}になるかたしかめましょう。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2810,6 +2813,7 @@
     "次の式で、xにあてはまる数を求めなさい。x-{a1}={b1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "x−{a1}={b1}のxは、ひき算の答えに{a1}をたせば求められます。x={b1}+{a1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2871,6 +2875,7 @@
     "次の式で、xにあてはまる数を求めなさい。x×{a1}={b1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "x×{a1}={b1}のxは、かけ算の答えを{a1}でわれば求められます。x={b1}÷{a1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2916,6 +2921,7 @@
     "次の式で、xにあてはまる数を求めなさい。x÷{a1}={b1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "x÷{a1}={b1}のxは、わり算の答えに{a1}をかければ求められます。x={b1}×{a1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2994,6 +3000,7 @@
     "次の式で、xにあてはまる数を求めなさい。x×{a1}+{c1}={b1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "2段階の式は、外側から順にもどします。まず{c1}をたす前の値を求めて{b1}−{c1}、次にそれを{a1}でわって、x=（{b1}−{c1}）÷{a1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3062,6 +3069,7 @@
     "1{ct1}x円の{it1}と、1{ct2}{c1}円の{it2}を買うと、代金は{b1}円でした。xにあてはまる数を求めなさい。"
    ],
    "answer_template": "しき {b1}-{c1}={ans} 答え {ans}",
+   "kaisetsu": "代金の式は x+{c1}={b1}です。xは{b1}−{c1}={ans}なので、{it1}1{ct1}は{ans}円です。文章を式に直してから、逆算します。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3147,6 +3155,7 @@
     "{f1}×{k1}を計算しなさい。"
    ],
    "answer_template": "答え {res1}",
+   "kaisetsu": "分数×整数は、分母はそのままで、分子に整数をかけます。{f1}×{k1}は分子が{n1}、分母が{L1}になります。約分できるときは約分して、{res1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3230,6 +3239,7 @@
     "1dLでかべを{f1}m²ぬれるペンキがあります。このペンキ{k1}dLでは、かべを何m²ぬれますか。"
    ],
    "answer_template": "しき {f1}×{k1}={res1} 答え {res1}m²",
+   "kaisetsu": "1dLでぬれる面積に、使うペンキの量（dL）をかけると、ぬれる面積が求められます。{f1}×{k1}={res1}なので、{res1}m²です。かける数が整数なら、分子だけに整数をかけます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3315,6 +3325,7 @@
     "{f1}÷{k1}を計算しなさい。"
    ],
    "answer_template": "答え {res1}",
+   "kaisetsu": "分数÷整数は、分子はそのままで、分母に整数をかけます。{f1}÷{k1}は分母が{L1}になります。約分できるときは約分して、{res1}です。分子が整数でわり切れるときは、分子をわっても同じ答えになります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3401,6 +3412,7 @@
     "{f1}Lの{liq}を{k1}人で等分すると、1人分は何Lになりますか。"
    ],
    "answer_template": "しき {f1}÷{k1}={res1} 答え {res1}L",
+   "kaisetsu": "等分するときはわり算です。{f1}÷{k1}={res1}なので、1人分は{res1}Lです。分母に人数をかけると考えます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3512,6 +3524,7 @@
     "{f1}×{f2}を計算しなさい。"
    ],
    "answer_template": "答え {res1}",
+   "kaisetsu": "分数×分数は、分子どうし・分母どうしをかけます。{f1}×{f2}は分子が{n1}、分母が{L1}です。とちゅうで約分できるときは、かける前に約分すると計算が楽です。答えは{res1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3628,6 +3641,7 @@
     "{mx1}×{f2}を計算しなさい。"
    ],
    "answer_template": "答え {res1}",
+   "kaisetsu": "帯分数のかけ算は、まず帯分数を仮分数になおします。{mx1}は分子{wn1}の仮分数です。そのあと分子どうし・分母どうしをかけて、{res1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3732,6 +3746,7 @@
     "1dLでかべを{f1}m²ぬれるペンキがあります。このペンキ{f2}dLでは、かべを何m²ぬれますか。"
    ],
    "answer_template": "しき {f1}×{f2}={res1} 答え {res1}m²",
+   "kaisetsu": "かける数が分数でも、式の形は「1dLあたり×量」で同じです。{f1}×{f2}={res1}なので、{res1}m²です。かける数が1より小さいときは、答えは1dLでぬれる面積より小さくなります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3848,6 +3863,7 @@
     "{f1}÷{f2}を計算しなさい。"
    ],
    "answer_template": "答え {res1}",
+   "kaisetsu": "分数÷分数は、わる数の分母と分子を入れかえた数（逆数）をかけます。{f1}÷{f2}は、分子が{n1}、分母が{L1}のかけ算になります。約分して{res1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3969,6 +3985,7 @@
     "{mx1}÷{f2}を計算しなさい。"
    ],
    "answer_template": "答え {res1}",
+   "kaisetsu": "帯分数のわり算は、まず帯分数を仮分数になおしてから、わる数の逆数をかけます。{mx1}は分子{wn1}の仮分数です。答えは{res1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4073,6 +4090,7 @@
     "{f2}dLでかべを{f1}m²ぬれるペンキがあります。このペンキ1dLでは、かべを何m²ぬれますか。"
    ],
    "answer_template": "しき {f1}÷{f2}={res1} 答え {res1}m²",
+   "kaisetsu": "1dLあたりの面積は、「ぬれた面積÷使った量」で求めます。{f1}÷{f2}なので、逆数をかけて{res1}m²です。わる数が分数でも「1あたり」を求める式はわり算です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4165,6 +4183,7 @@
     "{p1_disp}×{f2}を計算しなさい。答えは分数で書きなさい。"
    ],
    "answer_template": "答え {res1}",
+   "kaisetsu": "小数と分数の計算は、小数を分数になおしてから計算します。{p1_disp}は分母が10の分数です。そのあと分子どうし・分母どうしをかけて約分し、{res1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4265,6 +4284,7 @@
     "{f1}÷{p1_disp}を計算しなさい。答えは分数で書きなさい。"
    ],
    "answer_template": "答え {res1}",
+   "kaisetsu": "わる数の小数{p1_disp}を分母10の分数になおし、その逆数をかけます。約分して{res1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4397,6 +4417,7 @@
     "{fa}×{fb}÷{fc}を計算しなさい。"
    ],
    "answer_template": "答え {res1}",
+   "kaisetsu": "かけ算とわり算が続く式は、わり算を逆数のかけ算になおして、まとめて1つの分数にします。分子は{n1}、分母は{L1}になり、約分して{res1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4466,6 +4487,7 @@
     "{f1}時間は何分ですか。"
    ],
    "answer_template": "しき 60×{f1}={ans} 答え {ans}分",
+   "kaisetsu": "1時間は60分なので、{f1}時間は60分の{f1}にあたります。60×{f1}={ans}分です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4529,6 +4551,7 @@
     "{s1}秒は何分ですか。分数で答えなさい。"
    ],
    "answer_template": "答え {res1}分",
+   "kaisetsu": "1分は60秒なので、{s1}秒は{s1}/60分です。約分して{res1}分です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4617,6 +4640,7 @@
     "時速{v1}kmで走る自動車が、{f1}時間に進む道のりは何kmですか。"
    ],
    "answer_template": "しき {v1}×{f1}={ans} 答え {ans}km",
+   "kaisetsu": "道のりは速さ×時間で求めます。時間が分数でも同じ式です。{v1}×{f1}={ans}なので、{ans}kmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4700,6 +4724,7 @@
     "家から駅まで{d1}mあります。{wb}は家から駅へ分速{vs1}mで、{wa}は駅から家へ分速{vf1}mで、同時に出発しました。2人が出会うのは、出発してから何分後ですか。"
    ],
    "answer_template": "しき {d1}÷({vs1}+{vf1})={ans} 答え {ans}分後",
+   "kaisetsu": "向かい合って進むと、2人の間の道のりは1分間に（{vs1}+{vf1}）mずつちぢまります。{d1}mがなくなるまでの時間なので、{d1}÷（{vs1}+{vf1}）={ans}分後です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4783,6 +4808,7 @@
     "{wb}は分速{vs1}mで家を出発しました。その{m1}分後に、{wa}が分速{vf1}mで同じ道を追いかけました。{wa}が{wb}に追いつくのは、{wa}が出発してから何分後ですか。"
    ],
    "answer_template": "しき {vs1}×{m1}÷({vf1}-{vs1})={ans} 答え {ans}分後",
+   "kaisetsu": "先に出発した人は、{m1}分で{vs1}×{m1}mだけ先にいます。追いかける人は1分間に（{vf1}−{vs1}）mずつ差をちぢめるので、{vs1}×{m1}÷（{vf1}−{vs1}）={ans}分後に追いつきます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4847,6 +4873,7 @@
     "{a1}円は{b1}円の何倍ですか。分数で答えなさい。"
    ],
    "answer_template": "しき {a1}÷{b1}={red1} 答え {red1}倍",
+   "kaisetsu": "「何倍か」は、もとにする量でわります。{a1}÷{b1}の商を分数で表し、約分して{red1}倍です。1より小さい倍もあります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4964,6 +4991,7 @@
     "赤い{obj1}が{f1}m、青い{obj1}が{f2}mあります。赤い{obj1}の長さは、青い{obj1}の長さの何倍ですか。"
    ],
    "answer_template": "しき {f1}÷{f2}={red1} 答え {red1}倍",
+   "kaisetsu": "もとにする青い{obj1}の長さでわります。{f1}÷{f2}は逆数をかけて、約分して{red1}倍です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5039,6 +5067,7 @@
     "2つのおもりAとBがあります。おもりAの重さは{n1}gで、おもりBはおもりAの重さよりその{f1}だけ重いそうです。おもりBの重さは何gですか。"
    ],
    "answer_template": "しき {n1}+{n1}×{f1}={ans} 答え {ans}g",
+   "kaisetsu": "「Aの重さより、その{f1}だけ重い」は、Aの重さの{f1}にあたる分をAにたすという意味です。{n1}×{f1}を求めて{n1}にたすと、{ans}gです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5116,6 +5145,7 @@
     "おこづかい{n1}円のうちの{f1}を使いました。あと何円残っていますか。"
    ],
    "answer_template": "しき {n1}-{n1}×{f1}={ans} 答え {ans}円",
+   "kaisetsu": "使ったお金は{n1}×{f1}円です。残りは、はじめのお金からそれをひいて、{n1}−{n1}×{f1}={ans}円です。「全体の（1−{f1}）」と考えて{n1}×（1−{f1}）で求めることもできます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5171,6 +5201,7 @@
     "縦{a1}cm、横{b1}cmの長方形があります。縦と横の長さの割合を比で表しなさい。"
    ],
    "answer_template": "答え {a1}:{b1}",
+   "kaisetsu": "2つの量の割合を、「：」を使って{a1}:{b1}のように表したものが比です。前と後ろの順番を、問題の順番どおりにします。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5233,6 +5264,7 @@
     "{a1}:{b1}の比の値を求めなさい。"
    ],
    "answer_template": "しき {a1}÷{b1}={red1} 答え {red1}",
+   "kaisetsu": "比の値は、前の数を後ろの数でわった商です。{a1}÷{b1}を分数で表し、約分して{red1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5314,6 +5346,7 @@
     "{a1_disp}:{b1_disp}を簡単な整数の比になおしなさい。"
    ],
    "answer_template": "答え {p1}:{q1}",
+   "kaisetsu": "比は、両方の数に同じ数をかけたり、同じ数でわったりしても等しい比になります。{a1_disp}と{b1_disp}を最大公約数でわると、{p1}:{q1}になります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5380,6 +5413,7 @@
     "{pa1_disp}:{pb1_disp}を簡単な整数の比になおしなさい。"
    ],
    "answer_template": "答え {rp1}:{rq1}",
+   "kaisetsu": "小数の比は、両方を10倍して整数の比にしてから、最大公約数でわります。{pa1_disp}:{pb1_disp}は{rp1}:{rq1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5492,6 +5526,7 @@
     "{f1}:{f2}を簡単な整数の比になおしなさい。"
    ],
    "answer_template": "答え {ra1}:{rc1}",
+   "kaisetsu": "分数の比は、両方に分母の最小公倍数{L1}をかけて整数の比にしてから、約分します。{f1}:{f2}は{ra1}:{rc1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5560,6 +5595,7 @@
     "{p1}:{q1}={pk1_disp}:xのとき、xにあてはまる数を求めなさい。"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "等しい比では、前の数が何倍になれば、後ろの数も同じ倍になります。{p1}が{pk1_disp}になっているので、{q1}も同じ倍にして、x={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5629,6 +5665,7 @@
     "{p1}:{q1}=x:{qk1_disp}のとき、xにあてはまる数を求めなさい。"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "後ろの数{q1}が{qk1_disp}になっているので、前の数{p1}も同じ倍にします。x={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5708,6 +5745,7 @@
     "長さ{t1}cmの{obj1}を、{wa}と{wb}で長さの比が{p1}:{q1}になるように分けます。{wa}の分の{obj1}の長さは何cmになりますか。"
    ],
    "answer_template": "しき {t1}×{p1}÷({p1}+{q1})={ans} 答え {ans}cm",
+   "kaisetsu": "{p1}:{q1}に分けるとき、全体は{p1}+{q1}にあたります。{wa}の分は全体の{p1}/（{p1}+{q1}）なので、{t1}×{p1}÷（{p1}+{q1}）={ans}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5788,6 +5826,7 @@
     "{t1}円を{wa}と{wb}で{p1}:{q1}になるように分けました。{wa}がもらった金額と全体{t1}円との比を簡単な整数の比で表しなさい。また、{wa}がもらった金額は何円ですか。"
    ],
    "answer_template": "答え 比 {p1}:{s1_disp}、金額 {ans}円",
+   "kaisetsu": "{wa}の分と全体の比は、{p1}:（{p1}+{q1}）={p1}:{s1_disp}です。{wa}がもらった金額は、{t1}円の{p1}/{s1_disp}なので{ans}円です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5830,6 +5869,7 @@
     "1mの重さが{k1}gの{obj}があります。この{obj}の長さをx m、重さをy gとして、yをxの式で表しなさい。"
    ],
    "answer_template": "答え y={k1}×x",
+   "kaisetsu": "長さが2倍・3倍になると重さも2倍・3倍になるので、重さは長さに比例します。1mあたり{k1}gなので、y={k1}×xです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5877,6 +5917,7 @@
     "yはxに比例し、y={k1}×xの式で表されます。xの値が{v1}のときのyの値を求めなさい。"
    ],
    "answer_template": "しき {k1}×{v1}={ans} 答え {ans}",
+   "kaisetsu": "式のxに{v1}をあてはめて、{k1}×{v1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5938,6 +5979,7 @@
     "yはxに比例し、y={k1}×xの式で表されます。yの値が{w1}のときのxの値を求めなさい。"
    ],
    "answer_template": "しき {w1}÷{k1}={ans} 答え {ans}",
+   "kaisetsu": "y={k1}×xなので、yの値を{k1}でわるとxが求められます。{w1}÷{k1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -5987,6 +6029,7 @@
     "面積が{s1}cm²の長方形があります。縦の長さをx cm、横の長さをy cmとして、yをxの式で表しなさい。"
    ],
    "answer_template": "答え y={s1}÷x",
+   "kaisetsu": "面積が決まっているとき、たてが2倍になると横は1/2になります。このような関係が反比例で、たて×横がいつも{s1}なので、y={s1}÷xです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -6053,6 +6096,7 @@
     "yはxに反比例し、y={s1}÷xの式で表されます。xの値が{v1}のときのyの値を求めなさい。"
    ],
    "answer_template": "しき {s1}÷{v1}={ans} 答え {ans}",
+   "kaisetsu": "式のxに{v1}をあてはめて、{s1}÷{v1}={ans}です。反比例では、xが大きくなるとyは小さくなります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -6119,6 +6163,7 @@
     "yはxに反比例し、y={s1}÷xの式で表されます。yの値が{w1}のときのxの値を求めなさい。"
    ],
    "answer_template": "しき {s1}÷{w1}={ans} 答え {ans}",
+   "kaisetsu": "y={s1}÷xなので、{s1}をyの値でわるとxが求められます。{s1}÷{w1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -6189,6 +6234,7 @@
     "{l1}mの長さを{c1}cmで表した縮図があります。この縮図の縮尺を、分数と比で表しなさい。"
    ],
    "answer_template": "答え 分数 1/{ans}、比 1:{ans}",
+   "kaisetsu": "縮尺は、実際の長さをどれだけちぢめたかを表す割合です。単位をそろえて、縮図の長さ÷実際の長さを求めると1/{ans}で、比で表すと1:{ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -6254,6 +6300,7 @@
     "実際の長さが{l1}mのとき、縮尺1/{n1}の縮図では何cmになりますか。"
    ],
    "answer_template": "しき {l1}×100÷{n1}={ans} 答え {ans}cm",
+   "kaisetsu": "縮図上の長さは、実際の長さ×縮尺です。{l1}mをcmになおしてから1/{n1}にして、{l1}×100÷{n1}={ans}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -6315,6 +6362,7 @@
     "縮尺1/{n1}の縮図で{c1}cmの長さは、実際には何kmありますか。"
    ],
    "answer_template": "しき {c1}×{n1}=(cm) 答え {ans_disp}km",
+   "kaisetsu": "実際の長さは、縮図上の長さ×{n1}です。{c1}×{n1}cmをkmになおして（100000cm=1km）、{ans_disp}kmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -6358,6 +6406,7 @@
     "リレーで{n1}人が走ります。走る順番は全部で何通りありますか。"
    ],
    "answer_template": "答え {ans}通り",
+   "kaisetsu": "並べ方は、1番目に{n1}通り、2番目に残りの人数の通り…と順にかけて求めます。樹形図をかいて数えもれがないようにします。{n1}人では{ans}通りです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -6402,6 +6451,7 @@
     "{pa}をふくむ{n1}人が横1列に並びます。{pa}がいちばん左に並ぶとき、並び方は全部で何通りありますか。"
    ],
    "answer_template": "答え {ans}通り",
+   "kaisetsu": "{pa}がいちばん左と決まっているので、残りの人の並べ方だけを数えます。残りの人数で樹形図をかくと{ans}通りです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -6443,6 +6493,7 @@
     "{n1}種類のくだものの中から2種類を選びます。選び方は全部で何通りありますか。"
    ],
    "answer_template": "答え {ans}試合",
+   "kaisetsu": "組み合わせでは、AとB・BとAは同じ1通りと数えます。1つずつ相手を選んで表や線で数え、重なりを1回だけ数えます。{n1}つの中から2つ選ぶ組み合わせは{ans}通りです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -6492,6 +6543,7 @@
     "次の円の面積を求めなさい。円周率は3.14とします。"
    ],
    "answer_template": "しき {r1}×{r1}×3.14={ans_disp} 答え {ans_disp}cm²",
+   "kaisetsu": "円の面積は、半径×半径×円周率で求めます。{r1}×{r1}×3.14={ans_disp}なので、{ans_disp}cm²です。「半径×半径」であって「直径×半径」ではないことに注意しましょう。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -6542,6 +6594,7 @@
     "次の図は、半径{r1}cmの円の半分の形です。この図形の面積を求めなさい。円周率は3.14とします。"
    ],
    "answer_template": "しき {r1}×{r1}×3.14÷2={ans_disp} 答え {ans_disp}cm²",
+   "kaisetsu": "半円の面積は、円の面積の半分です。{r1}×{r1}×3.14÷2={ans_disp}なので、{ans_disp}cm²です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -6596,6 +6649,7 @@
     "次の図は、半径{r1}cmの円を4等分した1つ分の形です。この図形の面積を求めなさい。円周率は3.14とします。"
    ],
    "answer_template": "しき {r1}×{r1}×3.14÷4={ans_disp} 答え {ans_disp}cm²",
+   "kaisetsu": "円を4等分した形の面積は、円の面積の4分の1です。{r1}×{r1}×3.14÷4={ans_disp}なので、{ans_disp}cm²です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -6654,6 +6708,7 @@
     "面積が{area1_disp}cm²の円があります。この円の半径は何cmですか。円周率は3.14とします。"
    ],
    "answer_template": "しき {area1_disp}÷3.14={r2s_disp}、{r1}×{r1}={r2s_disp} 答え {ans_disp}cm",
+   "kaisetsu": "面積＝半径×半径×3.14なので、面積を3.14でわると「半径×半径」が求められます。{area1_disp}÷3.14={r2s_disp}で、同じ数を2回かけて{r2s_disp}になる数を探すと、半径は{ans_disp}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -6725,6 +6780,7 @@
     "次の四角柱の体積を求めなさい。"
    ],
    "answer_template": "しき {w1}×{d1}×{h1}={ans} 答え {ans}cm³",
+   "kaisetsu": "角柱の体積は、底面積×高さで求めます。四角柱の底面は長方形なので、{w1}×{d1}が底面積、それに高さ{h1}をかけて{ans}cm³です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -6797,6 +6853,7 @@
     "次の三角柱の体積を求めなさい。"
    ],
    "answer_template": "しき {base1}×{bh1}÷2×{h1}={ans} 答え {ans}cm³",
+   "kaisetsu": "三角柱の体積も、底面積×高さです。底面の三角形の面積は{base1}×{bh1}÷2なので、それに高さ{h1}をかけて{ans}cm³です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -6864,6 +6921,7 @@
     "底面積が{s1}cm²で、体積が{v1}cm³の四角柱があります。この四角柱の高さは何cmですか。"
    ],
    "answer_template": "しき {v1}÷{s1}={ans} 答え {ans}cm",
+   "kaisetsu": "体積＝底面積×高さなので、体積を底面積でわると高さが求められます。{v1}÷{s1}={ans}なので、高さは{ans}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -6946,6 +7004,7 @@
     "右の表は、xの値とyの値の関係を表していて、yはxに比例しています。表の□にあてはまる数を求めなさい。"
    ],
    "answer_template": "しき {k1}×4={ans} 答え {ans}",
+   "kaisetsu": "yがxに比例するとき、xが2倍・3倍になるとyも2倍・3倍になります。xが1のときのyが{k1}なので、xが4のときは{k1}×4={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -7025,6 +7084,7 @@
     "右の表は、xの値とyの値の関係を表していて、yはxに比例しています。yをxの式で表しなさい。"
    ],
    "answer_template": "答え y={k1}×x",
+   "kaisetsu": "比例では、yはいつも「決まった数×x」で表せます。表からxが1のときのyを読むと{k1}なので、y={k1}×xです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -7106,6 +7166,7 @@
     "右の表は、あるクラスのソフトボール投げのきろくを整理したものです。調べた人数は全部で何人ですか。"
    ],
    "answer_template": "しき {v1}+{v2}+{v3}+{v4}={ans} 答え {ans}人",
+   "kaisetsu": "度数分布表の「人数」をすべてたすと、調べた人数になります。{v1}+{v2}+{v3}+{v4}={ans}人です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -7187,6 +7248,7 @@
     "右の表は、あるクラスのソフトボール投げのきろくを整理したものです。20m以上投げた人は全部で何人ですか。"
    ],
    "answer_template": "しき {v3}+{v4}={ans} 答え {ans}人",
+   "kaisetsu": "「20m以上」は、20m以上の区間をすべてたします。{v3}+{v4}={ans}人です。「以上」はその数をふくみ、「未満」はふくみません。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -7236,6 +7298,7 @@
     "右の図の{sh_name}は線対称な図形です。対称の軸は何本ありますか。"
    ],
    "answer_template": "答え {ax1}本",
+   "kaisetsu": "対称の軸は、折ったときにぴったり重なる線です。{sh_name}の軸を1本ずつ探して数えると{ax1}本です。正多角形は頂点の数と同じ本数の軸があります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -7287,6 +7350,7 @@
     "右の図の{sh_name}は、線対称な図形ですか、点対称な図形ですか。あてはまるものを答えなさい。"
    ],
    "answer_template": "答え {judge1}",
+   "kaisetsu": "線対称は「折ると重なる」、点対称は「180度回すと重なる」図形です。{sh_name}をその2つの見方でたしかめると、{judge1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -7349,6 +7413,7 @@
     "右の図で、右側の図形は左側の図形の{r1}倍の拡大図です。左側の図形の長さが書かれた辺は{l1}cmです。右側の図形の対応する辺の長さは何cmですか。"
    ],
    "answer_template": "しき {l1}×{r1}={ans} 答え {ans}cm",
+   "kaisetsu": "{r1}倍の拡大図では、すべての辺の長さが{r1}倍になります。対応する辺は{l1}×{r1}={ans}cmです。角の大きさは変わりません。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -7403,6 +7468,7 @@
     "右の図で、右側の図形は左側の図形の1/2の縮図です。左側の図形の長さが書かれた辺は{l1}cmです。右側の図形の対応する辺の長さは何cmですか。"
    ],
    "answer_template": "しき {l1}÷2={ans} 答え {ans}cm",
+   "kaisetsu": "1/2の縮図では、すべての辺の長さが半分になります。対応する辺は{l1}÷2={ans}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -7478,6 +7544,7 @@
     "右のグラフは、yがxに比例するようすを表しています。xの値が{x1}のときのyの値を、グラフから読み取りなさい。"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "比例のグラフは、0を通るまっすぐな線です。横軸のx={x1}の位置から上に見ていき、線とぶつかったところの高さをたて軸で読みます。答えは{ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -7532,6 +7599,7 @@
     "右のグラフは、yがxに比例するようすを表しています。グラフから、yをxの式で表しなさい。"
    ],
    "answer_template": "答え y={k1}×x",
+   "kaisetsu": "グラフから、xが1のときのyの値を読みます。その値が「決まった数」なので、y={k1}×xです。読みにくいときは、xが整数になる点を1つ選んで、yをxでわります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -7597,6 +7665,7 @@
     "右のグラフは、yがxに反比例するようすを表しています。xの値が{x1}のときのyの値を、グラフから読み取りなさい。"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "反比例のグラフは、なめらかな曲線です。横軸のx={x1}の位置から上に見ていき、曲線とぶつかったところの高さをたて軸で読みます。答えは{ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -7674,6 +7743,7 @@
     "右のドットプロットは、あるはんの計算テストの点数を整理したものです。いちばん人数が多かった点数は何点ですか。"
    ],
    "answer_template": "答え {ans}点",
+   "kaisetsu": "ドットプロットは、同じ点数の人の数だけ点を積み上げたものです。点がいちばん高く積まれている点数を読みます。答えは{ans}点です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -7751,6 +7821,7 @@
     "右のグラフは、あるクラスのソフトボール投げのきろくを整理したものです。15m以上20m未満の人は何人ですか。"
    ],
    "answer_template": "答え {ans}人",
+   "kaisetsu": "ヒストグラム（柱状グラフ）は、柱の高さがその区間の人数を表します。15m以上20m未満の柱の高さを読むと{ans}人です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -7846,6 +7917,7 @@
     "右の表は、あるクラスでしらべた結果を整理したものです。{ask1}のかずは、いくつですか。"
    ],
    "answer_template": "答え {ans}{unit1}",
+   "kaisetsu": "表の{ask1}のところをたてに見て、書いてある数を読みます。答えは{ans}{unit1}です。",
    "figure_params": {
     "fig_version": 1,
     "kind": "table",
@@ -7985,6 +8057,7 @@
     "右の表は、あるクラスでしらべた結果を整理したものです。かずがいちばん多いものは、いくつですか。"
    ],
    "answer_template": "答え {ans}{unit1}",
+   "kaisetsu": "表の数を横に見くらべて、いちばん大きい数を探します。答えは{ans}{unit1}です。",
    "figure_params": {
     "fig_version": 1,
     "kind": "table",
@@ -8124,6 +8197,7 @@
     "右の表は、あるクラスでしらべた結果を整理したものです。かずがいちばん少ないものは、いくつですか。"
    ],
    "answer_template": "答え {ans}{unit1}",
+   "kaisetsu": "表の数を横に見くらべて、いちばん小さい数を探します。答えは{ans}{unit1}です。",
    "figure_params": {
     "fig_version": 1,
     "kind": "table",
@@ -8243,6 +8317,7 @@
     "右の表は、あるクラスでしらべた結果を整理したものです。{cb1}は{cd1}より、いくつ多いですか。"
    ],
    "answer_template": "しき {v2}-{v4}={ans} 答え {ans}{unit1}",
+   "kaisetsu": "「いくつ多いか」は、ひき算で求めます。{cb1}の数から{cd1}の数をひいて、{v2}−{v4}={ans}{unit1}です。",
    "figure_params": {
     "fig_version": 1,
     "kind": "table",
@@ -8351,6 +8426,7 @@
     "右の表は、あるクラスでしらべた結果を整理したものです。しらべたかずは、全部でいくつですか。"
    ],
    "answer_template": "しき {v1}+{v2}+{v3}+{v4}={ans} 答え {ans}{unit1}",
+   "kaisetsu": "合計は、表の数をすべてたして求めます。{v1}+{v2}+{v3}+{v4}={ans}{unit1}です。",
    "figure_params": {
     "fig_version": 1,
     "kind": "table",
@@ -8473,6 +8549,7 @@
     "右の表は、2つの組でしらべた結果を整理したものです。{r2a}で{c2a}とこたえた人は、何人ですか。"
    ],
    "answer_template": "答え {ans}{unit1}",
+   "kaisetsu": "2次元の表は、たての見出しと横の見出しが交わったますに数が入っています。{r2a}のだんと{c2a}の列が交わったますを読んで、{ans}{unit1}です。",
    "figure_params": {
     "fig_version": 1,
     "kind": "table",
@@ -8541,6 +8618,7 @@
     "次の半円のまわりの長さを求めなさい。円周率は3.14とします。"
    ],
    "answer_template": "しき {d1}×3.14÷2+{d1}={ans_disp} 答え {ans_disp}cm",
+   "kaisetsu": "半円のまわりの長さは、円周の半分と直径をあわせた長さです。まっすぐな部分（直径）をたし忘れないようにしましょう。{d1}×3.14÷2+{d1}={ans_disp}cmです。",
    "figure_params": {
     "fig_version": 2,
     "kind": "circle",
@@ -8591,6 +8669,7 @@
     "次の四分円(円を4等分した形)のまわりの長さを求めなさい。円周率は3.14とします。"
    ],
    "answer_template": "しき {r1}×2×3.14÷4+{r1}×2={ans_disp} 答え {ans_disp}cm",
+   "kaisetsu": "四分円のまわりの長さは、円周の4分の1と、半径2本分をあわせた長さです。{r1}×2×3.14÷4+{r1}×2={ans_disp}cmです。",
    "figure_params": {
     "fig_version": 2,
     "kind": "circle",
@@ -8648,6 +8727,7 @@
     "1辺が{s1}cmの正方形の中に、ぴったり入る円をかきました。色のついた部分の面積を求めなさい。円周率は3.14とします。"
    ],
    "answer_template": "しき {s1}×{s1}-{rr1}×{rr1}×3.14={ans_disp} 答え {ans_disp}cm²",
+   "kaisetsu": "色のついた部分は、正方形から円をとりのぞいた形です。円の半径は正方形の1辺の半分の{rr1}cmなので、{s1}×{s1}−{rr1}×{rr1}×3.14={ans_disp}cm²です。",
    "figure_params": {
     "fig_version": 2,
     "kind": "composite_circle",
@@ -8710,6 +8790,7 @@
     "半径{R1}cmの円から、同じ中心をもつ半径{r1}cmの円を切り取りました。色のついた部分の面積を求めなさい。円周率は3.14とします。"
    ],
    "answer_template": "しき {R1}×{R1}×3.14-{r1}×{r1}×3.14={ans_disp} 答え {ans_disp}cm²",
+   "kaisetsu": "大きい円の面積から小さい円の面積をひきます。{R1}×{R1}×3.14−{r1}×{r1}×3.14={ans_disp}cm²です。3.14をあとでまとめてかけると、計算が楽になります。",
    "figure_params": {
     "fig_version": 2,
     "kind": "composite_circle",
@@ -8772,6 +8853,7 @@
     "半径{R1}cmの半円から、半径{r1}cmの半円を切り取りました。色のついた部分の面積を求めなさい。円周率は3.14とします。"
    ],
    "answer_template": "しき ({R1}×{R1}×3.14-{r1}×{r1}×3.14)÷2={ans_disp} 答え {ans_disp}cm²",
+   "kaisetsu": "大きい半円から小さい半円をひくと考えます。円の面積の差を求めてから2でわって、（{R1}×{R1}×3.14−{r1}×{r1}×3.14）÷2={ans_disp}cm²です。",
    "figure_params": {
     "fig_version": 2,
     "kind": "composite_circle",
@@ -8835,6 +8917,7 @@
     "半径{R1}cmの大きい円の中に、半径{r1}cmの円を2つかきました。大きい円の色のついた部分の面積を求めなさい。円周率は3.14とします。"
    ],
    "answer_template": "しき {R1}×{R1}×3.14-{r1}×{r1}×3.14×2={ans_disp} 答え {ans_disp}cm²",
+   "kaisetsu": "大きい円の面積から、小さい円2つ分の面積をひきます。{R1}×{R1}×3.14−{r1}×{r1}×3.14×2={ans_disp}cm²です。",
    "figure_params": {
     "fig_version": 2,
     "kind": "composite_circle",
