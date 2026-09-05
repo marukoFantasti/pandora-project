@@ -25,6 +25,15 @@ LED.rows.forEach(r => {
   }
 });
 console.log('  ' + (LED.rows.length * 100) + '構成 ' + (bad === 0 ? '✅' : '❌'));
+console.log('=== (1b) バンク配線(g06 approx_solid): 生成器経由の図が関門条件を満たし、答文字列=体積 ===');
+(function () {
+  const P = require(path.join(__dirname, '..', 'pattern_bank', 'pattern_generator.js'));
+  const bank = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'pattern_bank', 'patterns_g06.json'), 'utf-8'));
+  const p = bank.patterns.find(x => x.pattern_id === 'g06_gaikei_solid_01'); if (!p) { bad++; console.log('  ❌ パターン不在'); return; }
+  for (let s = 0; s < 15; s++) { cases++; const r = P.makeProblem(p, null, bank.shared_lexicon); const a = FB._approxSolidAudit(r.figure); const vol = Number(r.figure.dims.w) * Number(r.figure.dims.d) * Number(r.figure.dims.h);
+    if (a.issues.length || a.labels.some(l => !l.ok) || Math.abs(a.volume - vol) > 1e-9 || String(r.answer).indexOf(String(r.env.vr1)) < 0 || Math.abs(Number(r.env.vr1) - vol) > 1e-9) { bad++; console.log('  ❌ ' + r.env.q1.slice(0, 20) + ' ' + JSON.stringify([a.issues, a.volume, r.answer])); } }
+  console.log('  ' + (bad === 0 ? '✅' : '❌'));
+})();
 console.log('=== (2) 円柱の契約(体積式・描画要素・面積比) ===');
 (function () { cases++; const fp = { kind: 'approx_solid', base: 'cylinder', dims: { r: 5, h: 8 }, unit: 'cm', outline: { seed: 7 } }; const a = FB._approxSolidAudit(fp), svg = FB.build(fp);
   if (Math.abs(a.volume - 5 * 5 * 3.14 * 8) > 1e-9 || a.issues.length || !/<ellipse/.test(svg) || a.labels.some(l => !l.ok)) { bad++; console.log('  ❌ 円柱 ' + JSON.stringify([a.volume, a.issues])); }

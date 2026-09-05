@@ -1,7 +1,7 @@
 {
  "_meta": {
   "schema": "g05系ネスト形({brief, rationale:{...}})",
-  "scope": "g06全71パターン rationale正準統一(図なし52を図形なし(→図なし(に正規化・図あり19移送) +対称第1便13(sym_figure 2026-09-05・裁可j・kaisetsu/pedagogyはFable後出し) +対称第2便9(shape_set 6・テキスト形2・表型1 2026-09-05・裁可k) +概形第1便5(approx_shape 2026-09-06・裁可l)",
+  "scope": "g06全71パターン rationale正準統一(図なし52を図形なし(→図なし(に正規化・図あり19移送) +対称第1便13(sym_figure 2026-09-05・裁可j・kaisetsu/pedagogyはFable後出し) +対称第2便9(shape_set 6・テキスト形2・表型1 2026-09-05・裁可k) +概形第1便5(approx_shape 2026-09-06・裁可l) +概形第2便3(approx_grid/approx_solid 2026-09-06・裁可m)",
   "canon": "figure_notes正準=ゴールド流儀(null不使用・図なしは「図なし」始まり/図ありは設計記録)",
   "grade": "g06",
   "session_date": "2026-08-09",
@@ -2381,6 +2381,69 @@
    "exclusions": "円と正方形の倍(ます数え図)・複合みなし(内訳未転記)・図から寸法を読む行=保留。",
    "figure_notes": "輪郭=有機的な実線・みなし図形=点線・高さ線+直角マーク・寸法ラベルは担当辺近傍。",
    "pedagogy": "およその面積を求めるときは、形をだいたい同じ大きさの長方形・三角形・円などとみて計算します。まわりの線は少しはみ出したり、へこんだりしていますが、はみ出した分とへこんだ分がだいたい同じなら、みなした図形の面積が、およその面積になります。{bn1}とみると、面積は約{ans}{u1}²です。"
+  }
+ },
+ "g06_gaikei_grid_01": {
+  "brief": {
+   "semantic_territory": "およその面積: 方眼のます数え(approx_grid)",
+   "number_domain": "転記文字列(静的・約N/N倍)",
+   "answer_structure": "single",
+   "figure": "approx_grid(blob)",
+   "step_count": 1,
+   "directives": [
+    "D14"
+   ]
+  },
+  "rationale": {
+   "source_features": "裁可(m) 概形第2便。■+□÷2=転記答(約N)に一致する輪郭をseed探索してanchor固定(行別レコード6)。分類=5×5点サンプル(描画・関門で同一導出)。答は転記文字列(静的)。葉/手の形(013/014)は不定形輪郭で代替(報告)。",
+   "representation": "approx_grid(blob): ■+□÷2=転記答に一致する星形輪郭をseed/R探索でanchor固定。分類=各ます5×5点サンプル(25点内側=■・1〜24=□)。",
+   "constructive_guarantees": "関門47: anchorの分類=台帳(独立実装)・自己交差/キャンバス/決定性・探索の決定性。",
+   "semantic_position": "およその大きさ(c10_u01)の方眼/立体系。第1便=みなし図形(approx_shape)。",
+   "exclusions": "四分円2行(転記個数と幾何が不一致)・複合直方体(026)・図なし(009)=保留。",
+   "figure_notes": "方眼=薄線・輪郭=緑実線・■/□の塗りは解説用(本便では非表示)／立体=点線見取図+投影輪郭。",
+   "pedagogy": "方眼を使っておよその面積を求めるときは、図形の中に全部入っているます（■）を1こ分、一部だけかかっているます（□）を半分（0.5こ分）として数えます。■が{nf1}こ、□が{np1}こなら、{nf1}+{np1}÷2＝約{ar1}{u1}²です。1目もりが{cc1}{u1}のときは、ますの数に1ますの面積をかけます。"
+  }
+ },
+ "g06_gaikei_bai_01": {
+  "brief": {
+   "semantic_territory": "およその面積: 円と正方形の倍(approx_grid 2図モード)",
+   "number_domain": "転記文字列(静的・約N/N倍)",
+   "answer_structure": "single",
+   "figure": "approx_grid(circle_squares)",
+   "step_count": 1,
+   "directives": [
+    "D14"
+   ]
+  },
+  "rationale": {
+   "source_features": "裁可(m)-4 倍の2図=circle_squares(円+内接正方形■+外接正方形)。答2倍/4倍は静的(頂点基準・境界上=内の分類で■0/□4=2・■4=4を関門契約)。",
+   "representation": "approx_grid(circle_squares): 円+内接正方形■+外接正方形を1cm方眼に整列。倍率=頂点基準(境界上=内)の分類 ■0/□4=2・■4=4。",
+   "constructive_guarantees": "関門47: 倍率の契約(境界=内で2倍/4倍・厳密は内接2倍)。四分円行は不一致でskip確定。",
+   "semantic_position": "およその大きさ(c10_u01)の方眼/立体系。第1便=みなし図形(approx_shape)。",
+   "exclusions": "四分円2行(転記個数と幾何が不一致)・複合直方体(026)・図なし(009)=保留。",
+   "figure_notes": "方眼=薄線・輪郭=緑実線・■/□の塗りは解説用(本便では非表示)／立体=点線見取図+投影輪郭。",
+   "pedagogy": "方眼を使っておよその面積を求めるときは、図形の中に全部入っているます（■）を1こ分、一部だけかかっているます（□）を半分（0.5こ分）として数えます。■が{nf1}こ、□が{np1}こなら、{nf1}+{np1}÷2＝約{ar1}{u1}²です。1目もりが{cc1}{u1}のときは、ますの数に1ますの面積をかけます。2つの図形の面積をそれぞれ求めて、大きいほうを小さいほうでわると約{bai1}倍です。"
+  }
+ },
+ "g06_gaikei_solid_01": {
+  "brief": {
+   "semantic_territory": "およその体積: 直方体とみる(approx_solid)",
+   "number_domain": "転記文字列(静的・約N/N倍)",
+   "answer_structure": "single",
+   "figure": "approx_solid(cuboid)",
+   "step_count": 1,
+   "directives": [
+    "D14"
+   ]
+  },
+  "rationale": {
+   "source_features": "裁可(m)-3 みなし立体(直方体)の寸法・体積は転記保存(行別レコード5・028は小数寸法)。見取図+投影輪郭はapprox_solidが合成(関門48)。答は転記文字列(静的)。026(複合直方体)=保留承認。",
+   "representation": "approx_solid(cuboid): 見取図(点線・隠れ線なし)+投影シルエット(凸包)に星形曲線のゆらぎ。体積=w×d×h(転記)。",
+   "constructive_guarantees": "関門48: 面積比[0.92,1.08]・内外はみ出し・自己交差・ラベル距離≦18px・体積=転記・決定性。",
+   "semantic_position": "およその大きさ(c10_u01)の方眼/立体系。第1便=みなし図形(approx_shape)。",
+   "exclusions": "四分円2行(転記個数と幾何が不一致)・複合直方体(026)・図なし(009)=保留。",
+   "figure_notes": "方眼=薄線・輪郭=緑実線・■/□の塗りは解説用(本便では非表示)／立体=点線見取図+投影輪郭。",
+   "pedagogy": "形がでこぼこしていても、だいたい直方体や円柱とみれば、およその体積が求められます。{bn1}とみて、たて×横×高さ（円柱なら半径×半径×3.14×高さ）を計算すると、およそ{vr1}{u1}³です。はみ出した分とへこんだ分がだいたい同じなら、この見積もりでよいことになります。"
   }
  }
 }

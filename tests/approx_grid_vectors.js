@@ -30,6 +30,17 @@ LED.rows.filter(r => r.mode === 'blob').forEach(r => {
   if (s.seed !== r.anchor_seed || Math.abs(s.R - r.anchor_R) > 1e-9) { bad++; console.log('  ❌ ' + r.row + ' 探索非決定 ' + s.seed + ' vs ' + r.anchor_seed); }
 });
 console.log('  ' + (bad === 0 ? '✅' : '❌'));
+console.log('=== (1b) バンク配線(g06 approx_grid): 行レコードのanchor→分類=レコード(■/□/面積)・答文字列と一致 ===');
+(function () {
+  const bank = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'pattern_bank', 'patterns_g06.json'), 'utf-8'));
+  (bank.shared_lexicon.gaikei_grid || []).forEach(rec => {
+    cases++; const a = FB._approxGridAudit({ kind: 'approx_grid', mode: 'blob', cols: rec.cols, rows: rec.rows, target_area: rec.ar, anchor_seed: rec.as, anchor_R: rec.aR });
+    if (a.cls.full !== rec.nf || a.cls.part !== rec.np || Math.abs(a.cls.area - rec.ar) > 1e-9 || a.issues.length) { bad++; console.log('  ❌ ' + rec.row + ' ' + JSON.stringify(a.cls) + ' vs ' + rec.nf + '/' + rec.np + '/' + rec.ar); }
+    if (String(rec.a).indexOf(String(rec.ar)) < 0) { bad++; console.log('  ❌ ' + rec.row + ' 答文字列 ' + rec.a); }
+  });
+  (bank.shared_lexicon.gaikei_bai || []).forEach(rec => { cases++; const g = FB._approxGridAudit({ kind: 'approx_grid', mode: 'circle_squares', r: 1 }); const c = rec.bai === 2 ? g.cls_inner : g.cls_outer; if (c.full !== rec.nf || c.part !== rec.np || c.area !== rec.ar || String(rec.a) !== rec.bai + '倍') { bad++; console.log('  ❌ ' + rec.row + ' 倍 ' + JSON.stringify(c)); } });
+  console.log('  ' + (bad === 0 ? '✅' : '❌'));
+})();
 console.log('=== (2) 倍の2図 / (3) 四分円契約 ===');
 (function () {
   cases++; const r = 1, inner = 2 * r * r, outer = (2 * r) * (2 * r);

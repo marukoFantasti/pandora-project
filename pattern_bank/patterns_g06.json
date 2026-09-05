@@ -2447,6 +2447,181 @@
    "d": 310,
    "amp": null
   }
+ ],
+  "gaikei_grid": [
+  {
+   "row": "u01_001",
+   "q": "下の図のような池のおよその面積を方眼の数を数える方法で求めなさい。",
+   "cols": 8,
+   "rows": 8,
+   "ar": 17,
+   "as": 1001,
+   "aR": 2.209902583548607,
+   "nf": 10,
+   "np": 14,
+   "u": "m",
+   "cc": 1,
+   "cl": "1目もり1m",
+   "a": "約17m²"
+  },
+  {
+   "row": "u01_003",
+   "q": "下の図のような形のおよその面積を方眼の数を数える方法で求めなさい。（1マス1cm²）",
+   "cols": 9,
+   "rows": 8,
+   "ar": 25,
+   "as": 1003,
+   "aR": 2.8209479177387813,
+   "nf": 16,
+   "np": 18,
+   "u": "cm",
+   "cc": 1,
+   "cl": "1目もり1cm",
+   "a": "約25cm²"
+  },
+  {
+   "row": "u01_004",
+   "q": "下の図のような形のおよその面積を方眼の数を数える方法で求めなさい。（1マス1m²）",
+   "cols": 9,
+   "rows": 8,
+   "ar": 25,
+   "as": 2007,
+   "aR": 2.8209479177387813,
+   "nf": 15,
+   "np": 20,
+   "u": "m",
+   "cc": 1,
+   "cl": "1目もり1m",
+   "a": "約25m²"
+  },
+  {
+   "row": "u01_013",
+   "q": "次の図のような形のおよその面積を方眼の数を数える方法で求めなさい。（葉の形）",
+   "cols": 10,
+   "rows": 9,
+   "ar": 40,
+   "as": 1003,
+   "aR": 3.5682482323055424,
+   "nf": 28,
+   "np": 24,
+   "u": "cm",
+   "cc": 1,
+   "cl": "1目もり1cm",
+   "a": "約40cm²"
+  },
+  {
+   "row": "u01_014",
+   "q": "次の図のような形のおよその面積を方眼の数を数える方法で求めなさい。（手の形）",
+   "cols": 10,
+   "rows": 9,
+   "ar": 36.5,
+   "as": 1008,
+   "aR": 3.4085643379153576,
+   "nf": 26,
+   "np": 21,
+   "u": "cm",
+   "cc": 1,
+   "cl": "1目もり1cm",
+   "a": "約36.5cm²"
+  },
+  {
+   "row": "u01_023",
+   "q": "次の図のような形のおよその面積を方眼の数を数える方法で求めなさい。",
+   "cols": 9,
+   "rows": 8,
+   "ar": 22,
+   "as": 1005,
+   "aR": 2.6462837142006137,
+   "nf": 15,
+   "np": 14,
+   "u": "m",
+   "cc": 1,
+   "cl": "1目もり1m",
+   "a": "約22m²"
+  }
+ ],
+  "gaikei_bai": [
+  {
+   "row": "u01_007",
+   "q": "円の面積が半径を1辺とする正方形の面積の、およそ何倍になるかを考えました。円の内側にある■の部分の面積は1辺が1cmの正方形の面積の何倍ですか。",
+   "nf": 0,
+   "np": 4,
+   "ar": 2,
+   "bai": 2,
+   "u": "cm",
+   "cc": 1,
+   "cl": "1目もり1cm",
+   "a": "2倍"
+  },
+  {
+   "row": "u01_008",
+   "q": "円の外側の、1辺が2cmの正方形の面積は1辺が1cmの正方形の面積の何倍ですか。",
+   "nf": 4,
+   "np": 0,
+   "ar": 4,
+   "bai": 4,
+   "u": "cm",
+   "cc": 1,
+   "cl": "1目もり1cm",
+   "a": "4倍"
+  }
+ ],
+  "gaikei_solid": [
+  {
+   "row": "u01_010",
+   "q": "右の図のような形をした辞書のおよその体積を求めなさい。（縦17cm×横11cm×高さ4cm直方体とみる）",
+   "w": 17,
+   "d": 11,
+   "h": 4,
+   "u": "cm",
+   "bn": "直方体",
+   "vr": "748",
+   "a": "約748cm³"
+  },
+  {
+   "row": "u01_011",
+   "q": "右の図のような形をした石けんの、およその体積を求めなさい。（6cm×9cm×3cm）",
+   "w": 9,
+   "d": 6,
+   "h": 3,
+   "u": "cm",
+   "bn": "直方体",
+   "vr": "162",
+   "a": "約162cm³"
+  },
+  {
+   "row": "u01_012",
+   "q": "右の図のような形をした紙パックに入るジュースの、およその体積を求めなさい。（7cm×7cm×10cm）",
+   "w": 7,
+   "d": 7,
+   "h": 10,
+   "u": "cm",
+   "bn": "直方体",
+   "vr": "490",
+   "a": "約490cm³"
+  },
+  {
+   "row": "u01_020",
+   "q": "右の図のような形をしたさいころの、およその体積を求めなさい。（4cm×4cm×4cm）",
+   "w": 4,
+   "d": 4,
+   "h": 4,
+   "u": "cm",
+   "bn": "直方体",
+   "vr": "64",
+   "a": "約64cm³"
+  },
+  {
+   "row": "u01_028",
+   "q": "この浴そうに入れられる水の、およその体積を求めなさい。（0.8m×1.4m×0.6m）",
+   "w": 1.4,
+   "d": 0.8,
+   "h": 0.6,
+   "u": "m",
+   "bn": "直方体",
+   "vr": "0.672",
+   "a": "約0.672m³"
+  }
  ]
  },
  "patterns": [
@@ -11087,6 +11262,279 @@
     1
    ],
    "answer_domain": "positive_int"
+  },
+  {
+   "pattern_id": "g06_gaikei_grid_01",
+   "grade": "g06",
+   "unit_id": "g06_c10_u01",
+   "unit_name": "およその大きさ",
+   "semantic_category": "およその面積: 方眼のます数え(approx_grid)",
+   "semantic_note": "裁可(m) 概形第2便。■+□÷2=転記答(約N)に一致する輪郭をseed探索してanchor固定(行別レコード6)。分類=5×5点サンプル(描画・関門で同一導出)。答は転記文字列(静的)。葉/手の形(013/014)は不定形輪郭で代替(報告)。",
+   "step_count": 1,
+   "operation": "ます数え",
+   "answer_formula": "A1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "gaikei_grid[j1].q"
+    },
+    "cols1": {
+     "from": "gaikei_grid[j1].cols"
+    },
+    "rows1": {
+     "from": "gaikei_grid[j1].rows"
+    },
+    "ar1": {
+     "from": "gaikei_grid[j1].ar"
+    },
+    "as1": {
+     "from": "gaikei_grid[j1].as"
+    },
+    "aR1": {
+     "from": "gaikei_grid[j1].aR"
+    },
+    "nf1": {
+     "from": "gaikei_grid[j1].nf"
+    },
+    "np1": {
+     "from": "gaikei_grid[j1].np"
+    },
+    "u1": {
+     "from": "gaikei_grid[j1].u"
+    },
+    "cc1": {
+     "from": "gaikei_grid[j1].cc"
+    },
+    "cl1": {
+     "from": "gaikei_grid[j1].cl"
+    },
+    "a1": {
+     "from": "gaikei_grid[j1].a"
+    }
+   },
+   "computed_slots": {
+    "A1": {
+     "formula": "a1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {A1}",
+   "figure_params": {
+    "kind": "approx_grid",
+    "mode": "blob",
+    "cols": "{cols1}",
+    "rows": "{rows1}",
+    "target_area": "{ar1}",
+    "anchor_seed": "{as1}",
+    "anchor_R": "{aR1}",
+    "cell_label": "{cl1}"
+   },
+   "kaisetsu": "方眼を使っておよその面積を求めるときは、図形の中に全部入っているます（■）を1こ分、一部だけかかっているます（□）を半分（0.5こ分）として数えます。■が{nf1}こ、□が{np1}こなら、{nf1}+{np1}÷2＝約{ar1}{u1}²です。1目もりが{cc1}{u1}のときは、ますの数に1ますの面積をかけます。",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ],
+   "answer_domain": "label"
+  },
+  {
+   "pattern_id": "g06_gaikei_bai_01",
+   "grade": "g06",
+   "unit_id": "g06_c10_u01",
+   "unit_name": "およその大きさ",
+   "semantic_category": "およその面積: 円と正方形の倍(approx_grid 2図モード)",
+   "semantic_note": "裁可(m)-4 倍の2図=circle_squares(円+内接正方形■+外接正方形)。答2倍/4倍は静的(頂点基準・境界上=内の分類で■0/□4=2・■4=4を関門契約)。",
+   "step_count": 1,
+   "operation": "倍",
+   "answer_formula": "A1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "gaikei_bai[j1].q"
+    },
+    "nf1": {
+     "from": "gaikei_bai[j1].nf"
+    },
+    "np1": {
+     "from": "gaikei_bai[j1].np"
+    },
+    "ar1": {
+     "from": "gaikei_bai[j1].ar"
+    },
+    "bai1": {
+     "from": "gaikei_bai[j1].bai"
+    },
+    "u1": {
+     "from": "gaikei_bai[j1].u"
+    },
+    "cc1": {
+     "from": "gaikei_bai[j1].cc"
+    },
+    "cl1": {
+     "from": "gaikei_bai[j1].cl"
+    },
+    "a1": {
+     "from": "gaikei_bai[j1].a"
+    }
+   },
+   "computed_slots": {
+    "A1": {
+     "formula": "a1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {A1}",
+   "figure_params": {
+    "kind": "approx_grid",
+    "mode": "circle_squares",
+    "r": 1,
+    "cell_label": "{cl1}"
+   },
+   "kaisetsu": "方眼を使っておよその面積を求めるときは、図形の中に全部入っているます（■）を1こ分、一部だけかかっているます（□）を半分（0.5こ分）として数えます。■が{nf1}こ、□が{np1}こなら、{nf1}+{np1}÷2＝約{ar1}{u1}²です。1目もりが{cc1}{u1}のときは、ますの数に1ますの面積をかけます。2つの図形の面積をそれぞれ求めて、大きいほうを小さいほうでわると約{bai1}倍です。",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1,
+    2
+   ],
+   "answer_domain": "label"
+  },
+  {
+   "pattern_id": "g06_gaikei_solid_01",
+   "grade": "g06",
+   "unit_id": "g06_c10_u01",
+   "unit_name": "およその大きさ",
+   "semantic_category": "およその体積: 直方体とみる(approx_solid)",
+   "semantic_note": "裁可(m)-3 みなし立体(直方体)の寸法・体積は転記保存(行別レコード5・028は小数寸法)。見取図+投影輪郭はapprox_solidが合成(関門48)。答は転記文字列(静的)。026(複合直方体)=保留承認。",
+   "step_count": 1,
+   "operation": "みなし立体の体積",
+   "answer_formula": "A1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "gaikei_solid[j1].q"
+    },
+    "w1": {
+     "from": "gaikei_solid[j1].w"
+    },
+    "d1": {
+     "from": "gaikei_solid[j1].d"
+    },
+    "h1": {
+     "from": "gaikei_solid[j1].h"
+    },
+    "u1": {
+     "from": "gaikei_solid[j1].u"
+    },
+    "bn1": {
+     "from": "gaikei_solid[j1].bn"
+    },
+    "vr1": {
+     "from": "gaikei_solid[j1].vr"
+    },
+    "a1": {
+     "from": "gaikei_solid[j1].a"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    }
+   },
+   "computed_slots": {
+    "A1": {
+     "formula": "a1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {A1}",
+   "figure_params": {
+    "kind": "approx_solid",
+    "base": "cuboid",
+    "dims": {
+     "w": "{w1}",
+     "d": "{d1}",
+     "h": "{h1}"
+    },
+    "unit": "{u1}",
+    "outline": {
+     "seed": "{sd1}"
+    }
+   },
+   "kaisetsu": "形がでこぼこしていても、だいたい直方体や円柱とみれば、およその体積が求められます。{bn1}とみて、たて×横×高さ（円柱なら半径×半径×3.14×高さ）を計算すると、およそ{vr1}{u1}³です。はみ出した分とへこんだ分がだいたい同じなら、この見積もりでよいことになります。",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    0,
+    8,
+    1,
+    4,
+    6
+   ],
+   "answer_domain": "label"
   }
  ],
  "schema_changelog": {
