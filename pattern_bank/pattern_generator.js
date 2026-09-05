@@ -462,11 +462,11 @@
     // 許可関数を増やすだけ（abs/max/min と同格）。既存バンクは未参照＝非干渉。
     var fn = new Function('abs', 'max', 'min', 'pymod', 'round_half_up', 'round_range_lower', 'round_range_upper_excl',
       'gcd', 'lcm', 'reduce_num', 'reduce_den',
-      'fmt_signed', 'fmt_coef', 'fmt_coefj', 'fmt_termj', 'sgn_str', 'sqrt_coef', 'sqrt_rad', 'fmt_sqrt', 'fmt_pi', 'fmt_pi_frac', 'fmt_choice', 'edge_rel', 'norm_edge_set', 'fmt_edge_set', 'dec2fix',
+      'fmt_signed', 'fmt_coef', 'fmt_coefj', 'fmt_termj', 'sgn_str', 'sqrt_coef', 'sqrt_rad', 'fmt_sqrt', 'fmt_pi', 'fmt_pi_frac', 'fmt_choice', 'edge_rel', 'norm_edge_set', 'fmt_edge_set', 'dec2fix', 'fmt_mixed', 'fmt_fraction',
       keys.join(','), 'return (' + jsExpr + ');');
     return fn.apply(null, [Math.abs, Math.max, Math.min, pymod, roundHalfUp, roundRangeLower, roundRangeUpperExcl,
       gcdInt, lcmInt, reduceNum, reduceDen,
-      fmtSigned, fmtCoef, fmtCoefj, fmtTermj, sgnStr, sqrtCoef, sqrtRad, fmtSqrt, fmtPi, fmtPiFrac, fmtChoice, edgeRel, normEdgeSet, fmtEdgeSet, fmtDec2fix].concat(vals));
+      fmtSigned, fmtCoef, fmtCoefj, fmtTermj, sgnStr, sqrtCoef, sqrtRad, fmtSqrt, fmtPi, fmtPiFrac, fmtChoice, edgeRel, normEdgeSet, fmtEdgeSet, fmtDec2fix, fmtMixed, fmtFraction].concat(vals));   // e-9 backfill(裁可b): fmt_mixed/fmt_fraction を computed から参照可
   }
 
   // ---- スロット解決 ----

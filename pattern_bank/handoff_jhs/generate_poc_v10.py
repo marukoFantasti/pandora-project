@@ -317,6 +317,7 @@ def fmt_edge_set(s):
     return "、".join(("辺" + e) if len(e) == 2 else e for e in edges)
 
 SAFE.update({"edge_rel": edge_rel, "norm_edge_set": norm_edge_set, "fmt_edge_set": fmt_edge_set})
+SAFE.update({"fmt_mixed": fmt_mixed})   # e-9 backfill(裁可b): computed から帯分数表示を参照可(JS evalExpr と1:1)
 
 def norm_num_seq(s):
     """数値列の正規化(num_seq機構・JS normNumSeqと1:1)。出現順トークンのカンマ連結(順序保存)。"""
@@ -426,6 +427,8 @@ def fmt_fraction(num, den):
     if num == 0: return "0"
     if num == den: return "1"
     return f"{num}/{den}"
+
+SAFE.update({"fmt_fraction": fmt_fraction})   # e-9 backfill(裁可b): JS evalExpr と1:1
 
 def kanji_check(t, allowed):
     return [c for c in t if '\u4e00' <= c <= '\u9fff' and c not in allowed]

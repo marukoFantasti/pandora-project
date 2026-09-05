@@ -1027,7 +1027,14 @@
    "sentence_templates": [
     "次の仮分数を帯分数になおしなさい。{num}/{den}"
    ],
+   "computed_slots": {
+    "M1": {
+     "formula": "fmt_mixed(num, den)",
+     "note": "e-9 backfill(裁可b): 帯分数表示=mixed_displayと同値・kaisetsu用"
+    }
+   },
    "answer_template": "答え {mixed}",
+   "kaisetsu": "分子が分母より大きい分数が仮分数です。{num}の中に{den}が何回入るかを考えると、その回数が整数部分、残りが分子になります。{num}/{den}は{M1}です。",
    "mixed_display": {
     "mixed": [
      "num",
@@ -1095,6 +1102,7 @@
     "リボンを{num1}/{den}mと{num2}/{den}mつかいました。あわせて何mつかいましたか。"
    ],
    "answer_template": "しき {num1}/{den}+{num2}/{den}={mixed} 答え {mixed}m",
+   "kaisetsu": "分母が同じ分数のたし算は、分母はそのままで分子だけをたします。{num1}+{num2}={num_sum}なので、{num_sum}/{den}になります。分子が分母より大きくなったら、帯分数になおして{M1}mです。",
    "mixed_display": {
     "mixed": [
      "num_sum",
@@ -1104,6 +1112,10 @@
    "computed_slots": {
     "num_sum": {
      "formula": "num1 + num2"
+    },
+    "M1": {
+     "formula": "fmt_mixed(num_sum, den)",
+     "note": "e-9 backfill(裁可b): 帯分数表示=mixed_displayと同値・kaisetsu用"
     }
    },
    "kanji_policy": {
