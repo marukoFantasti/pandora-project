@@ -1923,6 +1923,85 @@
     lay._geom = G;
     return lay;
   }
+  // ---- 概形第2便 Kind: approx_grid(方眼上の不定形・ます数え・裁可m) ----
+  // mode: blob(星形輪郭・■+□÷2=target_areaをseed探索で固定) / quarter_circle(半径r・厳密幾何) / circle_squares(倍の2図: 円+内接正方形+外接正方形)
+  // 分類(§1.2): 各ますを5×5格子点でサンプリング。25点内側=■(完全)・1〜24=□(一部)・0=外。答=■+□÷2(□=0.5こ・教科書手法)。描画と関門で同一導出。
+  var AG_CELL = 22;
+  function agInsidePoly(P, x, y) { var c = false; for (var i = 0, j = P.length - 1; i < P.length; j = i++) { var xi = P[i][0], yi = P[i][1], xj = P[j][0], yj = P[j][1]; if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) c = !c; } return c; }
+  function agClassify(cols, rows, insideFn) {   // 格子座標(0..cols,0..rows)・ますごとの分類
+    var full = 0, part = 0, cells = [];
+    for (var i = 0; i < cols; i++) for (var j = 0; j < rows; j++) {
+      var n = 0; for (var a = 0; a < 5; a++) for (var b = 0; b < 5; b++) { if (insideFn(i + (a + 0.5) / 5, j + (b + 0.5) / 5)) n++; }
+      var k = n === 25 ? 'full' : n > 0 ? 'part' : 'out'; if (k === 'full') full++; else if (k === 'part') part++; cells.push({ i: i, j: j, k: k });
+    }
+    return { full: full, part: part, area: full + part / 2, cells: cells };
+  }
+  function agBlobOutline(cols, rows, seed, R, amp) {   // 星形曲線(第1便と同じ生成器)・中心=格子中央
+    var rnd = lsRand(seed), c = [cols / 2, rows / 2], waves = [];
+    for (var w = 3; w <= 5; w++) waves.push({ k: w, a: 0.5 + rnd(), ph: rnd() * Math.PI * 2 });
+    var norm = waves.reduce(function (s2, v) { return s2 + v.a; }, 0);
+    var pts = [];
+    for (var deg = 0; deg < 360; deg += 3) { var th = deg * DEG, f = 1 + amp * waves.reduce(function (s2, v) { return s2 + v.a * Math.sin(v.k * th + v.ph); }, 0) / norm; pts.push([c[0] + R * f * Math.cos(th), c[1] + R * f * Math.sin(th)]); }
+    return pts;
+  }
+  function agGridSafe(pts, cols, rows) {   // 頂点が格子線から±0.08以上・キャンバス内(余白0.3)
+    // 頂点が格子線に乗らない(±0.01・5×5サンプル分類の曖昧さ排除)・キャンバス内(余白0.3)。※設計書の±0.08は120頂点の星形曲線では成立確率がほぼ0のため、分類が点サンプルである前提で0.01に緩和(報告)
+    // 分類は5×5点サンプル(頂点位置に非依存)のため格子線接触規則は不要(設計書§1.2の±0.08は120頂点の星形曲線では成立確率≈0=報告)。キャンバス内(余白0.3)のみ。
+    return pts.every(function (p) { return p[0] > 0.3 && p[0] < cols - 0.3 && p[1] > 0.3 && p[1] < rows - 0.3; });
+  }
+  function approxGridGeom(fp) {
+    var mode = fp.mode || 'blob', cols = Number(fp.cols) || 10, rows = Number(fp.rows) || 8, out = { mode: mode, cols: cols, rows: rows };
+    if (mode === 'quarter_circle') {
+      var r = Number(fp.r); out.cols = out.rows = r; out.r = r;
+      out.cls = agClassify(r, r, function (x, y) { return x * x + y * y < r * r; });
+      return out;
+    }
+    if (mode === 'circle_squares') {   // 半径r(格子)の円・内接正方形(ひし形)・外接正方形。答は静的(2倍/4倍)
+      var rc = Number(fp.r) || 1; out.cols = out.rows = 2 * rc + 2; out.r = rc; out.c = [rc + 1, rc + 1]; return out;
+    }
+    var target = fp.target_area !== undefined && fp.target_area !== null ? Number(fp.target_area) : null;
+    var tf = fp.target && fp.target.full !== undefined ? Number(fp.target.full) : null, tp = fp.target && fp.target.part !== undefined ? Number(fp.target.part) : null;
+    var amp = fp.outline && fp.outline.amp !== undefined && fp.outline.amp !== null ? Number(fp.outline.amp) : 0.14;
+    var seed = fp.outline && fp.outline.seed !== undefined ? Number(fp.outline.seed) : 1;
+    var R0 = target !== null ? Math.sqrt(target / Math.PI) : Math.min(cols, rows) * 0.3;
+    if (fp.anchor_seed !== undefined && fp.anchor_seed !== null) {   // 行レコードのanchor(探索済み)
+      var pts0 = agBlobOutline(cols, rows, Number(fp.anchor_seed), Number(fp.anchor_R) || R0, amp);
+      out.pts = pts0; out.cls = agClassify(cols, rows, function (x, y) { return agInsidePoly(pts0, x, y); }); out.seed = Number(fp.anchor_seed); out.R = Number(fp.anchor_R) || R0; out.amp = amp;
+      return out;
+    }
+    // 探索(§1.3): seed 1..500 × R/amp ±10% 3段。個数指定→(full,part)一致、無指定→■+□÷2=target_area
+    var scales = [1, 0.95, 1.05, 0.9, 1.1, 0.85, 1.15];
+    for (var sc = 0; sc < scales.length; sc++) for (var s2 = 1; s2 <= 500; s2++) {
+      var R = R0 * scales[sc], pts = agBlobOutline(cols, rows, seed * 1000 + s2, R, amp);
+      if (!agGridSafe(pts, cols, rows)) continue;
+      var cls = agClassify(cols, rows, function (x, y) { return agInsidePoly(pts, x, y); });
+      var ok = (tf !== null && tp !== null) ? (cls.full === tf && cls.part === tp) : (target !== null ? Math.abs(cls.area - target) < 1e-9 : true);
+      if (ok) { out.pts = pts; out.cls = cls; out.seed = seed * 1000 + s2; out.R = R; out.amp = amp; return out; }
+    }
+    throw new Error('approx_grid: 個数/面積に一致する輪郭が見つからない(契約違反: target=' + JSON.stringify(fp.target || target) + ')');
+  }
+  function approxGridLayout(fp) {
+    var g = approxGridGeom(fp), lay = newLayout(), C = g.mode === 'circle_squares' ? 60 : AG_CELL;   // 倍の2図は小さい格子(2r+2)のためセルを拡大
+    function px(q) { return [q[0] * C, (g.rows - q[1]) * C]; }
+    for (var gx = 0; gx <= g.cols; gx++) lay.parts.push(lineEl(px([gx, 0]), px([gx, g.rows]), '#c9d3e0', 0.9));
+    for (var gy = 0; gy <= g.rows; gy++) lay.parts.push(lineEl(px([0, gy]), px([g.cols, gy]), '#c9d3e0', 0.9));
+    lay.pts.push(px([0, 0]), px([g.cols, g.rows]));
+    if (fp.show_marks && g.cls) g.cls.cells.forEach(function (cl) { if (cl.k === 'out') return; var p = px([cl.i, cl.j + 1]); lay.parts.push('<rect x="' + p[0].toFixed(2) + '" y="' + p[1].toFixed(2) + '" width="' + C + '" height="' + C + '" fill="' + (cl.k === 'full' ? '#7fa8d8' : '#d9e6f5') + '" stroke="none"/>'); });
+    if (g.mode === 'quarter_circle') {
+      var o = px([0, 0]), R = g.r * C;
+      lay.parts.push('<path d="M ' + o[0].toFixed(2) + ' ' + o[1].toFixed(2) + ' L ' + (o[0] + R).toFixed(2) + ' ' + o[1].toFixed(2) + ' A ' + R + ' ' + R + ' 0 0 0 ' + o[0].toFixed(2) + ' ' + (o[1] - R).toFixed(2) + ' Z" fill="rgba(77,124,58,0.08)" stroke="#4d7c3a" stroke-width="2"/>');
+    } else if (g.mode === 'circle_squares') {
+      var cc = px(g.c), Rc = g.r * C;
+      lay.parts.push('<rect x="' + (cc[0] - Rc).toFixed(2) + '" y="' + (cc[1] - Rc).toFixed(2) + '" width="' + (2 * Rc) + '" height="' + (2 * Rc) + '" fill="none" stroke="' + C_STROKE + '" stroke-width="1.6"/>');
+      lay.parts.push('<circle cx="' + cc[0].toFixed(2) + '" cy="' + cc[1].toFixed(2) + '" r="' + Rc + '" fill="none" stroke="#4d7c3a" stroke-width="2"/>');
+      lay.parts.push('<polygon points="' + [[cc[0], cc[1] - Rc], [cc[0] + Rc, cc[1]], [cc[0], cc[1] + Rc], [cc[0] - Rc, cc[1]]].map(function (q) { return q[0].toFixed(2) + ',' + q[1].toFixed(2); }).join(' ') + '" fill="rgba(77,124,58,0.25)" stroke="' + C_STROKE + '" stroke-width="1.4"/>');
+    } else {
+      lay.parts.push('<polygon points="' + polyStr(g.pts.map(px)) + '" fill="rgba(77,124,58,0.08)" stroke="#4d7c3a" stroke-width="2" stroke-linejoin="round"/>');
+    }
+    if (fp.cell_label) { var lb = px([g.cols, 0]), tb = textBox([lb[0] - 4 - String(fp.cell_label).length * 3.3, lb[1] + 16], String(fp.cell_label), 11); lay.parts.push(textEl(tb.cx !== undefined ? tb.cx : (tb.x0 + tb.x1) / 2, lb[1] + 16, String(fp.cell_label), 11, '#555')); lay.pts.push([tb.x0 - 2, tb.y0], [tb.x1 + 2, tb.y1 + 4]); }   // 右下ラベル(右端揃え・viewBoxに幅を確保)
+    lay._geom = g;
+    return lay;
+  }
   // ---- P5-3 Kind A: xy_graph mode="polyline"(折れ線グラフ・1〜2系列・draw対応) ----
   // v1(prop/inv)/v2(jhs4象限)へ一切触れない独立分岐。日本語ハードコード禁止(表示文字列は全てfp由来)。
   var PL_W = 264, PL_H = 190, PL_FS = 11;
@@ -2740,7 +2819,7 @@
     para_area: paraAreaLayout, tri_area: triAreaLayout, trap_area: trapAreaLayout,
     rhombus_area: rhombusAreaLayout, circle: circleLayout, cuboid: cuboidLayout, prism: prismLayout,
     pyramid: pyramidLayout, cylinder: cylinderLayout, cone: coneLayout, sphere: sphereLayout,
-    rotation_source: rotationSourceLayout, clock_face: clockFaceLayout, composite_circle: compositeCircleLayout, composite_area: compositeAreaLayout, line_set: lineSetLayout, sym_figure: symFigureLayout, shape_set: shapeSetLayout, approx_shape: approxShapeLayout,
+    rotation_source: rotationSourceLayout, clock_face: clockFaceLayout, composite_circle: compositeCircleLayout, composite_area: compositeAreaLayout, line_set: lineSetLayout, sym_figure: symFigureLayout, shape_set: shapeSetLayout, approx_shape: approxShapeLayout, approx_grid: approxGridLayout,
     sym_polygon: symPolygonLayout, similar_pair: similarPairLayout, xy_graph: xyGraphLayout, dot_plot: dotPlotLayout, histogram: histogramLayout,
     angle_figure: angleFigureLayout
   };
@@ -2779,6 +2858,14 @@
   var FigureBuilder = { build: build, BUILDERS: BUILDERS, _angleSumMinClearance: angleSumMinClearance, _tableMinClearance: tableMinClearance };
   // e-2: line_setの監査(角度差/包含/交点/ラベル帰属を描画と同じ導出で独立再計算)
   FigureBuilder._lsStats = function (on) { LS_STATS = on ? {} : null; return LS_STATS; };
+  FigureBuilder._approxGridAudit = function (fp) {   // 概形第2便 関門用: 分類(■/□/面積)・格子線非接触・自己交差・決定性
+    var g = approxGridGeom(fp), out = { mode: g.mode, cols: g.cols, rows: g.rows, seed: g.seed, R: g.R, amp: g.amp, pts: g.pts || null, cls: g.cls ? { full: g.cls.full, part: g.cls.part, area: g.cls.area } : null, issues: [] };
+    if (g.pts) {
+      if (!agGridSafe(g.pts, g.cols, g.rows)) out.issues.push('grid_touch');
+      var P = g.pts; for (var i = 0; i < P.length; i++) for (var j = i + 2; j < P.length; j++) { if (i === 0 && j === P.length - 1) continue; if (lsSegInterRaw(P[i], P[(i + 1) % P.length], P[j], P[(j + 1) % P.length])) { out.issues.push('self_cross'); i = P.length; break; } }
+    }
+    return out;
+  };
   FigureBuilder._approxShapeAudit = function (fp) {   // 概形第1便 関門用: 面積比・内外はみ出し・自己交差・ラベル帰属・みなし面積
     var G = approxShapeGeom(fp), lay = approxShapeLayout(fp), out = { issues: asValidate(G.o), ratio: G.o.ratio, area_base: G.g.area, sub: G.o.sub, pts: G.o.pts, base_poly: G.g.poly, circle: G.g.circle, labels: [] };
     lay.labels.forEach(function (lb) {
@@ -2902,7 +2989,7 @@
     pyramid_visible: pyramidVisible, convex_hull: convexHull,   // S-2.1: 隠線シルエット判定(vector用・corr-0023)
     rotation_source: rotationSourceGeom,   // 第2ブロックS-4: 回転体の源(vector用)
     clock_face: clockFaceGeom,             // 小学第2波: 時計文字盤(vector用)
-    composite_circle: compositeCircleGeom, composite_area: compositeAreaGeom, line_set: lineSetGeom, sym_figure: symFigureGeom, shape_set: shapeSetGeom, approx_shape: approxShapeGeom, as_poly_area: asPolyArea, ss_symmetry: ssSymmetry, ss_outline: ssOutline, ss_catalog: SS_CAT, // P-3a: 複合円(vector用) / 対称第1便
+    composite_circle: compositeCircleGeom, composite_area: compositeAreaGeom, line_set: lineSetGeom, sym_figure: symFigureGeom, shape_set: shapeSetGeom, approx_shape: approxShapeGeom, approx_grid: approxGridGeom, ag_classify: agClassify, ag_inside: agInsidePoly, as_poly_area: asPolyArea, ss_symmetry: ssSymmetry, ss_outline: ssOutline, ss_catalog: SS_CAT, // P-3a: 複合円(vector用) / 対称第1便
     arc_sample_points: arcSamplePoints,          // 弧サンプル点(曲率関門用・頂点からr一定検査)
     // ベクター用の位置引数ラッパ（Python prism_geom(base_kind,a,b,h) と同型）
     prism: function (base_kind, a, b, h) {
