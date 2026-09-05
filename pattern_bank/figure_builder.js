@@ -1735,6 +1735,97 @@
   }
   function symFigureLayout(fp) { var g = symFigureGeom(fp); return sfLayoutFromGeom(g, fp); }
 
+  // ---- 対称第2便 Kind: shape_set(小図形の散布・ア〜クの記号・線対称/点対称の判別・裁可k) ----
+  // カタログ(各形の線対称/点対称の真偽・軸本数・族)。座標は単位ボックス(±1)・y上向き。曲線形(円/半円)は輪郭サンプル点で対称性を再計算可能にする。
+  var SS_CAT = {
+    square:     { name: '正方形',     fam: 'quad', line: true,  point: true,  axes: 4, verts: [[-0.8, -0.8], [0.8, -0.8], [0.8, 0.8], [-0.8, 0.8]] },
+    rect:       { name: '長方形',     fam: 'quad', line: true,  point: true,  axes: 2, verts: [[-0.9, -0.55], [0.9, -0.55], [0.9, 0.55], [-0.9, 0.55]] },
+    rhombus:    { name: 'ひし形',     fam: 'quad', line: true,  point: true,  axes: 2, verts: [[0, -0.9], [0.6, 0], [0, 0.9], [-0.6, 0]] },
+    hexagon:    { name: '正六角形',   fam: 'poly', line: true,  point: true,  axes: 6, regular: 6 },
+    cross:      { name: '十字',       fam: 'poly', line: true,  point: true,  axes: 4, verts: [[-0.3, -0.9], [0.3, -0.9], [0.3, -0.3], [0.9, -0.3], [0.9, 0.3], [0.3, 0.3], [0.3, 0.9], [-0.3, 0.9], [-0.3, 0.3], [-0.9, 0.3], [-0.9, -0.3], [-0.3, -0.3]] },
+    circle:     { name: '円',         fam: 'curve', line: true, point: true,  axes: Infinity, circle: 0.85 },
+    tri3:       { name: '正三角形',   fam: 'tri',  line: true,  point: false, axes: 3, regular: 3 },
+    iso_tri:    { name: '二等辺三角形', fam: 'tri', line: true, point: false, axes: 1, verts: [[-0.7, -0.7], [0.7, -0.7], [0, 0.85]] },
+    iso_trap:   { name: '等脚台形',   fam: 'quad', line: true,  point: false, axes: 1, verts: [[-0.9, -0.6], [0.9, -0.6], [0.5, 0.6], [-0.5, 0.6]] },
+    pentagon:   { name: '正五角形',   fam: 'poly', line: true,  point: false, axes: 5, regular: 5 },
+    arrow:      { name: '矢印',       fam: 'poly', line: true,  point: false, axes: 1, verts: [[-0.3, -0.9], [0.3, -0.9], [0.3, 0.1], [0.8, 0.1], [0, 0.9], [-0.8, 0.1], [-0.3, 0.1]] },
+    tshape:     { name: 'T字',        fam: 'poly', line: true,  point: false, axes: 1, verts: [[-0.9, 0.9], [0.9, 0.9], [0.9, 0.35], [0.3, 0.35], [0.3, -0.9], [-0.3, -0.9], [-0.3, 0.35], [-0.9, 0.35]] },
+    semicircle: { name: '半円',       fam: 'curve', line: true, point: false, axes: 1, semicircle: 0.9 },
+    para:       { name: '平行四辺形', fam: 'quad', line: false, point: true,  axes: 0, verts: [[-0.9, -0.55], [0.5, -0.55], [0.9, 0.55], [-0.5, 0.55]] },
+    zshape:     { name: 'Z字',        fam: 'poly', line: false, point: true,  axes: 0, verts: [[-0.9, 0.9], [0.9, 0.9], [0.9, 0.4], [-0.15, 0.4], [0.9, -0.4], [0.9, -0.9], [-0.9, -0.9], [-0.9, -0.4], [0.15, -0.4], [-0.9, 0.4]] },
+    pinwheel:   { name: '風車形',     fam: 'poly', line: false, point: true,  axes: 0, verts: [[0, 0], [0.9, 0], [0.9, 0.6], [0.3, 0.6], [0, 0], [-0.9, 0], [-0.9, -0.6], [-0.3, -0.6]] },
+    trap:       { name: '台形',       fam: 'quad', line: false, point: false, axes: 0, verts: [[-0.9, -0.6], [0.9, -0.6], [0.3, 0.6], [-0.6, 0.6]] },
+    lshape:     { name: 'L字',        fam: 'poly', line: false, point: false, axes: 0, verts: [[-0.8, -0.9], [0.9, -0.9], [0.9, -0.35], [-0.2, -0.35], [-0.2, 0.9], [-0.8, 0.9]] },
+    scalene:    { name: '三角形',     fam: 'tri',  line: false, point: false, axes: 0, verts: [[-0.9, -0.7], [0.8, -0.7], [-0.3, 0.8]] },
+    quad:       { name: '四角形',     fam: 'quad', line: false, point: false, axes: 0, verts: [[-0.9, -0.6], [0.7, -0.8], [0.9, 0.5], [-0.4, 0.8]] }
+  };
+  var SS_CELL = 84, SS_INNER = 30;   // セル1辺px・図形の半径px(等スケール)
+  function ssOutline(id) {   // 対称性の再計算用の輪郭点列(単位ボックス)
+    var c = SS_CAT[id]; if (!c) return null;
+    if (c.regular) return regularPoly(c.regular, 0.9);
+    if (c.circle) { var pts = []; for (var i = 0; i < 36; i++) { var a = d2r(i * 10); pts.push([c.circle * Math.cos(a), c.circle * Math.sin(a)]); } return pts; }
+    if (c.semicircle) { var q = [[-c.semicircle, -0.4], [c.semicircle, -0.4]]; for (var j = 1; j < 18; j++) { var b = d2r(j * 10); q.push([c.semicircle * Math.cos(b), c.semicircle * Math.sin(b) - 0.4]); } return q; }
+    return c.verts;
+  }
+  function ssCentroid(P) { var x = 0, y = 0; P.forEach(function (p) { x += p[0]; y += p[1]; }); return [x / P.length, y / P.length]; }
+  function ssSetEq(A, B, tol) { return A.every(function (a) { return B.some(function (b) { return Math.hypot(a[0] - b[0], a[1] - b[1]) < tol; }); }); }
+  function ssSymmetry(P) {   // 輪郭点集合から線対称(軸本数)・点対称を独立再計算(重心を通る軸を0.5°刻みで走査)
+    var c = ssCentroid(P), Q = P.map(function (p) { return [p[0] - c[0], p[1] - c[1]]; }), axes = 0;
+    for (var th = 0; th < 180; th += 0.5) {
+      var r = d2r(th), cs = Math.cos(2 * r), sn = Math.sin(2 * r);
+      var R = Q.map(function (p) { return [p[0] * cs + p[1] * sn, p[0] * sn - p[1] * cs]; });
+      if (ssSetEq(Q, R, 1e-6)) axes++;
+    }
+    var pt = ssSetEq(Q, Q.map(function (p) { return [-p[0], -p[1]]; }), 1e-6);
+    return { line: axes > 0, point: pt, axes: axes };
+  }
+  // 割当(§B.1): 各記号の要件(line/point/axes/fam)を満たす形をカタログから重複なく決定的乱択
+  function ssAssign(labels, req, seed, families) {
+    var rnd = lsRand(seed), ids = Object.keys(SS_CAT).filter(function (id) { return !families || families.indexOf(SS_CAT[id].fam) >= 0; });
+    function ok(id, r) {
+      var c = SS_CAT[id]; if (!r) return true;
+      if (r.line !== undefined && c.line !== r.line) return false;
+      if (r.point !== undefined && c.point !== r.point) return false;
+      if (r.both === false && c.line && c.point) return false;
+      if (r.axes !== undefined && c.axes !== r.axes) return false;
+      if (r.axes_min !== undefined && !(c.axes >= r.axes_min)) return false;
+      if (r.axes_max !== undefined && !(c.axes <= r.axes_max)) return false;
+      if (r.finite && !isFinite(c.axes)) return false;
+      return true;
+    }
+    for (var t = 0; t < 200; t++) {
+      var used = {}, out = [], good = true;
+      for (var i = 0; i < labels.length; i++) {
+        var cand = ids.filter(function (id) { return !used[id] && ok(id, req[labels[i]]); });
+        if (!cand.length) { good = false; break; }
+        var pick = cand[Math.floor(rnd() * cand.length)]; used[pick] = true; out.push({ label: labels[i], id: pick });
+      }
+      if (good) return out;
+    }
+    throw new Error('shape_set: 要件を満たす割当が得られない(契約違反)');
+  }
+  function shapeSetGeom(fp) {
+    var labels = fp.labels || []; if (labels.length < 2) throw new Error('shape_set: labelsは2つ以上(契約違反)');
+    var shapes = fp.shapes && fp.shapes.length ? fp.shapes.map(function (x) { return { label: x.label, id: x.id }; }) : ssAssign(labels, fp.require || {}, fp.seed !== undefined ? Number(fp.seed) : 1, fp.families);
+    shapes.forEach(function (x) { if (!SS_CAT[x.id]) throw new Error('shape_set: 未知の形 ' + x.id); });
+    var cols = fp.cols || (labels.length <= 4 ? labels.length : Math.ceil(labels.length / 2));
+    return { shapes: shapes, cols: cols, labels: labels };
+  }
+  function shapeSetLayout(fp) {
+    var g = shapeSetGeom(fp), lay = newLayout(), C = SS_CELL, R = SS_INNER, specs = [];
+    g.shapes.forEach(function (x, i) {
+      var col = i % g.cols, row = Math.floor(i / g.cols), cx = col * C + C / 2, cy = row * C + C / 2, c = SS_CAT[x.id];
+      lay.pts.push([col * C, row * C], [col * C + C, row * C + C]);
+      var pts = ssOutline(x.id).map(function (p) { return [cx + p[0] * R, cy - p[1] * R]; });
+      if (c.circle) lay.parts.push('<circle cx="' + cx.toFixed(2) + '" cy="' + cy.toFixed(2) + '" r="' + (c.circle * R).toFixed(2) + '" fill="#ffffff" stroke="' + C_STROKE + '" stroke-width="2"/>');
+      else lay.parts.push(polygonEl(pts, '#ffffff'));
+      for (var k = 0; k < pts.length; k++) lay.segs.push({ id: 's_' + i, p1: pts[k], p2: pts[(k + 1) % pts.length] });
+      specs.push({ anchor: [col * C + 6, row * C + 6], dirs: [[1, 1], [1, 0], [0, 1]], text: String(x.label), cands: [[6, 13], [8, 12]], color: '#333', own: 's_' + i });
+    });
+    finishLabels(lay, specs);
+    lay._cells = g.shapes.map(function (x, i) { return { i: i, x0: (i % g.cols) * C, y0: Math.floor(i / g.cols) * C, x1: (i % g.cols) * C + C, y1: Math.floor(i / g.cols) * C + C }; });
+    return lay;
+  }
   // ---- P5-3 Kind A: xy_graph mode="polyline"(折れ線グラフ・1〜2系列・draw対応) ----
   // v1(prop/inv)/v2(jhs4象限)へ一切触れない独立分岐。日本語ハードコード禁止(表示文字列は全てfp由来)。
   var PL_W = 264, PL_H = 190, PL_FS = 11;
@@ -2552,7 +2643,7 @@
     para_area: paraAreaLayout, tri_area: triAreaLayout, trap_area: trapAreaLayout,
     rhombus_area: rhombusAreaLayout, circle: circleLayout, cuboid: cuboidLayout, prism: prismLayout,
     pyramid: pyramidLayout, cylinder: cylinderLayout, cone: coneLayout, sphere: sphereLayout,
-    rotation_source: rotationSourceLayout, clock_face: clockFaceLayout, composite_circle: compositeCircleLayout, composite_area: compositeAreaLayout, line_set: lineSetLayout, sym_figure: symFigureLayout,
+    rotation_source: rotationSourceLayout, clock_face: clockFaceLayout, composite_circle: compositeCircleLayout, composite_area: compositeAreaLayout, line_set: lineSetLayout, sym_figure: symFigureLayout, shape_set: shapeSetLayout,
     sym_polygon: symPolygonLayout, similar_pair: similarPairLayout, xy_graph: xyGraphLayout, dot_plot: dotPlotLayout, histogram: histogramLayout,
     angle_figure: angleFigureLayout
   };
@@ -2591,6 +2682,19 @@
   var FigureBuilder = { build: build, BUILDERS: BUILDERS, _angleSumMinClearance: angleSumMinClearance, _tableMinClearance: tableMinClearance };
   // e-2: line_setの監査(角度差/包含/交点/ラベル帰属を描画と同じ導出で独立再計算)
   FigureBuilder._lsStats = function (on) { LS_STATS = on ? {} : null; return LS_STATS; };
+  FigureBuilder._shapeSetAudit = function (fp) {   // 対称第2便 関門用: 割当・真偽表(座標から再計算)・重複・ラベル帰属
+    var g = shapeSetGeom(fp), lay = shapeSetLayout(fp), out = { shapes: [], dup: false, labels: [] }, seen = {};
+    g.shapes.forEach(function (x) {
+      var c = SS_CAT[x.id], sym = ssSymmetry(ssOutline(x.id));
+      out.shapes.push({ label: x.label, id: x.id, cat: { line: c.line, point: c.point, axes: c.axes }, calc: sym, ok: sym.line === c.line && sym.point === c.point && (!isFinite(c.axes) || sym.axes === c.axes) });
+      if (seen[x.id]) out.dup = true; seen[x.id] = true;
+    });
+    lay.labels.forEach(function (lb) {
+      var cx = (lb.box.x0 + lb.box.x1) / 2, cy = (lb.box.y0 + lb.box.y1) / 2, cell = lay._cells.find(function (c) { return cx >= c.x0 && cx <= c.x1 && cy >= c.y0 && cy <= c.y1; });
+      out.labels.push({ own: lb.own, cell: cell ? 's_' + cell.i : null, ok: !!cell && 's_' + cell.i === lb.own });
+    });
+    return out;
+  };
   FigureBuilder._symFigureAudit = function (fp) {   // 対称第1便 関門用: 写像・幾何ガード・ラベル帰属・辺長を独立導出で返す
     var g = symFigureGeom(fp), lay = sfLayoutFromGeom(g, fp);
     var iss = g.regular ? [] : sfValidate(g.V, g.n, g.sym, g.k, Math.min(7, Number(fp.half) || SF_HALF));
@@ -2687,7 +2791,7 @@
     pyramid_visible: pyramidVisible, convex_hull: convexHull,   // S-2.1: 隠線シルエット判定(vector用・corr-0023)
     rotation_source: rotationSourceGeom,   // 第2ブロックS-4: 回転体の源(vector用)
     clock_face: clockFaceGeom,             // 小学第2波: 時計文字盤(vector用)
-    composite_circle: compositeCircleGeom, composite_area: compositeAreaGeom, line_set: lineSetGeom, sym_figure: symFigureGeom, // P-3a: 複合円(vector用) / 対称第1便
+    composite_circle: compositeCircleGeom, composite_area: compositeAreaGeom, line_set: lineSetGeom, sym_figure: symFigureGeom, shape_set: shapeSetGeom, ss_symmetry: ssSymmetry, ss_outline: ssOutline, ss_catalog: SS_CAT, // P-3a: 複合円(vector用) / 対称第1便
     arc_sample_points: arcSamplePoints,          // 弧サンプル点(曲率関門用・頂点からr一定検査)
     // ベクター用の位置引数ラッパ（Python prism_geom(base_kind,a,b,h) と同型）
     prism: function (base_kind, a, b, h) {

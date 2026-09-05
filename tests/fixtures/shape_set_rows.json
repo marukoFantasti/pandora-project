@@ -1,0 +1,615 @@
+{
+ "_comment": "対称第2便 shape_set 行台帳(転記記号のみ・原文非引用)。require=各記号の要件(line/point/both/axes/axes_min/axes_max/finite)・fam=カタログ族の限定",
+ "rows": [
+  {
+   "row": "u01_001",
+   "ask": "line",
+   "labels": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ"
+   ],
+   "ans": [
+    "ア",
+    "エ"
+   ],
+   "require": {
+    "ア": {
+     "line": true
+    },
+    "イ": {
+     "line": false
+    },
+    "ウ": {
+     "line": false
+    },
+    "エ": {
+     "line": true
+    }
+   }
+  },
+  {
+   "row": "u01_003",
+   "ask": "line",
+   "labels": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ"
+   ],
+   "ans": [
+    "イ",
+    "ウ"
+   ],
+   "require": {
+    "ア": {
+     "line": false
+    },
+    "イ": {
+     "line": true
+    },
+    "ウ": {
+     "line": true
+    },
+    "エ": {
+     "line": false
+    }
+   }
+  },
+  {
+   "row": "u01_015",
+   "ask": "line",
+   "labels": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ",
+    "オ",
+    "カ",
+    "キ",
+    "ク"
+   ],
+   "ans": [
+    "イ",
+    "エ",
+    "オ",
+    "キ",
+    "ク"
+   ],
+   "require": {
+    "ア": {
+     "line": false
+    },
+    "イ": {
+     "line": true
+    },
+    "ウ": {
+     "line": false
+    },
+    "エ": {
+     "line": true
+    },
+    "オ": {
+     "line": true
+    },
+    "カ": {
+     "line": false
+    },
+    "キ": {
+     "line": true
+    },
+    "ク": {
+     "line": true
+    }
+   }
+  },
+  {
+   "row": "u02_009",
+   "ask": "point",
+   "labels": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ"
+   ],
+   "ans": [
+    "イ",
+    "ウ"
+   ],
+   "note": "中心書き込み部は域外(d)・判別部のみ",
+   "require": {
+    "ア": {
+     "point": false
+    },
+    "イ": {
+     "point": true
+    },
+    "ウ": {
+     "point": true
+    },
+    "エ": {
+     "point": false
+    }
+   }
+  },
+  {
+   "row": "u02_010",
+   "ask": "point",
+   "labels": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ"
+   ],
+   "ans": [
+    "ア",
+    "イ"
+   ],
+   "require": {
+    "ア": {
+     "point": true
+    },
+    "イ": {
+     "point": true
+    },
+    "ウ": {
+     "point": false
+    },
+    "エ": {
+     "point": false
+    }
+   }
+  },
+  {
+   "row": "u02_022",
+   "ask": "point",
+   "labels": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ",
+    "オ",
+    "カ",
+    "キ",
+    "ク"
+   ],
+   "ans": [
+    "イ",
+    "エ",
+    "キ",
+    "ク"
+   ],
+   "require": {
+    "ア": {
+     "point": false
+    },
+    "イ": {
+     "point": true
+    },
+    "ウ": {
+     "point": false
+    },
+    "エ": {
+     "point": true
+    },
+    "オ": {
+     "point": false
+    },
+    "カ": {
+     "point": false
+    },
+    "キ": {
+     "point": true
+    },
+    "ク": {
+     "point": true
+    }
+   }
+  },
+  {
+   "row": "u02_026",
+   "ask": "point",
+   "labels": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ",
+    "オ"
+   ],
+   "ans": [
+    "ア",
+    "ウ",
+    "オ"
+   ],
+   "require": {
+    "ア": {
+     "point": true
+    },
+    "イ": {
+     "point": false
+    },
+    "ウ": {
+     "point": true
+    },
+    "エ": {
+     "point": false
+    },
+    "オ": {
+     "point": true
+    }
+   }
+  },
+  {
+   "row": "u03_001",
+   "ask": "line",
+   "labels": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ"
+   ],
+   "ans": [
+    "ア",
+    "イ"
+   ],
+   "fam": [
+    "tri",
+    "quad"
+   ],
+   "axes": {
+    "ア": 1,
+    "イ": 4
+   },
+   "ans_text": "ア…1本、イ…4本",
+   "require": {
+    "ア": {
+     "line": true,
+     "axes": 1
+    },
+    "イ": {
+     "line": true,
+     "axes": 4
+    },
+    "ウ": {
+     "line": false
+    },
+    "エ": {
+     "line": false
+    }
+   }
+  },
+  {
+   "row": "u03_002",
+   "ask": "point",
+   "labels": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ"
+   ],
+   "ans": [
+    "イ",
+    "エ"
+   ],
+   "fam": [
+    "tri",
+    "quad"
+   ],
+   "note": "中心書き込み部は域外(d)",
+   "require": {
+    "ア": {
+     "point": false
+    },
+    "イ": {
+     "point": true
+    },
+    "ウ": {
+     "point": false
+    },
+    "エ": {
+     "point": true
+    }
+   }
+  },
+  {
+   "row": "u03_003",
+   "ask": "both",
+   "labels": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ"
+   ],
+   "ans": [
+    "イ"
+   ],
+   "fam": [
+    "tri",
+    "quad"
+   ],
+   "require": {
+    "ア": {
+     "both": false
+    },
+    "イ": {
+     "line": true,
+     "point": true
+    },
+    "ウ": {
+     "both": false
+    },
+    "エ": {
+     "both": false
+    }
+   }
+  },
+  {
+   "row": "u03_004",
+   "ask": "line",
+   "labels": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ",
+    "オ",
+    "カ"
+   ],
+   "ans": [
+    "ウ",
+    "オ",
+    "カ"
+   ],
+   "fam": [
+    "tri",
+    "quad"
+   ],
+   "axes": {
+    "ウ": 2,
+    "オ": 1,
+    "カ": 2
+   },
+   "ans_text": "ウ…2本、オ…1本、カ…2本",
+   "require": {
+    "ア": {
+     "line": false
+    },
+    "イ": {
+     "line": false
+    },
+    "ウ": {
+     "line": true,
+     "axes": 2
+    },
+    "エ": {
+     "line": false
+    },
+    "オ": {
+     "line": true,
+     "axes": 1
+    },
+    "カ": {
+     "line": true,
+     "axes": 2
+    }
+   }
+  },
+  {
+   "row": "u03_005",
+   "ask": "point",
+   "labels": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ",
+    "オ",
+    "カ"
+   ],
+   "ans": [
+    "ウ",
+    "カ"
+   ],
+   "fam": [
+    "tri",
+    "quad"
+   ],
+   "note": "中心書き込み部は域外(d)",
+   "require": {
+    "ア": {
+     "point": false
+    },
+    "イ": {
+     "point": false
+    },
+    "ウ": {
+     "point": true
+    },
+    "エ": {
+     "point": false
+    },
+    "オ": {
+     "point": false
+    },
+    "カ": {
+     "point": true
+    }
+   }
+  },
+  {
+   "row": "u03_006",
+   "ask": "both",
+   "labels": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ",
+    "オ",
+    "カ"
+   ],
+   "ans": [
+    "ウ",
+    "カ"
+   ],
+   "fam": [
+    "tri",
+    "quad"
+   ],
+   "require": {
+    "ア": {
+     "both": false
+    },
+    "イ": {
+     "both": false
+    },
+    "ウ": {
+     "line": true,
+     "point": true
+    },
+    "エ": {
+     "both": false
+    },
+    "オ": {
+     "both": false
+    },
+    "カ": {
+     "line": true,
+     "point": true
+    }
+   }
+  },
+  {
+   "row": "u01_026",
+   "ask": "axes_min",
+   "labels": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ"
+   ],
+   "ans": [
+    "エ"
+   ],
+   "axes": {
+    "エ": 1
+   },
+   "others": {
+    "axes_min": 2,
+    "finite": true
+   },
+   "ans_text": "エ、1本",
+   "require": {
+    "ア": {
+     "line": true,
+     "axes_min": 2,
+     "finite": true
+    },
+    "イ": {
+     "line": true,
+     "axes_min": 2,
+     "finite": true
+    },
+    "ウ": {
+     "line": true,
+     "axes_min": 2,
+     "finite": true
+    },
+    "エ": {
+     "line": true,
+     "axes": 1
+    }
+   }
+  },
+  {
+   "row": "u01_027",
+   "ask": "axes_max",
+   "labels": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ"
+   ],
+   "ans": [
+    "ウ"
+   ],
+   "axes": {
+    "ウ": 6
+   },
+   "others": {
+    "axes_max": 5,
+    "finite": true
+   },
+   "ans_text": "ウ、6本",
+   "require": {
+    "ア": {
+     "line": true,
+     "axes_max": 5,
+     "finite": true
+    },
+    "イ": {
+     "line": true,
+     "axes_max": 5,
+     "finite": true
+    },
+    "ウ": {
+     "line": true,
+     "axes": 6
+    },
+    "エ": {
+     "line": true,
+     "axes_max": 5,
+     "finite": true
+    }
+   }
+  }
+ ],
+ "skips": [
+  [
+   "u01_025",
+   "紙を折って切り取った形(図依存)=域外(d)候補"
+  ],
+  [
+   "u02_011",
+   "作図(中心書き込み)=域外(d)"
+  ],
+  [
+   "u02_023",
+   "作図=域外(d)"
+  ],
+  [
+   "u03_007",
+   "正多角形の可否・軸本数=テキスト形(第2便・図はshape_setの正多角形)"
+  ],
+  [
+   "u03_008",
+   "同上"
+  ],
+  [
+   "u03_009",
+   "同上"
+  ],
+  [
+   "u03_010",
+   "同上"
+  ],
+  [
+   "u03_015",
+   "表型=table(第2便)"
+  ],
+  [
+   "u03_019",
+   "表型=table(第2便)"
+  ],
+  [
+   "u03_016",
+   "図なし=テキスト形(第2便)"
+  ],
+  [
+   "u03_022",
+   "同上"
+  ],
+  [
+   "u03_023",
+   "同上"
+  ]
+ ]
+}
