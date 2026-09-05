@@ -42,6 +42,8 @@ const VECTORS = [
   ['行の合計', 'ぎょうのごうけい'], ['駅まで行く', 'えきまでいく'], ['列や行の数', 'れつやぎょうのかず'], ['学校へ行った', 'がっこうへいった'],
   // 関門44(1字登録文脈一覧)の初回採取で検出: 算数=さんすう(算=ざんの誤爆)・千人/万人=にん(漢数字+人)
   ['算数と国語', 'さんすうとこくご'], ['5万6千人', 'ごまんろくせんにん'], ['千人が56こ分', 'せんにんがごじゅうろっこぶん'],
+  // 緊急パッチ第2弾(Fable読み上げ実測 2026-09-05): 上=うえ(単独)/上がる・上がれ=あ / 空いて・空い・空く=あ(空=から維持)
+  ['列や行の数', 'れつやぎょうのかず'], ['それより上にある', 'それよりうえにある'], ['はじめて上がる', 'はじめてあがる'], ['空いている', 'あいている'], ['空のはこ', 'からのはこ'], ['上底', 'じょうてい'],
 ];
 
 console.log('=== (2) 固定ベクター' + VECTORS.length + '件 golden照合 ===');
@@ -84,6 +86,17 @@ else {
   for (const pid of vpats) console.log('    ' + pid + ': ' + [...violations[pid]].slice(0, 4).join(' | '));
 }
 
-const fail = vbad > 0 || vpats.length > 0;
+// ---- (3) 1字登録の当たり文脈一覧(surface→例文2件): 関門44(single_char_contexts)の固定一覧を表示し、差分検出を同時実行 ----
+console.log('\n=== (3) 1字登録の当たり文脈一覧(読みの正誤は人が判定=アイさんのシート・差分はコミットごとに検出) ===');
+let cbad = 0;
+try {
+  const { execFileSync } = require('child_process');
+  const lex = JSON.parse(fs.readFileSync(path.join(ROOT, 'pattern_bank', 'handoff_jhs', 'furigana_lexicon.json'), 'utf-8')).surfaces;
+  const list = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'single_char_contexts.json'), 'utf-8'));
+  Object.keys(list).sort().forEach(k => console.log('  ' + k + '=' + (lex[k] || '?') + ' (' + list[k].length + '): ' + list[k].slice(0, 2).join(' ／ ')));
+  try { execFileSync('node', [path.join(__dirname, 'single_char_contexts.js')], { encoding: 'utf-8' }); console.log('  一覧差分: なし ✅'); }
+  catch (e) { cbad++; console.log('  ❌ 一覧が変化(関門44): ' + String(e.stdout || '').split('\n').filter(l => /❌/.test(l)).slice(0, 5).join(' | ')); }
+} catch (e) { cbad++; console.log('  ❌ 一覧の読み込み不可: ' + e.message.slice(0, 60)); }
+const fail = vbad > 0 || vpats.length > 0 || cbad > 0;
 console.log('\n' + (fail ? '❌ furigana_coverage 失敗' : 'furigana_coverage: 全通過 ✅(ベクター' + VECTORS.length + ' + 残存漢字0)'));
 process.exit(fail ? 1 : 0);
