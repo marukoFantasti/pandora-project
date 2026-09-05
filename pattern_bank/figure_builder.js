@@ -1742,6 +1742,8 @@
     rect:       { name: '長方形',     fam: 'quad', line: true,  point: true,  axes: 2, verts: [[-0.9, -0.55], [0.9, -0.55], [0.9, 0.55], [-0.9, 0.55]] },
     rhombus:    { name: 'ひし形',     fam: 'quad', line: true,  point: true,  axes: 2, verts: [[0, -0.9], [0.6, 0], [0, 0.9], [-0.6, 0]] },
     hexagon:    { name: '正六角形',   fam: 'poly', line: true,  point: true,  axes: 6, regular: 6 },
+    octagon:    { name: '正八角形',   fam: 'poly', line: true,  point: true,  axes: 8, regular: 8, named_only: true },   // 名前ラベルの図専用(判別の割当候補にしない)
+    nonagon:    { name: '正九角形',   fam: 'poly', line: true,  point: false, axes: 9, regular: 9, named_only: true },   // 同上(180°回転の重なり率0.94=判別の反例には不適)
     cross:      { name: '十字',       fam: 'poly', line: true,  point: true,  axes: 4, verts: [[-0.3, -0.9], [0.3, -0.9], [0.3, -0.3], [0.9, -0.3], [0.9, 0.3], [0.3, 0.3], [0.3, 0.9], [-0.3, 0.9], [-0.3, 0.3], [-0.9, 0.3], [-0.9, -0.3], [-0.3, -0.3]] },
     circle:     { name: '円',         fam: 'curve', line: true, point: true,  axes: Infinity, circle: 0.85 },
     tri3:       { name: '正三角形',   fam: 'tri',  line: true,  point: false, axes: 3, regular: 3 },
@@ -1782,7 +1784,7 @@
   }
   // 割当(§B.1): 各記号の要件(line/point/axes/fam)を満たす形をカタログから重複なく決定的乱択
   function ssAssign(labels, req, seed, families) {
-    var rnd = lsRand(seed), ids = Object.keys(SS_CAT).filter(function (id) { return !families || families.indexOf(SS_CAT[id].fam) >= 0; });
+    var rnd = lsRand(seed), ids = Object.keys(SS_CAT).filter(function (id) { return !SS_CAT[id].named_only && (!families || families.indexOf(SS_CAT[id].fam) >= 0); });
     function ok(id, r) {
       var c = SS_CAT[id]; if (!r) return true;
       if (r.line !== undefined && c.line !== r.line) return false;
@@ -2692,6 +2694,9 @@
       if (seen[x.id]) out.dup = true; seen[x.id] = true;
     });
     out.excl = SS_EXCL.some(function (grp) { return grp.filter(function (g2) { return seen[g2]; }).length > 1; });
+    // 図チェックシート用: 各記号の形名と対称性(線/点/両方/なし)・正答集合(線対称/点対称/両方)
+    out.sheet = { shapes: out.shapes.map(function (x) { var c = SS_CAT[x.id]; return { label: x.label, name: c.name, sym: c.line && c.point ? '両方' : c.line ? '線' : c.point ? '点' : 'なし', axes: isFinite(c.axes) ? c.axes : '無数' }; }),
+      answers: { line: out.shapes.filter(function (x) { return SS_CAT[x.id].line; }).map(function (x) { return x.label; }), point: out.shapes.filter(function (x) { return SS_CAT[x.id].point; }).map(function (x) { return x.label; }), both: out.shapes.filter(function (x) { return SS_CAT[x.id].line && SS_CAT[x.id].point; }).map(function (x) { return x.label; }) } };
     lay.labels.forEach(function (lb) {
       var cx = (lb.box.x0 + lb.box.x1) / 2, cy = (lb.box.y0 + lb.box.y1) / 2, cell = lay._cells.find(function (c) { return cx >= c.x0 && cx <= c.x1 && cy >= c.y0 && cy <= c.y1; });
       out.labels.push({ own: lb.own, cell: cell ? 's_' + cell.i : null, ok: !!cell && 's_' + cell.i === lb.own });

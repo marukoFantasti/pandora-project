@@ -1571,6 +1571,788 @@
    "cc": 1,
    "a": "垂直、5cm"
   }
+ ],
+  "symshape_sen_hanbetsu": [
+  {
+   "row": "u01_001",
+   "q": "次のア〜エの図形について、線対称な図形はどれですか。",
+   "lb": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ"
+   ],
+   "rq": {
+    "ア": {
+     "line": true
+    },
+    "イ": {
+     "line": false
+    },
+    "ウ": {
+     "line": false
+    },
+    "エ": {
+     "line": true
+    }
+   },
+   "fm": null,
+   "a": "ア,エ"
+  },
+  {
+   "row": "u01_003",
+   "q": "次のア〜エの図形について、線対称な図形はどれですか。",
+   "lb": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ"
+   ],
+   "rq": {
+    "ア": {
+     "line": false
+    },
+    "イ": {
+     "line": true
+    },
+    "ウ": {
+     "line": true
+    },
+    "エ": {
+     "line": false
+    }
+   },
+   "fm": null,
+   "a": "イ,ウ"
+  },
+  {
+   "row": "u01_015",
+   "q": "次のア〜クの図形のうち、線対称な図形はどれですか。",
+   "lb": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ",
+    "オ",
+    "カ",
+    "キ",
+    "ク"
+   ],
+   "rq": {
+    "ア": {
+     "line": false
+    },
+    "イ": {
+     "line": true
+    },
+    "ウ": {
+     "line": false
+    },
+    "エ": {
+     "line": true
+    },
+    "オ": {
+     "line": true
+    },
+    "カ": {
+     "line": false
+    },
+    "キ": {
+     "line": true
+    },
+    "ク": {
+     "line": true
+    }
+   },
+   "fm": null,
+   "a": "イ,エ,オ,キ,ク"
+  }
+ ],
+  "symshape_sen_jiku": [
+  {
+   "row": "u01_026",
+   "q": "次のア〜エの図形はすべて線対称です。対称の軸の本数が最も少ないのはどれで、何本ですか。",
+   "lb": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ"
+   ],
+   "rq": {
+    "ア": {
+     "line": true,
+     "axes_min": 2,
+     "finite": true
+    },
+    "イ": {
+     "line": true,
+     "axes_min": 2,
+     "finite": true
+    },
+    "ウ": {
+     "line": true,
+     "axes_min": 2,
+     "finite": true
+    },
+    "エ": {
+     "line": true,
+     "axes": 1
+    }
+   },
+   "fm": null,
+   "a": "エ、1本"
+  },
+  {
+   "row": "u01_027",
+   "q": "次のア〜エの図形はすべて線対称です。対称の軸の本数が最も多いのはどれで、何本ですか。",
+   "lb": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ"
+   ],
+   "rq": {
+    "ア": {
+     "line": true,
+     "axes_max": 5,
+     "finite": true
+    },
+    "イ": {
+     "line": true,
+     "axes_max": 5,
+     "finite": true
+    },
+    "ウ": {
+     "line": true,
+     "axes": 6
+    },
+    "エ": {
+     "line": true,
+     "axes_max": 5,
+     "finite": true
+    }
+   },
+   "fm": null,
+   "a": "ウ、6本"
+  }
+ ],
+  "symshape_tensym_hanbetsu": [
+  {
+   "row": "u02_009",
+   "q": "次のア〜エの図形のうち、点対称な図形はどれですか。",
+   "lb": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ"
+   ],
+   "rq": {
+    "ア": {
+     "point": false
+    },
+    "イ": {
+     "point": true
+    },
+    "ウ": {
+     "point": true
+    },
+    "エ": {
+     "point": false
+    }
+   },
+   "fm": null,
+   "a": "イ,ウ"
+  },
+  {
+   "row": "u02_010",
+   "q": "次のア〜エの図形について、点対称な図形はどれですか。",
+   "lb": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ"
+   ],
+   "rq": {
+    "ア": {
+     "point": true
+    },
+    "イ": {
+     "point": true
+    },
+    "ウ": {
+     "point": false
+    },
+    "エ": {
+     "point": false
+    }
+   },
+   "fm": null,
+   "a": "ア,イ"
+  },
+  {
+   "row": "u02_022",
+   "q": "次のア〜クの図形について、点対称な図形はどれですか。",
+   "lb": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ",
+    "オ",
+    "カ",
+    "キ",
+    "ク"
+   ],
+   "rq": {
+    "ア": {
+     "point": false
+    },
+    "イ": {
+     "point": true
+    },
+    "ウ": {
+     "point": false
+    },
+    "エ": {
+     "point": true
+    },
+    "オ": {
+     "point": false
+    },
+    "カ": {
+     "point": false
+    },
+    "キ": {
+     "point": true
+    },
+    "ク": {
+     "point": true
+    }
+   },
+   "fm": null,
+   "a": "イ,エ,キ,ク"
+  },
+  {
+   "row": "u02_026",
+   "q": "次のア〜オの図形のうち、点対称な図形はどれですか。",
+   "lb": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ",
+    "オ"
+   ],
+   "rq": {
+    "ア": {
+     "point": true
+    },
+    "イ": {
+     "point": false
+    },
+    "ウ": {
+     "point": true
+    },
+    "エ": {
+     "point": false
+    },
+    "オ": {
+     "point": true
+    }
+   },
+   "fm": null,
+   "a": "ア,ウ,オ"
+  }
+ ],
+  "symshape_tak_hanbetsu_ten": [
+  {
+   "row": "u03_002",
+   "q": "右の図の三角形や四角形について、点対称な図形はどれですか。",
+   "lb": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ"
+   ],
+   "rq": {
+    "ア": {
+     "point": false
+    },
+    "イ": {
+     "point": true
+    },
+    "ウ": {
+     "point": false
+    },
+    "エ": {
+     "point": true
+    }
+   },
+   "fm": [
+    "tri",
+    "quad"
+   ],
+   "a": "イ,エ"
+  },
+  {
+   "row": "u03_005",
+   "q": "右の図の三角形や四角形について、点対称な図形はどれですか。",
+   "lb": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ",
+    "オ",
+    "カ"
+   ],
+   "rq": {
+    "ア": {
+     "point": false
+    },
+    "イ": {
+     "point": false
+    },
+    "ウ": {
+     "point": true
+    },
+    "エ": {
+     "point": false
+    },
+    "オ": {
+     "point": false
+    },
+    "カ": {
+     "point": true
+    }
+   },
+   "fm": [
+    "tri",
+    "quad"
+   ],
+   "a": "ウ,カ"
+  }
+ ],
+  "symshape_tak_hanbetsu_ryo": [
+  {
+   "row": "u03_003",
+   "q": "右の図の三角形や四角形について、線対称であり、点対称でもある図形はどれですか。",
+   "lb": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ"
+   ],
+   "rq": {
+    "ア": {
+     "both": false
+    },
+    "イ": {
+     "line": true,
+     "point": true
+    },
+    "ウ": {
+     "both": false
+    },
+    "エ": {
+     "both": false
+    }
+   },
+   "fm": [
+    "tri",
+    "quad"
+   ],
+   "a": "イ"
+  },
+  {
+   "row": "u03_006",
+   "q": "右の図の三角形や四角形について、線対称であり、点対称でもある図形はどれですか。",
+   "lb": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ",
+    "オ",
+    "カ"
+   ],
+   "rq": {
+    "ア": {
+     "both": false
+    },
+    "イ": {
+     "both": false
+    },
+    "ウ": {
+     "line": true,
+     "point": true
+    },
+    "エ": {
+     "both": false
+    },
+    "オ": {
+     "both": false
+    },
+    "カ": {
+     "line": true,
+     "point": true
+    }
+   },
+   "fm": [
+    "tri",
+    "quad"
+   ],
+   "a": "ウ,カ"
+  }
+ ],
+  "symshape_tak_sen_jiku": [
+  {
+   "row": "u03_001",
+   "q": "右の図の三角形や四角形について、線対称な図形はどれですか。また、対称の軸は何本ありますか。",
+   "lb": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ"
+   ],
+   "rq": {
+    "ア": {
+     "line": true,
+     "axes": 1
+    },
+    "イ": {
+     "line": true,
+     "axes": 4
+    },
+    "ウ": {
+     "line": false
+    },
+    "エ": {
+     "line": false
+    }
+   },
+   "fm": [
+    "tri",
+    "quad"
+   ],
+   "a": "ア…1本、イ…4本"
+  },
+  {
+   "row": "u03_004",
+   "q": "右の図の三角形や四角形について、線対称な図形はどれですか。また、対称の軸は何本ありますか。",
+   "lb": [
+    "ア",
+    "イ",
+    "ウ",
+    "エ",
+    "オ",
+    "カ"
+   ],
+   "rq": {
+    "ア": {
+     "line": false
+    },
+    "イ": {
+     "line": false
+    },
+    "ウ": {
+     "line": true,
+     "axes": 2
+    },
+    "エ": {
+     "line": false
+    },
+    "オ": {
+     "line": true,
+     "axes": 1
+    },
+    "カ": {
+     "line": true,
+     "axes": 2
+    }
+   },
+   "fm": [
+    "tri",
+    "quad"
+   ],
+   "a": "ウ…2本、オ…1本、カ…2本"
+  }
+ ],
+  "symtext_tak": [
+  {
+   "row": "u03_007",
+   "q": "正三角形・正四角形（正方形）・正五角形は線対称であるといえますか。また、対称の軸は何本ありますか。",
+   "a": "正三角形…いえる。3本、正四角形…いえる。4本、正五角形…いえる。5本",
+   "fg": {
+    "kind": "shape_set",
+    "labels": [
+     "正三角形",
+     "正四角形",
+     "正五角形"
+    ],
+    "shapes": [
+     {
+      "label": "正三角形",
+      "id": "tri3"
+     },
+     {
+      "label": "正四角形",
+      "id": "square"
+     },
+     {
+      "label": "正五角形",
+      "id": "pentagon"
+     }
+    ],
+    "cols": 3
+   }
+  },
+  {
+   "row": "u03_008",
+   "q": "正三角形・正四角形（正方形）・正五角形はそれぞれ点対称であるといえますか。",
+   "a": "正三角形…いいえ。正四角形…いえる。正五角形…いいえ。",
+   "fg": {
+    "kind": "shape_set",
+    "labels": [
+     "正三角形",
+     "正四角形",
+     "正五角形"
+    ],
+    "shapes": [
+     {
+      "label": "正三角形",
+      "id": "tri3"
+     },
+     {
+      "label": "正四角形",
+      "id": "square"
+     },
+     {
+      "label": "正五角形",
+      "id": "pentagon"
+     }
+    ],
+    "cols": 3
+   }
+  },
+  {
+   "row": "u03_009",
+   "q": "正六角形・正八角形・正九角形はそれぞれ線対称であるといえますか。また、対称の軸は何本ありますか。",
+   "a": "正六角形…いえる。6本、正八角形…いえる。8本、正九角形…いえる。9本",
+   "fg": {
+    "kind": "shape_set",
+    "labels": [
+     "正六角形",
+     "正八角形",
+     "正九角形"
+    ],
+    "shapes": [
+     {
+      "label": "正六角形",
+      "id": "hexagon"
+     },
+     {
+      "label": "正八角形",
+      "id": "octagon"
+     },
+     {
+      "label": "正九角形",
+      "id": "nonagon"
+     }
+    ],
+    "cols": 3
+   }
+  },
+  {
+   "row": "u03_010",
+   "q": "正六角形・正八角形・正九角形はそれぞれ点対称であるといえますか。",
+   "a": "正六角形…いえる。正八角形…いえる。正九角形…いいえ。",
+   "fg": {
+    "kind": "shape_set",
+    "labels": [
+     "正六角形",
+     "正八角形",
+     "正九角形"
+    ],
+    "shapes": [
+     {
+      "label": "正六角形",
+      "id": "hexagon"
+     },
+     {
+      "label": "正八角形",
+      "id": "octagon"
+     },
+     {
+      "label": "正九角形",
+      "id": "nonagon"
+     }
+    ],
+    "cols": 3
+   }
+  },
+  {
+   "row": "u03_016",
+   "q": "点対称な四角形では、対称の中心はどこにありますか。",
+   "a": "対角線の交わる点",
+   "fg": null
+  },
+  {
+   "row": "u03_022",
+   "q": "2本の対角線がどちらも対称の軸になっている四角形は、どのような四角形ですか。",
+   "a": "正方形、ひし形",
+   "fg": null
+  },
+  {
+   "row": "u03_023",
+   "q": "対称の軸が3本ある三角形は、どのような三角形ですか。",
+   "a": "正三角形",
+   "fg": null
+  }
+ ],
+  "symtext_tak_en": [
+  {
+   "row": "u03_011",
+   "q": "円について、線対称であるといえますか。また、対称の軸は何本ありますか。",
+   "a": "いえる。無数にある。",
+   "fg": {
+    "fig_version": 1,
+    "kind": "circle",
+    "r": 4,
+    "unit": "cm",
+    "show_radius": false
+   }
+  },
+  {
+   "row": "u03_012",
+   "q": "円について、点対称であるといえますか。また、対称の中心はどこですか。",
+   "a": "いえる。円の中心",
+   "fg": {
+    "fig_version": 1,
+    "kind": "circle",
+    "r": 4,
+    "unit": "cm",
+    "show_radius": false
+   }
+  },
+  {
+   "row": "u03_030",
+   "q": "右の図のように、長方形ABCDの紙を直線EFで折ったところ、点Dが点Bに重なりました。直線BDと直線EFはどのような関係になりますか。",
+   "a": "垂直",
+   "fg": null
+  }
+ ],
+  "symhyo_tak": [
+  {
+   "row": "u03_015",
+   "q": "正方形・長方形・台形・平行四辺形・ひし形の対称についての表の空らんをうめなさい。",
+   "a": "長方形：○、2本、○／台形：×、なし、×／平行四辺形：×、なし、○／ひし形：○、2本、○",
+   "fg": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "四角形の対称",
+    "col_header": [
+     "線対称",
+     "軸の本数",
+     "点対称"
+    ],
+    "rows": [
+     {
+      "label": "正方形",
+      "values": [
+       "○",
+       "4本",
+       "○"
+      ]
+     },
+     {
+      "label": "長方形",
+      "values": [
+       "□",
+       "□",
+       "□"
+      ]
+     },
+     {
+      "label": "台形",
+      "values": [
+       "□",
+       "□",
+       "□"
+      ]
+     },
+     {
+      "label": "平行四辺形",
+      "values": [
+       "□",
+       "□",
+       "□"
+      ]
+     },
+     {
+      "label": "ひし形",
+      "values": [
+       "□",
+       "□",
+       "□"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "row": "u03_019",
+   "q": "正多角形の対称について表の空らんをうめなさい（正三角形〜正八角形）。",
+   "a": "正三角形：○、3本、×／正五角形：○、5本、×／正六角形：○、6本、○／正八角形：○、8本、○",
+   "fg": {
+    "fig_version": 1,
+    "kind": "table",
+    "caption": "正多角形の対称",
+    "col_header": [
+     "線対称",
+     "軸の本数",
+     "点対称"
+    ],
+    "rows": [
+     {
+      "label": "正三角形",
+      "values": [
+       "□",
+       "□",
+       "□"
+      ]
+     },
+     {
+      "label": "正方形",
+      "values": [
+       "○",
+       "4本",
+       "○"
+      ]
+     },
+     {
+      "label": "正五角形",
+      "values": [
+       "□",
+       "□",
+       "□"
+      ]
+     },
+     {
+      "label": "正六角形",
+      "values": [
+       "□",
+       "□",
+       "□"
+      ]
+     },
+     {
+      "label": "正八角形",
+      "values": [
+       "□",
+       "□",
+       "□"
+      ]
+     }
+    ]
+   }
+  }
  ]
  },
  "patterns": [
@@ -9186,6 +9968,621 @@
     1,
     10
    ],
+   "answer_domain": "label"
+  },
+  {
+   "pattern_id": "g06_sen_hanbetsu_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u01",
+   "unit_name": "線対称",
+   "semantic_category": "線対称: 図形の判別(shape_set)",
+   "semantic_note": "裁可(k) 対称第2便。正答集合(転記)を保存し、記号ごとの要件(線対称の真偽)をカタログから割当合成(shape_set)。答=記号集合(edge_setカタカナ・順不同)。",
+   "step_count": 1,
+   "operation": "線対称: 図形の判別",
+   "answer_formula": "A1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "symshape_sen_hanbetsu[j1].q"
+    },
+    "lb1": {
+     "from": "symshape_sen_hanbetsu[j1].lb"
+    },
+    "rq1": {
+     "from": "symshape_sen_hanbetsu[j1].rq"
+    },
+    "fm1": {
+     "from": "symshape_sen_hanbetsu[j1].fm"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    },
+    "a1": {
+     "from": "symshape_sen_hanbetsu[j1].a"
+    }
+   },
+   "computed_slots": {
+    "A1": {
+     "formula": "a1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {A1_edges}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "edge_set",
+   "figure_params": {
+    "kind": "shape_set",
+    "labels": "{lb1}",
+    "require": "{rq1}",
+    "families": "{fm1}",
+    "seed": "{sd1}"
+   }
+  },
+  {
+   "pattern_id": "g06_sen_jiku_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u01",
+   "unit_name": "線対称",
+   "semantic_category": "線対称: 対称の軸の本数が最少/最多の図形(shape_set)",
+   "semantic_note": "全て線対称の4図形から軸本数が最少/最多のものと本数(転記保存)。割当=対象記号に指定本数の形・他は本数の大小関係(axes_min/max)を満たす形。答は文字列(label)。",
+   "step_count": 1,
+   "operation": "線対称: 対称の軸の本数が最少/最多の図形",
+   "answer_formula": "A1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "symshape_sen_jiku[j1].q"
+    },
+    "lb1": {
+     "from": "symshape_sen_jiku[j1].lb"
+    },
+    "rq1": {
+     "from": "symshape_sen_jiku[j1].rq"
+    },
+    "fm1": {
+     "from": "symshape_sen_jiku[j1].fm"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    },
+    "a1": {
+     "from": "symshape_sen_jiku[j1].a"
+    }
+   },
+   "computed_slots": {
+    "A1": {
+     "formula": "a1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {A1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "label",
+   "figure_params": {
+    "kind": "shape_set",
+    "labels": "{lb1}",
+    "require": "{rq1}",
+    "families": "{fm1}",
+    "seed": "{sd1}"
+   }
+  },
+  {
+   "pattern_id": "g06_tensym_hanbetsu_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u02",
+   "unit_name": "点対称",
+   "semantic_category": "点対称: 図形の判別(shape_set)",
+   "semantic_note": "点対称の判別。u02_009は「対称の中心Oをかき入れる」部を除去(作図=域外d)し判別のみ。答=記号集合(順不同)。",
+   "step_count": 1,
+   "operation": "点対称: 図形の判別",
+   "answer_formula": "A1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "symshape_tensym_hanbetsu[j1].q"
+    },
+    "lb1": {
+     "from": "symshape_tensym_hanbetsu[j1].lb"
+    },
+    "rq1": {
+     "from": "symshape_tensym_hanbetsu[j1].rq"
+    },
+    "fm1": {
+     "from": "symshape_tensym_hanbetsu[j1].fm"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    },
+    "a1": {
+     "from": "symshape_tensym_hanbetsu[j1].a"
+    }
+   },
+   "computed_slots": {
+    "A1": {
+     "formula": "a1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {A1_edges}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "edge_set",
+   "figure_params": {
+    "kind": "shape_set",
+    "labels": "{lb1}",
+    "require": "{rq1}",
+    "families": "{fm1}",
+    "seed": "{sd1}"
+   }
+  },
+  {
+   "pattern_id": "g06_tak_hanbetsu_ten_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u03",
+   "unit_name": "多角形と対称",
+   "semantic_category": "多角形と対称: 三角形・四角形の点対称の判別(shape_set)",
+   "semantic_note": "三角形・四角形に族を限定(families=tri/quad)。中心書き込み部は除去(域外d)。",
+   "step_count": 1,
+   "operation": "多角形と対称: 三角形・四角形の点対称の判別",
+   "answer_formula": "A1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "symshape_tak_hanbetsu_ten[j1].q"
+    },
+    "lb1": {
+     "from": "symshape_tak_hanbetsu_ten[j1].lb"
+    },
+    "rq1": {
+     "from": "symshape_tak_hanbetsu_ten[j1].rq"
+    },
+    "fm1": {
+     "from": "symshape_tak_hanbetsu_ten[j1].fm"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    },
+    "a1": {
+     "from": "symshape_tak_hanbetsu_ten[j1].a"
+    }
+   },
+   "computed_slots": {
+    "A1": {
+     "formula": "a1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {A1_edges}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "edge_set",
+   "figure_params": {
+    "kind": "shape_set",
+    "labels": "{lb1}",
+    "require": "{rq1}",
+    "families": "{fm1}",
+    "seed": "{sd1}"
+   }
+  },
+  {
+   "pattern_id": "g06_tak_hanbetsu_ryo_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u03",
+   "unit_name": "多角形と対称",
+   "semantic_category": "多角形と対称: 線対称かつ点対称の判別(shape_set)",
+   "semantic_note": "両方を満たす形のみ正答(both)。非正答は「両方ではない」形(片方のみ・なし)。",
+   "step_count": 1,
+   "operation": "多角形と対称: 線対称かつ点対称の判別",
+   "answer_formula": "A1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "symshape_tak_hanbetsu_ryo[j1].q"
+    },
+    "lb1": {
+     "from": "symshape_tak_hanbetsu_ryo[j1].lb"
+    },
+    "rq1": {
+     "from": "symshape_tak_hanbetsu_ryo[j1].rq"
+    },
+    "fm1": {
+     "from": "symshape_tak_hanbetsu_ryo[j1].fm"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    },
+    "a1": {
+     "from": "symshape_tak_hanbetsu_ryo[j1].a"
+    }
+   },
+   "computed_slots": {
+    "A1": {
+     "formula": "a1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {A1_edges}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "edge_set",
+   "figure_params": {
+    "kind": "shape_set",
+    "labels": "{lb1}",
+    "require": "{rq1}",
+    "families": "{fm1}",
+    "seed": "{sd1}"
+   }
+  },
+  {
+   "pattern_id": "g06_tak_sen_jiku_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u03",
+   "unit_name": "多角形と対称",
+   "semantic_category": "多角形と対称: 三角形・四角形の線対称と軸の本数(shape_set)",
+   "semantic_note": "線対称の判別+軸本数(転記保存)。割当=正答記号に指定本数の形(axes)・非正答は線対称でない形。答は文字列(label)。",
+   "step_count": 1,
+   "operation": "多角形と対称: 三角形・四角形の線対称と軸の本数",
+   "answer_formula": "A1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "symshape_tak_sen_jiku[j1].q"
+    },
+    "lb1": {
+     "from": "symshape_tak_sen_jiku[j1].lb"
+    },
+    "rq1": {
+     "from": "symshape_tak_sen_jiku[j1].rq"
+    },
+    "fm1": {
+     "from": "symshape_tak_sen_jiku[j1].fm"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    },
+    "a1": {
+     "from": "symshape_tak_sen_jiku[j1].a"
+    }
+   },
+   "computed_slots": {
+    "A1": {
+     "formula": "a1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {A1}",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "label",
+   "figure_params": {
+    "kind": "shape_set",
+    "labels": "{lb1}",
+    "require": "{rq1}",
+    "families": "{fm1}",
+    "seed": "{sd1}"
+   }
+  },
+  {
+   "pattern_id": "g06_tak_text_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u03",
+   "unit_name": "多角形と対称",
+   "semantic_category": "多角形と対称: 正多角形・四角形の対称の性質(テキスト形)",
+   "semantic_note": "裁可(k)③ テキスト形7行(正多角形の可否・軸本数4行=正多角形の図を添付(shape_set・名前ラベル)、図なし3行)。答は転記文字列(label)。",
+   "step_count": 1,
+   "operation": "対称の性質",
+   "answer_formula": "A1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "symtext_tak[j1].q"
+    },
+    "a1": {
+     "from": "symtext_tak[j1].a"
+    },
+    "fg1": {
+     "from": "symtext_tak[j1].fg"
+    }
+   },
+   "computed_slots": {
+    "A1": {
+     "formula": "a1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {A1}",
+   "figure_params": "{fg1}",
+   "kaisetsu": "正多角形は頂点の数だけ対称の軸があり、頂点の数が偶数なら点対称でもあります。四角形では、正方形・長方形・ひし形は線対称と点対称の両方、平行四辺形は点対称だけ、台形は等脚台形のときだけ線対称です。",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    2,
+    3
+   ],
+   "answer_domain": "label"
+  },
+  {
+   "pattern_id": "g06_tak_text_en_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u03",
+   "unit_name": "多角形と対称",
+   "semantic_category": "多角形と対称: 円の対称・折り紙(テキスト形)",
+   "semantic_note": "裁可(k)② 円(u03_011/012)は円の図(circle kind)+テキスト形、折り紙(u03_030)はテキスト形(本文が状況を自立記述)。答は転記文字列(label)。",
+   "step_count": 1,
+   "operation": "対称の性質",
+   "answer_formula": "A1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "symtext_tak_en[j1].q"
+    },
+    "a1": {
+     "from": "symtext_tak_en[j1].a"
+    },
+    "fg1": {
+     "from": "symtext_tak_en[j1].fg"
+    }
+   },
+   "computed_slots": {
+    "A1": {
+     "formula": "a1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {A1}",
+   "figure_params": "{fg1}",
+   "kaisetsu": "円はどの直径で折ってもぴったり重なるので、対称の軸は無数にあります。また円は、中心のまわりに180度回してももとの形に重なるので、点対称でもあり、対称の中心は円の中心です。",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "label"
+  },
+  {
+   "pattern_id": "g06_tak_hyo_01",
+   "grade": "g06",
+   "unit_id": "g06_c01_u03",
+   "unit_name": "多角形と対称",
+   "semantic_category": "多角形と対称: 対称の性質の表(table・空らん)",
+   "semantic_note": "裁可(k)③ 表型2行=既存table kind(第3便流儀・空らん=□・正方形行は与件)。答は静的文字列(label・行別列挙)。",
+   "step_count": 1,
+   "operation": "表の完成",
+   "answer_formula": "A1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "symhyo_tak[j1].q"
+    },
+    "a1": {
+     "from": "symhyo_tak[j1].a"
+    },
+    "fg1": {
+     "from": "symhyo_tak[j1].fg"
+    }
+   },
+   "computed_slots": {
+    "A1": {
+     "formula": "a1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {A1}",
+   "figure_params": "{fg1}",
+   "kaisetsu": "正多角形は頂点の数だけ対称の軸があり、頂点の数が偶数なら点対称でもあります。四角形では、正方形・長方形・ひし形は線対称と点対称の両方、平行四辺形は点対称だけ、台形は等脚台形のときだけ線対称です。",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ],
+    "allowed_extra": "称軸"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
    "answer_domain": "label"
   }
  ],

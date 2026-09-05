@@ -26,7 +26,7 @@ console.log('=== (0b) r2 紛らわしさ検査: どちらでもない形=どの�
     if (cat.line && best < 0.999) { bad++; console.log('  ❌ 線対称の形の最良軸重なり<100% ' + id + ' ' + best.toFixed(3)); }
     if (!cat.line && best >= 0.85) { bad++; console.log('  ❌ 紛らわしい(線) ' + id + ' ' + cat.name + ' 最良軸IoU=' + best.toFixed(3)); }
     if (cat.point && rot < 0.999) { bad++; console.log('  ❌ 点対称の形の回転重なり<100% ' + id); }
-    if (!cat.point && rot >= 0.85) { bad++; console.log('  ❌ 紛らわしい(点) ' + id + ' ' + cat.name + ' 回転IoU=' + rot.toFixed(3)); }
+    if (!cat.point && rot >= 0.85 && !cat.named_only) { bad++; console.log('  ❌ 紛らわしい(点) ' + id + ' ' + cat.name + ' 回転IoU=' + rot.toFixed(3)); }   // named_only(正九角形等)は判別の割当候補外
     // r2②: 一般の四角形=辺長差≥30%・全て非直角(±10°)／一般の台形=直角台形または脚の傾き差≥25°
     if (id === 'quad' || id === 'trap') {
       const n = P.length, L = P.map((p, i) => Math.hypot(P[(i + 1) % n][0] - p[0], P[(i + 1) % n][1] - p[1]));
@@ -65,6 +65,26 @@ LED.rows.forEach(r => {
   }
 });
 console.log('  ' + (LED.rows.length * 100) + '構成 ' + (bad === 0 ? '✅' : '❌'));
+console.log('=== (1b) バンク配線(g06 shape_set 6パターン/15行): 行レコードの正答集合=転記(sheet.answersから再導出)・軸本数 ===');
+(function () {
+  const bank = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'pattern_bank', 'patterns_g06.json'), 'utf-8'));
+  let n = 0;
+  Object.keys(bank.shared_lexicon).filter(k => /^symshape_/.test(k)).forEach(k => {
+    bank.shared_lexicon[k].forEach(rec => {
+      n++; cases++;
+      const fp = { kind: 'shape_set', labels: rec.lb, require: rec.rq, families: rec.fm, seed: 11 };
+      let a; try { a = FB._shapeSetAudit(fp); } catch (e) { bad++; console.log('  ❌ ' + rec.row + ' 生成失敗 ' + e.message.slice(0, 60)); return; }
+      if (a.dup || a.excl || a.shapes.some(x => !x.ok) || a.labels.some(l => !l.ok)) { bad++; console.log('  ❌ ' + rec.row + ' 割当/帰属'); }
+      const led = LED.rows.find(r => r.row === rec.row); if (!led) { bad++; console.log('  ❌ 台帳不在 ' + rec.row); return; }
+      const ans = led.ask === 'line' ? a.sheet.answers.line : led.ask === 'point' ? a.sheet.answers.point : led.ask === 'both' ? a.sheet.answers.both : null;
+      if (ans && ans.join(',') !== led.ans.join(',')) { bad++; console.log('  ❌ ' + rec.row + ' 正答集合 ' + ans.join(',') + ' 転記 ' + led.ans.join(',')); }
+      if (ans && !led.ans_text && rec.a !== led.ans.join(',')) { bad++; console.log('  ❌ ' + rec.row + ' レコード答 ' + rec.a); }
+      if (led.axes) Object.keys(led.axes).forEach(l => { const sh = a.sheet.shapes.find(x => x.label === l); if (!sh || sh.axes !== led.axes[l]) { bad++; console.log('  ❌ ' + rec.row + ' 軸本数 ' + l); } });
+      if (led.ask === 'axes_min' || led.ask === 'axes_max') { const ax = a.sheet.shapes.map(x => x.axes); const tgt = led.ask === 'axes_min' ? Math.min(...ax) : Math.max(...ax); const who = a.sheet.shapes.filter(x => x.axes === tgt).map(x => x.label); if (who.join('') !== led.ans.join('') || String(rec.a).indexOf(tgt + '本') < 0) { bad++; console.log('  ❌ ' + rec.row + ' 最少/最多 ' + who + ' ' + rec.a); } }
+    });
+  });
+  console.log('  行レコード ' + n + ' ' + (bad === 0 ? '✅' : '❌'));
+})();
 console.log('=== (2) 契約throw ===');
 [[{ kind: 'shape_set', labels: ['ア'] }, 'labels不足'], [{ kind: 'shape_set', labels: ['ア', 'イ'], require: { ア: { line: true, point: false, axes: 99 } } }, '満たせない要件'], [{ kind: 'shape_set', labels: ['ア', 'イ'], shapes: [{ label: 'ア', id: 'nope' }, { label: 'イ', id: 'square' }] }, '未知の形']].forEach(([fp, name]) => {
   cases++; let threw = false; try { FB.build(fp); } catch (e) { threw = true; } if (!threw) { bad++; console.log('  ❌ 契約: ' + name); }

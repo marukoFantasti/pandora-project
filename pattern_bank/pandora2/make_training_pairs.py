@@ -166,7 +166,7 @@ def main():
                     f.write(json.dumps({"doc_type": "rationale", "section": key,
                                         "pattern_id": pid, "grade": p["grade"],
                                         "unit_id": p["unit_id"],
-                                        "kind": (p.get("figure_params") or {}).get("kind"),
+                                        "kind": (p.get("figure_params").get("kind") if isinstance(p.get("figure_params"), dict) else None),   # figure_paramsがレコード参照文字列("{fg1}")のパターンはNone
                                         "text": text}, ensure_ascii=False) + "\n")
         for c in corrections:
             f.write(json.dumps({"doc_type": "correction", "section": "generalization",
