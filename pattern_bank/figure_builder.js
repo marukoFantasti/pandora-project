@@ -1830,6 +1830,88 @@
     lay._cells = g.shapes.map(function (x, i) { return { i: i, x0: (i % g.cols) * C, y0: Math.floor(i / g.cols) * C, x1: (i % g.cols) * C + C, y1: Math.floor(i / g.cols) * C + C }; });
     return lay;
   }
+  // ---- 概形第1便 Kind: approx_shape(不定形の輪郭+みなし図形・裁可l) ----
+  // みなし図形(rect/para/trap/tri/circle)の寸法と答えは転記保存。輪郭=重心を中心とする星形曲線 r(θ)=R_base(θ)×(1+amp×noise(θ))
+  // (noise=3〜5波の正弦和・決定性乱数)。面積比を[0.96,1.04]へ正規化し、関門で[0.92,1.08]・内外はみ出し・自己交差なしを独立再計算。
+  var AS_MAXPX = 150, AS_STEP = 3;
+  function asBaseGeom(base, dims) {   // 世界座標(y上向き)・原点=左下 or 中心(circle)。area=単位²
+    var d = {}; Object.keys(dims || {}).forEach(function (k) { d[k] = Number(dims[k]); });
+    var mx = Math.max.apply(null, Object.keys(d).map(function (k) { return d[k] * (k === 'r' ? 2 : 1); })), k = AS_MAXPX / mx;   // 円は直径基準
+    var g = { base: base, k: k, poly: null, area: 0, labels: [], marks: [], aux: [], circle: null };
+    if (base === 'rect') { var W = d.w * k, H = d.h * k; g.poly = [[0, 0], [W, 0], [W, H], [0, H]]; g.area = d.w * d.h;
+      g.labels = [{ anchor: [W / 2, 0], dir: [0, -1], text: 'w', own: 'b0' }, { anchor: [W, H / 2], dir: [1, 0], text: 'h', own: 'b1' }]; g.marks = [{ V: [0, 0], e1: [1, 0], e2: [0, 1] }]; }
+    else if (base === 'para') { var B = d.b * k, Hp = d.h * k, off = 0.3 * Hp; g.poly = [[0, 0], [B, 0], [B + off, Hp], [off, Hp]]; g.area = d.b * d.h;
+      g.aux = [{ p1: [off, Hp], p2: [off, 0] }]; g.marks = [{ V: [off, 0], e1: [1, 0], e2: [0, 1] }];
+      g.labels = [{ anchor: [B / 2, 0], dir: [0, -1], text: 'b', own: 'b0' }, { anchor: [off, Hp / 2], dir: [1, 0], text: 'h', own: 'aux0' }]; }   // 高さラベルは図形内側(斜辺より高さ線に近い)
+    else if (base === 'trap') { var Bt = d.b * k, A = d.a * k, Ht = d.h * k, x0 = (Bt - A) / 2; g.poly = [[0, 0], [Bt, 0], [x0 + A, Ht], [x0, Ht]]; g.area = (d.a + d.b) * d.h / 2;
+      g.aux = [{ p1: [x0, Ht], p2: [x0, 0] }]; g.marks = [{ V: [x0, 0], e1: [1, 0], e2: [0, 1] }];
+      g.labels = [{ anchor: [Bt / 2, 0], dir: [0, -1], text: 'b', own: 'b0' }, { anchor: [x0 + A / 2, Ht], dir: [0, 1], text: 'a', own: 'b2' }, { anchor: [x0, Ht / 2], dir: [1, 0], text: 'h', own: 'aux0' }]; }
+    else if (base === 'tri') { var Bb = d.b * k, Hh = d.h * k, ax = 0.55 * Bb; g.poly = [[0, 0], [Bb, 0], [ax, Hh]]; g.area = d.b * d.h / 2;
+      g.aux = [{ p1: [ax, Hh], p2: [ax, 0] }]; g.marks = [{ V: [ax, 0], e1: [1, 0], e2: [0, 1] }];
+      g.labels = [{ anchor: [Bb / 2, 0], dir: [0, -1], text: 'b', own: 'b0' }, { anchor: [ax, Hh / 2], dir: [-1, 0], text: 'h', own: 'aux0' }]; }
+    else if (base === 'circle') { var R = d.r * k; g.circle = { c: [0, 0], R: R }; g.area = d.r * d.r * 3.14;
+      g.aux = [{ p1: [0, 0], p2: [R, 0] }]; g.labels = [{ anchor: [R / 2, 0], dir: [0, 1], text: 'r', own: 'aux0' }]; }
+    else throw new Error('approx_shape: 未知のbase ' + base);
+    return g;
+  }
+  function asCentroid(P) { var A = 0, cx = 0, cy = 0; for (var i = 0; i < P.length; i++) { var p = P[i], q = P[(i + 1) % P.length], w = p[0] * q[1] - q[0] * p[1]; A += w; cx += (p[0] + q[0]) * w; cy += (p[1] + q[1]) * w; } A /= 2; return [cx / (6 * A), cy / (6 * A)]; }
+  function asRayPoly(c, th, P) {   // 重心から方向θへの境界距離(凸多角形)
+    var dx = Math.cos(th), dy = Math.sin(th), best = Infinity;
+    for (var i = 0; i < P.length; i++) { var a = P[i], b = P[(i + 1) % P.length], ex = b[0] - a[0], ey = b[1] - a[1], den = dx * ey - dy * ex; if (Math.abs(den) < 1e-9) continue;
+      var t = ((a[0] - c[0]) * ey - (a[1] - c[1]) * ex) / den, u = ((a[0] - c[0]) * dy - (a[1] - c[1]) * dx) / den; if (t > 0 && u >= -1e-9 && u <= 1 + 1e-9) best = Math.min(best, t); }
+    return best;
+  }
+  function asPolyArea(P) { var A = 0; for (var i = 0; i < P.length; i++) { var p = P[i], q = P[(i + 1) % P.length]; A += p[0] * q[1] - q[0] * p[1]; } return Math.abs(A) / 2; }
+  function asOutline(g, seed, amp) {
+    var rnd = lsRand(seed), c = g.circle ? g.circle.c : asCentroid(g.poly), waves = [];
+    for (var w = 3; w <= 5; w++) waves.push({ k: w, a: 0.5 + rnd(), ph: rnd() * Math.PI * 2 });
+    var norm = waves.reduce(function (s2, v) { return s2 + v.a; }, 0);
+    function noise(th) { return waves.reduce(function (s2, v) { return s2 + v.a * Math.sin(v.k * th + v.ph); }, 0) / norm; }
+    var pts = [], dev = [];
+    for (var deg = 0; deg < 360; deg += AS_STEP) { var th = deg * DEG, Rb = g.circle ? g.circle.R : asRayPoly(c, th, g.poly), f = 1 + amp * noise(th); dev.push(f - 1); pts.push([c[0] + Rb * f * Math.cos(th), c[1] + Rb * f * Math.sin(th)]); }
+    var baseA = g.circle ? Math.PI * g.circle.R * g.circle.R : asPolyArea(g.poly), target = 0.96 + rnd() * 0.08, ratio = asPolyArea(pts) / baseA, kk = Math.sqrt(target / ratio);
+    pts = pts.map(function (p) { return [c[0] + (p[0] - c[0]) * kk, c[1] + (p[1] - c[1]) * kk]; });
+    return { pts: pts, c: c, ratio: asPolyArea(pts) / baseA, dev: dev.map(function (x) { return (1 + x) * kk - 1; }) };
+  }
+  function asValidate(o) {
+    var issues = [];
+    if (o.ratio < 0.92 || o.ratio > 1.08) issues.push('area_ratio:' + o.ratio.toFixed(3));
+    var pos = o.dev.filter(function (x) { return x >= 0.03; }).length, neg = o.dev.filter(function (x) { return x <= -0.03; }).length;
+    if (pos < 3 || neg < 3) issues.push('one_sided');
+    var P = o.pts, n = P.length;
+    for (var i = 0; i < n; i++) for (var j = i + 2; j < n; j++) { if (i === 0 && j === n - 1) continue; if (lsSegInterRaw(P[i], P[(i + 1) % n], P[j], P[(j + 1) % n])) { issues.push('self_cross'); i = n; break; } }
+    return issues;
+  }
+  function lsSegInterRaw(a, b, c, d) {
+    var den = (a[0] - b[0]) * (c[1] - d[1]) - (a[1] - b[1]) * (c[0] - d[0]); if (Math.abs(den) < 1e-12) return false;
+    var t = ((a[0] - c[0]) * (c[1] - d[1]) - (a[1] - c[1]) * (c[0] - d[0])) / den, u = -((a[0] - b[0]) * (a[1] - c[1]) - (a[1] - b[1]) * (a[0] - c[0])) / den;
+    return t > 1e-9 && t < 1 - 1e-9 && u > 1e-9 && u < 1 - 1e-9;
+  }
+  function approxShapeGeom(fp) {
+    var base = fp.base, dims = fp.dims || {}, g = asBaseGeom(base, dims), amp = fp.outline && fp.outline.amp !== undefined ? Number(fp.outline.amp) : (base === 'tri' ? 0.15 : 0.12);
+    var seed = fp.outline && fp.outline.seed !== undefined ? Number(fp.outline.seed) : (fp.seed !== undefined ? Number(fp.seed) : 1), o = null;
+    for (var sub = 0; sub < 24; sub++) { var cand = asOutline(g, seed * 1000 + sub, amp); if (asValidate(cand).length === 0) { o = cand; o.sub = sub; break; } }
+    if (!o) throw new Error('approx_shape: 輪郭の合成規則を満たさない(契約違反: seed=' + seed + ')');
+    return { g: g, o: o, amp: amp, unit: fp.unit || '', dims: dims };
+  }
+  function approxShapeLayout(fp) {
+    var G = approxShapeGeom(fp), g = G.g, o = G.o, lay = newLayout(), u = G.unit;
+    var wp = o.pts.map(worldFlip);
+    lay.parts.push('<polygon points="' + polyStr(wp) + '" fill="#f3f7ee" stroke="#4d7c3a" stroke-width="2" stroke-linejoin="round"/>');   // 輪郭(有機的な実線)
+    wp.forEach(function (q, i) { lay.pts.push(q); lay.segs.push({ id: 'o_' + i, p1: q, p2: wp[(i + 1) % wp.length] }); });
+    if (fp.show_base !== false) {
+      if (g.circle) { var cc = worldFlip(g.circle.c); lay.parts.push('<circle cx="' + cc[0].toFixed(2) + '" cy="' + cc[1].toFixed(2) + '" r="' + g.circle.R.toFixed(2) + '" fill="none" stroke="' + C_STROKE + '" stroke-width="1.6" stroke-dasharray="5,4"/>');
+        for (var a = 0; a < 36; a++) { var t1 = a * 10 * DEG, t2 = (a + 1) * 10 * DEG; lay.segs.push({ id: 'b0', p1: worldFlip([g.circle.R * Math.cos(t1), g.circle.R * Math.sin(t1)]), p2: worldFlip([g.circle.R * Math.cos(t2), g.circle.R * Math.sin(t2)]) }); } }
+      else { var bp = g.poly.map(worldFlip); lay.parts.push('<polygon points="' + polyStr(bp) + '" fill="none" stroke="' + C_STROKE + '" stroke-width="1.6" stroke-dasharray="5,4"/>'); bp.forEach(function (q, i) { lay.segs.push({ id: 'b' + i, p1: q, p2: bp[(i + 1) % bp.length] }); lay.pts.push(q); }); }
+      g.aux.forEach(function (ax, i) { var p1 = worldFlip(ax.p1), p2 = worldFlip(ax.p2); lay.parts.push(lineEl(p1, p2, C_STROKE, 1.4, '3,3')); lay.segs.push({ id: 'aux' + i, p1: p1, p2: p2 }); });
+      g.marks.forEach(function (m) { var rm = rightAngleMark(m.V, m.e1, m.e2, 9); lay.parts.push(rm.el); });
+      var specs = g.labels.map(function (lb) { var an = worldFlip(lb.anchor), dir = [lb.dir[0], -lb.dir[1]], aux = /^aux/.test(lb.own);
+        return { anchor: an, dirs: aux ? [dir, [-dir[0], -dir[1]]] : [dir], text: String(G.dims[lb.text]) + u, cands: aux ? [[14, 12], [16, 11], [20, 11], [14, 10]] : [[22, 13], [28, 13], [22, 11], [34, 11]], color: '#333', own: lb.own }; });   // 高さラベルは線の近傍(両側候補)
+      finishLabels(lay, specs);
+    }
+    lay._geom = G;
+    return lay;
+  }
   // ---- P5-3 Kind A: xy_graph mode="polyline"(折れ線グラフ・1〜2系列・draw対応) ----
   // v1(prop/inv)/v2(jhs4象限)へ一切触れない独立分岐。日本語ハードコード禁止(表示文字列は全てfp由来)。
   var PL_W = 264, PL_H = 190, PL_FS = 11;
@@ -2647,7 +2729,7 @@
     para_area: paraAreaLayout, tri_area: triAreaLayout, trap_area: trapAreaLayout,
     rhombus_area: rhombusAreaLayout, circle: circleLayout, cuboid: cuboidLayout, prism: prismLayout,
     pyramid: pyramidLayout, cylinder: cylinderLayout, cone: coneLayout, sphere: sphereLayout,
-    rotation_source: rotationSourceLayout, clock_face: clockFaceLayout, composite_circle: compositeCircleLayout, composite_area: compositeAreaLayout, line_set: lineSetLayout, sym_figure: symFigureLayout, shape_set: shapeSetLayout,
+    rotation_source: rotationSourceLayout, clock_face: clockFaceLayout, composite_circle: compositeCircleLayout, composite_area: compositeAreaLayout, line_set: lineSetLayout, sym_figure: symFigureLayout, shape_set: shapeSetLayout, approx_shape: approxShapeLayout,
     sym_polygon: symPolygonLayout, similar_pair: similarPairLayout, xy_graph: xyGraphLayout, dot_plot: dotPlotLayout, histogram: histogramLayout,
     angle_figure: angleFigureLayout
   };
@@ -2686,6 +2768,15 @@
   var FigureBuilder = { build: build, BUILDERS: BUILDERS, _angleSumMinClearance: angleSumMinClearance, _tableMinClearance: tableMinClearance };
   // e-2: line_setの監査(角度差/包含/交点/ラベル帰属を描画と同じ導出で独立再計算)
   FigureBuilder._lsStats = function (on) { LS_STATS = on ? {} : null; return LS_STATS; };
+  FigureBuilder._approxShapeAudit = function (fp) {   // 概形第1便 関門用: 面積比・内外はみ出し・自己交差・ラベル帰属・みなし面積
+    var G = approxShapeGeom(fp), lay = approxShapeLayout(fp), out = { issues: asValidate(G.o), ratio: G.o.ratio, area_base: G.g.area, sub: G.o.sub, pts: G.o.pts, base_poly: G.g.poly, circle: G.g.circle, labels: [] };
+    lay.labels.forEach(function (lb) {
+      var best = null, bd = 1e9; lay.segs.forEach(function (sg) { if (/^o_/.test(sg.id)) return; var dd = boxSeg(lb.box, sg.p1, sg.p2); if (dd < bd) { bd = dd; best = sg.id; } });
+      var dOwn = 1e9; lay.segs.forEach(function (sg) { if (sg.id === lb.own) dOwn = Math.min(dOwn, boxSeg(lb.box, sg.p1, sg.p2)); });
+      out.labels.push({ own: lb.own, nearest: best, dOwn: dOwn, ok: best === lb.own || dOwn <= 10, text: lb.text });   // 帰属: 最近傍=担当 or 担当線に接している(≤10px・高さ線の傍に斜辺が寄る三角形)
+    });
+    return out;
+  };
   FigureBuilder._shapeSetAudit = function (fp) {   // 対称第2便 関門用: 割当・真偽表(座標から再計算)・重複・ラベル帰属
     var g = shapeSetGeom(fp), lay = shapeSetLayout(fp), out = { shapes: [], dup: false, labels: [] }, seen = {};
     g.shapes.forEach(function (x) {
@@ -2799,7 +2890,7 @@
     pyramid_visible: pyramidVisible, convex_hull: convexHull,   // S-2.1: 隠線シルエット判定(vector用・corr-0023)
     rotation_source: rotationSourceGeom,   // 第2ブロックS-4: 回転体の源(vector用)
     clock_face: clockFaceGeom,             // 小学第2波: 時計文字盤(vector用)
-    composite_circle: compositeCircleGeom, composite_area: compositeAreaGeom, line_set: lineSetGeom, sym_figure: symFigureGeom, shape_set: shapeSetGeom, ss_symmetry: ssSymmetry, ss_outline: ssOutline, ss_catalog: SS_CAT, // P-3a: 複合円(vector用) / 対称第1便
+    composite_circle: compositeCircleGeom, composite_area: compositeAreaGeom, line_set: lineSetGeom, sym_figure: symFigureGeom, shape_set: shapeSetGeom, approx_shape: approxShapeGeom, as_poly_area: asPolyArea, ss_symmetry: ssSymmetry, ss_outline: ssOutline, ss_catalog: SS_CAT, // P-3a: 複合円(vector用) / 対称第1便
     arc_sample_points: arcSamplePoints,          // 弧サンプル点(曲率関門用・頂点からr一定検査)
     // ベクター用の位置引数ラッパ（Python prism_geom(base_kind,a,b,h) と同型）
     prism: function (base_kind, a, b, h) {

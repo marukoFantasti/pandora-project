@@ -530,3 +530,12 @@
 - `kaisetsu_backfill_g05.md`(76パターン・g03/g04と同形式。文脈セット`{ctx_*}`・表示派生・新規computed申告の規則を冒頭に追記)。
 - 概形棚卸し `概形第1便_棚卸し先出し.md`: g06 c10_u01 28行(figure18/grid8/なし2)。設問型=方眼ます数え8・みなし四角形5・三角形4・円2・体積6・倍1・図なし2。g05は対象行なし(P-4時の2行は体積単元の非図行)。提案=第1便approx_shape(みなし図形13行)→第2便approx_grid+approx_solid→テキスト形2。
 - **未受領**: まるこ「前々回の送信文」(第2便§3-3受理・設問補正3件承認・shape_set kaisetsu 6本・次便=概形棚卸し)はこちらに届いておらず、shape_set kaisetsu 6本の本文が未着。再送待ち。
+
+### 2026-09-05 shape_set kaisetsu 6本転写(Fable本文・A章)
+- 6パターンへ逐語転写(sen_hanbetsu/tensym_hanbetsu/tak_hanbetsu_ten/tak_hanbetsu_ryo/sen_jiku/tak_sen_jiku)。sen_jikuの`{ask1}`(少ない/多い)を行レコードへ追加(スロットask1)。kaisetsu_resolve GREEN(JS=Python)。furigana+6(整っ/矢印/十字/逆さ/風車/折れ)・registered 607。**golden g06 b93fb0d1 → 41cc8a78**(解説行のみ・解説行除外は不変)。backfill在庫 421。
+
+### 2026-09-05 概形第1便: approx_shape受け皿(裁可l・答え保存+輪郭合成・面積比±8%関門)——まるこ目視待ち
+- **approx_shape kind**: base=rect/para/trap/tri/circle(寸法は転記保存・面積式=既存面積kindと同じ)。輪郭=重心を中心とする星形曲線 r(θ)=R_base(θ)×(1+amp×noise)(3〜5波の正弦和・決定性乱数・amp既定0.12/三角形0.15)→面積比を[0.96,1.04]へ正規化。描画=輪郭(緑の有機的実線)+みなし図形(点線)+高さ線(細点線)+直角マーク(rightAngleMark共通導出)+寸法ラベル(帰属: 最近傍=担当 or 担当線に接する≤10px)。円は直径基準でスケール。
+- **関門46 approx_shape_vectors.js**: 行台帳9行(みなし8+円1)×seed100=面積比[0.92,1.08]・内外はみ出し(輪郭点が内側/外側とも≥3)・自己交差なし・みなし面積=転記答(寸法未転記の2行=u01_002/005は答を再現する寸法を設計補完)・帰属・決定性+契約=901照合GREEN。**全46関門GREEN・golden不変(図層のみ)**。
+- 台帳: u01_007/008(円と正方形の倍=ます数え図)・024(平行四辺形−三角形の複合みなし・内訳未転記)・027(図から寸法を読む)=保留・第2便候補。u01_019(円・図なし・転記答310=3.1×10²)は答保存のテキスト形+円図。
+- スモーク: approx_rect/approx_tri_island/approx_circle/approx_trap(+para)→まるこ目視待ち。「倍の2図」は007/008が図依存(ます数え)のため未実装=報告。
