@@ -2059,6 +2059,58 @@
     lay._geom = G;
     return lay;
   }
+  // ---- 数直線便 Kind: number_line(1kind3系統=int(万・億・兆)/dec(0.1・0.01・0.001刻み)/frac(0〜1をden等分)・裁可n) ----
+  // 値は system の基準単位の数値(int: base=万/億の倍数を fp.base(1e4/1e8) で絶対値化して表示・dec: 実数・frac: 分子/分母)。
+  // 描画: 水平線+右矢じり・大目盛(長線+数値ラベル下)・小目盛(短線)・矢印↑(目盛の下から上向き)+記号(ア/イ/ウ)を矢印の下。記号は隣接時に上下交互(finishLabels資産)。
+  var NL_W = 300, NL_MAJ = 12, NL_MIN = 6;
+  function nlFmtBig(abs) {   // 絶対値→「N兆N億N万N」(0→'0'・表記はバンク由来の単位文字を fp.units で差し替え可)
+    if (abs === 0) return '0';
+    var cho = Math.floor(abs / 1e12), oku = Math.floor(abs % 1e12 / 1e8), man = Math.floor(abs % 1e8 / 1e4), rest = abs % 1e4, out = '';
+    if (cho) out += cho + '兆'; if (oku) out += oku + '億'; if (man) out += man + '万'; if (rest) out += rest;
+    return out;
+  }
+  function nlDecimals(x) { var t = String(x); return t.indexOf('e') >= 0 ? Math.max(0, -Number(t.split('e')[1])) : (t.indexOf('.') >= 0 ? t.split('.')[1].length : 0); }
+  function nlFmt(v, fp, forMarker) {   // forMarker=true は小目盛精度(minorの小数桁)で表示(2.84)・目盛ラベルは label_fmt の桁(2.8)
+    var f = fp.label_fmt || 'plain';
+    if (f === 'big') return nlFmtBig(Math.round(v * (Number(fp.base) || 1)));
+    if (/^dec(\d)$/.test(f)) return Number(v).toFixed(forMarker ? Math.max(Number(f.slice(3)), nlDecimals(fp.minor)) : Number(f.slice(3)));
+    if (f === 'frac') { var den = Number(fp.den) || 1, num = Math.round(v * den); return num === 0 ? '0' : (num % den === 0 ? String(num / den) : (num > den ? Math.floor(num / den) + 'と' + (num % den) + '/' + den : num + '/' + den)); }
+    return String(v);
+  }
+  function numberLineGeom(fp) {
+    var min = Number(fp.min), max = Number(fp.max), major = Number(fp.major), minor = Number(fp.minor) || major;
+    if (!(max > min) || !(major > 0) || !(minor > 0)) throw new Error('number_line: min/max/major/minor が不正(契約違反)');
+    var eps = minor * 1e-6, nMinor = Math.round((max - min) / minor);
+    if (Math.abs((max - min) / minor - nMinor) > 1e-6 || Math.abs(major / minor - Math.round(major / minor)) > 1e-6) throw new Error('number_line: 刻みが範囲/大目盛を割り切らない(契約違反)');
+    var ticks = [];
+    for (var i = 0; i <= nMinor; i++) { var v = min + i * minor, isMaj = Math.abs((v - min) / major - Math.round((v - min) / major)) < 1e-6; ticks.push({ v: v, x: (v - min) / (max - min) * NL_W, major: isMaj }); }
+    var markers = (fp.markers || []).map(function (m) { var v = Number(m.value); if (v < min - eps || v > max + eps) throw new Error('number_line: markerが範囲外 ' + m.label); var k = (v - min) / minor; if (Math.abs(k - Math.round(k)) > 1e-6) throw new Error('number_line: markerが目盛上にない ' + m.label); return { label: String(m.label), value: v, x: (v - min) / (max - min) * NL_W, k: Math.round(k) }; });
+    return { min: min, max: max, major: major, minor: minor, ticks: ticks, markers: markers, nMinor: nMinor };
+  }
+  function numberLineLayout(fp) {
+    var g = numberLineGeom(fp), lay = newLayout(), y = 0, showV = fp.show_values || 'majors';
+    lay.parts.push(lineEl([-10, y], [NL_W + 18, y], C_STROKE, 2)); lay.segs.push({ id: 'axis', p1: [-10, y], p2: [NL_W + 18, y] });
+    lay.parts.push('<path d="M ' + (NL_W + 18) + ' ' + y + ' l -8 -5 l 0 10 z" fill="' + C_STROKE + '"/>');
+    lay.pts.push([-12, y - 34], [NL_W + 20, y + 50]);
+    var specs = [];
+    g.ticks.forEach(function (t, i) {
+      var h = t.major ? NL_MAJ : NL_MIN; lay.parts.push(lineEl([t.x, y - h], [t.x, y + (t.major ? 3 : 0)], C_STROKE, t.major ? 1.6 : 1));
+      var show = showV === 'majors' ? t.major : showV === 'ends' ? (i === 0 || i === g.ticks.length - 1) : false;
+      if (show) { lay.segs.push({ id: 'tick' + i, p1: [t.x, y - h], p2: [t.x, y] }); specs.push({ anchor: [t.x, y - h - 3], dirs: [[0, -1]], text: nlFmt(t.v, fp), cands: [[9, 12], [9, 11], [10, 10]], color: '#333', own: 'tick' + i }); }
+    });
+    finishLabels(lay, specs);   // 数値ラベル(目盛の上側・矢印↑は線の下側=領域分離で衝突なし)
+    var mspecs = [];
+    var order = g.markers.map(function (m, i) { return i; }).sort(function (a, b) { return g.markers[a].x - g.markers[b].x; }), level = {}, prevX = -1e9, prevLv = 1;
+    order.forEach(function (i) { var m = g.markers[i]; level[i] = (m.x - prevX < 18) ? (prevLv === 0 ? 1 : 0) : 0; prevX = m.x; prevLv = level[i]; });   // 近接(18px未満)の記号は矢印長を段違いにして記号を上下2段に分ける
+    g.markers.forEach(function (m, i) {   // 矢印↑: 目盛の下(y+26・段違い時y+48)から上向きに立てる。記号はその下
+      var top = y + 4, bottom = y + (level[i] ? 48 : 26); lay.parts.push(lineEl([m.x, bottom], [m.x, top], C_TARGET, 1.8)); lay.parts.push('<path d="M ' + m.x.toFixed(2) + ' ' + top + ' l -4 6 l 8 0 z" fill="' + C_TARGET + '"/>');
+      lay.segs.push({ id: 'mk' + i, p1: [m.x, bottom], p2: [m.x, top] });
+      mspecs.push({ anchor: [m.x, bottom], dirs: [[0, 1]], text: m.label, cands: [[10, 13], [13, 12]], color: C_TARGET, own: 'mk' + i });
+    });
+    if (fp.show_markers !== false) finishLabels(lay, mspecs);
+    lay._geom = g;
+    return lay;
+  }
   // ---- P5-3 Kind A: xy_graph mode="polyline"(折れ線グラフ・1〜2系列・draw対応) ----
   // v1(prop/inv)/v2(jhs4象限)へ一切触れない独立分岐。日本語ハードコード禁止(表示文字列は全てfp由来)。
   var PL_W = 264, PL_H = 190, PL_FS = 11;
@@ -2876,7 +2928,7 @@
     para_area: paraAreaLayout, tri_area: triAreaLayout, trap_area: trapAreaLayout,
     rhombus_area: rhombusAreaLayout, circle: circleLayout, cuboid: cuboidLayout, prism: prismLayout,
     pyramid: pyramidLayout, cylinder: cylinderLayout, cone: coneLayout, sphere: sphereLayout,
-    rotation_source: rotationSourceLayout, clock_face: clockFaceLayout, composite_circle: compositeCircleLayout, composite_area: compositeAreaLayout, line_set: lineSetLayout, sym_figure: symFigureLayout, shape_set: shapeSetLayout, approx_shape: approxShapeLayout, approx_grid: approxGridLayout, approx_solid: approxSolidLayout,
+    rotation_source: rotationSourceLayout, clock_face: clockFaceLayout, composite_circle: compositeCircleLayout, composite_area: compositeAreaLayout, line_set: lineSetLayout, sym_figure: symFigureLayout, shape_set: shapeSetLayout, approx_shape: approxShapeLayout, approx_grid: approxGridLayout, approx_solid: approxSolidLayout, number_line: numberLineLayout,
     sym_polygon: symPolygonLayout, similar_pair: similarPairLayout, xy_graph: xyGraphLayout, dot_plot: dotPlotLayout, histogram: histogramLayout,
     angle_figure: angleFigureLayout
   };
@@ -2915,6 +2967,13 @@
   var FigureBuilder = { build: build, BUILDERS: BUILDERS, _angleSumMinClearance: angleSumMinClearance, _tableMinClearance: tableMinClearance };
   // e-2: line_setの監査(角度差/包含/交点/ラベル帰属を描画と同じ導出で独立再計算)
   FigureBuilder._lsStats = function (on) { LS_STATS = on ? {} : null; return LS_STATS; };
+  FigureBuilder._numberLineAudit = function (fp) {   // 数直線便 関門用: 目盛座標=値の線形写像(独立再計算用に返す)・矢印が目盛上・記号帰属・間隔・数値ラベル非重なり
+    var g = numberLineGeom(fp), lay = numberLineLayout(fp), out = { ticks: g.ticks, markers: g.markers, issues: [], labels: [], fmt: g.markers.map(function (m) { return nlFmt(m.value, fp, true); }) };
+    for (var i = 0; i < g.markers.length; i++) for (var j = i + 1; j < g.markers.length; j++) if (Math.abs(g.markers[i].k - g.markers[j].k) < 2) out.issues.push('marker_gap:' + g.markers[i].label + g.markers[j].label);
+    for (var a = 0; a < lay.labels.length; a++) for (var b = a + 1; b < lay.labels.length; b++) if (rectRect(lay.labels[a].box, lay.labels[b].box) < 1) out.issues.push('label_overlap:' + lay.labels[a].text + '/' + lay.labels[b].text);
+    lay.labels.forEach(function (lb) { var cx = (lb.box.x0 + lb.box.x1) / 2, below = (lb.box.y0 + lb.box.y1) / 2 > 0, best = null, bd = 1e9; lay.segs.forEach(function (sg) { if (sg.id === 'axis') return; if ((sg.id.indexOf('mk') === 0) !== below) return; var dd = Math.abs(cx - sg.p1[0]); if (dd < bd) { bd = dd; best = sg.id; } }); out.labels.push({ own: lb.own, nearest: best, ok: best === lb.own && bd < 1e-6, text: lb.text, dx: bd }); });   // 帰属=ラベル中心xに最も近い縦要素(矢印/目盛)=真下・真上に置く規則(線の下側のラベルは矢印・上側は目盛と突合。数直線は全要素が鉛直なので水平距離で一意・段違い矢印の胴に影響されない)
+    return out;
+  };
   FigureBuilder._approxSolidAudit = function (fp) {   // 概形第2便 関門用: シルエット面積比・内外・自己交差・ラベル距離・体積
     var G = approxSolidGeom(fp), lay = approxSolidLayout(fp), out = { issues: asValidate(G.o), ratio: G.o.ratio, volume: G.g.volume, pts: G.o.pts, poly: G.g.poly, sub: G.o.sub, labels: [] };
     lay.labels.forEach(function (lb) { var dOwn = 1e9; lay.segs.forEach(function (sg) { if (sg.id === lb.own) dOwn = Math.min(dOwn, boxSeg(lb.box, sg.p1, sg.p2)); }); out.labels.push({ own: lb.own, dOwn: dOwn, ok: dOwn <= 18, text: lb.text }); });
@@ -3051,7 +3110,7 @@
     pyramid_visible: pyramidVisible, convex_hull: convexHull,   // S-2.1: 隠線シルエット判定(vector用・corr-0023)
     rotation_source: rotationSourceGeom,   // 第2ブロックS-4: 回転体の源(vector用)
     clock_face: clockFaceGeom,             // 小学第2波: 時計文字盤(vector用)
-    composite_circle: compositeCircleGeom, composite_area: compositeAreaGeom, line_set: lineSetGeom, sym_figure: symFigureGeom, shape_set: shapeSetGeom, approx_shape: approxShapeGeom, approx_grid: approxGridGeom, approx_solid: approxSolidGeom, ag_classify: agClassify, ag_inside: agInsidePoly, as_poly_area: asPolyArea, ss_symmetry: ssSymmetry, ss_outline: ssOutline, ss_catalog: SS_CAT, // P-3a: 複合円(vector用) / 対称第1便
+    composite_circle: compositeCircleGeom, composite_area: compositeAreaGeom, line_set: lineSetGeom, sym_figure: symFigureGeom, shape_set: shapeSetGeom, approx_shape: approxShapeGeom, approx_grid: approxGridGeom, approx_solid: approxSolidGeom, number_line: numberLineGeom, nl_fmt: nlFmt, ag_classify: agClassify, ag_inside: agInsidePoly, as_poly_area: asPolyArea, ss_symmetry: ssSymmetry, ss_outline: ssOutline, ss_catalog: SS_CAT, // P-3a: 複合円(vector用) / 対称第1便
     arc_sample_points: arcSamplePoints,          // 弧サンプル点(曲率関門用・頂点からr一定検査)
     // ベクター用の位置引数ラッパ（Python prism_geom(base_kind,a,b,h) と同型）
     prism: function (base_kind, a, b, h) {
