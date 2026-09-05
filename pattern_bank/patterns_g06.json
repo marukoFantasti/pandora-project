@@ -2355,6 +2355,98 @@
     ]
    }
   }
+ ],
+  "gaikei_rect": [
+  {
+   "row": "u01_006",
+   "q": "下の図のような形のおよその面積を、およその形を考えて求めなさい。（縦24m、横50mの長方形とみる）",
+   "u": "m",
+   "bn": "長方形",
+   "amp": null,
+   "w": 50,
+   "h": 24
+  },
+  {
+   "row": "u01_021",
+   "q": "次の図のような形のおよその面積を、およその形を考えて求めなさい。（40m×90m長方形とみる）",
+   "u": "m",
+   "bn": "長方形",
+   "amp": null,
+   "w": 90,
+   "h": 40
+  }
+ ],
+  "gaikei_para": [
+  {
+   "row": "u01_002",
+   "q": "同じ池のおよその面積を、およその形を考える方法で求めなさい。（平行四辺形とみる）",
+   "u": "m",
+   "bn": "平行四辺形",
+   "amp": null,
+   "b": 6,
+   "h": 3
+  },
+  {
+   "row": "u01_015",
+   "q": "次の図のような形のおよその面積を、およその形を考えて求めなさい。（8m×5m平行四辺形とみる）",
+   "u": "m",
+   "bn": "平行四辺形",
+   "amp": null,
+   "b": 8,
+   "h": 5
+  }
+ ],
+  "gaikei_trap": [
+  {
+   "row": "u01_022",
+   "q": "次の図のような形のおよその面積を、およその形を考えて求めなさい。（上底4m・下底10m・高さ5mの台形とみる）",
+   "u": "m",
+   "bn": "台形",
+   "amp": null,
+   "a": 4,
+   "b": 10,
+   "h": 5
+  }
+ ],
+  "gaikei_tri": [
+  {
+   "row": "u01_005",
+   "q": "下の図のような形のおよその面積を、およその形を考えて求めなさい。（三角形とみる）",
+   "u": "cm",
+   "bn": "三角形",
+   "amp": null,
+   "b": 6,
+   "h": 6
+  },
+  {
+   "row": "u01_016",
+   "q": "次の図のような形のおよその面積を、およその形を考えて求めなさい。（底辺10m・高さ6mの三角形とみる）",
+   "u": "m",
+   "bn": "三角形",
+   "amp": null,
+   "b": 10,
+   "h": 6
+  },
+  {
+   "row": "u01_025",
+   "q": "右の図は千葉県の地図です。これを参考にして、千葉県のおよその面積を求めなさい。（90km×112kmの三角形とみる）",
+   "u": "km",
+   "bn": "三角形",
+   "amp": 0.15,
+   "b": 112,
+   "h": 90
+  }
+ ],
+  "gaikei_en": [
+  {
+   "row": "u01_019",
+   "q": "半径10cmの円のおよその面積を求めなさい。（円周率を3.1として）",
+   "u": "cm",
+   "bn": "円",
+   "r": 10,
+   "d": 310,
+   "amp": null
+  }
  ]
  },
  "patterns": [
@@ -10595,6 +10687,406 @@
    "answer_structure": "single",
    "template_number_constants": [],
    "answer_domain": "label"
+  },
+  {
+   "pattern_id": "g06_gaikei_rect_01",
+   "grade": "g06",
+   "unit_id": "g06_c10_u01",
+   "unit_name": "およその大きさ",
+   "semantic_category": "およその面積: 長方形とみる(approx_shape)",
+   "semantic_note": "裁可(l) 概形第1便。みなし図形(長方形)の寸法と答は転記保存(行別レコード2)。不定形の輪郭はapprox_shapeが決定性乱数(seed)で合成し、面積比[0.92,1.08]・内外はみ出しを関門46で検算。",
+   "step_count": 1,
+   "operation": "みなし図形の面積",
+   "answer_formula": "w1 * h1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "gaikei_rect[j1].q"
+    },
+    "u1": {
+     "from": "gaikei_rect[j1].u"
+    },
+    "bn1": {
+     "from": "gaikei_rect[j1].bn"
+    },
+    "amp1": {
+     "from": "gaikei_rect[j1].amp"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    },
+    "w1": {
+     "from": "gaikei_rect[j1].w"
+    },
+    "h1": {
+     "from": "gaikei_rect[j1].h"
+    }
+   },
+   "computed_slots": {},
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え 約{ans}{u1}²",
+   "figure_params": {
+    "kind": "approx_shape",
+    "base": "rect",
+    "dims": {
+     "w": "{w1}",
+     "h": "{h1}"
+    },
+    "unit": "{u1}",
+    "outline": {
+     "seed": "{sd1}",
+     "amp": "{amp1}"
+    },
+    "show_base": true
+   },
+   "kaisetsu": "およその面積を求めるときは、形をだいたい同じ大きさの長方形・三角形・円などとみて計算します。まわりの線は少しはみ出したり、へこんだりしていますが、はみ出した分とへこんだ分がだいたい同じなら、みなした図形の面積が、およその面積になります。{bn1}とみると、面積は約{ans}{u1}²です。",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "positive_int"
+  },
+  {
+   "pattern_id": "g06_gaikei_para_01",
+   "grade": "g06",
+   "unit_id": "g06_c10_u01",
+   "unit_name": "およその大きさ",
+   "semantic_category": "およその面積: 平行四辺形とみる(approx_shape)",
+   "semantic_note": "裁可(l) 概形第1便。みなし図形(平行四辺形)の寸法と答は転記保存(行別レコード2)。不定形の輪郭はapprox_shapeが決定性乱数(seed)で合成し、面積比[0.92,1.08]・内外はみ出しを関門46で検算。寸法未転記の行(池/三角形)は答を再現する寸法を設計補完。",
+   "step_count": 1,
+   "operation": "みなし図形の面積",
+   "answer_formula": "b1 * h1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "gaikei_para[j1].q"
+    },
+    "u1": {
+     "from": "gaikei_para[j1].u"
+    },
+    "bn1": {
+     "from": "gaikei_para[j1].bn"
+    },
+    "amp1": {
+     "from": "gaikei_para[j1].amp"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    },
+    "b1": {
+     "from": "gaikei_para[j1].b"
+    },
+    "h1": {
+     "from": "gaikei_para[j1].h"
+    }
+   },
+   "computed_slots": {},
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え 約{ans}{u1}²",
+   "figure_params": {
+    "kind": "approx_shape",
+    "base": "para",
+    "dims": {
+     "b": "{b1}",
+     "h": "{h1}"
+    },
+    "unit": "{u1}",
+    "outline": {
+     "seed": "{sd1}",
+     "amp": "{amp1}"
+    },
+    "show_base": true
+   },
+   "kaisetsu": "およその面積を求めるときは、形をだいたい同じ大きさの長方形・三角形・円などとみて計算します。まわりの線は少しはみ出したり、へこんだりしていますが、はみ出した分とへこんだ分がだいたい同じなら、みなした図形の面積が、およその面積になります。{bn1}とみると、面積は約{ans}{u1}²です。",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "positive_int"
+  },
+  {
+   "pattern_id": "g06_gaikei_trap_01",
+   "grade": "g06",
+   "unit_id": "g06_c10_u01",
+   "unit_name": "およその大きさ",
+   "semantic_category": "およその面積: 台形とみる(approx_shape)",
+   "semantic_note": "裁可(l) 概形第1便。みなし図形(台形)の寸法と答は転記保存(行別レコード1)。不定形の輪郭はapprox_shapeが決定性乱数(seed)で合成し、面積比[0.92,1.08]・内外はみ出しを関門46で検算。",
+   "step_count": 1,
+   "operation": "みなし図形の面積",
+   "answer_formula": "(a1 + b1) * h1 // 2",
+   "slots": {
+    "j1": {
+     "choices": [
+      0
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "gaikei_trap[j1].q"
+    },
+    "u1": {
+     "from": "gaikei_trap[j1].u"
+    },
+    "bn1": {
+     "from": "gaikei_trap[j1].bn"
+    },
+    "amp1": {
+     "from": "gaikei_trap[j1].amp"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    },
+    "a1": {
+     "from": "gaikei_trap[j1].a"
+    },
+    "b1": {
+     "from": "gaikei_trap[j1].b"
+    },
+    "h1": {
+     "from": "gaikei_trap[j1].h"
+    }
+   },
+   "computed_slots": {},
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え 約{ans}{u1}²",
+   "figure_params": {
+    "kind": "approx_shape",
+    "base": "trap",
+    "dims": {
+     "a": "{a1}",
+     "b": "{b1}",
+     "h": "{h1}"
+    },
+    "unit": "{u1}",
+    "outline": {
+     "seed": "{sd1}",
+     "amp": "{amp1}"
+    },
+    "show_base": true
+   },
+   "kaisetsu": "およその面積を求めるときは、形をだいたい同じ大きさの長方形・三角形・円などとみて計算します。まわりの線は少しはみ出したり、へこんだりしていますが、はみ出した分とへこんだ分がだいたい同じなら、みなした図形の面積が、およその面積になります。{bn1}とみると、面積は約{ans}{u1}²です。",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "positive_int"
+  },
+  {
+   "pattern_id": "g06_gaikei_tri_01",
+   "grade": "g06",
+   "unit_id": "g06_c10_u01",
+   "unit_name": "およその大きさ",
+   "semantic_category": "およその面積: 三角形とみる(approx_shape)",
+   "semantic_note": "裁可(l) 概形第1便。みなし図形(三角形)の寸法と答は転記保存(行別レコード3)。不定形の輪郭はapprox_shapeが決定性乱数(seed)で合成し、面積比[0.92,1.08]・内外はみ出しを関門46で検算。寸法未転記の行(池/三角形)は答を再現する寸法を設計補完。",
+   "step_count": 1,
+   "operation": "みなし図形の面積",
+   "answer_formula": "b1 * h1 // 2",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "gaikei_tri[j1].q"
+    },
+    "u1": {
+     "from": "gaikei_tri[j1].u"
+    },
+    "bn1": {
+     "from": "gaikei_tri[j1].bn"
+    },
+    "amp1": {
+     "from": "gaikei_tri[j1].amp"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    },
+    "b1": {
+     "from": "gaikei_tri[j1].b"
+    },
+    "h1": {
+     "from": "gaikei_tri[j1].h"
+    }
+   },
+   "computed_slots": {},
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え 約{ans}{u1}²",
+   "figure_params": {
+    "kind": "approx_shape",
+    "base": "tri",
+    "dims": {
+     "b": "{b1}",
+     "h": "{h1}"
+    },
+    "unit": "{u1}",
+    "outline": {
+     "seed": "{sd1}",
+     "amp": "{amp1}"
+    },
+    "show_base": true
+   },
+   "kaisetsu": "およその面積を求めるときは、形をだいたい同じ大きさの長方形・三角形・円などとみて計算します。まわりの線は少しはみ出したり、へこんだりしていますが、はみ出した分とへこんだ分がだいたい同じなら、みなした図形の面積が、およその面積になります。{bn1}とみると、面積は約{ans}{u1}²です。",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "positive_int"
+  },
+  {
+   "pattern_id": "g06_gaikei_en_01",
+   "grade": "g06",
+   "unit_id": "g06_c10_u01",
+   "unit_name": "およその大きさ",
+   "semantic_category": "およその面積: 円とみる(approx_shape)",
+   "semantic_note": "裁可(l)+所見②承認: 図なし行の円の概算。転記答310=3.1×10²のため設問に「（円周率を3.1として）」を付与(設問補正)。答は転記保存(静的)。図はapprox_shape(circle)。",
+   "step_count": 1,
+   "operation": "円の概算",
+   "answer_formula": "d1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "gaikei_en[j1].q"
+    },
+    "u1": {
+     "from": "gaikei_en[j1].u"
+    },
+    "bn1": {
+     "from": "gaikei_en[j1].bn"
+    },
+    "r1": {
+     "from": "gaikei_en[j1].r"
+    },
+    "d1": {
+     "from": "gaikei_en[j1].d"
+    },
+    "amp1": {
+     "from": "gaikei_en[j1].amp"
+    },
+    "sd1": {
+     "type": "int",
+     "range": [
+      1,
+      100
+     ]
+    }
+   },
+   "computed_slots": {},
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え 約{ans}{u1}²",
+   "figure_params": {
+    "kind": "approx_shape",
+    "base": "circle",
+    "dims": {
+     "r": "{r1}"
+    },
+    "unit": "{u1}",
+    "outline": {
+     "seed": "{sd1}",
+     "amp": "{amp1}"
+    },
+    "show_base": true
+   },
+   "kaisetsu": "およその面積を求めるときは、形をだいたい同じ大きさの長方形・三角形・円などとみて計算します。まわりの線は少しはみ出したり、へこんだりしていますが、はみ出した分とへこんだ分がだいたい同じなら、みなした図形の面積が、およその面積になります。{bn1}とみると、面積は約{ans}{u1}²です。",
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05",
+     "g06"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    3,
+    1
+   ],
+   "answer_domain": "positive_int"
   }
  ],
  "schema_changelog": {

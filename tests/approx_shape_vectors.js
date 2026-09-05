@@ -31,6 +31,25 @@ LED.rows.forEach(r => {
   }
 });
 console.log('  ' + (LED.rows.length * 100) + '構成 ' + (bad === 0 ? '✅' : '❌'));
+console.log('=== (1b) バンク配線(g06 approx_shape 5パターン/9行): レコードの寸法→みなし面積=転記答・生成器経由の図で関門条件 ===');
+(function () {
+  const P = require(path.join(__dirname, '..', 'pattern_bank', 'pattern_generator.js'));
+  const bank = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'pattern_bank', 'patterns_g06.json'), 'utf-8'));
+  let n = 0;
+  bank.patterns.filter(p => p.figure_params && p.figure_params.kind === 'approx_shape').forEach(p => {
+    for (let s = 0; s < 6; s++) {
+      n++; cases++;
+      let r; try { r = P.makeProblem(p, null, bank.shared_lexicon); } catch (e) { bad++; console.log('  ❌ ' + p.pattern_id + ' 生成失敗 ' + e.message.slice(0, 60)); return; }
+      let a; try { a = FB._approxShapeAudit(r.figure); } catch (e) { bad++; console.log('  ❌ ' + p.pattern_id + ' 図失敗 ' + e.message.slice(0, 60)); return; }
+      if (a.issues.length || a.labels.some(l => !l.ok)) { bad++; console.log('  ❌ ' + p.pattern_id + ' issues/帰属 ' + a.issues); }
+      const led = LED.rows.find(x => x.row === r.env.q1 && false) || null;
+      const base = r.figure.base, d = r.figure.dims, area = FORM[base](Object.fromEntries(Object.entries(d).map(([k, v]) => [k, Number(v)])));
+      if (base !== 'circle' && Math.abs(area - r.env.ans) > 1e-9) { bad++; console.log('  ❌ ' + p.pattern_id + ' 答≠みなし面積 ' + r.env.ans + ' vs ' + area); }
+      if (!/^答え 約\d+/.test(r.answer)) { bad++; console.log('  ❌ ' + p.pattern_id + ' 答え形式 ' + r.answer); }
+    }
+  });
+  console.log('  生成 ' + n + '本 ' + (bad === 0 ? '✅' : '❌'));
+})();
 console.log('=== (2) 契約throw ===');
 [[{ kind: 'approx_shape', base: 'hexagon', dims: { r: 3 } }, '未知base']].forEach(([fp, name]) => { cases++; let threw = false; try { FB.build(fp); } catch (e) { threw = true; } if (!threw) { bad++; console.log('  ❌ 契約: ' + name); } });
 console.log('  契約1種 ' + (bad === 0 ? '✅' : '❌'));

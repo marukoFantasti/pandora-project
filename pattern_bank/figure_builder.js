@@ -1888,7 +1888,8 @@
     return t > 1e-9 && t < 1 - 1e-9 && u > 1e-9 && u < 1 - 1e-9;
   }
   function approxShapeGeom(fp) {
-    var base = fp.base, dims = fp.dims || {}, g = asBaseGeom(base, dims), amp = fp.outline && fp.outline.amp !== undefined ? Number(fp.outline.amp) : (base === 'tri' ? 0.15 : 0.12);
+    var base = fp.base, dims = fp.dims || {}, g = asBaseGeom(base, dims), ampRaw = fp.outline ? fp.outline.amp : undefined;
+    var amp = (ampRaw === undefined || ampRaw === null || ampRaw === '' || isNaN(Number(ampRaw))) ? (base === 'tri' ? 0.15 : 0.12) : Number(ampRaw);   // レコードのnull=既定
     var seed = fp.outline && fp.outline.seed !== undefined ? Number(fp.outline.seed) : (fp.seed !== undefined ? Number(fp.seed) : 1), o = null;
     for (var sub = 0; sub < 24; sub++) { var cand = asOutline(g, seed * 1000 + sub, amp); if (asValidate(cand).length === 0) { o = cand; o.sub = sub; break; } }
     if (!o) throw new Error('approx_shape: 輪郭の合成規則を満たさない(契約違反: seed=' + seed + ')');
