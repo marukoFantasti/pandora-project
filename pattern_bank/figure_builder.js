@@ -1905,8 +1905,18 @@
       else { var bp = g.poly.map(worldFlip); lay.parts.push('<polygon points="' + polyStr(bp) + '" fill="none" stroke="' + C_STROKE + '" stroke-width="1.6" stroke-dasharray="5,4"/>'); bp.forEach(function (q, i) { lay.segs.push({ id: 'b' + i, p1: q, p2: bp[(i + 1) % bp.length] }); lay.pts.push(q); }); }
       g.aux.forEach(function (ax, i) { var p1 = worldFlip(ax.p1), p2 = worldFlip(ax.p2); lay.parts.push(lineEl(p1, p2, C_STROKE, 1.4, '3,3')); lay.segs.push({ id: 'aux' + i, p1: p1, p2: p2 }); });
       g.marks.forEach(function (m) { var rm = rightAngleMark(m.V, m.e1, m.e2, 9); lay.parts.push(rm.el); });
-      var specs = g.labels.map(function (lb) { var an = worldFlip(lb.anchor), dir = [lb.dir[0], -lb.dir[1]], aux = /^aux/.test(lb.own);
-        return { anchor: an, dirs: aux ? [dir, [-dir[0], -dir[1]]] : [dir], text: String(G.dims[lb.text]) + u, cands: aux ? [[14, 12], [16, 11], [20, 11], [14, 10]] : [[22, 13], [28, 13], [22, 11], [34, 11]], color: '#333', own: lb.own }; });   // 高さラベルは線の近傍(両側候補)
+      // r2(まるこ差し戻し): 辺ラベルの外側オフセット＝担当辺の中点付近(±辺長の20%区間)での輪郭の外側はみ出し量の最大＋6px(辺ごと・全辺一律にしない)。
+      // 輪郭線はクリアランス計算から除外(輪郭に押し出されて辺から離れないように)。高さ/半径ラベルは現状維持(finishLabels)。
+      var specs = [];
+      g.labels.forEach(function (lb) {
+        var an = worldFlip(lb.anchor), dir = [lb.dir[0], -lb.dir[1]], aux = /^aux/.test(lb.own), text = String(G.dims[lb.text]) + u;
+        if (aux) { specs.push({ anchor: an, dirs: [dir, [-dir[0], -dir[1]]], text: text, cands: [[14, 12], [16, 11], [20, 11], [14, 10]], color: '#333', own: lb.own }); return; }
+        var ei = Number(lb.own.slice(1)), P1 = g.poly[ei], P2 = g.poly[(ei + 1) % g.poly.length], ex = P2[0] - P1[0], ey = P2[1] - P1[1], L = Math.hypot(ex, ey), ux = ex / L, uy = ey / L;
+        var nx = lb.dir[0], ny = lb.dir[1], exc = 0;   // 外向き法線(世界座標)
+        o.pts.forEach(function (q) { var t = ((q[0] - P1[0]) * ux + (q[1] - P1[1]) * uy) / L; if (t < 0.3 || t > 0.7) return; var dd = (q[0] - P1[0]) * nx + (q[1] - P1[1]) * ny; if (dd > exc) exc = dd; });
+        var fs = 13, dist = exc + 6 + fs * 0.55, cx = an[0] + dir[0] * dist, cy = an[1] + dir[1] * dist, box = textBox([cx, cy], text, fs);
+        lay.parts.push(textEl(cx, cy, text, fs, '#333')); lay.labels.push({ box: box, own: lb.own, ownMin: 0, text: text }); lay.pts.push([box.x0, box.y0], [box.x1, box.y1]);
+      });
       finishLabels(lay, specs);
     }
     lay._geom = G;
@@ -2773,7 +2783,8 @@
     lay.labels.forEach(function (lb) {
       var best = null, bd = 1e9; lay.segs.forEach(function (sg) { if (/^o_/.test(sg.id)) return; var dd = boxSeg(lb.box, sg.p1, sg.p2); if (dd < bd) { bd = dd; best = sg.id; } });
       var dOwn = 1e9; lay.segs.forEach(function (sg) { if (sg.id === lb.own) dOwn = Math.min(dOwn, boxSeg(lb.box, sg.p1, sg.p2)); });
-      out.labels.push({ own: lb.own, nearest: best, dOwn: dOwn, ok: best === lb.own || dOwn <= 10, text: lb.text });   // 帰属: 最近傍=担当 or 担当線に接している(≤10px・高さ線の傍に斜辺が寄る三角形)
+      var edge = /^b\d/.test(lb.own);
+      out.labels.push({ own: lb.own, nearest: best, dOwn: dOwn, ok: (best === lb.own || dOwn <= 10) && (!edge || dOwn <= 18), text: lb.text });   // 帰属: 最近傍=担当 or 担当線に接している(≤10px)。辺ラベルは担当辺との距離≦18px(r2)
     });
     return out;
   };

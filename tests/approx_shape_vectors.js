@@ -17,7 +17,7 @@ LED.rows.forEach(r => {
     const fp = { kind: 'approx_shape', base: r.base, dims: r.dims, unit: r.unit, outline: { seed: s, amp: r.amp } };
     let a; try { a = FB._approxShapeAudit(fp); } catch (e) { bad++; if (fails++ < 3) console.log('  ❌ 生成失敗 ' + r.row + ' seed' + s + ' ' + e.message.slice(0, 60)); continue; }
     if (a.issues.length) { bad++; if (fails++ < 3) console.log('  ❌ issues ' + r.row + ' seed' + s + ' ' + a.issues); }
-    a.labels.forEach(l => { if (!l.ok) { bad++; if (fails++ < 3) console.log('  ❌ 帰属 ' + r.row + ' seed' + s + ' ' + l.text + '→' + l.nearest + '(' + l.own + ')'); } });
+    a.labels.forEach(l => { if (!l.ok) { bad++; if (fails++ < 3) console.log('  ❌ 帰属 ' + r.row + ' seed' + s + ' ' + l.text + '→' + l.nearest + '(' + l.own + ')'); } if (/^b\d/.test(l.own) && l.dOwn > 18) { bad++; if (fails++ < 3) console.log('  ❌ 辺ラベル距離>18px ' + r.row + ' seed' + s + ' ' + l.text + ' ' + l.dOwn.toFixed(1)); } });
     // 独立再計算: 面積比・自己交差・内外はみ出し(輪郭点がみなし図形の内側/外側の両方に存在)
     const P = a.pts, baseA = a.circle ? Math.PI * a.circle.R * a.circle.R : area(a.base_poly), ratio = area(P) / baseA;
     if (ratio < 0.92 || ratio > 1.08) { bad++; if (fails++ < 3) console.log('  ❌ 面積比 ' + r.row + ' seed' + s + ' ' + ratio.toFixed(3)); }
