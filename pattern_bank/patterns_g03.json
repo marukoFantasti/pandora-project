@@ -308,6 +308,7 @@
    ],
    "question_tail": "1人分は何{counter}",
    "answer_template": "しき {n1}÷{n2}={ans} 答え {ans}{counter}",
+   "kaisetsu": "「同じ数ずつ分ける」ときは、わり算を使います。ぜんぶの数{n1}{counter}を、分ける人数{n2}人でわると、1人分が求められます。{n1}÷{n2}={ans}なので、1人分は{ans}{counter}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -382,6 +383,7 @@
    ],
    "question_tail": "何人に分けられますか",
    "answer_template": "しき {n1}÷{n2}={ans} 答え {ans}人",
+   "kaisetsu": "「1人に{n2}{counter}ずつ分ける」ときも、わり算を使います。ぜんぶの数{n1}{counter}の中に、{n2}{counter}が何回入るかを考えます。{n1}÷{n2}={ans}なので、{ans}人に分けられます。1人分を求めるときも、何人分かを求めるときも、式は同じわり算になります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -457,6 +459,7 @@
    ],
    "question_tail": "何倍ですか",
    "answer_template": "しき {n1}÷{n2}={ans} 答え {ans}倍",
+   "kaisetsu": "「何倍ですか」ときかれたら、もとにする大きさでわります。{n1}{unit}は{n2}{unit}の何倍かなので、{n1}÷{n2}={ans}で、{ans}倍です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -538,6 +541,7 @@
    ],
    "question_tail": "何人に配れて、何{counter}あまりますか",
    "answer_template": "しき {n1}÷{n2}={q}あまり{rem} 答え {q}人に配れて、{rem}{counter}あまる。",
+   "kaisetsu": "わり切れないわり算では、商とあまりを求めます。{n1}÷{n2}={q}あまり{rem}なので、{q}人に配れて、{rem}{counter}あまります。あまりの{rem}は、わる数の{n2}より小さくなっているか、たしかめましょう。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -627,6 +631,7 @@
    ],
    "question_tail": "(文脈依存)",
    "answer_template": "しき {n1}÷{n2}={q}あまり{rem} {q}+1={ans} 答え {ans}{ctx_ans_counter}",
+   "kaisetsu": "{n1}÷{n2}={q}あまり{rem}です。あまりの{rem}の分も入れなければならないので、{q}にあと1つ必要です。{q}+1={ans}で、答えは{ans}{ctx_ans_counter}になります。「あまりが出たら1つ多くする」のか「あまりは数えない」のか、問題の場面をよく読んで決めます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -716,6 +721,7 @@
    ],
    "question_tail": "(文脈依存)",
    "answer_template": "しき {n1}÷{n2}={q}あまり{rem} 答え {q}{ctx_ans_counter}",
+   "kaisetsu": "{n1}÷{n2}={q}あまり{rem}です。あまりの{rem}では1つ分に足りないので、あまりは数えません。答えは商のままの{q}{ctx_ans_counter}です。「あまりの分で、もう1つできるか」を場面で考えることが大切です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -815,6 +821,7 @@
    ],
    "question_tail": "1人分は何{counter}",
    "answer_template": "しき {a1}+{a2}={psum} {n1}÷{psum}={ans} 答え {ans}{counter}",
+   "kaisetsu": "まず、分ける人数を求めます。おとなと子どもをあわせて{a1}+{a2}={psum}人です。次に、ぜんぶの数{n1}{counter}を{psum}人でわって、{n1}÷{psum}={ans}なので、1人分は{ans}{counter}です。2つの式を順番に書きます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -888,6 +895,7 @@
    ],
    "question_tail": "□にあてはまる数",
    "answer_template": "しき {n1}+□={n3} □={n3}-{n1}={ans} 答え {ans}{counter}",
+   "kaisetsu": "もらった数を□とすると、{n1}+□={n3}という式になります。□を求めるときは、ぜんぶの数から、はじめの数をひきます。□={n3}−{n1}={ans}なので、もらったのは{ans}{counter}です。たし算の□は、ひき算で求められます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -961,6 +969,7 @@
    ],
    "question_tail": "□にあてはまる数",
    "answer_template": "しき {n1}-□={n3} □={n1}-{n3}={ans} 答え {ans}{counter}",
+   "kaisetsu": "{verb_use_ta}数を□とすると、{n1}−□={n3}という式になります。□を求めるときは、はじめの数からのこりの数をひきます。□={n1}−{n3}={ans}なので、{verb_use_ta}のは{ans}{counter}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1025,6 +1034,7 @@
    ],
    "question_tail": "□にあてはまる数",
    "answer_template": "しき {n2}×□={n3} □={n3}÷{n2}={ans} 答え {ans}グループ",
+   "kaisetsu": "グループの数を□とすると、{n2}×□={n3}という式になります。□を求めるときは、ぜんぶの人数を1グループの人数でわります。□={n3}÷{n2}={ans}なので、{ans}グループです。かけ算の□は、わり算で求められます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1092,6 +1102,7 @@
    ],
    "question_tail": "□にあてはまる数",
    "answer_template": "□={n1}÷{q}={ans} 答え {ans}",
+   "kaisetsu": "{n1}÷□={q}の□は、わる数です。わられる数を商でわると、わる数が求められます。□={n1}÷{q}={ans}です。求めた数で{n1}÷{ans}を計算して、{q}になればたしかめができます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1152,6 +1163,7 @@
    ],
    "question_tail": "あわせて何人",
    "answer_template": "しき {n1}+{n2}={ans} 答え {ans}人",
+   "kaisetsu": "「あわせて何人」ときかれたら、2つの数をたします。{n1}+{n2}={ans}なので、あわせて{ans}人です。くり上がりに気をつけて、一の位から順に計算します。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1230,6 +1242,7 @@
    ],
    "question_tail": "のこりは何{counter}",
    "answer_template": "しき {n1}-{n2}={ans} 答え {ans}{counter}",
+   "kaisetsu": "「のこりは何{counter}」ときかれたら、はじめの数から{verb_use}数をひきます。{n1}−{n2}={ans}なので、のこりは{ans}{counter}です。くり下がりに気をつけて、一の位から順に計算します。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1310,6 +1323,7 @@
    ],
    "question_tail": "どちらが何こ多く",
    "answer_template": "しき {n1}-{n2}={ans} 答え {actor_a}が{ans}こ多くひろった。",
+   "kaisetsu": "「どちらが何こ多い」ときかれたら、大きいほうから小さいほうをひきます。{n1}−{n2}={ans}なので、{actor_a}が{ans}こ多くひろいました。答えには、だれが多いのかも書きます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1380,6 +1394,7 @@
    ],
    "question_tail": "ぜんぶで何まい",
    "answer_template": "しき {n2}×{n3}={t} {t}+{n4}={ans} 答え {ans}まい",
+   "kaisetsu": "まず、たばになっている色紙の数を求めます。{n2}×{n3}={t}まいです。次に、ばらの{n4}まいをたして、{t}+{n4}={ans}まいです。",
    "template_number_constants": [
     1
    ],
@@ -1465,6 +1480,7 @@
    ],
    "question_tail": "おつりは何円",
    "answer_template": "しき {n2}×{n3}={t} {n5}-{t}={ans} 答え {ans}円",
+   "kaisetsu": "まず、パンの代金を求めます。{n2}×{n3}={t}円です。次に、出したお金から代金をひいて、{n5}−{t}={ans}円がおつりです。",
    "template_number_constants": [
     1
    ],
@@ -1550,6 +1566,7 @@
    ],
    "question_tail": "代金はぜんぶで何円",
    "answer_template": "しき {a}+{b}={s} {s}×{n}={ans} 答え {ans}円",
+   "kaisetsu": "パンとジュースを1つずつ買うと{a}+{b}={s}円です。それを{n}つずつ買うので、{s}×{n}={ans}円です。先に1組の代金を作ると、計算が楽になります。",
    "template_number_constants": [
     1
    ],
@@ -1650,6 +1667,7 @@
    ],
    "question_tail": "代金のちがいは何円",
    "answer_template": "しき {a}-{b}={d} {d}×{n}={ans} 答え {ans}円",
+   "kaisetsu": "ケーキとプリンの1こあたりのちがいは{a}−{b}={d}円です。{n}こずつ買うと、ちがいも{n}こ分になるので、{d}×{n}={ans}円です。",
    "template_number_constants": [
     1
    ],
@@ -1717,6 +1735,7 @@
     "家から学校までの道のりは{q1_disp}、学校から駅までの道のりは{q2_disp}です。家から学校の前を通って駅まで行くと、道のりは何km何mになりますか。"
    ],
    "answer_template": "しき {q1_disp}+{q2_disp}={ans}m {ans}m={ans_disp} 答え {ans_disp}",
+   "kaisetsu": "道のりをあわせるときは、同じ単位にそろえてたします。{q1_disp}+{q2_disp}={ans}mです。1000mが1kmなので、{ans}mは{ans_disp}と表せます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1781,6 +1800,7 @@
     "重さ{q1_disp}のかごに、みかんを{q2_disp}入れました。ぜんたいの重さは何kg何gになりますか。"
    ],
    "answer_template": "しき {q2_disp}={q2}g {q1_disp}+{q2}g={ans}g {ans}g={ans_disp} 答え {ans_disp}",
+   "kaisetsu": "重さをあわせるときは、同じ単位にそろえます。{q2_disp}は{q2}gなので、{q1_disp}+{q2}g={ans}gです。1000gが1kgなので、{ans}gは{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1843,6 +1863,7 @@
     "水がやかんに{q1_disp}L、ポットに{q2_disp}L入っています。あわせて何Lありますか。"
    ],
    "answer_template": "しき {q1_disp}+{q2_disp}={ans_disp} 答え {ans_disp}L",
+   "kaisetsu": "小数のたし算は、小数点の位置をそろえて、同じ位どうしをたします。{q1_disp}+{q2_disp}={ans_disp}なので、あわせて{ans_disp}Lです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1932,6 +1953,7 @@
     "{attr_a}テープは{q1_disp}m、{attr_b}テープは{q2_disp}mです。どちらが何m長いですか。"
    ],
    "answer_template": "しき {q1_disp}-{q2_disp}={ans_disp} 答え {attr_a}テープが{ans_disp}m長い。",
+   "kaisetsu": "「どちらが何m長い」ときかれたら、長いほうから短いほうをひきます。{q1_disp}−{q2_disp}={ans_disp}なので、{attr_a}テープが{ans_disp}m長いです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1997,6 +2019,7 @@
     "1{unit}を{den}等分した{num}こ分の{noun}は何{unit}ですか。"
    ],
    "answer_template": "答え {ans_frac}{unit}",
+   "kaisetsu": "1{unit}を{den}等分した1こ分は、{den}分の1{unit}です。その{num}こ分なので、{den}分の{num}、つまり{ans_frac}{unit}です。分母が「いくつに分けたか」、分子が「いくつ分か」を表します。",
    "template_number_constants": [
     1
    ],
@@ -2079,6 +2102,7 @@
     "リボンを{f1_disp}mと{f2_disp}mつかいました。あわせて何mつかいましたか。"
    ],
    "answer_template": "しき {f1_disp}+{f2_disp}={ans_frac} 答え {ans_frac}m",
+   "kaisetsu": "分母が同じ分数のたし算は、分母はそのままで、分子だけをたします。{f1_disp}+{f2_disp}={ans_frac}なので、あわせて{ans_frac}mです。分子が分母と同じになったら、それは1です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2158,6 +2182,7 @@
     "ジュースが{f1_disp}Lあります。{f2_disp}L飲みました。のこりは何Lですか。"
    ],
    "answer_template": "しき {f1_disp}-{f2_disp}={ans_frac} 答え {ans_frac}L",
+   "kaisetsu": "分母が同じ分数のひき算は、分母はそのままで、分子だけをひきます。{f1_disp}−{f2_disp}={ans_frac}なので、のこりは{ans_frac}Lです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2271,6 +2296,7 @@
    ],
    "question_tail": "長いすは何きゃく",
    "answer_template": "しき {n_a}×{n_b}={t} {t}÷{n2}={q}あまり{rem} {q}+1={ans} 答え {ans}きゃく",
+   "kaisetsu": "まず子どもの人数を求めます。{n_a}×{n_b}={t}人です。次に長いすの数を求めます。{t}÷{n2}={q}あまり{rem}で、あまった{rem}人にも長いすがいるので、{q}+1={ans}きゃくです。",
    "template_number_constants": [
     1
    ],
@@ -2325,6 +2351,7 @@
     "つぎの計算をしなさい。\n{a1}+{b1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "けたの多いたし算は、位をそろえて書き、一の位から順にたします。10になったら、次の位に1くり上げます。{a1}+{b1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2378,6 +2405,7 @@
     "つぎの計算をしなさい。\n{a1}-{b1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "けたの多いひき算は、位をそろえて書き、一の位から順にひきます。ひけないときは、上の位から1くり下げて10として計算します。{a1}−{b1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2420,6 +2448,7 @@
     "つぎの計算をしなさい。\n{a1}×{b1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "2けた×1けたの筆算は、一の位から順にかけます。一の位の答えが10をこえたら、十の位にくり上げます。{a1}×{b1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2462,6 +2491,7 @@
     "つぎの計算をしなさい。\n{a1}×{b1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "3けた×1けたの筆算も、一の位・十の位・百の位の順にかけていきます。くり上がりを忘れずにたします。{a1}×{b1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2510,6 +2540,7 @@
     "つぎの計算をしなさい。\n{a1}×{b1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "何十をかけるときは、まず十の位の数字でかけて、答えの右に0を1つつけます。{a1}×{b1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2568,6 +2599,7 @@
     "つぎの計算をしなさい。\n{a1}×{b1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "2けた×2けたの筆算は、かける数の一の位でかけた答えと、十の位でかけた答えを、位をずらして書いてからたします。{a1}×{b1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2623,6 +2655,7 @@
     "つぎの計算をしなさい。\n{a1}×{b1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "何百や何千をかけるときは、0をとった数どうしをかけてから、とった0の数だけ答えの右に0をつけます。{a1}×{b1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2676,6 +2709,7 @@
     "□にあてはまる数をかきましょう。\n{A1}×□={P1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "{A1}×□={P1}の□は、{P1}÷{A1}で求められます。何十のかけ算は、十の位の数字で考えると九九で見つけられます。□={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2783,6 +2817,7 @@
     "{N1}という数について、{ask1}の数字を答えなさい。"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "大きい数は、右から4けたずつ区切ると位がわかりやすくなります。一・十・百・千のあとは一万・十万・百万・千万です。{N1}の{ask1}を右から数えて見つけると、その位の数字は{ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2825,6 +2860,7 @@
     "1000を{n1}こあつめた数はいくつですか。"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "1000を10こあつめると10000（一万）です。1000を{n1}こあつめた数は、1000×{n1}と同じで、{ans}です。1000の右に0が3つあることをもとに考えます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2869,6 +2905,7 @@
     "{n1}を{sc1}倍した数はいくつですか。"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "数を10倍すると位が1つ上がり、100倍すると位が2つ上がります。数字はそのままで、右に0をつけます。{n1}を{sc1}倍すると{ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2917,6 +2954,7 @@
     "数がきまりにしたがってならんでいます。□にはいる数をかきましょう。\n{s1}、{d1}、□、□、{e1}"
    ],
    "answer_template": "答え {n1d}、{n2d}",
+   "kaisetsu": "数の並びのきまりを見つけます。{s1}から{d1}まで、いくつふえているかを調べると、同じ数ずつふえていることがわかります。同じ数をたし続けると、□は{n1d}、{n2d}になります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2973,6 +3011,7 @@
     "{t1}dLは何Lですか。小数で答えなさい。"
    ],
    "answer_template": "答え {ans_disp}L",
+   "kaisetsu": "1Lは10dLなので、1dLは0.1Lです。{t1}dLは、0.1Lが{t1}こ分なので、{ans_disp}Lです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3012,6 +3051,7 @@
     "つぎの計算をしなさい。\n{a1_disp}+{b1_disp}"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "小数のたし算の筆算は、小数点をそろえて書き、整数と同じように計算します。答えの小数点は、上の小数点の真下におろします。{a1_disp}+{b1_disp}={ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3079,6 +3119,7 @@
     "つぎの計算をしなさい。\n{a1_disp}-{b1_disp}"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "小数のひき算の筆算も、小数点をそろえて書きます。整数と同じようにひいて、答えの小数点は上の小数点の真下におろします。{a1_disp}−{b1_disp}={ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3133,6 +3174,7 @@
     "0.1を{n1}こあつめた数はいくつですか。"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "0.1を10こあつめると1になります。0.1を{n1}こあつめた数は、10こ分ごとに1になると考えて、{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3185,6 +3227,7 @@
     "つぎの計算をしなさい。\n{P1}÷{a1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "わり算の答えは、九九を使って見つけます。{a1}の段の九九で、答えが{P1}になるのを探すと、{a1}×{ans}={P1}なので、{P1}÷{a1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3250,6 +3293,7 @@
     "つぎの計算をしなさい。商とあまりを答えなさい。\n{P1}÷{a1}"
    ],
    "answer_template": "答え {b1}あまり{r1}",
+   "kaisetsu": "{a1}の段の九九で、{P1}をこえない一番大きい答えを探します。{a1}×{b1}のあと、{P1}からひいたのこりがあまりです。{P1}÷{a1}={b1}あまり{r1}で、あまり{r1}はわる数{a1}より小さくなっています。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3303,6 +3347,7 @@
     "□にあてはまる数をかきましょう。\n{a1}×{b1}={b1}×□"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "かけ算では、かける数とかけられる数を入れかえても答えは同じです。{a1}×{b1}={b1}×{a1}なので、□に入るのは{a1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3351,6 +3396,7 @@
     "つぎの計算をしなさい。\n{a1}×{b1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "どんな数に0をかけても、0にどんな数をかけても、答えは0です。{a1}×{b1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3394,6 +3440,7 @@
     "{A1}×{b1}の答えは、{A1}×{Q1}の答えよりいくつ大きいですか。"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "かける数が1ふえると、答えはかけられる数の分だけ大きくなります。{A1}×{b1}は{A1}×{Q1}より、{A1}だけ大きいので、答えは{ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3464,6 +3511,7 @@
     "{m1}分+{n1}分は何時間何分ですか。"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "分どうしをたして60分をこえたら、60分を1時間にかえます。{m1}分+{n1}分の答えは{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3506,6 +3554,7 @@
     "{t1}分は何時間何分ですか。"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "60分が1時間です。{t1}分の中に60分が何回あるかを考えて、そのあまりが分になります。{t1}分は{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3582,6 +3631,7 @@
     "午前{h1}時{m1}分から午前{h2}時{m2}分までの時間は何分ですか。"
    ],
    "answer_template": "答え {ans}分",
+   "kaisetsu": "午前{h1}時{m1}分から午前{h2}時{m2}分までの時間は、まず次の「ちょうどの時こく」までの分を数え、そこから終わりまでの分をたします。あわせて{ans}分です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3622,6 +3672,7 @@
     "半径が{r1}cmの円の直径は何cmですか。"
    ],
    "answer_template": "答え {ans}cm",
+   "kaisetsu": "直径は半径の2倍の長さです。半径が{r1}cmなので、直径は{r1}×2={ans}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3660,6 +3711,7 @@
     "直径が{D1}cmの円の半径は何cmですか。"
    ],
    "answer_template": "答え {ans}cm",
+   "kaisetsu": "半径は直径の半分の長さです。直径が{D1}cmなので、半径は{D1}÷2={ans}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3710,6 +3762,7 @@
     "直径が{d1}cmのボールを、箱の中に横にぴったり{n1}こならべます。箱の横の長さは何cmですか。"
    ],
    "answer_template": "答え {ans}cm",
+   "kaisetsu": "ボールを横にぴったりならべると、箱の横の長さは、ボールの直径の{n1}こ分になります。{d1}×{n1}={ans}cmです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3801,6 +3854,7 @@
     "右の表は、しらべたけっかを整理したものです。{ask1}の数はいくつですか。"
    ],
    "answer_template": "答え {ans}{unit1}",
+   "kaisetsu": "表は、しらべたことを種類ごとに整理したものです。{ask1}の数は、表の{ask1}のところをたてに見て、書いてある数を読みます。答えは{ans}{unit1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3907,6 +3961,7 @@
     "右の表は、しらべたけっかを整理したものです。しらべた数は全部でいくつですか。"
    ],
    "answer_template": "しき {v1}+{v2}+{v3}+{v4}={ans} 答え {ans}{unit1}",
+   "kaisetsu": "表の合計は、それぞれの数をぜんぶたして求めます。{v1}+{v2}+{v3}+{v4}={ans}なので、しらべた数は全部で{ans}{unit1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3970,6 +4025,7 @@
     "{def1}を何といいますか。"
    ],
    "answer_template": "答え {nm1}",
+   "kaisetsu": "三角形は、辺の長さで名前が決まります。2つの辺の長さが等しい三角形が二等辺三角形、3つの辺の長さがすべて等しい三角形が正三角形です。{def1}のは{nm1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4025,6 +4081,7 @@
     "{nm1}には、{ask1}がいくつありますか。"
    ],
    "answer_template": "答え {ans}{un1}",
+   "kaisetsu": "{nm1}の{ask1}の数を数えます。二等辺三角形は、等しい2つの辺と、等しい2つの角があります。正三角形は、3つの辺がすべて等しく、3つの角もすべて等しくなっています。答えは{ans}{un1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",

@@ -519,3 +519,8 @@
 - 図チェックシート用: `_shapeSetAudit(fp).sheet`={shapes:[{label,name,sym(線/点/両方/なし),axes}], answers:{line,point,both}}。関門45(1b)でバンク15行の正答集合=転記を再導出(sheet.answersから)。
 - furigana: 本数=ほんすう(取りこぼし: ほんかず)・最も・等脚台形・正四角形/正八角形/正九角形・無数・**空らん=くう(1字登録「空=から」の誤爆を関門44一覧で検出)**=registered 574→581・ベクター+3(77)。make_training_pairs=figure_paramsがレコード参照文字列のパターンを許容。
 - **golden md5: g06 08d0f3ae → b93fb0d1**(既存96件バイト不変・PASS 288→315 FAIL 0)。rationale+9(D13)・pairs 584・corr-0007残差0・全45関門GREEN。**g06 c01残余=作図/域外d(作図5・紙折り切り取り1・正五角形2個組合せ2)+素材待ち1(u01_029)**。
+
+### 2026-09-05 解説backfill g03(Fable本文57本→57転写・保留0)
+- **受領検証**: 57エントリ=pattern_id全一致(kaisetsu無し57と1:1)。`{slot}`実在確認: `{ctx_ans_counter}`(div_amari_ceil/floor)は文脈セット(context_set fields)由来のenv名=両エンジンで解決→保留なし。区切り線混入1件(hyo_gokei)を除去。kaisetsu_resolve GREEN(JS=Python 942標本)・D10関門GREEN。
+- **furigana**: 走査表25語のうち未登録11語+目検検出6語(必要/気/九九/探し/一番/順番)+関門44一覧で検出した誤読1件(「大切」=おお+き→たいせつ)=計18語増補。registered 581→599・ベクター+5(80)。1字登録文脈一覧を更新(全学年残存0)。
+- **golden md5: g03 (前版) → fa17b3e1**(解説行の追加のみ・解説行を除く出力はHEAD版と一致)。backfill在庫 427(g03=0)。全45関門GREEN。
