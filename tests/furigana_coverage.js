@@ -44,6 +44,8 @@ const VECTORS = [
   ['算数と国語', 'さんすうとこくご'], ['5万6千人', 'ごまんろくせんにん'], ['千人が56こ分', 'せんにんがごじゅうろっこぶん'],
   // 緊急パッチ第2弾(Fable読み上げ実測 2026-09-05): 上=うえ(単独)/上がる・上がれ=あ / 空いて・空い・空く=あ(空=から維持)
   ['列や行の数', 'れつやぎょうのかず'], ['それより上にある', 'それよりうえにある'], ['はじめて上がる', 'はじめてあがる'], ['空いている', 'あいている'], ['空のはこ', 'からのはこ'], ['上底', 'じょうてい'],
+  // 第2弾④: かな+漢字キーの読みは漢字部分のみ(がい数=すう)
+  ['千の位までのがい数', 'せんのくらいまでのがいすう'],
 ];
 
 console.log('=== (2) 固定ベクター' + VECTORS.length + '件 golden照合 ===');
@@ -97,6 +99,19 @@ try {
   try { execFileSync('node', [path.join(__dirname, 'single_char_contexts.js')], { encoding: 'utf-8' }); console.log('  一覧差分: なし ✅'); }
   catch (e) { cbad++; console.log('  ❌ 一覧が変化(関門44): ' + String(e.stdout || '').split('\n').filter(l => /❌/.test(l)).slice(0, 5).join(' | ')); }
 } catch (e) { cbad++; console.log('  ❌ 一覧の読み込み不可: ' + e.message.slice(0, 60)); }
-const fail = vbad > 0 || vpats.length > 0 || cbad > 0;
+// ---- (4) 辞書規約の機械検査: 読みはキーの漢字部分のみ(かな始まりキーの読みがそのかなで始まらない・かな終わりキーの読みがそのかなで終わらない) ----
+console.log('\n=== (4) 辞書規約検査(読み=漢字部分のみ) ===');
+let lbad = 0;
+(function () {
+  const lex = JSON.parse(fs.readFileSync(path.join(ROOT, 'pattern_bank', 'handoff_jhs', 'furigana_lexicon.json'), 'utf-8')).surfaces;
+  Object.keys(lex).forEach(k => {
+    const v = lex[k], head = (k.match(/^[ぁ-んァ-ンー]+/) || [''])[0], tail = (k.match(/[ぁ-んァ-ンー]+$/) || [''])[0];
+    if (!/[一-鿿々]/.test(k)) return;
+    if (head && v.startsWith(head)) { lbad++; console.log('  ❌ かな始まりキーの読みがかな部分から始まる: ' + k + '=' + v + ' → ' + v.slice(head.length)); }
+    if (tail && v.length > tail.length && v.endsWith(tail) && k.length > tail.length + 1) { lbad++; console.log('  ❌ かな終わりキーの読みがかな部分で終わる: ' + k + '=' + v); }
+  });
+  console.log('  ' + (lbad === 0 ? '規約違反0 ✅' : lbad + '件 ❌'));
+})();
+const fail = vbad > 0 || vpats.length > 0 || cbad > 0 || lbad > 0;
 console.log('\n' + (fail ? '❌ furigana_coverage 失敗' : 'furigana_coverage: 全通過 ✅(ベクター' + VECTORS.length + ' + 残存漢字0)'));
 process.exit(fail ? 1 : 0);
