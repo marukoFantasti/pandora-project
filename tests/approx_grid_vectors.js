@@ -35,6 +35,10 @@ console.log('=== (2) 倍の2図 / (3) 四分円契約 ===');
   cases++; const r = 1, inner = 2 * r * r, outer = (2 * r) * (2 * r);
   if (inner / (r * r) !== 2 || outer / (r * r) !== 4) { bad++; console.log('  ❌ 倍率'); }
   const svg = FB.build({ kind: 'approx_grid', mode: 'circle_squares', r: 1 }); if (!/<circle/.test(svg) || !/<polygon/.test(svg) || !/<rect/.test(svg)) { bad++; console.log('  ❌ 倍の2図の描画要素'); }
+  // 頂点基準の分類(外接正方形内のます)で転記倍率を再現: 境界上=内(inclusive)で内接■=0/□4→2倍・外接■4→4倍。厳密内側(strict)は内接2倍のみ再現(外接は隅が境界上で□4=2倍となり不一致=報告)
+  cases++; const g = FB._approxGridAudit({ kind: 'approx_grid', mode: 'circle_squares', r: 1 });
+  if (!(g.cls_inner.full === 0 && g.cls_inner.part === 4 && g.ratio_inner === 2 && g.cls_outer.full === 4 && g.cls_outer.part === 0 && g.ratio_outer === 4)) { bad++; console.log('  ❌ 倍の2図(境界=内) ' + JSON.stringify([g.cls_inner, g.cls_outer])); }
+  if (!(g.cls_inner_strict.area === 2)) { bad++; console.log('  ❌ 倍の2図(厳密・内接) ' + JSON.stringify(g.cls_inner_strict)); }
   cases++; const q = FB._approxGridAudit({ kind: 'approx_grid', mode: 'quarter_circle', r: 10 });
   if (q.cls.full !== 71 || q.cls.part !== 14) { bad++; console.log('  ❌ 四分円分類 ' + JSON.stringify(q.cls)); }
   // 独立再計算(四分円)
