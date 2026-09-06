@@ -50,9 +50,11 @@ console.log('=== (2b) バンク配線(g04 5パターン+g05 1): 生成器経由�
     const bank = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'pattern_bank', 'patterns_' + g + '.json'), 'utf-8'));
     for (const id of ids) {
       const p = bank.patterns.find(x => x.pattern_id === id); if (!p) { bad++; console.log('  ❌ パターン不在 ' + id); continue; }
-      for (let s = 0; s < 30; s++) {
-        cases++; let r; try { r = P.makeProblem(p, null, bank.shared_lexicon); } catch (e) { bad++; if (fails++ < 3) console.log('  ❌ 生成失敗 ' + id + ' ' + e.message.slice(0, 80)); continue; }
-        const a = check(id, r.figure, s); if (!a) continue;
+      for (let s = 1; s <= 200; s++) {
+        // 乱択生成を決定的に: Math.random を seed 付き mulberry32 に差し替え(失敗時は seed と env を記録=再現可能)。ループ後に復元
+        cases++; const orig = Math.random; Math.random = rng(s * 7919 + id.length); let r; try { r = P.makeProblem(p, null, bank.shared_lexicon); } catch (e) { Math.random = orig; bad++; if (fails++ < 3) console.log('  ❌ 生成失敗 ' + id + ' seed' + s + ' ' + e.message.slice(0, 80)); continue; } finally { Math.random = orig; }
+        const b0 = bad, a = check(id + ' seed' + s, r.figure, s); if (!a) continue;
+        if (bad > b0) console.log('     再現情報: ' + id + ' seed=' + s + ' markers=' + JSON.stringify(r.figure.markers) + ' env=' + JSON.stringify(Object.fromEntries(Object.entries(r.env).filter(([k]) => /^(j1|k\d)$/.test(k)))));
         const mk = a.markers, ans = String(r.answer);
         if (id === 'g04_numline_hikaku_01' || id === 'g05_numline_frac_kinyu_01') {
           const o = mk.slice().sort((x, y) => y.value - x.value).map(m => m.label).join('、');
@@ -70,6 +72,9 @@ console.log('=== (2b) バンク配線(g04 5パターン+g05 1): 生成器経由�
   }
   console.log('  ' + (bad === 0 ? '✅' : '❌'));
 })();
+console.log('=== (2c) 回帰: 3連近接記号(1.4〜1.5・k=71/73/75)=3段配置で重なりなし(単発赤の根因) ===');
+(function () { cases++; const fp = { kind: 'number_line', system: 'dec', min: 1.4, max: 1.5, major: 0.01, minor: 0.001, label_fmt: 'dec1', show_values: 'ends', markers: [{ label: 'ア', k: 71 }, { label: 'イ', k: 75 }, { label: 'ウ', k: 73 }] };
+  const a = check('regress_3adjacent', fp, 0); if (a && a.issues.length === 0) console.log('  ✅'); else console.log('  ❌'); })();
 console.log('=== (3) 契約: 範囲外marker・目盛上にないmarker・刻み不整合は例外 ===');
 [{ min: 0, max: 10, major: 5, minor: 1, markers: [{ label: 'ア', value: 11 }] }, { min: 0, max: 10, major: 5, minor: 1, markers: [{ label: 'ア', value: 2.5 }] }, { min: 0, max: 10, major: 5, minor: 3, markers: [] }].forEach(fp => { cases++; let threw = false; try { FB.build(Object.assign({ kind: 'number_line', system: 'int' }, fp)); } catch (e) { threw = true; } if (!threw) { bad++; console.log('  ❌ 契約違反が通過 ' + JSON.stringify(fp)); } });
 console.log('  ' + (bad === 0 ? '✅' : '❌'));

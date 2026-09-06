@@ -2140,7 +2140,7 @@
     var g = numberLineGeom(fp), lay = newLayout(), y = 0, showV = fp.show_values || 'majors';
     lay.parts.push(lineEl([-10, y], [NL_W + 18, y], C_STROKE, 2)); lay.segs.push({ id: 'axis', p1: [-10, y], p2: [NL_W + 18, y] });
     lay.parts.push('<path d="M ' + (NL_W + 18) + ' ' + y + ' l -8 -5 l 0 10 z" fill="' + C_STROKE + '"/>');
-    lay.pts.push([-12, y - 34], [NL_W + 20, y + 50]);
+    lay.pts.push([-12, y - 34], [NL_W + 20, y + 50]);   // 3段目(y+70)の記号が出る場合は finishLabels の pts 追加で viewBox が伸びる
     var specs = [];
     g.ticks.forEach(function (t, i) {
       var h = t.major ? NL_MAJ : NL_MIN; lay.parts.push(lineEl([t.x, y - h], [t.x, y + (t.major ? 3 : 0)], C_STROKE, t.major ? 1.6 : 1));
@@ -2149,10 +2149,12 @@
     });
     finishLabels(lay, specs);   // 数値ラベル(目盛の上側・矢印↑は線の下側=領域分離で衝突なし)
     var mspecs = [];
-    var order = g.markers.map(function (m, i) { return i; }).sort(function (a, b) { return g.markers[a].x - g.markers[b].x; }), level = {}, prevX = -1e9, prevLv = 1;
-    order.forEach(function (i) { var m = g.markers[i]; level[i] = (m.x - prevX < 18) ? (prevLv === 0 ? 1 : 0) : 0; prevX = m.x; prevLv = level[i]; });   // 近接(18px未満)の記号は矢印長を段違いにして記号を上下2段に分ける
-    g.markers.forEach(function (m, i) {   // 矢印↑: 目盛の下(y+26・段違い時y+48)から上向きに立てる。記号はその下
-      var top = y + 4, bottom = y + (level[i] ? 48 : 26); lay.parts.push(lineEl([m.x, bottom], [m.x, top], C_TARGET, 1.8)); lay.parts.push('<path d="M ' + m.x.toFixed(2) + ' ' + top + ' l -4 6 l 8 0 z" fill="' + C_TARGET + '"/>');
+    // 近接(18px未満)の記号は矢印長を段違いにして記号を上下に分ける。左から順に「同じ段の既配置記号と18px以上離れる最小の段」を選ぶ(3連近接=3段まで)。
+    // corr: 2段交互(0/1/0)では3連近接(例: 1.4〜1.5の100小目盛で k=71/73/75)の1番目と3番目が同段12px差で重なった(number_line_vectors(2b)の単発赤の根因)
+    var order = g.markers.map(function (m, i) { return i; }).sort(function (a, b) { return g.markers[a].x - g.markers[b].x; }), level = {}, placed = [];
+    order.forEach(function (i) { var m = g.markers[i], lv = 0; while (placed.some(function (q) { return q.lv === lv && Math.abs(q.x - m.x) < 18; })) lv++; level[i] = lv; placed.push({ x: m.x, lv: lv }); });
+    g.markers.forEach(function (m, i) {   // 矢印↑: 目盛の下(y+26・段違い時 y+26+22×段)から上向きに立てる。記号はその下
+      var top = y + 4, bottom = y + 26 + 22 * level[i]; lay.parts.push(lineEl([m.x, bottom], [m.x, top], C_TARGET, 1.8)); lay.parts.push('<path d="M ' + m.x.toFixed(2) + ' ' + top + ' l -4 6 l 8 0 z" fill="' + C_TARGET + '"/>');
       lay.segs.push({ id: 'mk' + i, p1: [m.x, bottom], p2: [m.x, top] });
       mspecs.push({ anchor: [m.x, bottom], dirs: [[0, 1]], text: m.label, cands: [[10, 13], [13, 12]], color: C_TARGET, own: 'mk' + i });
     });
