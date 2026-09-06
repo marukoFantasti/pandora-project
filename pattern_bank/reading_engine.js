@@ -115,6 +115,8 @@ function createEngine(lexicon, counterTable) {
       if (m) { const u = fracUnit(i + m[0].length); const h = readNumber(+m[1]) + 'と' + readNumber(+m[3]) + 'ぶんの' + (u ? readCounter(+m[2], u) : readNumber(+m[2])); const orig = m[0] + u; emit(orig, h, u ? groupRuby(orig, h) : orig); i += orig.length; continue; }
       m = rest.match(/^(\d+)\/(\d+)/);                             // 分数
       if (m) { const u = fracUnit(i + m[0].length); const h = readNumber(+m[2]) + 'ぶんの' + (u ? readCounter(+m[1], u) : readNumber(+m[1])); const orig = m[0] + u; emit(orig, h, u ? groupRuby(orig, h) : orig); i += orig.length; continue; }
+      m = rest.match(/^[−\-](\d+)\/(\d+)/);                       // 負の分数(−11/45=マイナスよんじゅうごぶんのじゅういち)。jhs backfill第1便で検出
+      if (m) { const neg = SP.negative.prefix || 'マイナス'; const u = fracUnit(i + m[0].length); const h = neg + readNumber(+m[2]) + 'ぶんの' + (u ? readCounter(+m[1], u) : readNumber(+m[1])); const orig = m[0] + u; emit(orig, h, u ? groupRuby(orig, h) : orig); i += orig.length; continue; }
       m = rest.match(/^[−\-](\d+(?:\.\d+)?)/);                    // 負数(+単位)
       if (m) {
         let j = i + m[0].length, unit = '';

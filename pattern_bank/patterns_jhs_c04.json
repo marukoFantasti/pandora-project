@@ -97,6 +97,7 @@
     "次の方程式を解きなさい。\n{p1}x−{q1}＝{r1}x＋{s1}"
    ],
    "answer_template": "答え x＝{ans_disp}",
+   "kaisetsu": "xの項を左辺に、数の項を右辺に移項します。移項するときは符号が変わります。両辺をxの係数でわって、x＝{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -198,6 +199,7 @@
     "次の方程式を解きなさい。\n{p1}x＋{q1}＝{r1}x＋{s1}"
    ],
    "answer_template": "答え x＝{ans_disp}",
+   "kaisetsu": "移項して整理すると、xの係数や右辺が負になることがあります。両辺を係数でわるとき、符号に注意して、x＝{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -294,6 +296,7 @@
     "次の方程式を解きなさい。\n{k1}(x−{m1})＝{r1}x＋{s1}"
    ],
    "answer_template": "答え x＝{ans_disp}",
+   "kaisetsu": "まず分配法則でかっこをはずします。そのあと移項して整理し、両辺をxの係数でわります。x＝{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -377,6 +380,7 @@
     "次の比例式を解きなさい。\n{a1}：x＝{b1}：{c1}"
    ],
    "answer_template": "答え x＝{ans_disp}",
+   "kaisetsu": "比例式では、外側どうしの積と内側どうしの積が等しくなります（a:b＝c:dならad＝bc）。この性質で方程式をつくり、x＝{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -456,6 +460,7 @@
     "x についての方程式 {p1}x＋a＝{t1} の解が x＝{s1} のとき、a の値を求めなさい。"
    ],
    "answer_template": "答え a＝{ans_disp}",
+   "kaisetsu": "解がx＝{s1}ということは、xに{s1}を代入すると等式が成り立つということです。{p1}×{s1}＋a＝{t1}をaについて解いて、a＝{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -529,6 +534,7 @@
     "次の連立方程式を解きなさい。\nx＋y＝{A1}，x−y＝{B1}"
    ],
    "answer_template": "答え x＝{xd1}，y＝{yd1}",
+   "kaisetsu": "2つの式をたすとyが消えて、xが求められます。求めたxをどちらかの式に代入してyを求めます。x＝{xd1}、y＝{yd1}です。加減法で文字を1つ消すのが基本です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",

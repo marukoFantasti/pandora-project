@@ -40,6 +40,7 @@
     "次の計算をしなさい。\n{a1}x＋{b1}x"
    ],
    "answer_template": "答え {ans}x",
+   "kaisetsu": "同じ文字の項（同類項）は、係数どうしをたしてまとめます。{a1}x＋{b1}x＝({a1}＋{b1})x＝{ans}xです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -106,6 +107,7 @@
     "次の計算をしなさい。\n{a1}x−{b1}x"
    ],
    "answer_template": "答え {cd1}x",
+   "kaisetsu": "同類項のひき算は、係数どうしをひきます。{a1}x−{b1}x＝({a1}−{b1})xで、{cd1}xです。係数が負になることもあります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -209,6 +211,7 @@
     "次の計算をしなさい。\n{p1}x＋{q1}−({r1}x−{s1})"
    ],
    "answer_template": "答え {cd1}x{td1}",
+   "kaisetsu": "かっこの前が−のときは、かっこの中の各項の符号を変えてかっこをはずします。そのあと同類項をまとめて、{cd1}x{td1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -339,6 +342,7 @@
     "次の計算をしなさい。\n{k1}({p1}x−{q1})−({r1}x−{s1})"
    ],
    "answer_template": "答え {cd1}x{td1}",
+   "kaisetsu": "数×(かっこ)は、かっこの中の各項に数をかけます（分配法則）。かっこをはずしてから、xの項どうし・数の項どうしをまとめて、{cd1}x{td1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -389,6 +393,7 @@
     "次の計算をしなさい。\n{p1}x×(−{q1}x)"
    ],
    "answer_template": "答え −{m1}x²",
+   "kaisetsu": "単項式のかけ算は、係数どうし・文字どうしをかけます。x×x＝x²です。符号のきまりはふつうの数と同じで、答えは−{m1}x²です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -454,6 +459,7 @@
     "次の計算をしなさい。\n{A1}xy÷{B1}x"
    ],
    "answer_template": "答え {ans}y",
+   "kaisetsu": "単項式のわり算は、分数の形にして約分します。係数どうしを約分し、同じ文字は消えます。答えは{ans}yです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -533,6 +539,7 @@
     "x＝−{k1} のとき、{p1}x＋{q1} の値を求めなさい。"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "式の値は、xに数を代入して計算します。負の数を代入するときは、かっこをつけて{p1}×(−{k1})＋{q1}と書いてから計算すると、符号のミスを防げます。答えは{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -592,6 +599,7 @@
     "x＝{a1}，y＝−{b1} のとき、{p1}x−{q1}y の値を求めなさい。"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "2つの文字にそれぞれ代入します。yには負の数−{b1}が入るので、−{q1}×(−{b1})は正になることに注意します。答えは{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -739,6 +747,7 @@
     "次の計算をしなさい。\n{k1}({p1}x−{q1})−{m1}({r1}x−{s1})"
    ],
    "answer_template": "答え {cd1}x{td1}",
+   "kaisetsu": "両方のかっこに分配法則を使ってはずします。後ろのかっこは−{m1}をかけるので、中の各項の符号が変わります。同類項をまとめて{cd1}x{td1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -789,6 +798,7 @@
     "次の計算をしなさい。\n{p1}x×(−{q1}y)"
    ],
    "answer_template": "答え −{m1}xy",
+   "kaisetsu": "ちがう文字どうしのかけ算は、係数をかけて、文字はx×y＝xyとまとめて書きます。答えは−{m1}xyです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -833,6 +843,7 @@
     "次の計算をしなさい。\n(−{p1}a)²×{q1}a"
    ],
    "answer_template": "答え {ans}a³",
+   "kaisetsu": "a²×aは、aを2回かけた数にさらにaをかけるので、a³です。係数どうしをかけて{ans}a³です。指数はたし算になります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -883,6 +894,7 @@
     "次の計算をしなさい。\n(−{p1}a)²×(−{q1}a³)"
    ],
    "answer_template": "答え −{m1}a⁵",
+   "kaisetsu": "(−{p1}a²)²は、−{p1}a²を2回かけるので係数は正の{p1}²、文字はa⁴になります。それに残りをかけて、答えは−{m1}a⁵です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -932,6 +944,7 @@
     "次の等式を、b について解きなさい。\na＋b/{n1}＝{m1}c"
    ],
    "answer_template": "答え b＝{k1}c−{n1}a",
+   "kaisetsu": "「bについて解く」とは、b＝…の形に変形することです。分母をはらってから、b以外の項を右辺に移項します。答えはb＝{k1}c−{n1}aです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -981,6 +994,7 @@
     "次の等式を、x について解きなさい。\ny＝{c1}−x/{n1}"
    ],
    "answer_template": "答え x＝−{n1}y＋{nc1}",
+   "kaisetsu": "xについて解くので、まず分母をはらい、次にx以外の項を右辺に移項します。移項すると符号が変わります。答えはx＝−{n1}y＋{nc1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1128,6 +1142,7 @@
     "A＝{p1}x＋{q1}y，B＝{r1}x−{s1}y のとき、{u1}A−{v1}B を計算しなさい。"
    ],
    "answer_template": "答え {cxd}x{cyd}y",
+   "kaisetsu": "AとBに式を代入するときは、かっこをつけて{u1}({p1}x＋{q1}y)−{v1}({r1}x−{s1}y)と書きます。分配法則でかっこをはずし、xの項・yの項をまとめて{cxd}x{cyd}yです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",

@@ -29,6 +29,7 @@
         "1個の重さがxgの箱を{m1}個と、1個の重さがygの箱を{n1}個積みます。全体の重さを、x、yを使った式で表しなさい。"
       ],
       "answer_template": "答え ({m1}x＋{n1}y)g",
+      "kaisetsu": "xgのものが{m1}個で{m1}xg、ygのものが{n1}個で{n1}ygです。あわせて({m1}x＋{n1}y)gです。単位は式全体にかっこをつけてから書きます。",
       "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
       "answer_structure": "single",
       "template_number_constants": [1]
@@ -56,6 +57,7 @@
         "定価が1個a円の品物が、定価の{w1}割引きで売られています。この品物を{n1}個買うときの代金を、aを使った式で表しなさい。"
       ],
       "answer_template": "答え {ans}a円",
+      "kaisetsu": "{w1}割引きということは、定価の(1−0.{w1})倍のねだんで買うということです。1個a円の(1−0.{w1})倍を{n1}個分にして、{ans}a円です。",
       "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
       "answer_structure": "single",
       "template_number_constants": [1, 10]
@@ -85,6 +87,7 @@
         "1冊a円のノートを{m1}冊と、1本{c1}円の万年筆を1本買ったところ、代金の合計は{t1}円でした。この数量の関係を、等式で表しなさい。"
       ],
       "answer_template": "答え {m1}a＋{c1}＝{t1}",
+      "kaisetsu": "代金の合計を式で表すと、ペン{m1}本分の{m1}a円と{c1}円をあわせた金額です。それが{t1}円に等しいので、等式は{m1}a＋{c1}＝{t1}です。",
       "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
       "answer_structure": "single",
       "template_number_constants": [1]
@@ -112,6 +115,7 @@
         "1個{p1}円のおにぎりをx個と、1本{q1}円のお茶を1本買って、代金の合計を{t1}円以下にします。この数量の関係を、不等式で表しなさい。"
       ],
       "answer_template": "答え {p1}x＋{q1}≦{t1}",
+      "kaisetsu": "代金の合計は{p1}x＋{q1}円です。「{t1}円以下」は{t1}円をふくむので、不等号は≦を使います。{p1}x＋{q1}≦{t1}です。「未満」なら＜になります。",
       "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
       "answer_structure": "single",
       "template_number_constants": [1]
@@ -136,6 +140,7 @@
         "a個のあめを、1人にb個ずつ{m1}人に配ると、{r1}個余りました。aを、bを使った式で表しなさい。"
       ],
       "answer_template": "答え a＝{m1}b＋{r1}",
+      "kaisetsu": "配った数は1人b冊×{m1}人で{m1}b冊、それに余った{r1}冊をたすと全部の冊数aになります。a＝{m1}b＋{r1}です。",
       "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
       "answer_structure": "single",
       "template_number_constants": [1]

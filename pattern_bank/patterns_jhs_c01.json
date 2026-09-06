@@ -56,6 +56,7 @@
     "次の計算をしなさい。\n{a1}＋(−{b1})"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "正の数に負の数をたすのは、その数をひくことと同じです。{a1}＋(−{b1})＝{a1}−{b1}と考えて計算します。答えは{ans_disp}です。数直線で、{a1}から左へ{b1}進むと考えても同じです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -113,6 +114,7 @@
     "次の計算をしなさい。\n−{a1}＋{b1}"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "負の数に正の数をたすときは、絶対値（符号を取った大きさ）の差を求め、絶対値が大きいほうの符号をつけます。−{a1}＋{b1}は、{a1}と{b1}の差に、大きいほうの符号をつけて{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -158,6 +160,7 @@
     "次の計算をしなさい。\n{a1}−(−{b1})"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "ひき算は、ひく数の符号を変えてたし算になおします。{a1}−(−{b1})＝{a1}＋{b1}なので、答えは{ans_disp}です。「負の数をひく」は「正の数をたす」と同じです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -215,6 +218,7 @@
     "次の計算をしなさい。\n−{a1}−(−{b1})"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "負の数から負の数をひくときも、ひく数の符号を変えてたし算にします。−{a1}−(−{b1})＝−{a1}＋{b1}です。絶対値の差に、大きいほうの符号をつけて{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -261,6 +265,7 @@
     "次の計算をしなさい。\n{a1}×(−{b1})"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "かけ算では、符号がちがう2つの数の積は負になります。絶対値どうしをかけて{a1}×{b1}を求め、符号を−にして{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -306,6 +311,7 @@
     "次の計算をしなさい。\n(−{a1})×(−{b1})"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "符号が同じ2つの数の積は正になります。負×負も正です。絶対値どうしをかけて{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -373,6 +379,7 @@
     "次の計算をしなさい。\n{a1}÷(−{b1})"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "わり算の符号のきまりはかけ算と同じで、符号がちがえば負、同じなら正です。絶対値どうしをわって{a1}÷{b1}、符号を−にして{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -452,6 +459,7 @@
     "次の計算をしなさい。\n{a1}＋{b1}×(−{c1})"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "かけ算・わり算は、たし算・ひき算より先に計算します。まず乗除の部分を計算してから、残りをたしたりひいたりします。答えは{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -531,6 +539,7 @@
     "次の計算をしなさい。\n{a1}−{b1}＋(−{c1})"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "3つの数のたし算・ひき算は、左から順に計算するか、正の数どうし・負の数どうしをまとめてから計算します。答えは{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -597,6 +606,7 @@
     "次の計算をしなさい。\n(−{a1})÷(−{b1})"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "負÷負は正です。絶対値どうしをわって{a1}÷{b1}、符号は＋なので{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -675,6 +685,7 @@
     "次の計算をしなさい。\n{a1}−{b1}÷(−{c1})"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "わり算を先に計算します。負÷正は負になるので、その結果をひくときは符号に注意します。「負の数をひく」は「正の数をたす」です。答えは{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -754,6 +765,7 @@
     "次の計算をしなさい。\n({a1}−{b1})×{c1}"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "かっこの中を先に計算します。かっこの中のひき算で符号が決まってから、外の数をかけます。答えは{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -838,6 +850,7 @@
     "次の計算をしなさい。\n({a1}−{b1})÷{c1}"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "かっこの中を先に計算してから、外の数でわります。かっこの中が負になったら、商も符号がつきます。答えは{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -900,6 +913,7 @@
     "次の計算をしなさい。\n−{a1}＋(−{b1})²"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "(−{b1})²は、−{b1}を2回かけた数なので正になります。かっこがあるかないかで意味が変わることに注意しましょう。累乗を先に計算してから、残りを計算して{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -962,6 +976,7 @@
     "次の計算をしなさい。\n{a1}−{b1}²"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "−{b1}²は、{b1}²に−をつけた数なので負です。(−{b1})²とはちがいます。累乗を先に計算し、それをひいて{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1020,6 +1035,7 @@
     "−{pl1}.{pf1}より大きく、{ql1}.{qf1}より小さい整数は、全部で何個ありますか。"
    ],
    "answer_template": "答え {ans}個",
+   "kaisetsu": "数直線で考えます。−{pl1}.{pf1}より大きい整数は−{pl1}から、{ql1}.{qf1}より小さい整数は{ql1}までです。両端の整数を数えると、負の整数が{pl1}個、0が1個、正の整数が{ql1}個で、全部で{ans}個です。0を数え忘れないようにしましょう。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1130,6 +1146,7 @@
     "次の計算をしなさい。\n−{a1}/{b1}＋{c1}/{d1}"
    ],
    "answer_template": "答え {sg1}{f1}",
+   "kaisetsu": "分数のたし算・ひき算は、通分してから分子を計算します。分母を{b1}と{d1}の公倍数にそろえ、分子どうしを計算します。符号は分子の計算結果で決まります。答えは{sg1}{f1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1187,6 +1204,7 @@
     "次の計算をしなさい。\n{a1}÷(−{b1})"
    ],
    "answer_template": "答え −{f1}",
+   "kaisetsu": "わり算は、わる数の逆数をかけるかけ算になおします。符号がちがうので答えは負です。約分できるところは約分して、−{f1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1282,6 +1300,7 @@
     "次の計算をしなさい。\n{a1}−{b1}/{c1}×(−{d1})"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "分数と整数のかけ算は、整数を分子にかけます。約分すると整数になる問題です。符号のきまりに注意して、{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1381,6 +1400,7 @@
     "次の計算をしなさい。\n(−{a1}/{b1})×{c1}/{d1}"
    ],
    "answer_template": "答え −{f1}",
+   "kaisetsu": "分数どうしのかけ算は、分子どうし・分母どうしをかけます。符号がちがうので答えは負です。とちゅうで約分すると計算が楽になります。答えは−{f1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1460,6 +1480,7 @@
     "−{pl1}.{pf1}＜x＜{ql1}.{qf1} をみたす整数xを、小さい順にすべて書きなさい。"
    ],
    "answer_template": "答え {n1d}，{n2d}，{n3d}，{n4d}",
+   "kaisetsu": "−{pl1}.{pf1}より大きく、{ql1}.{qf1}より小さい整数を、数直線で左から順に書き出します。{n1d}から{n4d}までです。不等号に＝がついていないので、両端の小数そのものは入りません。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",

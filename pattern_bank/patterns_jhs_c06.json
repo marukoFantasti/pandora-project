@@ -103,6 +103,7 @@
     "yはxに比例し、x＝{p1}のときy＝−{q1}である。yをxの式で表しなさい。"
    ],
    "answer_template": "答え y＝−{av1}x",
+   "kaisetsu": "比例の式はy＝axです。x＝{p1}、y＝−{q1}を代入してaを求めると、a＝−{av1}なので、y＝−{av1}xです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -187,6 +188,7 @@
     "yはxに比例し、x＝{p1}のときy＝{q1}である。x＝−{r1}のときのyの値を求めなさい。"
    ],
    "answer_template": "答え y＝{ans_disp}",
+   "kaisetsu": "まずy＝axにx＝{p1}、y＝{q1}を代入してaを求めます。次に求めた式にx＝−{r1}を代入して、y＝{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -242,6 +244,7 @@
     "yはxに反比例し、x＝{p1}のときy＝{q1}である。yをxの式で表しなさい。"
    ],
    "answer_template": "答え y＝{ans}/x",
+   "kaisetsu": "反比例の式はy＝a/xです。x＝{p1}、y＝{q1}を代入すると、a＝xy＝{ans}なので、y＝{ans}/xです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -326,6 +329,7 @@
     "yはxに反比例し、x＝{p1}のときy＝−{q1}である。x＝{r1}のときのyの値を求めなさい。"
    ],
    "answer_template": "答え y＝{ans_disp}",
+   "kaisetsu": "まずa＝xyでaを求めます。x＝{p1}、y＝−{q1}なのでaは負です。求めた式にx＝{r1}を代入して、y＝{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -391,6 +395,7 @@
     "図の直線は、比例のグラフである。yをxの式で表しなさい。"
    ],
    "answer_template": "答え y＝{ac1}x",
+   "kaisetsu": "比例のグラフは原点を通る直線です。グラフが通る点の座標を1つ読み取り、y＝axに代入してaを求めます。右下がりの直線なのでaは負で、y＝{ac1}xです。",
    "figure_params": {
     "kind": "xy_graph",
     "fig_version": 2,
@@ -489,6 +494,7 @@
     "図の曲線は、反比例のグラフである。yをxの式で表しなさい。"
    ],
    "answer_template": "答え y＝{ans}/x",
+   "kaisetsu": "反比例のグラフは双曲線です。グラフが通る点の座標を1つ読み取り、a＝xyでaを求めます。y＝{ans}/xです。",
    "figure_params": {
     "kind": "xy_graph",
     "fig_version": 2,
@@ -617,6 +623,7 @@
     "関数 y＝{a1}/x について、xの変域が −{p1}≦x≦−{q1} のときのyの変域を求めなさい。"
    ],
    "answer_template": "答え −{ans}≦y≦−{lv1}",
+   "kaisetsu": "反比例では、xが負の範囲ではyも負で、xが大きくなる（0に近づく）ほどyは小さくなります。変域の両端x＝−{p1}、x＝−{q1}を代入して、yの変域は−{ans}≦y≦−{lv1}です。端点の大小が入れかわることに注意します。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -694,6 +701,7 @@
     "関数 y＝−{a1}x について、xの変域が {p1}≦x≦{q1} のときのyの変域を求めなさい。"
    ],
    "answer_template": "答え −{ans}≦y≦−{hp1}",
+   "kaisetsu": "比例定数が負なので、xが大きくなるほどyは小さくなります。x＝{p1}のときとx＝{q1}のときのyを求め、小さいほうから並べて−{ans}≦y≦−{hp1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -730,6 +738,7 @@
     "図は、関数 y＝{k1}/x のグラフである。このグラフ上にある点のうち、x座標、y座標がともに整数である点は全部で何個ありますか。"
    ],
    "answer_template": "答え {ans}個",
+   "kaisetsu": "y＝{k1}/xでx、yがともに整数になるのは、xが{k1}の約数（正と負）のときです。{k1}の正の約数の個数を2倍すると、格子点の個数{ans}個です。",
    "figure_params": {
     "kind": "xy_graph",
     "fig_version": 2,
@@ -838,6 +847,7 @@
     "同じ種類の{it1}{p1}本の重さをはかったところ、{q1}gであった。この{it1}{r1}本の重さは何gですか。"
    ],
    "answer_template": "答え {ans}g",
+   "kaisetsu": "同じ種類のものは、本数と重さが比例します。1本の重さは{q1}÷{p1}gなので、{r1}本では{r1}倍して{ans}gです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -925,6 +935,7 @@
     "ある水そうを満水にするのに、毎分{v1}Lずつ水を入れると{t1}分かかる。毎分{u1}Lずつ水を入れると何分かかりますか。"
    ],
    "answer_template": "答え {ans}分",
+   "kaisetsu": "水そうの容積は毎分{v1}L×{t1}分で決まっています。毎分の量と時間は反比例するので、容積を毎分{u1}Lでわって{ans}分です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -983,6 +994,7 @@
     "表は、yがxに反比例する関係を表したものである。表のアにあてはまる数を求めなさい。"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "反比例では、xとyの積がいつも同じ（比例定数a）になります。表の分かっている組からaを求め、アの列のxでわると{ans}です。",
    "figure_params": {
     "kind": "table",
     "fig_version": 1,
@@ -1083,6 +1095,7 @@
     "図のように、関数 y＝{k1}/x のグラフと、原点を通る直線 y＝ax のグラフが、点Aで交わっている。点Aのx座標が{s1}のとき、aの値を求めなさい。"
    ],
    "answer_template": "答え a＝{ad1}",
+   "kaisetsu": "点Aは双曲線y＝{k1}/x上の点なので、x座標{s1}を代入してy座標を求めます。点Aは直線y＝ax上の点でもあるので、その座標を代入してa＝{ad1}です。",
    "figure_params": {
     "kind": "xy_graph",
     "fig_version": 2,
