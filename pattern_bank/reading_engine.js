@@ -108,8 +108,9 @@ function createEngine(lexicon, counterTable) {
       // 分数(帯分数)+単位: 直後に助数詞/単位が続くときは分子を助数詞読みで結合(1/4分=よんぶんのいっぷん・3/4m=よんぶんのさんメートル)。解説backfill g06申し送り①(まるこ回答: 分数表示化可・読み よんぶんのいっぷん)
       function fracUnit(j) { for (const u of UNIT_KEYS) { if (s.slice(j, j + u.length) === u) return u; } return ''; }
       // 「N分のM」(漢字表記の分数: 3分の1=さんぶんのいち)。数値+分(助数詞)より先に判定(等分図便の解説本文で 3分の1→さんぷんのいち の誤読を検出・是正)
-      let m = rest.match(/^(\d+)分の(\d+)/);
-      if (m) { const u = fracUnit(i + m[0].length); const h = readNumber(+m[1]) + 'ぶんの' + (u ? readCounter(+m[2], u) : readNumber(+m[2])); const orig = m[0] + u; emit(orig, h, groupRuby(orig, h)); i += orig.length; continue; }
+      let m = rest.match(/^(\d+)分の(\d+|一)/);
+      if (m && s[i - 1] === '時') m = null;   // 「10時35分の30分後」=時こく(分=ふん)は分数ではない
+      if (m) { if (m[2] === '一') m[2] = '1'; const u = fracUnit(i + m[0].length); const h = readNumber(+m[1]) + 'ぶんの' + (u ? readCounter(+m[2], u) : readNumber(+m[2])); const orig = m[0] + u; emit(orig, h, groupRuby(orig, h)); i += orig.length; continue; }
       m = rest.match(/^(\d+)と(\d+)\/(\d+)/);                  // 帯分数
       if (m) { const u = fracUnit(i + m[0].length); const h = readNumber(+m[1]) + 'と' + readNumber(+m[3]) + 'ぶんの' + (u ? readCounter(+m[2], u) : readNumber(+m[2])); const orig = m[0] + u; emit(orig, h, u ? groupRuby(orig, h) : orig); i += orig.length; continue; }
       m = rest.match(/^(\d+)\/(\d+)/);                             // 分数

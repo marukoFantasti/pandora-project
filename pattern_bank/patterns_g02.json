@@ -351,6 +351,7 @@
    ],
    "question_tail": "あわせて何{counter} / ぜんぶで何{counter}",
    "answer_template": "しき {n1}+{n2}={ans} 答え {ans}{counter}",
+   "kaisetsu": "「あわせて」は、たし算です。{n1}+{n2}={ans}なので、あわせて{ans}{counter}です。一のくらいから計算して、10になったらくり上げます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -469,6 +470,7 @@
    ],
    "question_tail": "のこりは何{counter}",
    "answer_template": "しき {n1}-{n2}={ans} 答え {ans}{counter}",
+   "kaisetsu": "「のこりは」は、はじめの数からつかった数をひきます。{n1}−{n2}={ans}なので、のこりは{ans}{counter}です。一のくらいがひけないときは、十のくらいから1くり下げます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -562,6 +564,7 @@
     "はこの中に{object}が{n1}{counter}入っていました。あとから{n2}{counter}入れました。ぜんぶで何{counter}になりましたか。"
    ],
    "answer_template": "しき {n1}+{n2}={ans} 答え {ans}{counter}",
+   "kaisetsu": "はじめの数に、あとからふえた数をたします。{n1}+{n2}={ans}なので、ぜんぶで{ans}{counter}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -690,6 +693,7 @@
     "{actor_a}は{object}を{n1}{counter}、{actor_b}は{object}を{n2}{counter}もっています。どちらが何{counter}多いですか。"
    ],
    "answer_template": "しき {big}-{small}={ans} 答え {winner}が{ans}{counter}多い",
+   "kaisetsu": "「どちらが何こ多いか」は、大きい数から小さい数をひきます。{big}−{small}={ans}なので、{winner}が{ans}{counter}多いです。答えには、だれが多いかも書きます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -795,6 +799,7 @@
     "{attr_a}{object}と{attr_b}{object}が、あわせて{n1}{counter}あります。{attr_a}{object}は{n2}{counter}です。{attr_b}{object}は何{counter}ありますか。"
    ],
    "answer_template": "しき {n1}-{n2}={ans} 答え {ans}{counter}",
+   "kaisetsu": "あわせた数から、わかっているほうの数をひくと、もう一方の数がわかります。{n1}−{n2}={ans}なので、{attr_b}{object}は{ans}{counter}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -892,6 +897,7 @@
     "{actor}は{object}を何{counter}かもっていました。{n_added}{counter}もらったので、ぜんぶで{n_after}{counter}になりました。はじめに何{counter}もっていましたか。"
    ],
    "answer_template": "しき {n_after}-{n_added}={ans} 答え {ans}{counter}",
+   "kaisetsu": "はじめの数は、ぜんぶの数から、もらった数をひいて求めます。{n_after}−{n_added}={ans}なので、はじめに{ans}{counter}もっていました。図にかいて、はじめ・もらった・ぜんぶの3つを線でつなぐと考えやすくなります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -998,6 +1004,7 @@
     "{object}が{n_total}{counter}ありました。きのう{n1}{counter}、きょう{n2}{counter}{verb_use}。のこりは何{counter}ですか。"
    ],
    "answer_template": "しき {n1}+{n2}={mid} {n_total}-{mid}={ans} 答え {ans}{counter}",
+   "kaisetsu": "まず、つかった数をあわせます。{n1}+{n2}={mid}です。つぎに、はじめの数からそれをひいて、{n_total}−{mid}={ans}{counter}です。2つの式を順に書きます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1108,6 +1115,7 @@
     "1{cont_counter}の{container}に{object}が{n_per}{counter}ずつ{verb_on}。{container}は{n_count}{cont_counter}あります。{object}はぜんぶで何{counter}{exist}か。"
    ],
    "answer_template": "しき {n_per}×{n_count}={ans} 答え {ans}{counter}",
+   "kaisetsu": "「1{cont_counter}に{n_per}{counter}ずつ、{n_count}{cont_counter}分」は、{n_per}が{n_count}こ分なので、かけ算で求めます。{n_per}×{n_count}={ans}{counter}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1176,6 +1184,7 @@
     "{actor_a}は{object}を{n_base}{counter}もっています。{actor_b}は{actor_a}の{n_times}ばいもっています。{actor_b}は{object}を何{counter}もっていますか。"
    ],
    "answer_template": "しき {n_base}×{n_times}={ans} 答え {ans}{counter}",
+   "kaisetsu": "「{n_times}ばい」は、同じ数を{n_times}こ分あわせることです。{n_base}×{n_times}={ans}なので、{ans}{counter}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1295,6 +1304,7 @@
     "1{cont_counter}の{container}に{object}が{n_per}{counter}ずつ{verb_on}。{container}は{n_count}{cont_counter}あります。ほかに{object}が{n_extra}{counter}あります。{object}はぜんぶで何{counter}{exist}か。"
    ],
    "answer_template": "しき {n_per}×{n_count}={mid} {mid}+{n_extra}={ans} 答え {ans}{counter}",
+   "kaisetsu": "まず、かけ算で{n_per}×{n_count}={mid}を求めます。つぎに、ほかにある{n_extra}{counter}をたして、{mid}+{n_extra}={ans}{counter}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1390,6 +1400,7 @@
     "子どもが{n_total}人います。{n_per}人ずつのはんを{n_count}つ作りました。はんに入っていない子どもは何人いますか。"
    ],
    "answer_template": "しき {n_per}×{n_count}={mid} {n_total}-{mid}={ans} 答え {ans}人",
+   "kaisetsu": "まず、はんに入っている子どもの数を求めます。{n_per}×{n_count}={mid}人です。つぎに、ぜんぶの人数からひいて、{n_total}−{mid}={ans}人です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1467,6 +1478,7 @@
     "{attr_a}テープの長さは{q1_disp}、{attr_b}テープの長さは{q2_disp}です。2本のテープをあわせると、何cm何mmになりますか。"
    ],
    "answer_template": "しき {q1_disp}+{q2_disp}={ans_disp} 答え {ans_disp}",
+   "kaisetsu": "長さをあわせるときは、cmはcmどうし、mmはmmどうしをたします。mmが10になったら1cmにくり上げます。{q1_disp}+{q2_disp}={ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1559,6 +1571,7 @@
     "{attr_a}テープの長さは{q1_disp}、{attr_b}テープの長さは{q2_disp}です。どちらがどれだけ長いですか。"
    ],
    "answer_template": "しき {big_disp}-{small_disp}={ans_disp} 答え {winner_attr}テープが{ans_disp}長い",
+   "kaisetsu": "「どれだけ長いか」は、長いほうから短いほうをひきます。{big_disp}−{small_disp}={ans_disp}なので、{winner_attr}テープが{ans_disp}長いです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1632,6 +1645,7 @@
     "やかんに水が{q1_disp}、水とうに水が{q2_disp}入っています。あわせて何L何dLありますか。"
    ],
    "answer_template": "しき {q1_disp}+{q2_disp}={ans_disp} 答え {ans_disp}",
+   "kaisetsu": "かさをあわせるときは、LはLどうし、dLはdLどうしをたします。dLが10になったら1Lにくり上げます。{q1_disp}+{q2_disp}={ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1679,6 +1693,7 @@
     "{q1_min}分は、何時間何分ですか。"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "1時間は60分です。{q1_min}分の中に60分がいくつあるかを考え、のこりが分になります。{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1750,6 +1765,7 @@
     "{actor}は{t_start_disp}に家を出て、{dur}分あるいて公園につきました。公園についた時こくは何時何分ですか。"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "出た時こくに、あるいた時間をたします。分をたして60をこえたら、1時間くり上げます。{t_start_disp}の{dur}分後は{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1828,6 +1844,7 @@
     "{actor_a}は{object}を{n1}{counter}、{actor_b}は{n2}{counter}、{actor_c}は{n3}{counter}もっています。3人あわせて何{counter}ありますか。"
    ],
    "answer_template": "しき {n1}+{n2}+{n3}={ans} 答え {ans}{counter}",
+   "kaisetsu": "3人分をあわせるときは、3つの数を順にたします。{n1}+{n2}+{n3}={ans}なので、あわせて{ans}{counter}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1915,6 +1932,7 @@
     "バスに{n1}人のっていました。バスていで{n_off}人おりて、{n_on}人のってきました。バスには何人のっていますか。"
    ],
    "answer_template": "しき {n1}-{n_off}+{n_on}={ans} 答え {ans}人",
+   "kaisetsu": "おりた人はひいて、のった人はたします。{n1}−{n_off}+{n_on}={ans}なので、バスには{ans}人のっています。前から順に計算します。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -1994,6 +2012,7 @@
     "{attr_a}リボンの長さは{q1_disp}、{attr_b}リボンの長さは{q2_disp}です。2本のリボンをあわせると、何m何cmになりますか。"
    ],
    "answer_template": "しき {q1_disp}+{q2_disp}={ans_disp} 答え {ans_disp}",
+   "kaisetsu": "長さをあわせるときは、mはmどうし、cmはcmどうしをたします。cmが100になったら1mにくり上げます。{q1_disp}+{q2_disp}={ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2054,6 +2073,7 @@
     "ポットにお茶が{q1_disp}入っています。{q2_disp}のみました。のこりは何L何dLですか。"
    ],
    "answer_template": "しき {q1_disp}-{q2_disp}={ans_disp} 答え {ans_disp}",
+   "kaisetsu": "のこりは、はじめのかさからのんだかさをひきます。dLがひけないときは、1Lを10dLにして計算します。{q1_disp}−{q2_disp}={ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2101,6 +2121,7 @@
     "{q1_disp}は、何分ですか。"
    ],
    "answer_template": "答え {ans_disp}分",
+   "kaisetsu": "1時間は60分なので、時間の数だけ60をたして、のこりの分をたします。{q1_disp}は{ans_disp}分です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2169,6 +2190,7 @@
     "つぎの計算をしなさい。\n{a1}+{b1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "2けたのたし算は、くらいをそろえて、一のくらいから計算します。{a1}+{b1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2243,6 +2265,7 @@
     "つぎの計算をしなさい。\n{a1}+{b1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "一のくらいをたして10になったら、十のくらいに1くり上げます。くり上げた1をわすれずにたします。{a1}+{b1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2312,6 +2335,7 @@
     "つぎの計算をしなさい。\n{a1}+{b1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "十のくらいをたして100になったら、百のくらいに1くり上げます。{a1}+{b1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2388,6 +2412,7 @@
     "つぎの計算をしなさい。\n{a1}+{b1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "3けたと2けたのたし算も、くらいをそろえて一のくらいから計算します。百のくらいはそのままおろします。{a1}+{b1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2467,6 +2492,7 @@
     "つぎの計算をしなさい。\n{a1}-{b1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "2けたのひき算は、くらいをそろえて、一のくらいから計算します。{a1}−{b1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2546,6 +2572,7 @@
     "つぎの計算をしなさい。\n{a1}-{b1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "一のくらいがひけないときは、十のくらいから1くり下げて、10としてひきます。十のくらいは1へることをわすれずに。{a1}−{b1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2627,6 +2654,7 @@
     "つぎの計算をしなさい。\n{a1}-{b1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "3けたから2けたをひくときも、一のくらいから順にひきます。ひけないときは上のくらいからくり下げます。{a1}−{b1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2694,6 +2722,7 @@
     "つぎの計算をしなさい。\n{a1}+{b1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "何十・何百の計算は、10や100のまとまりがいくつあるかで考えます。{t1}こと{t2}こをあわせて、{ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2761,6 +2790,7 @@
     "つぎの計算をしなさい。\n{a1}-{b1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "10や100のまとまりの数でひき算をします。{t1}こから{t2}こをひいた数だけまとまりがのこるので、{ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2817,6 +2847,7 @@
     "100を{a1}こ、10を{b1}こ、1を{c1}こあわせた数はいくつですか。"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "100が{a1}こで{a1}百、10が{b1}こで{b1}十、1が{c1}こなので、あわせて{ans}です。それぞれのくらいに数字を書きます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2875,6 +2906,7 @@
     "{N1}は、100を何こ、10を何こ、1を何こあわせた数ですか。"
    ],
    "answer_template": "答え 100を{a1}こ、10を{b1}こ、1を{c1}こ",
+   "kaisetsu": "{N1}の百のくらいの数字が100のこ数、十のくらいの数字が10のこ数、一のくらいの数字が1のこ数です。100を{a1}こ、10を{b1}こ、1を{c1}こです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2940,6 +2972,7 @@
     "1000を{a1}こ、100を{b1}こ、10を{c1}こ、1を{d1}こあわせた数はいくつですか。"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "1000が{a1}こで{a1}千、100が{b1}こで{b1}百、10が{c1}こで{c1}十、1が{d1}こなので、{ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -2992,6 +3025,7 @@
     "{a1}と{b1}では、どちらが大きいですか。"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "大きい数をくらべるときは、けたの数が多いほうが大きいです。けたが同じなら、上のくらいから順に数字をくらべます。{ans}のほうが大きいです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3040,6 +3074,7 @@
     "数がきまりにしたがってならんでいます。□にはいる数をかきましょう。\n{s1}、{d1}、□、□、{e1}"
    ],
    "answer_template": "答え {n1d}、{n2d}",
+   "kaisetsu": "となりの数といくつちがうかをしらべると、{k1}ずつふえています。□には、前の数に{k1}をたした数が入ります。{n1d}、{n2d}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3115,6 +3150,7 @@
     "いまの時こくは午前{h1}時{m1}分です。{d1}分後の時こくは何時何分ですか。"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "{d1}分後は、今の時こくの分に{d1}をたします。60分をこえたら1時間くり上げます。{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3163,6 +3199,7 @@
     "いまの時こくは{h1}時です。{d1}時間後の時こくは何時ですか。"
    ],
    "answer_template": "答え {ans}時",
+   "kaisetsu": "{d1}時間後は、今の時こくに{d1}をたします。{h1}時の{d1}時間後は{ans}時です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3211,6 +3248,7 @@
     "つぎの計算をしなさい。\n{a1}cm{b1}mm+{c1}cm"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "長さの計算は、同じたんいどうしをたします。mmが10をこえたら1cmにくり上げます。答えは{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3271,6 +3309,7 @@
     "つぎの計算をしなさい。\n{a1}cm{b1}mm-{c1}cm"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "長さのひき算も、同じたんいどうしをひきます。mmがひけないときは、1cmを10mmにしてひきます。答えは{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3333,6 +3372,7 @@
     "つぎの計算をしなさい。\n{a1}L{b1}dL+{c1}L{d1}dL"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "かさの計算は、LはLどうし、dLはdLどうしをたします。dLが10をこえたら1Lにくり上げます。答えは{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3405,6 +3445,7 @@
     "つぎの計算をしなさい。\n{a1}L{b1}dL-{c1}L{d1}dL"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "dLがひけないときは、1Lを10dLにしてひきます。答えは{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3454,6 +3495,7 @@
     "{T1}cmは何m何cmですか。"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "100cmが1mです。{T1}cmの中に100cmがいくつあるかを考え、のこりがcmになります。{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3505,6 +3547,7 @@
     "{def1}を何といいますか。"
    ],
    "answer_template": "答え {nm1}",
+   "kaisetsu": "3本の直線でかこまれた形が三角形、4本の直線でかこまれた形が四角形です。四角形のうち、4つの角がみんな直角なら長方形、さらに4つの辺の長さもみんな同じなら正方形です。{def1}は{nm1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3559,6 +3602,7 @@
     "{nm1}には、{ask1}がいくつありますか。"
    ],
    "answer_template": "答え {ans}{un1}",
+   "kaisetsu": "まわりの直線が辺、直線と直線がくっついたところが頂点、頂点でできる形が角です。{nm1}の{ask1}は{ans}{un1}あります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3604,6 +3648,7 @@
     "はこの形には、{ask1}がいくつありますか。"
    ],
    "answer_template": "答え {ans}{un1}",
+   "kaisetsu": "はこの形には、たいらなところ（面）が6つ、面と面のさかいの直線（辺）が12、かどの点（頂点）が8つあります。{ask1}は{ans}{un1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3652,6 +3697,7 @@
     "□にあてはまる数をかきましょう。\n{a1}×□={P1}"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "九九の答えから、かけた数を見つけます。{a1}のだんの九九で、答えが{P1}になるところをさがすと、{a1}×{ans}={P1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3698,6 +3744,7 @@
     "{a1}×{b1}の答えは、{a1}×{Q1}の答えよりいくつ大きいですか。"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "かける数が1ふえると、答えはかけられる数だけ大きくなります。{a1}×{b1}は{a1}×{Q1}より、{a1}だけ大きいので、{ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3739,6 +3786,7 @@
     "同じ大きさに{n1}つに分けた1つ分は、もとの大きさの何分の一ですか。"
    ],
    "answer_template": "答え 1/{n1}",
+   "kaisetsu": "同じ大きさに{n1}つに分けた1つ分を、もとの大きさの{n1}分の一といい、1/{n1}と書きます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3830,6 +3878,7 @@
     "右のひょうは、しらべたけっかをせいりしたものです。{ask1}のかずはいくつですか。"
    ],
    "answer_template": "答え {ans}{unit1}",
+   "kaisetsu": "ひょうは、しらべたことをしゅるいごとにせいりしたものです。{ask1}のところをたてに見て、書いてある数を読みます。答えは{ans}{unit1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",

@@ -44,6 +44,7 @@
     "つぎの けいさんを しましょう。\n{a1}+{b1}"
    ],
    "answer_template": "こたえ {ans}",
+   "kaisetsu": "たしざんは、2つの かずを あわせて いくつに なるかを もとめる けいさんです。{a1}に {b1}を たして、{ans}です。",
    "kanji_policy": {"allowed_grades": ["g01"]},
    "answer_structure": "single",
    "template_number_constants": []
@@ -69,6 +70,7 @@
     "つぎの けいさんを しましょう。\n{a1}+{b1}"
    ],
    "answer_template": "こたえ {ans}",
+   "kaisetsu": "こたえが 10より 大きく なる たしざんは、さきに 10の まとまりを つくります。{a1}に いくつ たすと 10に なるかを かんがえ、のこりを 10に たします。{a1}+{b1}={ans}です。",
    "kanji_policy": {"allowed_grades": ["g01"]},
    "answer_structure": "single",
    "template_number_constants": []
@@ -95,6 +97,7 @@
     "つぎの けいさんを しましょう。\n{a1}-{b1}"
    ],
    "answer_template": "こたえ {ans}",
+   "kaisetsu": "ひきざんは、はじめの かずから とった のこりを もとめる けいさんです。{a1}から {b1}を とって、{ans}です。",
    "kanji_policy": {"allowed_grades": ["g01"]},
    "answer_structure": "single",
    "template_number_constants": []
@@ -121,6 +124,7 @@
     "つぎの けいさんを しましょう。\n{a1}-{b1}"
    ],
    "answer_template": "こたえ {ans}",
+   "kaisetsu": "10より 大きい かずから ひくときは、10の まとまりから ひきます。{a1}を 10と いくつに わけて、10から {b1}を ひき、のこりの ばらを たします。こたえは {ans}です。",
    "kanji_policy": {"allowed_grades": ["g01"]},
    "answer_structure": "single",
    "template_number_constants": []
@@ -151,6 +155,7 @@
     "つぎの けいさんを しましょう。\n{a1}+{b1}-{c1}"
    ],
    "answer_template": "こたえ {ans}",
+   "kaisetsu": "3つの かずの けいさんは、まえから じゅんに 2つずつ けいさんします。さいしょの 2つを たして、その こたえに 3つめを たします。こたえは {ans}です。",
    "kanji_policy": {"allowed_grades": ["g01"]},
    "answer_structure": "single",
    "template_number_constants": []
@@ -173,6 +178,7 @@
     "10と {k1}で いくつですか。"
    ],
    "answer_template": "こたえ {ans}",
+   "kaisetsu": "10と {k1}を あわせた かずは、10の つぎから {k1}かぞえた {ans}です。10と いくつで、11から 19までの かずが できます。",
    "kanji_policy": {"allowed_grades": ["g01"]},
    "answer_structure": "single",
    "template_number_constants": [10]
@@ -195,6 +201,7 @@
     "{n1}は 10と いくつですか。"
    ],
    "answer_template": "こたえ {ans}",
+   "kaisetsu": "{n1}は、10と {ans}に わけられます。10の まとまりを とった のこりが ばらの かずです。",
    "kanji_policy": {"allowed_grades": ["g01"]},
    "answer_structure": "single",
    "template_number_constants": [10]
@@ -223,6 +230,7 @@
     "□に はいる かずを かきましょう。\n{a1}+□={b1}"
    ],
    "answer_template": "こたえ {ans}",
+   "kaisetsu": "□に はいる かずは、こたえの {b1}から {a1}を ひいて もとめます。□={ans}です。もとめたら、{a1}+{ans}が {b1}に なるか たしかめましょう。",
    "kanji_policy": {"allowed_grades": ["g01"]},
    "answer_structure": "single",
    "template_number_constants": []
@@ -249,6 +257,7 @@
     "あかい {it1}が {a1}こ、しろい {it1}が {b1}こ あります。あわせて なんこ ありますか。"
    ],
    "answer_template": "こたえ {ans}こ",
+   "kaisetsu": "「あわせて」は、2つの かずを たします。{a1}+{b1}={ans}なので、あわせて {ans}こです。",
    "kanji_policy": {"allowed_grades": ["g01"]},
    "answer_structure": "single",
    "template_number_constants": []
@@ -276,6 +285,7 @@
     "{it1}が {a1}こ あります。{b1}こ たべました。のこりは なんこですか。"
    ],
    "answer_template": "こたえ {ans}こ",
+   "kaisetsu": "「のこりは」は、はじめの かずから たべた かずを ひきます。{a1}−{b1}={ans}なので、のこりは {ans}こです。",
    "kanji_policy": {"allowed_grades": ["g01"]},
    "answer_structure": "single",
    "template_number_constants": []
@@ -303,6 +313,7 @@
     "あかい {it1}が {a1}こ、あおい {it1}が {b1}こ あります。ちがいは なんこですか。"
    ],
    "answer_template": "こたえ {ans}こ",
+   "kaisetsu": "「ちがい」は、大きい かずから 小さい かずを ひいて もとめます。{a1}−{b1}={ans}なので、ちがいは {ans}こです。",
    "kanji_policy": {"allowed_grades": ["g01"]},
    "answer_structure": "single",
    "template_number_constants": []
@@ -328,6 +339,7 @@
     "{a1}と {b1}では、どちらが おおきいですか。"
    ],
    "answer_template": "こたえ {ans}",
+   "kaisetsu": "かずの 大きさを くらべるときは、10の まとまりが おおい ほうが 大きい かずです。おなじなら、ばらの かずで くらべます。{ans}の ほうが 大きいです。",
    "kanji_policy": {"allowed_grades": ["g01"]},
    "answer_structure": "single",
    "template_number_constants": []
@@ -369,6 +381,7 @@
     "つぎの けいさんを しましょう。\n{a1}+{b1}"
    ],
    "answer_template": "こたえ {ans}",
+   "kaisetsu": "0は「なにも ない」という かずです。0を たしても かずは かわりません。{a1}+{b1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -415,6 +428,7 @@
     "つぎの けいさんを しましょう。\n{a1}-{b1}"
    ],
    "answer_template": "こたえ {ans}",
+   "kaisetsu": "0を ひいても かずは かわりません。おなじ かずを ひくと、こたえは 0に なります。{a1}−{b1}={ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -461,6 +475,7 @@
     "つぎの けいさんを しましょう。\n{A1}+{B1}"
    ],
    "answer_template": "こたえ {ans}",
+   "kaisetsu": "なん十の たしざんは、10の まとまりが いくつ あるかで かんがえます。{t1}こと {t2}こを あわせて、10の まとまりが {ans}を 10で わった かずに なるので、{ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -519,6 +534,7 @@
     "つぎの けいさんを しましょう。\n{A1}-{B1}"
    ],
    "answer_template": "こたえ {ans}",
+   "kaisetsu": "なん十の ひきざんも、10の まとまりの かずで かんがえます。{t1}こから {t2}こを ひいた のこりの まとまりを 10ずつ かぞえて、{ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -579,6 +595,7 @@
     "つぎの けいさんを しましょう。\n{N1}+{v1}"
    ],
    "answer_template": "こたえ {ans}",
+   "kaisetsu": "{N1}に {v1}を たすときは、ばらの {u1}に {v1}を たします。10の まとまりは そのままです。こたえは {ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -636,6 +653,7 @@
     "つぎの けいさんを しましょう。\n{N1}-{v1}"
    ],
    "answer_template": "こたえ {ans}",
+   "kaisetsu": "{N1}から {v1}を ひくときは、ばらの {u1}から {v1}を ひきます。10の まとまりは そのままです。こたえは {ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -713,6 +731,7 @@
     "つぎの けいさんを しましょう。\n{a1}-{b1}+{c1}"
    ],
    "answer_template": "こたえ {ans}",
+   "kaisetsu": "たしざんと ひきざんが まざった けいさんも、まえから じゅんに します。さいしょの 2つを けいさんして、その こたえと 3つめを けいさんします。こたえは {ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -761,6 +780,7 @@
     "しろい {it1}が {b1}こ あります。あかい {it1}は、しろい {it1}より {d1}こ おおいです。あかい {it1}は なんこ ありますか。"
    ],
    "answer_template": "こたえ {ans}こ",
+   "kaisetsu": "「{d1}こ おおい」ので、しろい {it1}の かず {b1}に {d1}を たします。{b1}+{d1}={ans}こです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -814,6 +834,7 @@
     "あかい {it1}が {b1}こ あります。しろい {it1}は、あかい {it1}より {d1}こ すくないです。しろい {it1}は なんこ ありますか。"
    ],
    "answer_template": "こたえ {ans}こ",
+   "kaisetsu": "「{d1}こ すくない」ので、あかい {it1}の かず {b1}から {d1}を ひきます。{b1}−{d1}={ans}こです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -862,6 +883,7 @@
     "{n1}にんの こどもに、{it1}を {d1}こずつ くばります。{it1}は ぜんぶで なんこ いりますか。"
    ],
    "answer_template": "こたえ {ans}こ",
+   "kaisetsu": "おなじ かずずつ くばるときは、1にんぶんの かずを ひとの かずだけ たします。{d1}こを {n1}かい たして、ぜんぶで {ans}こです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -915,6 +937,7 @@
     "あかと しろの {it1}が、あわせて {a1}こ あります。あかい {it1}は {b1}こです。しろい {it1}は なんこ ありますか。"
    ],
    "answer_template": "こたえ {ans}こ",
+   "kaisetsu": "あわせた かずから、わかっている ほうの かずを ひくと、もう いっぽうの かずが わかります。{a1}−{b1}={ans}こです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -955,6 +978,7 @@
     "10の まとまりが {x1}こと、ばらが {y1}こ あります。かずは いくつですか。"
    ],
    "answer_template": "こたえ {ans}",
+   "kaisetsu": "10の まとまりが {x1}こで {x1}十、ばらが {y1}こなので、あわせて {ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -997,6 +1021,7 @@
     "{N1}は、10の まとまりが なんこと、ばらが なんこですか。"
    ],
    "answer_template": "こたえ 10の まとまりが {x1}こ、ばらが {y1}こ",
+   "kaisetsu": "{N1}は、10の まとまりが {x1}こと、ばらが {y1}こです。十の くらいの すうじが まとまりの かず、一の くらいの すうじが ばらの かずです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -1050,6 +1075,7 @@
     "100が {h1}こと、10が {t1}こ あります。かずは いくつですか。"
    ],
    "answer_template": "こたえ {ans}",
+   "kaisetsu": "100が {h1}こと 10が {t1}こで、{ans}です。100の まとまりの かずを 百の くらいに、10の まとまりの かずを 十の くらいに かきます。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -1099,6 +1125,7 @@
     "{a1}と {b1}では、どちらが おおきいですか。"
    ],
    "answer_template": "こたえ {ans}",
+   "kaisetsu": "大きい かずを くらべるときは、けたの おおい ほうが 大きいです。けたが おなじなら、上の くらいから じゅんに くらべます。{ans}の ほうが 大きいです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -1132,6 +1159,7 @@
     "{n1}より 1 おおきい かずは いくつですか。"
    ],
    "answer_template": "こたえ {ans}",
+   "kaisetsu": "1 大きい かずは、つぎの かずです。{n1}の つぎは {ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -1167,6 +1195,7 @@
     "{n1}より 1 ちいさい かずは いくつですか。"
    ],
    "answer_template": "こたえ {ans}",
+   "kaisetsu": "1 小さい かずは、まえの かずです。{n1}の まえは {ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -1202,6 +1231,7 @@
     "かずが じゅんに ならんで います。□に はいる かずを かきましょう。\n{s1}、{d1}、□、□、{e1}"
    ],
    "answer_template": "こたえ {n1d}、{n2d}",
+   "kaisetsu": "かずが 1ずつ ふえて ならんで います。□には、まえの かずより 1 大きい かずが はいります。{n1d}、{n2d}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -1263,6 +1293,7 @@
     "かずが きまりに したがって ならんで います。□に はいる かずを かきましょう。\n{s1}、{d1}、□、□、{e1}"
    ],
    "answer_template": "こたえ {n1d}、{n2d}",
+   "kaisetsu": "となりの かずと いくつ ちがうかを しらべると、{k1}ずつ ふえて います。□には、まえの かずに {k1}を たした かずが はいります。{n1d}、{n2d}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -1331,6 +1362,7 @@
     "{it1}が {n1}こ、よこに 1れつに ならんで います。あかい {it1}は、まえから {k1}ばんめです。あかい {it1}の うしろには、{it1}が なんこ ありますか。"
    ],
    "answer_template": "こたえ {ans}こ",
+   "kaisetsu": "まえから {k1}ばんめの うしろに あるのは、ぜんぶの かずから {k1}を ひいた かずです。{n1}−{k1}={ans}こです。「{k1}ばんめ」は 1こだけを さして います。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -1387,6 +1419,7 @@
     "{it1}が {n1}こ、よこに 1れつに ならんで います。まえから {k1}こを はこに いれました。のこりの {it1}は なんこですか。"
    ],
    "answer_template": "こたえ {ans}こ",
+   "kaisetsu": "まえから {k1}こを とると、のこりは {n1}−{k1}={ans}こです。「{k1}こ」は {k1}こ ぜんぶを さして います。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -1435,6 +1468,7 @@
     "いまは {h1}じです。{d1}じかん あとは なんじですか。"
    ],
    "answer_template": "こたえ {ans}じ",
+   "kaisetsu": "{d1}じかん あとは、いまの じこくに {d1}を たします。{h1}じの {d1}じかん あとは {ans}じです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -1486,6 +1520,7 @@
     "いまは {h1}じです。{d1}じかん まえは なんじでしたか。"
    ],
    "answer_template": "こたえ {ans}じ",
+   "kaisetsu": "{d1}じかん まえは、いまの じこくから {d1}を ひきます。{h1}じの {d1}じかん まえは {ans}じです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -1532,6 +1567,7 @@
     "あかい テープの ながさは、クリップ {a1}こぶんです。しろい テープの ながさは、クリップ {b1}こぶんです。どちらの テープが ながいですか。"
    ],
    "answer_template": "こたえ {W1_word} テープ",
+   "kaisetsu": "おなじ クリップ なんこぶんかで くらべると、ながさが くらべられます。こぶんの かずが おおい {W1_word} テープの ほうが ながいです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -1582,6 +1618,7 @@
     "あかい やかんには、みずが コップ {a1}こぶん はいります。しろい やかんには、みずが コップ {b1}こぶん はいります。どちらの やかんに みずが おおく はいりますか。"
    ],
    "answer_template": "こたえ {W1_word} やかん",
+   "kaisetsu": "おなじ コップで なんこぶん はいるかで くらべると、かさが くらべられます。こぶんの かずが おおい {W1_word} やかんの ほうが おおく はいります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -1632,6 +1669,7 @@
     "あかい かみの ひろさは、ますめ {a1}こぶんです。しろい かみの ひろさは、ますめ {b1}こぶんです。どちらの かみが ひろいですか。"
    ],
    "answer_template": "こたえ {W1_word} かみ",
+   "kaisetsu": "おなじ ますめ なんこぶんかで くらべると、ひろさが くらべられます。こぶんの かずが おおい {W1_word} かみの ほうが ひろいです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -1699,6 +1737,7 @@
     "あかい テープは クリップ {a1}こぶん、しろい テープは クリップ {b1}こぶん、あおい テープは クリップ {c1}こぶんの ながさです。いちばん ながい テープは どれですか。"
    ],
    "answer_template": "こたえ {W1_word} テープ",
+   "kaisetsu": "3つを くらべるときは、こぶんの かずが いちばん おおい ものを さがします。{W1_word} テープが いちばん ながいです。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -1744,6 +1783,7 @@
     "{sol1}の そこの かたちを、かみに うつしとりました。どんな かたちが できますか。"
    ],
    "answer_template": "こたえ {fc1}",
+   "kaisetsu": "そこの かたちを かみに うつすと、そこの めんの かたちが そのまま できます。{sol1}の そこは {fc1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -1806,6 +1846,7 @@
     "{obj_first}と {obj_second}では、{sol_a}の かたちの なかまは どちらですか。"
    ],
    "answer_template": "こたえ {W1_word}",
+   "kaisetsu": "かたちの なかまわけは、ころがるか、つめるか、とがって いるかで みわけます。{sol_a}の なかまは {W1_word}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -1857,6 +1898,7 @@
     "おなじ おおきさの さんかくの いろいたを ならべて、{tg1}を つくります。いろいたは なんまい いりますか。"
    ],
    "answer_template": "こたえ {ans}まい",
+   "kaisetsu": "さんかくの いろいたを 2まい あわせると しかくが できます。{tg1}を つくるには、いろいたが {ans}まい いります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -1920,6 +1962,7 @@
     "はこの なかに、りんごが {a1}こ、あめが {b1}こ、おはじきが {c1}こ はいって います。いちばん おおい ものは どれですか。"
    ],
    "answer_template": "こたえ {W1_word}",
+   "kaisetsu": "かずを くらべるときは、それぞれの かずを かぞえて、いちばん 大きい かずを さがします。いちばん おおいのは {W1_word}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01"
@@ -1958,6 +2001,7 @@
     "とけいを みて、なんじか こたえましょう。"
    ],
    "answer_template": "こたえ {h1}じ",
+   "kaisetsu": "みじかい はりが さして いる すうじが「なんじ」です。ながい はりが 12を さして いるときは「ちょうど」です。{h1}じです。",
    "figure_params": {
     "kind": "clock_face",
     "h": "{h1}",
@@ -1998,6 +2042,7 @@
     "とけいを みて、なんじはんか こたえましょう。"
    ],
    "answer_template": "こたえ {h1}じはん",
+   "kaisetsu": "ながい はりが 6を さして いるときは「はん」です。みじかい はりは、すうじと すうじの あいだに あります。まえの すうじを よんで、{h1}じはんです。",
    "figure_params": {
     "kind": "clock_face",
     "h": "{h1}",
@@ -2053,6 +2098,7 @@
     "とけいを みて、なんじなんぷんか こたえましょう。"
    ],
    "answer_template": "こたえ {h1}じ{m1}ふん",
+   "kaisetsu": "ながい はりは、すうじ 1つぶんで 5ふん すすみます。ながい はりの さす すうじを 5とびで かぞえて {m1}ふん、みじかい はりの まえの すうじが {h1}じなので、{h1}じ{m1}ふんです。",
    "figure_params": {
     "kind": "clock_face",
     "h": "{h1}",
