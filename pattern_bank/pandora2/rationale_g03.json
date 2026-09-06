@@ -1,7 +1,7 @@
 {
  "_meta": {
   "schema": "rationale_g05_gold.json準拠",
-  "scope": "g03全26パターン完全版(遡及・統一遡及③ g03完了 2026-08-14) +P4-3追補16(筆算8+大きい数4+小数4 2026-08-30) +P4-4追補15(わり算/きまり/時間復活/円球/表/三角形 2026-08-30・P-4完結)",
+  "scope": "g03全26パターン完全版(遡及・統一遡及③ g03完了 2026-08-14) +P4-3追補16(筆算8+大きい数4+小数4 2026-08-30) +P4-4追補15(わり算/きまり/時間復活/円球/表/三角形 2026-08-30・P-4完結) +等分図便1(equal_parts c26_u01 2026-09-06)",
   "note": "figure_notes正準=ゴールド流儀(null不使用)。",
   "order": "バンク順"
  },
@@ -1170,6 +1170,36 @@
    "exclusions": "なし。",
    "figure_notes": "図なし(テキスト完結)。",
    "pedagogy": []
+  }
+ },
+ "g03_tobun_draw_01": {
+  "brief": {
+   "semantic_territory": "分数をテープ図に表す(作図型)",
+   "number_domain": "真分数(den∈[2,9]・num<den・単位m/L)",
+   "answer_structure": "single",
+   "figure": "equal_parts(draw・tape・1m/1Lラベル)",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "1kind3図型(circle/tape/rect・rectはden2/num2で2方向)。塗り位置固定(左詰め・12時から時計回り)。分数値は同単元非図行から補完。作図型=答え列挙・読み取り=computed。拡張候補9行は台帳のみ(裁可o)。",
+     "by": "marko",
+     "date": "2026-09-06"
+    },
+    {
+     "text": "スモーク4枚目視OK。差分3件承認(2方向rectの向き=den(たて)行/den2(横)列・×整数はcol_unit=答num×num2/den・÷分数は補助図で答は既存)。",
+     "by": "marko",
+     "date": "2026-09-06"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "c26_u01_002/007/013=「次の分数を図に表しなさい」(5小問・分数値未転記→同単元非図行の1/2m・2/3m・1/6L・3/5L・1/7m・4/5m・1/9L・6/7L・1/3m・6/11mから行レコードに補完=裁可o-3)。",
+   "representation": "テープ図(1m/1L)をden等分した等分線のみを示し、答=「{den}等分した{num}こ分に色をぬる」の列挙。可変化=分数の乱択(設計書§4 den 2〜9・013の6/11は域外=anchor)。",
+   "constructive_guarantees": "関門50 equal_parts_vectors: 行台帳13図+悉皆946構成(出力SVGから切れ目角/線位置/塗ります数/塗りブロック/面積比を独立再計算)+(2b)生成器経由(seed決定化・120本/パターン)で塗り面積比=答の分数・作図型は答に{den}等分{num}こ分を照合。",
+   "semantic_position": "g03 c26_u01の図行3本(全て作図型)を1パターンで受ける。frac_represent_01(文章)と対。",
+   "exclusions": "読み取り型(g03には図読み行なし)。",
+   "figure_notes": "equal_parts tape draw: 横長6:1・両端の短い目盛・上に1m/1L。",
+   "pedagogy": "設計書§6(Fable・逐語・g03 draw): {den}分の{num}は、全体を同じ大きさに{den}つに分けた{num}つ分です。まず全体を{den}等分して、そのうち{num}こに色をぬります。"
   }
  }
 }

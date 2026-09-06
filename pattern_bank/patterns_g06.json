@@ -3240,6 +3240,7 @@
    ],
    "answer_template": "しき {f1}×{k1}={res1} 答え {res1}m²",
    "kaisetsu": "1dLでぬれる面積に、使うペンキの量（dL）をかけると、ぬれる面積が求められます。{f1}×{k1}={res1}なので、{res1}m²です。かける数が整数なら、分子だけに整数をかけます。",
+   "figure_params": {"kind": "equal_parts", "shape": "rect", "den": "{b1}", "num": "{a1}", "den2": "{k1}", "num2": "{k1}", "mode": "read", "unit_label": "1m²", "col_unit": true},
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3413,6 +3414,7 @@
    ],
    "answer_template": "しき {f1}÷{k1}={res1} 答え {res1}L",
    "kaisetsu": "等分するときはわり算です。{f1}÷{k1}={res1}なので、1人分は{res1}Lです。分母に人数をかけると考えます。",
+   "figure_params": {"kind": "equal_parts", "shape": "rect", "den": "{b1}", "num": "{a1}", "den2": "{k1}", "num2": 1, "mode": "read", "unit_label": "1L"},
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -3746,7 +3748,8 @@
     "1dLでかべを{f1}m²ぬれるペンキがあります。このペンキ{f2}dLでは、かべを何m²ぬれますか。"
    ],
    "answer_template": "しき {f1}×{f2}={res1} 答え {res1}m²",
-   "kaisetsu": "かける数が分数でも、式の形は「1dLあたり×量」で同じです。{f1}×{f2}={res1}なので、{res1}m²です。かける数が1より小さいときは、答えは1dLでぬれる面積より小さくなります。",
+   "kaisetsu": "1m²の正方形を、たてに{b1}等分・横に{d1}等分すると、1つのますは1/({b1}×{d1})m²です。色のついたますは{a1}×{c1}こあるので、面積は{res1}m²になります。分数のかけ算で分母どうし・分子どうしをかける理由が、この図で分かります。",
+   "figure_params": {"kind": "equal_parts", "shape": "rect", "den": "{b1}", "num": "{a1}", "den2": "{d1}", "num2": "{c1}", "mode": "read", "unit_label": "1m²"},
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -4091,6 +4094,7 @@
    ],
    "answer_template": "しき {f1}÷{f2}={res1} 答え {res1}m²",
    "kaisetsu": "1dLあたりの面積は、「ぬれた面積÷使った量」で求めます。{f1}÷{f2}なので、逆数をかけて{res1}m²です。わる数が分数でも「1あたり」を求める式はわり算です。",
+   "figure_params": {"kind": "equal_parts", "shape": "rect", "den": "{b1}", "num": "{a1}", "den2": "{d1}", "num2": "{c1}", "mode": "read", "unit_label": "1m²"},
    "kanji_policy": {
     "allowed_grades": [
      "g01",

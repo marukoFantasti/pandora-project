@@ -250,7 +250,39 @@
    "ai": 3,
    "unit": "人"
   }
- ]
+ ],
+  "tobun_rows": [
+   {
+    "id": "c51_u01_003-1",
+    "shape": "circle",
+    "den": 2,
+    "num": 1
+   },
+   {
+    "id": "c51_u01_003-2",
+    "shape": "rect",
+    "den": 2,
+    "num": 1
+   },
+   {
+    "id": "c51_u01_003-3",
+    "shape": "tape",
+    "den": 2,
+    "num": 1
+   },
+   {
+    "id": "c51_u01_004-1",
+    "shape": "circle",
+    "den": 4,
+    "num": 1
+   },
+   {
+    "id": "c51_u01_004-2",
+    "shape": "rect",
+    "den": 8,
+    "num": 3
+   }
+  ]
  },
  "patterns": [
   {
@@ -3829,6 +3861,142 @@
      }
     ]
    }
+  },
+  {
+   "pattern_id": "g02_tobun_nuri_01",
+   "grade": "g02",
+   "unit_id": "g02_c51_u01",
+   "unit_name": "分数",
+   "semantic_category": "等分図に分数分の色をぬる(作図型)",
+   "semantic_note": "等分図便(裁可o)。equal_parts kind(1kind3図型・塗り位置固定=左詰め/12時から時計回り)。 c51_u01_003=1/2に色をぬった図(3小図=円/長方形/テープ)。作図型は答=「{den}等分した{num}こ分に色をぬる」の列挙(裁可o-4)。可変化=den∈{2,3,4,8}(g02は単位分数)・図型は行レコード。転記「塗った」は配当外漢字のため「ぬった」。",
+   "step_count": 1,
+   "operation": "1/n",
+   "answer_formula": "den1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2
+     ],
+     "type": "choice_int"
+    },
+    "sh1": {
+     "from": "tobun_rows[j1].shape"
+    },
+    "den1": {
+     "choices": [
+      2,
+      3,
+      4,
+      8
+     ],
+     "type": "choice_int"
+    }
+   },
+   "computed_slots": {
+    "num1": {
+     "formula": "1"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "1/{den1}に色をぬった図をかきなさい。"
+   ],
+   "answer_template": "答え {den1}等分した{num1}こ分に色をぬる",
+   "kaisetsu": "{den1}分の{num1}は、全体を同じ大きさに{den1}つに分けた{num1}つ分です。まず全体を{den1}等分して、そのうち{num1}こに色をぬります。",
+   "figure_params": {
+    "kind": "equal_parts",
+    "shape": "{sh1}",
+    "den": "{den1}",
+    "num": "{num1}",
+    "mode": "draw"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1
+   ],
+   "answer_domain": "any_int"
+  },
+  {
+   "pattern_id": "g02_tobun_yomi_01",
+   "grade": "g02",
+   "unit_id": "g02_c51_u01",
+   "unit_name": "分数",
+   "semantic_category": "色をぬった等分図を読んで分数を書く(読み取り型)",
+   "semantic_note": "等分図便(裁可o)。equal_parts kind(1kind3図型・塗り位置固定=左詰め/12時から時計回り)。 c51_u01_004=塗られた図→分数(答欄は転記誤記・値は同単元005/007の1/2・1/3・1/4・1/8・3/4・3/8から補完=裁可o-3)。読み取り型は答={num}/{den}をcomputedで機械採点(裁可o-4)。可変化=den∈{2,3,4,8}・num∈[1,den−1]・図型は行レコード(円/長方形)。転記「次の」は配当外漢字のため「つぎの」。",
+   "step_count": 1,
+   "operation": "num/den",
+   "answer_formula": "num1",
+   "slots": {
+    "j1": {
+     "choices": [
+      3,
+      4
+     ],
+     "type": "choice_int"
+    },
+    "sh1": {
+     "from": "tobun_rows[j1].shape"
+    },
+    "den1": {
+     "choices": [
+      2,
+      3,
+      4,
+      8
+     ],
+     "type": "choice_int"
+    },
+    "num1": {
+     "type": "int",
+     "range": [
+      1,
+      7
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "proper",
+     "expr": "num1 < den1",
+     "why": "真分数(塗りは全体未満)"
+    },
+    {
+     "rule": "irreducible",
+     "expr": "gcd(num1, den1) == 1",
+     "why": "2年は既約の分数のみ(補完値1/2・1/3・1/4・1/8・3/4・3/8に整合・2/4等を出さない)"
+    }
+   ],
+   "sentence_templates": [
+    "つぎの□にあてはまる分数を書きなさい。色をぬったところは、もとの大きさの□です。"
+   ],
+   "answer_template": "答え {num1}/{den1}",
+   "kaisetsu": "同じ大きさに{den1}つに分けた1つ分を、{den1}分の1と書きます。色がついているのは{den1}こに分けたうちの{num1}こ分なので、{num1}/{den1}です。",
+   "figure_params": {
+    "kind": "equal_parts",
+    "shape": "{sh1}",
+    "den": "{den1}",
+    "num": "{num1}",
+    "mode": "read"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02"
+    ],
+    "check_against": "data/kyoiku_kanji.json"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "positive_int"
   }
  ],
  "schema_changelog": {

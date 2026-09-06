@@ -248,7 +248,44 @@
    "ask": "千万の位",
    "p": 8
   }
- ]
+ ],
+  "tobun_rows": [
+   {
+    "id": "c26_u01_002-1",
+    "unit": "m",
+    "ul": "1m",
+    "den": 3,
+    "num": 2
+   },
+   {
+    "id": "c26_u01_002-2",
+    "unit": "L",
+    "ul": "1L",
+    "den": 5,
+    "num": 3
+   },
+   {
+    "id": "c26_u01_007-1",
+    "unit": "m",
+    "ul": "1m",
+    "den": 5,
+    "num": 4
+   },
+   {
+    "id": "c26_u01_007-2",
+    "unit": "L",
+    "ul": "1L",
+    "den": 7,
+    "num": 6
+   },
+   {
+    "id": "c26_u01_013",
+    "unit": "m",
+    "ul": "1m",
+    "den": 11,
+    "num": 6
+   }
+  ]
  },
  "patterns": [
   {
@@ -4093,6 +4130,85 @@
    },
    "answer_structure": "single",
    "template_number_constants": []
+  },
+  {
+   "pattern_id": "g03_tobun_draw_01",
+   "grade": "g03",
+   "unit_id": "g03_c26_u01",
+   "unit_name": "分数のしくみと大きさ",
+   "semantic_category": "分数をテープ図に表す(作図型)",
+   "semantic_note": "等分図便(裁可o)。equal_parts kind(1kind3図型・塗り位置固定=左詰め/12時から時計回り)。 c26_u01_002/007/013=「次の分数を図に表しなさい」(5小問)。分数値は未転記のため同単元非図行(1/2m・2/3m・1/6L・3/5L・1/7m・4/5m・1/9L・6/7L・1/3m・6/11m…)から行レコードに補完(裁可o-3)し、可変化は分数の乱択(den∈[2,9]=設計書§4・num<den。013の6/11は乱択域外=anchorとして台帳)。図=1m/1Lのテープ(draw=等分線のみ)。答=列挙(裁可o-4)。",
+   "step_count": 1,
+   "operation": "num/den",
+   "answer_formula": "num1",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "type": "choice_int"
+    },
+    "unit1": {
+     "from": "tobun_rows[j1].unit"
+    },
+    "ul1": {
+     "from": "tobun_rows[j1].ul"
+    },
+    "den1": {
+     "type": "int",
+     "range": [
+      2,
+      9
+     ]
+    },
+    "num1": {
+     "type": "int",
+     "range": [
+      1,
+      8
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "proper",
+     "expr": "num1 < den1",
+     "why": "真分数(1m/1Lのテープに収まる)"
+    }
+   ],
+   "sentence_templates": [
+    "次の分数を図に表しなさい。{f1}{unit1}"
+   ],
+   "answer_template": "答え {den1}等分した{num1}こ分に色をぬる",
+   "kaisetsu": "{den1}分の{num1}は、全体を同じ大きさに{den1}つに分けた{num1}つ分です。まず全体を{den1}等分して、そのうち{num1}こに色をぬります。",
+   "fraction_display": {
+    "f1": [
+     "num1",
+     "den1"
+    ]
+   },
+   "figure_params": {
+    "kind": "equal_parts",
+    "shape": "tape",
+    "den": "{den1}",
+    "num": "{num1}",
+    "mode": "draw",
+    "unit_label": "{ul1}"
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "positive_int"
   }
  ],
  "schema_changelog": {

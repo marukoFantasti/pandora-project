@@ -1,7 +1,7 @@
 {
  "_meta": {
   "schema": "rationale_g05_gold.json準拠",
-  "scope": "g02全49パターン(遡及21 + P4-1追補14 + P4-2追補14=時こく/単位/図形/九九/分数/表 2026-08-30。jikan_convは重複検出で在庫)",
+  "scope": "g02全49パターン(遡及21 + P4-1追補14 + P4-2追補14=時こく/単位/図形/九九/分数/表 2026-08-30。jikan_convは重複検出で在庫) +等分図便2(equal_parts c51_u01 2026-09-06)",
   "note": "figure_notes正準=ゴールド流儀(null不使用)。",
   "order": "バンク順"
  },
@@ -1018,6 +1018,66 @@
    "exclusions": "グラフ系。",
    "figure_notes": "table kind流用(g06実証域内の1行4列)。",
    "pedagogy": []
+  }
+ },
+ "g02_tobun_nuri_01": {
+  "brief": {
+   "semantic_territory": "等分図に分数分の色をぬる(作図型)",
+   "number_domain": "単位分数(den∈{2,3,4,8}・num=1)",
+   "answer_structure": "single",
+   "figure": "equal_parts(draw・円/長方形/テープ=行レコード)",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "1kind3図型(circle/tape/rect・rectはden2/num2で2方向)。塗り位置固定(左詰め・12時から時計回り)。分数値は同単元非図行から補完。作図型=答え列挙・読み取り=computed。拡張候補9行は台帳のみ(裁可o)。",
+     "by": "marko",
+     "date": "2026-09-06"
+    },
+    {
+     "text": "スモーク4枚目視OK。差分3件承認(2方向rectの向き=den(たて)行/den2(横)列・×整数はcol_unit=答num×num2/den・÷分数は補助図で答は既存)。",
+     "by": "marko",
+     "date": "2026-09-06"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "c51_u01_003=1/2に色を塗った図をかく(3小図・図の内容未転記)。",
+   "representation": "作図型は答=「{den}等分した{num}こ分に色をぬる」の列挙(裁可o-4)。図は等分線のみ(draw)。図型は行レコード(円/長方形/テープ)、denを乱択。配当外漢字「塗」「次」は仮名表記。",
+   "constructive_guarantees": "関門50 equal_parts_vectors: 行台帳13図+悉皆946構成(出力SVGから切れ目角/線位置/塗ります数/塗りブロック/面積比を独立再計算)+(2b)生成器経由(seed決定化・120本/パターン)で塗り面積比=答の分数・作図型は答に{den}等分{num}こ分を照合。",
+   "semantic_position": "g02 c51_u01(分数)の図行2本のうち作図型。読み取り型(tobun_yomi)と対。",
+   "exclusions": "塗り位置の乱択(裁可o-2)。#6相当の未転記行はskip。",
+   "figure_notes": "equal_parts draw: 円=半径線den本・テープ/長方形=縦線den−1本。塗りなし。",
+   "pedagogy": "設計書§6(Fable・逐語・g03 draw): {den}分の{num}は、全体を同じ大きさに{den}つに分けた{num}つ分です。まず全体を{den}等分して、そのうち{num}こに色をぬります。 ※g02作図型に固有の解説本文は設計書に無いためg03 drawを流用(「等分」は3年配当=要確認)。"
+  }
+ },
+ "g02_tobun_yomi_01": {
+  "brief": {
+   "semantic_territory": "色をぬった等分図を読んで分数を書く(読み取り型)",
+   "number_domain": "既約真分数(den∈{2,3,4,8}・num<den・gcd=1)",
+   "answer_structure": "single",
+   "figure": "equal_parts(read・円/長方形=行レコード)",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "1kind3図型(circle/tape/rect・rectはden2/num2で2方向)。塗り位置固定(左詰め・12時から時計回り)。分数値は同単元非図行から補完。作図型=答え列挙・読み取り=computed。拡張候補9行は台帳のみ(裁可o)。",
+     "by": "marko",
+     "date": "2026-09-06"
+    },
+    {
+     "text": "スモーク4枚目視OK。差分3件承認(2方向rectの向き=den(たて)行/den2(横)列・×整数はcol_unit=答num×num2/den・÷分数は補助図で答は既存)。",
+     "by": "marko",
+     "date": "2026-09-06"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "c51_u01_004=塗られた図→分数(答欄は転記誤記。値は同単元005/007の1/2・1/3・1/4・1/8・3/4・3/8から補完=裁可o-3)。",
+   "representation": "読み取り型は答={num}/{den}をcomputed(機械採点・fraction直書き)。塗りは左詰め/時計回り固定(裁可o-2)。既約制約は補完値に整合させるためCode追加(2/4等を出さない)。",
+   "constructive_guarantees": "関門50 equal_parts_vectors: 行台帳13図+悉皆946構成(出力SVGから切れ目角/線位置/塗ります数/塗りブロック/面積比を独立再計算)+(2b)生成器経由(seed決定化・120本/パターン)で塗り面積比=答の分数・作図型は答に{den}等分{num}こ分を照合。",
+   "semantic_position": "g02 分数の図行(読み取り)。非図行005/007と同じ答域。",
+   "exclusions": "約分(2年域外)。",
+   "figure_notes": "equal_parts read: 塗り=composite_circleのshade流用。",
+   "pedagogy": "設計書§6(Fable・逐語・g02 read): 同じ大きさに{den}つに分けた1つ分を、{den}分の1と書きます。色がついているのは{den}こに分けたうちの{num}こ分なので、{num}/{den}です。"
   }
  }
 }

@@ -1,7 +1,7 @@
 {
  "_meta": {
   "schema": "g05系ネスト形({brief, rationale:{...}})",
-  "scope": "g06全71パターン rationale正準統一(図なし52を図形なし(→図なし(に正規化・図あり19移送) +対称第1便13(sym_figure 2026-09-05・裁可j・kaisetsu/pedagogyはFable後出し) +対称第2便9(shape_set 6・テキスト形2・表型1 2026-09-05・裁可k) +概形第1便5(approx_shape 2026-09-06・裁可l) +概形第2便3(approx_grid/approx_solid 2026-09-06・裁可m)",
+  "scope": "g06全71パターン rationale正準統一(図なし52を図形なし(→図なし(に正規化・図あり19移送) +対称第1便13(sym_figure 2026-09-05・裁可j・kaisetsu/pedagogyはFable後出し) +対称第2便9(shape_set 6・テキスト形2・表型1 2026-09-05・裁可k) +概形第1便5(approx_shape 2026-09-06・裁可l) +概形第2便3(approx_grid/approx_solid 2026-09-06・裁可m) +等分図便 図追補4(c03 word系 2026-09-06)",
   "canon": "figure_notes正準=ゴールド流儀(null不使用・図なしは「図なし」始まり/図ありは設計記録)",
   "grade": "g06",
   "session_date": "2026-08-09",
@@ -93,6 +93,12 @@
    "text": "ひらがな記号の「」規則: 角や点のひらがな1字ラベル(あ・い・う等)は本文・正解表示・解説の全箇所で「」で囲む(例:「あ」の角度が75度のとき、「い」と「う」の角度を求めなさい／正解:「い」105度「う」75度／解説:「あ」の角が75度なら…)。国内・海外モード共通。図中のラベルは対象外・カタカナ記号は現状維持。関門 hiragana_label_brackets で未囲み出現ゼロを回帰検査(e-9目視差し戻し 2026-09-04)",
    "by": "marko",
    "date": "2026-09"
+  },
+  {
+   "id": "D15",
+   "text": "等分図便(裁可o): 1kind3図型(circle/tape/rect・rectはden2/num2で2方向)・塗り位置固定(左詰め/12時から時計回り)・分数値は同単元非図行から補完・作図型=答え列挙/読み取り=computed。g06 c03 word系4パターンは equal_parts rect 2方向の面積図/液量図を図追補(×整数=col_unit・÷分数=補助図)。スモーク目視OK・差分3件承認(2026-09-06)。",
+   "by": "marko",
+   "date": "2026-09-06"
   }
  ],
  "g06_moji_shiki_01": {
@@ -292,10 +298,11 @@
    "semantic_territory": "frac_word_semantics/per_unit_times",
    "number_domain": "既約真分数×整数(m²/dL)",
    "answer_structure": "パターン本体のanswer_structure/answer_templateを正とする",
-   "figure": "なし",
+   "figure": "equal_parts(rect 2方向・面積図/液量図)",
    "directives": [
     "D1",
-    "D2"
+    "D2",
+    "D15"
    ]
   },
   "rationale": {
@@ -304,7 +311,7 @@
    "constructive_guarantees": "既約・真分数制約+乗算の閉性。1dLはテンプレ定数として許可集合に登録。",
    "semantic_position": "g05第2用法(もとにする量×割合)の量バージョン(D2)。乗数>1で積が増える正常系。",
    "exclusions": "乗数が分数(積が減る転換)はx_frac_wordが担当。",
-   "figure_notes": "図なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+   "figure_notes": "equal_parts rect 2方向(たてb1等分×横k1列=各1dL・col_unit=各列が丸ごと1m²・塗り=a1行×k1列・答=a1×k1/b1)。等分図便で図追補(2026-09-06)。",
    "pedagogy": "単位量あたりの考えを分数量へ拡張する最初の文章題。"
   }
  },
@@ -335,9 +342,10 @@
    "semantic_territory": "frac_word_semantics/equal_share",
    "number_domain": "既約真分数÷人数(L)",
    "answer_structure": "パターン本体のanswer_structure/answer_templateを正とする",
-   "figure": "なし",
+   "figure": "equal_parts(rect 2方向・面積図/液量図)",
    "directives": [
-    "D1"
+    "D1",
+    "D15"
    ]
   },
   "rationale": {
@@ -346,7 +354,7 @@
    "constructive_guarantees": "既約・真分数制約+除算の閉性。",
    "semantic_position": "等分除の意味を分数量に拡張。包含除(何人に分けられるか)は逆構造で範囲外。",
    "exclusions": "余り概念は分数域では消滅する点が指導上の注意(exclusionsとして明記)。",
-   "figure_notes": "図なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+   "figure_notes": "equal_parts rect 2方向(1L・たてb1等分=a1行塗り(a1/b1 L)×横k1列=人数・1人分=左列a1ます=a1/(b1×k1))。等分図便で図追補。",
    "pedagogy": "1人分=全体÷人数の関係保存を確認。"
   }
  },
@@ -398,10 +406,11 @@
    "semantic_territory": "frac_word_semantics/per_unit_times",
    "number_domain": "真分数×真分数(m²/dL)",
    "answer_structure": "パターン本体のanswer_structure/answer_templateを正とする",
-   "figure": "なし",
+   "figure": "equal_parts(rect 2方向・面積図/液量図)",
    "directives": [
     "D1",
-    "D2"
+    "D2",
+    "D15"
    ]
   },
   "rationale": {
@@ -410,7 +419,7 @@
    "constructive_guarantees": "両分数既約・真分数制約。",
    "semantic_position": "乗数<1で「かけると減る」意味転換の主戦場(D2: 割合的な見方への橋)。",
    "exclusions": "乗数>1の分数(仮分数)は転換点をぼかすため除外。",
-   "figure_notes": "図なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+   "figure_notes": "equal_parts rect 2方向(1m²・たてb1等分×横d1等分・塗り=a1行×c1列=a1c1/(b1d1)m²=答)。kaisetsuは設計書§6の面積図本文に差し替え(旧backfill本文を置換)。等分図便で図追補。",
    "pedagogy": "同一文脈の数域拡張により、演算選択が数の種類に依存しないことを示す。"
   }
  },
@@ -462,10 +471,11 @@
    "semantic_territory": "frac_word_semantics/per_unit_find",
    "number_domain": "真分数÷真分数(m²/dL)",
    "answer_structure": "パターン本体のanswer_structure/answer_templateを正とする",
-   "figure": "なし",
+   "figure": "equal_parts(rect 2方向・面積図/液量図)",
    "directives": [
     "D1",
-    "D2"
+    "D2",
+    "D15"
    ]
   },
   "rationale": {
@@ -474,7 +484,7 @@
    "constructive_guarantees": "両分数既約・真分数制約(除数<1で商>被除数の意味が立つ)。",
    "semantic_position": "g05第3用法(base_find=くらべる量÷割合)の量バージョン(D2)。逆算重視方針の分数域継承。",
    "exclusions": "何dL使えるか(包含除逆)は構造が異なり第2波。",
-   "figure_notes": "図なし(A層方針: 図形依存単元はB/C層設計書へ分離)",
+   "figure_notes": "equal_parts rect 2方向(1m²・たてb1等分×横d1等分・塗り=a1行×c1列=ぬれた面積a1/b1 m²の高さ×使った量c1/d1 dLの幅)。補助図で答8/15型は図から直接出ない(既存答)。等分図便で図追補。",
    "pedagogy": "「1あたりを求めるには割る」の関係保存が最難関。しきの立式方向が主要誤答点。"
   }
  },
