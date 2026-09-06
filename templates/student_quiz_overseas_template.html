@@ -1381,10 +1381,12 @@ function createEngine(lexicon, counterTable) {
           emit(bm[1], h, groupRuby(bm[1], h)); i += bm[1].length; continue;
         }
       }
+      // 分数(帯分数)+単位: 直後に助数詞/単位が続くときは分子を助数詞読みで結合(1/4分=よんぶんのいっぷん・3/4m=よんぶんのさんメートル)。解説backfill g06申し送り①(まるこ回答: 分数表示化可・読み よんぶんのいっぷん)
+      function fracUnit(j) { for (const u of UNIT_KEYS) { if (s.slice(j, j + u.length) === u) return u; } return ''; }
       let m = rest.match(/^(\d+)と(\d+)\/(\d+)/);                  // 帯分数
-      if (m) { const h = readNumber(+m[1]) + 'と' + readNumber(+m[3]) + 'ぶんの' + readNumber(+m[2]); emit(m[0], h, m[0]); i += m[0].length; continue; }
+      if (m) { const u = fracUnit(i + m[0].length); const h = readNumber(+m[1]) + 'と' + readNumber(+m[3]) + 'ぶんの' + (u ? readCounter(+m[2], u) : readNumber(+m[2])); const orig = m[0] + u; emit(orig, h, u ? groupRuby(orig, h) : orig); i += orig.length; continue; }
       m = rest.match(/^(\d+)\/(\d+)/);                             // 分数
-      if (m) { const h = readNumber(+m[2]) + 'ぶんの' + readNumber(+m[1]); emit(m[0], h, m[0]); i += m[0].length; continue; }
+      if (m) { const u = fracUnit(i + m[0].length); const h = readNumber(+m[2]) + 'ぶんの' + (u ? readCounter(+m[1], u) : readNumber(+m[1])); const orig = m[0] + u; emit(orig, h, u ? groupRuby(orig, h) : orig); i += orig.length; continue; }
       m = rest.match(/^[−\-](\d+(?:\.\d+)?)/);                    // 負数(+単位)
       if (m) {
         let j = i + m[0].length, unit = '';
