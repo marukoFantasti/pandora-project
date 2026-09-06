@@ -4,7 +4,7 @@
 const fs = require('fs'), path = require('path');
 const q = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'review_queue.json'), 'utf-8'));
 let bad = 0; const ids = new Set();
-const KIND = ['問題文', '図', '読み'], ST = ['未', '済', '×'], BY = ['まるこ', 'アイ'], DIST = ['未配布', '配布済'];
+const KIND = ['問題文', '図', '読み'], ST = ['未', '済', '×'], BY = ['まるこ', 'アイ'], DIST = ['未配布', '配布済', '配布済(v8)', '配布済(v4)'];   // 配布済(v8/v4)=既配布分(日付なし可)・配布済=日付必須
 q.entries.forEach(e => {
   for (const k of ['id', '種類', '対象', '見るべきこと', '状態', '見る人', '追加した便', '追加日', '配布']) if (!(k in e) || e[k] === '') { bad++; console.log('  ❌ 欄欠落 ' + (e.id || '?') + ' ' + k); }
   if (ids.has(e.id)) { bad++; console.log('  ❌ id重複 ' + e.id); } ids.add(e.id);

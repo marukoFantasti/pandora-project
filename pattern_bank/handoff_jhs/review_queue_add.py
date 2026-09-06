@@ -3,7 +3,7 @@
 使い方: python3 review_queue_add.py --kind 図 --target graph_choice --check "時間の軸か種類かが図だけで分かるか" --by まるこ --batch graph_choice便
        python3 review_queue_add.py --kind 読み --target 棒 --check "ぼう: 気温、[棒]が降水量" --by アイ --batch line_bar_combo便
        python3 review_queue_add.py --set-status <id> 済|×
-種類=問題文(新パターンid)／図(新kind・描画変更+目視ポイント)／読み(1字=字ごと・多字語=便単位で語リスト)。状態=未/済/×。見る人=まるこ/アイ。配布=未配布/配布済・配布日=配布時にまるこが記入(Fableのシート生成は『未・未配布』からの差分)。"""
+種類=問題文(新パターンid)／図(新kind・描画変更+目視ポイント)／読み(1字=字ごと・多字語=便単位で語リスト)。状態=未/済/×。見る人=まるこ/アイ。配布=未配布/配布済(v8)=既配布分/配布済+配布日=まるこの指示でFableがシート出力時に記入(--distribute)(Fableのシート生成は『未・未配布』からの差分)。"""
 import json, sys, argparse, datetime, os
 QP = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'tests', 'fixtures', 'review_queue.json')
 def load():
