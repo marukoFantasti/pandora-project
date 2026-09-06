@@ -653,3 +653,9 @@
 - 関門51(2b)=200本GREEN(極値=答の文字列)・(2c)x軸ラベル非重なり14図。furigana+1(降水量)・registered 667・関門44一覧更新(少/月=正)。rationale+1(g04)・pairs 602・rag 3796・corr-0007残差0。
 - **golden md5: g04 1ca58495 → c27c1457(PASS 267→270)**(既存出力バイト不変)。全51関門GREEN。kind裁可(e)候補の残余: line_graph_choice(未着手)。
 - **是正(3854ee8はkaisetsu_resolve(4)が赤のままpush=手順違反)**: rationale_g04の新規エントリにpedagogy(設計ノート)を書いたため「pedagogy保持→kaisetsu投入」のretrofit完全性に抵触。pedagogyを空([])にしてFable本文着弾時に転写する形に戻し、全51関門GREENを再確認。
+
+### 2026-09-06 line_bar_combo§3-3受理・pre-pushフック導入・kaisetsu(line_bar_kion)転写・jhs backfill書き出し・line_graph_choice棚卸し先出し
+- **pre-pushフック(まるこ指示)**: `.githooks/pre-push`=全関門(tests/*.js・_seeded除く)を実行し赤があればpush拒否。有効化は `git config core.hooksPath .githooks`(このクローンで設定済み・CLAUDE.mdに恒久規約として記載)。回避(--no-verify)は台帳に理由を記録する運用。
+- **kaisetsu g04_line_bar_kion_01**: Fable本文を逐語。{m_tmax}{tmax}{m_tmin}{tmin}{m_pmax}{pmax}{pmin}=極値のcomputed(固定値8/29/1/15/7/250/10)・**{m_pmin_list}は{m_pmin1}・{m_pmin2}・{m_pmin3}(3/11/12)に読み替え(Code申告)**。rationale pedagogyに逐語転写。furigana+1(棒=ぼう)・registered 668・関門44一覧更新(先/右/左/度/月/決/目=正)。golden md5: g04 c27c1457 → 4f1979f0(解説行のみ)。backfill在庫 168→167(g04=0・残=jhs 167)。
+- **backfill書き出し**: `kaisetsu_backfill_jhs.md`(jhs 17章=167・章見出し付き・章ごと分割着弾可)。
+- **line_graph_choice棚卸し先出し**: `line_graph_choice_棚卸し先出し.md`(2行全文引用)。4面の選択肢(題材・種類)は2行とも未転記・答えの記号(ア、ウ／ア、ウ、エ)のみ生存=Fable合成(折れ線題材/棒題材の2群)前提の新kind graph_choice案。全51関門GREEN。

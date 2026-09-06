@@ -1,0 +1,12 @@
+#!/bin/bash
+# pre-push: 全関門(tests/*.js)がGREENでなければpushを拒否する(まるこ指示 2026-09-06・line_bar_combo§3-3受理時)。
+# 有効化: git config core.hooksPath .githooks   (CLAUDE.md参照)。緊急回避は --no-verify(台帳に理由を記録すること)。
+cd "$(git rev-parse --show-toplevel)" || exit 1
+red=0
+for f in tests/*.js; do
+  case "$f" in tests/_*) continue;; esac
+  if ! node "$f" > /dev/null 2>&1; then echo "pre-push: 関門赤 $f"; red=$((red+1)); fi
+done
+if [ "$red" -gt 0 ]; then echo "pre-push: $red 件の関門が赤のためpushを拒否します(node <関門> で内容を確認)"; exit 1; fi
+echo "pre-push: 全関門GREEN"
+exit 0

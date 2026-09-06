@@ -7768,6 +7768,7 @@
      ]
     }
    },
+   "computed_slots": {"m_tmax": {"formula": "8", "note": "極値の月(固定・解説用)"}, "tmax": {"formula": "29"}, "m_tmin": {"formula": "1"}, "tmin": {"formula": "15"}, "m_pmax": {"formula": "7"}, "pmax": {"formula": "250"}, "m_pmin1": {"formula": "3"}, "m_pmin2": {"formula": "11"}, "m_pmin3": {"formula": "12"}, "pmin": {"formula": "10", "note": "Fable本文の{m_pmin_list}は{m_pmin1}・{m_pmin2}・{m_pmin3}に読み替え(Code申告)"}},
    "value_constraints": [
     {
      "rule": "line_max_unique",
@@ -7794,6 +7795,7 @@
     "グラフを見て答えなさい。\n(1) 気温がいちばん高いのは何月で何度ですか。\n(2) 気温がいちばん低いのは何月で何度ですか。\n(3) 降水量がいちばん多いのは何月で何mmですか。\n(4) 降水量がいちばん少ない月が3つあります。何月と何月と何月で、何mmですか。"
    ],
    "answer_template": "答え (1) 8月、29度 (2) 1月、15度 (3) 7月、250mm (4) 3月と11月と12月、10mm",
+   "kaisetsu": "このグラフは、折れ線が気温、棒が降水量を表しています。気温は左の目もり（度）、降水量は右の目もり（mm）で読みます。2つのグラフが1つになっているときは、どちらの目もりを見るかを先に決めてから読みましょう。いちばん高い気温は{m_tmax}月の{tmax}度、いちばん低い気温は{m_tmin}月の{tmin}度です。降水量がいちばん多いのは{m_pmax}月の{pmax}mm、いちばん少ないのは{m_pmin1}・{m_pmin2}・{m_pmin3}月の{pmin}mmです。",
    "figure_params": {
     "kind": "xy_graph",
     "mode": "combo",
