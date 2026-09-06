@@ -2252,8 +2252,60 @@
     return lay;
   }
 
+  // ---- line_bar_combo(裁可e・まるこ方針確定): xy_graph mode="combo"=折れ線(左軸)+棒(右軸)。polylineの独立分岐(polylineは非破壊)。
+  // 右軸=1-2-5自動刻み(plNiceTick)・hi2=max切り上げ。x軸はカテゴリ位置(各月の中央=(i+0.5)·W/n)で棒がプロット内に収まる。凡例=線見本/棒見本+系列名(fp由来)。
+  function xyComboGeom(fp) {
+    var series = fp.series, bars = fp.bars, xl = fp.x_labels;
+    if (!Array.isArray(series) || series.length !== 1) throw new Error('xy_graph combo: seriesは1系列(契約違反)');
+    if (!Array.isArray(bars) || bars.length !== 1) throw new Error('xy_graph combo: barsは1系列(契約違反)');
+    if (!Array.isArray(xl) || xl.length < 2) throw new Error('xy_graph combo: x_labelsは2点以上(契約違反)');
+    var n = xl.length, ly = series[0].y.map(Number), by = bars[0].y.map(Number);
+    if (ly.length !== n || by.length !== n) throw new Error('xy_graph combo: 系列長とx_labels長の不一致(契約違反)');
+    var lo = fp.y_range ? Number(fp.y_range[0]) : 0, hi = fp.y_range ? Number(fp.y_range[1]) : Math.max.apply(null, ly);
+    var tick = fp.y_tick ? Number(fp.y_tick) : plNiceTick((hi - lo) || 1); hi = Math.ceil(hi / tick) * tick;
+    if (hi <= lo) throw new Error('xy_graph combo: y_range不正(契約違反)');
+    ly.forEach(function (v) { if (v < lo || v > hi) throw new Error('xy_graph combo: 折れ線の値がy_range外(契約違反)'); });
+    var lo2 = 0, mx2 = Math.max.apply(null, by); if (!(mx2 > 0)) throw new Error('xy_graph combo: 棒の最大値>0(契約違反)');
+    by.forEach(function (v) { if (v < 0) throw new Error('xy_graph combo: 棒の値<0(契約違反)'); });
+    var tick2 = plNiceTick(mx2), hi2 = Math.ceil(mx2 / tick2) * tick2;
+    var pitch = PL_W / n;
+    function X(i) { return (i + 0.5) * pitch; }
+    function Y(v) { return PL_H - (v - lo) / (hi - lo) * PL_H; }
+    function Y2(v) { return PL_H - (v - lo2) / (hi2 - lo2) * PL_H; }
+    return { n: n, ly: ly, by: by, lo: lo, hi: hi, tick: tick, lo2: lo2, hi2: hi2, tick2: tick2, pitch: pitch, bw: pitch * 0.5, X: X, Y: Y, Y2: Y2,
+      line_pts: ly.map(function (v, i) { return [X(i), Y(v)]; }), bar_rects: by.map(function (v, i) { return { x: X(i) - pitch * 0.25, y: Y2(v), w: pitch * 0.5, h: PL_H - Y2(v), v: v }; }) };
+  }
+  function xyGraphComboLayout(fp) {
+    var g = xyComboGeom(fp), lay = newLayout(), xl = fp.x_labels, n = g.n;
+    var nT = Math.round((g.hi - g.lo) / g.tick);
+    for (var ti = 0; ti <= nT; ti++) { var t = g.lo + ti * g.tick; lay.parts.push(lineEl([0, g.Y(t)], [PL_W, g.Y(t)], '#d5deea', 1)); lay.parts.push(textEl(-16, g.Y(t), String(Math.round(t * 10000) / 10000), PL_FS, '#333')); }
+    var nT2 = Math.round((g.hi2 - g.lo2) / g.tick2);
+    for (var tj = 0; tj <= nT2; tj++) { var t2 = g.lo2 + tj * g.tick2; lay.parts.push(lineEl([PL_W - 4, g.Y2(t2)], [PL_W, g.Y2(t2)], C_STROKE, 1)); lay.parts.push(textEl(PL_W + 18, g.Y2(t2), String(Math.round(t2 * 10000) / 10000), PL_FS, '#333')); }
+    var maxXL = 0; xl.forEach(function (v) { maxXL = Math.max(maxXL, String(v).length); });
+    var xfs = Math.max(7, Math.min(PL_FS, Math.floor(g.pitch / (maxXL * 0.62))));
+    for (var xi = 0; xi < n; xi++) lay.parts.push(textEl(g.X(xi), PL_H + 12, String(xl[xi]), xfs, '#333'));
+    g.bar_rects.forEach(function (r) { lay.parts.push('<rect x="' + r.x.toFixed(2) + '" y="' + r.y.toFixed(2) + '" width="' + r.w.toFixed(2) + '" height="' + r.h.toFixed(2) + '" fill="' + CC_SHADE + '" stroke="' + C_STROKE + '" stroke-width="1"/>'); });
+    lay.parts.push(lineEl([0, -8], [0, PL_H], C_STROKE, 1.6)); lay.parts.push(lineEl([0, PL_H], [PL_W, PL_H], C_STROKE, 1.6)); lay.parts.push(lineEl([PL_W, -8], [PL_W, PL_H], C_STROKE, 1.6));
+    if (fp.title) lay.parts.push(textEl(PL_W / 2, -50, String(fp.title), 12, '#333'));   // 題→凡例→軸題の3段(重なり回避)
+    if (fp.y_title) lay.parts.push(textEl(0, -16, String(fp.y_title), PL_FS, '#333'));
+    if (fp.y2_title) lay.parts.push(textEl(PL_W, -16, String(fp.y2_title), PL_FS, '#333'));
+    if (fp.x_title) lay.parts.push(textEl(PL_W + 40, PL_H + 12, String(fp.x_title), PL_FS, '#333'));
+    lay.parts.push('<polyline points="' + g.line_pts.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ') + '" fill="none" stroke="' + C_TARGET + '" stroke-width="2"/>');
+    g.line_pts.forEach(function (p) { lay.parts.push('<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="3" fill="' + C_TARGET + '"/>'); });
+    // 凡例(プロット上側・左寄せ): 線見本+名／棒見本+名
+    var lx = 6, ly0 = -33;
+    lay.parts.push(lineEl([lx, ly0], [lx + 20, ly0], C_TARGET, 2)); lay.parts.push('<circle cx="' + (lx + 10) + '" cy="' + ly0 + '" r="3" fill="' + C_TARGET + '"/>');
+    lay.parts.push('<text x="' + (lx + 25) + '" y="' + (ly0 + PL_FS * 0.34).toFixed(1) + '" font-size="' + PL_FS + '" fill="#333">' + esc(String(fp.series[0].name || '')) + '</text>');
+    var bx = lx + 25 + String(fp.series[0].name || '').length * PL_FS + 16;
+    lay.parts.push('<rect x="' + bx + '" y="' + (ly0 - 5) + '" width="14" height="10" rx="1" fill="' + CC_SHADE + '" stroke="' + C_STROKE + '" stroke-width="1"/>');   // rx=凡例見本の目印(関門の棒抽出から除外)
+    lay.parts.push('<text x="' + (bx + 19) + '" y="' + (ly0 + PL_FS * 0.34).toFixed(1) + '" font-size="' + PL_FS + '" fill="#333">' + esc(String(fp.bars[0].name || '')) + '</text>');
+    lay.pts.push([-34, -58], [PL_W + 52 + (fp.x_title ? 24 : 0), PL_H + 20]);
+    lay._geom = g;
+    return lay;
+  }
   function xyGraphLayout(fp) {
     if (fp.mode === 'polyline') return xyGraphPolylineLayout(fp);   // P5-3折れ線モード(独立分岐)
+    if (fp.mode === 'combo') return xyGraphComboLayout(fp);         // line_bar_combo(裁可e)
     if (Number(fp.fig_version) === 2) return xyGraphV2Layout(fp);   // v2へ分岐（v1は以下で完全維持・非破壊）
     var mode = fp.mode || 'prop', k = Number(fp.k), xmax = Number(fp.xmax) || 6, ymax = Number(fp.ymax) || 6;
     var g = xyGraphGeom(mode, k, xmax, ymax), U = g.unit, lay = newLayout();
@@ -3018,6 +3070,14 @@
   var FigureBuilder = { build: build, BUILDERS: BUILDERS, _angleSumMinClearance: angleSumMinClearance, _tableMinClearance: tableMinClearance };
   // e-2: line_setの監査(角度差/包含/交点/ラベル帰属を描画と同じ導出で独立再計算)
   FigureBuilder._lsStats = function (on) { LS_STATS = on ? {} : null; return LS_STATS; };
+  FigureBuilder._xyComboAudit = function (fp) {   // line_bar_combo 関門用: 右軸刻み/範囲・折れ線点/棒矩形(px)・極値(index)を返す(関門は出力SVGから独立再計算)
+    var g = xyComboGeom(fp), lmax = -1, lmin = -1, bmax = -1, bminV = Infinity;
+    g.ly.forEach(function (v, i) { if (lmax < 0 || v > g.ly[lmax]) lmax = i; if (lmin < 0 || v < g.ly[lmin]) lmin = i; });
+    g.by.forEach(function (v, i) { if (bmax < 0 || v > g.by[bmax]) bmax = i; if (v < bminV) bminV = v; });
+    var bmins = []; g.by.forEach(function (v, i) { if (v === bminV) bmins.push(i); });
+    var lmaxN = g.ly.filter(function (v) { return v === g.ly[lmax]; }).length, lminN = g.ly.filter(function (v) { return v === g.ly[lmin]; }).length, bmaxN = g.by.filter(function (v) { return v === g.by[bmax]; }).length;
+    return { geom: g, line_max: lmax, line_min: lmin, bar_max: bmax, bar_mins: bmins, unique: { line_max: lmaxN === 1, line_min: lminN === 1, bar_max: bmaxN === 1 } };
+  };
   FigureBuilder._equalPartsAudit = function (fp) {   // 等分図便 関門用: 幾何(角/幅/格子)・塗り個数・塗り面積比・連続性・ラベル帰属を返す(関門は出力SVGから独立再計算)
     var g = equalPartsGeom(fp), lay = equalPartsLayout(fp), out = { geom: g, issues: [], labels: [] };
     var filled = g.shape === 'circle' ? g.sectors.filter(function (x) { return x.filled; }).map(function (x) { return x.i; }) : g.cells.filter(function (x) { return x.filled; });
@@ -3172,7 +3232,7 @@
     pyramid_visible: pyramidVisible, convex_hull: convexHull,   // S-2.1: 隠線シルエット判定(vector用・corr-0023)
     rotation_source: rotationSourceGeom,   // 第2ブロックS-4: 回転体の源(vector用)
     clock_face: clockFaceGeom,             // 小学第2波: 時計文字盤(vector用)
-    composite_circle: compositeCircleGeom, composite_area: compositeAreaGeom, line_set: lineSetGeom, sym_figure: symFigureGeom, shape_set: shapeSetGeom, approx_shape: approxShapeGeom, approx_grid: approxGridGeom, approx_solid: approxSolidGeom, number_line: numberLineGeom, nl_fmt: nlFmt, equal_parts: equalPartsGeom, ag_classify: agClassify, ag_inside: agInsidePoly, as_poly_area: asPolyArea, ss_symmetry: ssSymmetry, ss_outline: ssOutline, ss_catalog: SS_CAT, // P-3a: 複合円(vector用) / 対称第1便
+    composite_circle: compositeCircleGeom, composite_area: compositeAreaGeom, line_set: lineSetGeom, sym_figure: symFigureGeom, shape_set: shapeSetGeom, approx_shape: approxShapeGeom, approx_grid: approxGridGeom, approx_solid: approxSolidGeom, number_line: numberLineGeom, nl_fmt: nlFmt, equal_parts: equalPartsGeom, xy_combo: xyComboGeom, ag_classify: agClassify, ag_inside: agInsidePoly, as_poly_area: asPolyArea, ss_symmetry: ssSymmetry, ss_outline: ssOutline, ss_catalog: SS_CAT, // P-3a: 複合円(vector用) / 対称第1便
     arc_sample_points: arcSamplePoints,          // 弧サンプル点(曲率関門用・頂点からr一定検査)
     // ベクター用の位置引数ラッパ（Python prism_geom(base_kind,a,b,h) と同型）
     prism: function (base_kind, a, b, h) {
