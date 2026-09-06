@@ -647,3 +647,8 @@
 - **規則(まるこ指示)**: x_labelsが12点以上で全て「数字+共通接尾語」なら数字表記(1〜12)にし、接尾語をx_titleへ(fp.x_titleがあれば優先=バンク由来・日本語ハードコードなし)。polyline/combo共通・12点未満は不変。既存の12点polyline 4パターン(tsukibetsu/omocha/line2_cd/line2_gh)は数字表記に変わる(承認済み・poc golden不変=図はテキスト出力外)。
 - **関門51(2c)**: x軸ラベルの非重なり(隣接ラベルの推定幅=文字数×font-size×0.62が重ならない)を行台帳+全バンクのxy_graph polyline/combo(13パターン)で検査=14図GREEN。全51関門GREEN。
 - スモーク再出力: combo_smoke_kion.svg / combo_smoke.png(参考: 既存polyline 12点の数字表記例を併載)→再目視待ち。
+
+### 2026-09-06 line_bar_combo 配線(g04_line_bar_kion_01=c02_u02_002)・再目視OK(12点数字化の副作用4パターン承認)
+- **配線**: 極値4点固定(8月29度/1月15度/7月250mm/3・11・12月10mm)・他の月は7+4スロットで乱択(範囲で一意性と3か月同値を保証・制約4本で封印)・答は転記保存(静的)。図=xy_graph mode:combo(y_range 0〜30・右軸1-2-5自動=50刻み・x軸12点数字表記+「月」)。kanji allowed_extra「降」。kaisetsu=Fable本文待ち(backfill在庫 167→168=g04 1)。004/006=skip素材待ち。
+- 関門51(2b)=200本GREEN(極値=答の文字列)・(2c)x軸ラベル非重なり14図。furigana+1(降水量)・registered 667・関門44一覧更新(少/月=正)。rationale+1(g04)・pairs 602・rag 3796・corr-0007残差0。
+- **golden md5: g04 1ca58495 → c27c1457(PASS 267→270)**(既存出力バイト不変)。全51関門GREEN。kind裁可(e)候補の残余: line_graph_choice(未着手)。

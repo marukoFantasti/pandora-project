@@ -7678,6 +7678,203 @@
     0
    ],
    "answer_domain": "label"
+  },
+  {
+   "pattern_id": "g04_line_bar_kion_01",
+   "grade": "g04",
+   "unit_id": "g04_c02_u02",
+   "unit_name": "いろいろな折れ線グラフ",
+   "semantic_category": "折れ線と棒の複合グラフの読み取り(気温と降水量・極値)",
+   "semantic_note": "line_bar_combo(裁可e・まるこ方針確定): c02_u02_002の1行のみ合成配線。12か月の系列は未転記のため、転記の極値4点(8月29度=気温max・1月15度=気温min・7月250mm=降水量max・3/11/12月10mm=降水量minの3か月同値)を固定し、他の月をスロットで乱択(範囲で極値の一意性と同値3か月を保証・制約で封印)。答は転記保存(静的)。図=xy_graph mode:combo(左軸=度・右軸=mm 1-2-5自動刻み・x軸は12点数字表記+「月」)。kaisetsuはFable本文待ち(backfill在庫+1)。004/006はskip素材待ち(答破損/未転記)。",
+   "step_count": 1,
+   "operation": "グラフの読み取り(最大・最小)",
+   "answer_formula": "29",
+   "slots": {
+    "t3": {
+     "type": "int",
+     "range": [
+      17,
+      19
+     ]
+    },
+    "t5": {
+     "type": "int",
+     "range": [
+      23,
+      25
+     ]
+    },
+    "t9": {
+     "type": "int",
+     "range": [
+      25,
+      27
+     ]
+    },
+    "t11": {
+     "type": "int",
+     "range": [
+      18,
+      20
+     ]
+    },
+    "r2": {
+     "type": "int",
+     "range": [
+      40,
+      80
+     ]
+    },
+    "r4": {
+     "type": "int",
+     "range": [
+      60,
+      100
+     ]
+    },
+    "r5": {
+     "type": "int",
+     "range": [
+      100,
+      140
+     ]
+    },
+    "r6": {
+     "type": "int",
+     "range": [
+      160,
+      200
+     ]
+    },
+    "r8": {
+     "type": "int",
+     "range": [
+      180,
+      230
+     ]
+    },
+    "r9": {
+     "type": "int",
+     "range": [
+      190,
+      240
+     ]
+    },
+    "r10": {
+     "type": "int",
+     "range": [
+      80,
+      120
+     ]
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "line_max_unique",
+     "expr": "t9 < 29 and t5 < 29",
+     "why": "気温の最大(8月29度)が一意"
+    },
+    {
+     "rule": "line_min_unique",
+     "expr": "t3 > 15 and t11 > 15",
+     "why": "気温の最小(1月15度)が一意"
+    },
+    {
+     "rule": "bar_max_unique",
+     "expr": "r9 < 250 and r8 < 250 and r6 < 250",
+     "why": "降水量の最大(7月250mm)が一意"
+    },
+    {
+     "rule": "bar_min_three",
+     "expr": "r2 > 10 and r4 > 10 and r5 > 10 and r6 > 10 and r8 > 10 and r9 > 10 and r10 > 10",
+     "why": "降水量の最小10mmは3・11・12月の3か月だけ"
+    }
+   ],
+   "sentence_templates": [
+    "グラフを見て答えなさい。\n(1) 気温がいちばん高いのは何月で何度ですか。\n(2) 気温がいちばん低いのは何月で何度ですか。\n(3) 降水量がいちばん多いのは何月で何mmですか。\n(4) 降水量がいちばん少ない月が3つあります。何月と何月と何月で、何mmですか。"
+   ],
+   "answer_template": "答え (1) 8月、29度 (2) 1月、15度 (3) 7月、250mm (4) 3月と11月と12月、10mm",
+   "figure_params": {
+    "kind": "xy_graph",
+    "mode": "combo",
+    "title": "気温と降水量",
+    "series": [
+     {
+      "name": "気温",
+      "y": [
+       15,
+       16,
+       "{t3}",
+       21,
+       "{t5}",
+       26,
+       28,
+       29,
+       "{t9}",
+       22,
+       "{t11}",
+       16
+      ]
+     }
+    ],
+    "bars": [
+     {
+      "name": "降水量",
+      "y": [
+       40,
+       "{r2}",
+       10,
+       "{r4}",
+       "{r5}",
+       "{r6}",
+       250,
+       "{r8}",
+       "{r9}",
+       "{r10}",
+       10,
+       10
+      ]
+     }
+    ],
+    "x_labels": [
+     "1月",
+     "2月",
+     "3月",
+     "4月",
+     "5月",
+     "6月",
+     "7月",
+     "8月",
+     "9月",
+     "10月",
+     "11月",
+     "12月"
+    ],
+    "x_title": "月",
+    "y_title": "度",
+    "y2_title": "mm",
+    "y_range": [
+     0,
+     30
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ],
+    "allowed_extra": "降"
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "answer_domain": "positive_int"
   }
  ],
  "schema_changelog": {
