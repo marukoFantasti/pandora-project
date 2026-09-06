@@ -665,3 +665,9 @@
 - **関門52 graph_choice_vectors.js**: 2行×seed100(割当=群・kind整合・重複なし・記号帰属・パネル非重なり・答え集合の再導出=edge_set正規形・SVGの折れ線/棒面数を独立に照合・等スケール・決定性)+trend昇順100+契約4=304構成GREEN。(2b)は配線後に有効。
 - **検収台帳 review_queue.json 新設(まるこ指示)**: `tests/fixtures/review_queue.json`(種類/対象/見るべきこと/状態/見る人/追加した便/追加日)・追記ツール `handoff_jhs/review_queue_add.py`・関門53 review_queue_integrity.js(スキーマ・id一意)。初期投入262件=読み(関門44の1字登録当たり文脈一覧=読みv8相当)+図(図kind一覧=図v4相当)を「未・アイ」+本日各便の新パターン10(まるこ)・図4(graph_choice=まるこ・他アイ)・読み13(アイ)。v8/v4シート本体はリポジトリ外のため同源データから投入(差分はFable側で照合)。CLAUDE.mdに恒久規約(報告時に追記)。
 - スモーク: graph_choice_smoke_004.svg(答ア・ウ)/007.svg(答ア・ウ・エ)/graph_choice_smoke.png→まるこ目視(「時間の軸か種類か」が図だけで分かるか)。目視後: lexicon(graph_topics_time/kind)+2行配線(1パターン・edge_setカタカナ採点)+kaisetsu§4→§3-3報告=kind裁可(e)候補は全件クローズ。全52関門GREEN・golden不変。
+
+### 2026-09-07 graph_choice便 配線(g04_graph_choice_01=c02_u01_004/007)・まるこ目視OK・検収台帳の補正①②③——kind裁可(e)候補は全件クローズ
+- **配線**: 1パターン(行別レコード gc_rows 2行=設問・記号・正答集合・題材2群 graph_topics_time 6/kind 5)。正答記号=転記保存(a1="ア,ウ"/"ア,ウ,エ"→A1=edge_set・答「ア、ウ」)。題材割当はseed(sd1∈[1,100])で決定的。kaisetsu=設計書§4逐語({ans}→{A1_edges}に読み替え=Code申告)。関門52(2b)=200本GREEN(答=図の正答集合)。golden md5: g04 4f1979f0 → 8a4578fa(PASS 270→273・既存出力バイト不変)。rationale+1・pairs 603。
+- furigana+2(変わり方=かわりかた: 既存の「変わり方を表す」の ほう 誤爆も同時是正・年=ねん)・registered 670・ベクター106・関門44一覧更新(向/売/多/少/年/度/数=正)。
+- **検収台帳の補正(まるこ)**: ①読み=1字文脈は字ごと(関門44一覧182件=配布済(v8))・多字語はパッチ便単位で1件(語リスト添付=数直線便/等分図便/backfill g01g02/line_bar_combo便/graph_choice便=未配布) ②図=生徒に見えるkind(C_LAYOUTS 33+バンク使用kind)のみ・v4以前=配布済(v4)・本日新設(number_line/equal_parts/graph_choice/xy_graph combo)=未配布 ③問題文=全603パターンを「配布済(v8)・未・アイ」で一括投入(本日新設11=未配布・まるこ)。欄「配布」新設(配布済(v8)/配布済(v4)/未配布)・追記ツール --dist・関門53で検査。計827件(未・未配布 20)。以後Fableのシート生成は『未・未配布』からの差分。
+- 全53関門GREEN。**kind裁可(e)候補(kaisetsu_template/line_bar_combo/line_graph_choice/平行線図kind)は全件クローズ**。
