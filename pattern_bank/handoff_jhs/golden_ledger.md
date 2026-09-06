@@ -659,3 +659,9 @@
 - **kaisetsu g04_line_bar_kion_01**: Fable本文を逐語。{m_tmax}{tmax}{m_tmin}{tmin}{m_pmax}{pmax}{pmin}=極値のcomputed(固定値8/29/1/15/7/250/10)・**{m_pmin_list}は{m_pmin1}・{m_pmin2}・{m_pmin3}(3/11/12)に読み替え(Code申告)**。rationale pedagogyに逐語転写。furigana+1(棒=ぼう)・registered 668・関門44一覧更新(先/右/左/度/月/決/目=正)。golden md5: g04 c27c1457 → 4f1979f0(解説行のみ)。backfill在庫 168→167(g04=0・残=jhs 167)。
 - **backfill書き出し**: `kaisetsu_backfill_jhs.md`(jhs 17章=167・章見出し付き・章ごと分割着弾可)。
 - **line_graph_choice棚卸し先出し**: `line_graph_choice_棚卸し先出し.md`(2行全文引用)。4面の選択肢(題材・種類)は2行とも未転記・答えの記号(ア、ウ／ア、ウ、エ)のみ生存=Fable合成(折れ線題材/棒題材の2群)前提の新kind graph_choice案。全51関門GREEN。
+
+### 2026-09-06 graph_choice便: graph_choice受け皿(裁可q)+関門52+検収台帳(review_queue)新設——まるこ目視待ち(スモーク2枚)
+- **graph_choice kind**: 4面(2×2)のミニグラフ。正答記号(fp.answer=転記保存)の面=時間軸群の題材で折れ線・他の面=種類別群の題材で棒。題材・軸ラベル・単位・値域・trend(単調=身長/温度上昇)は全てfp(バンクlexicon)由来=日本語ハードコードなし。割当はseedで決定的乱択(重複なし)。系列値は題材のrange内乱択(折れ線は隣接同値回避・trend=upは昇順)。記号はパネル左上(題名の左)。
+- **関門52 graph_choice_vectors.js**: 2行×seed100(割当=群・kind整合・重複なし・記号帰属・パネル非重なり・答え集合の再導出=edge_set正規形・SVGの折れ線/棒面数を独立に照合・等スケール・決定性)+trend昇順100+契約4=304構成GREEN。(2b)は配線後に有効。
+- **検収台帳 review_queue.json 新設(まるこ指示)**: `tests/fixtures/review_queue.json`(種類/対象/見るべきこと/状態/見る人/追加した便/追加日)・追記ツール `handoff_jhs/review_queue_add.py`・関門53 review_queue_integrity.js(スキーマ・id一意)。初期投入262件=読み(関門44の1字登録当たり文脈一覧=読みv8相当)+図(図kind一覧=図v4相当)を「未・アイ」+本日各便の新パターン10(まるこ)・図4(graph_choice=まるこ・他アイ)・読み13(アイ)。v8/v4シート本体はリポジトリ外のため同源データから投入(差分はFable側で照合)。CLAUDE.mdに恒久規約(報告時に追記)。
+- スモーク: graph_choice_smoke_004.svg(答ア・ウ)/007.svg(答ア・ウ・エ)/graph_choice_smoke.png→まるこ目視(「時間の軸か種類か」が図だけで分かるか)。目視後: lexicon(graph_topics_time/kind)+2行配線(1パターン・edge_setカタカナ採点)+kaisetsu§4→§3-3報告=kind裁可(e)候補は全件クローズ。全52関門GREEN・golden不変。

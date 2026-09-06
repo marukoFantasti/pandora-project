@@ -97,3 +97,7 @@ Do not introduce ad-hoc variants (e.g. a past bug referenced a non-existent `'pa
 ## Standing convention: pre-push gate hook
 
 `.githooks/pre-push` runs every gate in `tests/*.js` and refuses the push if any is red. It is enabled per clone with `git config core.hooksPath .githooks` (run this once in a fresh clone). Never bypass it with `--no-verify` unless the reason is recorded in `pattern_bank/handoff_jhs/golden_ledger.md`.
+
+## Standing convention: review queue (検収台帳)
+
+`tests/fixtures/review_queue.json` is the human-review ledger. Every §3-3 / §5 report MUST append entries via `python3 pattern_bank/handoff_jhs/review_queue_add.py --kind 問題文|図|読み --target <id/kind/word> --check "<what to look at>" --by まるこ|アイ --batch <便名>`: new pattern ids (問題文), new kinds or drawing changes with the 目視 point (図), and furigana patches with their contexts (読み). Status is `未/済/×`; the human sheets for アイ are generated from the `未` rows. `tests/review_queue_integrity.js` validates the schema.

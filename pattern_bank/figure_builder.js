@@ -2059,6 +2059,57 @@
     lay._geom = G;
     return lay;
   }
+  // ---- graph_choice便 Kind: graph_choice(裁可q): 4面のミニグラフ(2×2)から「変わり方を表すグラフ」を選ぶ。正答記号=転記保存・題材は2群(時間軸=折れ線/種類別=棒)からseedで決定的割当。
+  // 題材・軸ラベル・単位は全てfp(バンクlexicon)由来=日本語ハードコードなし。系列値は題材のrange内で乱択(読み取りは問わない)。
+  var GC_PW = 128, GC_PH = 78, GC_GX = 34, GC_GY = 52;
+  function graphChoiceGeom(fp) {
+    var labels = fp.labels, ans = fp.answer, tt = fp.time_topics, kt = fp.kind_topics, seed = Number(fp.seed) || 1;
+    if (!Array.isArray(labels) || labels.length !== 4) throw new Error('graph_choice: labelsは4面(契約違反)');
+    if (!Array.isArray(ans) || ans.length < 1 || ans.length > 3 || ans.some(function (a) { return labels.indexOf(a) < 0; })) throw new Error('graph_choice: answerは1〜3面のlabels部分集合(契約違反)');
+    if (!Array.isArray(tt) || tt.length < ans.length || !Array.isArray(kt) || kt.length < 4 - ans.length) throw new Error('graph_choice: 題材群の不足(契約違反)');
+    var rnd = lsRand(seed * 7919 + 17);
+    function pick(arr, k) { var idx = arr.map(function (_, i) { return i; }), out = []; for (var i = 0; i < k; i++) { var j = Math.floor(rnd() * idx.length); out.push(idx.splice(j, 1)[0]); } return out; }
+    var ti = pick(tt, ans.length), ki = pick(kt, 4 - ans.length), a = 0, b = 0, panels = [];
+    labels.forEach(function (lb, i) {
+      var isAns = ans.indexOf(lb) >= 0, t = isAns ? tt[ti[a++]] : kt[ki[b++]], n = t.x_labels.length, lo = Number(t.range[0]), hi = Number(t.range[1]), ys = [];
+      for (var p = 0; p < n; p++) ys.push(lo + Math.floor(rnd() * (hi - lo + 1)));
+      if (isAns) { for (var q = 1; q < n; q++) if (ys[q] === ys[q - 1]) ys[q] = Math.min(hi, ys[q] + 1); }   // 折れ線は隣接同値を避ける(変わり方が見える)
+      if (isAns && t.trend === 'up') { ys.sort(function (x, y) { return x - y; }); for (var q2 = 1; q2 < n; q2++) if (ys[q2] <= ys[q2 - 1]) ys[q2] = Math.min(hi, ys[q2 - 1] + 1); }   // 題材が単調増加(身長など)なら昇順(バンクlexiconのtrend由来)
+      var col = i % 2, row = Math.floor(i / 2), ox = col * (GC_PW + GC_GX), oy = row * (GC_PH + GC_GY);
+      panels.push({ label: lb, kind: isAns ? 'line' : 'bar', topic: t, topic_idx: isAns ? ti[a - 1] : ki[b - 1], ys: ys, ox: ox, oy: oy, ymax: Math.max(hi, 1) });
+    });
+    return { labels: labels, answer: ans.slice(), panels: panels };
+  }
+  function graphChoiceLayout(fp) {
+    var g = graphChoiceGeom(fp), lay = newLayout(), fs = 9;
+    g.panels.forEach(function (pn, i) {
+      var W = GC_PW, H = GC_PH, ox = pn.ox, oy = pn.oy, n = pn.ys.length, t = pn.topic;
+      function X(k) { return ox + (k + 0.5) * W / n; }
+      function Y(v) { return oy + H - v / pn.ymax * H; }
+      lay.parts.push('<rect x="' + ox + '" y="' + oy + '" width="' + W + '" height="' + H + '" fill="#fff" stroke="none"/>');
+      lay.parts.push(lineEl([ox, oy - 4], [ox, oy + H], C_STROKE, 1.3)); lay.parts.push(lineEl([ox, oy + H], [ox + W + 4, oy + H], C_STROKE, 1.3));
+      lay.parts.push(lineEl([ox, Y(pn.ymax)], [ox + W, Y(pn.ymax)], '#e3e9f2', 0.8));
+      lay.parts.push(textEl(ox - 9, Y(pn.ymax), String(pn.ymax), 8, '#333')); lay.parts.push(textEl(ox - 6, oy + H, '0', 8, '#333'));
+      if (pn.kind === 'line') {
+        var pts = pn.ys.map(function (v, k) { return [X(k), Y(v)]; });
+        lay.parts.push('<polyline points="' + pts.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ') + '" fill="none" stroke="' + C_TARGET + '" stroke-width="1.8"/>');
+        pts.forEach(function (p) { lay.parts.push('<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="2.2" fill="' + C_TARGET + '"/>'); });
+      } else {
+        pn.ys.forEach(function (v, k) { var bw = W / n * 0.55; lay.parts.push('<rect x="' + (X(k) - bw / 2).toFixed(2) + '" y="' + Y(v).toFixed(2) + '" width="' + bw.toFixed(2) + '" height="' + (oy + H - Y(v)).toFixed(2) + '" fill="' + CC_SHADE + '" stroke="' + C_STROKE + '" stroke-width="1"/>'); });
+      }
+      var xfs = Math.max(6, Math.min(fs, Math.floor((W / n) / (Math.max.apply(null, t.x_labels.map(function (x) { return String(x).length; })) * 0.62))));
+      t.x_labels.forEach(function (x, k) { lay.parts.push(textEl(X(k), oy + H + 9, String(x), xfs, '#333')); });
+      if (t.y_unit) lay.parts.push(textEl(ox + 2, oy - 12, String(t.y_unit), 8, '#333'));
+      if (t.x_unit) lay.parts.push(textEl(ox + W + 12, oy + H + 9, String(t.x_unit), 8, '#333'));
+      lay.parts.push(textEl(ox + W / 2, oy - 26, String(t.title), 10, '#333'));
+      lay.parts.push(textEl(ox - 20, oy - 26, String(pn.label), 12, C_TARGET));   // 記号(パネル左上・題名の左)
+      lay.segs.push({ id: 'panel' + i, p1: [ox, oy - 4], p2: [ox, oy + H] });
+      lay.labels.push({ box: { x0: ox - 27, y0: oy - 33, x1: ox - 13, y1: oy - 19 }, own: 'panel' + i, text: pn.label });
+      lay.pts.push([ox - 30, oy - 36], [ox + W + 22, oy + H + 16]);
+    });
+    lay._geom = g;
+    return lay;
+  }
   // ---- 等分図便 Kind: equal_parts(1kind3図型 circle/tape/rect・裁可o) ----
   // den等分・num個塗り(tape/rect=左詰め・circle=12時から時計回り=塗り位置固定)。rectはden2/num2で2方向等分(格子・塗りは左下から列×行の交差)。
   // mode=read(塗り済み→分数)/draw(等分線のみ・塗りなし)。塗り=composite_circleのshade(#cfe0fb)を流用。col_unit=true(g06 ×整数の面積図)は横の各列が丸ごと1単位(答=num×num2/den)。
@@ -3042,7 +3093,7 @@
     para_area: paraAreaLayout, tri_area: triAreaLayout, trap_area: trapAreaLayout,
     rhombus_area: rhombusAreaLayout, circle: circleLayout, cuboid: cuboidLayout, prism: prismLayout,
     pyramid: pyramidLayout, cylinder: cylinderLayout, cone: coneLayout, sphere: sphereLayout,
-    rotation_source: rotationSourceLayout, clock_face: clockFaceLayout, composite_circle: compositeCircleLayout, composite_area: compositeAreaLayout, line_set: lineSetLayout, sym_figure: symFigureLayout, shape_set: shapeSetLayout, approx_shape: approxShapeLayout, approx_grid: approxGridLayout, approx_solid: approxSolidLayout, number_line: numberLineLayout, equal_parts: equalPartsLayout,
+    rotation_source: rotationSourceLayout, clock_face: clockFaceLayout, composite_circle: compositeCircleLayout, composite_area: compositeAreaLayout, line_set: lineSetLayout, sym_figure: symFigureLayout, shape_set: shapeSetLayout, approx_shape: approxShapeLayout, approx_grid: approxGridLayout, approx_solid: approxSolidLayout, number_line: numberLineLayout, equal_parts: equalPartsLayout, graph_choice: graphChoiceLayout,
     sym_polygon: symPolygonLayout, similar_pair: similarPairLayout, xy_graph: xyGraphLayout, dot_plot: dotPlotLayout, histogram: histogramLayout,
     angle_figure: angleFigureLayout
   };
@@ -3081,6 +3132,15 @@
   var FigureBuilder = { build: build, BUILDERS: BUILDERS, _angleSumMinClearance: angleSumMinClearance, _tableMinClearance: tableMinClearance };
   // e-2: line_setの監査(角度差/包含/交点/ラベル帰属を描画と同じ導出で独立再計算)
   FigureBuilder._lsStats = function (on) { LS_STATS = on ? {} : null; return LS_STATS; };
+  FigureBuilder._graphChoiceAudit = function (fp) {   // graph_choice 関門用: 割当(正答面=line/時間軸群・他=bar/種類別群・題材重複なし)・記号帰属(最近傍パネル)・パネル非重なり・答え集合の再導出
+    var g = graphChoiceGeom(fp), lay = graphChoiceLayout(fp), out = { panels: g.panels.map(function (p) { return { label: p.label, kind: p.kind, topic_idx: p.topic_idx, title: p.topic.title, ox: p.ox, oy: p.oy }; }), issues: [], labels: [] };
+    var seenT = {}, seenK = {};
+    g.panels.forEach(function (p) { var isAns = g.answer.indexOf(p.label) >= 0; if ((p.kind === 'line') !== isAns) out.issues.push('kind_mismatch:' + p.label); var key = (p.kind === 'line' ? 'T' : 'K') + p.topic_idx; if (p.kind === 'line' ? seenT[key] : seenK[key]) out.issues.push('dup_topic:' + p.label); (p.kind === 'line' ? seenT : seenK)[key] = 1; });
+    for (var i = 0; i < g.panels.length; i++) for (var j = i + 1; j < g.panels.length; j++) { var a = g.panels[i], b = g.panels[j]; if (!(a.ox + GC_PW <= b.ox || b.ox + GC_PW <= a.ox || a.oy + GC_PH <= b.oy || b.oy + GC_PH <= a.oy)) out.issues.push('panel_overlap'); }
+    lay.labels.forEach(function (lb) { var best = null, bd = 1e9; lay.segs.forEach(function (sg) { var dd = boxSeg(lb.box, sg.p1, sg.p2); if (dd < bd) { bd = dd; best = sg.id; } }); out.labels.push({ own: lb.own, nearest: best, ok: best === lb.own, text: lb.text }); });
+    out.derived_answer = g.panels.filter(function (p) { return p.kind === 'line'; }).map(function (p) { return p.label; });
+    return out;
+  };
   FigureBuilder._xyComboAudit = function (fp) {   // line_bar_combo 関門用: 右軸刻み/範囲・折れ線点/棒矩形(px)・極値(index)を返す(関門は出力SVGから独立再計算)
     var g = xyComboGeom(fp), lmax = -1, lmin = -1, bmax = -1, bminV = Infinity;
     g.ly.forEach(function (v, i) { if (lmax < 0 || v > g.ly[lmax]) lmax = i; if (lmin < 0 || v < g.ly[lmin]) lmin = i; });
@@ -3243,7 +3303,7 @@
     pyramid_visible: pyramidVisible, convex_hull: convexHull,   // S-2.1: 隠線シルエット判定(vector用・corr-0023)
     rotation_source: rotationSourceGeom,   // 第2ブロックS-4: 回転体の源(vector用)
     clock_face: clockFaceGeom,             // 小学第2波: 時計文字盤(vector用)
-    composite_circle: compositeCircleGeom, composite_area: compositeAreaGeom, line_set: lineSetGeom, sym_figure: symFigureGeom, shape_set: shapeSetGeom, approx_shape: approxShapeGeom, approx_grid: approxGridGeom, approx_solid: approxSolidGeom, number_line: numberLineGeom, nl_fmt: nlFmt, equal_parts: equalPartsGeom, xy_combo: xyComboGeom, ag_classify: agClassify, ag_inside: agInsidePoly, as_poly_area: asPolyArea, ss_symmetry: ssSymmetry, ss_outline: ssOutline, ss_catalog: SS_CAT, // P-3a: 複合円(vector用) / 対称第1便
+    composite_circle: compositeCircleGeom, composite_area: compositeAreaGeom, line_set: lineSetGeom, sym_figure: symFigureGeom, shape_set: shapeSetGeom, approx_shape: approxShapeGeom, approx_grid: approxGridGeom, approx_solid: approxSolidGeom, number_line: numberLineGeom, nl_fmt: nlFmt, equal_parts: equalPartsGeom, xy_combo: xyComboGeom, graph_choice: graphChoiceGeom, ag_classify: agClassify, ag_inside: agInsidePoly, as_poly_area: asPolyArea, ss_symmetry: ssSymmetry, ss_outline: ssOutline, ss_catalog: SS_CAT, // P-3a: 複合円(vector用) / 対称第1便
     arc_sample_points: arcSamplePoints,          // 弧サンプル点(曲率関門用・頂点からr一定検査)
     // ベクター用の位置引数ラッパ（Python prism_geom(base_kind,a,b,h) と同型）
     prism: function (base_kind, a, b, h) {
