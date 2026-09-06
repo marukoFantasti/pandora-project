@@ -2,6 +2,7 @@
 // 悉皆: 行台帳×seed1..100 → 輪郭(自己交差なし・内外はみ出し・面積比[0.92,1.08]を座標から独立再計算)・みなし面積=転記答・ラベル帰属・決定性。契約throw。
 // 実行:  node tests/approx_shape_vectors.js
 'use strict';
+require('./_seeded').install();   // 台帳原則: 関門内の乱択はseed付き(corr-0042)
 const fs = require('fs'), path = require('path');
 const FB = require(path.join(__dirname, '..', 'pattern_bank', 'figure_builder.js'));
 const LED = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'approx_shape_rows.json'), 'utf-8'));

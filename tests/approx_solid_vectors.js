@@ -1,6 +1,7 @@
 // approx_solid_vectors.js — 概形第2便 Kind: approx_solid の関門(設計書§2.3)。行台帳×seed100: シルエット面積比[0.92,1.08]・内外はみ出し・自己交差なし・
 // ラベル距離≦18px・体積=転記答・決定性 + 円柱の契約(体積式・描画要素)
 'use strict';
+require('./_seeded').install();   // 台帳原則: 関門内の乱択はseed付き(corr-0042)
 const fs = require('fs'), path = require('path');
 const FB = require(path.join(__dirname, '..', 'pattern_bank', 'figure_builder.js'));
 const LED = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'approx_solid_rows.json'), 'utf-8'));

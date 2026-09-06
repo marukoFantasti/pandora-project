@@ -6,6 +6,7 @@
 //           ・line_set(描画角=幾何角)。許容±0.05°(座標2桁丸め)。
 // 実行:  node tests/figure_isoscale_scan.js [seedsPerPattern]
 'use strict';
+require('./_seeded').install();   // 台帳原則: 関門内の乱択はseed付き(corr-0042)
 const fs = require('fs');
 const path = require('path');
 const ROOT = path.join(__dirname, '..');

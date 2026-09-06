@@ -3,6 +3,7 @@
 // 「未囲みのひらがなラベルが (角|点|直線)/の(角|点|直線)/と+ラベル/度/区切り に隣接」する出現ゼロ。
 // 実行:  node tests/hiragana_label_brackets.js [samplesPerPattern]
 'use strict';
+require('./_seeded').install();   // 台帳原則: 関門内の乱択はseed付き(corr-0042)
 const fs = require('fs');
 const path = require('path');
 const ROOT = path.join(__dirname, '..');

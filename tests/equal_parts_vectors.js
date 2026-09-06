@@ -49,7 +49,7 @@ console.log('=== (2) 悉皆: circle/tape/rect × den2..12 × num0..den × read/d
 for (const shape of ['circle', 'tape', 'rect']) for (let den = 2; den <= 12; den++) for (let num = 0; num <= den; num++) for (const mode of ['read', 'draw']) check(shape + den + '/' + num + mode, { kind: 'equal_parts', shape, den, num, mode, unit_label: shape === 'circle' ? undefined : '1m' });
 for (let den = 2; den <= 6; den++) for (let den2 = 2; den2 <= 6; den2++) for (let num = 1; num <= den; num++) for (let num2 = 1; num2 <= den2; num2++) check('rect2way' + den + 'x' + den2 + '/' + num + 'x' + num2, { kind: 'equal_parts', shape: 'rect', den, num, den2, num2, mode: 'read', unit_label: '1m²' });
 console.log('  ' + cases + '構成 ' + (bad === 0 ? '✅' : '❌'));
-console.log('=== (2b) バンク配線(g02 2+g03 1+g06 4): 生成器経由(seed決定化)の図が関門条件を満たし、塗り面積比=答の分数・作図型は答に{den}等分{num}こ分 ===');
+console.log('=== (2b) バンク配線(g02 2+g03 1+g06 4): 生成器経由(seed決定化)の図が関門条件を満たし、塗り面積比=答の分数・作図型は答に{den}等分{num}こ分(g02は「つに分けた」) ===');
 (function () {
   const P = require(path.join(__dirname, '..', 'pattern_bank', 'pattern_generator.js'));
   function rng(seed) { let a = seed >>> 0; return function () { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
@@ -61,7 +61,7 @@ console.log('=== (2b) バンク配線(g02 2+g03 1+g06 4): 生成器経由(seed�
       for (let s = 1; s <= 120; s++) {
         const orig = Math.random; Math.random = rng(s * 7919 + id.length); let r; try { r = P.makeProblem(p, null, bank.shared_lexicon); } catch (e) { Math.random = orig; bad++; if (fails++ < 3) console.log('  ❌ 生成失敗 ' + id + ' seed' + s + ' ' + e.message.slice(0, 80)); continue; } finally { Math.random = orig; }
         const b0 = bad; check(id + ' seed' + s, r.figure); const g0 = FB._geom.equal_parts(r.figure), e = r.env, ans = String(r.answer);
-        if (id === 'g02_tobun_nuri_01' || id === 'g03_tobun_draw_01') { if (ans.indexOf(e.den1 + '等分した' + e.num1 + 'こ分') < 0 || r.figure.mode !== 'draw') { bad++; if (fails++ < 3) console.log('  ❌ 列挙≠den/num ' + id + ' ' + ans); } }
+        if (id === 'g02_tobun_nuri_01' || id === 'g03_tobun_draw_01') { const want = id === 'g02_tobun_nuri_01' ? e.den1 + 'つに分けた' + e.num1 + 'こ分' : e.den1 + '等分した' + e.num1 + 'こ分'; if (ans.indexOf(want) < 0 || r.figure.mode !== 'draw') { bad++; if (fails++ < 3) console.log('  ❌ 列挙≠den/num ' + id + ' ' + ans); } }
         else if (id === 'g02_tobun_yomi_01') { if (ans !== '答え ' + e.num1 + '/' + e.den1 || Math.abs(g0.fill_ratio - e.num1 / e.den1) > 1e-9 || gcd(e.num1, e.den1) !== 1) { bad++; if (fails++ < 3) console.log('  ❌ 読み取り答 ' + id + ' ' + ans); } }
         else { const want = id === 'g06_frac_x_int_word_01' ? e.a1 * e.k1 / e.b1 : id === 'g06_frac_div_int_word_01' ? e.a1 / (e.b1 * e.k1) : id === 'g06_frac_x_frac_word_01' ? e.a1 * e.c1 / (e.b1 * e.d1) : e.a1 * e.c1 / (e.b1 * e.d1);
           if (Math.abs(g0.fill_ratio - want) > 1e-9) { bad++; if (fails++ < 3) console.log('  ❌ 面積比≠答 ' + id + ' ' + g0.fill_ratio + ' vs ' + want); }

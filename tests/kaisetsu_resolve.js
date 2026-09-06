@@ -5,6 +5,7 @@
 // (4) retrofit 完全性: rationale_g04 で pedagogy を持つパターン(P5-3以降=31)は全て kaisetsu を持つ。kaisetsu 無しパターン数(解説backfill在庫)を学年別に報告
 // 実行:  node tests/kaisetsu_resolve.js [samplesPerPattern]
 'use strict';
+require('./_seeded').install();   // 台帳原則: 関門内の乱択はseed付き(corr-0042)
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');

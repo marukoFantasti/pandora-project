@@ -625,3 +625,9 @@
 - 関門50に(2b)バンク配線(7パターン×120本・seed決定化・塗り面積比=答の分数・作図型は答に{den}等分{num}こ分・g06は答=面積比)追加=1786照合GREEN。furigana+1(理由)・registered 666・関門44一覧更新(分/図/色/横/算 等=正)。rationale+3(g02 2/g03 1)・g06 4件のfigure_notes更新+bank_directive D15・pairs 601・rag 3789・corr-0007残差0。
 - **golden md5: g02 c01c598c → 70a90096(PASS 147→153)・g03 fa17b3e1 → ea89447b(PASS 171→174)・g06 4d141235 → da9b554c(x_frac_word解説行のみ・PASS 339不変)**(既存出力バイト不変・解説行除き一致)。全50関門GREEN。
 - **読み目検で誤読1件是正**: 「3分の1は」「4分の1と」が数値+分(助数詞)経路で さんぷんのいち に落ちていた→読みエンジンに「N分のM」(漢字表記の分数)の先行規則を追加(3コピー同期・ベクター+4=99・関門44一覧不変)。「1/(3×6)m²」は「いち/(さん×ろく)」と括弧式のまま(誤読ではないが分数表示ではない=報告)。全50関門GREEN。
+
+### 2026-09-06 等分図便§3-3受理・corr-0042受理(台帳原則追加)・表記判断①②③反映・backfill g01+g02書き出し・line_bar_combo棚卸し先出し
+- **台帳原則(corr-0042受理)**: 関門内の乱択は必ずseed付き・失敗時はseed/envを出力。実装: `tests/_seeded.js`(Math.random→seed付きmulberry32・既定seed 20260906・環境変数GATE_SEEDで変更)を、生成器(makeProblem)を無seedで呼んでいた17関門(approx_shape/approx_solid/composite_area/figure_clayer/figure_isoscale/figure_nondestructive/furigana_coverage/hiragana_label_brackets/kaisetsu_resolve/g01_identity/jhs c06〜c10/jhs_identity/js_parity)に導入。number_line(2b)/equal_parts(2b)/edge_set/corr0007は個別seed済み。全50関門GREEN(seed固定で再現可)。
+- **表記判断**: ①「ぬった」「つぎの」承認 ②g02は「等分」不可→g02_tobun_nuri_01の答「{den}つに分けた{num}こ分に色をぬる」・kaisetsu「…まず全体を同じ大きさに{den}つに分けて、そのうち{num}こに色をぬります」に改変(rationale pedagogyも同期・関門50(2b)の期待値更新) ③g06_frac_x_frac_word_01に computed dd=b1×d1 新設・解説「1つのますは1/{dd}m²です」。golden md5: g02 70a90096 → ad3e4c64(答/解説行のみ)・g06 da9b554c → 0ba82813(解説行のみ)。
+- **backfill書き出し**: `kaisetsu_backfill_g01g02.md`(g01 46+g02 49=95・1ファイル・g03〜g06と同形式)。
+- **line_bar_combo棚卸し先出し**: `line_bar_combo_棚卸し先出し.md`(3行全文引用)。3行とも12か月の系列と第2軸の刻みは未転記(極値のみ)。#1(002)は答整合=極値固定+合成で配線可・#2(004)は答破損(系列名と単位の取り違え)・#3(006)は電気代の答が順位語のみ=skip素材待ち候補。

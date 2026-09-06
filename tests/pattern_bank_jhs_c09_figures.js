@@ -4,6 +4,7 @@
 //
 // 実行:  node tests/pattern_bank_jhs_c09_figures.js [N]
 'use strict';
+require('./_seeded').install();   // 台帳原則: 関門内の乱択はseed付き(corr-0042)
 const fs = require('fs');
 const path = require('path');
 const ROOT = path.join(__dirname, '..');

@@ -1,6 +1,7 @@
 // c08 図あり3パターン描画可能性悉皆。gyomi_01(63組)/gyomi_02(45組)=xy_graph v2 segment / ryokin_01=table。
 // gyomi系の x目盛数(契約16以内・推奨12微超過=14)をまるこ目視確認用に報告。
 'use strict';
+require('./_seeded').install();   // 台帳原則: 関門内の乱択はseed付き(corr-0042)
 const fs = require('fs'); const path = require('path');
 const ROOT = path.join(__dirname, '..');
 const FB = require(path.join(ROOT, 'pattern_bank', 'figure_builder.js'));

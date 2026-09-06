@@ -1,6 +1,7 @@
 // c07 図あり2パターンの描画可能性悉皆。graph_01(xy_graph v2)の可行28組到達 + taiou_01(table)描画。
 // 実行:  node tests/pattern_bank_jhs_c07_figures.js [N]
 'use strict';
+require('./_seeded').install();   // 台帳原則: 関門内の乱択はseed付き(corr-0042)
 const fs = require('fs'); const path = require('path');
 const ROOT = path.join(__dirname, '..');
 const FB = require(path.join(ROOT, 'pattern_bank', 'figure_builder.js'));
