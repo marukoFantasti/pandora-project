@@ -652,3 +652,4 @@
 - **配線**: 極値4点固定(8月29度/1月15度/7月250mm/3・11・12月10mm)・他の月は7+4スロットで乱択(範囲で一意性と3か月同値を保証・制約4本で封印)・答は転記保存(静的)。図=xy_graph mode:combo(y_range 0〜30・右軸1-2-5自動=50刻み・x軸12点数字表記+「月」)。kanji allowed_extra「降」。kaisetsu=Fable本文待ち(backfill在庫 167→168=g04 1)。004/006=skip素材待ち。
 - 関門51(2b)=200本GREEN(極値=答の文字列)・(2c)x軸ラベル非重なり14図。furigana+1(降水量)・registered 667・関門44一覧更新(少/月=正)。rationale+1(g04)・pairs 602・rag 3796・corr-0007残差0。
 - **golden md5: g04 1ca58495 → c27c1457(PASS 267→270)**(既存出力バイト不変)。全51関門GREEN。kind裁可(e)候補の残余: line_graph_choice(未着手)。
+- **是正(3854ee8はkaisetsu_resolve(4)が赤のままpush=手順違反)**: rationale_g04の新規エントリにpedagogy(設計ノート)を書いたため「pedagogy保持→kaisetsu投入」のretrofit完全性に抵触。pedagogyを空([])にしてFable本文着弾時に転写する形に戻し、全51関門GREENを再確認。
