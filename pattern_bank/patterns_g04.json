@@ -320,7 +320,240 @@
    "para": "AD",
    "perp": "AB,CD"
   }
- ]
+ ],
+  "numline_rows": [
+   {
+    "id": "c01_u02_004-1",
+    "q": "数直線を見て答えなさい。ア、イ、ウはそれぞれ何億ですか。",
+    "lb1": "ア",
+    "lb2": "イ",
+    "lb3": "ウ",
+    "sys": "int",
+    "mn": 0,
+    "mx": 30,
+    "mj": 10,
+    "mi": 1,
+    "lf": "big",
+    "bs": 100000000,
+    "sv": "majors",
+    "un": "",
+    "mu": 0,
+    "ex": 0,
+    "r": 10,
+    "km": 30,
+    "sg": 1
+   },
+   {
+    "id": "c01_u02_004-2",
+    "q": "数直線を見て答えなさい。エ、オ、カはそれぞれ何億、何兆ですか。",
+    "lb1": "エ",
+    "lb2": "オ",
+    "lb3": "カ",
+    "sys": "int",
+    "mn": 0,
+    "mx": 30000,
+    "mj": 10000,
+    "mi": 1000,
+    "lf": "big",
+    "bs": 100000000,
+    "sv": "majors",
+    "un": "",
+    "mu": 0,
+    "ex": 0,
+    "r": 10,
+    "km": 30,
+    "sg": 1
+   },
+   {
+    "id": "c01_u02_004-3",
+    "q": "数直線を見て答えなさい。キ、ク、ケはそれぞれいくつですか。",
+    "lb1": "キ",
+    "lb2": "ク",
+    "lb3": "ケ",
+    "sys": "int",
+    "mn": 9000,
+    "mx": 11000,
+    "mj": 1000,
+    "mi": 100,
+    "lf": "big",
+    "bs": 100000000,
+    "sv": "majors",
+    "un": "",
+    "mu": 9000,
+    "ex": 0,
+    "r": 10,
+    "km": 20,
+    "sg": 1
+   },
+   {
+    "id": "c01_u02_007-1",
+    "q": "数直線のア、イに当てはまる数を答えなさい。",
+    "lb1": "ア",
+    "lb2": "イ",
+    "lb3": "",
+    "sys": "int",
+    "mn": 50000,
+    "mx": 52000,
+    "mj": 1000,
+    "mi": 100,
+    "lf": "big",
+    "bs": 100000000,
+    "sv": "majors",
+    "un": "",
+    "mu": 50000,
+    "ex": 0,
+    "r": 10,
+    "km": 20,
+    "sg": 1
+   },
+   {
+    "id": "c01_u02_007-2",
+    "q": "数直線のウ、エに当てはまる数を答えなさい。",
+    "lb1": "ウ",
+    "lb2": "エ",
+    "lb3": "",
+    "sys": "int",
+    "mn": 50000,
+    "mx": 80000,
+    "mj": 10000,
+    "mi": 1000,
+    "lf": "big",
+    "bs": 10000,
+    "sv": "majors",
+    "un": "",
+    "mu": 50000,
+    "ex": 0,
+    "r": 10,
+    "km": 30,
+    "sg": 1
+   },
+   {
+    "id": "c01_u02_005-2",
+    "q": "数直線の①、②の位置の数を答えなさい。",
+    "lb1": "①",
+    "lb2": "②",
+    "lb3": "",
+    "sys": "int",
+    "mn": 0,
+    "mx": 400,
+    "mj": 100,
+    "mi": 10,
+    "lf": "big",
+    "bs": 100000000,
+    "sv": "majors",
+    "un": "",
+    "mu": 0,
+    "ex": 0,
+    "r": 10,
+    "km": 40,
+    "sg": -1
+   },
+   {
+    "id": "c06_u01_004",
+    "q": "数直線のア〜ウにあてはまる数を答えなさい。",
+    "lb1": "ア",
+    "lb2": "イ",
+    "lb3": "ウ",
+    "sys": "dec",
+    "mn": 2.8,
+    "mx": 3.3,
+    "mj": 0.1,
+    "mi": 0.01,
+    "lf": "dec1",
+    "bs": 1,
+    "sv": "majors",
+    "un": "m",
+    "mu": 280,
+    "ex": -2,
+    "r": 10,
+    "km": 50,
+    "sg": 1
+   },
+   {
+    "id": "c06_u01_009",
+    "q": "数直線のア〜ウにあてはまる数を答えなさい。",
+    "lb1": "ア",
+    "lb2": "イ",
+    "lb3": "ウ",
+    "sys": "dec",
+    "mn": 1.7,
+    "mx": 2.1,
+    "mj": 0.1,
+    "mi": 0.01,
+    "lf": "dec1",
+    "bs": 1,
+    "sv": "majors",
+    "un": "m",
+    "mu": 170,
+    "ex": -2,
+    "r": 10,
+    "km": 40,
+    "sg": 1
+   },
+   {
+    "id": "c06_u01_013",
+    "q": "数直線のア〜ウにあてはまる数を答えなさい。",
+    "lb1": "ア",
+    "lb2": "イ",
+    "lb3": "ウ",
+    "sys": "dec",
+    "mn": 7.45,
+    "mx": 7.5,
+    "mj": 0.01,
+    "mi": 0.001,
+    "lf": "dec2",
+    "bs": 1,
+    "sv": "majors",
+    "un": "km",
+    "mu": 7450,
+    "ex": -3,
+    "r": 10,
+    "km": 50,
+    "sg": 1
+   },
+   {
+    "id": "c06_u02_002",
+    "q": "数直線のア、イ、ウの数を、大きい順に書きなさい。",
+    "lb1": "ア",
+    "lb2": "イ",
+    "lb3": "ウ",
+    "sys": "dec",
+    "mn": 1.4,
+    "mx": 1.5,
+    "mj": 0.01,
+    "mi": 0.001,
+    "lf": "dec1",
+    "bs": 1,
+    "sv": "ends",
+    "un": "",
+    "mu": 1400,
+    "ex": -3,
+    "r": 10,
+    "km": 100,
+    "sg": 1
+   },
+   {
+    "id": "c01_u02_005-1",
+    "q": "数直線に、0、ア、イの位置を↑で記入しなさい。",
+    "lb1": "ア",
+    "lb2": "イ",
+    "lb3": "",
+    "sys": "int",
+    "mn": 0,
+    "mx": 400,
+    "mj": 100,
+    "mi": 10,
+    "lf": "big",
+    "bs": 100000000,
+    "sv": "majors",
+    "un": "",
+    "mu": 0,
+    "ex": 0,
+    "r": 10,
+    "km": 40,
+    "sg": 1
+   }
+  ]
  },
  "patterns": [
   {
@@ -6564,6 +6797,887 @@
    "template_number_constants": [],
    "answer_domain": "edge_set",
    "note_edge": "多小問(①②)のためans=①(edge_set自動採点)・②は教師採点主。"
+  },
+  {
+   "pattern_id": "g04_numline_big3_01",
+   "grade": "g04",
+   "unit_id": "g04_c01_u02",
+   "unit_name": "大きい数のしくみ",
+   "semantic_category": "数直線の読み取り(大きい数・記号3つ)",
+   "semantic_note": "数直線便(裁可n)。行別レコード(numline_rows)に転記の範囲・刻み・記号を保存し、矢印の位置(小目盛index k)だけを乱択(記号の並び順=転記順・隣接≥2小目盛・第1記号は大目盛上を避けて解説の「こ分」が成立)。答=fmt_big/fmt_scaled(両エンジン共通ヘルパ)のcomputed・label採点(①のみ自動・他は教師採点主)。 c01_u02_004の3小問(億/千億〜兆/兆と億の境)=3レコード。",
+   "step_count": 1,
+   "operation": "数直線の読み取り",
+   "answer_formula": "ad1_disp",
+   "slots": {
+    "j1": {
+     "choices": [
+      0,
+      1,
+      2
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "numline_rows[j1].q"
+    },
+    "lb1": {
+     "from": "numline_rows[j1].lb1"
+    },
+    "lb2": {
+     "from": "numline_rows[j1].lb2"
+    },
+    "lb3": {
+     "from": "numline_rows[j1].lb3"
+    },
+    "sys1": {
+     "from": "numline_rows[j1].sys"
+    },
+    "mn1": {
+     "from": "numline_rows[j1].mn"
+    },
+    "mx1": {
+     "from": "numline_rows[j1].mx"
+    },
+    "mj1": {
+     "from": "numline_rows[j1].mj"
+    },
+    "mi1": {
+     "from": "numline_rows[j1].mi"
+    },
+    "lf1": {
+     "from": "numline_rows[j1].lf"
+    },
+    "bs1": {
+     "from": "numline_rows[j1].bs"
+    },
+    "sv1": {
+     "from": "numline_rows[j1].sv"
+    },
+    "un1": {
+     "from": "numline_rows[j1].un"
+    },
+    "mu1": {
+     "from": "numline_rows[j1].mu"
+    },
+    "ex1": {
+     "from": "numline_rows[j1].ex"
+    },
+    "r1": {
+     "from": "numline_rows[j1].r"
+    },
+    "km1": {
+     "from": "numline_rows[j1].km"
+    },
+    "sg1": {
+     "from": "numline_rows[j1].sg"
+    },
+    "k1": {
+     "type": "int",
+     "range": [
+      0,
+      30
+     ]
+    },
+    "k2": {
+     "type": "int",
+     "range": [
+      0,
+      30
+     ]
+    },
+    "k3": {
+     "type": "int",
+     "range": [
+      0,
+      30
+     ]
+    }
+   },
+   "computed_slots": {
+    "ad1_disp": {
+     "formula": "fmt_big(mn1 + k1 * mi1, bs1)"
+    },
+    "ad2_disp": {
+     "formula": "fmt_big(mn1 + k2 * mi1, bs1)"
+    },
+    "ad3_disp": {
+     "formula": "fmt_big(mn1 + k3 * mi1, bs1)"
+    },
+    "mj_disp": {
+     "formula": "fmt_big(mj1, bs1)"
+    },
+    "mi_disp": {
+     "formula": "fmt_big(mi1, bs1)"
+    },
+    "nf_disp": {
+     "formula": "fmt_big(mn1 + (k1 // r1) * mj1, bs1)"
+    },
+    "kk": {
+     "formula": "k1 % r1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "order_gap",
+     "expr": "k1 + 2 <= k2",
+     "why": "記号の並び順=転記順(左→右)を保存・隣接≥2小目盛"
+    },
+    {
+     "rule": "order_gap",
+     "expr": "k2 + 2 <= k3",
+     "why": "同上"
+    },
+    {
+     "rule": "km_by_row",
+     "expr": "k3 <= [30, 30, 20][j1]",
+     "why": "行別の小目盛本数(範囲内)"
+    },
+    {
+     "rule": "first_off_major",
+     "expr": "k1 % 10 >= 1",
+     "why": "第1記号は大目盛上を避け解説の「こ分」が成立"
+    }
+   ],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {lb1}…{ad1_disp}、{lb2}…{ad2_disp}、{lb3}…{ad3_disp}",
+   "kaisetsu": "数直線は、1目もりがいくつを表すかを先に読みます。大きい目もりが{mj_disp}ずつ、小さい目もりが{mi_disp}ずつです。「{lb1}」の矢印は{nf_disp}から小さい目もり{kk}こ分右にあるので、{ad1_disp}です。",
+   "figure_params": {
+    "kind": "number_line",
+    "system": "{sys1}",
+    "min": "{mn1}",
+    "max": "{mx1}",
+    "major": "{mj1}",
+    "minor": "{mi1}",
+    "label_fmt": "{lf1}",
+    "base": "{bs1}",
+    "show_values": "{sv1}",
+    "markers": [
+     {
+      "label": "{lb1}",
+      "k": "{k1}"
+     },
+     {
+      "label": "{lb2}",
+      "k": "{k2}"
+     },
+     {
+      "label": "{lb3}",
+      "k": "{k3}"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "label"
+  },
+  {
+   "pattern_id": "g04_numline_big2_01",
+   "grade": "g04",
+   "unit_id": "g04_c01_u02",
+   "unit_name": "大きい数のしくみ",
+   "semantic_category": "数直線の読み取り(大きい数・記号2つ)",
+   "semantic_note": "数直線便(裁可n)。行別レコード(numline_rows)に転記の範囲・刻み・記号を保存し、矢印の位置(小目盛index k)だけを乱択(記号の並び順=転記順・隣接≥2小目盛・第1記号は大目盛上を避けて解説の「こ分」が成立)。答=fmt_big/fmt_scaled(両エンジン共通ヘルパ)のcomputed・label採点(①のみ自動・他は教師採点主)。 c01_u02_007の2小問(兆系/万系)+005(2)(①②=数の位置・転記順は②<①=sg=-1で順序保存)=3レコード。",
+   "step_count": 1,
+   "operation": "数直線の読み取り",
+   "answer_formula": "ad1_disp",
+   "slots": {
+    "j1": {
+     "choices": [
+      3,
+      4,
+      5
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "numline_rows[j1].q"
+    },
+    "lb1": {
+     "from": "numline_rows[j1].lb1"
+    },
+    "lb2": {
+     "from": "numline_rows[j1].lb2"
+    },
+    "lb3": {
+     "from": "numline_rows[j1].lb3"
+    },
+    "sys1": {
+     "from": "numline_rows[j1].sys"
+    },
+    "mn1": {
+     "from": "numline_rows[j1].mn"
+    },
+    "mx1": {
+     "from": "numline_rows[j1].mx"
+    },
+    "mj1": {
+     "from": "numline_rows[j1].mj"
+    },
+    "mi1": {
+     "from": "numline_rows[j1].mi"
+    },
+    "lf1": {
+     "from": "numline_rows[j1].lf"
+    },
+    "bs1": {
+     "from": "numline_rows[j1].bs"
+    },
+    "sv1": {
+     "from": "numline_rows[j1].sv"
+    },
+    "un1": {
+     "from": "numline_rows[j1].un"
+    },
+    "mu1": {
+     "from": "numline_rows[j1].mu"
+    },
+    "ex1": {
+     "from": "numline_rows[j1].ex"
+    },
+    "r1": {
+     "from": "numline_rows[j1].r"
+    },
+    "km1": {
+     "from": "numline_rows[j1].km"
+    },
+    "sg1": {
+     "from": "numline_rows[j1].sg"
+    },
+    "k1": {
+     "type": "int",
+     "range": [
+      0,
+      40
+     ]
+    },
+    "k2": {
+     "type": "int",
+     "range": [
+      0,
+      40
+     ]
+    }
+   },
+   "computed_slots": {
+    "ad1_disp": {
+     "formula": "fmt_big(mn1 + k1 * mi1, bs1)"
+    },
+    "ad2_disp": {
+     "formula": "fmt_big(mn1 + k2 * mi1, bs1)"
+    },
+    "mj_disp": {
+     "formula": "fmt_big(mj1, bs1)"
+    },
+    "mi_disp": {
+     "formula": "fmt_big(mi1, bs1)"
+    },
+    "nf_disp": {
+     "formula": "fmt_big(mn1 + (k1 // r1) * mj1, bs1)"
+    },
+    "kk": {
+     "formula": "k1 % r1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "order_gap",
+     "expr": "(k2 - k1) * [0, 0, 0, 1, 1, -1][j1] >= 2",
+     "why": "転記順(007=①<②の昇順・005(2)=②<①の降順)を保存・隣接≥2小目盛"
+    },
+    {
+     "rule": "km_by_row",
+     "expr": "k1 <= [0, 0, 0, 20, 30, 40][j1]",
+     "why": "行別の小目盛本数"
+    },
+    {
+     "rule": "km_by_row",
+     "expr": "k2 <= [0, 0, 0, 20, 30, 40][j1]",
+     "why": "同上"
+    },
+    {
+     "rule": "first_off_major",
+     "expr": "k1 % 10 >= 1",
+     "why": "解説の「こ分」が成立"
+    }
+   ],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {lb1}…{ad1_disp}、{lb2}…{ad2_disp}",
+   "kaisetsu": "数直線は、1目もりがいくつを表すかを先に読みます。大きい目もりが{mj_disp}ずつ、小さい目もりが{mi_disp}ずつです。「{lb1}」の矢印は{nf_disp}から小さい目もり{kk}こ分右にあるので、{ad1_disp}です。",
+   "figure_params": {
+    "kind": "number_line",
+    "system": "{sys1}",
+    "min": "{mn1}",
+    "max": "{mx1}",
+    "major": "{mj1}",
+    "minor": "{mi1}",
+    "label_fmt": "{lf1}",
+    "base": "{bs1}",
+    "show_values": "{sv1}",
+    "markers": [
+     {
+      "label": "{lb1}",
+      "k": "{k1}"
+     },
+     {
+      "label": "{lb2}",
+      "k": "{k2}"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "label"
+  },
+  {
+   "pattern_id": "g04_numline_dec3_01",
+   "grade": "g04",
+   "unit_id": "g04_c06_u01",
+   "unit_name": "小数の表し方",
+   "semantic_category": "数直線の読み取り(小数・0.01/0.001刻み)",
+   "semantic_note": "数直線便(裁可n)。行別レコード(numline_rows)に転記の範囲・刻み・記号を保存し、矢印の位置(小目盛index k)だけを乱択(記号の並び順=転記順・隣接≥2小目盛・第1記号は大目盛上を避けて解説の「こ分」が成立)。答=fmt_big/fmt_scaled(両エンジン共通ヘルパ)のcomputed・label採点(①のみ自動・他は教師採点主)。 c06_u01_004/009/013=3レコード(単位m/kmは答えに付す・013は0.001刻み)。",
+   "step_count": 1,
+   "operation": "数直線の読み取り",
+   "answer_formula": "an1_disp",
+   "slots": {
+    "j1": {
+     "choices": [
+      6,
+      7,
+      8
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "numline_rows[j1].q"
+    },
+    "lb1": {
+     "from": "numline_rows[j1].lb1"
+    },
+    "lb2": {
+     "from": "numline_rows[j1].lb2"
+    },
+    "lb3": {
+     "from": "numline_rows[j1].lb3"
+    },
+    "sys1": {
+     "from": "numline_rows[j1].sys"
+    },
+    "mn1": {
+     "from": "numline_rows[j1].mn"
+    },
+    "mx1": {
+     "from": "numline_rows[j1].mx"
+    },
+    "mj1": {
+     "from": "numline_rows[j1].mj"
+    },
+    "mi1": {
+     "from": "numline_rows[j1].mi"
+    },
+    "lf1": {
+     "from": "numline_rows[j1].lf"
+    },
+    "bs1": {
+     "from": "numline_rows[j1].bs"
+    },
+    "sv1": {
+     "from": "numline_rows[j1].sv"
+    },
+    "un1": {
+     "from": "numline_rows[j1].un"
+    },
+    "mu1": {
+     "from": "numline_rows[j1].mu"
+    },
+    "ex1": {
+     "from": "numline_rows[j1].ex"
+    },
+    "r1": {
+     "from": "numline_rows[j1].r"
+    },
+    "km1": {
+     "from": "numline_rows[j1].km"
+    },
+    "sg1": {
+     "from": "numline_rows[j1].sg"
+    },
+    "k1": {
+     "type": "int",
+     "range": [
+      0,
+      50
+     ]
+    },
+    "k2": {
+     "type": "int",
+     "range": [
+      0,
+      50
+     ]
+    },
+    "k3": {
+     "type": "int",
+     "range": [
+      0,
+      50
+     ]
+    }
+   },
+   "computed_slots": {
+    "ad1_disp": {
+     "formula": "fmt_scaled(mu1 + k1, ex1)"
+    },
+    "ad2_disp": {
+     "formula": "fmt_scaled(mu1 + k2, ex1)"
+    },
+    "ad3_disp": {
+     "formula": "fmt_scaled(mu1 + k3, ex1)"
+    },
+    "an1_disp": {
+     "formula": "fmt_scaled(mu1 + k1, ex1) + un1"
+    },
+    "an2_disp": {
+     "formula": "fmt_scaled(mu1 + k2, ex1) + un1"
+    },
+    "an3_disp": {
+     "formula": "fmt_scaled(mu1 + k3, ex1) + un1"
+    },
+    "mi_disp": {
+     "formula": "fmt_scaled(1, ex1)"
+    },
+    "nf_disp": {
+     "formula": "fmt_scaled((mu1 + (k1 // r1) * r1) // r1, ex1 + 1)"
+    },
+    "kk": {
+     "formula": "k1 % r1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "order_gap",
+     "expr": "k1 + 2 <= k2",
+     "why": "転記順保存・隣接≥2小目盛"
+    },
+    {
+     "rule": "order_gap",
+     "expr": "k2 + 2 <= k3",
+     "why": "同上"
+    },
+    {
+     "rule": "km_by_row",
+     "expr": "k3 <= [50, 40, 50][j1 - 6]",
+     "why": "行別の小目盛本数"
+    },
+    {
+     "rule": "first_off_major",
+     "expr": "k1 % 10 >= 1",
+     "why": "解説の「こ分」が成立"
+    }
+   ],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {lb1}…{an1_disp}、{lb2}…{an2_disp}、{lb3}…{an3_disp}",
+   "kaisetsu": "大きい目もりの間が10等分されているので、小さい目もり1つ分は{mi_disp}です。「{lb1}」は{nf_disp}から小さい目もり{kk}こ分右にあるので、{an1_disp}です。",
+   "figure_params": {
+    "kind": "number_line",
+    "system": "{sys1}",
+    "min": "{mn1}",
+    "max": "{mx1}",
+    "major": "{mj1}",
+    "minor": "{mi1}",
+    "label_fmt": "{lf1}",
+    "base": "{bs1}",
+    "show_values": "{sv1}",
+    "markers": [
+     {
+      "label": "{lb1}",
+      "k": "{k1}"
+     },
+     {
+      "label": "{lb2}",
+      "k": "{k2}"
+     },
+     {
+      "label": "{lb3}",
+      "k": "{k3}"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "label"
+  },
+  {
+   "pattern_id": "g04_numline_hikaku_01",
+   "grade": "g04",
+   "unit_id": "g04_c06_u02",
+   "unit_name": "小数のしくみ",
+   "semantic_category": "数直線上の小数の大小比較(大きい順の記号列)",
+   "semantic_note": "数直線便(裁可n)。行別レコード(numline_rows)に転記の範囲・刻み・記号を保存し、矢印の位置(小目盛index k)だけを乱択(記号の並び順=転記順・隣接≥2小目盛・第1記号は大目盛上を避けて解説の「こ分」が成立)。答=fmt_big/fmt_scaled(両エンジン共通ヘルパ)のcomputed・label採点(①のみ自動・他は教師採点主)。 c06_u02_002=mode:compare(まるこ追記): 転記の左→右順ア<ウ<イを制約で保存し、答=値の大きい順の記号列をorder_descでcomputed(転記答「イ、ウ、ア」再現)。設問文は答え漏れの転記「イ、ウ、アの順に」を「ア、イ、ウの数を大きい順に」に補正。",
+   "step_count": 1,
+   "operation": "数直線の読み取り",
+   "answer_formula": "od1_disp",
+   "slots": {
+    "j1": {
+     "choices": [
+      9
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "numline_rows[j1].q"
+    },
+    "lb1": {
+     "from": "numline_rows[j1].lb1"
+    },
+    "lb2": {
+     "from": "numline_rows[j1].lb2"
+    },
+    "lb3": {
+     "from": "numline_rows[j1].lb3"
+    },
+    "sys1": {
+     "from": "numline_rows[j1].sys"
+    },
+    "mn1": {
+     "from": "numline_rows[j1].mn"
+    },
+    "mx1": {
+     "from": "numline_rows[j1].mx"
+    },
+    "mj1": {
+     "from": "numline_rows[j1].mj"
+    },
+    "mi1": {
+     "from": "numline_rows[j1].mi"
+    },
+    "lf1": {
+     "from": "numline_rows[j1].lf"
+    },
+    "bs1": {
+     "from": "numline_rows[j1].bs"
+    },
+    "sv1": {
+     "from": "numline_rows[j1].sv"
+    },
+    "un1": {
+     "from": "numline_rows[j1].un"
+    },
+    "mu1": {
+     "from": "numline_rows[j1].mu"
+    },
+    "ex1": {
+     "from": "numline_rows[j1].ex"
+    },
+    "r1": {
+     "from": "numline_rows[j1].r"
+    },
+    "km1": {
+     "from": "numline_rows[j1].km"
+    },
+    "sg1": {
+     "from": "numline_rows[j1].sg"
+    },
+    "k1": {
+     "type": "int",
+     "range": [
+      0,
+      100
+     ]
+    },
+    "k2": {
+     "type": "int",
+     "range": [
+      0,
+      100
+     ]
+    },
+    "k3": {
+     "type": "int",
+     "range": [
+      0,
+      100
+     ]
+    }
+   },
+   "computed_slots": {
+    "ad1_disp": {
+     "formula": "fmt_scaled(mu1 + k1, ex1)"
+    },
+    "ad2_disp": {
+     "formula": "fmt_scaled(mu1 + k2, ex1)"
+    },
+    "ad3_disp": {
+     "formula": "fmt_scaled(mu1 + k3, ex1)"
+    },
+    "an1_disp": {
+     "formula": "fmt_scaled(mu1 + k1, ex1) + un1"
+    },
+    "an2_disp": {
+     "formula": "fmt_scaled(mu1 + k2, ex1) + un1"
+    },
+    "an3_disp": {
+     "formula": "fmt_scaled(mu1 + k3, ex1) + un1"
+    },
+    "mi_disp": {
+     "formula": "fmt_scaled(1, ex1)"
+    },
+    "nf_disp": {
+     "formula": "fmt_scaled((mu1 + (k1 // r1) * r1) // r1, ex1 + 1)"
+    },
+    "kk": {
+     "formula": "k1 % r1"
+    },
+    "od1_disp": {
+     "formula": "order_desc([k1, k2, k3], [lb1, lb2, lb3])"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "order_gap",
+     "expr": "k1 + 2 <= k3",
+     "why": "転記の左→右順ア<ウ<イを保存(答=イ、ウ、ア)・隣接≥2小目盛"
+    },
+    {
+     "rule": "order_gap",
+     "expr": "k3 + 2 <= k2",
+     "why": "同上"
+    },
+    {
+     "rule": "first_off_major",
+     "expr": "k1 % 10 >= 1",
+     "why": "解説の「こ分」が成立"
+    }
+   ],
+   "sentence_templates": [
+    "{q1}"
+   ],
+   "answer_template": "答え {od1_disp}",
+   "kaisetsu": "大きい目もりの間が10等分されているので、小さい目もり1つ分は{mi_disp}です。「{lb1}」は{nf_disp}から小さい目もり{kk}こ分右にあるので、{an1_disp}です。",
+   "figure_params": {
+    "kind": "number_line",
+    "system": "{sys1}",
+    "min": "{mn1}",
+    "max": "{mx1}",
+    "major": "{mj1}",
+    "minor": "{mi1}",
+    "label_fmt": "{lf1}",
+    "base": "{bs1}",
+    "show_values": "{sv1}",
+    "markers": [
+     {
+      "label": "{lb1}",
+      "k": "{k1}"
+     },
+     {
+      "label": "{lb2}",
+      "k": "{k2}"
+     },
+     {
+      "label": "{lb3}",
+      "k": "{k3}"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "label"
+  },
+  {
+   "pattern_id": "g04_numline_kinyu_01",
+   "grade": "g04",
+   "unit_id": "g04_c01_u02",
+   "unit_name": "大きい数のしくみ",
+   "semantic_category": "数直線への位置の記入(作図型・答=位置列挙)",
+   "semantic_note": "数直線便(裁可n)。行別レコード(numline_rows)に転記の範囲・刻み・記号を保存し、矢印の位置(小目盛index k)だけを乱択(記号の並び順=転記順・隣接≥2小目盛・第1記号は大目盛上を避けて解説の「こ分」が成立)。答=fmt_big/fmt_scaled(両エンジン共通ヘルパ)のcomputed・label採点(①のみ自動・他は教師採点主)。 c01_u02_005(1)=作図型(まるこ追記: 位置列挙)。ア・イの値を本文で与え、答は「0から小さい目もり何こ分右」の位置列挙(u01_002打点列挙と同流儀)。図は矢印なし(show_markers=false)。",
+   "step_count": 1,
+   "operation": "数直線の読み取り",
+   "answer_formula": "ad1_disp",
+   "slots": {
+    "j1": {
+     "choices": [
+      10
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "numline_rows[j1].q"
+    },
+    "lb1": {
+     "from": "numline_rows[j1].lb1"
+    },
+    "lb2": {
+     "from": "numline_rows[j1].lb2"
+    },
+    "lb3": {
+     "from": "numline_rows[j1].lb3"
+    },
+    "sys1": {
+     "from": "numline_rows[j1].sys"
+    },
+    "mn1": {
+     "from": "numline_rows[j1].mn"
+    },
+    "mx1": {
+     "from": "numline_rows[j1].mx"
+    },
+    "mj1": {
+     "from": "numline_rows[j1].mj"
+    },
+    "mi1": {
+     "from": "numline_rows[j1].mi"
+    },
+    "lf1": {
+     "from": "numline_rows[j1].lf"
+    },
+    "bs1": {
+     "from": "numline_rows[j1].bs"
+    },
+    "sv1": {
+     "from": "numline_rows[j1].sv"
+    },
+    "un1": {
+     "from": "numline_rows[j1].un"
+    },
+    "mu1": {
+     "from": "numline_rows[j1].mu"
+    },
+    "ex1": {
+     "from": "numline_rows[j1].ex"
+    },
+    "r1": {
+     "from": "numline_rows[j1].r"
+    },
+    "km1": {
+     "from": "numline_rows[j1].km"
+    },
+    "sg1": {
+     "from": "numline_rows[j1].sg"
+    },
+    "k1": {
+     "type": "int",
+     "range": [
+      0,
+      40
+     ]
+    },
+    "k2": {
+     "type": "int",
+     "range": [
+      0,
+      40
+     ]
+    }
+   },
+   "computed_slots": {
+    "ad1_disp": {
+     "formula": "fmt_big(mn1 + k1 * mi1, bs1)"
+    },
+    "ad2_disp": {
+     "formula": "fmt_big(mn1 + k2 * mi1, bs1)"
+    },
+    "mj_disp": {
+     "formula": "fmt_big(mj1, bs1)"
+    },
+    "mi_disp": {
+     "formula": "fmt_big(mi1, bs1)"
+    },
+    "nf_disp": {
+     "formula": "fmt_big(mn1 + (k1 // r1) * mj1, bs1)"
+    },
+    "kk": {
+     "formula": "k1 % r1"
+    }
+   },
+   "value_constraints": [
+    {
+     "rule": "order_gap",
+     "expr": "k1 + 2 <= k2",
+     "why": "ア<イ・隣接≥2小目盛"
+    },
+    {
+     "rule": "first_off_major",
+     "expr": "k1 % 10 >= 1",
+     "why": "解説の「こ分」が成立"
+    }
+   ],
+   "sentence_templates": [
+    "{q1}（{lb1}…{ad1_disp}、{lb2}…{ad2_disp}）"
+   ],
+   "answer_template": "答え 0…いちばん左の目もり、{lb1}…0から小さい目もり{k1}こ分右、{lb2}…0から小さい目もり{k2}こ分右",
+   "kaisetsu": "数直線は、1目もりがいくつを表すかを先に読みます。大きい目もりが{mj_disp}ずつ、小さい目もりが{mi_disp}ずつです。「{lb1}」の矢印は{nf_disp}から小さい目もり{kk}こ分右にあるので、{ad1_disp}です。",
+   "figure_params": {
+    "kind": "number_line",
+    "system": "{sys1}",
+    "min": "{mn1}",
+    "max": "{mx1}",
+    "major": "{mj1}",
+    "minor": "{mi1}",
+    "label_fmt": "{lf1}",
+    "base": "{bs1}",
+    "show_values": "{sv1}",
+    "markers": [
+     {
+      "label": "{lb1}",
+      "k": "{k1}"
+     },
+     {
+      "label": "{lb2}",
+      "k": "{k2}"
+     }
+    ],
+    "show_markers": false
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [
+    0
+   ],
+   "answer_domain": "label"
   }
  ],
  "schema_changelog": {

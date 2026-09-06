@@ -1,7 +1,7 @@
 {
  "_meta": {
   "schema": "rationale_g05_gold.json準拠",
-  "scope": "g04全24パターン完全版(遡及・統一遡及③ g04完了 2026-08-12) +P5-1追補13(2026-08-31。gaisu_shishaは既存round_01の真部分集合=重複自動除外) +P5-2追補16(c05性質/面積/角度/立体/小数あまり 2026-08-31) +P5-3第2便12(折れ線10+composite_area2 2026-09-01。pedagogy=Fable rationale本文の逐語転写・anchor可変文は「例: 」例示化=裁可1) +P5-3第3便9(表族c02_u03 2026-09-02。pedagogy=設計書rationale4種の逐語転写・例示化適用済) +P5-3第4便7(c13変わり方 2026-09-02。pedagogy=設計書rationale5種の逐語転写) +e-1(平行線と角 2026-09-03) +e-2(直線の組合せ選択+長方形の辺 2026-09-04。pedagogy=設計ノート文字列形式=Fable本文未着・検収待ち)",
+  "scope": "g04全24パターン完全版(遡及・統一遡及③ g04完了 2026-08-12) +P5-1追補13(2026-08-31。gaisu_shishaは既存round_01の真部分集合=重複自動除外) +P5-2追補16(c05性質/面積/角度/立体/小数あまり 2026-08-31) +P5-3第2便12(折れ線10+composite_area2 2026-09-01。pedagogy=Fable rationale本文の逐語転写・anchor可変文は「例: 」例示化=裁可1) +P5-3第3便9(表族c02_u03 2026-09-02。pedagogy=設計書rationale4種の逐語転写・例示化適用済) +P5-3第4便7(c13変わり方 2026-09-02。pedagogy=設計書rationale5種の逐語転写) +e-1(平行線と角 2026-09-03) +e-2(直線の組合せ選択+長方形の辺 2026-09-04。pedagogy=設計ノート文字列形式=Fable本文未着・検収待ち) +数直線便5(number_line c01_u02/c06 2026-09-06。pedagogy=設計書§6解説骨子の逐語転写)",
   "note": "figure_notes正準=ゴールド流儀(null不使用)。",
   "order": "バンク順"
  },
@@ -1989,6 +1989,181 @@
    "exclusions": "辺の長さ(rect_mawari系)。直方体の辺(c14 chokuho系)。",
    "figure_notes": "図なし(長方形+頂点ラベル資産が無い・自明)。",
    "pedagogy": "設計ノート(AI要約・Fable本文未着): 長方形の向かい合う辺は平行、となり合う辺は垂直。基準の辺を決めてから、向かい合う辺(1本)・となり合う辺(2本)を順に挙げる。"
+  }
+ },
+ "g04_numline_big3_01": {
+  "brief": {
+   "semantic_territory": "数直線の読み取り(大きい数・記号3つ)",
+   "number_domain": "整数(億・兆: 行レコードの範囲・刻み固定、位置=小目盛index乱択)",
+   "answer_structure": "single",
+   "figure": "number_line(system=int・label_fmt=big・base=万/億で「N兆N億N万」表示)。数値ラベル上側・矢印↑下側・近接記号は矢印長を段違い。",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "1kindで3系統(整数=万・億・兆/小数=0.1・0.01・0.001刻み/分数=0〜1をn等分)を受ける。読み取り型のみ配線し、作図型は答え=位置の数値列挙。記号と答えは転記保存、矢印の位置だけ合成(裁可n)。",
+     "by": "marko",
+     "date": "2026-09-06"
+    },
+    {
+     "text": "棚卸し追記: 破損3行(c01_003/c06_u02_001/c06_u02_006)=skip素材待ち。c06_u02_002=mode:compare(答=大きい順の記号列computed)。g05_014=draw型+答=大きい順の数列挙(分数・小数混在比較computed)。c01_005=(1)位置列挙・(2)読み取り。",
+     "by": "marko",
+     "date": "2026-09-06"
+    },
+    {
+     "text": "スモーク目視OK。差分2件承認(帰属規則=水平距離最近傍(側別)・比較行は数値ラベル両端のみ)。上下配置(数値ラベル上側・矢印下側)は現状維持。",
+     "by": "marko",
+     "date": "2026-09-06"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "c01_u02_004の3小問(0〜30億/0〜3兆/9000億〜1兆1000億)=矢印ア〜ケの位置の数を答える。範囲・刻み・記号は転記、位置は図依存で未転記。",
+   "representation": "行別レコード(numline_rows)に範囲・大小目盛・記号・表示形式を保存し、矢印位置k(小目盛index)を乱択(転記順保存・隣接≥2・第1記号は大目盛上を避ける)。答=fmt_big(min+k×minor, base)のcomputed。",
+   "constructive_guarantees": "関門49 number_line_vectors: 行台帳12図×seed100(目盛上乱択・記号順保存・隣接≥2小目盛)で目盛/矢印座標=値の線形写像を独立再計算(誤差0)・帰属・間隔・数値ラベル非重なり・等スケール・決定性、+(2b)生成器経由30本/パターンで答=矢印位置の表示(fmt_big/fmt_scaled)を照合。表示ヘルパはJS/Python両実装をhelpers_test_vectorsで1:1照合。",
+   "semantic_position": "c01_u02(大きい数のしくみ)の行レベル追補(単元は既に被覆)。数直線部品は小数(c06)・分数(g05)と共通kind。",
+   "exclusions": "破損行(c01_003=答と設問不整合)。作図型は別パターン。",
+   "figure_notes": "number_line(system=int・label_fmt=big・base=万/億で「N兆N億N万」表示)。数値ラベル上側・矢印↑下側・近接記号は矢印長を段違い。 3小問=3レコードで同一パターン。",
+   "pedagogy": "設計書§6(Fable・逐語): 数直線は、1目もりがいくつを表すかを先に読みます。大きい目もりが{major_disp}ずつ、小さい目もりが{minor_disp}ずつです。「{lb1}」の矢印は{n_from}から小さい目もり{k}こ分右にあるので、{ans}です。"
+  }
+ },
+ "g04_numline_big2_01": {
+  "brief": {
+   "semantic_territory": "数直線の読み取り(大きい数・記号2つ)",
+   "number_domain": "整数(兆・万系: 5兆〜5兆2000億/5億〜8億/0〜400億)",
+   "answer_structure": "single",
+   "figure": "number_line(system=int・label_fmt=big・base=万/億で「N兆N億N万」表示)。数値ラベル上側・矢印↑下側・近接記号は矢印長を段違い。",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "1kindで3系統(整数=万・億・兆/小数=0.1・0.01・0.001刻み/分数=0〜1をn等分)を受ける。読み取り型のみ配線し、作図型は答え=位置の数値列挙。記号と答えは転記保存、矢印の位置だけ合成(裁可n)。",
+     "by": "marko",
+     "date": "2026-09-06"
+    },
+    {
+     "text": "棚卸し追記: 破損3行(c01_003/c06_u02_001/c06_u02_006)=skip素材待ち。c06_u02_002=mode:compare(答=大きい順の記号列computed)。g05_014=draw型+答=大きい順の数列挙(分数・小数混在比較computed)。c01_005=(1)位置列挙・(2)読み取り。",
+     "by": "marko",
+     "date": "2026-09-06"
+    },
+    {
+     "text": "スモーク目視OK。差分2件承認(帰属規則=水平距離最近傍(側別)・比較行は数値ラベル両端のみ)。上下配置(数値ラベル上側・矢印下側)は現状維持。",
+     "by": "marko",
+     "date": "2026-09-06"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "c01_u02_007の2小問(兆系・万系)+005(2)(①②の位置=310億/280億)=矢印2本の数を答える。",
+   "representation": "big3と同型で記号2本。005(2)は転記順が②<①(降順)のためsg=-1で順序保存。①②は記号として図に描く。",
+   "constructive_guarantees": "関門49 number_line_vectors: 行台帳12図×seed100(目盛上乱択・記号順保存・隣接≥2小目盛)で目盛/矢印座標=値の線形写像を独立再計算(誤差0)・帰属・間隔・数値ラベル非重なり・等スケール・決定性、+(2b)生成器経由30本/パターンで答=矢印位置の表示(fmt_big/fmt_scaled)を照合。表示ヘルパはJS/Python両実装をhelpers_test_vectorsで1:1照合。",
+   "semantic_position": "big3の記号2本版。",
+   "exclusions": "作図型(005(1))は別パターン。",
+   "figure_notes": "number_line(system=int・label_fmt=big・base=万/億で「N兆N億N万」表示)。数値ラベル上側・矢印↑下側・近接記号は矢印長を段違い。 3レコード(007-1/007-2/005-2)。",
+   "pedagogy": "設計書§6(Fable・逐語): 数直線は、1目もりがいくつを表すかを先に読みます。大きい目もりが{major_disp}ずつ、小さい目もりが{minor_disp}ずつです。「{lb1}」の矢印は{n_from}から小さい目もり{k}こ分右にあるので、{ans}です。"
+  }
+ },
+ "g04_numline_dec3_01": {
+  "brief": {
+   "semantic_territory": "数直線の読み取り(小数・0.01/0.001刻み)",
+   "number_domain": "小数(2.8〜3.3/1.7〜2.1=0.01刻み・7.45〜7.5=0.001刻み・単位m/km)",
+   "answer_structure": "single",
+   "figure": "number_line(system=dec・label_fmt=dec1/dec2・記号の値は小目盛桁で表示)",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "1kindで3系統(整数=万・億・兆/小数=0.1・0.01・0.001刻み/分数=0〜1をn等分)を受ける。読み取り型のみ配線し、作図型は答え=位置の数値列挙。記号と答えは転記保存、矢印の位置だけ合成(裁可n)。",
+     "by": "marko",
+     "date": "2026-09-06"
+    },
+    {
+     "text": "棚卸し追記: 破損3行(c01_003/c06_u02_001/c06_u02_006)=skip素材待ち。c06_u02_002=mode:compare(答=大きい順の記号列computed)。g05_014=draw型+答=大きい順の数列挙(分数・小数混在比較computed)。c01_005=(1)位置列挙・(2)読み取り。",
+     "by": "marko",
+     "date": "2026-09-06"
+    },
+    {
+     "text": "スモーク目視OK。差分2件承認(帰属規則=水平距離最近傍(側別)・比較行は数値ラベル両端のみ)。上下配置(数値ラベル上側・矢印下側)は現状維持。",
+     "by": "marko",
+     "date": "2026-09-06"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "c06_u01_004/009/013=矢印ア〜ウの数を単位付きで答える(2.84m・7.459km等)。",
+   "representation": "位置k(小目盛index)を乱択し、答=fmt_scaled(min_units+k, exp)+単位のcomputed。範囲・刻み・単位は行レコード。",
+   "constructive_guarantees": "関門49 number_line_vectors: 行台帳12図×seed100(目盛上乱択・記号順保存・隣接≥2小目盛)で目盛/矢印座標=値の線形写像を独立再計算(誤差0)・帰属・間隔・数値ラベル非重なり・等スケール・決定性、+(2b)生成器経由30本/パターンで答=矢印位置の表示(fmt_big/fmt_scaled)を照合。表示ヘルパはJS/Python両実装をhelpers_test_vectorsで1:1照合。",
+   "semantic_position": "c06_u01(小数の表し方)の行レベル追補。",
+   "exclusions": "c06_u02_001/006(転記破損)=skip素材待ち。",
+   "figure_notes": "number_line dec: 大目盛10等分の小目盛。3レコード。",
+   "pedagogy": "設計書§6(Fable・逐語): 大きい目もりの間が10等分されているので、小さい目もり1つ分は{minor_disp}です。「{lb1}」は{n_from}から小さい目もり{k}こ分右にあるので、{ans}です。"
+  }
+ },
+ "g04_numline_hikaku_01": {
+  "brief": {
+   "semantic_territory": "数直線上の小数の大小比較(大きい順の記号列)",
+   "number_domain": "小数(1.4〜1.5・0.001刻み・記号3本)",
+   "answer_structure": "single",
+   "figure": "number_line(system=dec・0.01大目盛×10・数値ラベルは両端のみ)",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "1kindで3系統(整数=万・億・兆/小数=0.1・0.01・0.001刻み/分数=0〜1をn等分)を受ける。読み取り型のみ配線し、作図型は答え=位置の数値列挙。記号と答えは転記保存、矢印の位置だけ合成(裁可n)。",
+     "by": "marko",
+     "date": "2026-09-06"
+    },
+    {
+     "text": "棚卸し追記: 破損3行(c01_003/c06_u02_001/c06_u02_006)=skip素材待ち。c06_u02_002=mode:compare(答=大きい順の記号列computed)。g05_014=draw型+答=大きい順の数列挙(分数・小数混在比較computed)。c01_005=(1)位置列挙・(2)読み取り。",
+     "by": "marko",
+     "date": "2026-09-06"
+    },
+    {
+     "text": "スモーク目視OK。差分2件承認(帰属規則=水平距離最近傍(側別)・比較行は数値ラベル両端のみ)。上下配置(数値ラベル上側・矢印下側)は現状維持。",
+     "by": "marko",
+     "date": "2026-09-06"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "c06_u02_002=ア・イ・ウの数の大小(転記答「イ、ウ、ア」)。転記設問は答え漏れ(「イ、ウ、アの順に」)のため「ア、イ、ウの数を大きい順に書きなさい」に補正。",
+   "representation": "mode:compare(まるこ追記): 転記の左→右順ア<ウ<イを制約で保存し、答=order_desc(位置k, 記号)のcomputed=常に「イ、ウ、ア」。",
+   "constructive_guarantees": "関門49 number_line_vectors: 行台帳12図×seed100(目盛上乱択・記号順保存・隣接≥2小目盛)で目盛/矢印座標=値の線形写像を独立再計算(誤差0)・帰属・間隔・数値ラベル非重なり・等スケール・決定性、+(2b)生成器経由30本/パターンで答=矢印位置の表示(fmt_big/fmt_scaled)を照合。表示ヘルパはJS/Python両実装をhelpers_test_vectorsで1:1照合。 関門(2b)で大きい順=転記答を毎回照合。",
+   "semantic_position": "c06_u02(小数のしくみ)の行レベル追補。",
+   "exclusions": "値の読み取り自体は問わない(dec3が担う)。",
+   "figure_notes": "number_line dec(ends表示)。1レコード。",
+   "pedagogy": "設計書§6(Fable・逐語): 大きい目もりの間が10等分されているので、小さい目もり1つ分は{minor_disp}です。「{lb1}」は{n_from}から小さい目もり{k}こ分右にあるので、{ans}です。"
+  }
+ },
+ "g04_numline_kinyu_01": {
+  "brief": {
+   "semantic_territory": "数直線への位置の記入(作図型・答=位置列挙)",
+   "number_domain": "整数(0〜400億・10億刻み・ア/イの値を本文で与える)",
+   "answer_structure": "single",
+   "figure": "number_line(system=int・矢印なし=show_markers:false)",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "1kindで3系統(整数=万・億・兆/小数=0.1・0.01・0.001刻み/分数=0〜1をn等分)を受ける。読み取り型のみ配線し、作図型は答え=位置の数値列挙。記号と答えは転記保存、矢印の位置だけ合成(裁可n)。",
+     "by": "marko",
+     "date": "2026-09-06"
+    },
+    {
+     "text": "棚卸し追記: 破損3行(c01_003/c06_u02_001/c06_u02_006)=skip素材待ち。c06_u02_002=mode:compare(答=大きい順の記号列computed)。g05_014=draw型+答=大きい順の数列挙(分数・小数混在比較computed)。c01_005=(1)位置列挙・(2)読み取り。",
+     "by": "marko",
+     "date": "2026-09-06"
+    },
+    {
+     "text": "スモーク目視OK。差分2件承認(帰属規則=水平距離最近傍(側別)・比較行は数値ラベル両端のみ)。上下配置(数値ラベル上側・矢印下側)は現状維持。",
+     "by": "marko",
+     "date": "2026-09-06"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "c01_u02_005(1)=0・ア・イの位置を数直線に記入(作図型・答未転記)。",
+   "representation": "作図型は解答図機構が無い前提で、答=位置の数値列挙(u01_002の打点列挙前例)。ア・イの値を本文で与え、答は「0から小さい目もり何こ分右」の列挙=位置kそのもの。",
+   "constructive_guarantees": "関門49 number_line_vectors: 行台帳12図×seed100(目盛上乱択・記号順保存・隣接≥2小目盛)で目盛/矢印座標=値の線形写像を独立再計算(誤差0)・帰属・間隔・数値ラベル非重なり・等スケール・決定性、+(2b)生成器経由30本/パターンで答=矢印位置の表示(fmt_big/fmt_scaled)を照合。表示ヘルパはJS/Python両実装をhelpers_test_vectorsで1:1照合。 関門(2b)で本文の値=矢印位置・答の「こ分」=kを照合。",
+   "semantic_position": "c01_u02の行レベル追補(作図型の受け皿)。",
+   "exclusions": "矢印の描画(生徒の解答図)は域外。",
+   "figure_notes": "number_line int(矢印なし)。1レコード。",
+   "pedagogy": "設計書§6(Fable・逐語): 数直線は、1目もりがいくつを表すかを先に読みます。大きい目もりが{major_disp}ずつ、小さい目もりが{minor_disp}ずつです。「{lb1}」の矢印は{n_from}から小さい目もり{k}こ分右にあるので、{ans}です。"
   }
  }
 }

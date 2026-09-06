@@ -23,7 +23,8 @@ const IMPL = {
   sqrt_rad: P.sqrtRad, fmt_sqrt: P.fmtSqrt, sample_domain: P.sampleDomain,
   fmt_pi: P.fmtPi, fmt_pi_frac: P.fmtPiFrac, fmt_choice: P.fmtChoice,
   edge_rel: P.edgeRel, norm_edge_set: P.normEdgeSet, fmt_edge_set: P.fmtEdgeSet, norm_num_seq: P.normNumSeq,
-  dec2fix: P.fmtDec2fix
+  dec2fix: P.fmtDec2fix,
+  fmt_big: P.fmtBig, fmt_scaled: P.fmtScaled, order_desc: P.orderDesc
 };
 
 const vecPath = process.argv[2] || path.join(ROOT, 'pattern_bank', 'handoff_g05', 'helpers_test_vectors.json');

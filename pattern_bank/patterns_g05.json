@@ -93,6 +93,21 @@
    "西町",
    "南町",
    "北町"
+  ],
+  "numline_frac_rows": [
+   {
+    "id": "g05_c06_u03_014",
+    "q": "次の数を、下の数直線に↑で表し、大きいほうから順に数を書きなさい。",
+    "n1": "0.4",
+    "n2": "2と3/5",
+    "n3": "1.6",
+    "n4": "8/4",
+    "v1": 2,
+    "v2": 13,
+    "v3": 8,
+    "v4": 10,
+    "den": 5
+   }
   ]
  },
  "patterns": [
@@ -5804,6 +5819,108 @@
    "template_number_constants": [
     2
    ]
+  },
+  {
+   "pattern_id": "g05_numline_frac_kinyu_01",
+   "grade": "g05",
+   "unit_id": "g05_c06_u03",
+   "unit_name": "分数の性質",
+   "semantic_category": "分数・小数混在の数直線への記入と大小順(作図型)",
+   "semantic_note": "数直線便(裁可n)。行別レコード(numline_rows)に転記の範囲・刻み・記号を保存し、矢印の位置(小目盛index k)だけを乱択(記号の並び順=転記順・隣接≥2小目盛・第1記号は大目盛上を避けて解説の「こ分」が成立)。答=fmt_big/fmt_scaled(両エンジン共通ヘルパ)のcomputed・label採点(①のみ自動・他は教師採点主)。 g05_c06_u03_014=draw型(まるこ追記): 4数(小数・帯分数・仮分数)を1/5刻みの数直線に置き、答=大きい順の数列挙をorder_desc(小目盛index)でcomputed(転記答「2と3/5、8/4、1.6、0.4」再現)。anchor固定(数の表記が本文に実在=乱択なし)。",
+   "step_count": 1,
+   "operation": "数直線の読み取り",
+   "answer_formula": "od1_disp",
+   "slots": {
+    "j1": {
+     "choices": [
+      0
+     ],
+     "type": "choice_int"
+    },
+    "q1": {
+     "from": "numline_frac_rows[j1].q"
+    },
+    "den1": {
+     "from": "numline_frac_rows[j1].den"
+    },
+    "n1_disp": {
+     "from": "numline_frac_rows[j1].n1"
+    },
+    "v1": {
+     "from": "numline_frac_rows[j1].v1"
+    },
+    "n2_disp": {
+     "from": "numline_frac_rows[j1].n2"
+    },
+    "v2": {
+     "from": "numline_frac_rows[j1].v2"
+    },
+    "n3_disp": {
+     "from": "numline_frac_rows[j1].n3"
+    },
+    "v3": {
+     "from": "numline_frac_rows[j1].v3"
+    },
+    "n4_disp": {
+     "from": "numline_frac_rows[j1].n4"
+    },
+    "v4": {
+     "from": "numline_frac_rows[j1].v4"
+    }
+   },
+   "computed_slots": {
+    "od1_disp": {
+     "formula": "order_desc([v1, v2, v3, v4], [n1_disp, n2_disp, n3_disp, n4_disp])"
+    }
+   },
+   "value_constraints": [],
+   "sentence_templates": [
+    "{q1}（{n1_disp}、{n2_disp}、{n3_disp}、{n4_disp}）"
+   ],
+   "answer_template": "答え {od1_disp}",
+   "kaisetsu": "0と1の間が{den1}等分されているので、小さい目もり1つ分は1/{den1}です。「{n1_disp}」は0から{v1}こ分右にあるので、{v1}/{den1}です。",
+   "figure_params": {
+    "kind": "number_line",
+    "system": "frac",
+    "min": 0,
+    "max": 3,
+    "major": 1,
+    "minor": 0.2,
+    "label_fmt": "frac",
+    "den": "{den1}",
+    "show_values": "majors",
+    "show_markers": false,
+    "markers": [
+     {
+      "label": "{n1_disp}",
+      "k": "{v1}"
+     },
+     {
+      "label": "{n2_disp}",
+      "k": "{v2}"
+     },
+     {
+      "label": "{n3_disp}",
+      "k": "{v3}"
+     },
+     {
+      "label": "{n4_disp}",
+      "k": "{v4}"
+     }
+    ]
+   },
+   "kanji_policy": {
+    "allowed_grades": [
+     "g01",
+     "g02",
+     "g03",
+     "g04",
+     "g05"
+    ]
+   },
+   "answer_structure": "single",
+   "template_number_constants": [],
+   "answer_domain": "label"
   }
  ],
  "schema_changelog": {

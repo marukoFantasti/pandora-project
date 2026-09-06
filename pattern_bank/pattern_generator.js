@@ -131,6 +131,23 @@
 
   // 帯分数表記（generate_poc_v08.py fmt_mixed と同一）。num==0→"0"、割り切れ→整数、
   // whole==0→真分数、他→"aとb/c"（g03分数表記と一貫）。
+  // 数直線便(裁可n): 表示ヘルパ3種(Python SAFE と1:1・helpers_test_vectors で照合)
+  function fmtBig(v, base) {   // v×base の絶対値を「N兆N億N万N」に分解(0→'0')。数直線の大きい数ラベル・答え表示
+    var abs = Math.round(Math.trunc(v) * Math.trunc(base)); if (abs === 0) return '0';
+    var cho = Math.floor(abs / 1e12), oku = Math.floor(abs % 1e12 / 1e8), man = Math.floor(abs % 1e8 / 1e4), rest = abs % 1e4, out = '';
+    if (cho) out += cho + '兆'; if (oku) out += oku + '億'; if (man) out += man + '万'; if (rest) out += rest;
+    return out;
+  }
+  function fmtScaled(v, exp) {   // 整数v×10^exp(exp≦0)を小数第(-exp)位まで固定表示(284,-2→'2.84'・30,-1→'3.0'・7,0→'7')
+    v = Math.trunc(v); exp = Math.trunc(exp); if (exp >= 0) return '' + v;
+    var d = -exp, s = ('' + Math.abs(v)); while (s.length < d + 1) s = '0' + s;
+    return (v < 0 ? '-' : '') + s.slice(0, s.length - d) + '.' + s.slice(s.length - d);
+  }
+  function orderDesc(vals, labels) {   // 値の大きい順にラベルを「、」連結(同値は元順=安定)
+    var idx = vals.map(function (_, i) { return i; });
+    idx.sort(function (a, b) { return (vals[b] - vals[a]) || (a - b); });
+    return idx.map(function (i) { return labels[i]; }).join('、');
+  }
   function fmtMixed(num, den) {
     num = Math.trunc(num); den = Math.trunc(den);
     if (num === 0) return '0';
@@ -462,11 +479,11 @@
     // 許可関数を増やすだけ（abs/max/min と同格）。既存バンクは未参照＝非干渉。
     var fn = new Function('abs', 'max', 'min', 'pymod', 'round_half_up', 'round_range_lower', 'round_range_upper_excl',
       'gcd', 'lcm', 'reduce_num', 'reduce_den',
-      'fmt_signed', 'fmt_coef', 'fmt_coefj', 'fmt_termj', 'sgn_str', 'sqrt_coef', 'sqrt_rad', 'fmt_sqrt', 'fmt_pi', 'fmt_pi_frac', 'fmt_choice', 'edge_rel', 'norm_edge_set', 'fmt_edge_set', 'dec2fix', 'fmt_mixed', 'fmt_fraction',
+      'fmt_signed', 'fmt_coef', 'fmt_coefj', 'fmt_termj', 'sgn_str', 'sqrt_coef', 'sqrt_rad', 'fmt_sqrt', 'fmt_pi', 'fmt_pi_frac', 'fmt_choice', 'edge_rel', 'norm_edge_set', 'fmt_edge_set', 'dec2fix', 'fmt_mixed', 'fmt_fraction', 'fmt_big', 'fmt_scaled', 'order_desc',
       keys.join(','), 'return (' + jsExpr + ');');
     return fn.apply(null, [Math.abs, Math.max, Math.min, pymod, roundHalfUp, roundRangeLower, roundRangeUpperExcl,
       gcdInt, lcmInt, reduceNum, reduceDen,
-      fmtSigned, fmtCoef, fmtCoefj, fmtTermj, sgnStr, sqrtCoef, sqrtRad, fmtSqrt, fmtPi, fmtPiFrac, fmtChoice, edgeRel, normEdgeSet, fmtEdgeSet, fmtDec2fix, fmtMixed, fmtFraction].concat(vals));   // e-9 backfill(裁可b): fmt_mixed/fmt_fraction を computed から参照可
+      fmtSigned, fmtCoef, fmtCoefj, fmtTermj, sgnStr, sqrtCoef, sqrtRad, fmtSqrt, fmtPi, fmtPiFrac, fmtChoice, edgeRel, normEdgeSet, fmtEdgeSet, fmtDec2fix, fmtMixed, fmtFraction, fmtBig, fmtScaled, orderDesc].concat(vals));   // e-9 backfill(裁可b): fmt_mixed/fmt_fraction を computed から参照可
   }
 
   // ---- スロット解決 ----
@@ -960,7 +977,7 @@
     fmtChoice: fmtChoice,
     edgeRel: edgeRel, normEdgeSet: normEdgeSet, fmtEdgeSet: fmtEdgeSet, cuboidEdgeRelation: cuboidEdgeRelation,
     normNumSeq: normNumSeq,
-    fmtDec2fix: fmtDec2fix,
+    fmtDec2fix: fmtDec2fix, fmtBig: fmtBig, fmtScaled: fmtScaled, orderDesc: orderDesc,
     sampleDomain: sampleDomain,
     resolveFigureParams: resolveFigureParams,
     allowedKanji: allowedKanji,

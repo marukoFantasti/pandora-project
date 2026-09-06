@@ -430,6 +430,36 @@ def fmt_fraction(num, den):
 
 SAFE.update({"fmt_fraction": fmt_fraction})   # e-9 backfill(裁可b): JS evalExpr と1:1
 
+
+# 数直線便(裁可n): 表示ヘルパ3種(JS fmtBig/fmtScaled/orderDesc と1:1・helpers_test_vectors で照合)
+def fmt_big(v, base):
+    """v×base の絶対値を「N兆N億N万N」に分解(0→'0')。数直線の大きい数ラベル・答え表示。"""
+    a = int(v) * int(base)
+    if a == 0:
+        return "0"
+    cho, r = divmod(a, 10**12)
+    oku, r = divmod(r, 10**8)
+    man, rest = divmod(r, 10**4)
+    out = ""
+    if cho: out += f"{cho}兆"
+    if oku: out += f"{oku}億"
+    if man: out += f"{man}万"
+    if rest: out += str(rest)
+    return out
+def fmt_scaled(v, exp):
+    """整数v×10^exp(exp≦0)を小数第(-exp)位まで固定表示(284,-2→'2.84'・30,-1→'3.0'・7,0→'7')。"""
+    v, exp = int(v), int(exp)
+    if exp >= 0:
+        return str(v)
+    d = -exp
+    s = str(abs(v)).rjust(d + 1, "0")
+    return ("-" if v < 0 else "") + s[:-d] + "." + s[-d:]
+def order_desc(vals, labels):
+    """値の大きい順にラベルを「、」連結(同値は元順=安定)。"""
+    idx = sorted(range(len(vals)), key=lambda i: (-vals[i], i))
+    return "、".join(labels[i] for i in idx)
+SAFE.update({"fmt_big": fmt_big, "fmt_scaled": fmt_scaled, "order_desc": order_desc})
+
 def kanji_check(t, allowed):
     return [c for c in t if '\u4e00' <= c <= '\u9fff' and c not in allowed]
 
@@ -730,7 +760,7 @@ def _run_vectors(path):
             "sqrt_rad": sqrt_rad, "fmt_sqrt": fmt_sqrt, "sample_domain": sample_domain,
             "fmt_pi": fmt_pi, "fmt_pi_frac": fmt_pi_frac, "fmt_choice": fmt_choice,
             "edge_rel": edge_rel, "norm_edge_set": norm_edge_set, "fmt_edge_set": fmt_edge_set, "norm_num_seq": norm_num_seq,
-            "dec2fix": fmt_dec2fix}
+            "dec2fix": fmt_dec2fix, "fmt_big": fmt_big, "fmt_scaled": fmt_scaled, "order_desc": order_desc}
     bad = total = covered = 0
     skipped = []
     for name, cases in vec.items():

@@ -42,6 +42,34 @@ LED.rows.forEach(r => {
   }
 });
 console.log('  ' + cases + '構成 ' + (bad === 0 ? '✅' : '❌'));
+console.log('=== (2b) バンク配線(g04 5パターン+g05 1): 生成器経由の図が関門条件を満たし、答=矢印位置の表示(fmt_big/fmt_scaled)・比較行は大きい順 ===');
+(function () {
+  const P = require(path.join(__dirname, '..', 'pattern_bank', 'pattern_generator.js'));
+  const fmt = (v, fp) => FB._geom.nl_fmt(v, fp, true);
+  for (const [g, ids] of [['g04', ['g04_numline_big3_01', 'g04_numline_big2_01', 'g04_numline_dec3_01', 'g04_numline_hikaku_01', 'g04_numline_kinyu_01']], ['g05', ['g05_numline_frac_kinyu_01']]]) {
+    const bank = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'pattern_bank', 'patterns_' + g + '.json'), 'utf-8'));
+    for (const id of ids) {
+      const p = bank.patterns.find(x => x.pattern_id === id); if (!p) { bad++; console.log('  ❌ パターン不在 ' + id); continue; }
+      for (let s = 0; s < 30; s++) {
+        cases++; let r; try { r = P.makeProblem(p, null, bank.shared_lexicon); } catch (e) { bad++; if (fails++ < 3) console.log('  ❌ 生成失敗 ' + id + ' ' + e.message.slice(0, 80)); continue; }
+        const a = check(id, r.figure, s); if (!a) continue;
+        const mk = a.markers, ans = String(r.answer);
+        if (id === 'g04_numline_hikaku_01' || id === 'g05_numline_frac_kinyu_01') {
+          const o = mk.slice().sort((x, y) => y.value - x.value).map(m => m.label).join('、');
+          if (ans !== '答え ' + o) { bad++; if (fails++ < 3) console.log('  ❌ 大きい順≠答 ' + id + ' ' + ans + ' vs ' + o); }
+          if (id === 'g04_numline_hikaku_01' && o !== 'イ、ウ、ア') { bad++; console.log('  ❌ 転記順不保存 ' + id + ' ' + o); }
+        } else if (id === 'g04_numline_kinyu_01') {
+          mk.forEach(m => { if (ans.indexOf('目もり' + m.k + 'こ分') < 0) { bad++; if (fails++ < 3) console.log('  ❌ 位置列挙≠k ' + id + ' ' + ans); } });
+          mk.forEach(m => { if (r.problem.indexOf(m.label + '…' + fmt(m.value, r.figure)) < 0) { bad++; if (fails++ < 3) console.log('  ❌ 本文の値≠矢印 ' + id + ' ' + r.problem); } });
+        } else {
+          mk.forEach(m => { if (ans.indexOf(m.label + '…' + fmt(m.value, r.figure)) < 0) { bad++; if (fails++ < 3) console.log('  ❌ 答≠表示 ' + id + ' ' + ans + ' / ' + m.label + '=' + fmt(m.value, r.figure)); } });
+        }
+        if (r.kaisetsu.indexOf('{') >= 0) { bad++; console.log('  ❌ 解説未解決 ' + id); }
+      }
+    }
+  }
+  console.log('  ' + (bad === 0 ? '✅' : '❌'));
+})();
 console.log('=== (3) 契約: 範囲外marker・目盛上にないmarker・刻み不整合は例外 ===');
 [{ min: 0, max: 10, major: 5, minor: 1, markers: [{ label: 'ア', value: 11 }] }, { min: 0, max: 10, major: 5, minor: 1, markers: [{ label: 'ア', value: 2.5 }] }, { min: 0, max: 10, major: 5, minor: 3, markers: [] }].forEach(fp => { cases++; let threw = false; try { FB.build(Object.assign({ kind: 'number_line', system: 'int' }, fp)); } catch (e) { threw = true; } if (!threw) { bad++; console.log('  ❌ 契約違反が通過 ' + JSON.stringify(fp)); } });
 console.log('  ' + (bad === 0 ? '✅' : '❌'));

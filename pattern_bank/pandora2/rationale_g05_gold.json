@@ -1,7 +1,7 @@
 {
  "_meta": {
   "schema": "rationale_g05_gold.json準拠",
-  "scope": "g05全70パターン完全版(ゴールド8+遡及62・統一遡及③ g05完了 2026-08-12)",
+  "scope": "g05全70パターン完全版(ゴールド8+遡及62・統一遡及③ g05完了 2026-08-12) +数直線便1(number_line frac g05_c06_u03_014 2026-09-06)",
   "note": "figure_notes正準=ゴールド流儀(図あり=図設計記録・図なし=理由文字列・null不使用)。ゴールド側null 5件も本裁可で統一(2026-08-12まるこ裁可)。",
   "order": "バンク順"
  },
@@ -1713,6 +1713,41 @@
    "exclusions": "非割り切れ・域外・転記。",
    "figure_notes": "図なし(同上)。",
    "pedagogy": []
+  }
+ },
+ "g05_numline_frac_kinyu_01": {
+  "brief": {
+   "semantic_territory": "分数・小数混在の数直線への記入と大小順(作図型)",
+   "number_domain": "分数・小数(0.4/2と3/5/1.6/8/4=1/5刻みの0〜3・anchor固定)",
+   "answer_structure": "single",
+   "figure": "number_line(system=frac・den=5・矢印なし)",
+   "step_count": 1,
+   "directives": [
+    {
+     "text": "1kindで3系統(整数=万・億・兆/小数=0.1・0.01・0.001刻み/分数=0〜1をn等分)を受ける。読み取り型のみ配線し、作図型は答え=位置の数値列挙。記号と答えは転記保存、矢印の位置だけ合成(裁可n)。",
+     "by": "marko",
+     "date": "2026-09-06"
+    },
+    {
+     "text": "棚卸し追記: 破損3行(c01_003/c06_u02_001/c06_u02_006)=skip素材待ち。c06_u02_002=mode:compare(答=大きい順の記号列computed)。g05_014=draw型+答=大きい順の数列挙(分数・小数混在比較computed)。c01_005=(1)位置列挙・(2)読み取り。",
+     "by": "marko",
+     "date": "2026-09-06"
+    },
+    {
+     "text": "スモーク目視OK。差分2件承認(帰属規則=水平距離最近傍(側別)・比較行は数値ラベル両端のみ)。上下配置(数値ラベル上側・矢印下側)は現状維持。",
+     "by": "marko",
+     "date": "2026-09-06"
+    }
+   ]
+  },
+  "rationale": {
+   "source_features": "g05_c06_u03_014=4数を数直線に表し大きい順に書く(転記答=True=未転記、大きい順「2と3/5、8/4、1.6、0.4」は本文から確定)。",
+   "representation": "draw型(まるこ追記): 4数の位置(小目盛index)を行レコードに持ち、答=order_desc(位置, 数の表記)のcomputed。数の表記が本文に実在するためanchor固定(乱択なし)。",
+   "constructive_guarantees": "関門49 number_line_vectors: 行台帳12図×seed100(目盛上乱択・記号順保存・隣接≥2小目盛)で目盛/矢印座標=値の線形写像を独立再計算(誤差0)・帰属・間隔・数値ラベル非重なり・等スケール・決定性、+(2b)生成器経由30本/パターンで答=矢印位置の表示(fmt_big/fmt_scaled)を照合。表示ヘルパはJS/Python両実装をhelpers_test_vectorsで1:1照合。",
+   "semantic_position": "g05_c06_u03(分数の性質)+1行=単元被覆+1。",
+   "exclusions": "位置の乱択(数の表記再生成が必要)。",
+   "figure_notes": "number_line frac(0〜3・大目盛整数・小目盛1/5)。1レコード。",
+   "pedagogy": "設計書§6(Fable・逐語): 0と1の間が{den}等分されているので、小さい目もり1つ分は1/{den}です。「{lb1}」は0から{k}こ分右にあるので、{k}/{den}です。"
   }
  }
 }

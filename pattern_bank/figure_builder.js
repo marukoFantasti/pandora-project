@@ -2084,7 +2084,8 @@
     if (Math.abs((max - min) / minor - nMinor) > 1e-6 || Math.abs(major / minor - Math.round(major / minor)) > 1e-6) throw new Error('number_line: 刻みが範囲/大目盛を割り切らない(契約違反)');
     var ticks = [];
     for (var i = 0; i <= nMinor; i++) { var v = min + i * minor, isMaj = Math.abs((v - min) / major - Math.round((v - min) / major)) < 1e-6; ticks.push({ v: v, x: (v - min) / (max - min) * NL_W, major: isMaj }); }
-    var markers = (fp.markers || []).map(function (m) { var v = Number(m.value); if (v < min - eps || v > max + eps) throw new Error('number_line: markerが範囲外 ' + m.label); var k = (v - min) / minor; if (Math.abs(k - Math.round(k)) > 1e-6) throw new Error('number_line: markerが目盛上にない ' + m.label); return { label: String(m.label), value: v, x: (v - min) / (max - min) * NL_W, k: Math.round(k) }; });
+    // marker位置: k=小目盛index(バンク配線: 整数スロットで位置を持つ)・value=実数(直接指定)。どちらも同じ線形写像で座標化
+    var markers = (fp.markers || []).map(function (m) { var v = (m.value === undefined || m.value === null || m.value === '') ? min + Number(m.k) * minor : Number(m.value); if (v < min - eps || v > max + eps) throw new Error('number_line: markerが範囲外 ' + m.label); var k = (v - min) / minor; if (Math.abs(k - Math.round(k)) > 1e-6) throw new Error('number_line: markerが目盛上にない ' + m.label); return { label: String(m.label), value: v, x: (v - min) / (max - min) * NL_W, k: Math.round(k) }; });
     return { min: min, max: max, major: major, minor: minor, ticks: ticks, markers: markers, nMinor: nMinor };
   }
   function numberLineLayout(fp) {
