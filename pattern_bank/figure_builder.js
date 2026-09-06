@@ -2059,7 +2059,7 @@
     lay._geom = G;
     return lay;
   }
-  // ---- graph_choice便 Kind: graph_choice(裁可q): 4面のミニグラフ(2×2)から「変わり方を表すグラフ」を選ぶ。正答記号=転記保存・題材は2群(時間軸=折れ線/種類別=棒)からseedで決定的割当。
+  // ---- graph_choice便 Kind: graph_choice(裁可q・自己差し戻し反映): 4面のミニグラフ(2×2・全面折れ線)から「変わり方を表すグラフ」を選ぶ。正答記号=転記保存・題材は2群(時間軸/種類別)からseedで決定的割当。判別は横軸が時間か種類かのみ。
   // 題材・軸ラベル・単位は全てfp(バンクlexicon)由来=日本語ハードコードなし。系列値は題材のrange内で乱択(読み取りは問わない)。
   var GC_PW = 128, GC_PH = 78, GC_GX = 34, GC_GY = 52;
   function graphChoiceGeom(fp) {
@@ -2073,10 +2073,10 @@
     labels.forEach(function (lb, i) {
       var isAns = ans.indexOf(lb) >= 0, t = isAns ? tt[ti[a++]] : kt[ki[b++]], n = t.x_labels.length, lo = Number(t.range[0]), hi = Number(t.range[1]), ys = [];
       for (var p = 0; p < n; p++) ys.push(lo + Math.floor(rnd() * (hi - lo + 1)));
-      if (isAns) { for (var q = 1; q < n; q++) if (ys[q] === ys[q - 1]) ys[q] = Math.min(hi, ys[q] + 1); }   // 折れ線は隣接同値を避ける(変わり方が見える)
-      if (isAns && t.trend === 'up') { ys.sort(function (x, y) { return x - y; }); for (var q2 = 1; q2 < n; q2++) if (ys[q2] <= ys[q2 - 1]) ys[q2] = Math.min(hi, ys[q2 - 1] + 1); }   // 題材が単調増加(身長など)なら昇順(バンクlexiconのtrend由来)
+      for (var q = 1; q < n; q++) if (ys[q] === ys[q - 1]) ys[q] = Math.min(hi, ys[q] + 1);   // 折れ線は隣接同値を避ける(全面折れ線)
+      if (t.trend === 'up') { ys.sort(function (x, y) { return x - y; }); for (var q2 = 1; q2 < n; q2++) if (ys[q2] <= ys[q2 - 1]) ys[q2] = Math.min(hi, ys[q2 - 1] + 1); }   // 題材が単調増加(身長など)なら昇順(バンクlexiconのtrend由来)
       var col = i % 2, row = Math.floor(i / 2), ox = col * (GC_PW + GC_GX), oy = row * (GC_PH + GC_GY);
-      panels.push({ label: lb, kind: isAns ? 'line' : 'bar', topic: t, topic_idx: isAns ? ti[a - 1] : ki[b - 1], ys: ys, ox: ox, oy: oy, ymax: Math.max(hi, 1) });
+      panels.push({ label: lb, kind: 'line', group: isAns ? 'time' : 'kind', topic: t, topic_idx: isAns ? ti[a - 1] : ki[b - 1], ys: ys, ox: ox, oy: oy, ymax: Math.max(hi, 1) });   // 全面line固定(自己差し戻し: 棒での描き分け廃止・判別は横軸が時間か種類かのみ)
     });
     return { labels: labels, answer: ans.slice(), panels: panels };
   }
@@ -2090,13 +2090,9 @@
       lay.parts.push(lineEl([ox, oy - 4], [ox, oy + H], C_STROKE, 1.3)); lay.parts.push(lineEl([ox, oy + H], [ox + W + 4, oy + H], C_STROKE, 1.3));
       lay.parts.push(lineEl([ox, Y(pn.ymax)], [ox + W, Y(pn.ymax)], '#e3e9f2', 0.8));
       lay.parts.push(textEl(ox - 9, Y(pn.ymax), String(pn.ymax), 8, '#333')); lay.parts.push(textEl(ox - 6, oy + H, '0', 8, '#333'));
-      if (pn.kind === 'line') {
-        var pts = pn.ys.map(function (v, k) { return [X(k), Y(v)]; });
-        lay.parts.push('<polyline points="' + pts.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ') + '" fill="none" stroke="' + C_TARGET + '" stroke-width="1.8"/>');
-        pts.forEach(function (p) { lay.parts.push('<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="2.2" fill="' + C_TARGET + '"/>'); });
-      } else {
-        pn.ys.forEach(function (v, k) { var bw = W / n * 0.55; lay.parts.push('<rect x="' + (X(k) - bw / 2).toFixed(2) + '" y="' + Y(v).toFixed(2) + '" width="' + bw.toFixed(2) + '" height="' + (oy + H - Y(v)).toFixed(2) + '" fill="' + CC_SHADE + '" stroke="' + C_STROKE + '" stroke-width="1"/>'); });
-      }
+      var pts = pn.ys.map(function (v, k) { return [X(k), Y(v)]; });   // 4面とも点をつないだ折れ線(種類別の題材も同じ描き方)
+      lay.parts.push('<polyline points="' + pts.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ') + '" fill="none" stroke="' + C_TARGET + '" stroke-width="1.8"/>');
+      pts.forEach(function (p) { lay.parts.push('<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="2.2" fill="' + C_TARGET + '"/>'); });
       var xfs = Math.max(6, Math.min(fs, Math.floor((W / n) / (Math.max.apply(null, t.x_labels.map(function (x) { return String(x).length; })) * 0.62))));
       t.x_labels.forEach(function (x, k) { lay.parts.push(textEl(X(k), oy + H + 9, String(x), xfs, '#333')); });
       if (t.y_unit) lay.parts.push(textEl(ox + 2, oy - 12, String(t.y_unit), 8, '#333'));
@@ -3133,12 +3129,12 @@
   // e-2: line_setの監査(角度差/包含/交点/ラベル帰属を描画と同じ導出で独立再計算)
   FigureBuilder._lsStats = function (on) { LS_STATS = on ? {} : null; return LS_STATS; };
   FigureBuilder._graphChoiceAudit = function (fp) {   // graph_choice 関門用: 割当(正答面=line/時間軸群・他=bar/種類別群・題材重複なし)・記号帰属(最近傍パネル)・パネル非重なり・答え集合の再導出
-    var g = graphChoiceGeom(fp), lay = graphChoiceLayout(fp), out = { panels: g.panels.map(function (p) { return { label: p.label, kind: p.kind, topic_idx: p.topic_idx, title: p.topic.title, ox: p.ox, oy: p.oy }; }), issues: [], labels: [] };
-    var seenT = {}, seenK = {};
-    g.panels.forEach(function (p) { var isAns = g.answer.indexOf(p.label) >= 0; if ((p.kind === 'line') !== isAns) out.issues.push('kind_mismatch:' + p.label); var key = (p.kind === 'line' ? 'T' : 'K') + p.topic_idx; if (p.kind === 'line' ? seenT[key] : seenK[key]) out.issues.push('dup_topic:' + p.label); (p.kind === 'line' ? seenT : seenK)[key] = 1; });
+    var g = graphChoiceGeom(fp), lay = graphChoiceLayout(fp), out = { panels: g.panels.map(function (p) { return { label: p.label, kind: p.kind, group: p.group, topic_idx: p.topic_idx, title: p.topic.title, ox: p.ox, oy: p.oy }; }), issues: [], labels: [] };
+    var seen = {};
+    g.panels.forEach(function (p) { var isAns = g.answer.indexOf(p.label) >= 0; if (p.kind !== 'line') out.issues.push('not_line:' + p.label); if ((p.group === 'time') !== isAns) out.issues.push('group_mismatch:' + p.label); var key = p.group + p.topic_idx; if (seen[key]) out.issues.push('dup_topic:' + p.label); seen[key] = 1; });
     for (var i = 0; i < g.panels.length; i++) for (var j = i + 1; j < g.panels.length; j++) { var a = g.panels[i], b = g.panels[j]; if (!(a.ox + GC_PW <= b.ox || b.ox + GC_PW <= a.ox || a.oy + GC_PH <= b.oy || b.oy + GC_PH <= a.oy)) out.issues.push('panel_overlap'); }
     lay.labels.forEach(function (lb) { var best = null, bd = 1e9; lay.segs.forEach(function (sg) { var dd = boxSeg(lb.box, sg.p1, sg.p2); if (dd < bd) { bd = dd; best = sg.id; } }); out.labels.push({ own: lb.own, nearest: best, ok: best === lb.own, text: lb.text }); });
-    out.derived_answer = g.panels.filter(function (p) { return p.kind === 'line'; }).map(function (p) { return p.label; });
+    out.derived_answer = g.panels.filter(function (p) { return p.group === 'time'; }).map(function (p) { return p.label; });   // 正答=横軸が時間の面
     return out;
   };
   FigureBuilder._xyComboAudit = function (fp) {   // line_bar_combo 関門用: 右軸刻み/範囲・折れ線点/棒矩形(px)・極値(index)を返す(関門は出力SVGから独立再計算)

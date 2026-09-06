@@ -1,5 +1,5 @@
-// graph_choice_vectors.js — graph_choice便(裁可q) Kind: graph_choice の関門(設計書§3)。行台帳2行×seed1..100: 割当(正答面=折れ線/時間軸群・非正答面=棒/種類別群・題材重複なし)・
-// 記号帰属(最近傍パネル)・パネル非重なり・等スケール・決定性・答え集合の再導出=転記(edge_set正規形)。出力SVGからも折れ線/棒の面数を独立に数えて割当と照合。(2b)バンク配線(あれば)。
+// graph_choice_vectors.js — graph_choice便(裁可q) Kind: graph_choice の関門(設計書§3)。行台帳2行×seed1..100: 割当(4面とも折れ線・正答面=時間軸群・非正答面=種類別群・題材重複なし)・
+// 記号帰属(最近傍パネル)・パネル非重なり・等スケール・決定性・答え集合の再導出=転記(edge_set正規形)。出力SVGからも折れ線4面(棒なし)を独立に照合。(2b)バンク配線(あれば)。
 'use strict';
 require('./_seeded').install();   // 台帳原則: 関門内の乱択はseed付き(corr-0042)
 const fs = require('fs'), path = require('path');
@@ -13,12 +13,10 @@ function check(row, fp, wantAns) {
   a.labels.forEach(l => { if (!l.ok) { bad++; if (fails++ < 3) console.log('  ❌ 帰属 ' + row + ' ' + l.text + '→' + l.nearest); } });
   const derived = P.normEdgeSet(a.derived_answer.join(',')), want = P.normEdgeSet(wantAns.join(','));
   if (derived !== want) { bad++; if (fails++ < 3) console.log('  ❌ 答え集合 ' + row + ' ' + derived + ' vs ' + want); }
-  const nLine = (svg.match(/<polyline /g) || []).length, nBarPanels = a.panels.filter(p => p.kind === 'bar').length, nBars = (svg.match(/<rect x="[-\d.]+" y="[-\d.]+" width="[-\d.]+" height="[-\d.]+" fill="#cfe0fb"/g) || []).length;
-  if (nLine !== wantAns.length) { bad++; if (fails++ < 3) console.log('  ❌ 折れ線面数 ' + row + ' ' + nLine); }
-  const wantBars = a.panels.filter(p => p.kind === 'bar').reduce((s, p) => s + fp.kind_topics[p.topic_idx].x_labels.length, 0);
-  if (nBars !== wantBars || nBarPanels !== 4 - wantAns.length) { bad++; if (fails++ < 3) console.log('  ❌ 棒面数 ' + row + ' ' + nBars + '/' + nBarPanels); }
-  // 時間軸群の題材は正答面にだけ・種類別群は非正答面にだけ(fp側の群定義から独立に照合)
-  a.panels.forEach(p => { const inAns = wantAns.indexOf(p.label) >= 0, t = inAns ? fp.time_topics[p.topic_idx] : fp.kind_topics[p.topic_idx]; if (!t || t.title !== p.title) { bad++; if (fails++ < 3) console.log('  ❌ 題材群 ' + row + ' ' + p.label + ' ' + p.title); } });
+  // 自己差し戻し反映: 4面とも折れ線(SVGのpolyline=4・棒rectなし)・正答面=時間軸群の題材・非正答面=種類別群の題材(fp側の群定義から独立に照合)
+  const nLine = (svg.match(/<polyline /g) || []).length, nBars = (svg.match(/<rect x="[-\d.]+" y="[-\d.]+" width="[-\d.]+" height="[-\d.]+" fill="#cfe0fb"/g) || []).length;
+  if (nLine !== 4 || nBars !== 0) { bad++; if (fails++ < 3) console.log('  ❌ 4面折れ線 ' + row + ' polyline=' + nLine + ' bars=' + nBars); }
+  a.panels.forEach(p => { const inAns = wantAns.indexOf(p.label) >= 0, t = inAns ? fp.time_topics[p.topic_idx] : fp.kind_topics[p.topic_idx]; if (!t || t.title !== p.title || p.kind !== 'line') { bad++; if (fails++ < 3) console.log('  ❌ 題材群 ' + row + ' ' + p.label + ' ' + p.title); } });
   if (svg !== FB.build(fp)) { bad++; console.log('  ❌ 非決定 ' + row); }
   const vb = svg.match(/viewBox="([-\d.]+) ([-\d.]+) ([-\d.]+) ([-\d.]+)"/), wh = svg.match(/width="([-\d.]+)" height="([-\d.]+)"/);
   if (!vb || !wh || Math.abs(Number(vb[3]) / Number(vb[4]) - Number(wh[1]) / Number(wh[2])) > 0.02) { bad++; if (fails++ < 3) console.log('  ❌ 等スケール ' + row); }
@@ -29,7 +27,7 @@ LED.rows.forEach(r => { for (let s = 1; s <= 100; s++) check(r.row + ' seed' + s
 console.log('  ' + cases + '構成 ' + (bad === 0 ? '✅' : '❌'));
 console.log('=== (1b) 単調題材(trend=up)は昇順 ===');
 (function () { for (let s = 1; s <= 100; s++) { const fp = { kind: 'graph_choice', labels: ['ア', 'イ', 'ウ', 'エ'], answer: ['ア', 'ウ', 'エ'], time_topics: LED.time_topics, kind_topics: LED.kind_topics, seed: s }; const g = FB._geom.graph_choice(fp); cases++;
-  g.panels.forEach(p => { if (p.kind === 'line' && p.topic.trend === 'up') for (let i = 1; i < p.ys.length; i++) if (p.ys[i] <= p.ys[i - 1]) { bad++; if (fails++ < 3) console.log('  ❌ 非昇順 seed' + s + ' ' + p.topic.title + ' ' + p.ys); break; } }); }
+  g.panels.forEach(p => { if (p.topic.trend === 'up') for (let i = 1; i < p.ys.length; i++) if (p.ys[i] <= p.ys[i - 1]) { bad++; if (fails++ < 3) console.log('  ❌ 非昇順 seed' + s + ' ' + p.topic.title + ' ' + p.ys); break; } }); }
   console.log('  ' + (bad === 0 ? '✅' : '❌')); })();
 console.log('=== (2b) バンク配線(g04 graph_choice): 生成器経由(seed決定化)で答=転記記号集合 ===');
 (function () {
