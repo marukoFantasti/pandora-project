@@ -60,6 +60,26 @@ console.log('=== (2b) バンク配線(g04 line_bar): 生成器経由(seed決定�
   }
   console.log('  ' + (bad === 0 ? '✅' : '❌'));
 })();
+console.log('=== (2c) x軸ラベルの非重なり(polyline/combo共通・全バンクのxy_graph+行台帳): 隣接ラベルの推定幅(文字数×font-size×0.62)が重ならない ===');
+(function () {
+  function xlabelsOk(svg, row) {
+    const H = 190; const els = [...svg.matchAll(/<text x="([-\d.]+)" y="([-\d.]+)" text-anchor="middle" font-size="([\d.]+)"[^>]*>([^<]*)<\/text>/g)]
+      .map(m => ({ x: Number(m[1]), y: Number(m[2]), fs: Number(m[3]), t: m[4] })).filter(e => Math.abs(e.y - (H + 12 + e.fs * 0.34)) < 0.6);
+    els.sort((a, b) => a.x - b.x);
+    for (let i = 1; i < els.length; i++) { const a = els[i - 1], b = els[i], wa = a.t.length * a.fs * 0.62, wb = b.t.length * b.fs * 0.62; if (a.x + wa / 2 > b.x - wb / 2 + 0.5) { bad++; if (fails++ < 5) console.log('  ❌ x軸ラベル重なり ' + row + ' ' + a.t + '/' + b.t + ' gap=' + ((b.x - wb / 2) - (a.x + wa / 2)).toFixed(1)); return false; } }
+    return true;
+  }
+  let n = 0;
+  LED.rows.forEach(r => { cases++; n++; xlabelsOk(FB.build(r.fp), r.row); });
+  const P = require(path.join(__dirname, '..', 'pattern_bank', 'pattern_generator.js'));
+  for (const f of fs.readdirSync(path.join(__dirname, '..', 'pattern_bank')).filter(f => /^patterns_(g\d\d|jhs_c\d\d)\.json$/.test(f))) {
+    const bank = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'pattern_bank', f), 'utf-8'));
+    for (const p of bank.patterns) { const fp = p.figure_params; if (!fp || typeof fp !== 'object' || fp.kind !== 'xy_graph' || !(fp.mode === 'polyline' || fp.mode === 'combo')) continue;
+      cases++; n++; let r; try { r = P.makeProblem(p, null, bank.shared_lexicon); } catch (e) { bad++; console.log('  ❌ 生成失敗 ' + p.pattern_id); continue; }
+      xlabelsOk(FB.build(r.figure), p.pattern_id); }
+  }
+  console.log('  ' + n + '図 ' + (bad === 0 ? '✅' : '❌'));
+})();
 console.log('=== (3) 契約: 系列数≠1・長さ不一致・棒max≦0・負の棒 は例外 ===');
 [{ series: [], bars: [{ y: [1, 2] }], x_labels: ['a', 'b'] }, { series: [{ y: [1, 2, 3] }], bars: [{ y: [1, 2] }], x_labels: ['a', 'b'] }, { series: [{ y: [1, 2] }], bars: [{ y: [0, 0] }], x_labels: ['a', 'b'] }, { series: [{ y: [1, 2] }], bars: [{ y: [-1, 2] }], x_labels: ['a', 'b'] }].forEach(fp => { cases++; let threw = false; try { FB.build(Object.assign({ kind: 'xy_graph', mode: 'combo' }, fp)); } catch (e) { threw = true; } if (!threw) { bad++; console.log('  ❌ 契約違反が通過 ' + JSON.stringify(fp)); } });
 console.log('  ' + (bad === 0 ? '✅' : '❌'));

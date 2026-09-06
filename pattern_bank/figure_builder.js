@@ -2170,11 +2170,22 @@
     for (var i = 0; i < cands.length; i++) { if (span / cands[i] <= 10) return cands[i]; }
     return cands[cands.length - 1];
   }
+  // x軸ラベル圧縮規則(まるこ差し戻し・2026-09-06・polyline/combo共通): x_labelsが12点以上で全て「数字+共通接尾語」(1月…12月)なら数字表記(1〜12)にし、
+  // 接尾語はx_title(fp.x_titleがあればそれを優先=バンク由来)に回す。12点未満は不変(既存出力バイト不変)。日本語ハードコードなし(接尾語はラベル由来)。
+  function xyCompactXLabels(xl, xTitle) {
+    if (!Array.isArray(xl) || xl.length < 12) return { labels: xl, x_title: xTitle };
+    var parts = xl.map(function (v) { return String(v).match(/^(\d+)(\D*)$/); });
+    if (parts.some(function (m) { return !m; })) return { labels: xl, x_title: xTitle };
+    var suf = parts[0][2];
+    if (parts.some(function (m) { return m[2] !== suf; })) return { labels: xl, x_title: xTitle };
+    return { labels: parts.map(function (m) { return m[1]; }), x_title: xTitle || suf, compacted: true };
+  }
   function xyGraphPolylineLayout(fp) {
     var series = fp.series;
     if (!Array.isArray(series) || series.length < 1 || series.length > 2) throw new Error('xy_graph polyline: seriesは1〜2(契約違反)');
     var xl = fp.x_labels;
     if (!Array.isArray(xl) || xl.length < 2) throw new Error('xy_graph polyline: x_labelsは2点以上(契約違反)');
+    var cx = xyCompactXLabels(xl, fp.x_title), xTitle = cx.x_title; xl = cx.labels;   // 12点以上=数字表記(共通規則)
     series.forEach(function (s) {
       if (!Array.isArray(s.y) || s.y.length !== xl.length) throw new Error('xy_graph polyline: series.y長とx_labels長の不一致(契約違反)');
     });
@@ -2227,7 +2238,7 @@
     // タイトル・軸題(全てfp由来・省略可)
     if (fp.title) lay.parts.push(textEl(PL_W / 2, -22, String(fp.title), 12, '#333'));
     if (fp.y_title) lay.parts.push(textEl(0, -16, String(fp.y_title), PL_FS, '#333'));
-    if (fp.x_title) lay.parts.push(textEl(PL_W + 24, PL_H, String(fp.x_title), PL_FS, '#333'));
+    if (xTitle) lay.parts.push(textEl(PL_W + 24, PL_H, String(xTitle), PL_FS, '#333'));
     // 系列: 実線●(第1)/破線○(第2)。draw:trueでは描かない
     if (!draw) {
       series.forEach(function (s, si) {
@@ -2276,7 +2287,7 @@
       line_pts: ly.map(function (v, i) { return [X(i), Y(v)]; }), bar_rects: by.map(function (v, i) { return { x: X(i) - pitch * 0.25, y: Y2(v), w: pitch * 0.5, h: PL_H - Y2(v), v: v }; }) };
   }
   function xyGraphComboLayout(fp) {
-    var g = xyComboGeom(fp), lay = newLayout(), xl = fp.x_labels, n = g.n;
+    var g = xyComboGeom(fp), lay = newLayout(), n = g.n, cx = xyCompactXLabels(fp.x_labels, fp.x_title), xl = cx.labels, xTitle = cx.x_title;   // 12点以上=数字表記(共通規則)
     var nT = Math.round((g.hi - g.lo) / g.tick);
     for (var ti = 0; ti <= nT; ti++) { var t = g.lo + ti * g.tick; lay.parts.push(lineEl([0, g.Y(t)], [PL_W, g.Y(t)], '#d5deea', 1)); lay.parts.push(textEl(-16, g.Y(t), String(Math.round(t * 10000) / 10000), PL_FS, '#333')); }
     var nT2 = Math.round((g.hi2 - g.lo2) / g.tick2);
@@ -2289,7 +2300,7 @@
     if (fp.title) lay.parts.push(textEl(PL_W / 2, -50, String(fp.title), 12, '#333'));   // 題→凡例→軸題の3段(重なり回避)
     if (fp.y_title) lay.parts.push(textEl(0, -16, String(fp.y_title), PL_FS, '#333'));
     if (fp.y2_title) lay.parts.push(textEl(PL_W, -16, String(fp.y2_title), PL_FS, '#333'));
-    if (fp.x_title) lay.parts.push(textEl(PL_W + 40, PL_H + 12, String(fp.x_title), PL_FS, '#333'));
+    if (xTitle) lay.parts.push(textEl(PL_W + 40, PL_H + 12, String(xTitle), PL_FS, '#333'));
     lay.parts.push('<polyline points="' + g.line_pts.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ') + '" fill="none" stroke="' + C_TARGET + '" stroke-width="2"/>');
     g.line_pts.forEach(function (p) { lay.parts.push('<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="3" fill="' + C_TARGET + '"/>'); });
     // 凡例(プロット上側・左寄せ): 線見本+名／棒見本+名
@@ -2299,7 +2310,7 @@
     var bx = lx + 25 + String(fp.series[0].name || '').length * PL_FS + 16;
     lay.parts.push('<rect x="' + bx + '" y="' + (ly0 - 5) + '" width="14" height="10" rx="1" fill="' + CC_SHADE + '" stroke="' + C_STROKE + '" stroke-width="1"/>');   // rx=凡例見本の目印(関門の棒抽出から除外)
     lay.parts.push('<text x="' + (bx + 19) + '" y="' + (ly0 + PL_FS * 0.34).toFixed(1) + '" font-size="' + PL_FS + '" fill="#333">' + esc(String(fp.bars[0].name || '')) + '</text>');
-    lay.pts.push([-34, -58], [PL_W + 52 + (fp.x_title ? 24 : 0), PL_H + 20]);
+    lay.pts.push([-34, -58], [PL_W + 52 + (xTitle ? 24 : 0), PL_H + 20]);
     lay._geom = g;
     return lay;
   }
