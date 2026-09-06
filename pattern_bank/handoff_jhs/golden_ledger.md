@@ -600,3 +600,10 @@
 - **skip(素材待ち)3行**: c01_u02_003(設問と答が不整合)・c06_u02_001(答が個数列で設問と不一致)・c06_u02_006(答が順序のみ・値未転記)。
 - 関門49に(2b)バンク配線(6パターン×30本: 図条件+答=矢印位置の表示+比較行の大きい順+位置列挙=k)追加=1575照合GREEN。furigana+4(数直線=すうちょくせん(かず誤爆是正)/の間が=あいだ/当てはま/記入)・registered 665・ベクター92・関門44一覧更新。rationale+6(g04 5/g05 1・D=裁可n+追記+目視)・pairs 598・rag 3767・corr-0007残差0。
 - **golden md5: g04 91598c7a → 1ca58495(PASS 252→267)・g05 0e8f8dfb → 483de41e(PASS 228→231)**(既存出力バイト不変)。全49関門GREEN。g04カバレッジ=行レベル追補(単元被覆不変)・g05 +1行(分数の性質)。
+
+### 2026-09-06 等分図便: equal_parts受け皿(裁可o・1kind3図型)+関門50——まるこ目視待ち(スモーク4枚+参考4図)
+- **equal_parts kind**: shape=circle(den本の半径線・12時から時計回りにnum扇形を塗り)/tape(横長6:1・den等分・左からnum・上に{unit_label}・両端に短い目盛)/rect(1方向=たての切れ目でden列・左からnum／2方向=たてにden等分(行・下からnum)×横にden2等分(列・左からnum2)・格子)。mode=read(塗り済み)/draw(等分線のみ)。塗り=composite_circleのshade(#cfe0fb)流用。col_unit=true(g06 ×整数の面積図: 横の各列が丸ごと1単位・答=num×num2/den)。
+- **契約(例外)**: 未知shape・den∉[2,24]・num∉[0,den]・circle/tapeにden2。
+- **関門50 equal_parts_vectors.js**: 行台帳13図(本体5行=9図・隣接g06 4図・面積比=転記)+悉皆(3図型×den2..12×num0..den×read/draw+rect2方向den,den2∈2..6×全num)=946構成。出力SVGから独立再計算: 切れ目角=360/den・12時起点・扇形の時計回り連続・縦線/横線位置=W/cols・H/rows・塗ります数=num(×num2)・塗りブロック(左詰め/左下)・面積比=num/den(SVG丸め≦1e-3・幾何側は誤差0)・ラベル帰属・等スケール・決定性。全50関門GREEN・golden不変。
+- **設計書からの差分(報告)**: ①2方向rectの向き=den(たて)=行・den2(横)=列(kaisetsu「たてに{den}等分・横に{den2}等分」に合わせた) ②g06 ×整数(c03_u01_001: 4/5×2dL)は横の2列が各1dL=丸ごと1m²なので設計書§3の面積式(num×num2/(den×den2))が合わず、col_unitフラグで答=num×num2/den=8/5 ③c03_u04_001(2/5÷3/4)は補助図(塗り=2/5m²の高さ×3/4dLの幅)で答8/15は図から直接出ない=既存パターンの答を使用。
+- スモーク: equal_smoke_{circle_read,tape_draw,rect_2way,area_g06}.svg + equal_smoke.png(参考: 円2等分draw・テープ8等分read・長方形1方向・×整数col_unit)→まるこ目視待ち。目視後: 配線9行(g02 2=新パターン/g03 3=新パターン/g06 4=既存パターンへの図追補)+kaisetsu§6→§3-3報告・拡張候補9行の台帳登録。

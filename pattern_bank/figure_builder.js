@@ -2059,6 +2059,54 @@
     lay._geom = G;
     return lay;
   }
+  // ---- 等分図便 Kind: equal_parts(1kind3図型 circle/tape/rect・裁可o) ----
+  // den等分・num個塗り(tape/rect=左詰め・circle=12時から時計回り=塗り位置固定)。rectはden2/num2で2方向等分(格子・塗りは左下から列×行の交差)。
+  // mode=read(塗り済み→分数)/draw(等分線のみ・塗りなし)。塗り=composite_circleのshade(#cfe0fb)を流用。col_unit=true(g06 ×整数の面積図)は横の各列が丸ごと1単位(答=num×num2/den)。
+  var EP_R = 80, EP_TAPE_W = 240, EP_TAPE_H = 40, EP_RECT_W = 180, EP_RECT_H = 110, EP_SQ = 160;
+  function equalPartsGeom(fp) {
+    var shape = fp.shape, den = Number(fp.den), num = Number(fp.num == null ? 0 : fp.num), den2 = fp.den2 == null || fp.den2 === '' ? null : Number(fp.den2), num2 = fp.num2 == null || fp.num2 === '' ? null : Number(fp.num2);
+    if (shape !== 'circle' && shape !== 'tape' && shape !== 'rect') throw new Error('equal_parts: 未対応shape ' + shape);
+    if (!(Number.isInteger(den) && den >= 2 && den <= 24)) throw new Error('equal_parts: den は2〜24の整数(契約違反)');
+    if (!(Number.isInteger(num) && num >= 0 && num <= den)) throw new Error('equal_parts: num は0〜den(契約違反)');
+    if (den2 !== null) { if (shape !== 'rect') throw new Error('equal_parts: den2 は rect のみ'); if (!(Number.isInteger(den2) && den2 >= 1 && den2 <= 24)) throw new Error('equal_parts: den2 は1〜24の整数'); if (num2 === null) num2 = num > 0 ? 1 : 0; if (!(Number.isInteger(num2) && num2 >= 0 && num2 <= den2)) throw new Error('equal_parts: num2 は0〜den2'); }
+    var mode = fp.mode === 'draw' ? 'draw' : 'read', g = { shape: shape, den: den, num: num, den2: den2, num2: num2, mode: mode, col_unit: !!fp.col_unit };
+    if (shape === 'circle') { g.R = EP_R; g.cuts = []; g.sectors = []; for (var i = 0; i < den; i++) { var a0 = 90 - 360 * i / den, a1 = 90 - 360 * (i + 1) / den; g.cuts.push(a0); g.sectors.push({ i: i, a0: a0, a1: a1, filled: mode === 'read' && i < num }); } }
+    else if (shape === 'tape') { g.W = EP_TAPE_W; g.H = EP_TAPE_H; g.cells = []; for (var j = 0; j < den; j++) g.cells.push({ i: j, x0: g.W * j / den, x1: g.W * (j + 1) / den, filled: mode === 'read' && j < num }); }
+    else if (den2 === null) { g.W = EP_RECT_W; g.H = EP_RECT_H; g.cols = den; g.rows = 1; g.cells = [];   // 1方向=たての切れ目でden列(テープと同じ左詰め)
+      for (var c = 0; c < den; c++) g.cells.push({ c: c, r: 0, x0: g.W * c / den, x1: g.W * (c + 1) / den, y0: 0, y1: g.H, filled: mode === 'read' && c < num }); }
+    else { g.W = EP_SQ; g.H = EP_SQ; g.rows = den; g.cols = den2; g.cells = [];   // 2方向=たてにden等分(行・下から num)×横にden2等分(列・左から num2)。y0=下端基準(世界座標)
+      for (var r = 0; r < den; r++) for (var c = 0; c < den2; c++) g.cells.push({ c: c, r: r, x0: g.W * c / den2, x1: g.W * (c + 1) / den2, y0: g.H * r / den, y1: g.H * (r + 1) / den, filled: mode === 'read' && r < num && c < num2 }); }
+    g.fill_ratio = mode === 'read' ? (shape === 'rect' && den2 !== null ? (g.col_unit ? num * num2 / den : num * num2 / (den * den2)) : num / den) : 0;
+    return g;
+  }
+  function epPt(R, deg) { return [R * Math.cos(d2r(deg)), -R * Math.sin(d2r(deg))]; }   // 世界角(反時計回り・上=90°)→SVG座標
+  function equalPartsLayout(fp) {
+    var g = equalPartsGeom(fp), lay = newLayout(), specs = [];
+    if (g.shape === 'circle') {
+      var R = g.R;
+      lay.parts.push('<circle cx="0" cy="0" r="' + R + '" fill="' + C_FILL + '" stroke="' + C_STROKE + '" stroke-width="2"/>');
+      g.sectors.forEach(function (sc) { if (!sc.filled) return; var p0 = epPt(R, sc.a0), p1 = epPt(R, sc.a1), large = (360 / g.den) > 180 ? 1 : 0;
+        lay.parts.push('<path d="M 0 0 L ' + p0[0].toFixed(2) + ' ' + p0[1].toFixed(2) + ' A ' + R + ' ' + R + ' 0 ' + large + ' 1 ' + p1[0].toFixed(2) + ' ' + p1[1].toFixed(2) + ' Z" fill="' + CC_SHADE + '" stroke="none"/>'); });
+      g.cuts.forEach(function (a, i) { var p = epPt(R, a); lay.parts.push(lineEl([0, 0], p, C_STROKE, 1.6)); lay.segs.push({ id: 'cut' + i, p1: [0, 0], p2: p }); });
+      lay.parts.push('<circle cx="0" cy="0" r="' + R + '" fill="none" stroke="' + C_STROKE + '" stroke-width="2"/>');
+      lay.pts.push([-R, -R], [R, R]);
+    } else {
+      var W = g.W, H = g.H, cols = g.shape === 'tape' ? g.den : g.cols, rows = g.shape === 'tape' ? 1 : g.rows;
+      lay.parts.push(polygonEl([[0, 0], [W, 0], [W, H], [0, H]], C_FILL, 2));
+      g.cells.forEach(function (ce) { if (!ce.filled) return; var y0 = g.shape === 'tape' ? 0 : H - ce.y1, y1 = g.shape === 'tape' ? H : H - ce.y0;
+        lay.parts.push('<rect x="' + ce.x0.toFixed(2) + '" y="' + y0.toFixed(2) + '" width="' + (ce.x1 - ce.x0).toFixed(2) + '" height="' + (y1 - y0).toFixed(2) + '" fill="' + CC_SHADE + '" stroke="none"/>'); });
+      for (var c = 1; c < cols; c++) { var x = W * c / cols; lay.parts.push(lineEl([x, 0], [x, H], C_STROKE, 1.6)); lay.segs.push({ id: 'vcut' + c, p1: [x, 0], p2: [x, H] }); }
+      for (var r = 1; r < rows; r++) { var y = H * r / rows; lay.parts.push(lineEl([0, y], [W, y], C_STROKE, 1.6)); lay.segs.push({ id: 'hcut' + r, p1: [0, y], p2: [W, y] }); }
+      lay.parts.push(polygonEl([[0, 0], [W, 0], [W, H], [0, H]], 'none', 2));
+      lay.segs.push({ id: 'top', p1: [0, 0], p2: [W, 0] });
+      lay.pts.push([0, 0], [W, H]);
+      if (g.shape === 'tape') { lay.parts.push(lineEl([0, -8], [0, 0], C_STROKE, 1.2)); lay.parts.push(lineEl([W, -8], [W, 0], C_STROKE, 1.2)); lay.pts.push([0, -10]); }   // 両端の短い目盛(全体=1m/1Lの幅を示す)
+      if (fp.unit_label) specs.push({ anchor: [W / 2, g.shape === 'tape' ? -8 : 0], dirs: [[0, -1]], text: String(fp.unit_label), cands: [[10, 14], [12, 13], [14, 12]], color: '#333', own: 'top' });
+    }
+    finishLabels(lay, specs);
+    lay._geom = g;
+    return lay;
+  }
   // ---- 数直線便 Kind: number_line(1kind3系統=int(万・億・兆)/dec(0.1・0.01・0.001刻み)/frac(0〜1をden等分)・裁可n) ----
   // 値は system の基準単位の数値(int: base=万/億の倍数を fp.base(1e4/1e8) で絶対値化して表示・dec: 実数・frac: 分子/分母)。
   // 描画: 水平線+右矢じり・大目盛(長線+数値ラベル下)・小目盛(短線)・矢印↑(目盛の下から上向き)+記号(ア/イ/ウ)を矢印の下。記号は隣接時に上下交互(finishLabels資産)。
@@ -2929,7 +2977,7 @@
     para_area: paraAreaLayout, tri_area: triAreaLayout, trap_area: trapAreaLayout,
     rhombus_area: rhombusAreaLayout, circle: circleLayout, cuboid: cuboidLayout, prism: prismLayout,
     pyramid: pyramidLayout, cylinder: cylinderLayout, cone: coneLayout, sphere: sphereLayout,
-    rotation_source: rotationSourceLayout, clock_face: clockFaceLayout, composite_circle: compositeCircleLayout, composite_area: compositeAreaLayout, line_set: lineSetLayout, sym_figure: symFigureLayout, shape_set: shapeSetLayout, approx_shape: approxShapeLayout, approx_grid: approxGridLayout, approx_solid: approxSolidLayout, number_line: numberLineLayout,
+    rotation_source: rotationSourceLayout, clock_face: clockFaceLayout, composite_circle: compositeCircleLayout, composite_area: compositeAreaLayout, line_set: lineSetLayout, sym_figure: symFigureLayout, shape_set: shapeSetLayout, approx_shape: approxShapeLayout, approx_grid: approxGridLayout, approx_solid: approxSolidLayout, number_line: numberLineLayout, equal_parts: equalPartsLayout,
     sym_polygon: symPolygonLayout, similar_pair: similarPairLayout, xy_graph: xyGraphLayout, dot_plot: dotPlotLayout, histogram: histogramLayout,
     angle_figure: angleFigureLayout
   };
@@ -2968,6 +3016,17 @@
   var FigureBuilder = { build: build, BUILDERS: BUILDERS, _angleSumMinClearance: angleSumMinClearance, _tableMinClearance: tableMinClearance };
   // e-2: line_setの監査(角度差/包含/交点/ラベル帰属を描画と同じ導出で独立再計算)
   FigureBuilder._lsStats = function (on) { LS_STATS = on ? {} : null; return LS_STATS; };
+  FigureBuilder._equalPartsAudit = function (fp) {   // 等分図便 関門用: 幾何(角/幅/格子)・塗り個数・塗り面積比・連続性・ラベル帰属を返す(関門は出力SVGから独立再計算)
+    var g = equalPartsGeom(fp), lay = equalPartsLayout(fp), out = { geom: g, issues: [], labels: [] };
+    var filled = g.shape === 'circle' ? g.sectors.filter(function (x) { return x.filled; }).map(function (x) { return x.i; }) : g.cells.filter(function (x) { return x.filled; });
+    out.fill_count = filled.length;
+    if (g.shape === 'circle') { filled.forEach(function (i, k) { if (i !== k) out.issues.push('not_contiguous'); }); }
+    else if (g.shape === 'tape') { filled.forEach(function (ce, k) { if (ce.i !== k) out.issues.push('not_contiguous'); }); }
+    else if (g.den2 === null) { filled.forEach(function (ce, k) { if (ce.c !== k) out.issues.push('not_contiguous'); }); }
+    else { filled.forEach(function (ce) { if (!(ce.r < g.num && ce.c < g.num2)) out.issues.push('not_block'); }); }
+    lay.labels.forEach(function (lb) { var best = null, bd = 1e9; lay.segs.forEach(function (sg) { var dd = boxSeg(lb.box, sg.p1, sg.p2); if (dd < bd) { bd = dd; best = sg.id; } }); out.labels.push({ own: lb.own, nearest: best, ok: best === lb.own, text: lb.text }); });
+    return out;
+  };
   FigureBuilder._numberLineAudit = function (fp) {   // 数直線便 関門用: 目盛座標=値の線形写像(独立再計算用に返す)・矢印が目盛上・記号帰属・間隔・数値ラベル非重なり
     var g = numberLineGeom(fp), lay = numberLineLayout(fp), out = { ticks: g.ticks, markers: g.markers, issues: [], labels: [], fmt: g.markers.map(function (m) { return nlFmt(m.value, fp, true); }) };
     for (var i = 0; i < g.markers.length; i++) for (var j = i + 1; j < g.markers.length; j++) if (Math.abs(g.markers[i].k - g.markers[j].k) < 2) out.issues.push('marker_gap:' + g.markers[i].label + g.markers[j].label);
@@ -3111,7 +3170,7 @@
     pyramid_visible: pyramidVisible, convex_hull: convexHull,   // S-2.1: 隠線シルエット判定(vector用・corr-0023)
     rotation_source: rotationSourceGeom,   // 第2ブロックS-4: 回転体の源(vector用)
     clock_face: clockFaceGeom,             // 小学第2波: 時計文字盤(vector用)
-    composite_circle: compositeCircleGeom, composite_area: compositeAreaGeom, line_set: lineSetGeom, sym_figure: symFigureGeom, shape_set: shapeSetGeom, approx_shape: approxShapeGeom, approx_grid: approxGridGeom, approx_solid: approxSolidGeom, number_line: numberLineGeom, nl_fmt: nlFmt, ag_classify: agClassify, ag_inside: agInsidePoly, as_poly_area: asPolyArea, ss_symmetry: ssSymmetry, ss_outline: ssOutline, ss_catalog: SS_CAT, // P-3a: 複合円(vector用) / 対称第1便
+    composite_circle: compositeCircleGeom, composite_area: compositeAreaGeom, line_set: lineSetGeom, sym_figure: symFigureGeom, shape_set: shapeSetGeom, approx_shape: approxShapeGeom, approx_grid: approxGridGeom, approx_solid: approxSolidGeom, number_line: numberLineGeom, nl_fmt: nlFmt, equal_parts: equalPartsGeom, ag_classify: agClassify, ag_inside: agInsidePoly, as_poly_area: asPolyArea, ss_symmetry: ssSymmetry, ss_outline: ssOutline, ss_catalog: SS_CAT, // P-3a: 複合円(vector用) / 対称第1便
     arc_sample_points: arcSamplePoints,          // 弧サンプル点(曲率関門用・頂点からr一定検査)
     // ベクター用の位置引数ラッパ（Python prism_geom(base_kind,a,b,h) と同型）
     prism: function (base_kind, a, b, h) {

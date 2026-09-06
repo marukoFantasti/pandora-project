@@ -1,0 +1,19 @@
+{
+  "_note": "等分図便(裁可o) 行台帳: 本体5行(g02 2+g03 3)=9図+隣接4行(g06 c03)=4図。分数値は同単元非図行から補完(裁可o-3)。#6(g03_c27_u01_004)=skip素材待ち。2方向rect: den=たて(行・下から)・den2=横(列・左から)。col_unit=横の各列が丸ごと1単位(g06 ×整数)。",
+  "rows": [
+    { "row": "g02_c51_u01_003-1", "fp": { "kind": "equal_parts", "shape": "circle", "den": 2, "num": 1, "mode": "draw" }, "ans": "2等分した1こ分に色" },
+    { "row": "g02_c51_u01_003-2", "fp": { "kind": "equal_parts", "shape": "rect", "den": 2, "num": 1, "mode": "draw" }, "ans": "2等分した1こ分に色" },
+    { "row": "g02_c51_u01_003-3", "fp": { "kind": "equal_parts", "shape": "tape", "den": 2, "num": 1, "mode": "draw" }, "ans": "2等分した1こ分に色" },
+    { "row": "g02_c51_u01_004-1", "fp": { "kind": "equal_parts", "shape": "circle", "den": 4, "num": 1, "mode": "read" }, "ans": "1/4" },
+    { "row": "g02_c51_u01_004-2", "fp": { "kind": "equal_parts", "shape": "rect", "den": 8, "num": 3, "mode": "read" }, "ans": "3/8" },
+    { "row": "g03_c26_u01_002-1", "fp": { "kind": "equal_parts", "shape": "tape", "den": 3, "num": 2, "mode": "draw", "unit_label": "1m" }, "ans": "3等分した2こ分に色" },
+    { "row": "g03_c26_u01_002-2", "fp": { "kind": "equal_parts", "shape": "tape", "den": 5, "num": 3, "mode": "draw", "unit_label": "1L" }, "ans": "5等分した3こ分に色" },
+    { "row": "g03_c26_u01_007-1", "fp": { "kind": "equal_parts", "shape": "tape", "den": 5, "num": 4, "mode": "draw", "unit_label": "1m" }, "ans": "5等分した4こ分に色" },
+    { "row": "g03_c26_u01_007-2", "fp": { "kind": "equal_parts", "shape": "tape", "den": 7, "num": 6, "mode": "draw", "unit_label": "1L" }, "ans": "7等分した6こ分に色" },
+    { "row": "g03_c26_u01_013", "fp": { "kind": "equal_parts", "shape": "tape", "den": 11, "num": 6, "mode": "draw", "unit_label": "1m" }, "ans": "11等分した6こ分に色" },
+    { "row": "g06_c03_u02_001", "fp": { "kind": "equal_parts", "shape": "rect", "den": 4, "num": 3, "den2": 4, "num2": 1, "mode": "read", "unit_label": "1L" }, "ans": "3/16", "ratio": [3, 16] },
+    { "row": "g06_c03_u01_001", "fp": { "kind": "equal_parts", "shape": "rect", "den": 5, "num": 4, "den2": 2, "num2": 2, "mode": "read", "unit_label": "1m²", "col_unit": true }, "ans": "8/5", "ratio": [8, 5] },
+    { "row": "g06_c03_u03_001", "fp": { "kind": "equal_parts", "shape": "rect", "den": 4, "num": 3, "den2": 5, "num2": 3, "mode": "read", "unit_label": "1m²" }, "ans": "9/20", "ratio": [9, 20] },
+    { "row": "g06_c03_u04_001", "fp": { "kind": "equal_parts", "shape": "rect", "den": 5, "num": 2, "den2": 4, "num2": 3, "mode": "read", "unit_label": "1m²" }, "ans": "(補助図: 2/5m²=3/4dL・答8/15は既存パターン)", "ratio": [6, 20] }
+  ]
+}
