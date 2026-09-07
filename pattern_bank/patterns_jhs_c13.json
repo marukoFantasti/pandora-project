@@ -44,6 +44,7 @@
     "図の直角三角形ABCで、∠xの大きさを求めなさい。"
    ],
    "answer_template": "答え ∠x＝{xv1}°",
+   "kaisetsu": "直角三角形では、直角以外の2つの角の和が90°です。∠x＝90°−{a1}°＝{xv1}°です。",
    "figure_params": {
     "kind": "angle_figure",
     "subkind": "polygon",
@@ -121,6 +122,7 @@
     "図の三角形ABCは、AB＝ACの二等辺三角形である。∠xの大きさを求めなさい。"
    ],
    "answer_template": "答え ∠x＝{xv1}°",
+   "kaisetsu": "二等辺三角形の2つの底角は等しくなります。内角の和180°から頂角{t1}°をひき、残りを2等分して∠x＝(180°−{t1}°)÷2＝{xv1}°です。",
    "figure_params": {
     "kind": "angle_figure",
     "subkind": "polygon",
@@ -206,6 +208,7 @@
     "図の三角形ABCは、AB＝ACの二等辺三角形である。∠xの大きさを求めなさい。"
    ],
    "answer_template": "答え ∠x＝{xv1}°",
+   "kaisetsu": "二等辺三角形の底角は2つとも{b1}°です。頂角は180°から底角2つ分をひいて、∠x＝180°−{b1}°×2＝{xv1}°です。",
    "figure_params": {
     "kind": "angle_figure",
     "subkind": "polygon",
@@ -296,6 +299,7 @@
     "図の四角形ABCDは平行四辺形である。∠xの大きさを求めなさい。"
    ],
    "answer_template": "答え ∠x＝{xv1}°",
+   "kaisetsu": "平行四辺形では、となり合う角の和が180°です（向かい合う角は等しい）。∠x＝180°−{a1}°＝{xv1}°です。",
    "figure_params": {
     "kind": "angle_figure",
     "subkind": "polygon",
@@ -402,6 +406,7 @@
     "図で、三角形ABCと三角形DEFは合同である。∠xの大きさを求めなさい。"
    ],
    "answer_template": "答え ∠x＝{a1}°",
+   "kaisetsu": "合同な図形では、対応する角の大きさが等しくなります。∠xに対応する角は{a1}°の角なので、∠x＝{a1}°です。対応する頂点は、記号の順番（ABCとDEF）で分かります。",
    "figure_params": {
     "kind": "angle_figure",
     "subkind": "congruent_pair",
@@ -507,6 +512,7 @@
     "図で、三角形ABCと三角形DEFは合同である。∠xの大きさを求めなさい。"
    ],
    "answer_template": "答え ∠x＝{xv1}°",
+   "kaisetsu": "∠xに対応する角は、もう一方の三角形では分かっていない角です。内角の和180°から分かっている2つの角{a1}°、{b1}°をひいて、∠x＝{xv1}°です。",
    "figure_params": {
     "kind": "angle_figure",
     "subkind": "congruent_pair",
@@ -605,6 +611,7 @@
     "図の三角形ABCと三角形DEFは合同である。合同条件として正しいものを、次のア〜ウから1つ選び、記号で答えなさい。　ア 3組の辺がそれぞれ等しい　イ 2組の辺とその間の角がそれぞれ等しい　ウ 1組の辺とその両端の角がそれぞれ等しい"
    ],
    "answer_template": "答え {C1_choice}",
+   "kaisetsu": "図で等しいと分かっているのは、3組の辺の長さです。3組の辺がそれぞれ等しいとき、2つの三角形は合同です。合同条件は{C1_choice}です。",
    "figure_params": {
     "kind": "angle_figure",
     "subkind": "congruent_pair",
@@ -708,6 +715,7 @@
     "図の三角形ABCと三角形DEFは合同である。合同条件として正しいものを、次のア〜ウから1つ選び、記号で答えなさい。　ア 3組の辺がそれぞれ等しい　イ 2組の辺とその間の角がそれぞれ等しい　ウ 1組の辺とその両端の角がそれぞれ等しい"
    ],
    "answer_template": "答え {C1_choice}",
+   "kaisetsu": "図で等しいと分かっているのは、2組の辺とその間の角です。「その間の角」であることが大切で、間にない角では合同は言えません。合同条件は{C1_choice}です。",
    "figure_params": {
     "kind": "angle_figure",
     "subkind": "congruent_pair",
@@ -811,6 +819,7 @@
     "図の三角形ABCと三角形DEFは合同である。合同条件として正しいものを、次のア〜ウから1つ選び、記号で答えなさい。　ア 3組の辺がそれぞれ等しい　イ 2組の辺とその間の角がそれぞれ等しい　ウ 1組の辺とその両端の角がそれぞれ等しい"
    ],
    "answer_template": "答え {C1_choice}",
+   "kaisetsu": "図で等しいと分かっているのは、1組の辺とその両端の角です。1組の辺とその両端の角がそれぞれ等しいとき、2つの三角形は合同です。合同条件は{C1_choice}です。",
    "figure_params": {
     "kind": "angle_figure",
     "subkind": "congruent_pair",

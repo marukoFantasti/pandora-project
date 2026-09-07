@@ -11,12 +11,13 @@
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
   var LABELS = 'あいうえおかきくけこ';
-  var RE = new RegExp('(^|[^ぁ-んァ-ン一-鿿「]|の)([' + LABELS + '])(?=(角|点|直線)|の(角|点|直線))|(^|[^ぁ-んァ-ン一-鿿「])([' + LABELS + '])(?=と[' + LABELS + ']|度|[、 ]|$)', 'gm');
+  // D10-2(2026-09-07): 「ラベル+の+(角|点|直線)」の型から こ を除外(「この点」「この角」=指示語。jhs backfill第2便の解説「この点(x＝8)」で誤検出)。ラベル+直結(こ点/こ角)は従来どおり検出
+  var RE = new RegExp('(^|[^ぁ-んァ-ン一-鿿「]|の)([' + LABELS + '])(?=(角|点|直線))|(^|[^ぁ-んァ-ン一-鿿「]|の)([あいうえおかきくけ])(?=の(角|点|直線))|(^|[^ぁ-んァ-ン一-鿿「])([' + LABELS + '])(?=と[' + LABELS + ']|度|[、 ]|$)', 'gm');
   function findUnbracketedLabels(text, figLabels) {
     var out = [], t = String(text == null ? '' : text), m; RE.lastIndex = 0;
     var has = {}; (figLabels || []).forEach(function (c) { has[c] = true; });
     while ((m = RE.exec(t))) {
-      var lab = m[2] || m[5], strong = !!m[2];
+      var lab = m[2] || m[5] || m[8], strong = !!(m[2] || m[5]);
       if (!strong && !has[lab]) continue;
       out.push({ label: lab, index: m.index, context: t.slice(Math.max(0, m.index - 6), m.index + 10) });
     }
@@ -28,7 +29,7 @@
     "var HYOKI_LABELS='" + LABELS + "';",
     "var HYOKI_RE=new RegExp(" + JSON.stringify(RE.source) + ",'gm');",
     "function hyokiFindUnbracketedLabels(text,figLabels){var out=[],t=String(text==null?'':text),m;HYOKI_RE.lastIndex=0;var has={};(figLabels||[]).forEach(function(c){has[c]=true;});",
-    "while((m=HYOKI_RE.exec(t))){var lab=m[2]||m[5],strong=!!m[2];if(!strong&&!has[lab])continue;out.push({label:lab,index:m.index,context:t.slice(Math.max(0,m.index-6),m.index+10)});}return out;}"
+    "while((m=HYOKI_RE.exec(t))){var lab=m[2]||m[5]||m[8],strong=!!(m[2]||m[5]);if(!strong&&!has[lab])continue;out.push({label:lab,index:m.index,context:t.slice(Math.max(0,m.index-6),m.index+10)});}return out;}"
   ].join('\n');
-  return { LABELS: LABELS, RE: RE, findUnbracketedLabels: findUnbracketedLabels, INLINE_SNIPPET: INLINE_SNIPPET, VERSION: 'D10-1' };
+  return { LABELS: LABELS, RE: RE, findUnbracketedLabels: findUnbracketedLabels, INLINE_SNIPPET: INLINE_SNIPPET, VERSION: 'D10-2' };
 });

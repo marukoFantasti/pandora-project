@@ -44,6 +44,7 @@
     "図のように、2つの直線が1つの点で交わっている。∠xの大きさを求めなさい。"
    ],
    "answer_template": "答え ∠x＝{a1}°",
+   "kaisetsu": "2直線が交わってできる向かい合った角を対頂角といい、対頂角は等しくなります。∠xは{a1}°の角の対頂角なので、∠x＝{a1}°です。",
    "figure_params": {
     "kind": "angle_figure",
     "subkind": "angle_around_point",
@@ -120,6 +121,7 @@
     "図のように、2つの直線が1つの点で交わっている。∠xの大きさを求めなさい。"
    ],
    "answer_template": "答え ∠x＝{xv1}°",
+   "kaisetsu": "一直線の角は180°です。∠xと{a1}°の角は一直線上に並んでいるので、∠x＝180°−{a1}°＝{xv1}°です。",
    "figure_params": {
     "kind": "angle_figure",
     "subkind": "angle_around_point",
@@ -219,6 +221,7 @@
     "図のように、3つの直線が1つの点で交わっている。∠xの大きさを求めなさい。"
    ],
    "answer_template": "答え ∠x＝{xv1}°",
+   "kaisetsu": "直線の上側にある角をすべてたすと180°です。∠x＝180°−{a1}°−{a2}°＝{xv1}°です。対頂角が等しいことを使って、下側の角から求めることもできます。",
    "figure_params": {
     "kind": "angle_figure",
     "subkind": "angle_around_point",
@@ -334,6 +337,7 @@
     "図で、∠xの大きさを求めなさい。"
    ],
    "answer_template": "答え ∠x＝{xv1}°",
+   "kaisetsu": "1点のまわりの角をすべてたすと360°です。∠x＝360°−{a1}°−{a2}°−{a3}°＝{xv1}°です。",
    "figure_params": {
     "kind": "angle_figure",
     "subkind": "angle_around_point",
@@ -403,6 +407,7 @@
     "図で、直線ℓと直線mは平行である。∠xの大きさを求めなさい。"
    ],
    "answer_template": "答え ∠x＝{t1}°",
+   "kaisetsu": "2直線が平行なとき、同位角は等しくなります。∠xと{t1}°の角は同位角の位置にあるので、∠x＝{t1}°です。",
    "figure_params": {
     "kind": "angle_figure",
     "subkind": "parallel_lines",
@@ -471,6 +476,7 @@
     "図で、直線ℓと直線mは平行である。∠xの大きさを求めなさい。"
    ],
    "answer_template": "答え ∠x＝{t1}°",
+   "kaisetsu": "2直線が平行なとき、錯角は等しくなります。∠xと{t1}°の角は錯角の位置にあるので、∠x＝{t1}°です。",
    "figure_params": {
     "kind": "angle_figure",
     "subkind": "parallel_lines",
@@ -543,6 +549,7 @@
     "図で、直線ℓと直線mは平行である。∠xの大きさを求めなさい。"
    ],
    "answer_template": "答え ∠x＝{xv1}°",
+   "kaisetsu": "平行な2直線の間にある同じ側の内角（同側内角）の和は180°です。∠x＝180°−{t1}°＝{xv1}°です。同位角や錯角を使って、一直線の180°から求めることもできます。",
    "figure_params": {
     "kind": "angle_figure",
     "subkind": "parallel_lines",
@@ -615,6 +622,7 @@
     "図で、直線ℓと直線mは平行である。∠xの大きさを求めなさい。"
    ],
    "answer_template": "答え ∠x＝{t1}°",
+   "kaisetsu": "まず一直線の角180°から、{t1}°の角のとなりの角{s1}°を求めます。次に平行線の同位角（または錯角）が等しいことを使って∠xを求めます。∠x＝{t1}°です。",
    "figure_params": {
     "kind": "angle_figure",
     "subkind": "parallel_lines",
@@ -710,6 +718,7 @@
     "図の三角形ABCで、∠xの大きさを求めなさい。"
    ],
    "answer_template": "答え ∠x＝{xv1}°",
+   "kaisetsu": "三角形の内角の和は180°です。∠x＝180°−{a1}°−{a2}°＝{xv1}°です。",
    "figure_params": {
     "kind": "angle_figure",
     "subkind": "polygon",
@@ -796,6 +805,7 @@
     "図の三角形ABCで、∠xの大きさを求めなさい。"
    ],
    "answer_template": "答え ∠x＝{xv1}°",
+   "kaisetsu": "三角形の外角は、それととなり合わない2つの内角の和に等しくなります。∠x＝{a1}°＋{a2}°＝{xv1}°です。内角の和180°から残りの内角{s1}°を求めて、180°からひいても同じです。",
    "figure_params": {
     "kind": "angle_figure",
     "subkind": "polygon",
@@ -920,6 +930,7 @@
     "図の五角形ABCDEで、∠xの大きさを求めなさい。"
    ],
    "answer_template": "答え ∠x＝{xv1}°",
+   "kaisetsu": "n角形の内角の和は180°×(n−2)なので、五角形は180°×3＝540°です。∠x＝540°−{a1}°−{a2}°−{a3}°−{a4}°＝{xv1}°です。",
    "figure_params": {
     "kind": "angle_figure",
     "subkind": "polygon",

@@ -32,6 +32,7 @@
         "1つのさいころを投げるとき、出る目が{m1}以下になる確率を求めなさい。"
       ],
       "answer_template": "答え {f1}",
+      "kaisetsu": "さいころの目の出方は6通りで、どれも同じように起こります。{m1}以下の目は1から{m1}までの{m1}通りなので、確率は{f1}です。",
       "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
       "answer_structure": "single",
       "template_number_constants": [1]
@@ -61,6 +62,7 @@
         "大小2つのさいころを同時に投げるとき、出る目の和が{s1}になる確率を求めなさい。"
       ],
       "answer_template": "答え {f1}",
+      "kaisetsu": "2つのさいころの目の出方は6×6＝36通りです。和が{s1}になる組み合わせを（大，小）で数え上げると{num_c}通りなので、確率は{f1}です。表をかいて数えると数えもれを防げます。",
       "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
       "answer_structure": "single",
       "template_number_constants": [2]
@@ -90,6 +92,7 @@
         "大小2つのさいころを同時に投げるとき、出る目の積が{k1}になる確率を求めなさい。"
       ],
       "answer_template": "答え {f1}",
+      "kaisetsu": "全部で36通りのうち、積が{k1}になる（大，小）の組を数えます。{cnt1}通りなので、確率は{f1}です。",
       "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
       "answer_structure": "single",
       "template_number_constants": [2]
@@ -119,6 +122,7 @@
         "2枚の硬貨を同時に投げるとき、{ev1}確率を求めなさい。"
       ],
       "answer_template": "答え {f1}",
+      "kaisetsu": "2枚の硬貨の出方は（表，表）（表，裏）（裏，表）（裏，裏）の4通りです。条件に合う出方は{cnt1}通りなので、確率は{f1}です。",
       "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06", "jhs"]},
       "answer_structure": "single",
       "template_number_constants": [1, 2]
@@ -151,6 +155,7 @@
         "袋の中に、赤玉が{r1}個、白玉が{w1}個入っています。この袋から玉を1個取り出すとき、取り出した玉が赤玉である確率を求めなさい。"
       ],
       "answer_template": "答え {f1}",
+      "kaisetsu": "玉は全部で{r1}＋{w1}＝{tot1}個で、どの玉も同じように取り出されます。赤玉は{r1}個なので、確率は{f1}です。約分できるときは約分します。",
       "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06", "jhs"]},
       "answer_structure": "single",
       "template_number_constants": [1]

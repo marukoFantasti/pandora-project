@@ -58,6 +58,7 @@
     "変化の割合が−{a1}で、x＝{p1}のときy＝{q1}である1次関数の式を求めなさい。"
    ],
    "answer_template": "答え y＝−{a1}x＋{b1}",
+   "kaisetsu": "1次関数はy＝ax＋bの形で、変化の割合aは傾きと同じです。a＝−{a1}なのでy＝−{a1}x＋bとし、x＝{p1}、y＝{q1}を代入してbを求めます。b＝{b1}なので、y＝−{a1}x＋{b1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -202,6 +203,7 @@
     "2点({p1}，{y1v_disp})，({p2v_disp}，{y2v_disp})を通る1次関数の式を求めなさい。"
    ],
    "answer_template": "答え y＝{a1}x−{b1}",
+   "kaisetsu": "2点を通る直線の傾きは、yの増加量÷xの増加量で求めます。傾きa＝{a1}が分かったら、y＝{a1}x＋bに1点の座標を代入してbを求めます。y＝{a1}x−{b1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -279,6 +281,7 @@
     "直線 y＝−{a1}x＋{c1} に平行で、点({p1}，{q1})を通る直線の式を求めなさい。"
    ],
    "answer_template": "答え y＝−{a1}x＋{b1}",
+   "kaisetsu": "平行な直線は傾きが等しいので、求める直線の傾きも−{a1}です。y＝−{a1}x＋bに点({p1}，{q1})を代入してb＝{b1}、y＝−{a1}x＋{b1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -343,6 +346,7 @@
     "1次関数 y＝−{a1}x＋{c1} で、xの増加量が{d1}のときのyの増加量を求めなさい。"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "1次関数y＝ax＋bでは、yの増加量＝a×（xの増加量）です。傾きが−{a1}なので、xが{d1}増えるとyは−{a1}×{d1}変化して、{ans_disp}です。負の値は「減った」という意味です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -470,6 +474,7 @@
     "1次関数 y＝{a1}x−{b1} について、xの変域が {p1}≦x≦{q1} のときのyの変域を求めなさい。"
    ],
    "answer_template": "答え {lo1_disp}≦y≦{ans_disp}",
+   "kaisetsu": "傾きが正なので、xが大きいほどyも大きくなります。x＝{p1}のときのyと、x＝{q1}のときのyを求めて、小さいほうから並べます。{lo1_disp}≦y≦{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -597,6 +602,7 @@
     "1次関数 y＝−{a1}x＋{c1} について、xの変域が {p1}≦x≦{q1} のときのyの変域を求めなさい。"
    ],
    "answer_template": "答え {lo1_disp}≦y≦{ans_disp}",
+   "kaisetsu": "傾きが負なので、xが大きいほどyは小さくなります。x＝{q1}のときのyが最小、x＝{p1}のときのyが最大です。大小が入れかわることに注意して、{lo1_disp}≦y≦{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -669,6 +675,7 @@
     "図の直線は、ある1次関数のグラフである。yをxの式で表しなさい。"
    ],
    "answer_template": "答え y＝{ac1}x＋{b1}",
+   "kaisetsu": "グラフから切片（y軸との交点）と傾きを読み取ります。切片は{b1}です。傾きは、グラフ上の読みやすい2点から「右へ1進むとどれだけ変化するか」で求め、右下がりなので負です。y＝{ac1}x＋{b1}です。",
    "figure_params": {
     "kind": "xy_graph",
     "fig_version": 2,
@@ -840,6 +847,7 @@
     "2直線 y＝{a1}x−{c1v_disp} と y＝−{a2}x＋{c2v_disp} の交点の座標を求めなさい。"
    ],
    "answer_template": "答え ({s1}，{t1})",
+   "kaisetsu": "2直線の交点は、2つの式を連立方程式として解いた解です。yを消去してxを求め、どちらかの式に代入してyを求めます。交点は({s1}，{t1})です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -894,6 +902,7 @@
     "点({p1}，−{q1})を通り、x軸に平行な直線の式を求めなさい。"
    ],
    "answer_template": "答え y＝{ans_disp}",
+   "kaisetsu": "x軸に平行な直線は、どの点でもy座標が同じです。点({p1}，−{q1})を通るので、y＝{ans_disp}です。xの項がない式になります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -960,6 +969,7 @@
     "表は、yがxの1次関数である関係を表したものである。表のアにあてはまる数を求めなさい。"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "表からxが1増えるときのyの増加量を読み取ると、それが傾きaです。aが分かれば、表の分かっている組からbを求めて式を作り、アのxを代入します。答えは{ans_disp}です。",
    "figure_params": {
     "kind": "table",
     "fig_version": 1,
@@ -1093,6 +1103,7 @@
     "2直線 y＝{a1}x−{c1v_disp} と y＝−{a2}x＋{c2v_disp} の交点を通り、傾きが−{m1}である直線の式を求めなさい。"
    ],
    "answer_template": "答え y＝−{m1}x＋{bb1}",
+   "kaisetsu": "まず2直線の交点を、連立方程式を解いて求めます。次に、傾き−{m1}の直線y＝−{m1}x＋bにその交点の座標を代入してbを求めます。y＝−{m1}x＋{bb1}です。",
    "answer_unit_system": "signed",
    "kanji_policy": {
     "allowed_grades": [
@@ -1174,6 +1185,7 @@
     "1次関数 y＝{a1}x＋{c1} で、yの増加量が{dy1}のときのxの増加量を求めなさい。"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "yの増加量＝a×（xの増加量）なので、xの増加量＝yの増加量÷aです。{dy1}÷{a1}＝{ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",

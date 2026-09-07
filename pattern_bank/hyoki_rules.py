@@ -3,12 +3,12 @@ homeworkビルダー(jio課題・build.py)等の Python 経路から:  from hyok
 規則1: ひらがな1字ラベル(あ・い・う…)は本文・正解表示・解説で「」囲み。図中ラベル対象外・カタカナ記号は現状維持。"""
 import re
 LABELS = "あいうえおかきくけこ"
-RE = re.compile(r"(^|[^ぁ-んァ-ン一-鿿「]|の)([" + LABELS + r"])(?=(角|点|直線)|の(角|点|直線))|(^|[^ぁ-んァ-ン一-鿿「])([" + LABELS + r"])(?=と[" + LABELS + r"]|度|[、 ]|$)", re.M)
+RE = re.compile(r"(^|[^ぁ-んァ-ン一-鿿「]|の)([" + LABELS + r"])(?=(角|点|直線))|(^|[^ぁ-んァ-ン一-鿿「]|の)([あいうえおかきくけ])(?=の(角|点|直線))|(^|[^ぁ-んァ-ン一-鿿「])([" + LABELS + r"])(?=と[" + LABELS + r"]|度|[、 ]|$)", re.M)   # D10-2: の+(角|点|直線)型から こ を除外(この点=指示語)
 def find_unbracketed_labels(text, fig_labels=()):
     out = []
     has = set(fig_labels or ())
     for m in RE.finditer(str(text or "")):
-        lab = m.group(2) or m.group(5); strong = m.group(2) is not None
+        lab = m.group(2) or m.group(5) or m.group(8); strong = (m.group(2) is not None) or (m.group(5) is not None)
         if not strong and lab not in has:
             continue
         out.append({"label": lab, "index": m.start(), "context": text[max(0, m.start() - 6):m.start() + 10]})
