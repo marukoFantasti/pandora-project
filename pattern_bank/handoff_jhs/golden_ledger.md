@@ -705,3 +705,9 @@
 - **自己検査(dry-run)**: g04の3パターンを一時的に書き換えて検出を確認(長文化1.76倍→文字数比で赤・語尾だけの変更→類似度0.89/0.91で赤・問題行以外の不変=(6)GREEN)→バンクは復元(diffなし)。
 - **学年別配当漢字表**: `pattern_bank/kanji_grade.js`(generate_poc_v10の allowed_kanji/kanji_check と1:1・allowed_grades+allowed_extra・累積集合API)と `handoff_jhs/学年別配当漢字表.md`(Fable執筆用: 学年別/累積字数と字一覧・allowed_extraの運用)。
 - 全54関門GREEN・golden不変。D10-2=裁可承認済み(記録)。
+
+### 2026-09-07 言い換え便 iikae_g04第1便(Fable新文42→転写33・保留9)——まるこ抽出検収待ち(10件・seed20260907)
+- **関門54の計測補正(Fable申し送り・適用)**: 類似度・文字数比は{slot}除去後の本文で計測。文字数比の窓=旧非スロット部<20字なら0.7〜3.0・それ以外0.8〜1.5・新非スロット部≦45字。
+- **転写33**: 関門54 GREEN(スロット集合一致・他フィールド不変・配当漢字・D10・類似度0.30〜0.75・文字数比窓内・golden=問題文行以外バイト一致)。golden md5: g04 8a4578fa → cb59041c(問題文行のみ変化・PASS 273不変)。furigana残存0・関門44一覧更新(新文の1字文脈=正)。**基線(iikae_baseline)は未更新=まるこ受理後に --update**。
+- **保留9(Fable差し戻し・本文は旧文のまま)**: ①申し送り自身の窓を超える7=div_2digit(文字数比3.18>3.0)・div_int(3.18)・men_conv(3.17)・gaisu_range(1.72>1.5・55字>45)・frac_addsub(1.63・49字)・estimate(1.53・46字)・div_bai(55字>45) ②本文に新しい数値定数を持ち込み nums_from_slots が赤=dec_addsub(「2つをあわせると」の2・かつ「水が5.3Lがあります」の助詞重複)・mult_trick(「99を（100−1）と考えて」の100/1)。定数追加は template_number_constants の変更=裁可1(他フィールド不変)に抵触するため転写不可→新文の書き直し待ち。
+- **抽出10(seed20260907・mulberry32)**: dec_div/box_mult/dist_law/bignum_write/dec_ikutsu/dec_atsume/kaku_chokkaku_do/kaku_do_chokkaku/kaz_kurai_big/tokei_choshin(旧/新の実生成文を報告に添付)。検収台帳: 問題文33件追記(抽出10=まるこ・23=アイ シート⑤・未配布・追記ツールは同一便内のみ更新に修正)。全54関門GREEN。

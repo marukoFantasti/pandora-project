@@ -18,6 +18,7 @@ const files = fs.readdirSync(BANK).filter(f => /^patterns_(g\d\d|jhs_c\d\d)\.jso
 function restHash(p) { const o = Object.assign({}, p); delete o.sentence_templates; delete o.kaisetsu; return crypto.createHash('md5').update(JSON.stringify(o)).digest('hex'); }
 function slots(t) { return new Set([...String(t).matchAll(/\{(\w+)\}/g)].map(m => m[1])); }
 function lev(a, b) { const m = a.length, n = b.length; if (!m) return n; if (!n) return m; let prev = Array.from({ length: n + 1 }, (_, j) => j); for (let i = 1; i <= m; i++) { const cur = [i]; for (let j = 1; j <= n; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); prev = cur; } return prev[n]; }
+function strip(t) { return String(t).replace(/\{\w+\}/g, ''); }   // {slot}除去(計測補正)
 function sim(a, b) { const L = Math.max(a.length, b.length); return L ? 1 - lev(a, b) / L : 1; }
 function isTranscribed(p) { return /転記例外|SELECTION_ANSWER|FORMULA_TRANSCRIBE/.test(JSON.stringify(p)); }
 const cur = {};
@@ -41,7 +42,9 @@ for (const f of files) {
     if ([...so].sort().join() !== [...sn].sort().join()) e.push('スロット集合 ' + [...so].sort().join('/') + ' ≠ ' + [...sn].sort().join('/'));
     if (restHash(p) !== b.rest) e.push('sentence_templates/kaisetsu以外のフィールドが変化');
     const kaisetsuChanged = (p.kaisetsu === undefined ? null : p.kaisetsu) !== b.kaisetsu;
-    for (let i = 0; i < Math.min(old.length, nw.length); i++) { const s = sim(old[i], nw[i]), r = nw[i].length / Math.max(1, old[i].length); if (s >= 0.8) e.push('variant' + i + ' 類似度 ' + s.toFixed(2) + '≥0.8(言い換えが実質的でない)'); if (r < 0.8 || r > 1.3) e.push('variant' + i + ' 文字数比 ' + r.toFixed(2) + '(0.8〜1.3外)'); }
+    // 計測補正(Fable申し送り・iikae_g04第1便): 類似度・文字数比は{slot}を除いた本文で計測。窓=旧非スロット部<20字なら0.7〜3.0・それ以外0.8〜1.5。新非スロット部≦45字
+    for (let i = 0; i < Math.min(old.length, nw.length); i++) { const oa = strip(old[i]), na = strip(nw[i]), s = sim(oa, na), r = na.length / Math.max(1, oa.length), shortOld = oa.length < 20, lo = shortOld ? 0.7 : 0.8, hi = shortOld ? 3.0 : 1.5;
+      if (s >= 0.8) e.push('variant' + i + ' 類似度 ' + s.toFixed(2) + '≥0.8(言い換えが実質的でない・スロット除去後)'); if (r < lo || r > hi) e.push('variant' + i + ' 文字数比 ' + r.toFixed(2) + '(' + lo + '〜' + hi + '外・非スロット部' + oa.length + '→' + na.length + ')'); if (na.length > 45) e.push('variant' + i + ' 新文の非スロット部 ' + na.length + '字>45'); }
     if (isTranscribed(p)) { const digs = new Set(); old.forEach(t => (t.replace(/\{\w+\}/g, '').match(/\d+(?:\.\d+)?/g) || []).forEach(d => digs.add(d))); const nd = nw.join('\n').replace(/\{\w+\}/g, ''); [...digs].forEach(d => { if (nd.indexOf(d) < 0) e.push('転記例外: 本文の数値 ' + d + ' が新文に無い'); }); }
     const allowed = K.allowedFor(p);
     for (let s = 0; s < 20; s++) { let r; try { r = P.makeProblem(p, null, bank.shared_lexicon); } catch (err) { e.push('生成失敗 ' + err.message.slice(0, 60)); break; }

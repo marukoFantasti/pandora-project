@@ -14,7 +14,7 @@ def add(kind, target, check, by, batch, status='未', dist='未配布', subject=
     q = load(); ids = {e['id'] for e in q['entries']}
     key = f"{kind}:{target}"
     for e in q['entries']:
-        if e['種類'] == kind and e['対象'] == target and e['状態'] == '未':
+        if e['種類'] == kind and e['対象'] == target and e['状態'] == '未' and e['追加した便'] == batch:   # 同じ便の再追記だけ更新(別便の同一対象は新規行=再検収)
             e['見るべきこと'] = check; e['追加した便'] = batch; save(q); return e['id']
     n = 1
     while f"rq-{n:04d}" in ids: n += 1
