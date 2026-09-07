@@ -1,0 +1,4841 @@
+{
+ "g01_add_nocarry_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "つぎの けいさんを しましょう。\n{a1}+{b1}"
+  ],
+  "kaisetsu": "たしざんは、2つの かずを あわせて いくつに なるかを もとめる けいさんです。{a1}に {b1}を たして、{ans}です。",
+  "rest": "31c9782697d703c4766db1ce70b08531"
+ },
+ "g01_add_carry_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "つぎの けいさんを しましょう。\n{a1}+{b1}"
+  ],
+  "kaisetsu": "こたえが 10より 大きく なる たしざんは、さきに 10の まとまりを つくります。{a1}に いくつ たすと 10に なるかを かんがえ、のこりを 10に たします。{a1}+{b1}={ans}です。",
+  "rest": "68e8887f839b19fdb538005fab1670bd"
+ },
+ "g01_sub_noborrow_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "つぎの けいさんを しましょう。\n{a1}-{b1}"
+  ],
+  "kaisetsu": "ひきざんは、はじめの かずから とった のこりを もとめる けいさんです。{a1}から {b1}を とって、{ans}です。",
+  "rest": "d24c72d6aa6c3f16aa2e6977c4bf3d89"
+ },
+ "g01_sub_borrow_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "つぎの けいさんを しましょう。\n{a1}-{b1}"
+  ],
+  "kaisetsu": "10より 大きい かずから ひくときは、10の まとまりから ひきます。{a1}を 10と いくつに わけて、10から {b1}を ひき、のこりの ばらを たします。こたえは {ans}です。",
+  "rest": "4d780ee64ac85d07b778a54ad0d9ad3d"
+ },
+ "g01_threenum_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "つぎの けいさんを しましょう。\n{a1}+{b1}-{c1}"
+  ],
+  "kaisetsu": "3つの かずの けいさんは、まえから じゅんに 2つずつ けいさんします。さいしょの 2つを たして、その こたえに 3つめを たします。こたえは {ans}です。",
+  "rest": "0a6913598edda92340a3c05331b34a75"
+ },
+ "g01_compose_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "10と {k1}で いくつですか。"
+  ],
+  "kaisetsu": "10と {k1}を あわせた かずは、10の つぎから {k1}かぞえた {ans}です。10と いくつで、11から 19までの かずが できます。",
+  "rest": "71a1c29290e580e36c1c72a8b3526450"
+ },
+ "g01_decompose_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "{n1}は 10と いくつですか。"
+  ],
+  "kaisetsu": "{n1}は、10と {ans}に わけられます。10の まとまりを とった のこりが ばらの かずです。",
+  "rest": "e8975dd28b1e523cac67df40b0e156b7"
+ },
+ "g01_box_add_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "□に はいる かずを かきましょう。\n{a1}+□={b1}"
+  ],
+  "kaisetsu": "□に はいる かずは、こたえの {b1}から {a1}を ひいて もとめます。□={ans}です。もとめたら、{a1}+{ans}が {b1}に なるか たしかめましょう。",
+  "rest": "4916c82f83acb0a5ee0fe2aac7b1eeee"
+ },
+ "g01_bunsho_awasete_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "あかい {it1}が {a1}こ、しろい {it1}が {b1}こ あります。あわせて なんこ ありますか。"
+  ],
+  "kaisetsu": "「あわせて」は、2つの かずを たします。{a1}+{b1}={ans}なので、あわせて {ans}こです。",
+  "rest": "59e9831339c824bf430b95fa3d5592db"
+ },
+ "g01_bunsho_nokori_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "{it1}が {a1}こ あります。{b1}こ たべました。のこりは なんこですか。"
+  ],
+  "kaisetsu": "「のこりは」は、はじめの かずから たべた かずを ひきます。{a1}−{b1}={ans}なので、のこりは {ans}こです。",
+  "rest": "8b06d04d2b1a336f2dd1f93ac5787902"
+ },
+ "g01_bunsho_chigai_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "あかい {it1}が {a1}こ、あおい {it1}が {b1}こ あります。ちがいは なんこですか。"
+  ],
+  "kaisetsu": "「ちがい」は、大きい かずから 小さい かずを ひいて もとめます。{a1}−{b1}={ans}なので、ちがいは {ans}こです。",
+  "rest": "3a3c141379f24670aa4593dd079ab46c"
+ },
+ "g01_kurabe_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "{a1}と {b1}では、どちらが おおきいですか。"
+  ],
+  "kaisetsu": "かずの 大きさを くらべるときは、10の まとまりが おおい ほうが 大きい かずです。おなじなら、ばらの かずで くらべます。{ans}の ほうが 大きいです。",
+  "rest": "7368941de96cd014ae77ad5ccd377971"
+ },
+ "g01_add_zero_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "つぎの けいさんを しましょう。\n{a1}+{b1}"
+  ],
+  "kaisetsu": "0は「なにも ない」という かずです。0を たしても かずは かわりません。{a1}+{b1}={ans}です。",
+  "rest": "4d696be3b8379bb052274dc39e403d5c"
+ },
+ "g01_sub_zero_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "つぎの けいさんを しましょう。\n{a1}-{b1}"
+  ],
+  "kaisetsu": "0を ひいても かずは かわりません。おなじ かずを ひくと、こたえは 0に なります。{a1}−{b1}={ans}です。",
+  "rest": "ddb0aba212e395fca2ae440f74b50948"
+ },
+ "g01_add_tens_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "つぎの けいさんを しましょう。\n{A1}+{B1}"
+  ],
+  "kaisetsu": "なん十の たしざんは、10の まとまりが いくつ あるかで かんがえます。{t1}こと {t2}こを あわせて、10の まとまりが {ans}を 10で わった かずに なるので、{ans}です。",
+  "rest": "11016a720b89edfada57d1457374e95b"
+ },
+ "g01_sub_tens_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "つぎの けいさんを しましょう。\n{A1}-{B1}"
+  ],
+  "kaisetsu": "なん十の ひきざんも、10の まとまりの かずで かんがえます。{t1}こから {t2}こを ひいた のこりの まとまりを 10ずつ かぞえて、{ans}です。",
+  "rest": "489b7a501fd67d660f14993e05efb8f3"
+ },
+ "g01_add_tensone_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "つぎの けいさんを しましょう。\n{N1}+{v1}"
+  ],
+  "kaisetsu": "{N1}に {v1}を たすときは、ばらの {u1}に {v1}を たします。10の まとまりは そのままです。こたえは {ans}です。",
+  "rest": "73e310e01a4486a4dbf3aa4512ccd474"
+ },
+ "g01_sub_tensone_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "つぎの けいさんを しましょう。\n{N1}-{v1}"
+  ],
+  "kaisetsu": "{N1}から {v1}を ひくときは、ばらの {u1}から {v1}を ひきます。10の まとまりは そのままです。こたえは {ans}です。",
+  "rest": "fcbfc029c7c46d48ac7c0e2b78c8a65d"
+ },
+ "g01_threenum_mix_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "つぎの けいさんを しましょう。\n{a1}-{b1}+{c1}"
+  ],
+  "kaisetsu": "たしざんと ひきざんが まざった けいさんも、まえから じゅんに します。さいしょの 2つを けいさんして、その こたえと 3つめを けいさんします。こたえは {ans}です。",
+  "rest": "d8d0ad50b2ca117644ee50c4f5cdf57a"
+ },
+ "g01_bunsho_kyudai_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "しろい {it1}が {b1}こ あります。あかい {it1}は、しろい {it1}より {d1}こ おおいです。あかい {it1}は なんこ ありますか。"
+  ],
+  "kaisetsu": "「{d1}こ おおい」ので、しろい {it1}の かず {b1}に {d1}を たします。{b1}+{d1}={ans}こです。",
+  "rest": "aeae052c354cfba87b164fc1b745a81b"
+ },
+ "g01_bunsho_kyusho_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "あかい {it1}が {b1}こ あります。しろい {it1}は、あかい {it1}より {d1}こ すくないです。しろい {it1}は なんこ ありますか。"
+  ],
+  "kaisetsu": "「{d1}こ すくない」ので、あかい {it1}の かず {b1}から {d1}を ひきます。{b1}−{d1}={ans}こです。",
+  "rest": "08fd382ebf9ba1c78b39237762cfb7ac"
+ },
+ "g01_bunsho_onaji_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "{n1}にんの こどもに、{it1}を {d1}こずつ くばります。{it1}は ぜんぶで なんこ いりますか。"
+  ],
+  "kaisetsu": "おなじ かずずつ くばるときは、1にんぶんの かずを ひとの かずだけ たします。{d1}こを {n1}かい たして、ぜんぶで {ans}こです。",
+  "rest": "f5aff2c34d23367257229848197f617f"
+ },
+ "g01_bunsho_kyuho_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "あかと しろの {it1}が、あわせて {a1}こ あります。あかい {it1}は {b1}こです。しろい {it1}は なんこ ありますか。"
+  ],
+  "kaisetsu": "あわせた かずから、わかっている ほうの かずを ひくと、もう いっぽうの かずが わかります。{a1}−{b1}={ans}こです。",
+  "rest": "3fb5ed04ee91d92745d610dcc65ec573"
+ },
+ "g01_kurai_kosei_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "10の まとまりが {x1}こと、ばらが {y1}こ あります。かずは いくつですか。"
+  ],
+  "kaisetsu": "10の まとまりが {x1}こで {x1}十、ばらが {y1}こなので、あわせて {ans}です。",
+  "rest": "4e636c0fd59ef63d41ab0fac1d18f9c1"
+ },
+ "g01_kurai_bunkai_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "{N1}は、10の まとまりが なんこと、ばらが なんこですか。"
+  ],
+  "kaisetsu": "{N1}は、10の まとまりが {x1}こと、ばらが {y1}こです。十の くらいの すうじが まとまりの かず、一の くらいの すうじが ばらの かずです。",
+  "rest": "277e07a73841e3dad62a97647b128046"
+ },
+ "g01_hyaku_kosei_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "100が {h1}こと、10が {t1}こ あります。かずは いくつですか。"
+  ],
+  "kaisetsu": "100が {h1}こと 10が {t1}こで、{ans}です。100の まとまりの かずを 百の くらいに、10の まとまりの かずを 十の くらいに かきます。",
+  "rest": "c5b1706f37f397a783edf07892822693"
+ },
+ "g01_kurabe_ookii_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "{a1}と {b1}では、どちらが おおきいですか。"
+  ],
+  "kaisetsu": "大きい かずを くらべるときは、けたの おおい ほうが 大きいです。けたが おなじなら、上の くらいから じゅんに くらべます。{ans}の ほうが 大きいです。",
+  "rest": "747b7cf8cba9b3c0cd99f0dbbb1e1e46"
+ },
+ "g01_seq_tsugi_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "{n1}より 1 おおきい かずは いくつですか。"
+  ],
+  "kaisetsu": "1 大きい かずは、つぎの かずです。{n1}の つぎは {ans}です。",
+  "rest": "1dcf5ed4e487d51b07ee77982147452e"
+ },
+ "g01_seq_mae_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "{n1}より 1 ちいさい かずは いくつですか。"
+  ],
+  "kaisetsu": "1 小さい かずは、まえの かずです。{n1}の まえは {ans}です。",
+  "rest": "dece802e363c47fe6196e31a9253a3e1"
+ },
+ "g01_seq_ana_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "かずが じゅんに ならんで います。□に はいる かずを かきましょう。\n{s1}、{d1}、□、□、{e1}"
+  ],
+  "kaisetsu": "かずが 1ずつ ふえて ならんで います。□には、まえの かずより 1 大きい かずが はいります。{n1d}、{n2d}です。",
+  "rest": "50302ba25d26f07e7cf12666471f6f8c"
+ },
+ "g01_seq_tobi_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "かずが きまりに したがって ならんで います。□に はいる かずを かきましょう。\n{s1}、{d1}、□、□、{e1}"
+  ],
+  "kaisetsu": "となりの かずと いくつ ちがうかを しらべると、{k1}ずつ ふえて います。□には、まえの かずに {k1}を たした かずが はいります。{n1d}、{n2d}です。",
+  "rest": "df8cab77b0aaf9b793866975efc64712"
+ },
+ "g01_junjo_banme_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "{it1}が {n1}こ、よこに 1れつに ならんで います。あかい {it1}は、まえから {k1}ばんめです。あかい {it1}の うしろには、{it1}が なんこ ありますか。"
+  ],
+  "kaisetsu": "まえから {k1}ばんめの うしろに あるのは、ぜんぶの かずから {k1}を ひいた かずです。{n1}−{k1}={ans}こです。「{k1}ばんめ」は 1こだけを さして います。",
+  "rest": "f3888a1d506d3b4e4df6e694e9da93fd"
+ },
+ "g01_junjo_shugo_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "{it1}が {n1}こ、よこに 1れつに ならんで います。まえから {k1}こを はこに いれました。のこりの {it1}は なんこですか。"
+  ],
+  "kaisetsu": "まえから {k1}こを とると、のこりは {n1}−{k1}={ans}こです。「{k1}こ」は {k1}こ ぜんぶを さして います。",
+  "rest": "9cc26a6b6c20068c2df1219d662e67e7"
+ },
+ "g01_jikan_ato_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "いまは {h1}じです。{d1}じかん あとは なんじですか。"
+  ],
+  "kaisetsu": "{d1}じかん あとは、いまの じこくに {d1}を たします。{h1}じの {d1}じかん あとは {ans}じです。",
+  "rest": "511bbf9b0b40a9d69e64404aa222f9aa"
+ },
+ "g01_jikan_mae_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "いまは {h1}じです。{d1}じかん まえは なんじでしたか。"
+  ],
+  "kaisetsu": "{d1}じかん まえは、いまの じこくから {d1}を ひきます。{h1}じの {d1}じかん まえは {ans}じです。",
+  "rest": "906881bd9371e60d149fdfecd8d18a02"
+ },
+ "g01_kurabe_nagasa_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "あかい テープの ながさは、クリップ {a1}こぶんです。しろい テープの ながさは、クリップ {b1}こぶんです。どちらの テープが ながいですか。"
+  ],
+  "kaisetsu": "おなじ クリップ なんこぶんかで くらべると、ながさが くらべられます。こぶんの かずが おおい {W1_word} テープの ほうが ながいです。",
+  "rest": "97ca657481b9cd742bd911cd847b02fe"
+ },
+ "g01_kurabe_kasa_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "あかい やかんには、みずが コップ {a1}こぶん はいります。しろい やかんには、みずが コップ {b1}こぶん はいります。どちらの やかんに みずが おおく はいりますか。"
+  ],
+  "kaisetsu": "おなじ コップで なんこぶん はいるかで くらべると、かさが くらべられます。こぶんの かずが おおい {W1_word} やかんの ほうが おおく はいります。",
+  "rest": "760f738fd49615a06edb476e069737eb"
+ },
+ "g01_kurabe_hirosa_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "あかい かみの ひろさは、ますめ {a1}こぶんです。しろい かみの ひろさは、ますめ {b1}こぶんです。どちらの かみが ひろいですか。"
+  ],
+  "kaisetsu": "おなじ ますめ なんこぶんかで くらべると、ひろさが くらべられます。こぶんの かずが おおい {W1_word} かみの ほうが ひろいです。",
+  "rest": "0b4c391b41e58e92b047a3f42a6011f0"
+ },
+ "g01_kurabe_ichiban_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "あかい テープは クリップ {a1}こぶん、しろい テープは クリップ {b1}こぶん、あおい テープは クリップ {c1}こぶんの ながさです。いちばん ながい テープは どれですか。"
+  ],
+  "kaisetsu": "3つを くらべるときは、こぶんの かずが いちばん おおい ものを さがします。{W1_word} テープが いちばん ながいです。",
+  "rest": "e343aedf954bcc8623e48b1305d17825"
+ },
+ "g01_katachi_utsushi_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "{sol1}の そこの かたちを、かみに うつしとりました。どんな かたちが できますか。"
+  ],
+  "kaisetsu": "そこの かたちを かみに うつすと、そこの めんの かたちが そのまま できます。{sol1}の そこは {fc1}です。",
+  "rest": "d0bb8a85e3c81bc44d11425f2b74e103"
+ },
+ "g01_katachi_nakama_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "{obj_first}と {obj_second}では、{sol_a}の かたちの なかまは どちらですか。"
+  ],
+  "kaisetsu": "かたちの なかまわけは、ころがるか、つめるか、とがって いるかで みわけます。{sol_a}の なかまは {W1_word}です。",
+  "rest": "ea9757c4dff621cd5490b30044f8159c"
+ },
+ "g01_katachi_kosei_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "おなじ おおきさの さんかくの いろいたを ならべて、{tg1}を つくります。いろいたは なんまい いりますか。"
+  ],
+  "kaisetsu": "さんかくの いろいたを 2まい あわせると しかくが できます。{tg1}を つくるには、いろいたが {ans}まい いります。",
+  "rest": "edbcfc7bb4a60d62b93c3c3a06131142"
+ },
+ "g01_kazushirabe_ooi_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "はこの なかに、りんごが {a1}こ、あめが {b1}こ、おはじきが {c1}こ はいって います。いちばん おおい ものは どれですか。"
+  ],
+  "kaisetsu": "かずを くらべるときは、それぞれの かずを かぞえて、いちばん 大きい かずを さがします。いちばん おおいのは {W1_word}です。",
+  "rest": "d9e14783e96f9f09ebea2c6a902cb8e2"
+ },
+ "g01_tokei_seiji_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "とけいを みて、なんじか こたえましょう。"
+  ],
+  "kaisetsu": "みじかい はりが さして いる すうじが「なんじ」です。ながい はりが 12を さして いるときは「ちょうど」です。{h1}じです。",
+  "rest": "f7633c7bb9a6c18e786918a22411d57c"
+ },
+ "g01_tokei_han_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "とけいを みて、なんじはんか こたえましょう。"
+  ],
+  "kaisetsu": "ながい はりが 6を さして いるときは「はん」です。みじかい はりは、すうじと すうじの あいだに あります。まえの すうじを よんで、{h1}じはんです。",
+  "rest": "c912b3bf5f07fbd703366fa10b26dd75"
+ },
+ "g01_tokei_nanpun_01": {
+  "file": "patterns_g01.json",
+  "sentence_templates": [
+   "とけいを みて、なんじなんぷんか こたえましょう。"
+  ],
+  "kaisetsu": "ながい はりは、すうじ 1つぶんで 5ふん すすみます。ながい はりの さす すうじを 5とびで かぞえて {m1}ふん、みじかい はりの まえの すうじが {h1}じなので、{h1}じ{m1}ふんです。",
+  "rest": "ab335b8ee5b907fa1ef1dda7251bc997"
+ },
+ "g02_addsub_gappei_2digit_carry_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "{actor_a}は{object}を{n1}{counter}、{actor_b}は{object}を{n2}{counter}もっています。あわせて何{counter}ありますか。",
+   "{object}が、赤いはこに{n1}{counter}、青いはこに{n2}{counter}入っています。ぜんぶで何{counter}ありますか。"
+  ],
+  "kaisetsu": "「あわせて」は、たし算です。{n1}+{n2}={ans}なので、あわせて{ans}{counter}です。一のくらいから計算して、10になったらくり上げます。",
+  "rest": "f4faf0fd9b78b023251bb6004ebaf4c4"
+ },
+ "g02_addsub_kyuzan_2digit_borrow_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "{actor}は{object}を{n1}{counter}もっていました。{n2}{counter}{verb_use}。のこりは何{counter}ですか。",
+   "{object}が{n1}{counter}ありました。{n2}{counter}{verb_use}。のこりは何{counter}になりましたか。"
+  ],
+  "kaisetsu": "「のこりは」は、はじめの数からつかった数をひきます。{n1}−{n2}={ans}なので、のこりは{ans}{counter}です。一のくらいがひけないときは、十のくらいから1くり下げます。",
+  "rest": "7c9022566d2c6b99c1e5939b313d8f5f"
+ },
+ "g02_addsub_zoka_2digit_carry_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "{actor}は{object}を{n1}{counter}もっていました。おかあさんから{n2}{counter}もらいました。ぜんぶで何{counter}になりましたか。",
+   "はこの中に{object}が{n1}{counter}入っていました。あとから{n2}{counter}入れました。ぜんぶで何{counter}になりましたか。"
+  ],
+  "kaisetsu": "はじめの数に、あとからふえた数をたします。{n1}+{n2}={ans}なので、ぜんぶで{ans}{counter}です。",
+  "rest": "c9b49e71d135f955d0c04c113cc0907e"
+ },
+ "g02_addsub_kyusa_2digit_borrow_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "{actor_a}は{object}を{n1}{counter}、{actor_b}は{object}を{n2}{counter}もっています。どちらが何{counter}多いですか。"
+  ],
+  "kaisetsu": "「どちらが何こ多いか」は、大きい数から小さい数をひきます。{big}−{small}={ans}なので、{winner}が{ans}{counter}多いです。答えには、だれが多いかも書きます。",
+  "rest": "b0dfedd0dbbfaeedb11ddac0ede59aa5"
+ },
+ "g02_addsub_kyuho_2digit_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "{attr_a}{object}と{attr_b}{object}が、あわせて{n1}{counter}あります。{attr_a}{object}は{n2}{counter}です。{attr_b}{object}は何{counter}ありますか。"
+  ],
+  "kaisetsu": "あわせた数から、わかっているほうの数をひくと、もう一方の数がわかります。{n1}−{n2}={ans}なので、{attr_b}{object}は{ans}{counter}です。",
+  "rest": "1ed535c80e7b7ac1cdba32b37cdbd9fa"
+ },
+ "g02_addsub_zoka_inverse_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "{actor}は{object}を何{counter}かもっていました。{n_added}{counter}もらったので、ぜんぶで{n_after}{counter}になりました。はじめに何{counter}もっていましたか。"
+  ],
+  "kaisetsu": "はじめの数は、ぜんぶの数から、もらった数をひいて求めます。{n_after}−{n_added}={ans}なので、はじめに{ans}{counter}もっていました。図にかいて、はじめ・もらった・ぜんぶの3つを線でつなぐと考えやすくなります。",
+  "rest": "013ec3000fd5b1dbdee2436f14414218"
+ },
+ "g02_addsub_2step_gosei_kyuzan_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "はこの中に{object}が{n_total}{counter}入っていました。{actor_a}が{n1}{counter}、{actor_b}が{n2}{counter}{verb_use}。のこりは何{counter}ですか。",
+   "{object}が{n_total}{counter}ありました。きのう{n1}{counter}、きょう{n2}{counter}{verb_use}。のこりは何{counter}ですか。"
+  ],
+  "kaisetsu": "まず、つかった数をあわせます。{n1}+{n2}={mid}です。つぎに、はじめの数からそれをひいて、{n_total}−{mid}={ans}{counter}です。2つの式を順に書きます。",
+  "rest": "e890e7af8d78c608c0cbd9b8396bf645"
+ },
+ "g02_mult_1atari_kuku_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "1{cont_counter}の{container}に{object}が{n_per}{counter}ずつ{verb_on}。{container}は{n_count}{cont_counter}あります。{object}はぜんぶで何{counter}{exist}か。"
+  ],
+  "kaisetsu": "「1{cont_counter}に{n_per}{counter}ずつ、{n_count}{cont_counter}分」は、{n_per}が{n_count}こ分なので、かけ算で求めます。{n_per}×{n_count}={ans}{counter}です。",
+  "rest": "372339a81144d0ecb695883dabc92271"
+ },
+ "g02_mult_bai_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "{actor_a}は{object}を{n_base}{counter}もっています。{actor_b}は{actor_a}の{n_times}ばいもっています。{actor_b}は{object}を何{counter}もっていますか。"
+  ],
+  "kaisetsu": "「{n_times}ばい」は、同じ数を{n_times}こ分あわせることです。{n_base}×{n_times}={ans}なので、{ans}{counter}です。",
+  "rest": "74e1b2a5e3dbb12bfec20570dc3aa6d2"
+ },
+ "g02_mult_2step_add_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "1{cont_counter}の{container}に{object}が{n_per}{counter}ずつ{verb_on}。{container}は{n_count}{cont_counter}あります。ほかに{object}が{n_extra}{counter}あります。{object}はぜんぶで何{counter}{exist}か。"
+  ],
+  "kaisetsu": "まず、かけ算で{n_per}×{n_count}={mid}を求めます。つぎに、ほかにある{n_extra}{counter}をたして、{mid}+{n_extra}={ans}{counter}です。",
+  "rest": "0278e0f402a7a54b97968e815b316c69"
+ },
+ "g02_mult_2step_sub_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "子どもが{n_total}人います。{n_per}人ずつのはんを{n_count}つ作りました。はんに入っていない子どもは何人いますか。"
+  ],
+  "kaisetsu": "まず、はんに入っている子どもの数を求めます。{n_per}×{n_count}={mid}人です。つぎに、ぜんぶの人数からひいて、{n_total}−{mid}={ans}人です。",
+  "rest": "e8f5cca553d3a544714590941f72f82d"
+ },
+ "g02_meas_len_gappei_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "{attr_a}テープの長さは{q1_disp}、{attr_b}テープの長さは{q2_disp}です。2本のテープをあわせると、何cm何mmになりますか。"
+  ],
+  "kaisetsu": "長さをあわせるときは、cmはcmどうし、mmはmmどうしをたします。mmが10になったら1cmにくり上げます。{q1_disp}+{q2_disp}={ans_disp}です。",
+  "rest": "cac86ebb7ef0b39eac87c01e58267953"
+ },
+ "g02_meas_len_kyusa_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "{attr_a}テープの長さは{q1_disp}、{attr_b}テープの長さは{q2_disp}です。どちらがどれだけ長いですか。"
+  ],
+  "kaisetsu": "「どれだけ長いか」は、長いほうから短いほうをひきます。{big_disp}−{small_disp}={ans_disp}なので、{winner_attr}テープが{ans_disp}長いです。",
+  "rest": "a7390de981daeb0ed93edfb486f69f3e"
+ },
+ "g02_meas_kasa_gappei_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "やかんに水が{q1_disp}、水とうに水が{q2_disp}入っています。あわせて何L何dLありますか。"
+  ],
+  "kaisetsu": "かさをあわせるときは、LはLどうし、dLはdLどうしをたします。dLが10になったら1Lにくり上げます。{q1_disp}+{q2_disp}={ans_disp}です。",
+  "rest": "96d242818af9469cd5598dfaba7d486a"
+ },
+ "g02_time_conv_min_to_hmin_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "{q1_min}分は、何時間何分ですか。"
+  ],
+  "kaisetsu": "1時間は60分です。{q1_min}分の中に60分がいくつあるかを考え、のこりが分になります。{ans_disp}です。",
+  "rest": "a70798699e72c9ae0d0380d261c7a59d"
+ },
+ "g02_time_after_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "{actor}は{t_start_disp}に家を出て、{dur}分あるいて公園につきました。公園についた時こくは何時何分ですか。"
+  ],
+  "kaisetsu": "出た時こくに、あるいた時間をたします。分をたして60をこえたら、1時間くり上げます。{t_start_disp}の{dur}分後は{ans_disp}です。",
+  "rest": "452eeccb9953b2f4b090e63638d3f838"
+ },
+ "g02_addsub_3ko_gappei_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "{actor_a}は{object}を{n1}{counter}、{actor_b}は{n2}{counter}、{actor_c}は{n3}{counter}もっています。3人あわせて何{counter}ありますか。"
+  ],
+  "kaisetsu": "3人分をあわせるときは、3つの数を順にたします。{n1}+{n2}+{n3}={ans}なので、あわせて{ans}{counter}です。",
+  "rest": "2e4595f55110424ae45a36af30245cd0"
+ },
+ "g02_addsub_zogen_bus_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "バスに{n1}人のっていました。バスていで{n_off}人おりて、{n_on}人のってきました。バスには何人のっていますか。"
+  ],
+  "kaisetsu": "おりた人はひいて、のった人はたします。{n1}−{n_off}+{n_on}={ans}なので、バスには{ans}人のっています。前から順に計算します。",
+  "rest": "c9d1385a23593ce23087de3fc23d01a4"
+ },
+ "g02_meas_longlen_gappei_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "{attr_a}リボンの長さは{q1_disp}、{attr_b}リボンの長さは{q2_disp}です。2本のリボンをあわせると、何m何cmになりますか。"
+  ],
+  "kaisetsu": "長さをあわせるときは、mはmどうし、cmはcmどうしをたします。cmが100になったら1mにくり上げます。{q1_disp}+{q2_disp}={ans_disp}です。",
+  "rest": "aced324afe0627d5f6b151230d43f563"
+ },
+ "g02_meas_kasa_kyuzan_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "ポットにお茶が{q1_disp}入っています。{q2_disp}のみました。のこりは何L何dLですか。"
+  ],
+  "kaisetsu": "のこりは、はじめのかさからのんだかさをひきます。dLがひけないときは、1Lを10dLにして計算します。{q1_disp}−{q2_disp}={ans_disp}です。",
+  "rest": "2d0b3050bae5b6f59fd09dfac9794a1c"
+ },
+ "g02_time_conv_hmin_to_min_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "{q1_disp}は、何分ですか。"
+  ],
+  "kaisetsu": "1時間は60分なので、時間の数だけ60をたして、のこりの分をたします。{q1_disp}は{ans_disp}分です。",
+  "rest": "2ed4f73b34007789b5c86219632f1ce4"
+ },
+ "g02_calc_add_2d_nc_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1}+{b1}"
+  ],
+  "kaisetsu": "2けたのたし算は、くらいをそろえて、一のくらいから計算します。{a1}+{b1}={ans}です。",
+  "rest": "c45d7b5866f57bc2cbb0c66f1cb6c2ee"
+ },
+ "g02_calc_add_2d_c_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1}+{b1}"
+  ],
+  "kaisetsu": "一のくらいをたして10になったら、十のくらいに1くり上げます。くり上げた1をわすれずにたします。{a1}+{b1}={ans}です。",
+  "rest": "e587d53726718b08d0d2b424ef75ef7c"
+ },
+ "g02_calc_add_to3d_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1}+{b1}"
+  ],
+  "kaisetsu": "十のくらいをたして100になったら、百のくらいに1くり上げます。{a1}+{b1}={ans}です。",
+  "rest": "73833f4373793317775b7eaefdd6619c"
+ },
+ "g02_calc_add_3d2d_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1}+{b1}"
+  ],
+  "kaisetsu": "3けたと2けたのたし算も、くらいをそろえて一のくらいから計算します。百のくらいはそのままおろします。{a1}+{b1}={ans}です。",
+  "rest": "4d84f3926d93807a6057c934078f3ef1"
+ },
+ "g02_calc_sub_2d_nb_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1}-{b1}"
+  ],
+  "kaisetsu": "2けたのひき算は、くらいをそろえて、一のくらいから計算します。{a1}−{b1}={ans}です。",
+  "rest": "b172a84246fffb010f34df072ee1048c"
+ },
+ "g02_calc_sub_2d_b_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1}-{b1}"
+  ],
+  "kaisetsu": "一のくらいがひけないときは、十のくらいから1くり下げて、10としてひきます。十のくらいは1へることをわすれずに。{a1}−{b1}={ans}です。",
+  "rest": "b6402503de6fdfe555296e6efa3c4d51"
+ },
+ "g02_calc_sub_3d2d_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1}-{b1}"
+  ],
+  "kaisetsu": "3けたから2けたをひくときも、一のくらいから順にひきます。ひけないときは上のくらいからくり下げます。{a1}−{b1}={ans}です。",
+  "rest": "000e3c7bcebc7df5aaa4a5854f82c9b1"
+ },
+ "g02_calc_tens_add_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1}+{b1}"
+  ],
+  "kaisetsu": "何十・何百の計算は、10や100のまとまりがいくつあるかで考えます。{t1}こと{t2}こをあわせて、{ans}です。",
+  "rest": "e27cf5419a764cf14a0a4694553ae77b"
+ },
+ "g02_calc_tens_sub_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1}-{b1}"
+  ],
+  "kaisetsu": "10や100のまとまりの数でひき算をします。{t1}こから{t2}こをひいた数だけまとまりがのこるので、{ans}です。",
+  "rest": "77f37741fc5e759f47b15585ec9d91a2"
+ },
+ "g02_kaz_kosei_1000_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "100を{a1}こ、10を{b1}こ、1を{c1}こあわせた数はいくつですか。"
+  ],
+  "kaisetsu": "100が{a1}こで{a1}百、10が{b1}こで{b1}十、1が{c1}こなので、あわせて{ans}です。それぞれのくらいに数字を書きます。",
+  "rest": "5ad2dfc4a3e69fc67396d9f5e0b00f00"
+ },
+ "g02_kaz_bunkai_1000_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "{N1}は、100を何こ、10を何こ、1を何こあわせた数ですか。"
+  ],
+  "kaisetsu": "{N1}の百のくらいの数字が100のこ数、十のくらいの数字が10のこ数、一のくらいの数字が1のこ数です。100を{a1}こ、10を{b1}こ、1を{c1}こです。",
+  "rest": "568e89d1cd012265f31ae9ad693f1fc0"
+ },
+ "g02_kaz_kosei_10000_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "1000を{a1}こ、100を{b1}こ、10を{c1}こ、1を{d1}こあわせた数はいくつですか。"
+  ],
+  "kaisetsu": "1000が{a1}こで{a1}千、100が{b1}こで{b1}百、10が{c1}こで{c1}十、1が{d1}こなので、{ans}です。",
+  "rest": "4afaeed1567a21de7fabce39c5072767"
+ },
+ "g02_kaz_kurabe_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "{a1}と{b1}では、どちらが大きいですか。"
+  ],
+  "kaisetsu": "大きい数をくらべるときは、けたの数が多いほうが大きいです。けたが同じなら、上のくらいから順に数字をくらべます。{ans}のほうが大きいです。",
+  "rest": "7ff3afd362679342545e879f37b36b0e"
+ },
+ "g02_kaz_tobi_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "数がきまりにしたがってならんでいます。□にはいる数をかきましょう。\n{s1}、{d1}、□、□、{e1}"
+  ],
+  "kaisetsu": "となりの数といくつちがうかをしらべると、{k1}ずつふえています。□には、前の数に{k1}をたした数が入ります。{n1d}、{n2d}です。",
+  "rest": "a310da4e53408535e8cb50fe67b4cd83"
+ },
+ "g02_jikoku_fun_go_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "いまの時こくは午前{h1}時{m1}分です。{d1}分後の時こくは何時何分ですか。"
+  ],
+  "kaisetsu": "{d1}分後は、今の時こくの分に{d1}をたします。60分をこえたら1時間くり上げます。{ans_disp}です。",
+  "rest": "800a52237962d97fa1ddee0caea9590a"
+ },
+ "g02_jikoku_go_hour_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "いまの時こくは{h1}時です。{d1}時間後の時こくは何時ですか。"
+  ],
+  "kaisetsu": "{d1}時間後は、今の時こくに{d1}をたします。{h1}時の{d1}時間後は{ans}時です。",
+  "rest": "6406d93c26b42d1042b484c06b874a59"
+ },
+ "g02_naga_add_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1}cm{b1}mm+{c1}cm"
+  ],
+  "kaisetsu": "長さの計算は、同じたんいどうしをたします。mmが10をこえたら1cmにくり上げます。答えは{ans_disp}です。",
+  "rest": "5108445b552201aff56f25f7bd9e6967"
+ },
+ "g02_naga_sub_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1}cm{b1}mm-{c1}cm"
+  ],
+  "kaisetsu": "長さのひき算も、同じたんいどうしをひきます。mmがひけないときは、1cmを10mmにしてひきます。答えは{ans_disp}です。",
+  "rest": "b884cef02e9368d5c37c91a028ea0cf5"
+ },
+ "g02_kasa_add_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1}L{b1}dL+{c1}L{d1}dL"
+  ],
+  "kaisetsu": "かさの計算は、LはLどうし、dLはdLどうしをたします。dLが10をこえたら1Lにくり上げます。答えは{ans_disp}です。",
+  "rest": "3a453053abb6909dd9249e29bba127e0"
+ },
+ "g02_kasa_sub_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1}L{b1}dL-{c1}L{d1}dL"
+  ],
+  "kaisetsu": "dLがひけないときは、1Lを10dLにしてひきます。答えは{ans_disp}です。",
+  "rest": "63c07d4cd54d033ddd7b17627e6aff5a"
+ },
+ "g02_naga_conv_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "{T1}cmは何m何cmですか。"
+  ],
+  "kaisetsu": "100cmが1mです。{T1}cmの中に100cmがいくつあるかを考え、のこりがcmになります。{ans_disp}です。",
+  "rest": "23945fb1b38cf39b79d3835710a38ace"
+ },
+ "g02_zukei_name_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "{def1}を何といいますか。"
+  ],
+  "kaisetsu": "3本の直線でかこまれた形が三角形、4本の直線でかこまれた形が四角形です。四角形のうち、4つの角がみんな直角なら長方形、さらに4つの辺の長さもみんな同じなら正方形です。{def1}は{nm1}です。",
+  "rest": "0a70955febbaea01c9ab93e4cfb5b773"
+ },
+ "g02_zukei_hen_choten_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "{nm1}には、{ask1}がいくつありますか。"
+  ],
+  "kaisetsu": "まわりの直線が辺、直線と直線がくっついたところが頂点、頂点でできる形が角です。{nm1}の{ask1}は{ans}{un1}あります。",
+  "rest": "16ca6cbb9f1b1258eae0b64348a01960"
+ },
+ "g02_hako_kazoe_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "はこの形には、{ask1}がいくつありますか。"
+  ],
+  "kaisetsu": "はこの形には、たいらなところ（面）が6つ、面と面のさかいの直線（辺）が12、かどの点（頂点）が8つあります。{ask1}は{ans}{un1}です。",
+  "rest": "174d5f60714bd02558e5ae0fe08aa36c"
+ },
+ "g02_kuku_ana_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "□にあてはまる数をかきましょう。\n{a1}×□={P1}"
+  ],
+  "kaisetsu": "九九の答えから、かけた数を見つけます。{a1}のだんの九九で、答えが{P1}になるところをさがすと、{a1}×{ans}={P1}です。",
+  "rest": "986b3b2766429b6ec8f6ff9f58a60d5a"
+ },
+ "g02_kuku_kimari_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "{a1}×{b1}の答えは、{a1}×{Q1}の答えよりいくつ大きいですか。"
+  ],
+  "kaisetsu": "かける数が1ふえると、答えはかけられる数だけ大きくなります。{a1}×{b1}は{a1}×{Q1}より、{a1}だけ大きいので、{ans}です。",
+  "rest": "4d868bac9cf908a7f7946e3e7fd738b9"
+ },
+ "g02_bunsu_teigi_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "同じ大きさに{n1}つに分けた1つ分は、もとの大きさの何分の一ですか。"
+  ],
+  "kaisetsu": "同じ大きさに{n1}つに分けた1つ分を、もとの大きさの{n1}分の一といい、1/{n1}と書きます。",
+  "rest": "3001221859cbee6f569c36f63f28ba92"
+ },
+ "g02_hyo_yomi_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "右のひょうは、しらべたけっかをせいりしたものです。{ask1}のかずはいくつですか。"
+  ],
+  "kaisetsu": "ひょうは、しらべたことをしゅるいごとにせいりしたものです。{ask1}のところをたてに見て、書いてある数を読みます。答えは{ans}{unit1}です。",
+  "rest": "1945df4247fbbfbab66c9272079a76a8"
+ },
+ "g02_tobun_nuri_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "1/{den1}に色をぬった図をかきなさい。"
+  ],
+  "kaisetsu": "{den1}分の{num1}は、全体を同じ大きさに{den1}つに分けた{num1}つ分です。まず全体を同じ大きさに{den1}つに分けて、そのうち{num1}こに色をぬります。",
+  "rest": "0eb44cc5f44a411a1dcc92d3f54510a8"
+ },
+ "g02_tobun_yomi_01": {
+  "file": "patterns_g02.json",
+  "sentence_templates": [
+   "つぎの□にあてはまる分数を書きなさい。色をぬったところは、もとの大きさの□です。"
+  ],
+  "kaisetsu": "同じ大きさに{den1}つに分けた1つ分を、{den1}分の1と書きます。色がついているのは{den1}こに分けたうちの{num1}こ分なので、{num1}/{den1}です。",
+  "rest": "7ca76b0b00ad826195a5dcf3853364b0"
+ },
+ "g03_div_tobun_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "{n1}{counter}の{object}を{n2}人で同じ数ずつ分けると、1人分は何{counter}になりますか。",
+   "{object}が{n1}{counter}あります。{n2}人で同じ数ずつ分けると、1人分は何{counter}になりますか。"
+  ],
+  "kaisetsu": "「同じ数ずつ分ける」ときは、わり算を使います。ぜんぶの数{n1}{counter}を、分ける人数{n2}人でわると、1人分が求められます。{n1}÷{n2}={ans}なので、1人分は{ans}{counter}です。",
+  "rest": "a156da273a7e70a66eb1f4a9bae2476c"
+ },
+ "g03_div_hogan_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "{n1}{counter}の{object}を1人に{n2}{counter}ずつ分けると、何人に分けられますか。",
+   "{object}が{n1}{counter}あります。1人に{n2}{counter}ずつ分けると、何人に分けられますか。"
+  ],
+  "kaisetsu": "「1人に{n2}{counter}ずつ分ける」ときも、わり算を使います。ぜんぶの数{n1}{counter}の中に、{n2}{counter}が何回入るかを考えます。{n1}÷{n2}={ans}なので、{ans}人に分けられます。1人分を求めるときも、何人分かを求めるときも、式は同じわり算になります。",
+  "rest": "f949816e033c40a1019add425e0cd16c"
+ },
+ "g03_div_bai_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "{n1}{unit}は{n2}{unit}の何倍ですか。"
+  ],
+  "kaisetsu": "「何倍ですか」ときかれたら、もとにする大きさでわります。{n1}{unit}は{n2}{unit}の何倍かなので、{n1}÷{n2}={ans}で、{ans}倍です。",
+  "rest": "27592fb86d03fc7ab1d35656cf4b750b"
+ },
+ "g03_div_amari_fukubun_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "{n1}{counter}の{object}を1人に{n2}{counter}ずつ配ると、何人に配れて、何{counter}あまりますか。",
+   "{object}が{n1}{counter}あります。1人に{n2}{counter}ずつ配ると、何人に配れて、何{counter}あまりますか。"
+  ],
+  "kaisetsu": "わり切れないわり算では、商とあまりを求めます。{n1}÷{n2}={q}あまり{rem}なので、{q}人に配れて、{rem}{counter}あまります。あまりの{rem}は、わる数の{n2}より小さくなっているか、たしかめましょう。",
+  "rest": "5dfe6f4a803470cc7e0d65f84b6f039f"
+ },
+ "g03_div_amari_ceil_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "{ctx_head}{ctx_tail}"
+  ],
+  "kaisetsu": "{n1}÷{n2}={q}あまり{rem}です。あまりの{rem}の分も入れなければならないので、{q}にあと1つ必要です。{q}+1={ans}で、答えは{ans}{ctx_ans_counter}になります。「あまりが出たら1つ多くする」のか「あまりは数えない」のか、問題の場面をよく読んで決めます。",
+  "rest": "c4ff61e86fdc3451dd814c9373268f55"
+ },
+ "g03_div_amari_floor_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "{ctx_head}{ctx_tail}"
+  ],
+  "kaisetsu": "{n1}÷{n2}={q}あまり{rem}です。あまりの{rem}では1つ分に足りないので、あまりは数えません。答えは商のままの{q}{ctx_ans_counter}です。「あまりの分で、もう1つできるか」を場面で考えることが大切です。",
+  "rest": "f45671814299fd5867f8ff435d1a0173"
+ },
+ "g03_div_2step_gappei_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "おとな{a1}人と子ども{a2}人がいます。あわせた人数で{object}{n1}{counter}を同じ数ずつ分けると、1人分は何{counter}になりますか。"
+  ],
+  "kaisetsu": "まず、分ける人数を求めます。おとなと子どもをあわせて{a1}+{a2}={psum}人です。次に、ぜんぶの数{n1}{counter}を{psum}人でわって、{n1}÷{psum}={ans}なので、1人分は{ans}{counter}です。2つの式を順番に書きます。",
+  "rest": "56172584c1f6683b73aef9df8c9ed75e"
+ },
+ "g03_box_add_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "{object}が{n1}{counter}ありました。何{counter}かもらったので、ぜんぶで{n3}{counter}になりました。もらった数を□{counter}として式をかき、□にあてはまる数をもとめなさい。"
+  ],
+  "kaisetsu": "もらった数を□とすると、{n1}+□={n3}という式になります。□を求めるときは、ぜんぶの数から、はじめの数をひきます。□={n3}−{n1}={ans}なので、もらったのは{ans}{counter}です。たし算の□は、ひき算で求められます。",
+  "rest": "5c3d7e0ce953324dd7cd93374465b5e4"
+ },
+ "g03_box_sub_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "{object}が{n1}{counter}ありました。何{counter}か{verb_use_ta}ので、のこりが{n3}{counter}になりました。{verb_use_ta}数を□{counter}として式をかき、□にあてはまる数をもとめなさい。"
+  ],
+  "kaisetsu": "{verb_use_ta}数を□とすると、{n1}−□={n3}という式になります。□を求めるときは、はじめの数からのこりの数をひきます。□={n1}−{n3}={ans}なので、{verb_use_ta}のは{ans}{counter}です。",
+  "rest": "1cb1496484392a0aecc8f3128cf167ae"
+ },
+ "g03_box_mult_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "1つのグループに{n2}人ずついます。ぜんぶで{n3}人いるとき、グループの数を□として式をかき、□にあてはまる数をもとめなさい。"
+  ],
+  "kaisetsu": "グループの数を□とすると、{n2}×□={n3}という式になります。□を求めるときは、ぜんぶの人数を1グループの人数でわります。□={n3}÷{n2}={ans}なので、{ans}グループです。かけ算の□は、わり算で求められます。",
+  "rest": "895053c49b9dd96260eb8f591589bf63"
+ },
+ "g03_box_div_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "次の□にあてはまる数をもとめなさい。{n1}÷□={q}"
+  ],
+  "kaisetsu": "{n1}÷□={q}の□は、わる数です。わられる数を商でわると、わる数が求められます。□={n1}÷{q}={ans}です。求めた数で{n1}÷{ans}を計算して、{q}になればたしかめができます。",
+  "rest": "10fec5d484219479ddac69b45b92cec5"
+ },
+ "g03_addsub_gappei_3digit_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "動物園に、きのうは{n1}人、今日は{n2}人来ました。あわせて何人来ましたか。",
+   "図書館で、先週は{n1}人、今週は{n2}人が本をかりました。あわせて何人ですか。"
+  ],
+  "kaisetsu": "「あわせて何人」ときかれたら、2つの数をたします。{n1}+{n2}={ans}なので、あわせて{ans}人です。くり上がりに気をつけて、一の位から順に計算します。",
+  "rest": "3234088a0c16c0b16a610d69ff0edd8b"
+ },
+ "g03_addsub_kyuzan_3digit_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "{object}が{n1}{counter}ありました。{n2}{counter}{verb_use}。のこりは何{counter}ですか。"
+  ],
+  "kaisetsu": "「のこりは何{counter}」ときかれたら、はじめの数から{verb_use}数をひきます。{n1}−{n2}={ans}なので、のこりは{ans}{counter}です。くり下がりに気をつけて、一の位から順に計算します。",
+  "rest": "91ec5ca12fdeab4742dae10823b9392d"
+ },
+ "g03_addsub_kyusa_3digit_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "{actor_a}は貝がらを{n1}こ、{actor_b}は{n2}こひろいました。どちらが何こ多くひろいましたか。"
+  ],
+  "kaisetsu": "「どちらが何こ多い」ときかれたら、大きいほうから小さいほうをひきます。{n1}−{n2}={ans}なので、{actor_a}が{ans}こ多くひろいました。答えには、だれが多いのかも書きます。",
+  "rest": "45488f3b78859727bd0c3608ab078be6"
+ },
+ "g03_mult_2step_add_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "1たば{n2}まいの色紙が{n3}たばと、ばらの色紙が{n4}まいあります。色紙はぜんぶで何まいありますか。"
+  ],
+  "kaisetsu": "まず、たばになっている色紙の数を求めます。{n2}×{n3}={t}まいです。次に、ばらの{n4}まいをたして、{t}+{n4}={ans}まいです。",
+  "rest": "f540a72b3db1eb6c357c231332fb1b66"
+ },
+ "g03_mult_2step_change_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "1こ{n2}円のパンを{n3}こ買って、{n5}円を出しました。おつりは何円ですか。"
+  ],
+  "kaisetsu": "まず、パンの代金を求めます。{n2}×{n3}={t}円です。次に、出したお金から代金をひいて、{n5}−{t}={ans}円がおつりです。",
+  "rest": "dcec54b305f4d6bf188a5a82078a5e46"
+ },
+ "g03_mult_distrib_sum_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "1こ{a}円のパンと、1本{b}円のジュースを、それぞれ{n}つずつ買います。代金はぜんぶで何円ですか。"
+  ],
+  "kaisetsu": "パンとジュースを1つずつ買うと{a}+{b}={s}円です。それを{n}つずつ買うので、{s}×{n}={ans}円です。先に1組の代金を作ると、計算が楽になります。",
+  "rest": "eb0583aa573fedc986f19adadc21083b"
+ },
+ "g03_mult_distrib_diff_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "1こ{a}円のケーキと、1こ{b}円のプリンがあります。それぞれ{n}こずつ買うと、代金のちがいは何円ですか。"
+  ],
+  "kaisetsu": "ケーキとプリンの1こあたりのちがいは{a}−{b}={d}円です。{n}こずつ買うと、ちがいも{n}こ分になるので、{d}×{n}={ans}円です。",
+  "rest": "b27470978a7dc40383656fb5047a392b"
+ },
+ "g03_meas_dist_gappei_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "家から学校までの道のりは{q1_disp}、学校から駅までの道のりは{q2_disp}です。家から学校の前を通って駅まで行くと、道のりは何km何mになりますか。"
+  ],
+  "kaisetsu": "道のりをあわせるときは、同じ単位にそろえてたします。{q1_disp}+{q2_disp}={ans}mです。1000mが1kmなので、{ans}mは{ans_disp}と表せます。",
+  "rest": "b41f9041958082ac550afa3e6f30f64d"
+ },
+ "g03_meas_weight_gappei_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "重さ{q1_disp}のかごに、みかんを{q2_disp}入れました。ぜんたいの重さは何kg何gになりますか。"
+  ],
+  "kaisetsu": "重さをあわせるときは、同じ単位にそろえます。{q2_disp}は{q2}gなので、{q1_disp}+{q2}g={ans}gです。1000gが1kgなので、{ans}gは{ans_disp}です。",
+  "rest": "642e4825ce24faa260f535b56e0366a4"
+ },
+ "g03_dec_add_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "水がやかんに{q1_disp}L、ポットに{q2_disp}L入っています。あわせて何Lありますか。"
+  ],
+  "kaisetsu": "小数のたし算は、小数点の位置をそろえて、同じ位どうしをたします。{q1_disp}+{q2_disp}={ans_disp}なので、あわせて{ans_disp}Lです。",
+  "rest": "8da1ad1fa97d3813bf81d3d747dc8e8d"
+ },
+ "g03_dec_kyusa_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "{attr_a}テープは{q1_disp}m、{attr_b}テープは{q2_disp}mです。どちらが何m長いですか。"
+  ],
+  "kaisetsu": "「どちらが何m長い」ときかれたら、長いほうから短いほうをひきます。{q1_disp}−{q2_disp}={ans_disp}なので、{attr_a}テープが{ans_disp}m長いです。",
+  "rest": "ef58a5f7e67603f5d104203b9b123f25"
+ },
+ "g03_frac_represent_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "1{unit}を{den}等分した{num}こ分の{noun}は何{unit}ですか。"
+  ],
+  "kaisetsu": "1{unit}を{den}等分した1こ分は、{den}分の1{unit}です。その{num}こ分なので、{den}分の{num}、つまり{ans_frac}{unit}です。分母が「いくつに分けたか」、分子が「いくつ分か」を表します。",
+  "rest": "bb5e148190daf2a9730fd16dbc6c70ae"
+ },
+ "g03_frac_add_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "リボンを{f1_disp}mと{f2_disp}mつかいました。あわせて何mつかいましたか。"
+  ],
+  "kaisetsu": "分母が同じ分数のたし算は、分母はそのままで、分子だけをたします。{f1_disp}+{f2_disp}={ans_frac}なので、あわせて{ans_frac}mです。分子が分母と同じになったら、それは1です。",
+  "rest": "fa4cf731e8c3f0675594fba2eeb43ab3"
+ },
+ "g03_frac_sub_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "ジュースが{f1_disp}Lあります。{f2_disp}L飲みました。のこりは何Lですか。"
+  ],
+  "kaisetsu": "分母が同じ分数のひき算は、分母はそのままで、分子だけをひきます。{f1_disp}−{f2_disp}={ans_frac}なので、のこりは{ans_frac}Lです。",
+  "rest": "53f13e5eb63f603813e985a6f3743ad9"
+ },
+ "g03_div_amari_ceil_2step_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "子どもが1れつに{n_a}人ずつ、{n_b}れつにならんでいます。この子ども全員が、長いす1きゃくに{n2}人ずつすわります。全員がすわるには、長いすは何きゃくいりますか。"
+  ],
+  "kaisetsu": "まず子どもの人数を求めます。{n_a}×{n_b}={t}人です。次に長いすの数を求めます。{t}÷{n2}={q}あまり{rem}で、あまった{rem}人にも長いすがいるので、{q}+1={ans}きゃくです。",
+  "rest": "59e6d1f020bc81d463225b50a7eb4b9f"
+ },
+ "g03_calc_add_34d_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1}+{b1}"
+  ],
+  "kaisetsu": "けたの多いたし算は、位をそろえて書き、一の位から順にたします。10になったら、次の位に1くり上げます。{a1}+{b1}={ans}です。",
+  "rest": "5e69ec9c37de2f63a339f427c1c11dba"
+ },
+ "g03_calc_sub_34d_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1}-{b1}"
+  ],
+  "kaisetsu": "けたの多いひき算は、位をそろえて書き、一の位から順にひきます。ひけないときは、上の位から1くり下げて10として計算します。{a1}−{b1}={ans}です。",
+  "rest": "a3222f3d5e350a79c83e8f413c141056"
+ },
+ "g03_calc_mult_2d1d_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1}×{b1}"
+  ],
+  "kaisetsu": "2けた×1けたの筆算は、一の位から順にかけます。一の位の答えが10をこえたら、十の位にくり上げます。{a1}×{b1}={ans}です。",
+  "rest": "70a43fb3f15fb35938b41bb2d5f604e7"
+ },
+ "g03_calc_mult_3d1d_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1}×{b1}"
+  ],
+  "kaisetsu": "3けた×1けたの筆算も、一の位・十の位・百の位の順にかけていきます。くり上がりを忘れずにたします。{a1}×{b1}={ans}です。",
+  "rest": "ffdd80ee82c439919be1ca8bbe040a8b"
+ },
+ "g03_calc_mult_x10s_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1}×{b1}"
+  ],
+  "kaisetsu": "何十をかけるときは、まず十の位の数字でかけて、答えの右に0を1つつけます。{a1}×{b1}={ans}です。",
+  "rest": "cf9f087134e68fa9bf7ff6ec163138c2"
+ },
+ "g03_calc_mult_2d2d_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1}×{b1}"
+  ],
+  "kaisetsu": "2けた×2けたの筆算は、かける数の一の位でかけた答えと、十の位でかけた答えを、位をずらして書いてからたします。{a1}×{b1}={ans}です。",
+  "rest": "4b8e01f060b20e706cffa9caffe8287a"
+ },
+ "g03_calc_mult_big_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1}×{b1}"
+  ],
+  "kaisetsu": "何百や何千をかけるときは、0をとった数どうしをかけてから、とった0の数だけ答えの右に0をつけます。{a1}×{b1}={ans}です。",
+  "rest": "f874d3339e828c3f1a678378b799eecc"
+ },
+ "g03_calc_mult_box_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "□にあてはまる数をかきましょう。\n{A1}×□={P1}"
+  ],
+  "kaisetsu": "{A1}×□={P1}の□は、{P1}÷{A1}で求められます。何十のかけ算は、十の位の数字で考えると九九で見つけられます。□={ans}です。",
+  "rest": "7297f7c39da179feea496886fa3e25f2"
+ },
+ "g03_kaz_kurai_digit_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "{N1}という数について、{ask1}の数字を答えなさい。"
+  ],
+  "kaisetsu": "大きい数は、右から4けたずつ区切ると位がわかりやすくなります。一・十・百・千のあとは一万・十万・百万・千万です。{N1}の{ask1}を右から数えて見つけると、その位の数字は{ans}です。",
+  "rest": "36bd6ea4119e4baca55e000912d71e76"
+ },
+ "g03_kaz_man_kosei_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "1000を{n1}こあつめた数はいくつですか。"
+  ],
+  "kaisetsu": "1000を10こあつめると10000（一万）です。1000を{n1}こあつめた数は、1000×{n1}と同じで、{ans}です。1000の右に0が3つあることをもとに考えます。",
+  "rest": "848420daab81b294a37c31678be258fd"
+ },
+ "g03_kaz_x10_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "{n1}を{sc1}倍した数はいくつですか。"
+  ],
+  "kaisetsu": "数を10倍すると位が1つ上がり、100倍すると位が2つ上がります。数字はそのままで、右に0をつけます。{n1}を{sc1}倍すると{ans}です。",
+  "rest": "687103733c89000868f522635a36c24f"
+ },
+ "g03_kaz_seq_big_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "数がきまりにしたがってならんでいます。□にはいる数をかきましょう。\n{s1}、{d1}、□、□、{e1}"
+  ],
+  "kaisetsu": "数の並びのきまりを見つけます。{s1}から{d1}まで、いくつふえているかを調べると、同じ数ずつふえていることがわかります。同じ数をたし続けると、□は{n1d}、{n2d}になります。",
+  "rest": "0d2bb165a78248aba750ee1e0bac338f"
+ },
+ "g03_dec_kasa_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "{t1}dLは何Lですか。小数で答えなさい。"
+  ],
+  "kaisetsu": "1Lは10dLなので、1dLは0.1Lです。{t1}dLは、0.1Lが{t1}こ分なので、{ans_disp}Lです。",
+  "rest": "306cd069166820afcceeb4e37495827c"
+ },
+ "g03_dec_add_calc_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1_disp}+{b1_disp}"
+  ],
+  "kaisetsu": "小数のたし算の筆算は、小数点をそろえて書き、整数と同じように計算します。答えの小数点は、上の小数点の真下におろします。{a1_disp}+{b1_disp}={ans_disp}です。",
+  "rest": "50f67629de4f0d15f908cb7baeaa5b10"
+ },
+ "g03_dec_sub_calc_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1_disp}-{b1_disp}"
+  ],
+  "kaisetsu": "小数のひき算の筆算も、小数点をそろえて書きます。整数と同じようにひいて、答えの小数点は上の小数点の真下におろします。{a1_disp}−{b1_disp}={ans_disp}です。",
+  "rest": "b8881b4caee212c7bac8af54a8f4616f"
+ },
+ "g03_dec_shikumi_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "0.1を{n1}こあつめた数はいくつですか。"
+  ],
+  "kaisetsu": "0.1を10こあつめると1になります。0.1を{n1}こあつめた数は、10こ分ごとに1になると考えて、{ans_disp}です。",
+  "rest": "ca1e061b9ab7a5f071dcb4cdd61e524f"
+ },
+ "g03_calc_div_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{P1}÷{a1}"
+  ],
+  "kaisetsu": "わり算の答えは、九九を使って見つけます。{a1}の段の九九で、答えが{P1}になるのを探すと、{a1}×{ans}={P1}なので、{P1}÷{a1}={ans}です。",
+  "rest": "0090d425e449082f869fcb00e3fa024c"
+ },
+ "g03_calc_div_amari_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。商とあまりを答えなさい。\n{P1}÷{a1}"
+  ],
+  "kaisetsu": "{a1}の段の九九で、{P1}をこえない一番大きい答えを探します。{a1}×{b1}のあと、{P1}からひいたのこりがあまりです。{P1}÷{a1}={b1}あまり{r1}で、あまり{r1}はわる数{a1}より小さくなっています。",
+  "rest": "aa28eb96b5477612e677c0a583163898"
+ },
+ "g03_kimari_koukan_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "□にあてはまる数をかきましょう。\n{a1}×{b1}={b1}×□"
+  ],
+  "kaisetsu": "かけ算では、かける数とかけられる数を入れかえても答えは同じです。{a1}×{b1}={b1}×{a1}なので、□に入るのは{a1}です。",
+  "rest": "2d24c79448ca6b6d91a4080d7eccef4f"
+ },
+ "g03_kimari_zero_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1}×{b1}"
+  ],
+  "kaisetsu": "どんな数に0をかけても、0にどんな数をかけても、答えは0です。{a1}×{b1}={ans}です。",
+  "rest": "a0fd3376ea266280664cf59051c9b102"
+ },
+ "g03_kimari_zoubun_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "{A1}×{b1}の答えは、{A1}×{Q1}の答えよりいくつ大きいですか。"
+  ],
+  "kaisetsu": "かける数が1ふえると、答えはかけられる数の分だけ大きくなります。{A1}×{b1}は{A1}×{Q1}より、{A1}だけ大きいので、答えは{ans}です。",
+  "rest": "56e0584e3aa8ac35ee16cfafb63cf063"
+ },
+ "g03_time_min_add_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "{m1}分+{n1}分は何時間何分ですか。"
+  ],
+  "kaisetsu": "分どうしをたして60分をこえたら、60分を1時間にかえます。{m1}分+{n1}分の答えは{ans_disp}です。",
+  "rest": "294d6ba06fed189abd4ab7192526a9b3"
+ },
+ "g03_time_conv_min_to_hmin_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "{t1}分は何時間何分ですか。"
+  ],
+  "kaisetsu": "60分が1時間です。{t1}分の中に60分が何回あるかを考えて、そのあまりが分になります。{t1}分は{ans_disp}です。",
+  "rest": "609403be079480249df2207e0d13e6b2"
+ },
+ "g03_time_keika_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "午前{h1}時{m1}分から午前{h2}時{m2}分までの時間は何分ですか。"
+  ],
+  "kaisetsu": "午前{h1}時{m1}分から午前{h2}時{m2}分までの時間は、まず次の「ちょうどの時こく」までの分を数え、そこから終わりまでの分をたします。あわせて{ans}分です。",
+  "rest": "12abafdc7d0d5c3b092a1b713123ae95"
+ },
+ "g03_en_han_to_choku_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "半径が{r1}cmの円の直径は何cmですか。"
+  ],
+  "kaisetsu": "直径は半径の2倍の長さです。半径が{r1}cmなので、直径は{r1}×2={ans}cmです。",
+  "rest": "05040872bd201c04d14626a90cb5d10e"
+ },
+ "g03_en_choku_to_han_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "直径が{D1}cmの円の半径は何cmですか。"
+  ],
+  "kaisetsu": "半径は直径の半分の長さです。直径が{D1}cmなので、半径は{D1}÷2={ans}cmです。",
+  "rest": "39603c193b114590f0749d55d10a0ec9"
+ },
+ "g03_kyu_hako_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "直径が{d1}cmのボールを、箱の中に横にぴったり{n1}こならべます。箱の横の長さは何cmですか。"
+  ],
+  "kaisetsu": "ボールを横にぴったりならべると、箱の横の長さは、ボールの直径の{n1}こ分になります。{d1}×{n1}={ans}cmです。",
+  "rest": "28ee7bc1f71db58b63571c3a688b68b3"
+ },
+ "g03_hyo_yomi_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "右の表は、しらべたけっかを整理したものです。{ask1}の数はいくつですか。"
+  ],
+  "kaisetsu": "表は、しらべたことを種類ごとに整理したものです。{ask1}の数は、表の{ask1}のところをたてに見て、書いてある数を読みます。答えは{ans}{unit1}です。",
+  "rest": "5ac08344062668fb8134643cc74a0b56"
+ },
+ "g03_hyo_gokei_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "右の表は、しらべたけっかを整理したものです。しらべた数は全部でいくつですか。"
+  ],
+  "kaisetsu": "表の合計は、それぞれの数をぜんぶたして求めます。{v1}+{v2}+{v3}+{v4}={ans}なので、しらべた数は全部で{ans}{unit1}です。",
+  "rest": "9efef4ff9423942e7f861ee5ca92c56a"
+ },
+ "g03_sankaku_name_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "{def1}を何といいますか。"
+  ],
+  "kaisetsu": "三角形は、辺の長さで名前が決まります。2つの辺の長さが等しい三角形が二等辺三角形、3つの辺の長さがすべて等しい三角形が正三角形です。{def1}のは{nm1}です。",
+  "rest": "1f44deb9e5c5a31af70b75415deac37d"
+ },
+ "g03_sankaku_yoso_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "{nm1}には、{ask1}がいくつありますか。"
+  ],
+  "kaisetsu": "{nm1}の{ask1}の数を数えます。二等辺三角形は、等しい2つの辺と、等しい2つの角があります。正三角形は、3つの辺がすべて等しく、3つの角もすべて等しくなっています。答えは{ans}{un1}です。",
+  "rest": "bef2960bbdbd4b967dada70e29613ecb"
+ },
+ "g03_tobun_draw_01": {
+  "file": "patterns_g03.json",
+  "sentence_templates": [
+   "次の分数を図に表しなさい。{f1}{unit1}"
+  ],
+  "kaisetsu": "{den1}分の{num1}は、全体を同じ大きさに{den1}つに分けた{num1}つ分です。まず全体を{den1}等分して、そのうち{num1}こに色をぬります。",
+  "rest": "f47a56fc177e83d052b38a6be8f6c9f6"
+ },
+ "g04_bignum_calc_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "次の計算をしなさい。{n1}{unit}+{n2}{unit}"
+  ],
+  "kaisetsu": "{unit}のついた数どうしのたし算は、{unit}をそろえたまま、前の数字だけをたします。{n1}+{n2}={ans}なので、答えは{ans}{unit}です。",
+  "rest": "fdb277c76395cee3ca33af66e6284a4e"
+ },
+ "g04_div_1digit_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "次の計算をしなさい。{n1}÷{n2}"
+  ],
+  "kaisetsu": "わり算は、わられる数を大きい位から順にわっていきます。{n1}÷{n2}の商は{ans}、あまりは{r}です。あまりは、わる数の{n2}より小さくなっているかをたしかめましょう。「わる数×商＋あまり」がわられる数にもどれば正しく計算できています。",
+  "rest": "503335625e68107004ba4fef4223b1db"
+ },
+ "g04_div_2digit_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "次の計算をしなさい。{n1}÷{n2}"
+  ],
+  "kaisetsu": "2けたの数でわるときは、商の見当をつけてからかけて、ひきます。{n1}÷{n2}は、商を{ans}と見当をつけて{n2}×{ans}を{n1}からひくと、あまりは{r}になります。あまりが{n2}より大きくなったら、商を1大きくしてやり直します。",
+  "rest": "d8d1a6271ebcb616bfc133cf13022620"
+ },
+ "g04_dec_addsub_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{add_a}{q1_disp}{unit}、{add_b}{q2_disp}{unit}あります。あわせて何{unit}ありますか。"
+  ],
+  "kaisetsu": "小数のたし算は、小数点の位置をそろえて、同じ位どうしをたします。{q1_disp}+{q2_disp}={ans_disp}なので、あわせて{ans_disp}{unit}です。答えの小数点は、たされる数の小数点の真下におろします。",
+  "rest": "a9e2c87db5fc5153cf5a3549d7ec5a73"
+ },
+ "g04_dec_mult_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "1{mc}{q1_disp}{unit}の{noun}が{n}{mc}あります。ぜんぶで何{unit}ありますか。"
+  ],
+  "kaisetsu": "小数×整数は、小数を整数と同じように計算してから、小数点をつけます。{q1_disp}×{n}={ans_disp}なので、ぜんぶで{ans_disp}{unit}です。かけられる数の小数点の位置をそのまま答えにうつします。",
+  "rest": "172c74c62b3c633cdadcacb67e2c1dbc"
+ },
+ "g04_dec_div_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{q1_disp}{unit}の{noun}を、{n}{dvc}{dvv}に同じ{dvq}ずつ{dvverb}。{dvper}は何{unit}ですか。"
+  ],
+  "kaisetsu": "同じ量ずつ分けるときは、全体の量を分ける数でわります。{q1_disp}÷{n}={ans_disp}なので、{dvper}は{ans_disp}{unit}です。商の小数点は、わられる数の小数点の真上です。",
+  "rest": "41d253b9c796e21614a4a98b2a9bc45a"
+ },
+ "g04_order_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "次の計算をしなさい。（{n1}+{n2}）×{n3}"
+  ],
+  "kaisetsu": "（ ）のある式は、（ ）の中を先に計算します。{n1}+{n2}={mid}を先に求めてから、{mid}×{n3}={ans}です。",
+  "rest": "414dda868c5f694202dbcb40a95e96d7"
+ },
+ "g04_box_add_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "次の□にあてはまる数を求めなさい。□+{a}={b}"
+  ],
+  "kaisetsu": "□+{a}={b}の□は、{b}から{a}をひけば求められます。たし算の答えから一方の数をひくと、もう一方の数がわかります。□={b}−{a}={ans}です。",
+  "rest": "3a6fb21db488062a1a43bf26e4f3ba85"
+ },
+ "g04_box_mult_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "次の□にあてはまる数を求めなさい。□×{a}={b}"
+  ],
+  "kaisetsu": "□×{a}={b}の□は、{b}を{a}でわれば求められます。かけ算の答えを一方の数でわると、もう一方の数がわかります。□={b}÷{a}={ans}です。",
+  "rest": "f42caf4bbaf83aa6bd2cb0b1bc91bd02"
+ },
+ "g04_gaisu_round_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{n}を四捨五入して、{place_name}の位までのがい数にしなさい。"
+  ],
+  "kaisetsu": "{place_name}の位までのがい数にするには、{place_name}の位のすぐ下の位の数字を見ます。その数字が0〜4なら切り捨て、5〜9なら切り上げて、{place_name}の位より下をすべて0にします。{n}は{ans}になります。",
+  "rest": "bb035110c27b126c0adbca955c7a7381"
+ },
+ "g04_gaisu_range_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "四捨五入して千の位までのがい数が{target}になる整数のはんいを答えなさい。"
+  ],
+  "kaisetsu": "四捨五入して{target}になる整数は、百の位が5以上で切り上がった数から、百の位が4以下で切り捨てられた数までです。いちばん小さい数は{lo}、{hi_excl}になると{target}より大きいがい数になってしまうので、{lo}以上{hi_excl}未満です。「未満」はその数を入れません。",
+  "rest": "604477a5cd5b44e6a6f7966bc986c1d1"
+ },
+ "g04_frac_convert_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "次の仮分数を帯分数になおしなさい。{num}/{den}"
+  ],
+  "kaisetsu": "分子が分母より大きい分数が仮分数です。{num}の中に{den}が何回入るかを考えると、その回数が整数部分、残りが分子になります。{num}/{den}は{M1}です。",
+  "rest": "25e375534fcbfd91c1a2c7eaaa279a18"
+ },
+ "g04_frac_addsub_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "リボンを{num1}/{den}mと{num2}/{den}mつかいました。あわせて何mつかいましたか。"
+  ],
+  "kaisetsu": "分母が同じ分数のたし算は、分母はそのままで分子だけをたします。{num1}+{num2}={num_sum}なので、{num_sum}/{den}になります。分子が分母より大きくなったら、帯分数になおして{M1}mです。",
+  "rest": "ddb907c36c3ebc0367d33fdb31f4c207"
+ },
+ "g04_div_riyou_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{object}が{n1}{counter}あります。{n2}人で同じ数ずつ分けると、1人分は何{counter}になりますか。"
+  ],
+  "kaisetsu": "「同じ数ずつ分ける」ときはわり算です。全部の数{n1}{counter}を、分ける人数{n2}人でわると、1人分の{ans}{counter}が求められます。",
+  "rest": "f9e5b8341c7366900763876e54967543"
+ },
+ "g04_rect_area_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "図のような長方形の面積を求めなさい。"
+  ],
+  "kaisetsu": "長方形の面積は、たて×横で求めます。{h}×{w}={ans}なので、{ans}cm²です。1辺1cmの正方形が{ans}こ分あると考えられます。",
+  "rest": "c8bde9337afee2d1acc7cbd96f8781f4"
+ },
+ "g04_angle_sum_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "図の「あ」の角度を求めなさい。"
+  ],
+  "kaisetsu": "「あ」の角は、2つの角をあわせた大きさです。{a1}度と{a2}度をたして、{a1}+{a2}={ans}度です。角の大きさはたし算・ひき算で求められます。",
+  "rest": "04d517f19d2f4eecdae31a411ab77a49"
+ },
+ "g04_div_int_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "次の計算をしなさい。{n1}÷{n2}"
+  ],
+  "kaisetsu": "わられる数の上の2けたから、わる数{n2}がいくつ入るかを考えます。商が2けたになるので、十の位の商を立ててからひき、次の位をおろして一の位の商を立てます。{n1}÷{n2}={ans}あまり{r}です。",
+  "rest": "2630245dc1e810436ad684c4f783b145"
+ },
+ "g04_estimate_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{a}と{b}を、それぞれ百の位までのがい数にして、和を見積もりなさい。"
+  ],
+  "kaisetsu": "見積もりは、それぞれの数をがい数にしてから計算します。{a}はおよそ{ra}、{b}はおよそ{rb}なので、和はおよそ{ra}+{rb}={ans}です。",
+  "rest": "ccd62ede644ebcde63902e340f24b7b0"
+ },
+ "g04_dist_law_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "くふうして計算しなさい。{a}×{c}+{b}×{c}"
+  ],
+  "kaisetsu": "同じ数をかけているたし算は、先にたしてからかけることができます。{a}×{c}+{b}×{c}=（{a}+{b}）×{c}なので、{sum}×{c}={ans}です。{a}+{b}がきりのよい数になるので、計算が楽になります。",
+  "rest": "fffb3b73e4f6d8cd2abe6721efe37b74"
+ },
+ "g04_mult_trick_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "くふうして計算しなさい。{a}×99"
+  ],
+  "kaisetsu": "99は100より1小さい数です。{a}×99は、{a}×100から{a}を1回分ひけばよいので、{h}−{a}={ans}です。",
+  "rest": "85b5e27cf3b453c122ad67cdf715042c"
+ },
+ "g04_dec_div_simple_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "次の計算をしなさい。{q1_disp}÷{n}"
+  ],
+  "kaisetsu": "小数÷整数は、整数のわり算と同じようにわり、商の小数点はわられる数の小数点の真上につけます。{q1_disp}÷{n}={ans_disp}です。",
+  "rest": "6f38b4047caaff569ac7760c5c306208"
+ },
+ "g04_bignum_write_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{n1}万{n2}を数字で書きなさい。"
+  ],
+  "kaisetsu": "「万」の左側が万の位から上、右側が千の位から下の4けたです。{n1}万{n2}は、{n1}のうしろに{n2}を4けたで書きます。{n2}が4けたにたりないときは、たりない分だけ0を入れます。",
+  "rest": "64b62e2253b58140bdd384ff5879bf1c"
+ },
+ "g04_bignum_x10_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{n}を10倍した数を書きなさい。"
+  ],
+  "kaisetsu": "数を10倍すると、それぞれの数字の位が1つずつ上がります。数字はそのままで、右はしに0を1つつけると、{n}の10倍の{ans}になります。",
+  "rest": "0e8b49f0b81809b6fa6b803f04ff171d"
+ },
+ "g04_div_bai_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "赤いテープが{a}cm、青いテープが{b}cmあります。赤いテープは青いテープの何倍ですか。"
+  ],
+  "kaisetsu": "「何倍か」をきかれたら、もとにする量でわります。ここでは青いテープの{b}cmがもとなので、{a}÷{b}={ans}で、赤いテープは青いテープの{ans}倍です。",
+  "rest": "f79e2d0c035f25d516df1374170a607b"
+ },
+ "g04_dec_ikutsu_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{n1_disp}は、0.01を何こ集めた数ですか。"
+  ],
+  "kaisetsu": "0.01は1を100等分した1つ分です。{n1_disp}のような小数は、0.01を何こ集めたかで考えると、小数点をとった{ans}こ分になります。",
+  "rest": "d6b7eba5495347633b24a5a7c1ac3dc5"
+ },
+ "g04_dec_atsume_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "0.01を{n1}こ集めた数はいくつですか。"
+  ],
+  "kaisetsu": "0.01を{n1}こ集めると、100こで1になるので、100こ分ごとに1の位が1ふえます。{n1}こでは{ans_disp}です。",
+  "rest": "da100ab7c75ab146fc8d7303282e7f55"
+ },
+ "g04_dec_kurai_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{ki1}.{k1}{k2}{k3}という数について、{ask1}の数字を答えなさい。"
+  ],
+  "kaisetsu": "小数点の右は、順に小数第一位・小数第二位・小数第三位です。{ki1}.{k1}{k2}{k3}の{ask1}を、小数点のすぐ右から数えて見つけます。",
+  "rest": "6b0e93a7116557fdcf052dc9853524c6"
+ },
+ "g04_dec_10bai_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{n1_disp}を{sc1}倍した数はいくつですか。"
+  ],
+  "kaisetsu": "小数を10倍すると小数点が右へ1つ、100倍すると右へ2つ動きます。{n1_disp}を{sc1}倍すると{ans}になります。",
+  "rest": "ad040bcb5fb4c61339c5a3ee0a5f80c0"
+ },
+ "g04_kaku_chokkaku_do_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{n1}直角は何度ですか。"
+  ],
+  "kaisetsu": "1直角は90度です。{n1}直角は90度の{n1}こ分なので、90×{n1}={ans}度です。2直角で一直線の180度、4直角で1回りの360度になります。",
+  "rest": "33082d99273f31b47885da8f1cdeb8e6"
+ },
+ "g04_kaku_do_chokkaku_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{D1}度は、直角何こ分ですか。"
+  ],
+  "kaisetsu": "90度が直角1こ分です。{D1}度は90度がいくつ分かを考えて、直角{ans}こ分です。",
+  "rest": "04fb2c8915d563cc433a322ce3494b4c"
+ },
+ "g04_men_conv_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{a1}{fr1}は何{to1}ですか。"
+  ],
+  "kaisetsu": "面積の単位は、1辺の長さが10倍になると面積は100倍になります。1{fr1}は{kk1}{to1}なので、{a1}{fr1}は{a1}×{kk1}={ans}{to1}です。",
+  "rest": "e33aa2eadc4677ee903faa9a4fc21d34"
+ },
+ "g04_men_gyaku_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "面積が{S1}cm²の長方形があります。たての長さが{a1}cmのとき、横の長さは何cmですか。"
+  ],
+  "kaisetsu": "長方形の面積＝たて×横なので、面積をたてでわると横が求められます。{S1}÷{a1}={ans}なので、横の長さは{ans}cmです。",
+  "rest": "e030c6dd9c667492eafdb3bffda670fc"
+ },
+ "g04_kaz_tanigo_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{t1}兆{o1}億を数字で書きなさい。"
+  ],
+  "kaisetsu": "大きい数は、右から4けたずつ「万・億・兆」の区切りで読みます。{t1}兆{o1}億は、兆の区切りに{t1}、億の区切りに{o1}を書き、万の区切りと一の区切りは0を4けたずつ書きます。",
+  "rest": "a14963d4afbcd422711072dc58bcd161"
+ },
+ "g04_kaz_kurai_big_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{k12}{k11}{k10}{k9}{k8}{k7}{k6}{k5}{k4}{k3}{k2}{k1}という数について、{ask1}の数字を答えなさい。"
+  ],
+  "kaisetsu": "大きい数は、右から4けたずつ区切ると位がわかりやすくなります。一・十・百・千のあとに万が4つ、そのあとに億が4つ続きます。{ask1}がどこかを右から数えて、その位の数字を答えます。",
+  "rest": "3dd32f94147c24662b692bc2fe4616a9"
+ },
+ "g04_tokei_choshin_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "時計の長い針が、{m1}分間に回る角度は何度ですか。"
+  ],
+  "kaisetsu": "時計の長い針は、60分で1回り（360度）回ります。1分では360÷60=6度回るので、{m1}分間では6×{m1}={ans}度です。",
+  "rest": "e227856a4cdd6b9dbf72de745d8c9acd"
+ },
+ "g04_tokei_seiji_kaku_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{h1}時ちょうどのとき、時計の長い針と短い針の間の角度は何度ですか。"
+  ],
+  "kaisetsu": "時計の文字ばんは、1時間分（数字1つ分）が360÷12=30度です。{h1}時ちょうどのとき、長い針は12、短い針は{h1}をさしているので、間の角は30×{h1}={ans}度です。",
+  "rest": "37f4069ae7bc60dcea2056890dd445d7"
+ },
+ "g04_junjo_kakko_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{a1}+({b1}-{c1})"
+  ],
+  "kaisetsu": "（ ）の中を先に計算します。{b1}−{c1}を先に求めてから、{a1}にたして{ans}になります。",
+  "rest": "f22d4a5b9da72b029f326783b39c1581"
+ },
+ "g04_shikaku_teigi_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{def1}を何といいますか。"
+  ],
+  "kaisetsu": "四角形は、辺の平行の様子で名前が決まります。向かい合った1組の辺だけが平行なら台形、2組とも平行なら平行四辺形、さらに4つの辺の長さがすべて等しければひし形です。{def1}のは{nm1}です。",
+  "rest": "9c2e98ccfb2e4c32f93d5532b09f9da2"
+ },
+ "g04_heishi_hen_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "平行四辺形ABCDがあります。辺ABの長さが{a1}cmのとき、辺CDの長さは何cmですか。"
+  ],
+  "kaisetsu": "平行四辺形では、向かい合った辺の長さは等しくなります。辺ABと辺CDは向かい合った辺なので、辺CDも{ans}cmです。",
+  "rest": "bbc0d8083cc7009d5cd8afe87f778033"
+ },
+ "g04_heishi_taikaku_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "平行四辺形ABCDがあります。角Aの大きさが{al1}度のとき、角Cの大きさは何度ですか。"
+  ],
+  "kaisetsu": "平行四辺形では、向かい合った角の大きさは等しくなります。角Aと角Cは向かい合った角なので、角Cも{ans}度です。",
+  "rest": "7c75202e81be129d2037854deea3a1a3"
+ },
+ "g04_heishi_rinkaku_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "平行四辺形ABCDがあります。角Aの大きさが{al1}度のとき、となりの角Bの大きさは何度ですか。"
+  ],
+  "kaisetsu": "平行四辺形では、となり合った2つの角をあわせると180度になります。角Aが{al1}度なので、角Bは180−{al1}={ans}度です。",
+  "rest": "a83baf9f4cd1d31885a009a9fcd47576"
+ },
+ "g04_hishi_mawari_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "1辺の長さが{a1}cmのひし形のまわりの長さは何cmですか。"
+  ],
+  "kaisetsu": "ひし形は、4つの辺の長さがすべて等しい四角形です。まわりの長さは1辺の長さの4つ分なので、{a1}×4={ans}cmです。",
+  "rest": "eb29686cadad8a585bdf606c39e69e54"
+ },
+ "g04_rect_mawari_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "たての長さが{a1}cm、横の長さが{b1}cmの長方形のまわりの長さは何cmですか。"
+  ],
+  "kaisetsu": "まわりの長さは、4つの辺の長さの合計です。長方形はたてと横が2本ずつあるので、（{a1}+{b1}）×2={ans}cmです。面積（たて×横）とまちがえないようにしましょう。",
+  "rest": "0c4c26e92d8b15906156c63061564103"
+ },
+ "g04_sq_mawari_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "1辺の長さが{a1}cmの正方形のまわりの長さは何cmですか。"
+  ],
+  "kaisetsu": "正方形は4つの辺の長さがすべて等しいので、まわりの長さは1辺の4つ分です。{a1}×4={ans}cmです。",
+  "rest": "c1d351af922076f6e4068cd64c54d49c"
+ },
+ "g04_sq_gyaku_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "面積が{S1}cm²の正方形の1辺の長さは何cmですか。"
+  ],
+  "kaisetsu": "正方形の面積は1辺×1辺です。同じ数を2回かけて{S1}になる数をさがすと、{ans}×{ans}={S1}なので、1辺は{ans}cmです。",
+  "rest": "e2d00eaf1d2b3d183ec05ac0e9425479"
+ },
+ "g04_rect_area_m_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "たての長さが{a1}m、横の長さが{b1}mの長方形の面積は何m²ですか。"
+  ],
+  "kaisetsu": "mの単位でも、長方形の面積はたて×横です。{a1}×{b1}={ans}なので、{ans}m²です。",
+  "rest": "1f6bf928067c383b6051a79ad898765e"
+ },
+ "g04_kaku_add_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{al1}°+{be1}°"
+  ],
+  "kaisetsu": "角度も、ふつうの数と同じようにたし算ができます。{al1}°+{be1}°={ans}°です。",
+  "rest": "06fe588f123e31741328d067cdb56b7b"
+ },
+ "g04_kaku_sub_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。\n{al1}°-{be1}°"
+  ],
+  "kaisetsu": "角度のひき算も、ふつうの数と同じように計算します。{al1}°−{be1}°={ans}°です。1回りは360°なので、答えが360°をこえることはありません。",
+  "rest": "68d1b300e82ee430d10829ca99a54e9c"
+ },
+ "g04_kaku_hosui_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{al1}度の角に、あと何度をあわせると一直線(180度)になりますか。"
+  ],
+  "kaisetsu": "一直線の角は180度です。{al1}度の角とあわせて180度になる角は、180−{al1}={ans}度です。",
+  "rest": "11c7f3ea72bbb6f46a791c34ad835690"
+ },
+ "g04_chokuho_suichoku_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右の直方体ABCDEFGHで、辺ABと垂直な辺をすべて答えなさい。"
+  ],
+  "kaisetsu": "直方体では、1つの辺に交わっている辺は、その辺と垂直です。辺ABの両はしの頂点AとBに集まっている辺をさがすと、{E1_edges}です。",
+  "rest": "b2fcc7c74473d709f2bb30c9d82c3eee"
+ },
+ "g04_chokuho_heikou_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右の直方体ABCDEFGHで、辺ABと平行な辺をすべて答えなさい。"
+  ],
+  "kaisetsu": "直方体では、向かい合った面の同じ向きの辺どうしが平行です。辺ABと同じ向きの辺を、同じ面と向かい合った面からさがすと、{E1_edges}です。",
+  "rest": "775870af587211f8d91f54b6b89f2b9f"
+ },
+ "g04_chokuho_yoso_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "直方体には、{ask1}がいくつありますか。"
+  ],
+  "kaisetsu": "直方体は、6つの長方形の面でかこまれた形です。面が6つ、辺が12本、頂点が8つあります。{ask1}は{ans}{un1}です。",
+  "rest": "d3a4f2fa9808bbbadaedf56880612d9a"
+ },
+ "g04_dec_div_amari_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "つぎの計算をしなさい。商は整数で求め、あまりも出しなさい。\n{N1_disp}÷{a1}"
+  ],
+  "kaisetsu": "商を整数で求めるときは、一の位までわって止め、残りをあまりとします。あまりの小数点は、わられる数の小数点と同じ位置にそろえます。{N1_disp}÷{a1}={q1}あまり{r1_disp}です。「わる数×商＋あまり」でたしかめましょう。",
+  "rest": "5847f9a934357c0250c0fdea32c23373"
+ },
+ "g04_line_ondo_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右の折れ線グラフは、地面の温度をしらべたものです。\n① 午前10時の温度は何度ですか。\n② 温度がいちばん低いのは何時ですか。また、それは何度ですか。\n③ 温度が変わっていないのは、何時と何時の間ですか。\n④ 温度がいちばん大きく上がったのは、何時と何時の間ですか。"
+  ],
+  "kaisetsu": "折れ線グラフでは、点の高さがそのときの量を、線のかたむきが変わり方を表します。(1)は午前10時の点の高さを目もりで読みます。(2)いちばん低い点をさがし、その時刻と目もりを答えます。(3)線が横にまっすぐなところは、量が変わっていないところです。(4)右上がりの線がいちばん急なところが、いちばん大きく上がったところです。答えは「午前11時と午前12時の間」のように、はしの2つの時刻で答えます。",
+  "rest": "c6cf469636e7f8eb3f1ef19d6fb07e26"
+ },
+ "g04_line_draw_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "下の表は、地面の温度をしらべたものです。表を見て、折れ線グラフをかきましょう。\n時こく: 午前8時 午前9時 午前10時 午前11時 午前12時 午後1時 午後2時 午後3時 午後4時 午後5時 午後6時\n温度(度): {yc1} {yc2} {yc3} {yc4} {yc5} {yc6} {yc7} {yc8} {yc9} {yc10} {yc11}"
+  ],
+  "kaisetsu": "表の数を1つずつグラフに打っていきます。時刻のたての線と、温度の横の目もりが交わるところに点を打ち、打ち終わったら左から順に直線でつなぎます。点を打ってからつなぐ、の順番が大切です。",
+  "rest": "d120d114b0896e3c945f60edd31df219"
+ },
+ "g04_line_fukasa_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右の折れ線グラフは、小川の水の深さをしらべたものです。\n① 水の深さがいちばん深いのは何日ですか。また、それは何cmですか。\n② 水の深さが30cmより深いのは、何日から何日までですか。"
+  ],
+  "kaisetsu": "(1)いちばん高い点の日と目もりを読みます。(2)「30cmより深い」は、30cmちょうどの日は入りません。グラフの30cmの高さに横の線を引いたつもりで、それより上にある点の日をさがすと、3日から6日までとわかります。",
+  "rest": "83a6c235bd393c742689c8e4b4f9f6d0"
+ },
+ "g04_line_tsukibetsu_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右の折れ線グラフは、ある市の月ごとの気温を表したものです。\n① 気温がいちばん高いのは何月で、何度ですか。\n② 気温がいちばん低いのは何月ですか。\n③ 10月と11月の気温の差は何度ですか。\n④ 気温がいちばん大きく上がったのは、何月と何月の間ですか。\n⑤ いちばん高い気温といちばん低い気温の差は何度ですか。"
+  ],
+  "kaisetsu": "1つのグラフから、いちばん高い・いちばん低い・2つの月の差・いちばん急な変化、と読み分ける問題です。(3)は10月の点と11月の点の高さの差を目もりで数えます。(5)はいちばん高い8月といちばん低い12月の差なので、{yc8}−{yc12}=23度です。差をきかれたら、大きいほうから小さいほうを引きます。",
+  "rest": "cff0f1baf67a1a4d438e0c2fb1226279"
+ },
+ "g04_line_tokuten_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右の折れ線グラフは、りょうさんのテストのとく点を表したものです。\n① 1回目のとく点は何点ですか。\n② とく点がいちばん大きく上がったのは、何回目と何回目の間ですか。"
+  ],
+  "kaisetsu": "このグラフのたての目もりは{lo1}点から始まっています。0から始まっていないしるしが、たての軸の下の波線です。目もりを読むときは、1目もりがいくつ分かを先にたしかめます。(2)は右上がりがいちばん急なところをさがします。",
+  "rest": "38f24e62f95a0cbbd71a3075a854c183"
+ },
+ "g04_line_omocha_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右の折れ線グラフは、ある店で月ごとに売れたおもちゃの数を表したものです。\n① 売れた数がいちばん少ないのは何月で、何こですか。\n② 売れた数がいちばん多いのは何月で、何こですか。\n③ 売れた数がいちばん大きくへったのは、何月と何月の間ですか。\n④ 売れた数がいちばん大きくふえたのは、何月と何月の間ですか。"
+  ],
+  "kaisetsu": "たての1目もりが大きい数(100こなど)のグラフです。(1)(2)はいちばん低い点・高い点の月と目もりを読みます。(3)は右下がりがいちばん急なところ、(4)は右上がりがいちばん急なところです。下がり方・上がり方は、線のかたむきの急さで比べます。",
+  "rest": "9c88ee488b748ea6585e663dd2f78bc2"
+ },
+ "g04_line_kankyaku_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右の折れ線グラフは、野球大会の観客数を表したものです。たてのじくの目もりは千人です。\n① 1日目の観客数は何千人ですか。\n② 4日間の観客数の合計は何万何千人ですか。"
+  ],
+  "kaisetsu": "たての目もりは「千人」です。1日目の点が{y1}の高さなら、{y1}千人と読みます。(2)は4日分の点の高さをぜんぶたして、{y1}+{y2}+{y3}+{y4}=56千人。千人が56こ分なので5万6千人です。",
+  "rest": "edfa14c3f1493bbfdbe089a3e0de237b"
+ },
+ "g04_line2_cd_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右の折れ線グラフは、C市とD市の月ごとの気温を表したものです。\n① C市の気温が上がり続けているのは何月までですか。\n② D市の気温が下がり続けているのは何月までですか。"
+  ],
+  "kaisetsu": "2本の折れ線は、実線と点線で見分けます。「上がり続けている」は、とちゅうで1回でも下がったらそこで終わりです。C市の線を1月から順にたどり、はじめて下がる手前の月までが答えです。D市の「下がり続けている」も同じように、はじめて上がる手前の月までをさがします。",
+  "rest": "55763dc006fc89b7044457721790b049"
+ },
+ "g04_line2_gh_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右の折れ線グラフは、G市とH市の月ごとの気温を表したものです。\n① G市の気温が下がり続けているのは何月までですか。\n② H市の気温が上がり続けているのは何月までですか。"
+  ],
+  "kaisetsu": "それぞれの線を1月から順にたどり、G市ははじめて上がる手前まで、H市ははじめて下がる手前までをさがします。2本の線が交わっていても、1本ずつ分けてたどれば迷いません。",
+  "rest": "625fe924844d7ebd7705e73aa9b306de"
+ },
+ "g04_line2_taion_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右の折れ線グラフは、はるかさんの健康なときと病気のときの体温を表したものです。\n① 健康なときの体温の、いちばん高い温度といちばん低い温度の差は何度ですか。\n② 病気のときの体温の差は何度ですか。"
+  ],
+  "kaisetsu": "たての目もりは0.1度きざみです。健康なときの線でいちばん高い体温といちばん低い体温を読み、差を出します(36.8−36.2=0.6度)。病気のときの線でも同じことをします(38.5−37.2=1.3度)。小数の目もりは、1目もりがいくつかを先にたしかめてから読みます。",
+  "rest": "6a01921e7e3ec7985c9adaf403af32cb"
+ },
+ "g04_comp_lshape_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "たて{oh1}cm、横{ow1}cmの長方形から、たて{ch1}cm、横{cw1}cmの長方形がかけた形があります。図のかけたところのある形の面積を求めなさい。"
+  ],
+  "kaisetsu": "かけたところのある形の面積は、大きい長方形から、かけた長方形を引いて求めます。この問題では、たて{oh1}cm・横{ow1}cmの長方形からたて{ch1}cm・横{cw1}cmの長方形がかけた形なので、{ow1}×{oh1}−{cw1}×{ch1}={S1}−{S2}={ans}cm²です。図を2つの長方形に分けて、それぞれの面積をたして求めることもできます。どちらのやり方でも答えは同じになるので、たしかめに使えます。かけたところが2つある形も、同じように1つずつ引いていきます。",
+  "rest": "445868c5b6f62be1fc907d18cf41df94"
+ },
+ "g04_comp_hole_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "たて{oh1}cm、横{ow1}cmの長方形から、たて{ch1}cm、横{cw1}cmの長方形をくりぬいた形があります。図のくりぬいた形の面積を求めなさい。"
+  ],
+  "kaisetsu": "まわりの長方形の面積から、中のあなの長方形の面積を引きます。この問題では、たて{oh1}cm・横{ow1}cmの長方形から、たて{ch1}cm・横{cw1}cmの長方形をくりぬいた形なので、{ow1}×{oh1}−{cw1}×{ch1}={S1}−{S2}={ans}cm²です。あなの場所がまん中でもはしのほうでも、引く面積は変わらないので、答えは同じです。",
+  "rest": "cf7da6a2b804e21a0c4bdfc839e2022c"
+ },
+ "g04_hyo_gakunen_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右の表は、学年と遊んだ場所をしらべて整理したものです。\n① 表のあいているところにあてはまる数を書きましょう。\n② 公園で遊んだ人は何人ですか。\n③ 遊んだ人がいちばん多いのは何年生ですか。"
+  ],
+  "kaisetsu": "表のたてとよこの合計は、その列や行の数をぜんぶたした数です。空いているところは、合計から分かっている数を引いて求めます。例: 白のだんの合計が6で、3と1が分かっていれば、残りは6−3−1=2です。「いちばん多い」をきかれたら、合計のらんをくらべます。",
+  "rest": "27da04010ff58f8094492e682e59043c"
+ },
+ "g04_hyo_sukikirai_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右の表は、肉と魚の好ききらいをしらべて整理したものです。\n① 肉が好きで、魚がきらいな人は何人ですか。\n② 肉も魚も好きな人は何人ですか。\n③ しらべた人はぜんぶで何人ですか。"
+  ],
+  "kaisetsu": "2つのことがらを1つの表にまとめたものが二次元の表です。たての見出しとよこの見出しが交わったますが、「両方にあてはまる数」です。例: 肉が好きで魚がきらいな人は、「好き」の行と「きらい」の列の交わったますを読みます。合計のらんは、たてに見てもよこに見ても同じ総計になります。",
+  "rest": "8c50bdd24895e610b222143d16a1f43c"
+ },
+ "g04_hyo_nyujo_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "ゆうえん地に入場した人をしらべると、午前に入場した大人は{na1}人、子どもは{nc1}人、午後に入場した大人は{nb1}人、子どもは{nd1}人でした。右の表に整理して答えなさい。\n① 入場した人はぜんぶで何人ですか。\n② 午後に入場した大人は何人ですか。"
+  ],
+  "kaisetsu": "2つのことがらを1つの表にまとめたものが二次元の表です。たての見出しとよこの見出しが交わったますが、「両方にあてはまる数」です。例: 肉が好きで魚がきらいな人は、「好き」の行と「きらい」の列の交わったますを読みます。合計のらんは、たてに見てもよこに見ても同じ総計になります。",
+  "rest": "91fd9951c52c855117a0fa63cde3a5bf"
+ },
+ "g04_hyo_hon_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右の表は、組ごとに借りた本の種類をしらべて整理したものです。\n① 表のあいているところにあてはまる数を書きましょう。\n② 物語の本は、ぜんぶで何さつ借りられましたか。\n③ いちばん多く本を借りたのは何組ですか。\n④ いちばん多く借りられた本の種類は何ですか。"
+  ],
+  "kaisetsu": "表のたてとよこの合計は、その列や行の数をぜんぶたした数です。空いているところは、合計から分かっている数を引いて求めます。例: 白のだんの合計が6で、3と1が分かっていれば、残りは6−3−1=2です。「いちばん多い」をきかれたら、合計のらんをくらべます。",
+  "rest": "9873205e237531357f9cc42f4981ace7"
+ },
+ "g04_hyo_tsurimushi_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右の表は、つりと虫とりをしたかどうかをしらべて整理したものです。\n① つりも虫とりもした人は何人ですか。\n② つりも虫とりもしなかった人は何人ですか。"
+  ],
+  "kaisetsu": "「どちらもした」「どちらもしなかった」は、二次元の表の対角のますに入ります。4つのますをぜんぶたすと全体の人数になるので、3つ分かれば残りの1つは引き算で求められます。例: 全体{T1}人で、両方が{ta1}人・かたほうずつが{tb1}人と{tc1}人なら、どちらもしなかった人は{T1}−{ta1}−{tb1}−{tc1}={td1}人です。",
+  "rest": "eb6f6ee83b2add9c2b1405fea4cfd8cd"
+ },
+ "g04_hyo_nyujo2_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右の表は、ゆうえん地に入場した人をしらべて整理したものです。\n① 入場した人はぜんぶで何人ですか。\n② 午後に入場した大人は何人ですか。"
+  ],
+  "kaisetsu": "2つのことがらを1つの表にまとめたものが二次元の表です。たての見出しとよこの見出しが交わったますが、「両方にあてはまる数」です。例: 肉が好きで魚がきらいな人は、「好き」の行と「きらい」の列の交わったますを読みます。合計のらんは、たてに見てもよこに見ても同じ総計になります。",
+  "rest": "bba12d6e598934b654c6e0d6253790e4"
+ },
+ "g04_hyo_irokatachi_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右の表は、色と形のちがうカードの数を整理したとちゅうのものです。\n① 表のあいているところにあてはまる数を書きましょう。\n② 白い四角のカードは何まいですか。\n③ 黒い丸のカードは何まいですか。\n④ カードはぜんぶで何まいですか。"
+  ],
+  "kaisetsu": "数えたものを表に整理するときは、1つのものを2回数えないように、行と列の見出しで場所を決めてから書き入れます。合計が数えたものの総数と合うかどうかで、たしかめができます。",
+  "rest": "5843ece969943b5205b0d953f3c52727"
+ },
+ "g04_hyo_kanbin_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右の表は、かんとびんを拾ったかどうかをしらべて整理したものです。\n① 表の「あ」にあてはまる数は何ですか。\n② かんもびんも拾っていない人は何人ですか。"
+  ],
+  "kaisetsu": "「どちらもした」「どちらもしなかった」は、二次元の表の対角のますに入ります。4つのますをぜんぶたすと全体の人数になるので、3つ分かれば残りの1つは引き算で求められます。例: 全体{T1}人で、両方が{pa1}人・かたほうずつが4人と{pc1}人なら、どちらもしなかった人は{T1}−{pa1}−4−{pc1}={pd1}人です。",
+  "rest": "9c653199c2c723fa20bef7d08bd91b0a"
+ },
+ "g04_hyo_sansu_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右の表は、算数と国語の問題ができたかどうかをしらべて整理したものです。\n① 表のあいているところにあてはまる数を書きましょう。\n② 算数も国語もできた人は何人ですか。"
+  ],
+  "kaisetsu": "「どちらもした」「どちらもしなかった」は、二次元の表の対角のますに入ります。4つのますをぜんぶたすと全体の人数になるので、3つ分かれば残りの1つは引き算で求められます。例: 全体{T1}人で、両方が24人・かたほうずつが{qb1}人と{qc1}人なら、どちらもできなかった人は{T1}−24−{qb1}−{qc1}={qd1}人です。",
+  "rest": "54841a13c659f5f993a3217682728b92"
+ },
+ "g04_kawari_dai_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "1こ{u1}円の消しゴムの数と代金の関係を、右の表に整理します。\n① 表のあいているところにあてはまる数を書きましょう。\n② 代金を求める式を書きましょう。"
+  ],
+  "kaisetsu": "一方が変わるともう一方も変わる2つの量は、表に整理してから、きまりを式に表します。例: 1こ{u1}円の消しゴムなら、代金はいつも {u1}×個数 です。表のとなり合う数がいくつずつ変わっているかを見ると、きまりが見つけやすくなります。まわりの長さが決まった長方形では、たてと横の和がいつも同じ（まわり÷2）になります。",
+  "rest": "5d99b75cc9ad047fdc9352a6f22fc9fc"
+ },
+ "g04_kawari_naga_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "まわりの長さが{m1}cmの長方形の、たての長さ□cmと横の長さ○cmの関係を、右の表に整理します。\n① 表のあいているところにあてはまる数を書きましょう。\n② □と○の関係を式に表しましょう。"
+  ],
+  "kaisetsu": "一方が変わるともう一方も変わる2つの量は、表に整理してから、きまりを式に表します。例: 1こ90円の消しゴムなら、代金はいつも 90×個数 です。表のとなり合う数がいくつずつ変わっているかを見ると、きまりが見つけやすくなります。まわりの長さが決まった長方形では、たてと横の和がいつも同じ（まわり÷2）になります。",
+  "rest": "ff7532812463fead2c3cb0de0f09d746"
+ },
+ "g04_kawari_dan_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "1辺が1cmの正方形を、たてに□だん積み上げた形を作ります。だんの数□とまわりの長さ○cmの関係を、右の表に整理しました。\n① □と○の関係を式に表しましょう。\n② {n1}だんのときのまわりの長さは何cmですか。"
+  ],
+  "kaisetsu": "図がふえていくときは、1つふえると何がいくつふえるかを数えます。例: 正方形を1だん積み上げるごとに、まわりの長さは2cmずつふえるので、□×2＋2と表せます。ようじの正方形は、さいしょの1個に4本、あとは1個ごとに3本ずつふえるので、□×3＋1です。式ができたら、表の数を入れてたしかめてから、大きい数にあてはめます。",
+  "rest": "8b335125177d301dd1228e90c39673b7"
+ },
+ "g04_kawari_yoji_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "ようじをならべて正方形を作り、横に□こつなげた形を作ります。正方形の数□とようじの数○本の関係を、右の表に整理しました。\n① □と○の関係を式に表しましょう。\n② 正方形が{n1}このとき、ようじは何本ですか。"
+  ],
+  "kaisetsu": "図がふえていくときは、1つふえると何がいくつふえるかを数えます。例: 正方形を1だん積み上げるごとに、まわりの長さは2cmずつふえるので、□×2＋2と表せます。ようじの正方形は、さいしょの1個に4本、あとは1個ごとに3本ずつふえるので、□×3＋1です。式ができたら、表の数を入れてたしかめてから、大きい数にあてはめます。",
+  "rest": "51008f2f856a0254f185bfd71e6f3542"
+ },
+ "g04_kawari_mizu_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右のグラフは、水そうに水を入れたときの、時間と水の量を表したものです。\n① 7分後の水の量は何Lですか。\n② グラフをのばすと、35分後の水の量は何Lになりますか。"
+  ],
+  "kaisetsu": "グラフの線がまっすぐなときは、同じ調子で変わり続けると考えて、線をのばした先を読むことができます。まず1分でいくつ変わるかをグラフから見つけ、そのきまりを大きい時間にあてはめます。",
+  "rest": "3921d06ba1b3c2cdf91ccadd3cc1b06d"
+ },
+ "g04_kawari_senko_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右のグラフは、火をつけたせんこうの長さの変わり方を表したものです。\n① 20分後のせんこうの長さは何mmですか。\n② せんこうがなくなるのは、火をつけてから何分後ですか。"
+  ],
+  "kaisetsu": "右下がりの直線は、量が同じ調子で減っていることを表します。線が横の軸（0のところ）とぶつかる点が、なくなる時間です。",
+  "rest": "7bc546537e06c3ebec1f3c9fcf740735"
+ },
+ "g04_kawari_futatsu_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右のグラフは、2つの水そうAとBに水を入れたときの、時間と水の量を表したものです。\n① AとBの水の量の差が10Lになるのは何分後ですか。\n② AとBの水の量が等しくなるのは何分後ですか。"
+  ],
+  "kaisetsu": "2本のグラフの差は、同じ時間のところでのたての間かくです。2本が交わった点では、2つの量が等しくなっています。交わる前と後で、どちらが多いかが入れかわることにも注目します。",
+  "rest": "041cf2b8d1efe51e2612c514517bd2c0"
+ },
+ "g04_heikou_kaku_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右の図のように、2本の平行な直線に、1本の直線が交わっています。「あ」の角度が{al1}度のとき、「い」と「う」の角度を求めなさい。"
+  ],
+  "kaisetsu": "平行な2本の直線に1本の直線が交わるとき、同じ側にできる角(同位角)は等しくなります。となり合う角は、あわせて180度です。例: 「あ」の角が{al1}度なら、「い」の角は180−{al1}={b1}度、「う」の角は「あ」と同じ{al1}度です。",
+  "rest": "92faa168fe98e63a6bfe588de935369e"
+ },
+ "g04_chokusen_kumi_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "右の図の直線{lb1}のうち、垂直な組み合わせと平行な組み合わせを答えなさい。\n① {q1}な組み合わせ ② {q2}な組み合わせ ③ {q3}な組み合わせ"
+  ],
+  "kaisetsu": "2本の直線が交わってできる角が直角のとき、その2本は垂直です。図の中で交わっていなくても、のばしていくと直角に交わるなら垂直です。同じ向きにまっすぐのびていて、どこまでのばしても交わらない2本は平行です。図を見るときは、まず交わっているところの角が直角かどうかをたしかめ、次に交わっていない線どうしは、のばしたらどうなるかを考えます。",
+  "rest": "d3475748da06701479de8d9e6e43d9c5"
+ },
+ "g04_chohokei_hen_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "長方形ABCDについて、次の辺を答えなさい。\n① 辺{e1}に平行な辺 ② 辺{e1}に垂直な辺"
+  ],
+  "kaisetsu": "長方形では、向かい合った2つの辺はどこまでのばしても交わらないので平行です。となり合った2つの辺は直角に交わっているので垂直です。この問題では、辺{e1}に平行な辺は向かい合った辺、辺{e1}に垂直な辺はとなり合った2つの辺です。",
+  "rest": "6af8cee7908b9a8e4786ea0511d9d2a2"
+ },
+ "g04_numline_big3_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "数直線は、1目もりがいくつを表すかを先に読みます。大きい目もりが{mj_disp}ずつ、小さい目もりが{mi_disp}ずつです。「{lb1}」の矢印は{nf_disp}から小さい目もり{kk}こ分右にあるので、{ad1_disp}です。",
+  "rest": "5b6aab40253a552f0826696576989b1c"
+ },
+ "g04_numline_big2_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "数直線は、1目もりがいくつを表すかを先に読みます。大きい目もりが{mj_disp}ずつ、小さい目もりが{mi_disp}ずつです。「{lb1}」の矢印は{nf_disp}から小さい目もり{kk}こ分右にあるので、{ad1_disp}です。",
+  "rest": "439f3807b24f83c0c8ef2276ccb99a17"
+ },
+ "g04_numline_dec3_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "大きい目もりの間が10等分されているので、小さい目もり1つ分は{mi_disp}です。「{lb1}」は{nf_disp}から小さい目もり{kk}こ分右にあるので、{an1_disp}です。",
+  "rest": "53e5c44d1e6d5e5b47058a7f43c7ce15"
+ },
+ "g04_numline_hikaku_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "大きい目もりの間が10等分されているので、小さい目もり1つ分は{mi_disp}です。「{lb1}」は{nf_disp}から小さい目もり{kk}こ分右にあるので、{an1_disp}です。",
+  "rest": "e6ef6be74c435332ca889a0267ec102e"
+ },
+ "g04_numline_kinyu_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{q1}（{lb1}…{ad1_disp}、{lb2}…{ad2_disp}）"
+  ],
+  "kaisetsu": "数直線は、1目もりがいくつを表すかを先に読みます。大きい目もりが{mj_disp}ずつ、小さい目もりが{mi_disp}ずつです。「{lb1}」の矢印は{nf_disp}から小さい目もり{kk}こ分右にあるので、{ad1_disp}です。",
+  "rest": "4485f1ade78912a6fd6111856a345488"
+ },
+ "g04_line_bar_kion_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "グラフを見て答えなさい。\n(1) 気温がいちばん高いのは何月で何度ですか。\n(2) 気温がいちばん低いのは何月で何度ですか。\n(3) 降水量がいちばん多いのは何月で何mmですか。\n(4) 降水量がいちばん少ない月が3つあります。何月と何月と何月で、何mmですか。"
+  ],
+  "kaisetsu": "このグラフは、折れ線が気温、棒が降水量を表しています。気温は左の目もり（度）、降水量は右の目もり（mm）で読みます。2つのグラフが1つになっているときは、どちらの目もりを見るかを先に決めてから読みましょう。いちばん高い気温は{m_tmax}月の{tmax}度、いちばん低い気温は{m_tmin}月の{tmin}度です。降水量がいちばん多いのは{m_pmax}月の{pmax}mm、いちばん少ないのは{m_pmin1}・{m_pmin2}・{m_pmin3}月の{pmin}mmです。",
+  "rest": "b19b133dae0806e16ced6530a6be4f20"
+ },
+ "g04_graph_choice_01": {
+  "file": "patterns_g04.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "変わり方のようすを表すには、折れ線グラフが向いています。横の軸が時こく・月・年のように「時間」になっているグラフは、線のかたむきで変わり方が読めます。横の軸がくだものやクラスのような「種類」のグラフは、多い少ないをくらべる棒グラフで表します。時間の軸があるものを選ぶと、{A1_edges}です。",
+  "rest": "89bb04bfbd2f7e01df040c11826439be"
+ },
+ "g05_dec_shift_up_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "{a_disp}を{k}倍した数を書きなさい。"
+  ],
+  "kaisetsu": "小数を10倍すると小数点が右へ1つ、100倍で2つ、1000倍で3つ動きます。{a_disp}を{k}倍すると{ans_disp}です。",
+  "rest": "297a17353d0511503470ae9fd04034fc"
+ },
+ "g05_dec_shift_down_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "{a_disp}を1/{k}にした数を書きなさい。"
+  ],
+  "kaisetsu": "小数を1/10にすると小数点が左へ1つ、1/100で2つ動きます。動かす先に数字がないときは0を書きます。{a_disp}を1/{k}にすると{ans_disp}です。",
+  "rest": "92750b5f5e5e3e258676fe80bd46bd77"
+ },
+ "g05_int_x_dec_calc_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次の計算をしなさい。{n1}×{d1_disp}"
+  ],
+  "kaisetsu": "整数×小数は、小数点がないものとして整数のかけ算をしてから、かける数の小数点の位置に合わせて答えに小数点をつけます。{n1}×{d1_disp}={ans_disp}です。",
+  "rest": "68a7c6ee624479de5247540918026a64"
+ },
+ "g05_int_x_dec_word_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "1{unit}のねだんが{n1}円の{obj}を、{d1_disp}{unit}買いました。代金はいくらですか。"
+  ],
+  "kaisetsu": "1{unit}あたりのねだんに、買った長さをかけると代金になります。買った長さが小数でも、式の形は整数のときと同じです。{n1}×{d1_disp}={ans}なので、代金は{ans}円です。",
+  "rest": "2dbe15d15ef4c08f068ef0f90977a058"
+ },
+ "g05_dec_x_dec_calc_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次の計算をしなさい。{a1_disp}×{b1_disp}"
+  ],
+  "kaisetsu": "小数×小数は、両方の小数点をないものとして整数のかけ算をし、2つの数の小数点より右のけた数をあわせた分だけ、答えの小数点を左に打ちます。{a1_disp}×{b1_disp}={ans_disp}です。",
+  "rest": "b570258ca5815a2f1991ca6e0e5dbd8d"
+ },
+ "g05_dec_x_dec_word_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "1Lの重さが{a1_disp}kgの{liq}があります。この{liq}{b1_disp}Lの重さは何kgですか。"
+  ],
+  "kaisetsu": "1Lの重さに、かさ（L）をかけると全体の重さになります。{a1_disp}×{b1_disp}={ans_disp}なので、{ans_disp}kgです。かさが1より小さいときは、答えは1Lの重さより軽くなります。",
+  "rest": "8aed08c73e2a96cfc7d791460dc56c4b"
+ },
+ "g05_int_div_dec_calc_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次の計算をしなさい。{n1}÷{d1_disp}"
+  ],
+  "kaisetsu": "整数÷小数は、わる数の小数点を右に動かして整数にし、わられる数の小数点も同じ数だけ右に動かしてから計算します。{n1}÷{d1_disp}={ans}です。",
+  "rest": "4bb33de4f0eac54f09f19295e01bd3ce"
+ },
+ "g05_int_div_dec_word_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "{obj}を{d1_disp}{unit}買ったら、代金は{n1}円でした。この{obj}1{unit}のねだんはいくらですか。"
+  ],
+  "kaisetsu": "1{unit}のねだんは、代金を買った長さでわって求めます。{n1}÷{d1_disp}={ans}なので、1{unit}あたり{ans}円です。わる数が小数でも「1あたり」を求める式はわり算です。",
+  "rest": "9445b6d4a0b9bbd62c610260270e1b44"
+ },
+ "g05_dec_div_dec_calc_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次の計算をしなさい。{a1_disp}÷{b1_disp}"
+  ],
+  "kaisetsu": "小数÷小数は、わる数が整数になるように両方の小数点を同じ数だけ右に動かしてから、整数÷小数と同じように計算します。{a1_disp}÷{b1_disp}={ans_disp}です。",
+  "rest": "5ddc9a0029ebfe01df017c9c9bbeb658"
+ },
+ "g05_dec_div_dec_word_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "{b1_disp}mの重さが{a1_disp}kgの{obj}があります。この{obj}1mの重さは何kgですか。"
+  ],
+  "kaisetsu": "1mあたりの重さは、全体の重さを長さでわって求めます。{a1_disp}÷{b1_disp}={ans_disp}なので、1mの重さは{ans_disp}kgです。",
+  "rest": "a9e89d0572de5a2f1a35331d902dae49"
+ },
+ "g05_dec_riyou_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "1{unit}のねだんが{n1}円の{obj}を{d1_disp}{unit}買って、{m1}円を出しました。おつりはいくらですか。"
+  ],
+  "kaisetsu": "まず代金を求めます。1{unit}のねだん{n1}円に、買った長さ{d1_disp}{unit}をかけます。次に、出したお金{m1}円から代金をひくと、おつりは{ans}円です。",
+  "rest": "4d21ac5ff50bac8073381eaf0cd669a7"
+ },
+ "g05_dec_bai_ratio_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "{liq}が{a1_disp}L、{liq2}が{b1_disp}Lあります。{liq}のかさは、{liq2}のかさの何倍ですか。"
+  ],
+  "kaisetsu": "「何倍か」は、もとにする量でわって求めます。{liq}のかさ{a1_disp}Lを、もとにする{liq2}のかさ{b1_disp}Lでわって、{a1_disp}÷{b1_disp}={ans_disp}倍です。答えが1より小さいときは、もとより少ないという意味です。",
+  "rest": "0b347f5409011db126a41bf9c7dd20c6"
+ },
+ "g05_dec_bai_apply_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "白い{obj}の長さは{b1}{unit}です。赤い{obj}の長さは、白い{obj}の長さの{k1_disp}倍です。赤い{obj}は何{unit}ですか。"
+  ],
+  "kaisetsu": "「もとの長さの{k1_disp}倍」は、もとの長さに{k1_disp}をかけて求めます。{b1}×{k1_disp}={ans_disp}なので、赤い{obj}は{ans_disp}{unit}です。",
+  "rest": "ab42da1293645c5328babe9430298da2"
+ },
+ "g05_evenodd_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "{n1}は、偶数と奇数のどちらですか。"
+  ],
+  "kaisetsu": "2でわり切れる整数が偶数、わり切れない整数が奇数です。一の位が0・2・4・6・8なら偶数、1・3・5・7・9なら奇数です。{n1}は{parity}です。",
+  "rest": "7838e62dafb79e01e860eadd93a8e5c9"
+ },
+ "g05_lcm_calc_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "（{a1}、{b1}）の最小公倍数を求めなさい。また、（{a1}、{b1}）の公倍数を小さいほうから順に3つ書きなさい。"
+  ],
+  "kaisetsu": "公倍数は、2つの数のどちらの倍数にもなっている数で、いちばん小さいものが最小公倍数です。大きいほうの数の倍数を順に書いていき、小さいほうの数でもわり切れるものを探すと、最小公倍数は{ans}です。公倍数は最小公倍数の倍数なので、{ans}、{m2}、{m3}と続きます。",
+  "rest": "940838c389ed8d1163a9d49a07dd6b14"
+ },
+ "g05_gcd_calc_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "（{a1}、{b1}）の最大公約数を求めなさい。"
+  ],
+  "kaisetsu": "公約数は、2つの数のどちらもわり切れる数で、いちばん大きいものが最大公約数です。小さいほうの数の約数を大きい順に調べ、大きいほうの数もわり切れるものを探すと、最大公約数は{ans}です。",
+  "rest": "357549797a68ae401d24ef36d929496c"
+ },
+ "g05_lcm_word_clock_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "あるバス停では、{dest_a}行きのバスが{a1}分ごとに、{dest_b}行きのバスが{b1}分ごとに出発します。{t0_disp}に{dest_a}行きと{dest_b}行きのバスが同時に出発しました。次に2つのバスが同時に出発するのは何時何分ですか。"
+  ],
+  "kaisetsu": "次に同時に出発するのは、{a1}分と{b1}分の両方の倍数になる時間がたったときです。それは最小公倍数の分後なので、{t0_disp}にその分をたして{ans_disp}です。",
+  "rest": "871e12a2902034df15c3bab66df9684d"
+ },
+ "g05_lcm_word_tile_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "たて{a1}cm、横{b1}cmの長方形の紙を、同じ向きにすきまなくしきつめて、できるだけ小さい正方形をつくります。正方形の1辺の長さは何cmになりますか。"
+  ],
+  "kaisetsu": "正方形の1辺の長さは、たて{a1}cmの倍数でもあり、横{b1}cmの倍数でもある必要があります。できるだけ小さくするので、{a1}と{b1}の最小公倍数の{ans}cmです。",
+  "rest": "53d178f5e76648c62d7fc7fe9ff6cfe0"
+ },
+ "g05_gcd_word_divide_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "{obj_a}が{a1}{cnt_a}と{obj_b}が{b1}{cnt_b}あります。これを何人かの子どもに、それぞれ同じ数ずつ、あまりが出ないように分けます。できるだけ多くの子どもに分けるとき、何人に分けることができますか。"
+  ],
+  "kaisetsu": "あまりが出ないように分けるには、人数が{a1}の約数でもあり{b1}の約数でもある必要があります。できるだけ多くの人に分けるので、最大公約数の{ans}人です。",
+  "rest": "2c29f99ee45a16e458013a9c721a2c42"
+ },
+ "g05_yakubun_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次の分数を約分しなさい。{raw1}"
+  ],
+  "kaisetsu": "約分は、分母と分子を同じ数でわって、簡単な分数にすることです。分母と分子の最大公約数でわると、1回でいちばん簡単な形になります。{raw1}を約分すると{red1}です。",
+  "rest": "847a152bd459a06d2a1d63301a456379"
+ },
+ "g05_tsubun_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次の分数を通分しなさい。{f1}、{f2}"
+  ],
+  "kaisetsu": "通分は、分母のちがう分数を、同じ分母の分数になおすことです。分母を{b1}と{d1}の最小公倍数{L1}にそろえ、分母を何倍したかと同じ倍だけ分子もかけます。{f1}、{f2}を通分すると{g1}、{g2}です。",
+  "rest": "8452baa179d41135e700bd4d8d2c0a60"
+ },
+ "g05_div_to_frac_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次のわり算の商を分数で表しなさい。{a1}÷{b1}"
+  ],
+  "kaisetsu": "わり算の商は分数で表せます。わられる数が分子、わる数が分母になります。{a1}÷{b1}の商は{f1}です。",
+  "rest": "74ef3e6227988be3cc0537baebaafcf1"
+ },
+ "g05_frac_bai_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "{liq}が{a1}L、{liq2}が{b1}Lあります。{liq}のかさは、{liq2}のかさの何倍ですか。分数で答えなさい。"
+  ],
+  "kaisetsu": "「何倍か」は、もとにする量でわります。{a1}÷{b1}の商を分数で表すと、分子が{a1}、分母が{b1}です。約分できるときは約分して、{red1}倍です。",
+  "rest": "c14d9eb8925082baf3b5b6d217b6b889"
+ },
+ "g05_frac_add_unlike_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次の計算をしなさい。{f1}+{f2}"
+  ],
+  "kaisetsu": "分母がちがう分数のたし算は、まず通分して分母をそろえてから、分子どうしをたします。分母は{L1}にそろえます。答えが約分できるときは約分して、{res1}です。",
+  "rest": "d20c40ebb5d6538c2825a900aa3209b1"
+ },
+ "g05_frac_sub_unlike_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次の計算をしなさい。{f1}−{f2}"
+  ],
+  "kaisetsu": "分母がちがう分数のひき算も、まず通分して分母を{L1}にそろえてから、分子どうしをひきます。答えが約分できるときは約分して、{res1}です。",
+  "rest": "c7b7581187c03fc9a98e73ee78c3a606"
+ },
+ "g05_frac_mixed_add_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次の計算をしなさい。{mx1}+{f2}"
+  ],
+  "kaisetsu": "帯分数のたし算は、帯分数を仮分数になおすか、整数部分と分数部分を分けて計算します。分母を{L1}に通分してから分子をたし、答えは{res1}です。仮分数になったら帯分数になおします。",
+  "rest": "1cbac707172a28f57f4c5ffe24241b23"
+ },
+ "g05_frac_three_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次の計算をしなさい。{f_a}+{f_b}−{f_c}"
+  ],
+  "kaisetsu": "3つの分数の計算は、3つの分母の最小公倍数{L1}で一度に通分すると計算が楽です。分子を左から順にたしたりひいたりして、答えは{res1}です。",
+  "rest": "1834d66c29b917ca8c20403ffa7c277a"
+ },
+ "g05_heikin_calc_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次の4つのテストの点数の平均を求めなさい。{v1}点、{v2}点、{v3}点、{v4}点"
+  ],
+  "kaisetsu": "平均は、合計を個数でわって求めます。4つの点数をぜんぶたして、4でわります。（{v1}+{v2}+{v3}+{v4}）÷4={ans}なので、平均{ans}点です。",
+  "rest": "0f623e917c889ee1c9f490f22f8161ea"
+ },
+ "g05_heikin_word_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "{p1}ページの本を{d1}日間で読み終えました。1日に平均何ページ読んだことになりますか。"
+  ],
+  "kaisetsu": "1日に平均何ページ読んだかは、全体のページ数を日数でわって求めます。{p1}÷{d1}={ans}なので、1日平均{ans}ページです。",
+  "rest": "c2c55c6853bbca8ca6d4540cdecdf6ef"
+ },
+ "g05_heikin_reverse_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "ある家では、1日に平均{a1}gのお米を食べます。{d1}日間では、何kg何gのお米を食べることになりますか。ちょうどのときはkgだけで答えなさい。"
+  ],
+  "kaisetsu": "平均が分かっているとき、合計は「平均×個数」で求められます。1日に平均{a1}gなので、{d1}日間では{a1}×{d1}={ans}gです。1000gが1kgなので、{ans_disp}です。",
+  "rest": "53526856b5d35a11b9821a012b27c2be"
+ },
+ "g05_unit_weight_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "{d1}mで{w1}gのはり金があります。このはり金1mあたりの重さは何gですか。"
+  ],
+  "kaisetsu": "「1mあたりの重さ」は、全体の重さを長さでわって求めます。{w1}÷{d1}={ans}なので、1mあたり{ans}gです。",
+  "rest": "0f0fdc2f30472cbcc813a101ef94197e"
+ },
+ "g05_unit_price_compare_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "A店では{item}{na}{cnt}を{pa}円、B店では{item}{nb}{cnt}を{pb}円で売っています。1{cnt}あたりのねだんで比べると、どちらの店の{item}のほうが安いといえますか。"
+  ],
+  "kaisetsu": "1{cnt}あたりのねだんを比べるには、それぞれの店で「ねだん÷個数」を計算します。A店は{pa}÷{na}={ua}円、B店は{pb}÷{nb}={ub}円なので、{winner}のほうが安いです。",
+  "rest": "49eec351406d897e117057148bb05a9c"
+ },
+ "g05_density_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "ある町の面積は{s1}km²で、人口は{p1}人です。この町の人口密度を求めなさい。"
+  ],
+  "kaisetsu": "人口密度は、1km²あたりの人口です。人口を面積でわって、{p1}÷{s1}={ans}なので、1km²あたり{ans}人です。",
+  "rest": "060529f050ec6f990ece2283026606d7"
+ },
+ "g05_speed_calc_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "自動車で、{dist}kmの道のりを{t1}時間かかって走りました。この自動車の時速を求めなさい。"
+  ],
+  "kaisetsu": "速さは、道のりを時間でわって求めます。{dist}÷{t1}={ans}なので、時速{ans}kmです。時速は「1時間あたりに進む道のり」です。",
+  "rest": "6e54583dfda56f4e02e7f17440615bdc"
+ },
+ "g05_speed_minute_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "{dist}mの道のりを{t1}分で歩きました。分速を求めなさい。"
+  ],
+  "kaisetsu": "分速は「1分あたりに進む道のり」です。道のりを時間（分）でわって、{dist}÷{t1}={ans}なので、分速{ans}mです。",
+  "rest": "9b83be303b9dccb11a33332df0a350e0"
+ },
+ "g05_speed_convert_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "分速{v1}mで進む電車があります。この電車の秒速は何mですか。また、時速は何kmですか。"
+  ],
+  "kaisetsu": "分速を秒速になおすには60でわり（1分＝60秒）、時速になおすには60をかけます（1時間＝60分）。分速{v1}mは、秒速{sec}m、時速は{v1}×60mを1000でわって時速{hkm}kmです。",
+  "rest": "4a8b29b1f563a328f6a3e0c365bfe06c"
+ },
+ "g05_distance_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "時速{v1}kmで走る電車が、{t1}時間に進む道のりは何kmですか。"
+  ],
+  "kaisetsu": "道のりは、速さ×時間で求めます。時速{v1}kmで{t1}時間走るので、{v1}×{t1}={ans}kmです。",
+  "rest": "61eddd16bddd7e3926dfd8b50562d900"
+ },
+ "g05_time_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "{dist}kmの道のりを、自転車で時速{v1}kmで走ります。かかる時間は何時間ですか。"
+  ],
+  "kaisetsu": "時間は、道のりを速さでわって求めます。{dist}÷{v1}={ans}なので、{ans}時間かかります。",
+  "rest": "cbcb4aab5e26042b55d2870d222383fa"
+ },
+ "g05_speed_compare_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "{actor_a}は自転車で{ta}分間に{la}m走り、{actor_b}は自転車で{tb}分間に{lb}m走りました。どちらのほうが速いですか。"
+  ],
+  "kaisetsu": "速さを比べるには、同じ時間（1分）あたりに進む道のりにそろえます。{actor_a}は{la}÷{ta}={ua}m、{actor_b}は{lb}÷{tb}={ub}mなので、1分あたりの道のりが長い{winner}のほうが速いです。",
+  "rest": "617191fd654a772f1f33155b7154dae3"
+ },
+ "g05_ratio_find_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "ある小学校の児童数は{m1}人で、そのうち{c1}人がスポーツクラブに入っています。スポーツクラブに入っている人数は、児童数全体のどれだけの割合ですか。小数で答えなさい。"
+  ],
+  "kaisetsu": "割合は、比べる量÷もとにする量で求めます。もとにする量は児童数全体の{m1}人、比べる量はクラブの{c1}人なので、{c1}÷{m1}={ans_disp}です。",
+  "rest": "c33a8e42a6b702d7d0b571f8dec20f04"
+ },
+ "g05_compare_find_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "持っているお金が{m1}円あります。このうち、{p1_disp}の割合にあたるお金を使いました。使ったお金はいくらですか。"
+  ],
+  "kaisetsu": "比べる量は、もとにする量×割合で求めます。もとにする量は持っているお金{m1}円なので、{m1}×{p1_disp}={ans}円です。",
+  "rest": "c44f198a0623d6183c22b779a288f51a"
+ },
+ "g05_base_find_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "バスに{c1}人が乗っています。これは、このバスの定員の{p1_disp}にあたります。バスの定員は何人ですか。"
+  ],
+  "kaisetsu": "もとにする量は、比べる量÷割合で求めます。{p1_disp}を小数で表すと{p_dec}なので、{c1}÷{p_dec}={ans}人が定員です。",
+  "rest": "8fdd3621e067910d39b88327b8a70b59"
+ },
+ "g05_base_find_discount_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "ある品物を{p1_disp}引きのねだんで買ったら、代金は{c1}円でした。この品物のもとのねだんはいくらですか。"
+  ],
+  "kaisetsu": "{p1_disp}引きということは、もとのねだんの（1−{p_dec}）にあたる金額をはらったということです。代金÷（1−{p_dec}）で、もとのねだんは{ans}円です。",
+  "rest": "e929d4659ad6c22201a92873333c801e"
+ },
+ "g05_pct_convert_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次の割合を百分率で表しなさい。{p1_disp}"
+  ],
+  "kaisetsu": "百分率は、割合を100倍して%をつけたものです。小数の割合0.01が1%にあたります。{p1_disp}は{ans_disp}です。",
+  "rest": "b089704b751025470fb9d37804624316"
+ },
+ "g05_buai_convert_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次の割合を歩合で表しなさい。{p1_disp}"
+  ],
+  "kaisetsu": "歩合は、割合0.1を1割、0.01を1分、0.001を1厘と表す言い方です。{p1_disp}は{ans_disp}です。",
+  "rest": "208b36a86c804f6fb033acc791cbbb7f"
+ },
+ "g05_percent_of_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "{c1}gは、{m1}gの何%ですか。"
+  ],
+  "kaisetsu": "何%かをきかれたら、まず割合を小数で求め、100倍して%をつけます。{c1}÷{m1}の割合を百分率になおすと{ans_disp}です。",
+  "rest": "634ca4b3cf2a5cb55e0bcedeb665f7aa"
+ },
+ "g05_zougen_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "ある小学校の去年の児童数は{n1}人でした。今年は去年より{p1_disp}増えたそうです。今年の児童数は何人ですか。"
+  ],
+  "kaisetsu": "{p1_disp}増えたということは、去年を1とすると今年は（1+{p_dec}）にあたります。{n1}×（1+{p_dec}）={ans}なので、今年は{ans}人です。",
+  "rest": "7ee5c7a56d1d35af58ca5af7d99c5d0a"
+ },
+ "g05_zougen_seq_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "あるクラブの去年の人数は{n1}人でした。今年は去年より{pa_disp}増え、来年はさらに今年より{pb_disp}増える予定です。来年の人数は何人になりますか。"
+  ],
+  "kaisetsu": "増える割合を2回続けて考えます。今年は去年の（1+{pa_dec}）倍、来年はさらに今年の（1+{pb_dec}）倍です。{n1}×（1+{pa_dec}）×（1+{pb_dec}）={ans}なので、来年は{ans}人です。",
+  "rest": "9f6fe51f7616ce9d72c21a702697a81d"
+ },
+ "g05_table_heikin_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "右の表は、ある図書館の月曜日から木曜日までの入館者数を表しています。入館者数は1日平均何人ですか。"
+  ],
+  "kaisetsu": "表の4日分の入館者数をぜんぶたして、日数の4でわります。（{v1}+{v2}+{v3}+{v4}）÷4={ans}なので、1日平均{ans}人です。",
+  "rest": "d0e783b27c3f356013164ead44c1a8e9"
+ },
+ "g05_table_unit_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "右の表は、A、Bの2つのにわとり小屋の面積と、そこにいるにわとりの数を表したものです。1m²あたりのにわとりの数で比べると、どちらの小屋のほうがこんでいますか。"
+  ],
+  "kaisetsu": "こみぐあいは、1m²あたりのにわとりの数で比べます。Aは{ca}÷{sa}={ua}わ、Bは{cb}÷{sb}={ub}わなので、{winner}の小屋のほうがこんでいます。面積や数が大きいほうがこんでいるとは限らないので、必ず「1あたり」にそろえて比べます。",
+  "rest": "8b2cd1fc89c088641ba718a5e09ba503"
+ },
+ "g05_table_ratio_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "右の表は、A、Bの2台のバスの定員と乗客の数を表したものです。定員をもとにした乗客の数の割合で比べると、どちらのバスのほうがこんでいるといえますか。"
+  ],
+  "kaisetsu": "こみぐあいを割合で比べるには、乗客の数÷定員を計算します。Aは{ca}÷{ma}={ua_disp}、Bは{cb}÷{mb}={ub_disp}なので、割合が大きい{winner}のバスのほうがこんでいます。",
+  "rest": "bfd8a6296a58136e3441c6bf105836dd"
+ },
+ "g05_kawarikata_table_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "まわりの長さが{L1}cmの長方形をつくります。右の表は、たての長さと横の長さの関係を表したものです。たての長さが{x1}cmのとき、横の長さは何cmですか。"
+  ],
+  "kaisetsu": "長方形のまわりの長さは（たて＋横）×2なので、たて＋横はいつも{L1}÷2です。たてが{x1}cmのとき、横は{L1}÷2−{x1}={ans}cmです。表を見ると、たてが1cmふえるごとに横が1cmへることが分かります。",
+  "rest": "277b4d7e8a8be2eff984527f1a9f6989"
+ },
+ "g05_rect_area_dec_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "たてが{h1_disp}cm、横が{w1_disp}cmの長方形の面積を求めなさい。"
+  ],
+  "kaisetsu": "長さが小数でも、長方形の面積はたて×横で求めます。{h1_disp}×{w1_disp}={ans_disp}なので、{ans_disp}cm²です。",
+  "rest": "945ba54476954397d0e85a37bffde4d9"
+ },
+ "g05_tri_angle_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次の図の三角形で、「あ」の角度は何度ですか。"
+  ],
+  "kaisetsu": "三角形の3つの角の大きさをたすと180°になります。180から分かっている2つの角をひいて、180−{a1}−{a2}={ans}なので、「あ」の角度は{ans}°です。",
+  "rest": "257a873d2c4af70767dec6226da28118"
+ },
+ "g05_tri_iso_angle_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次の図の二等辺三角形は、頂角の大きさが{t1}°です。「あ」の角度は何度ですか。"
+  ],
+  "kaisetsu": "二等辺三角形では、底辺の両はしの2つの角（底角）が等しくなります。3つの角の合計180°から頂角{t1}°をひき、残りを2つに分けて、（180−{t1}）÷2={ans}°です。",
+  "rest": "3d09f9f7aeae8bd1614cba18d3338509"
+ },
+ "g05_quad_angle_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次の図の四角形で、「あ」の角度は何度ですか。"
+  ],
+  "kaisetsu": "四角形の4つの角の大きさをたすと360°になります。四角形は対角線で2つの三角形に分けられ、180°×2＝360°だからです。360−{a1}−{a2}−{a3}={ans}なので、「あ」の角度は{ans}°です。",
+  "rest": "48440950138e2fb4c15539d2a33b1a45"
+ },
+ "g05_para_area_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次の平行四辺形の面積を求めなさい。"
+  ],
+  "kaisetsu": "平行四辺形の面積は、底辺×高さで求めます。高さは、底辺に垂直な長さで、ななめの辺の長さではありません。{b1}×{h1}={ans}なので、{ans}cm²です。",
+  "rest": "7339445f3fbbc1155b0e62dbdb3f1127"
+ },
+ "g05_para_height_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "底辺の長さが{b1}cm、面積が{S1}cm²の平行四辺形の高さは何cmですか。"
+  ],
+  "kaisetsu": "平行四辺形の面積＝底辺×高さなので、面積を底辺でわると高さが求められます。{S1}÷{b1}={ans}なので、高さは{ans}cmです。",
+  "rest": "c00c3439826fb6a376f75c555231e381"
+ },
+ "g05_tri_area_fig_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次の三角形の面積を求めなさい。"
+  ],
+  "kaisetsu": "三角形の面積は、底辺×高さ÷2で求めます。同じ三角形を2つ合わせると平行四辺形になるので、その半分と考えます。{b1}×{h1}÷2={ans}なので、{ans}cm²です。",
+  "rest": "be537198fd247f79b071265962beae22"
+ },
+ "g05_tri_height_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "底辺の長さが{b1}cm、面積が{S1}cm²の三角形の高さは何cmですか。"
+  ],
+  "kaisetsu": "三角形の面積＝底辺×高さ÷2なので、面積を2倍してから底辺でわると高さが求められます。{S1}×2÷{b1}={ans}なので、高さは{ans}cmです。",
+  "rest": "0e1d228491af1e047a0928a191a2001e"
+ },
+ "g05_trap_area_fig_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次の台形の面積を求めなさい。"
+  ],
+  "kaisetsu": "台形の面積は、（上底＋下底）×高さ÷2で求めます。同じ台形を2つ合わせると平行四辺形になるので、その半分です。（{a1}+{b1}）×{h1}÷2={ans}なので、{ans}cm²です。",
+  "rest": "27dce525c69067b1757ead2814a0c81f"
+ },
+ "g05_rhombus_area_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次のひし形の面積を求めなさい。"
+  ],
+  "kaisetsu": "ひし形の面積は、対角線×対角線÷2で求めます。ひし形を囲む長方形の半分になるからです。{d1}×{d2}÷2={ans}なので、{ans}cm²です。",
+  "rest": "3f5ea17c1a5fbd4e6429f1707fd15e07"
+ },
+ "g05_circle_circum_diam_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次の円の円周の長さを求めなさい。ただし、円周率は3.14とします。"
+  ],
+  "kaisetsu": "円周の長さは、直径×円周率で求めます。円周率は約3.14です。{d1}×3.14={ans_disp}なので、円周は{ans_disp}cmです。",
+  "rest": "02fcf4e83b8ab4d567efda4ee0fa312a"
+ },
+ "g05_circle_circum_rad_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次の円の円周の長さを求めなさい。ただし、円周率は3.14とします。"
+  ],
+  "kaisetsu": "直径は半径の2倍なので、円周は半径×2×3.14で求めます。{r1}×2×3.14={ans_disp}なので、円周は{ans_disp}cmです。",
+  "rest": "d1f57347700063e11888220305d9bc6f"
+ },
+ "g05_circle_diam_from_circum_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "円周の長さが{c_len_disp}cmの円があります。この円の直径の長さは何cmですか。ただし、円周率は3.14とします。"
+  ],
+  "kaisetsu": "円周＝直径×3.14なので、円周を3.14でわると直径が求められます。{c_len_disp}÷3.14={ans}なので、直径は{ans}cmです。",
+  "rest": "7dc2371b841289aad33ab67ee98a803d"
+ },
+ "g05_cuboid_vol_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次の直方体の体積は何cm³ですか。"
+  ],
+  "kaisetsu": "直方体の体積は、たて×横×高さで求めます。1辺1cmの立方体がいくつ分あるかを表しています。{d1}×{w1}×{h1}={ans}なので、{ans}cm³です。",
+  "rest": "2509ac4e4e127c1d2d88a6dfc10ee79e"
+ },
+ "g05_cube_vol_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "次の立方体の体積は何cm³ですか。"
+  ],
+  "kaisetsu": "立方体は、たて・横・高さがすべて同じ長さです。1辺×1辺×1辺で、{a1}×{a1}×{a1}={ans}なので、{ans}cm³です。",
+  "rest": "0528357dbc94f1668395b7f70d51de3c"
+ },
+ "g05_cuboid_capacity_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "右の図のような直方体の形をした水そうがあります。内のりは、たて{d1}cm、横{w1}cm、深さ{h1}cmです。この水そうの容積は何Lですか。"
+  ],
+  "kaisetsu": "容積は、入れ物の内側の体積です。内のりのたて×横×深さで体積をcm³で求め、1000cm³＝1Lなので1000でわります。{d1}×{w1}×{h1}÷1000={ans}なので、{ans}Lです。",
+  "rest": "c81344f1f2e14bfc57554f864785009a"
+ },
+ "g05_cuboid_depth_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "右の図のような直方体の形をした水そうがあります。内のりは、たて{d1}cm、横{w1}cm、深さ{h1}cmです。この水そうに{VL}Lの水を入れると、水の深さは何cmになりますか。"
+  ],
+  "kaisetsu": "水の体積＝たて×横×深さなので、水の体積を底面積（たて×横）でわると深さが求められます。{VL}Lをcm³になおすと{VL}×1000cm³なので、{VL}×1000÷（{d1}×{w1}）={ans}cmです。",
+  "rest": "cd843eb608ce43b184de5f431a7f322c"
+ },
+ "g05_vol_unit_convert_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "{v1_disp}m³は何Lですか。"
+  ],
+  "kaisetsu": "1m³は1000Lです（1m³＝100cm×100cm×100cm＝1000000cm³、1L＝1000cm³）。{v1_disp}m³は{v1_disp}×1000={ans}Lです。",
+  "rest": "5bce93c556c36c45b958336573f0d80e"
+ },
+ "g05_circle_rad_from_circum_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "円周の長さが{c_len1_disp}cmの円があります。この円の半径の長さは何cmですか。ただし、円周率は3.14とします。"
+  ],
+  "kaisetsu": "円周を3.14でわると直径が求められ、直径を2でわると半径になります。{c_len1_disp}÷3.14={dd1}、{dd1}÷2={ans}なので、半径は{ans}cmです。",
+  "rest": "14c0064b3bbbffeacf63888d2f4b56d6"
+ },
+ "g05_circle_circum_word_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "まるい花だんがあります。花だんの直径は{d1}mです。この花だんのまわりの長さは何mですか。ただし、円周率は3.14とします。"
+  ],
+  "kaisetsu": "まるい花だんのまわりの長さは円周なので、直径×3.14で求めます。{d1}×3.14={ans_disp}なので、{ans_disp}mです。",
+  "rest": "e62cc7f7391233c36108201865901afd"
+ },
+ "g05_para_base_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "高さが{h1}cm、面積が{S1}cm²の平行四辺形の底辺の長さは何cmですか。"
+  ],
+  "kaisetsu": "面積を高さでわると底辺が求められます。{S1}÷{h1}={ans}なので、底辺は{ans}cmです。",
+  "rest": "b0ed1bc0d94f622eb7684f3ed5150a3c"
+ },
+ "g05_tri_base_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "高さが{h1}cm、面積が{S1}cm²の三角形の底辺の長さは何cmですか。"
+  ],
+  "kaisetsu": "面積を2倍してから高さでわると底辺が求められます。{S1}×2÷{h1}={ans}なので、底辺は{ans}cmです。",
+  "rest": "adc1e00df4419b91ac88bb487aa048a2"
+ },
+ "g05_trap_height_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "上底が{a1}cm、下底が{b1}cm、面積が{S1}cm²の台形の高さは何cmですか。"
+  ],
+  "kaisetsu": "台形の面積＝（上底＋下底）×高さ÷2なので、面積を2倍してから（上底＋下底）でわると高さが求められます。{S1}×2÷（{a1}+{b1}）={ans}なので、高さは{ans}cmです。",
+  "rest": "737b57a8939e37d3d3e678919db0f636"
+ },
+ "g05_rhombus_diag_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "一方の対角線が{d1}cm、面積が{S1}cm²のひし形の、もう一方の対角線の長さは何cmですか。"
+  ],
+  "kaisetsu": "ひし形の面積＝対角線×対角線÷2なので、面積を2倍してから分かっている対角線でわると、もう一方の対角線が求められます。{S1}×2÷{d1}={ans}なので、{ans}cmです。",
+  "rest": "574ca44ef019291433ff12273d8353b3"
+ },
+ "g05_numline_frac_kinyu_01": {
+  "file": "patterns_g05.json",
+  "sentence_templates": [
+   "{q1}（{n1_disp}、{n2_disp}、{n3_disp}、{n4_disp}）"
+  ],
+  "kaisetsu": "0と1の間が{den1}等分されているので、小さい目もり1つ分は1/{den1}です。「{n1_disp}」は0から{v1}こ分右にあるので、{v1}/{den1}です。",
+  "rest": "6535524de555ef529e428832bf1b267e"
+ },
+ "g06_moji_shiki_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "1{ct1}x円の{it1}を{k1}{ct1}買います。代金を求める式を、xを使って書きなさい。"
+  ],
+  "kaisetsu": "数がまだ分からないところを、xのような文字で表して式を作ることができます。代金は「1{ct1}のねだん×{ct1}数」なので、x×{k1}です。文字も数と同じように式に入れられます。",
+  "rest": "f1245d0e19e243d54fae1a737d08ab78"
+ },
+ "g06_moji_subst_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "x×{k1}の式で、xの値が{v1}のときの式の値を求めなさい。"
+  ],
+  "kaisetsu": "式の値は、文字のところに数をあてはめて計算します。xに{v1}を入れて、{v1}×{k1}={ans}です。",
+  "rest": "e0743d3d6e0d42d5993a9406a0f862f8"
+ },
+ "g06_moji_gyaku_add_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "次の式で、xにあてはまる数を求めなさい。x+{a1}={b1}"
+  ],
+  "kaisetsu": "x+{a1}={b1}のxは、たし算の答えから{a1}をひけば求められます。x={b1}−{a1}={ans}です。求めたxを式にもどして、{b1}になるかたしかめましょう。",
+  "rest": "df1b966317b28f89dabf908822638e27"
+ },
+ "g06_moji_gyaku_sub_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "次の式で、xにあてはまる数を求めなさい。x-{a1}={b1}"
+  ],
+  "kaisetsu": "x−{a1}={b1}のxは、ひき算の答えに{a1}をたせば求められます。x={b1}+{a1}={ans}です。",
+  "rest": "1c115023886d584d076cc09b95eefd28"
+ },
+ "g06_moji_gyaku_mul_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "次の式で、xにあてはまる数を求めなさい。x×{a1}={b1}"
+  ],
+  "kaisetsu": "x×{a1}={b1}のxは、かけ算の答えを{a1}でわれば求められます。x={b1}÷{a1}={ans}です。",
+  "rest": "807965e71e0fcc5c28de074516f57a7c"
+ },
+ "g06_moji_gyaku_div_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "次の式で、xにあてはまる数を求めなさい。x÷{a1}={b1}"
+  ],
+  "kaisetsu": "x÷{a1}={b1}のxは、わり算の答えに{a1}をかければ求められます。x={b1}×{a1}={ans}です。",
+  "rest": "b530b3bce0c6df12370ab6700994bb6f"
+ },
+ "g06_moji_gyaku_2step_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "次の式で、xにあてはまる数を求めなさい。x×{a1}+{c1}={b1}"
+  ],
+  "kaisetsu": "2段階の式は、外側から順にもどします。まず{c1}をたす前の値を求めて{b1}−{c1}、次にそれを{a1}でわって、x=（{b1}−{c1}）÷{a1}={ans}です。",
+  "rest": "c36ca6a0157df646785c8fc6e2ccd3a5"
+ },
+ "g06_moji_gyaku_word_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "1{ct1}x円の{it1}と、1{ct2}{c1}円の{it2}を買うと、代金は{b1}円でした。xにあてはまる数を求めなさい。"
+  ],
+  "kaisetsu": "代金の式は x+{c1}={b1}です。xは{b1}−{c1}={ans}なので、{it1}1{ct1}は{ans}円です。文章を式に直してから、逆算します。",
+  "rest": "d6f707631ffb27f2196e31ac79b141ce"
+ },
+ "g06_frac_x_int_calc_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{f1}×{k1}を計算しなさい。"
+  ],
+  "kaisetsu": "分数×整数は、分母はそのままで、分子に整数をかけます。{f1}×{k1}は分子が{n1}、分母が{L1}になります。約分できるときは約分して、{res1}です。",
+  "rest": "00e9f19c415e8b0f3a73cad6728c75bf"
+ },
+ "g06_frac_x_int_word_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "1dLでかべを{f1}m²ぬれるペンキがあります。このペンキ{k1}dLでは、かべを何m²ぬれますか。"
+  ],
+  "kaisetsu": "1dLでぬれる面積に、使うペンキの量（dL）をかけると、ぬれる面積が求められます。{f1}×{k1}={res1}なので、{res1}m²です。かける数が整数なら、分子だけに整数をかけます。",
+  "rest": "2e8446afa7c9c97b3a79b7a85f773372"
+ },
+ "g06_frac_div_int_calc_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{f1}÷{k1}を計算しなさい。"
+  ],
+  "kaisetsu": "分数÷整数は、分子はそのままで、分母に整数をかけます。{f1}÷{k1}は分母が{L1}になります。約分できるときは約分して、{res1}です。分子が整数でわり切れるときは、分子をわっても同じ答えになります。",
+  "rest": "635d932a54dc3b07f0a87e6091308941"
+ },
+ "g06_frac_div_int_word_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{f1}Lの{liq}を{k1}人で等分すると、1人分は何Lになりますか。"
+  ],
+  "kaisetsu": "等分するときはわり算です。{f1}÷{k1}={res1}なので、1人分は{res1}Lです。分母に人数をかけると考えます。",
+  "rest": "5c6f66361e4fcdc6373b3c9d3530335e"
+ },
+ "g06_frac_x_frac_calc_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{f1}×{f2}を計算しなさい。"
+  ],
+  "kaisetsu": "分数×分数は、分子どうし・分母どうしをかけます。{f1}×{f2}は分子が{n1}、分母が{L1}です。とちゅうで約分できるときは、かける前に約分すると計算が楽です。答えは{res1}です。",
+  "rest": "3e0c5299e5ac3c64287e8938b734399d"
+ },
+ "g06_frac_mixed_x_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{mx1}×{f2}を計算しなさい。"
+  ],
+  "kaisetsu": "帯分数のかけ算は、まず帯分数を仮分数になおします。{mx1}は分子{wn1}の仮分数です。そのあと分子どうし・分母どうしをかけて、{res1}です。",
+  "rest": "db4cd0f9a3ff2e70d5cea700c59b4ba7"
+ },
+ "g06_frac_x_frac_word_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "1dLでかべを{f1}m²ぬれるペンキがあります。このペンキ{f2}dLでは、かべを何m²ぬれますか。"
+  ],
+  "kaisetsu": "1m²の正方形を、たてに{b1}等分・横に{d1}等分すると、1つのますは1/{dd}m²です。色のついたますは{a1}×{c1}こあるので、面積は{res1}m²になります。分数のかけ算で分母どうし・分子どうしをかける理由が、この図で分かります。",
+  "rest": "286f70eca31cdcc6ac629c427be59b7c"
+ },
+ "g06_frac_div_frac_calc_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{f1}÷{f2}を計算しなさい。"
+  ],
+  "kaisetsu": "分数÷分数は、わる数の分母と分子を入れかえた数（逆数）をかけます。{f1}÷{f2}は、分子が{n1}、分母が{L1}のかけ算になります。約分して{res1}です。",
+  "rest": "413f577f3a8fe295a42a8cfdc4a082fa"
+ },
+ "g06_frac_mixed_div_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{mx1}÷{f2}を計算しなさい。"
+  ],
+  "kaisetsu": "帯分数のわり算は、まず帯分数を仮分数になおしてから、わる数の逆数をかけます。{mx1}は分子{wn1}の仮分数です。答えは{res1}です。",
+  "rest": "45e43eefe54fdcb7a6526bedc5064556"
+ },
+ "g06_frac_div_frac_word_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{f2}dLでかべを{f1}m²ぬれるペンキがあります。このペンキ1dLでは、かべを何m²ぬれますか。"
+  ],
+  "kaisetsu": "1dLあたりの面積は、「ぬれた面積÷使った量」で求めます。{f1}÷{f2}なので、逆数をかけて{res1}m²です。わる数が分数でも「1あたり」を求める式はわり算です。",
+  "rest": "f1f86b9655fec41e3e845340062e35dc"
+ },
+ "g06_frac_dec_x_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{p1_disp}×{f2}を計算しなさい。答えは分数で書きなさい。"
+  ],
+  "kaisetsu": "小数と分数の計算は、小数を分数になおしてから計算します。{p1_disp}は分母が10の分数です。そのあと分子どうし・分母どうしをかけて約分し、{res1}です。",
+  "rest": "de0442c282d089204ab05815107d01f5"
+ },
+ "g06_frac_dec_div_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{f1}÷{p1_disp}を計算しなさい。答えは分数で書きなさい。"
+  ],
+  "kaisetsu": "わる数の小数{p1_disp}を分母10の分数になおし、その逆数をかけます。約分して{res1}です。",
+  "rest": "a95bee2533d57e14bcb29c2b16d8995b"
+ },
+ "g06_frac_three_ops_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{fa}×{fb}÷{fc}を計算しなさい。"
+  ],
+  "kaisetsu": "かけ算とわり算が続く式は、わり算を逆数のかけ算になおして、まとめて1つの分数にします。分子は{n1}、分母は{L1}になり、約分して{res1}です。",
+  "rest": "039756b74f577d827d1c4b88a6d07400"
+ },
+ "g06_time_h_to_min_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{f1}時間は何分ですか。"
+  ],
+  "kaisetsu": "1時間は60分なので、{f1}時間は60分の{f1}にあたります。60×{f1}={ans}分です。",
+  "rest": "d33e6ea60533a4ab9c1495919f88d2b4"
+ },
+ "g06_time_sec_to_min_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{s1}秒は何分ですか。分数で答えなさい。"
+  ],
+  "kaisetsu": "1分は60秒なので、{s1}秒は{s1}/60分です。約分して{res1}分です。",
+  "rest": "1d5acf157f72305fbb87659e2d23590b"
+ },
+ "g06_time_frac_dist_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "時速{v1}kmで走る自動車が、{f1}時間に進む道のりは何kmですか。"
+  ],
+  "kaisetsu": "道のりは速さ×時間で求めます。時間が分数でも同じ式です。{v1}×{f1}={ans}なので、{ans}kmです。",
+  "rest": "1eebfd59f54a0f2cda444ed362414818"
+ },
+ "g06_speed_meet_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "家から駅まで{d1}mあります。{wb}は家から駅へ分速{vs1}mで、{wa}は駅から家へ分速{vf1}mで、同時に出発しました。2人が出会うのは、出発してから何分後ですか。"
+  ],
+  "kaisetsu": "向かい合って進むと、2人の間の道のりは1分間に（{vs1}+{vf1}）mずつちぢまります。{d1}mがなくなるまでの時間なので、{d1}÷（{vs1}+{vf1}）={ans}分後です。",
+  "rest": "d514ca8eb95704b513c2caee1998dfe8"
+ },
+ "g06_speed_chase_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{wb}は分速{vs1}mで家を出発しました。その{m1}分後に、{wa}が分速{vf1}mで同じ道を追いかけました。{wa}が{wb}に追いつくのは、{wa}が出発してから何分後ですか。"
+  ],
+  "kaisetsu": "先に出発した人は、{m1}分で{vs1}×{m1}mだけ先にいます。追いかける人は1分間に（{vf1}−{vs1}）mずつ差をちぢめるので、{vs1}×{m1}÷（{vf1}−{vs1}）={ans}分後に追いつきます。",
+  "rest": "4fd14242f211de073b0a8d04106b223f"
+ },
+ "g06_frac_bai_int_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{a1}円は{b1}円の何倍ですか。分数で答えなさい。"
+  ],
+  "kaisetsu": "「何倍か」は、もとにする量でわります。{a1}÷{b1}の商を分数で表し、約分して{red1}倍です。1より小さい倍もあります。",
+  "rest": "090ca3345e8edeb3454de4392d5d0f86"
+ },
+ "g06_frac_bai_frac_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "赤い{obj1}が{f1}m、青い{obj1}が{f2}mあります。赤い{obj1}の長さは、青い{obj1}の長さの何倍ですか。"
+  ],
+  "kaisetsu": "もとにする青い{obj1}の長さでわります。{f1}÷{f2}は逆数をかけて、約分して{red1}倍です。",
+  "rest": "3c610d3beef9182526cee6b171b931a0"
+ },
+ "g06_frac_word_more_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "2つのおもりAとBがあります。おもりAの重さは{n1}gで、おもりBはおもりAの重さよりその{f1}だけ重いそうです。おもりBの重さは何gですか。"
+  ],
+  "kaisetsu": "「Aの重さより、その{f1}だけ重い」は、Aの重さの{f1}にあたる分をAにたすという意味です。{n1}×{f1}を求めて{n1}にたすと、{ans}gです。",
+  "rest": "b069de48185db7f37798bf98064c4940"
+ },
+ "g06_frac_word_left_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "おこづかい{n1}円のうちの{f1}を使いました。あと何円残っていますか。"
+  ],
+  "kaisetsu": "使ったお金は{n1}×{f1}円です。残りは、はじめのお金からそれをひいて、{n1}−{n1}×{f1}={ans}円です。「全体の（1−{f1}）」と考えて{n1}×（1−{f1}）で求めることもできます。",
+  "rest": "2fc7a270c79234e76bce941d799719e2"
+ },
+ "g06_hi_arawasu_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "Aのびんにはコップ{a1}はいの{liq}が、Bのびんにはコップ{b1}はいの{liq}が入っています。AとBに入っている{liq}の量の割合を比で表しなさい。",
+   "縦{a1}cm、横{b1}cmの長方形があります。縦と横の長さの割合を比で表しなさい。"
+  ],
+  "kaisetsu": "2つの量の割合を、「：」を使って{a1}:{b1}のように表したものが比です。前と後ろの順番を、問題の順番どおりにします。",
+  "rest": "1241be3f690ab9552fed741375458496"
+ },
+ "g06_hi_atai_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{a1}:{b1}の比の値を求めなさい。"
+  ],
+  "kaisetsu": "比の値は、前の数を後ろの数でわった商です。{a1}÷{b1}を分数で表し、約分して{red1}です。",
+  "rest": "7860496ab76ef9fb623f3acc3eb7d178"
+ },
+ "g06_hi_kantan_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{a1_disp}:{b1_disp}を簡単な整数の比になおしなさい。"
+  ],
+  "kaisetsu": "比は、両方の数に同じ数をかけたり、同じ数でわったりしても等しい比になります。{a1_disp}と{b1_disp}を最大公約数でわると、{p1}:{q1}になります。",
+  "rest": "46cfac33484afb8eb1250d023937eb8f"
+ },
+ "g06_hi_kantan_dec_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{pa1_disp}:{pb1_disp}を簡単な整数の比になおしなさい。"
+  ],
+  "kaisetsu": "小数の比は、両方を10倍して整数の比にしてから、最大公約数でわります。{pa1_disp}:{pb1_disp}は{rp1}:{rq1}です。",
+  "rest": "6a4f29449a1178b7da4fddf0dd09ea17"
+ },
+ "g06_hi_kantan_frac_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{f1}:{f2}を簡単な整数の比になおしなさい。"
+  ],
+  "kaisetsu": "分数の比は、両方に分母の最小公倍数{L1}をかけて整数の比にしてから、約分します。{f1}:{f2}は{ra1}:{rc1}です。",
+  "rest": "d5bd94aff98b8c4bbdadf3a762ed54f4"
+ },
+ "g06_hi_eq_koukou_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{p1}:{q1}={pk1_disp}:xのとき、xにあてはまる数を求めなさい。"
+  ],
+  "kaisetsu": "等しい比では、前の数が何倍になれば、後ろの数も同じ倍になります。{p1}が{pk1_disp}になっているので、{q1}も同じ倍にして、x={ans}です。",
+  "rest": "7073e5a2655f49ca397964fd6ae2580e"
+ },
+ "g06_hi_eq_zenkou_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{p1}:{q1}=x:{qk1_disp}のとき、xにあてはまる数を求めなさい。"
+  ],
+  "kaisetsu": "後ろの数{q1}が{qk1_disp}になっているので、前の数{p1}も同じ倍にします。x={ans}です。",
+  "rest": "175c23d07c8cc246430e068e679056eb"
+ },
+ "g06_hi_bunpai_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "長さ{t1}cmの{obj1}を、{wa}と{wb}で長さの比が{p1}:{q1}になるように分けます。{wa}の分の{obj1}の長さは何cmになりますか。"
+  ],
+  "kaisetsu": "{p1}:{q1}に分けるとき、全体は{p1}+{q1}にあたります。{wa}の分は全体の{p1}/（{p1}+{q1}）なので、{t1}×{p1}÷（{p1}+{q1}）={ans}cmです。",
+  "rest": "9819bda60ec94893409b32a56ba5022c"
+ },
+ "g06_hi_whole_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{t1}円を{wa}と{wb}で{p1}:{q1}になるように分けました。{wa}がもらった金額と全体{t1}円との比を簡単な整数の比で表しなさい。また、{wa}がもらった金額は何円ですか。"
+  ],
+  "kaisetsu": "{wa}の分と全体の比は、{p1}:（{p1}+{q1}）={p1}:{s1_disp}です。{wa}がもらった金額は、{t1}円の{p1}/{s1_disp}なので{ans}円です。",
+  "rest": "838e3267f92c77993fbfeaedbdbd0f96"
+ },
+ "g06_prop_shiki_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "1mの重さが{k1}gの{obj}があります。この{obj}の長さをx m、重さをy gとして、yをxの式で表しなさい。"
+  ],
+  "kaisetsu": "長さが2倍・3倍になると重さも2倍・3倍になるので、重さは長さに比例します。1mあたり{k1}gなので、y={k1}×xです。",
+  "rest": "559db0426ccdeda196077489d155d4ff"
+ },
+ "g06_prop_findy_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "yはxに比例し、y={k1}×xの式で表されます。xの値が{v1}のときのyの値を求めなさい。"
+  ],
+  "kaisetsu": "式のxに{v1}をあてはめて、{k1}×{v1}={ans}です。",
+  "rest": "703d12b48a4fecc685350cf830c67dff"
+ },
+ "g06_prop_findx_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "yはxに比例し、y={k1}×xの式で表されます。yの値が{w1}のときのxの値を求めなさい。"
+  ],
+  "kaisetsu": "y={k1}×xなので、yの値を{k1}でわるとxが求められます。{w1}÷{k1}={ans}です。",
+  "rest": "4505b2601753f5ae8d1da00b8520539e"
+ },
+ "g06_inv_shiki_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "面積が{s1}cm²の長方形があります。縦の長さをx cm、横の長さをy cmとして、yをxの式で表しなさい。"
+  ],
+  "kaisetsu": "面積が決まっているとき、たてが2倍になると横は1/2になります。このような関係が反比例で、たて×横がいつも{s1}なので、y={s1}÷xです。",
+  "rest": "aac75f09d875a6605e87c4f28516b7ea"
+ },
+ "g06_inv_findy_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "yはxに反比例し、y={s1}÷xの式で表されます。xの値が{v1}のときのyの値を求めなさい。"
+  ],
+  "kaisetsu": "式のxに{v1}をあてはめて、{s1}÷{v1}={ans}です。反比例では、xが大きくなるとyは小さくなります。",
+  "rest": "a659724e0d642d520f1c443352ab7f31"
+ },
+ "g06_inv_findx_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "yはxに反比例し、y={s1}÷xの式で表されます。yの値が{w1}のときのxの値を求めなさい。"
+  ],
+  "kaisetsu": "y={s1}÷xなので、{s1}をyの値でわるとxが求められます。{s1}÷{w1}={ans}です。",
+  "rest": "ce1aa95ab125e2eb66c09dca455dffd1"
+ },
+ "g06_shukuzu_arawasu_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{l1}mの長さを{c1}cmで表した縮図があります。この縮図の縮尺を、分数と比で表しなさい。"
+  ],
+  "kaisetsu": "縮尺は、実際の長さをどれだけちぢめたかを表す割合です。単位をそろえて、縮図の長さ÷実際の長さを求めると1/{ans}で、比で表すと1:{ans}です。",
+  "rest": "bbbd892222434d8b8a11eff1913c7b58"
+ },
+ "g06_shukuzu_to_map_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "実際の長さが{l1}mのとき、縮尺1/{n1}の縮図では何cmになりますか。"
+  ],
+  "kaisetsu": "縮図上の長さは、実際の長さ×縮尺です。{l1}mをcmになおしてから1/{n1}にして、{l1}×100÷{n1}={ans}cmです。",
+  "rest": "38bd59e6329bec00ad837cf8199d2698"
+ },
+ "g06_shukuzu_to_real_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "縮尺1/{n1}の縮図で{c1}cmの長さは、実際には何kmありますか。"
+  ],
+  "kaisetsu": "実際の長さは、縮図上の長さ×{n1}です。{c1}×{n1}cmをkmになおして（100000cm=1km）、{ans_disp}kmです。",
+  "rest": "666ad079ccfa528369d87ef4c7351521"
+ },
+ "g06_baai_narabe_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{n1}人が1列に並びます。並び方は全部で何通りありますか。",
+   "リレーで{n1}人が走ります。走る順番は全部で何通りありますか。"
+  ],
+  "kaisetsu": "並べ方は、1番目に{n1}通り、2番目に残りの人数の通り…と順にかけて求めます。樹形図をかいて数えもれがないようにします。{n1}人では{ans}通りです。",
+  "rest": "1358f6b22a7a845e30d660ba176e5809"
+ },
+ "g06_baai_joken_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{pa}をふくむ{n1}人が横1列に並びます。{pa}がいちばん左に並ぶとき、並び方は全部で何通りありますか。"
+  ],
+  "kaisetsu": "{pa}がいちばん左と決まっているので、残りの人の並べ方だけを数えます。残りの人数で樹形図をかくと{ans}通りです。",
+  "rest": "42c1b2cf68769a9c5985f4f6879692b6"
+ },
+ "g06_baai_kumi_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{n1}チームで、どのチームとも1回ずつ試合をします。試合は全部で何試合になりますか。",
+   "{n1}種類のくだものの中から2種類を選びます。選び方は全部で何通りありますか。"
+  ],
+  "kaisetsu": "組み合わせでは、AとB・BとAは同じ1通りと数えます。1つずつ相手を選んで表や線で数え、重なりを1回だけ数えます。{n1}つの中から2つ選ぶ組み合わせは{ans}通りです。",
+  "rest": "11fa24aa933ca27d25504bb0236cc570"
+ },
+ "g06_circle_area_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "次の円の面積を求めなさい。円周率は3.14とします。"
+  ],
+  "kaisetsu": "円の面積は、半径×半径×円周率で求めます。{r1}×{r1}×3.14={ans_disp}なので、{ans_disp}cm²です。「半径×半径」であって「直径×半径」ではないことに注意しましょう。",
+  "rest": "7e6e874efadfc805e05f4b0f7ad49d35"
+ },
+ "g06_circle_area_half_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "次の図は、半径{r1}cmの円の半分の形です。この図形の面積を求めなさい。円周率は3.14とします。"
+  ],
+  "kaisetsu": "半円の面積は、円の面積の半分です。{r1}×{r1}×3.14÷2={ans_disp}なので、{ans_disp}cm²です。",
+  "rest": "6ecd2252d5f6166e4a62f6365c9fde2a"
+ },
+ "g06_circle_area_quarter_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "次の図は、半径{r1}cmの円を4等分した1つ分の形です。この図形の面積を求めなさい。円周率は3.14とします。"
+  ],
+  "kaisetsu": "円を4等分した形の面積は、円の面積の4分の1です。{r1}×{r1}×3.14÷4={ans_disp}なので、{ans_disp}cm²です。",
+  "rest": "8d20f1e9b70bd48b9f04b8fafb9e069c"
+ },
+ "g06_circle_area_reverse_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "面積が{area1_disp}cm²の円があります。この円の半径は何cmですか。円周率は3.14とします。"
+  ],
+  "kaisetsu": "面積＝半径×半径×3.14なので、面積を3.14でわると「半径×半径」が求められます。{area1_disp}÷3.14={r2s_disp}で、同じ数を2回かけて{r2s_disp}になる数を探すと、半径は{ans_disp}cmです。",
+  "rest": "4580b242d76871e0873f8f79f22c453b"
+ },
+ "g06_prism_rect_vol_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "次の四角柱の体積を求めなさい。"
+  ],
+  "kaisetsu": "角柱の体積は、底面積×高さで求めます。四角柱の底面は長方形なので、{w1}×{d1}が底面積、それに高さ{h1}をかけて{ans}cm³です。",
+  "rest": "19d69403c4a127c7c7594a97cb07279e"
+ },
+ "g06_prism_tri_vol_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "次の三角柱の体積を求めなさい。"
+  ],
+  "kaisetsu": "三角柱の体積も、底面積×高さです。底面の三角形の面積は{base1}×{bh1}÷2なので、それに高さ{h1}をかけて{ans}cm³です。",
+  "rest": "d5ffb904232544d24ace99a9f0d1cf09"
+ },
+ "g06_prism_height_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "底面積が{s1}cm²で、体積が{v1}cm³の四角柱があります。この四角柱の高さは何cmですか。"
+  ],
+  "kaisetsu": "体積＝底面積×高さなので、体積を底面積でわると高さが求められます。{v1}÷{s1}={ans}なので、高さは{ans}cmです。",
+  "rest": "7506869b7bf2cae49b200fc349d3cddb"
+ },
+ "g06_prop_table_blank_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "右の表は、xの値とyの値の関係を表していて、yはxに比例しています。表の□にあてはまる数を求めなさい。"
+  ],
+  "kaisetsu": "yがxに比例するとき、xが2倍・3倍になるとyも2倍・3倍になります。xが1のときのyが{k1}なので、xが4のときは{k1}×4={ans}です。",
+  "rest": "4f6aa742893e826bec749676e53c8e57"
+ },
+ "g06_prop_table_shiki_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "右の表は、xの値とyの値の関係を表していて、yはxに比例しています。yをxの式で表しなさい。"
+  ],
+  "kaisetsu": "比例では、yはいつも「決まった数×x」で表せます。表からxが1のときのyを読むと{k1}なので、y={k1}×xです。",
+  "rest": "fa97561d4eb3e92e7e93aa4174a96888"
+ },
+ "g06_dosuu_total_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "右の表は、あるクラスのソフトボール投げのきろくを整理したものです。調べた人数は全部で何人ですか。"
+  ],
+  "kaisetsu": "度数分布表の「人数」をすべてたすと、調べた人数になります。{v1}+{v2}+{v3}+{v4}={ans}人です。",
+  "rest": "0ae72b98ed2c6a7805a5c8f6a1fefe2b"
+ },
+ "g06_dosuu_cumul_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "右の表は、あるクラスのソフトボール投げのきろくを整理したものです。20m以上投げた人は全部で何人ですか。"
+  ],
+  "kaisetsu": "「20m以上」は、20m以上の区間をすべてたします。{v3}+{v4}={ans}人です。「以上」はその数をふくみ、「未満」はふくみません。",
+  "rest": "b43b81de90a7eaaa921cf636df4c7163"
+ },
+ "g06_sym_axes_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "右の図の{sh_name}は線対称な図形です。対称の軸は何本ありますか。"
+  ],
+  "kaisetsu": "対称の軸は、折ったときにぴったり重なる線です。{sh_name}の軸を1本ずつ探して数えると{ax1}本です。正多角形は頂点の数と同じ本数の軸があります。",
+  "rest": "443dc545b19c5bb52a723443b02de5aa"
+ },
+ "g06_sym_judge_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "右の図の{sh_name}は、線対称な図形ですか、点対称な図形ですか。あてはまるものを答えなさい。"
+  ],
+  "kaisetsu": "線対称は「折ると重なる」、点対称は「180度回すと重なる」図形です。{sh_name}をその2つの見方でたしかめると、答えは「{judge1}」です。",
+  "rest": "ee9a253cc7cfe91fea1a3d65209339de"
+ },
+ "g06_similar_len_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "右の図で、右側の図形は左側の図形の{r1}倍の拡大図です。左側の図形の長さが書かれた辺は{l1}cmです。右側の図形の対応する辺の長さは何cmですか。"
+  ],
+  "kaisetsu": "{r1}倍の拡大図では、すべての辺の長さが{r1}倍になります。対応する辺は{l1}×{r1}={ans}cmです。角の大きさは変わりません。",
+  "rest": "d8f6b0f4786cca5d3358dc0cd21f3ec4"
+ },
+ "g06_similar_shrink_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "右の図で、右側の図形は左側の図形の1/2の縮図です。左側の図形の長さが書かれた辺は{l1}cmです。右側の図形の対応する辺の長さは何cmですか。"
+  ],
+  "kaisetsu": "1/2の縮図では、すべての辺の長さが半分になります。対応する辺は{l1}÷2={ans}cmです。",
+  "rest": "37f3135ced06ffb8efb3a6f3d366f157"
+ },
+ "g06_graph_prop_read_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "右のグラフは、yがxに比例するようすを表しています。xの値が{x1}のときのyの値を、グラフから読み取りなさい。"
+  ],
+  "kaisetsu": "比例のグラフは、0を通るまっすぐな線です。横軸のx={x1}の位置から上に見ていき、線とぶつかったところの高さをたて軸で読みます。答えは{ans}です。",
+  "rest": "6ef65b10d2415d9b951bbaaac430037f"
+ },
+ "g06_graph_prop_shiki_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "右のグラフは、yがxに比例するようすを表しています。グラフから、yをxの式で表しなさい。"
+  ],
+  "kaisetsu": "グラフから、xが1のときのyの値を読みます。その値が「決まった数」なので、y={k1}×xです。読みにくいときは、xが整数になる点を1つ選んで、yをxでわります。",
+  "rest": "6c39136a2a505254907fe63970603bad"
+ },
+ "g06_graph_inv_read_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "右のグラフは、yがxに反比例するようすを表しています。xの値が{x1}のときのyの値を、グラフから読み取りなさい。"
+  ],
+  "kaisetsu": "反比例のグラフは、なめらかな曲線です。横軸のx={x1}の位置から上に見ていき、曲線とぶつかったところの高さをたて軸で読みます。答えは{ans}です。",
+  "rest": "55f61c5e8aa54cbb1366567bac633ab6"
+ },
+ "g06_dotplot_mode_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "右のドットプロットは、あるはんの計算テストの点数を整理したものです。いちばん人数が多かった点数は何点ですか。"
+  ],
+  "kaisetsu": "ドットプロットは、同じ点数の人の数だけ点を積み上げたものです。点がいちばん高く積まれている点数を読みます。答えは{ans}点です。",
+  "rest": "47388647a2d2355413eb95b7621f9a9a"
+ },
+ "g06_hist_read_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "右のグラフは、あるクラスのソフトボール投げのきろくを整理したものです。15m以上20m未満の人は何人ですか。"
+  ],
+  "kaisetsu": "ヒストグラム（柱状グラフ）は、柱の高さがその区間の人数を表します。15m以上20m未満の柱の高さを読むと{ans}人です。",
+  "rest": "d3965ee421032470e1b0e89c18f6c86d"
+ },
+ "g06_hyo_yomi_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "右の表は、あるクラスでしらべた結果を整理したものです。{ask1}のかずは、いくつですか。"
+  ],
+  "kaisetsu": "表の{ask1}のところをたてに見て、書いてある数を読みます。答えは{ans}{unit1}です。",
+  "rest": "e0a1d0ae5cf5cb72b8eea67a1a933802"
+ },
+ "g06_hyo_max_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "右の表は、あるクラスでしらべた結果を整理したものです。かずがいちばん多いものは、いくつですか。"
+  ],
+  "kaisetsu": "表の数を横に見くらべて、いちばん大きい数を探します。答えは{ans}{unit1}です。",
+  "rest": "c2c3d93059de350c71c2c1088bd9ae4c"
+ },
+ "g06_hyo_min_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "右の表は、あるクラスでしらべた結果を整理したものです。かずがいちばん少ないものは、いくつですか。"
+  ],
+  "kaisetsu": "表の数を横に見くらべて、いちばん小さい数を探します。答えは{ans}{unit1}です。",
+  "rest": "4ede8420184b38c4f4e8d02418ce6d82"
+ },
+ "g06_hyo_sa_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "右の表は、あるクラスでしらべた結果を整理したものです。{cb1}は{cd1}より、いくつ多いですか。"
+  ],
+  "kaisetsu": "「いくつ多いか」は、ひき算で求めます。{cb1}の数から{cd1}の数をひいて、{v2}−{v4}={ans}{unit1}です。",
+  "rest": "2c9386f1322506f7808c227fd47c1180"
+ },
+ "g06_hyo_gokei_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "右の表は、あるクラスでしらべた結果を整理したものです。しらべたかずは、全部でいくつですか。"
+  ],
+  "kaisetsu": "合計は、表の数をすべてたして求めます。{v1}+{v2}+{v3}+{v4}={ans}{unit1}です。",
+  "rest": "6c47a450eb69fe4e4821fc5098c205bd"
+ },
+ "g06_hyo_2d_yomi_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "右の表は、2つの組でしらべた結果を整理したものです。{r2a}で{c2a}とこたえた人は、何人ですか。"
+  ],
+  "kaisetsu": "2次元の表は、たての見出しと横の見出しが交わったますに数が入っています。{r2a}のだんと{c2a}の列が交わったますを読んで、{ans}{unit1}です。",
+  "rest": "087e4f873948a6e440d11b7f78c05047"
+ },
+ "g06_circle_mawari_half_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "次の半円のまわりの長さを求めなさい。円周率は3.14とします。"
+  ],
+  "kaisetsu": "半円のまわりの長さは、円周の半分と直径をあわせた長さです。まっすぐな部分（直径）をたし忘れないようにしましょう。{d1}×3.14÷2+{d1}={ans_disp}cmです。",
+  "rest": "e1a36c3cf682c9ced8fb414b9f3016ee"
+ },
+ "g06_circle_mawari_quarter_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "次の四分円(円を4等分した形)のまわりの長さを求めなさい。円周率は3.14とします。"
+  ],
+  "kaisetsu": "四分円のまわりの長さは、円周の4分の1と、半径2本分をあわせた長さです。{r1}×2×3.14÷4+{r1}×2={ans_disp}cmです。",
+  "rest": "aaf485a5fed7f10f305a8f84b7a6362f"
+ },
+ "g06_comp_sq_circle_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "1辺が{s1}cmの正方形の中に、ぴったり入る円をかきました。色のついた部分の面積を求めなさい。円周率は3.14とします。"
+  ],
+  "kaisetsu": "色のついた部分は、正方形から円をとりのぞいた形です。円の半径は正方形の1辺の半分の{rr1}cmなので、{s1}×{s1}−{rr1}×{rr1}×3.14={ans_disp}cm²です。",
+  "rest": "4fb4fc629f5723bbe51c82a6d2a6d53e"
+ },
+ "g06_comp_donut_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "半径{R1}cmの円から、同じ中心をもつ半径{r1}cmの円を切り取りました。色のついた部分の面積を求めなさい。円周率は3.14とします。"
+  ],
+  "kaisetsu": "大きい円の面積から小さい円の面積をひきます。{R1}×{R1}×3.14−{r1}×{r1}×3.14={ans_disp}cm²です。3.14をあとでまとめてかけると、計算が楽になります。",
+  "rest": "746d61b29c5a8814c2187976ab04c46e"
+ },
+ "g06_comp_half_ring_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "半径{R1}cmの半円から、半径{r1}cmの半円を切り取りました。色のついた部分の面積を求めなさい。円周率は3.14とします。"
+  ],
+  "kaisetsu": "大きい半円から小さい半円をひくと考えます。円の面積の差を求めてから2でわって、（{R1}×{R1}×3.14−{r1}×{r1}×3.14）÷2={ans_disp}cm²です。",
+  "rest": "7f26d4ae287fa14a8b681c3efac398e5"
+ },
+ "g06_comp_two_circles_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "半径{R1}cmの大きい円の中に、半径{r1}cmの円を2つかきました。大きい円の色のついた部分の面積を求めなさい。円周率は3.14とします。"
+  ],
+  "kaisetsu": "大きい円の面積から、小さい円2つ分の面積をひきます。{R1}×{R1}×3.14−{r1}×{r1}×3.14×2={ans_disp}cm²です。",
+  "rest": "3495d6adaee69fc05df8abf1d508c715"
+ },
+ "g06_sen_taiou_ten_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "線対称な図形を対称の軸で折ると、ぴったり重なります。そのとき重なり合う点が「対応する点」です。点{x1}から対称の軸に向かってまっすぐ（垂直に）進み、軸をこえて同じ長さだけ進んだところにある点が、対応する点{Y1}です。",
+  "rest": "3dae134e820bd915e49902c6a2c68668"
+ },
+ "g06_sen_taiou_hen_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "折ったときに重なり合う辺が「対応する辺」です。辺の両はしの点それぞれについて対応する点を見つけ、その2つの点を結んだ辺が答えです。辺{x1}の対応する辺は辺{E1}で、長さは等しくなります。",
+  "rest": "a784f50061a7106a412df2206bc89351"
+ },
+ "g06_sen_taiou_kaku_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "折ったときに重なり合う角が「対応する角」です。角{x1}の頂点に対応する点を見つけると、その点にできる角が対応する角{Y1}です。対応する角の大きさは等しくなります。",
+  "rest": "6cf3c0301a9f6e5363e43aba5cdf8e28"
+ },
+ "g06_sen_seishitsu_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "線対称な図形では、対応する2つの点を結んだ直線は、対称の軸と垂直に交わります。また、その交わった点から対応する2つの点までの長さは等しくなります。つまり、対称の軸は対応する点どうしを結ぶ直線を垂直に2等分しています。",
+  "rest": "15e9e80020fc7bc889ccbd1684de5d44"
+ },
+ "g06_sen_nagasa_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "対応する点から対称の軸までの長さは、両側で等しくなります。方眼の目もりを数えて、軸からの目もりの数を左右で比べます。1目もりが{cc1}cmなので、目もりの数に{cc1}をかけて長さを求めます。",
+  "rest": "c243cf73de3d33096721c874a174afbc"
+ },
+ "g06_tensym_taiou_ten_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "点対称な図形は、対称の中心Oのまわりに180度回すと、もとの図形にぴったり重なります。点{x1}と中心Oを結んで、Oをこえて同じ長さだけまっすぐのばしたところにある点が、対応する点{Y1}です。",
+  "rest": "1af0ec853ae874f425b9ca9b57a23ce5"
+ },
+ "g06_tensym_taiou_hen_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "180度回したときに重なり合う辺が「対応する辺」です。辺の両はしの点それぞれについて、中心Oをこえた反対側の点を見つけ、その2つを結んだ辺が答えです。辺{x1}に対応する辺は辺{E1}で、長さは等しくなります。",
+  "rest": "64fdd530ccb4bb6bf83d01825c24d780"
+ },
+ "g06_tensym_taiou_kaku_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "180度回したときに重なり合う角が「対応する角」です。角{x1}の頂点から中心Oを通って反対側にある頂点にできる角が、対応する角{Y1}です。大きさは等しくなります。",
+  "rest": "a06a9c5a784880d1943be6efb4d10822"
+ },
+ "g06_tensym_seishitsu_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "点対称な図形では、対応する2つの点を結んだ直線は、必ず対称の中心Oを通ります。また、中心Oから対応する2つの点までの長さは等しくなります。中心Oは、対応する点どうしを結ぶ直線のまん中にあります。",
+  "rest": "6904b03bab5c4201076d5fdce61b76b2"
+ },
+ "g06_tensym_nagasa_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "対応する点から中心Oまでの長さは等しいので、点{x1}から中心Oまでの目もりを数えれば、対応する点までの長さもわかります。1目もりが{cc1}cmなので、目もりの数に{cc1}をかけます。",
+  "rest": "4cfc50dd53f3c126c39ab82b153a7689"
+ },
+ "g06_tak_taiou_ten_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "正多角形は線対称な図形で、頂点の数だけ対称の軸があります。1つの頂点を通る軸で折ると、その軸の両側の頂点が順に対応します。点{x1}に対応する点は、軸をはさんで同じ位置にある点{Y1}です。",
+  "rest": "497b955e7e5e4bf0d5d861dafcfb6ebc"
+ },
+ "g06_tak_taiou_hen_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "正多角形では、対称の軸をはさんで同じ位置にある辺どうしが対応します。辺{x1}の両はしの点それぞれについて対応する点を見つけ、結んだ辺{E1}が答えです。正多角形の辺はすべて同じ長さです。",
+  "rest": "1aceb05819e224fea38e5ac25d831679"
+ },
+ "g06_tak_seishitsu_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "正多角形のうち、頂点の数が偶数のもの（正方形・正六角形など）は線対称であり点対称でもあります。頂点の数が奇数のもの（正三角形・正五角形など）は線対称ですが点対称ではありません。対称の軸の本数は、頂点の数と同じです。",
+  "rest": "28084f1e86f60334df7b4d4926710f1b"
+ },
+ "g06_sen_hanbetsu_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "線対称な図形は、1本の直線で折ったときに両側がぴったり重なる図形です。まん中で折れる線が見つかるかどうかを、1つずつたしかめます。正方形や正三角形のように整った形だけでなく、矢印や十字のような形も、折って重なれば線対称です。",
+  "rest": "8761b5be93acfac2cd30eab3192eb965"
+ },
+ "g06_sen_jiku_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "対称の軸は、折ったときにぴったり重なる線のことで、図形によって本数がちがいます。正多角形は頂点の数と同じ本数の軸があり、円は無数にあります。それぞれの図形で軸を数えて、いちばん{ask1}ものを選びます。",
+  "rest": "74305439162cb3dc3cc97a6a1e94630a"
+ },
+ "g06_tensym_hanbetsu_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "点対称な図形は、ある点を中心に180度回したときに、もとの図形にぴったり重なる図形です。正三角形は線対称ですが、180度回すと逆さになるので点対称ではありません。平行四辺形や風車の形は、折っても重なりませんが、180度回すと重なるので点対称です。",
+  "rest": "72823808afa688448881af2a876eb1c3"
+ },
+ "g06_tak_hanbetsu_ten_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "三角形や四角形の中で、180度回してもとの形に重なるものが点対称です。平行四辺形・長方形・正方形・ひし形は点対称ですが、台形や三角形は180度回すと形の向きが変わってしまうので点対称ではありません。",
+  "rest": "5b229b9de63ed0fba4c95319947921a4"
+ },
+ "g06_tak_hanbetsu_ryo_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "線対称と点対称の両方にあてはまるのは、折っても重なり、180度回しても重なる図形です。長方形・正方形・ひし形がこれにあたります。平行四辺形は点対称だけ、等脚台形は線対称だけです。",
+  "rest": "0b6c9e09d6c3d5482f0ee1fded5c4704"
+ },
+ "g06_tak_sen_jiku_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "正多角形は必ず線対称で、対称の軸の本数は頂点の数と同じです。正三角形は3本、正方形は4本、正五角形は5本、正六角形は6本です。",
+  "rest": "4dd4a9e13379554942a52eb14f1e8260"
+ },
+ "g06_tak_text_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "正多角形は頂点の数だけ対称の軸があり、頂点の数が偶数なら点対称でもあります。四角形では、正方形・長方形・ひし形は線対称と点対称の両方、平行四辺形は点対称だけ、台形は等脚台形のときだけ線対称です。",
+  "rest": "9de3ecff6cbbfb9dce84be79b11d82fd"
+ },
+ "g06_tak_text_en_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "円はどの直径で折ってもぴったり重なるので、対称の軸は無数にあります。また円は、中心のまわりに180度回してももとの形に重なるので、点対称でもあり、対称の中心は円の中心です。",
+  "rest": "b08f364b43e7e4b72ff28d69ae0f8204"
+ },
+ "g06_tak_hyo_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "正多角形は頂点の数だけ対称の軸があり、頂点の数が偶数なら点対称でもあります。四角形では、正方形・長方形・ひし形は線対称と点対称の両方、平行四辺形は点対称だけ、台形は等脚台形のときだけ線対称です。",
+  "rest": "79698b94788ff73f735c74d94340aa4d"
+ },
+ "g06_gaikei_rect_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "およその面積を求めるときは、形をだいたい同じ大きさの長方形・三角形・円などとみて計算します。まわりの線は少しはみ出したり、へこんだりしていますが、はみ出した分とへこんだ分がだいたい同じなら、みなした図形の面積が、およその面積になります。{bn1}とみると、面積は約{ans}{u1}²です。",
+  "rest": "0656d33bb39664987cdee4074746dfe1"
+ },
+ "g06_gaikei_para_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "およその面積を求めるときは、形をだいたい同じ大きさの長方形・三角形・円などとみて計算します。まわりの線は少しはみ出したり、へこんだりしていますが、はみ出した分とへこんだ分がだいたい同じなら、みなした図形の面積が、およその面積になります。{bn1}とみると、面積は約{ans}{u1}²です。",
+  "rest": "a5865e69007902ff3952206cd30f041d"
+ },
+ "g06_gaikei_trap_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "およその面積を求めるときは、形をだいたい同じ大きさの長方形・三角形・円などとみて計算します。まわりの線は少しはみ出したり、へこんだりしていますが、はみ出した分とへこんだ分がだいたい同じなら、みなした図形の面積が、およその面積になります。{bn1}とみると、面積は約{ans}{u1}²です。",
+  "rest": "1ab3d72bd32bd2c6f716d2d7c0e7a09b"
+ },
+ "g06_gaikei_tri_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "およその面積を求めるときは、形をだいたい同じ大きさの長方形・三角形・円などとみて計算します。まわりの線は少しはみ出したり、へこんだりしていますが、はみ出した分とへこんだ分がだいたい同じなら、みなした図形の面積が、およその面積になります。{bn1}とみると、面積は約{ans}{u1}²です。",
+  "rest": "dd4d8eb9f7dbb04f6e297d9601fbbc9a"
+ },
+ "g06_gaikei_en_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "およその面積を求めるときは、形をだいたい同じ大きさの長方形・三角形・円などとみて計算します。まわりの線は少しはみ出したり、へこんだりしていますが、はみ出した分とへこんだ分がだいたい同じなら、みなした図形の面積が、およその面積になります。{bn1}とみると、面積は約{ans}{u1}²です。",
+  "rest": "1b4518ec4f38ba7395347f2e66efb205"
+ },
+ "g06_gaikei_grid_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "方眼を使っておよその面積を求めるときは、図形の中に全部入っているます（■）を1こ分、一部だけかかっているます（□）を半分（0.5こ分）として数えます。■が{nf1}こ、□が{np1}こなら、{nf1}+{np1}÷2＝約{ar1}{u1}²です。1目もりが{cc1}{u1}のときは、ますの数に1ますの面積をかけます。",
+  "rest": "8595c7c865a474144161b7fd762f50d9"
+ },
+ "g06_gaikei_bai_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "方眼を使っておよその面積を求めるときは、図形の中に全部入っているます（■）を1こ分、一部だけかかっているます（□）を半分（0.5こ分）として数えます。■が{nf1}こ、□が{np1}こなら、{nf1}+{np1}÷2＝約{ar1}{u1}²です。1目もりが{cc1}{u1}のときは、ますの数に1ますの面積をかけます。2つの図形の面積をそれぞれ求めて、大きいほうを小さいほうでわると約{bai1}倍です。",
+  "rest": "f233e1d1f4bb969fb5aad3e151576d6a"
+ },
+ "g06_gaikei_solid_01": {
+  "file": "patterns_g06.json",
+  "sentence_templates": [
+   "{q1}"
+  ],
+  "kaisetsu": "形がでこぼこしていても、だいたい直方体や円柱とみれば、およその体積が求められます。{bn1}とみて、たて×横×高さ（円柱なら半径×半径×3.14×高さ）を計算すると、およそ{vr1}{u1}³です。はみ出した分とへこんだ分がだいたい同じなら、この見積もりでよいことになります。",
+  "rest": "227ab0c1329128133abcf3868deec217"
+ },
+ "jhs_c01_asub_01": {
+  "file": "patterns_jhs_c01.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n{a1}＋(−{b1})"
+  ],
+  "kaisetsu": "正の数に負の数をたすのは、その数をひくことと同じです。{a1}＋(−{b1})＝{a1}−{b1}と考えて計算します。答えは{ans_disp}です。数直線で、{a1}から左へ{b1}進むと考えても同じです。",
+  "rest": "dda00a36d42a6b73c25018a93a97f80b"
+ },
+ "jhs_c01_asub_02": {
+  "file": "patterns_jhs_c01.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n−{a1}＋{b1}"
+  ],
+  "kaisetsu": "負の数に正の数をたすときは、絶対値（符号を取った大きさ）の差を求め、絶対値が大きいほうの符号をつけます。−{a1}＋{b1}は、{a1}と{b1}の差に、大きいほうの符号をつけて{ans_disp}です。",
+  "rest": "52361df0ab38ab492a4f008f181277b9"
+ },
+ "jhs_c01_asub_03": {
+  "file": "patterns_jhs_c01.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n{a1}−(−{b1})"
+  ],
+  "kaisetsu": "ひき算は、ひく数の符号を変えてたし算になおします。{a1}−(−{b1})＝{a1}＋{b1}なので、答えは{ans_disp}です。「負の数をひく」は「正の数をたす」と同じです。",
+  "rest": "ea0a427c7cc47fe3f67f6b115ec22386"
+ },
+ "jhs_c01_asub_04": {
+  "file": "patterns_jhs_c01.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n−{a1}−(−{b1})"
+  ],
+  "kaisetsu": "負の数から負の数をひくときも、ひく数の符号を変えてたし算にします。−{a1}−(−{b1})＝−{a1}＋{b1}です。絶対値の差に、大きいほうの符号をつけて{ans_disp}です。",
+  "rest": "b995251889bf968bb582e5204299b663"
+ },
+ "jhs_c01_mul_01": {
+  "file": "patterns_jhs_c01.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n{a1}×(−{b1})"
+  ],
+  "kaisetsu": "かけ算では、符号がちがう2つの数の積は負になります。絶対値どうしをかけて{a1}×{b1}を求め、符号を−にして{ans_disp}です。",
+  "rest": "60bfade631c20cba7a53d8e392292844"
+ },
+ "jhs_c01_mul_02": {
+  "file": "patterns_jhs_c01.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n(−{a1})×(−{b1})"
+  ],
+  "kaisetsu": "符号が同じ2つの数の積は正になります。負×負も正です。絶対値どうしをかけて{ans_disp}です。",
+  "rest": "faba2b35040c214e92cd770d4219988d"
+ },
+ "jhs_c01_div_01": {
+  "file": "patterns_jhs_c01.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n{a1}÷(−{b1})"
+  ],
+  "kaisetsu": "わり算の符号のきまりはかけ算と同じで、符号がちがえば負、同じなら正です。絶対値どうしをわって{a1}÷{b1}、符号を−にして{ans_disp}です。",
+  "rest": "ec7b69a82adc8daaf796d5768c983412"
+ },
+ "jhs_c01_mix_01": {
+  "file": "patterns_jhs_c01.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n{a1}＋{b1}×(−{c1})"
+  ],
+  "kaisetsu": "かけ算・わり算は、たし算・ひき算より先に計算します。まず乗除の部分を計算してから、残りをたしたりひいたりします。答えは{ans_disp}です。",
+  "rest": "a0477bc7f7f99b498ea7ab1e5b0848d4"
+ },
+ "jhs_c01_tri_01": {
+  "file": "patterns_jhs_c01.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n{a1}−{b1}＋(−{c1})"
+  ],
+  "kaisetsu": "3つの数のたし算・ひき算は、左から順に計算するか、正の数どうし・負の数どうしをまとめてから計算します。答えは{ans_disp}です。",
+  "rest": "e763582234fad793f26f9ae129da9986"
+ },
+ "jhs_c01_div_02": {
+  "file": "patterns_jhs_c01.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n(−{a1})÷(−{b1})"
+  ],
+  "kaisetsu": "負÷負は正です。絶対値どうしをわって{a1}÷{b1}、符号は＋なので{ans_disp}です。",
+  "rest": "5501334fdb3724bcbc377fcff89d23f0"
+ },
+ "jhs_c01_mix_02": {
+  "file": "patterns_jhs_c01.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n{a1}−{b1}÷(−{c1})"
+  ],
+  "kaisetsu": "わり算を先に計算します。負÷正は負になるので、その結果をひくときは符号に注意します。「負の数をひく」は「正の数をたす」です。答えは{ans_disp}です。",
+  "rest": "e08d80574af1a5c2d7f1943b276c1f3e"
+ },
+ "jhs_c01_paren_mul_01": {
+  "file": "patterns_jhs_c01.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n({a1}−{b1})×{c1}"
+  ],
+  "kaisetsu": "かっこの中を先に計算します。かっこの中のひき算で符号が決まってから、外の数をかけます。答えは{ans_disp}です。",
+  "rest": "8619d88293c7c4ef9b7e208f47d60558"
+ },
+ "jhs_c01_paren_div_01": {
+  "file": "patterns_jhs_c01.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n({a1}−{b1})÷{c1}"
+  ],
+  "kaisetsu": "かっこの中を先に計算してから、外の数でわります。かっこの中が負になったら、商も符号がつきます。答えは{ans_disp}です。",
+  "rest": "f360278f80966dceb840eef9b0046f12"
+ },
+ "jhs_c01_pow_01": {
+  "file": "patterns_jhs_c01.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n−{a1}＋(−{b1})²"
+  ],
+  "kaisetsu": "(−{b1})²は、−{b1}を2回かけた数なので正になります。かっこがあるかないかで意味が変わることに注意しましょう。累乗を先に計算してから、残りを計算して{ans_disp}です。",
+  "rest": "fa05d6e21810756c7706b0190601bc74"
+ },
+ "jhs_c01_pow_02": {
+  "file": "patterns_jhs_c01.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n{a1}−{b1}²"
+  ],
+  "kaisetsu": "−{b1}²は、{b1}²に−をつけた数なので負です。(−{b1})²とはちがいます。累乗を先に計算し、それをひいて{ans_disp}です。",
+  "rest": "9cc5eda781a4f950c43a26bd3788bf2e"
+ },
+ "jhs_c01_count_01": {
+  "file": "patterns_jhs_c01.json",
+  "sentence_templates": [
+   "−{pl1}.{pf1}より大きく、{ql1}.{qf1}より小さい整数は、全部で何個ありますか。"
+  ],
+  "kaisetsu": "数直線で考えます。−{pl1}.{pf1}より大きい整数は−{pl1}から、{ql1}.{qf1}より小さい整数は{ql1}までです。両端の整数を数えると、負の整数が{pl1}個、0が1個、正の整数が{ql1}個で、全部で{ans}個です。0を数え忘れないようにしましょう。",
+  "rest": "f872c241b601f7edf43c12828ab0d0cc"
+ },
+ "jhs_c01_frac_add_01": {
+  "file": "patterns_jhs_c01.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n−{a1}/{b1}＋{c1}/{d1}"
+  ],
+  "kaisetsu": "分数のたし算・ひき算は、通分してから分子を計算します。分母を{b1}と{d1}の公倍数にそろえ、分子どうしを計算します。符号は分子の計算結果で決まります。答えは{sg1}{f1}です。",
+  "rest": "6d46f049a8adf955120e1a88c20a85d9"
+ },
+ "jhs_c01_frac_div_01": {
+  "file": "patterns_jhs_c01.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n{a1}÷(−{b1})"
+  ],
+  "kaisetsu": "わり算は、わる数の逆数をかけるかけ算になおします。符号がちがうので答えは負です。約分できるところは約分して、−{f1}です。",
+  "rest": "d176520387129c1e1e420be1e043bbf1"
+ },
+ "jhs_c01_frac_mix_01": {
+  "file": "patterns_jhs_c01.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n{a1}−{b1}/{c1}×(−{d1})"
+  ],
+  "kaisetsu": "分数と整数のかけ算は、整数を分子にかけます。約分すると整数になる問題です。符号のきまりに注意して、{ans_disp}です。",
+  "rest": "6d5a9fa9d72923ddb6965e6c3e0ddf33"
+ },
+ "jhs_c01_frac_mul_01": {
+  "file": "patterns_jhs_c01.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n(−{a1}/{b1})×{c1}/{d1}"
+  ],
+  "kaisetsu": "分数どうしのかけ算は、分子どうし・分母どうしをかけます。符号がちがうので答えは負です。とちゅうで約分すると計算が楽になります。答えは−{f1}です。",
+  "rest": "7a4cac4260abf2c0698aec5f89976db4"
+ },
+ "jhs_c01_enum_01": {
+  "file": "patterns_jhs_c01.json",
+  "sentence_templates": [
+   "−{pl1}.{pf1}＜x＜{ql1}.{qf1} をみたす整数xを、小さい順にすべて書きなさい。"
+  ],
+  "kaisetsu": "−{pl1}.{pf1}より大きく、{ql1}.{qf1}より小さい整数を、数直線で左から順に書き出します。{n1d}から{n4d}までです。不等号に＝がついていないので、両端の小数そのものは入りません。",
+  "rest": "d13b416006b5db9fe2d920a719c22459"
+ },
+ "jhs_c02_like_01": {
+  "file": "patterns_jhs_c02.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n{a1}x＋{b1}x"
+  ],
+  "kaisetsu": "同じ文字の項（同類項）は、係数どうしをたしてまとめます。{a1}x＋{b1}x＝({a1}＋{b1})x＝{ans}xです。",
+  "rest": "cd99d5b4a428e6e2348370cec0140374"
+ },
+ "jhs_c02_like_02": {
+  "file": "patterns_jhs_c02.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n{a1}x−{b1}x"
+  ],
+  "kaisetsu": "同類項のひき算は、係数どうしをひきます。{a1}x−{b1}x＝({a1}−{b1})xで、{cd1}xです。係数が負になることもあります。",
+  "rest": "ef0eeb44601367532db9b051b8562e61"
+ },
+ "jhs_c02_paren_01": {
+  "file": "patterns_jhs_c02.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n{p1}x＋{q1}−({r1}x−{s1})"
+  ],
+  "kaisetsu": "かっこの前が−のときは、かっこの中の各項の符号を変えてかっこをはずします。そのあと同類項をまとめて、{cd1}x{td1}です。",
+  "rest": "494eff2791fbfc378d1a86f95880ede3"
+ },
+ "jhs_c02_dist_01": {
+  "file": "patterns_jhs_c02.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n{k1}({p1}x−{q1})−({r1}x−{s1})"
+  ],
+  "kaisetsu": "数×(かっこ)は、かっこの中の各項に数をかけます（分配法則）。かっこをはずしてから、xの項どうし・数の項どうしをまとめて、{cd1}x{td1}です。",
+  "rest": "3476c1fe918ff0b08751a22ebd0d7691"
+ },
+ "jhs_c02_mono_mul_01": {
+  "file": "patterns_jhs_c02.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n{p1}x×(−{q1}x)"
+  ],
+  "kaisetsu": "単項式のかけ算は、係数どうし・文字どうしをかけます。x×x＝x²です。符号のきまりはふつうの数と同じで、答えは−{m1}x²です。",
+  "rest": "d9a82843393068734b1c36e0cd343f49"
+ },
+ "jhs_c02_mono_div_01": {
+  "file": "patterns_jhs_c02.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n{A1}xy÷{B1}x"
+  ],
+  "kaisetsu": "単項式のわり算は、分数の形にして約分します。係数どうしを約分し、同じ文字は消えます。答えは{ans}yです。",
+  "rest": "66ae8ab92bb94745515f58bd45b99a0d"
+ },
+ "jhs_c02_subst_01": {
+  "file": "patterns_jhs_c02.json",
+  "sentence_templates": [
+   "x＝−{k1} のとき、{p1}x＋{q1} の値を求めなさい。"
+  ],
+  "kaisetsu": "式の値は、xに数を代入して計算します。負の数を代入するときは、かっこをつけて{p1}×(−{k1})＋{q1}と書いてから計算すると、符号のミスを防げます。答えは{ans_disp}です。",
+  "rest": "c044ac576b8ca73032fc8d5a6366d9b1"
+ },
+ "jhs_c02_subst_02": {
+  "file": "patterns_jhs_c02.json",
+  "sentence_templates": [
+   "x＝{a1}，y＝−{b1} のとき、{p1}x−{q1}y の値を求めなさい。"
+  ],
+  "kaisetsu": "2つの文字にそれぞれ代入します。yには負の数−{b1}が入るので、−{q1}×(−{b1})は正になることに注意します。答えは{ans_disp}です。",
+  "rest": "b01bab07576cb0a3eac37b8003bb6552"
+ },
+ "jhs_c02_dist_02": {
+  "file": "patterns_jhs_c02.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n{k1}({p1}x−{q1})−{m1}({r1}x−{s1})"
+  ],
+  "kaisetsu": "両方のかっこに分配法則を使ってはずします。後ろのかっこは−{m1}をかけるので、中の各項の符号が変わります。同類項をまとめて{cd1}x{td1}です。",
+  "rest": "1bef1a0a7020582ef4f3a140d12f6bd4"
+ },
+ "jhs_c02_mono_mul_02": {
+  "file": "patterns_jhs_c02.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n{p1}x×(−{q1}y)"
+  ],
+  "kaisetsu": "ちがう文字どうしのかけ算は、係数をかけて、文字はx×y＝xyとまとめて書きます。答えは−{m1}xyです。",
+  "rest": "2199b815f9b8f129bac200c8532dba2e"
+ },
+ "jhs_c02_pow_mono_01": {
+  "file": "patterns_jhs_c02.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n(−{p1}a)²×{q1}a"
+  ],
+  "kaisetsu": "a²×aは、aを2回かけた数にさらにaをかけるので、a³です。係数どうしをかけて{ans}a³です。指数はたし算になります。",
+  "rest": "b67e6d96abe444e4c8330f200003f1de"
+ },
+ "jhs_c02_pow_mono_02": {
+  "file": "patterns_jhs_c02.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n(−{p1}a)²×(−{q1}a³)"
+  ],
+  "kaisetsu": "(−{p1}a²)²は、−{p1}a²を2回かけるので係数は正の{p1}²、文字はa⁴になります。それに残りをかけて、答えは−{m1}a⁵です。",
+  "rest": "c181cc181558239aaafe273d214bff4e"
+ },
+ "jhs_c02_form_01": {
+  "file": "patterns_jhs_c02.json",
+  "sentence_templates": [
+   "次の等式を、b について解きなさい。\na＋b/{n1}＝{m1}c"
+  ],
+  "kaisetsu": "「bについて解く」とは、b＝…の形に変形することです。分母をはらってから、b以外の項を右辺に移項します。答えはb＝{k1}c−{n1}aです。",
+  "rest": "97491f04cb67218f952e1954e2113f6c"
+ },
+ "jhs_c02_form_02": {
+  "file": "patterns_jhs_c02.json",
+  "sentence_templates": [
+   "次の等式を、x について解きなさい。\ny＝{c1}−x/{n1}"
+  ],
+  "kaisetsu": "xについて解くので、まず分母をはらい、次にx以外の項を右辺に移項します。移項すると符号が変わります。答えはx＝−{n1}y＋{nc1}です。",
+  "rest": "5a450217074338079afa4a6b1f1a8b13"
+ },
+ "jhs_c02_ab_subst_01": {
+  "file": "patterns_jhs_c02.json",
+  "sentence_templates": [
+   "A＝{p1}x＋{q1}y，B＝{r1}x−{s1}y のとき、{u1}A−{v1}B を計算しなさい。"
+  ],
+  "kaisetsu": "AとBに式を代入するときは、かっこをつけて{u1}({p1}x＋{q1}y)−{v1}({r1}x−{s1}y)と書きます。分配法則でかっこをはずし、xの項・yの項をまとめて{cxd}x{cyd}yです。",
+  "rest": "19812508753b53ab41c8fb5a18fe28cc"
+ },
+ "jhs_c03_exp_01": {
+  "file": "patterns_jhs_c03.json",
+  "sentence_templates": [
+   "1個の重さがxgの荷物を{m1}個と、1個の重さがygの荷物を{n1}個運びます。全体の重さを、x、yを使った式で表しなさい。",
+   "1個の重さがxgの箱を{m1}個と、1個の重さがygの箱を{n1}個積みます。全体の重さを、x、yを使った式で表しなさい。"
+  ],
+  "kaisetsu": "xgのものが{m1}個で{m1}xg、ygのものが{n1}個で{n1}ygです。あわせて({m1}x＋{n1}y)gです。単位は式全体にかっこをつけてから書きます。",
+  "rest": "f2f273ffcffe0746f5b27471d2cb7e5c"
+ },
+ "jhs_c03_exp_02": {
+  "file": "patterns_jhs_c03.json",
+  "sentence_templates": [
+   "定価が1個a円の品物が、定価の{w1}割引きで売られています。この品物を{n1}個買うときの代金を、aを使った式で表しなさい。"
+  ],
+  "kaisetsu": "{w1}割引きということは、定価の(1−0.{w1})倍のねだんで買うということです。1個a円の(1−0.{w1})倍を{n1}個分にして、{ans}a円です。",
+  "rest": "51b2bd02448e04736194e2cabddb36a2"
+ },
+ "jhs_c03_eq_01": {
+  "file": "patterns_jhs_c03.json",
+  "sentence_templates": [
+   "1本a円のペンを{m1}本と、1個{c1}円の筆箱を1個買ったところ、代金の合計は{t1}円でした。この数量の関係を、等式で表しなさい。",
+   "1冊a円のノートを{m1}冊と、1本{c1}円の万年筆を1本買ったところ、代金の合計は{t1}円でした。この数量の関係を、等式で表しなさい。"
+  ],
+  "kaisetsu": "代金の合計を式で表すと、ペン{m1}本分の{m1}a円と{c1}円をあわせた金額です。それが{t1}円に等しいので、等式は{m1}a＋{c1}＝{t1}です。",
+  "rest": "8d5152c361644c5c4c97409837984eb8"
+ },
+ "jhs_c03_ineq_01": {
+  "file": "patterns_jhs_c03.json",
+  "sentence_templates": [
+   "1個{p1}円のりんごをx個と、1個{q1}円のかごを1個買って、代金の合計を{t1}円以下にします。この数量の関係を、不等式で表しなさい。",
+   "1個{p1}円のおにぎりをx個と、1本{q1}円のお茶を1本買って、代金の合計を{t1}円以下にします。この数量の関係を、不等式で表しなさい。"
+  ],
+  "kaisetsu": "代金の合計は{p1}x＋{q1}円です。「{t1}円以下」は{t1}円をふくむので、不等号は≦を使います。{p1}x＋{q1}≦{t1}です。「未満」なら＜になります。",
+  "rest": "eb666ddf1a587ff8b6d30723b2083ce5"
+ },
+ "jhs_c03_rel_01": {
+  "file": "patterns_jhs_c03.json",
+  "sentence_templates": [
+   "a冊のノートを、1人にb冊ずつ{m1}人に配ると、{r1}冊余りました。aを、bを使った式で表しなさい。",
+   "a個のあめを、1人にb個ずつ{m1}人に配ると、{r1}個余りました。aを、bを使った式で表しなさい。"
+  ],
+  "kaisetsu": "配った数は1人b冊×{m1}人で{m1}b冊、それに余った{r1}冊をたすと全部の冊数aになります。a＝{m1}b＋{r1}です。",
+  "rest": "dcf3aa534c247ec5592090fffc70762f"
+ },
+ "jhs_c04_move_01": {
+  "file": "patterns_jhs_c04.json",
+  "sentence_templates": [
+   "次の方程式を解きなさい。\n{p1}x−{q1}＝{r1}x＋{s1}"
+  ],
+  "kaisetsu": "xの項を左辺に、数の項を右辺に移項します。移項するときは符号が変わります。両辺をxの係数でわって、x＝{ans_disp}です。",
+  "rest": "506a261348ae2aa75be8464c794d118c"
+ },
+ "jhs_c04_move_02": {
+  "file": "patterns_jhs_c04.json",
+  "sentence_templates": [
+   "次の方程式を解きなさい。\n{p1}x＋{q1}＝{r1}x＋{s1}"
+  ],
+  "kaisetsu": "移項して整理すると、xの係数や右辺が負になることがあります。両辺を係数でわるとき、符号に注意して、x＝{ans_disp}です。",
+  "rest": "b1241bc42d511d431053c25899ab26c8"
+ },
+ "jhs_c04_paren_01": {
+  "file": "patterns_jhs_c04.json",
+  "sentence_templates": [
+   "次の方程式を解きなさい。\n{k1}(x−{m1})＝{r1}x＋{s1}"
+  ],
+  "kaisetsu": "まず分配法則でかっこをはずします。そのあと移項して整理し、両辺をxの係数でわります。x＝{ans_disp}です。",
+  "rest": "65247ca307ffe30061eb01830b284ca6"
+ },
+ "jhs_c04_ratio_01": {
+  "file": "patterns_jhs_c04.json",
+  "sentence_templates": [
+   "次の比例式を解きなさい。\n{a1}：x＝{b1}：{c1}"
+  ],
+  "kaisetsu": "比例式では、外側どうしの積と内側どうしの積が等しくなります（a:b＝c:dならad＝bc）。この性質で方程式をつくり、x＝{ans_disp}です。",
+  "rest": "9adbb1b35439f59a2aada4b325726707"
+ },
+ "jhs_c04_coeff_back_01": {
+  "file": "patterns_jhs_c04.json",
+  "sentence_templates": [
+   "x についての方程式 {p1}x＋a＝{t1} の解が x＝{s1} のとき、a の値を求めなさい。"
+  ],
+  "kaisetsu": "解がx＝{s1}ということは、xに{s1}を代入すると等式が成り立つということです。{p1}×{s1}＋a＝{t1}をaについて解いて、a＝{ans_disp}です。",
+  "rest": "65cd0e325c3177fe5a197eac49434451"
+ },
+ "jhs_c04_renritsu_01": {
+  "file": "patterns_jhs_c04.json",
+  "sentence_templates": [
+   "次の連立方程式を解きなさい。\nx＋y＝{A1}，x−y＝{B1}"
+  ],
+  "kaisetsu": "2つの式をたすとyが消えて、xが求められます。求めたxをどちらかの式に代入してyを求めます。x＝{xd1}、y＝{yd1}です。加減法で文字を1つ消すのが基本です。",
+  "rest": "9b4462c1516ad5baceaf12ab14dff88c"
+ },
+ "jhs_c05_kaimono_01": {
+  "file": "patterns_jhs_c05.json",
+  "sentence_templates": [
+   "1{cnt1}{p1}円の{item1}を何{cnt1}か買って、{c1}円の箱につめてもらったところ、代金の合計は{t1}円になりました。{item1}を何{cnt1}買いましたか。"
+  ],
+  "kaisetsu": "買った個数をx{cnt1}とすると、代金は{p1}x＋{c1}円です。これが{t1}円に等しいので方程式をつくり、xを求めると{ans}{cnt1}です。求めた答えが問題に合っているか（個数が自然数か）をたしかめましょう。",
+  "rest": "db96bca72483fc6ac57f4204e7b349a3"
+ },
+ "jhs_c05_kafusoku_01": {
+  "file": "patterns_jhs_c05.json",
+  "sentence_templates": [
+   "何人かの{ppl1}に{item1}を配ります。1人に{a1}{cnt1}ずつ配ると{r1}{cnt1}余り、1人に{b1}{cnt1}ずつ配ると{s1}{cnt1}足りません。{ppl1}の人数を求めなさい。"
+  ],
+  "kaisetsu": "人数をx人とすると、配る{item1}の総数は2通りに表せます。{a1}x＋{r1}（余る）と{b1}x−{s1}（足りない）です。総数は同じなので等式にして、x＝{ans}人です。",
+  "rest": "3528f2c9bd0c8cffe62a5ca357823bf7"
+ },
+ "jhs_c05_kafusoku_02": {
+  "file": "patterns_jhs_c05.json",
+  "sentence_templates": [
+   "何人かの{ppl1}に{item1}を配ります。1人に{a1}{cnt1}ずつ配ると{r1}{cnt1}余り、1人に{b1}{cnt1}ずつ配ると{s1}{cnt1}足りません。{item1}は全部で何{cnt1}ありますか。"
+  ],
+  "kaisetsu": "まず人数をx人として、{a1}x＋{r1}＝{b1}x−{s1}から人数を求めます。総数はそのどちらかの式に代入して求めます。全部で{ans}{cnt1}です。",
+  "rest": "0e9a4aecd64519e9c6af60d5c839ddbd"
+ },
+ "jhs_c05_hayasa_01": {
+  "file": "patterns_jhs_c05.json",
+  "sentence_templates": [
+   "弟が家を出発して、分速{va1}mで駅に向かって歩いています。兄は、弟が出発してから{d1}分後に家を出発し、分速{vb1}mの自転車で弟を追いかけました。兄は、出発してから何分後に弟に追いつきますか。"
+  ],
+  "kaisetsu": "兄が出発してからx分後に追いつくとします。追いついたとき2人の進んだ道のりは等しいので、弟は(x＋{d1})分歩いて{va1}(x＋{d1})m、兄はx分で{vb1}xmです。等式にしてx＝{ans}分後です。",
+  "rest": "da2e2bfd4c6e9eb046171f16d1387e4f"
+ },
+ "jhs_c05_hayasa_02": {
+  "file": "patterns_jhs_c05.json",
+  "sentence_templates": [
+   "AさんとBさんが、{L1}m離れた2つの地点から、同時に向かい合って出発します。Aさんは分速{va1}m、Bさんは分速{vb1}mで歩くとき、2人は出発してから何分後に出会いますか。"
+  ],
+  "kaisetsu": "x分後に出会うとすると、2人の進んだ道のりの和が{L1}mになります。{va1}x＋{vb1}x＝{L1}を解いて、x＝{ans}分後です。",
+  "rest": "7bb3a83be537b728fc4384980b4d7099"
+ },
+ "jhs_c05_nenrei_01": {
+  "file": "patterns_jhs_c05.json",
+  "sentence_templates": [
+   "現在、父は{P1}歳、子は{C1}歳です。父の年齢が子の年齢の{k1}倍になるのは、今から何年後ですか。"
+  ],
+  "kaisetsu": "x年後とすると、父は({P1}＋x)歳、子は({C1}＋x)歳です。父の年齢が子の{k1}倍なので、{P1}＋x＝{k1}({C1}＋x)を解いて、x＝{ans}年後です。",
+  "rest": "c1a1c7ea4c9f2f8a6550fbe804b07dd7"
+ },
+ "jhs_c05_seisu_01": {
+  "file": "patterns_jhs_c05.json",
+  "sentence_templates": [
+   "連続する3つの整数があり、その和は{S1}です。もっとも小さい整数を求めなさい。"
+  ],
+  "kaisetsu": "もっとも小さい整数をxとすると、3つの整数はx、x＋1、x＋2です。和は3x＋3なので、3x＋3＝{S1}を解いてx＝{ans}です。",
+  "rest": "1cc99d0d4e9fd60d6daf8ca86c429ddb"
+ },
+ "jhs_c06_prop_01": {
+  "file": "patterns_jhs_c06.json",
+  "sentence_templates": [
+   "yはxに比例し、x＝{p1}のときy＝−{q1}である。yをxの式で表しなさい。"
+  ],
+  "kaisetsu": "比例の式はy＝axです。x＝{p1}、y＝−{q1}を代入してaを求めると、a＝−{av1}なので、y＝−{av1}xです。",
+  "rest": "ccc31315539497113cad717a1b01e0c8"
+ },
+ "jhs_c06_prop_02": {
+  "file": "patterns_jhs_c06.json",
+  "sentence_templates": [
+   "yはxに比例し、x＝{p1}のときy＝{q1}である。x＝−{r1}のときのyの値を求めなさい。"
+  ],
+  "kaisetsu": "まずy＝axにx＝{p1}、y＝{q1}を代入してaを求めます。次に求めた式にx＝−{r1}を代入して、y＝{ans_disp}です。",
+  "rest": "d41b94af4b17686c9a070983511f07aa"
+ },
+ "jhs_c06_inv_01": {
+  "file": "patterns_jhs_c06.json",
+  "sentence_templates": [
+   "yはxに反比例し、x＝{p1}のときy＝{q1}である。yをxの式で表しなさい。"
+  ],
+  "kaisetsu": "反比例の式はy＝a/xです。x＝{p1}、y＝{q1}を代入すると、a＝xy＝{ans}なので、y＝{ans}/xです。",
+  "rest": "af4c4dc88354b3be05594561b50853af"
+ },
+ "jhs_c06_inv_02": {
+  "file": "patterns_jhs_c06.json",
+  "sentence_templates": [
+   "yはxに反比例し、x＝{p1}のときy＝−{q1}である。x＝{r1}のときのyの値を求めなさい。"
+  ],
+  "kaisetsu": "まずa＝xyでaを求めます。x＝{p1}、y＝−{q1}なのでaは負です。求めた式にx＝{r1}を代入して、y＝{ans_disp}です。",
+  "rest": "7d709f184a03daf3cd9747c3af86c7cf"
+ },
+ "jhs_c06_pgraph_01": {
+  "file": "patterns_jhs_c06.json",
+  "sentence_templates": [
+   "図の直線は、比例のグラフである。yをxの式で表しなさい。"
+  ],
+  "kaisetsu": "比例のグラフは原点を通る直線です。グラフが通る点の座標を1つ読み取り、y＝axに代入してaを求めます。右下がりの直線なのでaは負で、y＝{ac1}xです。",
+  "rest": "e7b2f639bb79a852a0a24ae282c879ad"
+ },
+ "jhs_c06_igraph_01": {
+  "file": "patterns_jhs_c06.json",
+  "sentence_templates": [
+   "図の曲線は、反比例のグラフである。yをxの式で表しなさい。"
+  ],
+  "kaisetsu": "反比例のグラフは双曲線です。グラフが通る点の座標を1つ読み取り、a＝xyでaを求めます。y＝{ans}/xです。",
+  "rest": "698ab6ad1b16fc1413205d19574f603d"
+ },
+ "jhs_c06_heniki_01": {
+  "file": "patterns_jhs_c06.json",
+  "sentence_templates": [
+   "関数 y＝{a1}/x について、xの変域が −{p1}≦x≦−{q1} のときのyの変域を求めなさい。"
+  ],
+  "kaisetsu": "反比例では、xが負の範囲ではyも負で、xが大きくなる（0に近づく）ほどyは小さくなります。変域の両端x＝−{p1}、x＝−{q1}を代入して、yの変域は−{ans}≦y≦−{lv1}です。端点の大小が入れかわることに注意します。",
+  "rest": "977944ab87cf7d9885f1478456409a78"
+ },
+ "jhs_c06_heniki_02": {
+  "file": "patterns_jhs_c06.json",
+  "sentence_templates": [
+   "関数 y＝−{a1}x について、xの変域が {p1}≦x≦{q1} のときのyの変域を求めなさい。"
+  ],
+  "kaisetsu": "比例定数が負なので、xが大きくなるほどyは小さくなります。x＝{p1}のときとx＝{q1}のときのyを求め、小さいほうから並べて−{ans}≦y≦−{hp1}です。",
+  "rest": "5acd180b480d629fa342e14b40dc2df2"
+ },
+ "jhs_c06_lattice_01": {
+  "file": "patterns_jhs_c06.json",
+  "sentence_templates": [
+   "図は、関数 y＝{k1}/x のグラフである。このグラフ上にある点のうち、x座標、y座標がともに整数である点は全部で何個ありますか。"
+  ],
+  "kaisetsu": "y＝{k1}/xでx、yがともに整数になるのは、xが{k1}の約数（正と負）のときです。{k1}の正の約数の個数を2倍すると、格子点の個数{ans}個です。",
+  "rest": "49ba93056afd159ce6efd7215dce5223"
+ },
+ "jhs_c06_bunsho_01": {
+  "file": "patterns_jhs_c06.json",
+  "sentence_templates": [
+   "同じ種類の{it1}{p1}本の重さをはかったところ、{q1}gであった。この{it1}{r1}本の重さは何gですか。"
+  ],
+  "kaisetsu": "同じ種類のものは、本数と重さが比例します。1本の重さは{q1}÷{p1}gなので、{r1}本では{r1}倍して{ans}gです。",
+  "rest": "71d2a6fd04c2a96db605bd9e3a809c0a"
+ },
+ "jhs_c06_bunsho_02": {
+  "file": "patterns_jhs_c06.json",
+  "sentence_templates": [
+   "ある水そうを満水にするのに、毎分{v1}Lずつ水を入れると{t1}分かかる。毎分{u1}Lずつ水を入れると何分かかりますか。"
+  ],
+  "kaisetsu": "水そうの容積は毎分{v1}L×{t1}分で決まっています。毎分の量と時間は反比例するので、容積を毎分{u1}Lでわって{ans}分です。",
+  "rest": "235527cf56369ea14a4b23a6116adf49"
+ },
+ "jhs_c06_taiou_01": {
+  "file": "patterns_jhs_c06.json",
+  "sentence_templates": [
+   "表は、yがxに反比例する関係を表したものである。表のアにあてはまる数を求めなさい。"
+  ],
+  "kaisetsu": "反比例では、xとyの積がいつも同じ（比例定数a）になります。表の分かっている組からaを求め、アの列のxでわると{ans}です。",
+  "rest": "8d936eed838213bcd43817585daeb8cb"
+ },
+ "jhs_c06_kouten_01": {
+  "file": "patterns_jhs_c06.json",
+  "sentence_templates": [
+   "図のように、関数 y＝{k1}/x のグラフと、原点を通る直線 y＝ax のグラフが、点Aで交わっている。点Aのx座標が{s1}のとき、aの値を求めなさい。"
+  ],
+  "kaisetsu": "点Aは双曲線y＝{k1}/x上の点なので、x座標{s1}を代入してy座標を求めます。点Aは直線y＝ax上の点でもあるので、その座標を代入してa＝{ad1}です。",
+  "rest": "f8d8b6586ccfddf2e9e12d2b6cfcb5fb"
+ },
+ "jhs_c07_katamuki_01": {
+  "file": "patterns_jhs_c07.json",
+  "sentence_templates": [
+   "変化の割合が−{a1}で、x＝{p1}のときy＝{q1}である1次関数の式を求めなさい。"
+  ],
+  "kaisetsu": "1次関数はy＝ax＋bの形で、変化の割合aは傾きと同じです。a＝−{a1}なのでy＝−{a1}x＋bとし、x＝{p1}、y＝{q1}を代入してbを求めます。b＝{b1}なので、y＝−{a1}x＋{b1}です。",
+  "rest": "2e203db9c2f3778614818a9c37051639"
+ },
+ "jhs_c07_niten_01": {
+  "file": "patterns_jhs_c07.json",
+  "sentence_templates": [
+   "2点({p1}，{y1v_disp})，({p2v_disp}，{y2v_disp})を通る1次関数の式を求めなさい。"
+  ],
+  "kaisetsu": "2点を通る直線の傾きは、yの増加量÷xの増加量で求めます。傾きa＝{a1}が分かったら、y＝{a1}x＋bに1点の座標を代入してbを求めます。y＝{a1}x−{b1}です。",
+  "rest": "7081a2670c8d39c56e0c68aed839e205"
+ },
+ "jhs_c07_heikou_01": {
+  "file": "patterns_jhs_c07.json",
+  "sentence_templates": [
+   "直線 y＝−{a1}x＋{c1} に平行で、点({p1}，{q1})を通る直線の式を求めなさい。"
+  ],
+  "kaisetsu": "平行な直線は傾きが等しいので、求める直線の傾きも−{a1}です。y＝−{a1}x＋bに点({p1}，{q1})を代入してb＝{b1}、y＝−{a1}x＋{b1}です。",
+  "rest": "870d8ff18cad82ab2de2486eec5a5e2d"
+ },
+ "jhs_c07_zoka_01": {
+  "file": "patterns_jhs_c07.json",
+  "sentence_templates": [
+   "1次関数 y＝−{a1}x＋{c1} で、xの増加量が{d1}のときのyの増加量を求めなさい。"
+  ],
+  "kaisetsu": "1次関数y＝ax＋bでは、yの増加量＝a×（xの増加量）です。傾きが−{a1}なので、xが{d1}増えるとyは−{a1}×{d1}変化して、{ans_disp}です。負の値は「減った」という意味です。",
+  "rest": "b8ce7ad47872eb7fb1a768e00d256626"
+ },
+ "jhs_c07_heniki_01": {
+  "file": "patterns_jhs_c07.json",
+  "sentence_templates": [
+   "1次関数 y＝{a1}x−{b1} について、xの変域が {p1}≦x≦{q1} のときのyの変域を求めなさい。"
+  ],
+  "kaisetsu": "傾きが正なので、xが大きいほどyも大きくなります。x＝{p1}のときのyと、x＝{q1}のときのyを求めて、小さいほうから並べます。{lo1_disp}≦y≦{ans_disp}です。",
+  "rest": "7db42ad310e190ff73f9cdf3383e55f8"
+ },
+ "jhs_c07_heniki_02": {
+  "file": "patterns_jhs_c07.json",
+  "sentence_templates": [
+   "1次関数 y＝−{a1}x＋{c1} について、xの変域が {p1}≦x≦{q1} のときのyの変域を求めなさい。"
+  ],
+  "kaisetsu": "傾きが負なので、xが大きいほどyは小さくなります。x＝{q1}のときのyが最小、x＝{p1}のときのyが最大です。大小が入れかわることに注意して、{lo1_disp}≦y≦{ans_disp}です。",
+  "rest": "72d6a3b4dc3d0b0c373ef4a58623467f"
+ },
+ "jhs_c07_graph_01": {
+  "file": "patterns_jhs_c07.json",
+  "sentence_templates": [
+   "図の直線は、ある1次関数のグラフである。yをxの式で表しなさい。"
+  ],
+  "kaisetsu": "グラフから切片（y軸との交点）と傾きを読み取ります。切片は{b1}です。傾きは、グラフ上の読みやすい2点から「右へ1進むとどれだけ変化するか」で求め、右下がりなので負です。y＝{ac1}x＋{b1}です。",
+  "rest": "525a655e362528ba941e11095515ef79"
+ },
+ "jhs_c07_kouten_01": {
+  "file": "patterns_jhs_c07.json",
+  "sentence_templates": [
+   "2直線 y＝{a1}x−{c1v_disp} と y＝−{a2}x＋{c2v_disp} の交点の座標を求めなさい。"
+  ],
+  "kaisetsu": "2直線の交点は、2つの式を連立方程式として解いた解です。yを消去してxを求め、どちらかの式に代入してyを求めます。交点は({s1}，{t1})です。",
+  "rest": "18640cb4a98c14fa225d6f3b509863f8"
+ },
+ "jhs_c07_jiku_01": {
+  "file": "patterns_jhs_c07.json",
+  "sentence_templates": [
+   "点({p1}，−{q1})を通り、x軸に平行な直線の式を求めなさい。"
+  ],
+  "kaisetsu": "x軸に平行な直線は、どの点でもy座標が同じです。点({p1}，−{q1})を通るので、y＝{ans_disp}です。xの項がない式になります。",
+  "rest": "e85c88bc3e9f499813018b51fe96fc0e"
+ },
+ "jhs_c07_taiou_01": {
+  "file": "patterns_jhs_c07.json",
+  "sentence_templates": [
+   "表は、yがxの1次関数である関係を表したものである。表のアにあてはまる数を求めなさい。"
+  ],
+  "kaisetsu": "表からxが1増えるときのyの増加量を読み取ると、それが傾きaです。aが分かれば、表の分かっている組からbを求めて式を作り、アのxを代入します。答えは{ans_disp}です。",
+  "rest": "e66dd53c6fddb00ef8e5c87bc8e0ba40"
+ },
+ "jhs_c07_tsuten_01": {
+  "file": "patterns_jhs_c07.json",
+  "sentence_templates": [
+   "2直線 y＝{a1}x−{c1v_disp} と y＝−{a2}x＋{c2v_disp} の交点を通り、傾きが−{m1}である直線の式を求めなさい。"
+  ],
+  "kaisetsu": "まず2直線の交点を、連立方程式を解いて求めます。次に、傾き−{m1}の直線y＝−{m1}x＋bにその交点の座標を代入してbを求めます。y＝−{m1}x＋{bb1}です。",
+  "rest": "806fe959489931a070e65fa711a61f89"
+ },
+ "jhs_c07_zoka_02": {
+  "file": "patterns_jhs_c07.json",
+  "sentence_templates": [
+   "1次関数 y＝{a1}x＋{c1} で、yの増加量が{dy1}のときのxの増加量を求めなさい。"
+  ],
+  "kaisetsu": "yの増加量＝a×（xの増加量）なので、xの増加量＝yの増加量÷aです。{dy1}÷{a1}＝{ans}です。",
+  "rest": "3ccb823709aa0afb32a834731371f391"
+ },
+ "jhs_c08_chusui_01": {
+  "file": "patterns_jhs_c08.json",
+  "sentence_templates": [
+   "空の水そうに、はじめの{t01}分間は毎分{a1}Lずつ、その後は毎分{b1}Lずつ水を入れる。水を入れ始めてからx分後の水の量をyLとするとき、x≧{t01}のとき、yをxの式で表しなさい。"
+  ],
+  "kaisetsu": "{t01}分後からは毎分{b1}Lずつ増えるので、傾きは{b1}です。{t01}分の時点の水の量は{a1}×{t01}Lなので、この点(x＝{t01})を通る傾き{b1}の直線を求めます。y＝{b1}x−{cv1}です。",
+  "rest": "594b945e6ef80997da4316e35e25df7b"
+ },
+ "jhs_c08_chusui_02": {
+  "file": "patterns_jhs_c08.json",
+  "sentence_templates": [
+   "容積が{vv1_disp}Lの空の水そうに、はじめの{t01}分間は毎分{a1}Lずつ、その後は毎分{b1}Lずつ水を入れる。水そうが満水になるのは、水を入れ始めてから何分後ですか。"
+  ],
+  "kaisetsu": "はじめの{t01}分で{a1}×{t01}L入ります。残りの量を毎分{b1}Lでわると、後半にかかる時間が分かります。{t01}分とその時間をあわせて、{ans}分後です。",
+  "rest": "37d3ea0ecfb7083ae6ff1f59d3fccd23"
+ },
+ "jhs_c08_oikake_01": {
+  "file": "patterns_jhs_c08.json",
+  "sentence_templates": [
+   "弟が家を出発してから{t01}分後に、兄が自転車で同じ道を追いかけた。弟は分速{v1}m、兄は分速{v2}mで進むとき、兄が出発してから何分後に弟に追いつきますか。"
+  ],
+  "kaisetsu": "兄が出発してx分後に追いつくとします。弟は(x＋{t01})分歩いているので道のりは{v1}(x＋{t01})m、兄は{v2}xmです。等しいとおいて解くと、x＝{ans}分後です。",
+  "rest": "b4a346f50d88ea426cbe6fa91f8e55fc"
+ },
+ "jhs_c08_gyomi_01": {
+  "file": "patterns_jhs_c08.json",
+  "sentence_templates": [
+   "図は、Aさんが家を出発して公園まで歩き、公園で休んだ後、同じ道を歩いて家にもどったようすを表したものである。行きの速さは分速何mですか。"
+  ],
+  "kaisetsu": "行きは、家（0m）から公園までの区間です。グラフからその区間の道のりと時間を読み取り、道のり÷時間で速さを求めます。分速{ans}mです。",
+  "rest": "46448a03cb07e5e4df2e87bb2cf549b5"
+ },
+ "jhs_c08_gyomi_02": {
+  "file": "patterns_jhs_c08.json",
+  "sentence_templates": [
+   "図は、Aさんが家を出発して公園まで歩き、公園で休んだ後、同じ道を歩いて家にもどったようすを表したものである。家にもどる区間について、yをxの式で表しなさい。"
+  ],
+  "kaisetsu": "帰りの区間は右下がりの直線です。傾きは「道のり÷帰りの時間」に−をつけたもので、家に着く時刻（y＝0になるx）を使ってbを求めます。y＝−{s2v}x＋{cc1}です。",
+  "rest": "bfdafb86587214ad809c14f6ab638531"
+ },
+ "jhs_c08_ryokin_01": {
+  "file": "patterns_jhs_c08.json",
+  "sentence_templates": [
+   "写真のプリント料金について、表のような2つのプランA、Bがある。プランAとプランBの料金が等しくなるのは、写真が何枚のときですか。"
+  ],
+  "kaisetsu": "枚数をx枚として、プランA・プランBの料金をそれぞれxの式で表します。2つの料金が等しいとおいて方程式を解くと、x＝{ans}枚です。",
+  "rest": "0d20de4d3c62c0256c1bc01408836db3"
+ },
+ "jhs_c08_haisui_01": {
+  "file": "patterns_jhs_c08.json",
+  "sentence_templates": [
+   "水が{vv1_disp}L入っている水そうから、毎分{v1}Lずつ水をぬく。水をぬき始めてからx分後の水そうの水の量をyLとするとき、yをxの式で表しなさい。"
+  ],
+  "kaisetsu": "はじめの量が{vv1}Lで、毎分{v1}Lずつ減るので、x分後の量はy＝{vv1}−{v1}xです。整理してy＝−{v1}x＋{vv1}です。減るときは傾きが負になります。",
+  "rest": "17c5b0e395af8f06ed0e652140010373"
+ },
+ "jhs_c08_dankai_01": {
+  "file": "patterns_jhs_c08.json",
+  "sentence_templates": [
+   "ある店の自転車のかし出し料金は、最初の{t01}時間までは{p1}円で、その後は1時間ごとに{u1}円が加算される。かりる時間がx時間(x≧{t01})のときの料金をy円とするとき、yをxの式で表しなさい。"
+  ],
+  "kaisetsu": "{t01}時間をこえた分は1時間ごとに{u1}円増えるので、傾きは{u1}です。x＝{t01}のときy＝{p1}なので、この点を通る傾き{u1}の直線を求めて、y＝{u1}x＋{cc1}です。",
+  "rest": "6278596a0657cb3c5d30b49dfd9296ba"
+ },
+ "jhs_c09_dosu_01": {
+  "file": "patterns_jhs_c09.json",
+  "sentence_templates": [
+   "表は、あるクラスの生徒の{t1}を調べて、度数分布表に整理したものである。表のアにあてはまる度数を求めなさい。"
+  ],
+  "kaisetsu": "度数分布表の度数をすべてたすと、調べた人数{n1}人になります。分かっている度数の合計を{n1}からひくと、アの度数{ans}人です。",
+  "rest": "5b0e949c413f930e023caa3844e4f22d"
+ },
+ "jhs_c09_dosu_02": {
+  "file": "patterns_jhs_c09.json",
+  "sentence_templates": [
+   "表は、あるクラスの生徒の{t1}を調べて、度数分布表に整理したものである。表のイにあてはまる相対度数を求めなさい。"
+  ],
+  "kaisetsu": "相対度数は、その階級の度数÷全体の度数です。合計が1になるように、小数で表します。イの階級の度数を{n1}でわって、{ans_disp}です。",
+  "rest": "bd2b60415d857781919617b61608a9c8"
+ },
+ "jhs_c09_dosu_03": {
+  "file": "patterns_jhs_c09.json",
+  "sentence_templates": [
+   "あるクラスの生徒{n1}人の通学時間を調べて、度数分布表に整理したところ、ある階級の相対度数は{r1_disp}であった。この階級の度数を求めなさい。"
+  ],
+  "kaisetsu": "度数＝相対度数×全体の度数です。{r1_disp}×{n1}＝{ans}人です。",
+  "rest": "6f575b9dc746cef69f8d37737c319446"
+ },
+ "jhs_c09_med_01": {
+  "file": "patterns_jhs_c09.json",
+  "sentence_templates": [
+   "ヒストグラムは、あるクラスの生徒の{t1}を調べた結果を表したものである。中央値がふくまれる階級を答えなさい。"
+  ],
+  "kaisetsu": "中央値は、データを小さい順に並べたときの真ん中の値です。ヒストグラムでは、度数を小さい階級から順にたしていき、全体の半分に達する階級を探します。{ans}m以上{b3}m未満の階級です。",
+  "rest": "62f81a8c13852b2947e267f538338a4e"
+ },
+ "jhs_c09_mode_01": {
+  "file": "patterns_jhs_c09.json",
+  "sentence_templates": [
+   "ヒストグラムは、あるクラスの生徒の{t1}を調べた結果を表したものである。この記録の最頻値を求めなさい。"
+  ],
+  "kaisetsu": "最頻値は、度数がもっとも大きい階級の階級値（階級の真ん中の値）です。ヒストグラムでいちばん高い柱の階級を見つけ、その真ん中の値{ans}mが最頻値です。",
+  "rest": "82401bb28cc4e02b7794a1829a0f1258"
+ },
+ "jhs_c09_pct_01": {
+  "file": "patterns_jhs_c09.json",
+  "sentence_templates": [
+   "表は、あるクラスの生徒の{t1}を調べて、度数分布表に整理したものである。{t1}が60分以上である生徒は、全体の何%か求めなさい。"
+  ],
+  "kaisetsu": "60分以上の階級の度数をすべてたし、全体の人数{n1}でわって100をかけます。{ans}%です。",
+  "rest": "bceaba7cdd7ab52da6e6c0238c2f6f8a"
+ },
+ "jhs_c09_kinji_01": {
+  "file": "patterns_jhs_c09.json",
+  "sentence_templates": [
+   "ある数xの小数第1位を四捨五入したところ、{a1}になった。xの値の範囲を、不等号を使って表しなさい。"
+  ],
+  "kaisetsu": "小数第1位を四捨五入して{a1}になる数は、{ans_disp}以上{hi1_disp}未満の範囲です。上限は{hi1_disp}そのものをふくまないので、不等号は＜を使います。",
+  "rest": "aa05c5e596da1287ccf374260813f7bf"
+ },
+ "jhs_c09_yuko_01": {
+  "file": "patterns_jhs_c09.json",
+  "sentence_templates": [
+   "ある道のりを測定したところ、{v1}mであった。これを有効数字を3けたとして、整数部分が1けたの小数と10の累乗との積の形で表しなさい。"
+  ],
+  "kaisetsu": "有効数字3けたで表すには、上から3けたを残し、整数部分が1けたになるように小数点を動かします。動かしたけた数だけ10の累乗をかけて、{ans_disp}×10⁴mです。",
+  "rest": "4324bb459708aaad7213547f458156e4"
+ },
+ "jhs_c09_mean_01": {
+  "file": "patterns_jhs_c09.json",
+  "sentence_templates": [
+   "表は、あるクラスの生徒の小テストの得点を調べて、度数分布表に整理したものである。この度数分布表から得点の平均値を求めなさい。"
+  ],
+  "kaisetsu": "度数分布表からの平均値は、（階級値×度数）の合計÷度数の合計で求めます。階級値は各階級の真ん中の値です。答えは{ans}点です。",
+  "rest": "4122362084c5d812e33cf2132def9559"
+ },
+ "jhs_c09_range_01": {
+  "file": "patterns_jhs_c09.json",
+  "sentence_templates": [
+   "表は、あるクラスの生徒9人の{t1}を調べたものである。この記録の分布の範囲を求めなさい。"
+  ],
+  "kaisetsu": "分布の範囲は、最大値−最小値です。表の中でいちばん大きい値といちばん小さい値を見つけて、その差{ans}回です。",
+  "rest": "ebdde791735a3a7a9f313376739ef505"
+ },
+ "jhs_c09_med_02": {
+  "file": "patterns_jhs_c09.json",
+  "sentence_templates": [
+   "表は、ある10日間の毎日の気温を記録したものである。この10日間の気温の中央値を求めなさい。"
+  ],
+  "kaisetsu": "データが偶数個（10個）のときの中央値は、小さい順に並べた5番目と6番目の値の平均です。2つをたして2でわり、{ans_disp}℃です。",
+  "rest": "061c94f0b7eca52a8d940541ee6d288a"
+ },
+ "jhs_c10_dice_01": {
+  "file": "patterns_jhs_c10.json",
+  "sentence_templates": [
+   "1つのさいころを投げるとき、出る目が{m1}以下になる確率を求めなさい。"
+  ],
+  "kaisetsu": "さいころの目の出方は6通りで、どれも同じように起こります。{m1}以下の目は1から{m1}までの{m1}通りなので、確率は{f1}です。",
+  "rest": "6038fa444e151342000bf09b93a1f0a0"
+ },
+ "jhs_c10_dice_02": {
+  "file": "patterns_jhs_c10.json",
+  "sentence_templates": [
+   "大小2つのさいころを同時に投げるとき、出る目の和が{s1}になる確率を求めなさい。"
+  ],
+  "kaisetsu": "2つのさいころの目の出方は6×6＝36通りです。和が{s1}になる組み合わせを（大，小）で数え上げると{num_c}通りなので、確率は{f1}です。表をかいて数えると数えもれを防げます。",
+  "rest": "3539172a6579071cf7287381c23c9a0f"
+ },
+ "jhs_c10_dice_03": {
+  "file": "patterns_jhs_c10.json",
+  "sentence_templates": [
+   "大小2つのさいころを同時に投げるとき、出る目の積が{k1}になる確率を求めなさい。"
+  ],
+  "kaisetsu": "全部で36通りのうち、積が{k1}になる（大，小）の組を数えます。{cnt1}通りなので、確率は{f1}です。",
+  "rest": "34a298df923afdc2230f0f1107f80909"
+ },
+ "jhs_c10_coin_01": {
+  "file": "patterns_jhs_c10.json",
+  "sentence_templates": [
+   "2枚の硬貨を同時に投げるとき、{ev1}確率を求めなさい。"
+  ],
+  "kaisetsu": "2枚の硬貨の出方は（表，表）（表，裏）（裏，表）（裏，裏）の4通りです。条件に合う出方は{cnt1}通りなので、確率は{f1}です。",
+  "rest": "724fe1983b30569d3d03a690184f1166"
+ },
+ "jhs_c10_ball_01": {
+  "file": "patterns_jhs_c10.json",
+  "sentence_templates": [
+   "袋の中に、赤玉が{r1}個、白玉が{w1}個入っています。この袋から玉を1個取り出すとき、取り出した玉が赤玉である確率を求めなさい。"
+  ],
+  "kaisetsu": "玉は全部で{r1}＋{w1}＝{tot1}個で、どの玉も同じように取り出されます。赤玉は{r1}個なので、確率は{f1}です。約分できるときは約分します。",
+  "rest": "527d98786a91dd4883ccab7ae8d249eb"
+ },
+ "jhs_c12_taicho_01": {
+  "file": "patterns_jhs_c12.json",
+  "sentence_templates": [
+   "図のように、2つの直線が1つの点で交わっている。∠xの大きさを求めなさい。"
+  ],
+  "kaisetsu": "2直線が交わってできる向かい合った角を対頂角といい、対頂角は等しくなります。∠xは{a1}°の角の対頂角なので、∠x＝{a1}°です。",
+  "rest": "f41c55f1f25e50696f4ae309d87eb387"
+ },
+ "jhs_c12_taicho_02": {
+  "file": "patterns_jhs_c12.json",
+  "sentence_templates": [
+   "図のように、2つの直線が1つの点で交わっている。∠xの大きさを求めなさい。"
+  ],
+  "kaisetsu": "一直線の角は180°です。∠xと{a1}°の角は一直線上に並んでいるので、∠x＝180°−{a1}°＝{xv1}°です。",
+  "rest": "9fb75c0b462723e46b774aa58b6d5c2a"
+ },
+ "jhs_c12_isshuu_01": {
+  "file": "patterns_jhs_c12.json",
+  "sentence_templates": [
+   "図のように、3つの直線が1つの点で交わっている。∠xの大きさを求めなさい。"
+  ],
+  "kaisetsu": "直線の上側にある角をすべてたすと180°です。∠x＝180°−{a1}°−{a2}°＝{xv1}°です。対頂角が等しいことを使って、下側の角から求めることもできます。",
+  "rest": "9bb05b207f38fcd30f2f5c1f8118f1a3"
+ },
+ "jhs_c12_mawari_01": {
+  "file": "patterns_jhs_c12.json",
+  "sentence_templates": [
+   "図で、∠xの大きさを求めなさい。"
+  ],
+  "kaisetsu": "1点のまわりの角をすべてたすと360°です。∠x＝360°−{a1}°−{a2}°−{a3}°＝{xv1}°です。",
+  "rest": "1ee0f4f6fa635f884c1c95e2959535a8"
+ },
+ "jhs_c12_doui_01": {
+  "file": "patterns_jhs_c12.json",
+  "sentence_templates": [
+   "図で、直線ℓと直線mは平行である。∠xの大きさを求めなさい。"
+  ],
+  "kaisetsu": "2直線が平行なとき、同位角は等しくなります。∠xと{t1}°の角は同位角の位置にあるので、∠x＝{t1}°です。",
+  "rest": "e3046fd661a6ead35699666c437be23e"
+ },
+ "jhs_c12_sakka_01": {
+  "file": "patterns_jhs_c12.json",
+  "sentence_templates": [
+   "図で、直線ℓと直線mは平行である。∠xの大きさを求めなさい。"
+  ],
+  "kaisetsu": "2直線が平行なとき、錯角は等しくなります。∠xと{t1}°の角は錯角の位置にあるので、∠x＝{t1}°です。",
+  "rest": "976061a3fe47e0d905b8aecfc1175fbb"
+ },
+ "jhs_c12_naikaku_01": {
+  "file": "patterns_jhs_c12.json",
+  "sentence_templates": [
+   "図で、直線ℓと直線mは平行である。∠xの大きさを求めなさい。"
+  ],
+  "kaisetsu": "平行な2直線の間にある同じ側の内角（同側内角）の和は180°です。∠x＝180°−{t1}°＝{xv1}°です。同位角や錯角を使って、一直線の180°から求めることもできます。",
+  "rest": "9316deb09928a86d9767b426f64c2da4"
+ },
+ "jhs_c12_fukugo_01": {
+  "file": "patterns_jhs_c12.json",
+  "sentence_templates": [
+   "図で、直線ℓと直線mは平行である。∠xの大きさを求めなさい。"
+  ],
+  "kaisetsu": "まず一直線の角180°から、{t1}°の角のとなりの角{s1}°を求めます。次に平行線の同位角（または錯角）が等しいことを使って∠xを求めます。∠x＝{t1}°です。",
+  "rest": "c7b472b2e8d7e57dbd1d080f09f9577f"
+ },
+ "jhs_c12_tri_naikaku_01": {
+  "file": "patterns_jhs_c12.json",
+  "sentence_templates": [
+   "図の三角形ABCで、∠xの大きさを求めなさい。"
+  ],
+  "kaisetsu": "三角形の内角の和は180°です。∠x＝180°−{a1}°−{a2}°＝{xv1}°です。",
+  "rest": "aaeccb6ca958dd65d4045ceba92eac44"
+ },
+ "jhs_c12_tri_gaikaku_01": {
+  "file": "patterns_jhs_c12.json",
+  "sentence_templates": [
+   "図の三角形ABCで、∠xの大きさを求めなさい。"
+  ],
+  "kaisetsu": "三角形の外角は、それととなり合わない2つの内角の和に等しくなります。∠x＝{a1}°＋{a2}°＝{xv1}°です。内角の和180°から残りの内角{s1}°を求めて、180°からひいても同じです。",
+  "rest": "313a08a8a888e4e8f83a347416f72b51"
+ },
+ "jhs_c12_gokaku_naikaku_01": {
+  "file": "patterns_jhs_c12.json",
+  "sentence_templates": [
+   "図の五角形ABCDEで、∠xの大きさを求めなさい。"
+  ],
+  "kaisetsu": "n角形の内角の和は180°×(n−2)なので、五角形は180°×3＝540°です。∠x＝540°−{a1}°−{a2}°−{a3}°−{a4}°＝{xv1}°です。",
+  "rest": "3a9ee3bd88ff8aa2c7b24c32efff56ec"
+ },
+ "jhs_c13_rt_tri_01": {
+  "file": "patterns_jhs_c13.json",
+  "sentence_templates": [
+   "図の直角三角形ABCで、∠xの大きさを求めなさい。"
+  ],
+  "kaisetsu": "直角三角形では、直角以外の2つの角の和が90°です。∠x＝90°−{a1}°＝{xv1}°です。",
+  "rest": "d4b16652e79e6a81ee0471aea76337a4"
+ },
+ "jhs_c13_nitohen_01": {
+  "file": "patterns_jhs_c13.json",
+  "sentence_templates": [
+   "図の三角形ABCは、AB＝ACの二等辺三角形である。∠xの大きさを求めなさい。"
+  ],
+  "kaisetsu": "二等辺三角形の2つの底角は等しくなります。内角の和180°から頂角{t1}°をひき、残りを2等分して∠x＝(180°−{t1}°)÷2＝{xv1}°です。",
+  "rest": "4cd3793d1d213c9a39526ed454dc6cde"
+ },
+ "jhs_c13_nitohen_02": {
+  "file": "patterns_jhs_c13.json",
+  "sentence_templates": [
+   "図の三角形ABCは、AB＝ACの二等辺三角形である。∠xの大きさを求めなさい。"
+  ],
+  "kaisetsu": "二等辺三角形の底角は2つとも{b1}°です。頂角は180°から底角2つ分をひいて、∠x＝180°−{b1}°×2＝{xv1}°です。",
+  "rest": "f3bc65426322269934f2143604059b78"
+ },
+ "jhs_c13_heishi_01": {
+  "file": "patterns_jhs_c13.json",
+  "sentence_templates": [
+   "図の四角形ABCDは平行四辺形である。∠xの大きさを求めなさい。"
+  ],
+  "kaisetsu": "平行四辺形では、となり合う角の和が180°です（向かい合う角は等しい）。∠x＝180°−{a1}°＝{xv1}°です。",
+  "rest": "1ae6fabb3fc01ecc338fada15ffedf40"
+ },
+ "jhs_c13_goudou_01": {
+  "file": "patterns_jhs_c13.json",
+  "sentence_templates": [
+   "図で、三角形ABCと三角形DEFは合同である。∠xの大きさを求めなさい。"
+  ],
+  "kaisetsu": "合同な図形では、対応する角の大きさが等しくなります。∠xに対応する角は{a1}°の角なので、∠x＝{a1}°です。対応する頂点は、記号の順番（ABCとDEF）で分かります。",
+  "rest": "1f997d9b129ac04bf8e537329436eac9"
+ },
+ "jhs_c13_goudou_02": {
+  "file": "patterns_jhs_c13.json",
+  "sentence_templates": [
+   "図で、三角形ABCと三角形DEFは合同である。∠xの大きさを求めなさい。"
+  ],
+  "kaisetsu": "∠xに対応する角は、もう一方の三角形では分かっていない角です。内角の和180°から分かっている2つの角{a1}°、{b1}°をひいて、∠x＝{xv1}°です。",
+  "rest": "fe63c71ea70dfe19bb07c370094af274"
+ },
+ "jhs_c13_jouken_sss_01": {
+  "file": "patterns_jhs_c13.json",
+  "sentence_templates": [
+   "図の三角形ABCと三角形DEFは合同である。合同条件として正しいものを、次のア〜ウから1つ選び、記号で答えなさい。　ア 3組の辺がそれぞれ等しい　イ 2組の辺とその間の角がそれぞれ等しい　ウ 1組の辺とその両端の角がそれぞれ等しい"
+  ],
+  "kaisetsu": "図で等しいと分かっているのは、3組の辺の長さです。3組の辺がそれぞれ等しいとき、2つの三角形は合同です。合同条件は{C1_choice}です。",
+  "rest": "1780f79d5c5a578e6e05b296d14cafaa"
+ },
+ "jhs_c13_jouken_sas_01": {
+  "file": "patterns_jhs_c13.json",
+  "sentence_templates": [
+   "図の三角形ABCと三角形DEFは合同である。合同条件として正しいものを、次のア〜ウから1つ選び、記号で答えなさい。　ア 3組の辺がそれぞれ等しい　イ 2組の辺とその間の角がそれぞれ等しい　ウ 1組の辺とその両端の角がそれぞれ等しい"
+  ],
+  "kaisetsu": "図で等しいと分かっているのは、2組の辺とその間の角です。「その間の角」であることが大切で、間にない角では合同は言えません。合同条件は{C1_choice}です。",
+  "rest": "17ed986354ad11034b99a75d6a08e840"
+ },
+ "jhs_c13_jouken_asa_01": {
+  "file": "patterns_jhs_c13.json",
+  "sentence_templates": [
+   "図の三角形ABCと三角形DEFは合同である。合同条件として正しいものを、次のア〜ウから1つ選び、記号で答えなさい。　ア 3組の辺がそれぞれ等しい　イ 2組の辺とその間の角がそれぞれ等しい　ウ 1組の辺とその両端の角がそれぞれ等しい"
+  ],
+  "kaisetsu": "図で等しいと分かっているのは、1組の辺とその両端の角です。1組の辺とその両端の角がそれぞれ等しいとき、2つの三角形は合同です。合同条件は{C1_choice}です。",
+  "rest": "624dfda44f85540c07d0e5a1e0a94f58"
+ },
+ "jhs_c14_sankakuchu_vol_01": {
+  "file": "patterns_jhs_c14.json",
+  "sentence_templates": [
+   "図の三角柱の体積を求めなさい。"
+  ],
+  "kaisetsu": "角柱の体積は、底面積×高さで求めます。底面の三角形の面積は{b1}×{bh1}÷2なので、それに高さ{h1}をかけて{V1}cm³です。",
+  "rest": "9dd4ddf2fb170fed4d037fac8f43b6a5"
+ },
+ "jhs_c14_shikakuchu_vol_01": {
+  "file": "patterns_jhs_c14.json",
+  "sentence_templates": [
+   "図の四角柱の体積を求めなさい。"
+  ],
+  "kaisetsu": "四角柱（直方体）の体積は、底面積×高さです。底面の長方形の面積{w1}×{d1}に高さ{h1}をかけて、{V1}cm³です。",
+  "rest": "7feb5bbff4b0cd524590951d208108d5"
+ },
+ "jhs_c14_shikakuchu_hyomen_01": {
+  "file": "patterns_jhs_c14.json",
+  "sentence_templates": [
+   "図の四角柱の表面積を求めなさい。"
+  ],
+  "kaisetsu": "表面積は、すべての面の面積の合計です。直方体は同じ大きさの長方形が2枚ずつ3組あるので、（{w1}×{d1}＋{d1}×{h1}＋{w1}×{h1}）×2＝{S1}cm²です。展開図をかくと面の数え忘れを防げます。",
+  "rest": "de4f7cfbf096cb16cb4dd5a55950e33a"
+ },
+ "jhs_c14_sankakuchu_hyomen_01": {
+  "file": "patterns_jhs_c14.json",
+  "sentence_templates": [
+   "図の三角柱の表面積を求めなさい。底面は、3辺が{a1}cm、{b1}cm、{c1}cmの直角三角形である。"
+  ],
+  "kaisetsu": "角柱の表面積は、底面積×2＋側面積です。側面は展開すると1枚の長方形で、横の長さは底面の周の長さ（{a1}＋{b1}＋{c1}）、たての長さは高さ{h1}です。底面の直角三角形の面積は{a1}×{b1}÷2で、合計{S1}cm²です。",
+  "rest": "34709b86380246f6541ec1191023810b"
+ },
+ "jhs_c14_enchu_vol_01": {
+  "file": "patterns_jhs_c14.json",
+  "sentence_templates": [
+   "図の円柱の体積を求めなさい。"
+  ],
+  "kaisetsu": "円柱の体積は、底面積×高さです。底面の円の面積はπr²なので、π×{r1}²×{h1}＝{V1_pi}cm³です。中学ではπのまま答えます。",
+  "rest": "70fc3d629f790dc28d72b4aac90f1871"
+ },
+ "jhs_c14_enchu_hyomen_01": {
+  "file": "patterns_jhs_c14.json",
+  "sentence_templates": [
+   "図の円柱の表面積を求めなさい。"
+  ],
+  "kaisetsu": "円柱の表面積は、底面積×2＋側面積です。側面は展開すると長方形で、横の長さは底面の円周2π×{r1}、たては高さ{h1}です。2×π×{r1}²＋2π×{r1}×{h1}をまとめて、{S1_pi}cm²です。",
+  "rest": "0c494ec4c72168cae0642defb063b0f2"
+ },
+ "jhs_c14_ensui_vol_01": {
+  "file": "patterns_jhs_c14.json",
+  "sentence_templates": [
+   "図の円錐の体積を求めなさい。"
+  ],
+  "kaisetsu": "円錐の体積は、同じ底面と高さの円柱の体積の1/3です。（1/3）×π×{r1}²×{h1}＝{V1_pi}cm³です。",
+  "rest": "8830fc96d1bc4040b7c1c720f638b90f"
+ },
+ "jhs_c14_kyu_vol_01": {
+  "file": "patterns_jhs_c14.json",
+  "sentence_templates": [
+   "図の球の体積を求めなさい。"
+  ],
+  "kaisetsu": "球の体積は（4/3）πr³で求めます。（4/3）×π×{r1}³＝{V1_pi}cm³です。",
+  "rest": "e7b1ea0f6fc25d83952732496d61ba0a"
+ },
+ "jhs_c14_kakusui_vol_01": {
+  "file": "patterns_jhs_c14.json",
+  "sentence_templates": [
+   "図の四角錐の体積を求めなさい。"
+  ],
+  "kaisetsu": "角錐の体積は、同じ底面と高さの角柱の体積の1/3です。（1/3）×{w1}×{d1}×{h1}＝{V1}cm³です。",
+  "rest": "5bb01fe6bd61468d24db7da8377b4fbc"
+ },
+ "jhs_c14_kaiten_enchu_01": {
+  "file": "patterns_jhs_c14.json",
+  "sentence_templates": [
+   "図の長方形を、直線ℓを軸として1回転させてできる立体の体積を求めなさい。"
+  ],
+  "kaisetsu": "長方形を1辺を軸にして1回転させると、円柱ができます。軸から遠いほうの辺の長さが底面の半径、軸に重なる辺の長さが高さです。π×{r1}²×{h1}＝{V1_pi}cm³です。",
+  "rest": "b941230e93955fe07e9c74e95450f520"
+ },
+ "jhs_c14_kaiten_ensui_01": {
+  "file": "patterns_jhs_c14.json",
+  "sentence_templates": [
+   "図の直角三角形を、直線ℓを軸として1回転させてできる立体の体積を求めなさい。"
+  ],
+  "kaisetsu": "直角三角形を直角をはさむ1辺を軸にして1回転させると、円錐ができます。もう一方の直角をはさむ辺が底面の半径、軸の辺が高さです。（1/3）×π×{r1}²×{h1}＝{V1_pi}cm³です。",
+  "rest": "acd67d023aa69d349a1d8b797db81e23"
+ },
+ "jhs_c14_kaiten_kyu_01": {
+  "file": "patterns_jhs_c14.json",
+  "sentence_templates": [
+   "図の半円を、直線ℓを軸として1回転させてできる立体の体積を求めなさい。"
+  ],
+  "kaisetsu": "半円を直径を軸にして1回転させると、球ができます。半円の半径がそのまま球の半径なので、（4/3）×π×{r1}³＝{V1_pi}cm³です。",
+  "rest": "8fa49a380e6cbbe51257405320293233"
+ },
+ "jhs_c14_nejire_01": {
+  "file": "patterns_jhs_c14.json",
+  "sentence_templates": [
+   "図の直方体ABCD-EFGHで、辺ABとねじれの位置にある辺をすべて答えなさい。"
+  ],
+  "kaisetsu": "空間で2直線が「平行でなく、交わりもしない」とき、ねじれの位置にあるといいます。辺ABと平行な辺、交わる辺を除いた残りが、ねじれの位置にある辺です。{E1_edges}です。",
+  "rest": "33ebfcdc1ad79203b305d0be9808474d"
+ },
+ "jhs_c14_heikou_hen_01": {
+  "file": "patterns_jhs_c14.json",
+  "sentence_templates": [
+   "図の直方体ABCD-EFGHで、辺ABと平行な辺をすべて答えなさい。"
+  ],
+  "kaisetsu": "直方体では、同じ向きの辺どうしが平行です。辺ABと同じ向きの辺を、各面から探すと{E1_edges}です。",
+  "rest": "de971953e7415e2de9680576e151dd9b"
+ },
+ "jhs_c14_suichoku_01": {
+  "file": "patterns_jhs_c14.json",
+  "sentence_templates": [
+   "図の直方体ABCD-EFGHで、辺ABと垂直に交わる辺をすべて答えなさい。"
+  ],
+  "kaisetsu": "辺ABと垂直に交わる辺は、点Aまたは点Bに集まっている辺のうち、ABと直角をなすものです。直方体では各頂点に集まる辺は互いに垂直なので、{E1_edges}です。",
+  "rest": "1024b7608795c05a503a017ec05f3967"
+ },
+ "jhs_c15_exp_01": {
+  "file": "patterns_jhs_c15.json",
+  "sentence_templates": [
+   "次の式を展開しなさい。\n(x＋{a1})(x＋{b1})"
+  ],
+  "kaisetsu": "(x＋a)(x＋b)＝x²＋(a＋b)x＋abです。xの係数は{a1}と{b1}の和、定数項は積になります。x²＋{s1}x＋{t1}です。",
+  "rest": "f197b9a0dd7144f2a21a211984a008d0"
+ },
+ "jhs_c15_exp_02": {
+  "file": "patterns_jhs_c15.json",
+  "sentence_templates": [
+   "次の式を展開しなさい。\n(x＋{a1})(x−{b1})"
+  ],
+  "kaisetsu": "(x＋a)(x−b)も同じ公式で、bを負の数として考えます。xの係数は{a1}＋(−{b1})、定数項は{a1}×(−{b1})で負になります。x²{md1}x−{t1}です。",
+  "rest": "7e7fd8cc24e125a5ce66d2c9f1e66803"
+ },
+ "jhs_c15_exp_03": {
+  "file": "patterns_jhs_c15.json",
+  "sentence_templates": [
+   "次の式を展開しなさい。\n(x＋{a1})²"
+  ],
+  "kaisetsu": "(x＋a)²＝x²＋2ax＋a²です。真ん中の項は「2×a×x」で、aの2倍になることに注意します。x²＋{d1}x＋{q1}です。",
+  "rest": "26a779f85563c98ac7f7c4574adc514e"
+ },
+ "jhs_c15_exp_04": {
+  "file": "patterns_jhs_c15.json",
+  "sentence_templates": [
+   "次の式を展開しなさい。\n(x−{a1})²"
+  ],
+  "kaisetsu": "(x−a)²＝x²−2ax＋a²です。真ん中の項が負、最後の項は正になります。x²−{d1}x＋{q1}です。",
+  "rest": "eeaf8a4dd9fc3c7498423d5d26561d61"
+ },
+ "jhs_c15_exp_05": {
+  "file": "patterns_jhs_c15.json",
+  "sentence_templates": [
+   "次の式を展開しなさい。\n(x＋{a1})(x−{a1})"
+  ],
+  "kaisetsu": "(x＋a)(x−a)＝x²−a²です。xの項が消えて、2乗の差になります。x²−{q1}です。",
+  "rest": "710948d3c11bdb6b81b21ca17696deb0"
+ },
+ "jhs_c15_fac_01": {
+  "file": "patterns_jhs_c15.json",
+  "sentence_templates": [
+   "次の式を因数分解しなさい。\n{A1}x²＋{B1}x"
+  ],
+  "kaisetsu": "因数分解は、まず各項に共通する因数（共通因数）をくくり出します。共通因数は{A1}xなので、{A1}x(x＋{m1})です。",
+  "rest": "6302a2cb32247dab698caa7d1d825415"
+ },
+ "jhs_c15_fac_02": {
+  "file": "patterns_jhs_c15.json",
+  "sentence_templates": [
+   "次の式を因数分解しなさい。\nx²＋{p1}x−{q1}"
+  ],
+  "kaisetsu": "x²＋px＋qの因数分解は、たして係数、かけて定数項になる2つの数を探します。定数項が負なので、2つの数は符号がちがいます。(x＋{av1})(x−{bv1})です。展開してもとの式にもどるか、たしかめましょう。",
+  "rest": "a2f0d6033b916597742920b7c8c0476b"
+ },
+ "jhs_c15_fac_03": {
+  "file": "patterns_jhs_c15.json",
+  "sentence_templates": [
+   "次の式を因数分解しなさい。\nx²−{d1}x＋{q1}"
+  ],
+  "kaisetsu": "定数項が{av1}²、xの係数が−2×{av1}の形なので、公式(x−a)²＝x²−2ax＋a²が使えます。(x−{av1})²です。",
+  "rest": "3893e8c9a6f8a1c79ec56afc97bb7b2a"
+ },
+ "jhs_c15_fac_04": {
+  "file": "patterns_jhs_c15.json",
+  "sentence_templates": [
+   "次の式を因数分解しなさい。\nx²−{N1}"
+  ],
+  "kaisetsu": "x²−(数)²の形は、和と差の積に因数分解できます。{N1}＝{av1}²なので、(x＋{av1})(x−{av1})です。",
+  "rest": "4f6de843b1de5924b1906f2b6d3452ba"
+ },
+ "jhs_c16_simp_01": {
+  "file": "patterns_jhs_c16.json",
+  "sentence_templates": [
+   "次の数を、根号の中をできるだけ小さい自然数にして表しなさい。\n√{N1}"
+  ],
+  "kaisetsu": "根号の中に2乗の因数があれば、根号の外に出せます（√(a²b)＝a√b）。{N1}を素因数分解して、2乗になっている部分を外に出すと{sd1}です。",
+  "rest": "33f5c8b411d1384441b2bb10e1f10721"
+ },
+ "jhs_c16_mul_01": {
+  "file": "patterns_jhs_c16.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n√{a1}×√{b1}"
+  ],
+  "kaisetsu": "√a×√b＝√(ab)です。根号の中をかけてから、2乗の因数があれば外に出して簡単にします。{sd1}です。",
+  "rest": "fb21396ec8d1158d27ecfc44fd3ca73c"
+ },
+ "jhs_c16_add_01": {
+  "file": "patterns_jhs_c16.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n{p1}√{m1}＋{q1}√{m1}−{r1}√{m1}"
+  ],
+  "kaisetsu": "根号の中が同じ√{m1}は、同類項と同じようにまとめられます。係数どうしを計算して、{cd1}√{m1}です。根号の中がちがう数どうしはまとめられません。",
+  "rest": "9c1fabfd4778740649067f31f7cf1c59"
+ },
+ "jhs_c16_mixadd_01": {
+  "file": "patterns_jhs_c16.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n√{N1}＋{p1}√{m1}"
+  ],
+  "kaisetsu": "まず√{N1}を簡単にして、根号の中を√{m1}にそろえます。そのあと係数どうしをたして、{s1}√{m1}です。",
+  "rest": "357739b4633522b19f5b6ec8b37e32ad"
+ },
+ "jhs_c16_dist_01": {
+  "file": "patterns_jhs_c16.json",
+  "sentence_templates": [
+   "次の計算をしなさい。\n√{m1}(√{m1}＋{p1})"
+  ],
+  "kaisetsu": "分配法則で、√{m1}をかっこの中の各項にかけます。√{m1}×√{m1}＝{m1}、√{m1}×{p1}＝{p1}√{m1}なので、{m1}＋{p1}√{m1}です。",
+  "rest": "648f1e7d1f8541ad7d2232ee456bcfad"
+ },
+ "jhs_c16_intpart_01": {
+  "file": "patterns_jhs_c16.json",
+  "sentence_templates": [
+   "√{n1} の整数部分を求めなさい。"
+  ],
+  "kaisetsu": "√{n1}の整数部分は、{n1}をはさむ2つの平方数を探して決めます。{a1}²≦{n1}＜({a1}＋1)²なので、{a1}≦√{n1}＜{a1}＋1となり、整数部分は{ans}です。",
+  "rest": "4dcf80e369dc0fa714ccc0c52c160506"
+ },
+ "jhs_c17_fact_01": {
+  "file": "patterns_jhs_c17.json",
+  "sentence_templates": [
+   "次の二次方程式を解きなさい。\nx²＋{p1}x−{q1}＝0"
+  ],
+  "kaisetsu": "左辺を因数分解して、(x＋a)(x−b)＝0の形にします。積が0になるのは、どちらかの因数が0のときなので、x＝{bv1}または{s2d}です。解は2つあります。",
+  "rest": "811adf7957b8b09782948456e18815e5"
+ },
+ "jhs_c17_fact_02": {
+  "file": "patterns_jhs_c17.json",
+  "sentence_templates": [
+   "次の二次方程式を解きなさい。\nx²＋{d1}x＋{q1}＝0"
+  ],
+  "kaisetsu": "左辺を因数分解すると(x＋a)(x＋b)＝0の形になり、解はx＝−a、x＝−bです。因数の符号と解の符号が逆になることに注意して、x＝{s1d}、{s2d}です。",
+  "rest": "e6221c85c5355616b36f7656c84f0785"
+ },
+ "jhs_c17_fact_03": {
+  "file": "patterns_jhs_c17.json",
+  "sentence_templates": [
+   "次の二次方程式を解きなさい。\nx²−{d1}x＋{q1}＝0"
+  ],
+  "kaisetsu": "左辺が(x−a)²の形に因数分解できるときは、解は1つだけ（重解）です。x＝{ans}です。",
+  "rest": "68b225483cc0a485abfb1ce4d9e9b4b1"
+ },
+ "jhs_c17_sq_01": {
+  "file": "patterns_jhs_c17.json",
+  "sentence_templates": [
+   "次の二次方程式を解きなさい。\nx²＝{k1}"
+  ],
+  "kaisetsu": "x²＝kの解は、kの平方根なのでx＝±√kです。正と負の2つがあることを忘れないようにします。根号の中はできるだけ簡単にして、x＝±{sd1}です。",
+  "rest": "d3475d562cb09f396d383fe3666d6bfe"
+ },
+ "jhs_c17_sq_02": {
+  "file": "patterns_jhs_c17.json",
+  "sentence_templates": [
+   "次の二次方程式を解きなさい。\n(x−{m1})²＝{k1}"
+  ],
+  "kaisetsu": "(x−m)²＝kの形は、x−m＝±√kと考えます。mを右辺に移項して、x＝{m1}±{sd1}です。",
+  "rest": "0c1ebbb4c9f8b54d0e4363bafb6b6a41"
+ },
+ "jhs_c17_formula_01": {
+  "file": "patterns_jhs_c17.json",
+  "sentence_templates": [
+   "次の二次方程式を、解の公式を使って解きなさい。\nx²−{p1}x＋{q1}＝0"
+  ],
+  "kaisetsu": "ax²＋bx＋c＝0の解は、解の公式 x＝(−b±√(b²−4ac))/2a で求めます。a、b、cの値を代入し、根号の中を計算して簡単にすると、x＝({p1}±{sdD})/2です。",
+  "rest": "c7f13b2cce9215979509971c1d7e446a"
+ },
+ "jhs_c17_back_01": {
+  "file": "patterns_jhs_c17.json",
+  "sentence_templates": [
+   "x についての二次方程式 x²＋ax−{q1}＝0 の1つの解が x＝{s1} のとき、a の値を求めなさい。"
+  ],
+  "kaisetsu": "x＝{s1}が解なので、方程式にx＝{s1}を代入すると等式が成り立ちます。{s1}²＋a×{s1}−{q1}＝0をaについて解いて、a＝{ans_disp}です。",
+  "rest": "4b0df3a15561f0786e91a69e2654bad6"
+ },
+ "jhs_c18_table_01": {
+  "file": "patterns_jhs_c18.json",
+  "sentence_templates": [
+   "y は x の2乗に比例し、x＝{s1} のとき y＝{t1} です。y を x の式で表しなさい。"
+  ],
+  "kaisetsu": "yがxの2乗に比例するとき、y＝ax²と表せます。x＝{s1}、y＝{t1}を代入してaを求めると、a＝{a1v}なのでy＝{a1v}x²です。",
+  "rest": "99002c44975be1956275f7210c67d09f"
+ },
+ "jhs_c18_val_01": {
+  "file": "patterns_jhs_c18.json",
+  "sentence_templates": [
+   "関数 y＝{a1}x² について、x＝−{u1} のときの y の値を求めなさい。"
+  ],
+  "kaisetsu": "x＝−{u1}を代入します。(−{u1})²は正の数になるので、y＝{a1}×(−{u1})²＝{ans_disp}です。負の数を代入するときはかっこをつけましょう。",
+  "rest": "d8cec38753828388b6c7612eb781eb0f"
+ },
+ "jhs_c18_range_01": {
+  "file": "patterns_jhs_c18.json",
+  "sentence_templates": [
+   "関数 y＝{a1}x² について、x の変域が −{p1}≦x≦{q1} のときの y の変域を求めなさい。"
+  ],
+  "kaisetsu": "y＝ax²（a＞0）のグラフは、原点で最小値0をとる放物線です。xの変域が0をふくんでいるので、yの最小値は0です。最大値は、変域の両端のうち絶対値が大きいほうのxで決まり、{M1}です。0≦y≦{M1}です。",
+  "rest": "d97f3fd91da15105f404a03afb34a13a"
+ },
+ "jhs_c18_range_02": {
+  "file": "patterns_jhs_c18.json",
+  "sentence_templates": [
+   "関数 y＝−{a1}x² について、x の変域が −{p1}≦x≦{q1} のときの y の変域を求めなさい。"
+  ],
+  "kaisetsu": "y＝−ax²のグラフは上に開かず、原点で最大値0をとります。xの変域が0をふくむので最大値は0、最小値は絶対値が大きいほうのxのときで−{M1}です。−{M1}≦y≦0です。",
+  "rest": "038a9ada47de5954580a557fcde4af78"
+ },
+ "jhs_c18_rate_01": {
+  "file": "patterns_jhs_c18.json",
+  "sentence_templates": [
+   "関数 y＝{a1}x² について、x の値が {u1} から {v1} まで増加するときの変化の割合を求めなさい。"
+  ],
+  "kaisetsu": "変化の割合は、yの増加量÷xの増加量です。x＝{u1}のときとx＝{v1}のときのyを求めて差をとり、xの増加量({v1}−{u1})でわります。y＝ax²では変化の割合は一定でないので、区間ごとに計算します。答えは{ans_disp}です。",
+  "rest": "8b6b1d7f782c2b8336143f394462f255"
+ },
+ "jhs_c18_taiou_01": {
+  "file": "patterns_jhs_c18.json",
+  "sentence_templates": [
+   "表は、yがxの2乗に比例する関係を表したものである。yをxの式で表しなさい。"
+  ],
+  "kaisetsu": "表からx＝1のときのyを読むと、それがaです（y＝a×1²）。他の組で確かめると、yはx²に比例しています。y＝{a1}x²です。",
+  "rest": "9478b9d4eca9db2b97002b9c79e81109"
+ },
+ "jhs_c18_taiou_02": {
+  "file": "patterns_jhs_c18.json",
+  "sentence_templates": [
+   "表は、yがxの2乗に比例する関係を表したものである。表のアにあてはまる数を求めなさい。"
+  ],
+  "kaisetsu": "表の分かっている組からaを求めます。x＝1のときのyがaです。アのxを式に代入して、{ans}です。",
+  "rest": "219ee58dc5a19c878826b6bf9ddecfb9"
+ }
+}

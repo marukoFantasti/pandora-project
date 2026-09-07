@@ -699,3 +699,9 @@
 
 ### 2026-09-07 検収台帳: 教科欄(算数/国語)新設(まるこ指示)
 - 既存827+3件=算数で埋め・以後の追記は --subject 必須(関門53で列挙値検査)。Fableのシート差分生成は教科別に分けて出力する運用(CLAUDE.md更新)。
+
+### 2026-09-07 言い換え便(裁可p): 言い換え関門(関門54)+学年別配当漢字表の先行実装——Fableの iikae_g04第1便 待ち
+- **関門54 tests/iikae_gate.js**: 基線=tests/fixtures/iikae_baseline.json(全603パターンの sentence_templates/kaisetsu/他フィールドmd5=本日採取)。sentence_templates が基線と異なるパターンについて (1){slot}集合一致・variant数維持・生成文に未解決{}ゼロ (2)他フィールドのバイト不変(kaisetsu同時改訂は裁可4=報告) (3)学年配当漢字(kanji_grade.js)・D10・(furiganaは既存関門) (4)旧文との類似度(レーベンシュタイン比)<0.8・文字数比0.8〜1.3 (5)転記例外(SELECTION_ANSWER/FORMULA_TRANSCRIBE/転記例外の11パターン)は本文の数値定数保存 (6)golden=基線本文に戻したバンクと現行の生成出力を比較し問題文ブロック以外の行がバイト一致。`--update`で便受理後に基線更新(CLAUDE.md規約)。
+- **自己検査(dry-run)**: g04の3パターンを一時的に書き換えて検出を確認(長文化1.76倍→文字数比で赤・語尾だけの変更→類似度0.89/0.91で赤・問題行以外の不変=(6)GREEN)→バンクは復元(diffなし)。
+- **学年別配当漢字表**: `pattern_bank/kanji_grade.js`(generate_poc_v10の allowed_kanji/kanji_check と1:1・allowed_grades+allowed_extra・累積集合API)と `handoff_jhs/学年別配当漢字表.md`(Fable執筆用: 学年別/累積字数と字一覧・allowed_extraの運用)。
+- 全54関門GREEN・golden不変。D10-2=裁可承認済み(記録)。
