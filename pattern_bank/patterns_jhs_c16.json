@@ -31,6 +31,7 @@
         "次の数を、根号の中をできるだけ小さい自然数にして表しなさい。\n√{N1}"
       ],
       "answer_template": "答え {sd1}",
+      "kaisetsu": "根号の中に2乗の因数があれば、根号の外に出せます（√(a²b)＝a√b）。{N1}を素因数分解して、2乗になっている部分を外に出すと{sd1}です。",
       "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
       "answer_structure": "single",
       "template_number_constants": []
@@ -62,6 +63,7 @@
         "次の計算をしなさい。\n√{a1}×√{b1}"
       ],
       "answer_template": "答え {sd1}",
+      "kaisetsu": "√a×√b＝√(ab)です。根号の中をかけてから、2乗の因数があれば外に出して簡単にします。{sd1}です。",
       "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
       "answer_structure": "single",
       "template_number_constants": []
@@ -93,6 +95,7 @@
         "次の計算をしなさい。\n{p1}√{m1}＋{q1}√{m1}−{r1}√{m1}"
       ],
       "answer_template": "答え {cd1}√{m1}",
+      "kaisetsu": "根号の中が同じ√{m1}は、同類項と同じようにまとめられます。係数どうしを計算して、{cd1}√{m1}です。根号の中がちがう数どうしはまとめられません。",
       "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
       "answer_structure": "single",
       "template_number_constants": []
@@ -123,6 +126,7 @@
         "次の計算をしなさい。\n√{N1}＋{p1}√{m1}"
       ],
       "answer_template": "答え {s1}√{m1}",
+      "kaisetsu": "まず√{N1}を簡単にして、根号の中を√{m1}にそろえます。そのあと係数どうしをたして、{s1}√{m1}です。",
       "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
       "answer_structure": "single",
       "template_number_constants": []
@@ -146,6 +150,7 @@
         "次の計算をしなさい。\n√{m1}(√{m1}＋{p1})"
       ],
       "answer_template": "答え {m1}＋{p1}√{m1}",
+      "kaisetsu": "分配法則で、√{m1}をかっこの中の各項にかけます。√{m1}×√{m1}＝{m1}、√{m1}×{p1}＝{p1}√{m1}なので、{m1}＋{p1}√{m1}です。",
       "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
       "answer_structure": "single",
       "template_number_constants": []
@@ -173,6 +178,7 @@
         "√{n1} の整数部分を求めなさい。"
       ],
       "answer_template": "答え {ans}",
+      "kaisetsu": "√{n1}の整数部分は、{n1}をはさむ2つの平方数を探して決めます。{a1}²≦{n1}＜({a1}＋1)²なので、{a1}≦√{n1}＜{a1}＋1となり、整数部分は{ans}です。",
       "kanji_policy": {"allowed_grades": ["g01", "g02", "g03", "g04", "g05", "g06"]},
       "answer_structure": "single",
       "template_number_constants": []

@@ -62,6 +62,7 @@
     "図の三角柱の体積を求めなさい。"
    ],
    "answer_template": "答え {V1}cm³",
+   "kaisetsu": "角柱の体積は、底面積×高さで求めます。底面の三角形の面積は{b1}×{bh1}÷2なので、それに高さ{h1}をかけて{V1}cm³です。",
    "figure_params": {
     "kind": "prism",
     "base_kind": "tri",
@@ -133,6 +134,7 @@
     "図の四角柱の体積を求めなさい。"
    ],
    "answer_template": "答え {V1}cm³",
+   "kaisetsu": "四角柱（直方体）の体積は、底面積×高さです。底面の長方形の面積{w1}×{d1}に高さ{h1}をかけて、{V1}cm³です。",
    "figure_params": {
     "kind": "prism",
     "base_kind": "rect",
@@ -198,6 +200,7 @@
     "図の四角柱の表面積を求めなさい。"
    ],
    "answer_template": "答え {S1}cm²",
+   "kaisetsu": "表面積は、すべての面の面積の合計です。直方体は同じ大きさの長方形が2枚ずつ3組あるので、（{w1}×{d1}＋{d1}×{h1}＋{w1}×{h1}）×2＝{S1}cm²です。展開図をかくと面の数え忘れを防げます。",
    "figure_params": {
     "kind": "prism",
     "base_kind": "rect",
@@ -267,6 +270,7 @@
     "図の三角柱の表面積を求めなさい。底面は、3辺が{a1}cm、{b1}cm、{c1}cmの直角三角形である。"
    ],
    "answer_template": "答え {S1}cm²",
+   "kaisetsu": "角柱の表面積は、底面積×2＋側面積です。側面は展開すると1枚の長方形で、横の長さは底面の周の長さ（{a1}＋{b1}＋{c1}）、たての長さは高さ{h1}です。底面の直角三角形の面積は{a1}×{b1}÷2で、合計{S1}cm²です。",
    "figure_params": {
     "kind": "prism",
     "base_kind": "tri",
@@ -334,6 +338,7 @@
     "図の円柱の体積を求めなさい。"
    ],
    "answer_template": "答え {V1_pi}cm³",
+   "kaisetsu": "円柱の体積は、底面積×高さです。底面の円の面積はπr²なので、π×{r1}²×{h1}＝{V1_pi}cm³です。中学ではπのまま答えます。",
    "figure_params": {
     "kind": "cylinder",
     "r": "{r1}",
@@ -390,6 +395,7 @@
     "図の円柱の表面積を求めなさい。"
    ],
    "answer_template": "答え {S1_pi}cm²",
+   "kaisetsu": "円柱の表面積は、底面積×2＋側面積です。側面は展開すると長方形で、横の長さは底面の円周2π×{r1}、たては高さ{h1}です。2×π×{r1}²＋2π×{r1}×{h1}をまとめて、{S1_pi}cm²です。",
    "figure_params": {
     "kind": "cylinder",
     "r": "{r1}",
@@ -454,6 +460,7 @@
     "図の円錐の体積を求めなさい。"
    ],
    "answer_template": "答え {V1_pi}cm³",
+   "kaisetsu": "円錐の体積は、同じ底面と高さの円柱の体積の1/3です。（1/3）×π×{r1}²×{h1}＝{V1_pi}cm³です。",
    "figure_params": {
     "kind": "cone",
     "r": "{r1}",
@@ -507,6 +514,7 @@
     "図の球の体積を求めなさい。"
    ],
    "answer_template": "答え {V1_pi}cm³",
+   "kaisetsu": "球の体積は（4/3）πr³で求めます。（4/3）×π×{r1}³＝{V1_pi}cm³です。",
    "figure_params": {
     "kind": "sphere",
     "r": "{r1}",
@@ -583,6 +591,7 @@
     "図の四角錐の体積を求めなさい。"
    ],
    "answer_template": "答え {V1}cm³",
+   "kaisetsu": "角錐の体積は、同じ底面と高さの角柱の体積の1/3です。（1/3）×{w1}×{d1}×{h1}＝{V1}cm³です。",
    "figure_params": {
     "kind": "pyramid",
     "base_kind": "rect",
@@ -651,6 +660,7 @@
     "図の長方形を、直線ℓを軸として1回転させてできる立体の体積を求めなさい。"
    ],
    "answer_template": "答え {V1_pi}cm³",
+   "kaisetsu": "長方形を1辺を軸にして1回転させると、円柱ができます。軸から遠いほうの辺の長さが底面の半径、軸に重なる辺の長さが高さです。π×{r1}²×{h1}＝{V1_pi}cm³です。",
    "figure_params": {
     "kind": "rotation_source",
     "source_kind": "rect",
@@ -717,6 +727,7 @@
     "図の直角三角形を、直線ℓを軸として1回転させてできる立体の体積を求めなさい。"
    ],
    "answer_template": "答え {V1_pi}cm³",
+   "kaisetsu": "直角三角形を直角をはさむ1辺を軸にして1回転させると、円錐ができます。もう一方の直角をはさむ辺が底面の半径、軸の辺が高さです。（1/3）×π×{r1}²×{h1}＝{V1_pi}cm³です。",
    "figure_params": {
     "kind": "rotation_source",
     "source_kind": "right_tri",
@@ -772,6 +783,7 @@
     "図の半円を、直線ℓを軸として1回転させてできる立体の体積を求めなさい。"
    ],
    "answer_template": "答え {V1_pi}cm³",
+   "kaisetsu": "半円を直径を軸にして1回転させると、球ができます。半円の半径がそのまま球の半径なので、（4/3）×π×{r1}³＝{V1_pi}cm³です。",
    "figure_params": {
     "kind": "rotation_source",
     "source_kind": "semicircle",
@@ -846,6 +858,7 @@
     "図の直方体ABCD-EFGHで、辺ABとねじれの位置にある辺をすべて答えなさい。"
    ],
    "answer_template": "答え {E1_edges}",
+   "kaisetsu": "空間で2直線が「平行でなく、交わりもしない」とき、ねじれの位置にあるといいます。辺ABと平行な辺、交わる辺を除いた残りが、ねじれの位置にある辺です。{E1_edges}です。",
    "figure_params": {
     "kind": "prism",
     "base_kind": "rect",
@@ -932,6 +945,7 @@
     "図の直方体ABCD-EFGHで、辺ABと平行な辺をすべて答えなさい。"
    ],
    "answer_template": "答え {E1_edges}",
+   "kaisetsu": "直方体では、同じ向きの辺どうしが平行です。辺ABと同じ向きの辺を、各面から探すと{E1_edges}です。",
    "figure_params": {
     "kind": "prism",
     "base_kind": "rect",
@@ -1018,6 +1032,7 @@
     "図の直方体ABCD-EFGHで、辺ABと垂直に交わる辺をすべて答えなさい。"
    ],
    "answer_template": "答え {E1_edges}",
+   "kaisetsu": "辺ABと垂直に交わる辺は、点Aまたは点Bに集まっている辺のうち、ABと直角をなすものです。直方体では各頂点に集まる辺は互いに垂直なので、{E1_edges}です。",
    "figure_params": {
     "kind": "prism",
     "base_kind": "rect",

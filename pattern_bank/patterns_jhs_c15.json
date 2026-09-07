@@ -65,6 +65,7 @@
     "次の式を展開しなさい。\n(x＋{a1})(x＋{b1})"
    ],
    "answer_template": "答え x²＋{s1}x＋{t1}",
+   "kaisetsu": "(x＋a)(x＋b)＝x²＋(a＋b)x＋abです。xの係数は{a1}と{b1}の和、定数項は積になります。x²＋{s1}x＋{t1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -144,6 +145,7 @@
     "次の式を展開しなさい。\n(x＋{a1})(x−{b1})"
    ],
    "answer_template": "答え x²{md1}x−{t1}",
+   "kaisetsu": "(x＋a)(x−b)も同じ公式で、bを負の数として考えます。xの係数は{a1}＋(−{b1})、定数項は{a1}×(−{b1})で負になります。x²{md1}x−{t1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -189,6 +191,7 @@
     "次の式を展開しなさい。\n(x＋{a1})²"
    ],
    "answer_template": "答え x²＋{d1}x＋{q1}",
+   "kaisetsu": "(x＋a)²＝x²＋2ax＋a²です。真ん中の項は「2×a×x」で、aの2倍になることに注意します。x²＋{d1}x＋{q1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -234,6 +237,7 @@
     "次の式を展開しなさい。\n(x−{a1})²"
    ],
    "answer_template": "答え x²−{d1}x＋{q1}",
+   "kaisetsu": "(x−a)²＝x²−2ax＋a²です。真ん中の項が負、最後の項は正になります。x²−{d1}x＋{q1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -276,6 +280,7 @@
     "次の式を展開しなさい。\n(x＋{a1})(x−{a1})"
    ],
    "answer_template": "答え x²−{q1}",
+   "kaisetsu": "(x＋a)(x−a)＝x²−a²です。xの項が消えて、2乗の差になります。x²−{q1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -341,6 +346,7 @@
     "次の式を因数分解しなさい。\n{A1}x²＋{B1}x"
    ],
    "answer_template": "答え {A1}x(x＋{m1})",
+   "kaisetsu": "因数分解は、まず各項に共通する因数（共通因数）をくくり出します。共通因数は{A1}xなので、{A1}x(x＋{m1})です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -419,6 +425,7 @@
     "次の式を因数分解しなさい。\nx²＋{p1}x−{q1}"
    ],
    "answer_template": "答え (x＋{av1})(x−{bv1})",
+   "kaisetsu": "x²＋px＋qの因数分解は、たして係数、かけて定数項になる2つの数を探します。定数項が負なので、2つの数は符号がちがいます。(x＋{av1})(x−{bv1})です。展開してもとの式にもどるか、たしかめましょう。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -486,6 +493,7 @@
     "次の式を因数分解しなさい。\nx²−{d1}x＋{q1}"
    ],
    "answer_template": "答え (x−{av1})²",
+   "kaisetsu": "定数項が{av1}²、xの係数が−2×{av1}の形なので、公式(x−a)²＝x²−2ax＋a²が使えます。(x−{av1})²です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -534,6 +542,7 @@
     "次の式を因数分解しなさい。\nx²−{N1}"
    ],
    "answer_template": "答え (x＋{av1})(x−{av1})",
+   "kaisetsu": "x²−(数)²の形は、和と差の積に因数分解できます。{N1}＝{av1}²なので、(x＋{av1})(x−{av1})です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",

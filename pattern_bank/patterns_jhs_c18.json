@@ -66,6 +66,7 @@
     "y は x の2乗に比例し、x＝{s1} のとき y＝{t1} です。y を x の式で表しなさい。"
    ],
    "answer_template": "答え y＝{a1v}x²",
+   "kaisetsu": "yがxの2乗に比例するとき、y＝ax²と表せます。x＝{s1}、y＝{t1}を代入してaを求めると、a＝{a1v}なのでy＝{a1v}x²です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -113,6 +114,7 @@
     "関数 y＝{a1}x² について、x＝−{u1} のときの y の値を求めなさい。"
    ],
    "answer_template": "答え y＝{ans_disp}",
+   "kaisetsu": "x＝−{u1}を代入します。(−{u1})²は正の数になるので、y＝{a1}×(−{u1})²＝{ans_disp}です。負の数を代入するときはかっこをつけましょう。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -175,6 +177,7 @@
     "関数 y＝{a1}x² について、x の変域が −{p1}≦x≦{q1} のときの y の変域を求めなさい。"
    ],
    "answer_template": "答え 0≦y≦{M1}",
+   "kaisetsu": "y＝ax²（a＞0）のグラフは、原点で最小値0をとる放物線です。xの変域が0をふくんでいるので、yの最小値は0です。最大値は、変域の両端のうち絶対値が大きいほうのxで決まり、{M1}です。0≦y≦{M1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -237,6 +240,7 @@
     "関数 y＝−{a1}x² について、x の変域が −{p1}≦x≦{q1} のときの y の変域を求めなさい。"
    ],
    "answer_template": "答え −{M1}≦y≦0",
+   "kaisetsu": "y＝−ax²のグラフは上に開かず、原点で最大値0をとります。xの変域が0をふくむので最大値は0、最小値は絶対値が大きいほうのxのときで−{M1}です。−{M1}≦y≦0です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -295,6 +299,7 @@
     "関数 y＝{a1}x² について、x の値が {u1} から {v1} まで増加するときの変化の割合を求めなさい。"
    ],
    "answer_template": "答え {ans_disp}",
+   "kaisetsu": "変化の割合は、yの増加量÷xの増加量です。x＝{u1}のときとx＝{v1}のときのyを求めて差をとり、xの増加量({v1}−{u1})でわります。y＝ax²では変化の割合は一定でないので、区間ごとに計算します。答えは{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -346,6 +351,7 @@
     "表は、yがxの2乗に比例する関係を表したものである。yをxの式で表しなさい。"
    ],
    "answer_template": "答え y＝{a1}x²",
+   "kaisetsu": "表からx＝1のときのyを読むと、それがaです（y＝a×1²）。他の組で確かめると、yはx²に比例しています。y＝{a1}x²です。",
    "figure_params": {
     "kind": "table",
     "fig_version": 1,
@@ -424,6 +430,7 @@
     "表は、yがxの2乗に比例する関係を表したものである。表のアにあてはまる数を求めなさい。"
    ],
    "answer_template": "答え {ans}",
+   "kaisetsu": "表の分かっている組からaを求めます。x＝1のときのyがaです。アのxを式に代入して、{ans}です。",
    "figure_params": {
     "kind": "table",
     "fig_version": 1,

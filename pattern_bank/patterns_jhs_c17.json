@@ -78,6 +78,7 @@
     "次の二次方程式を解きなさい。\nx²＋{p1}x−{q1}＝0"
    ],
    "answer_template": "答え x＝{bv1}，{s2d}",
+   "kaisetsu": "左辺を因数分解して、(x＋a)(x−b)＝0の形にします。積が0になるのは、どちらかの因数が0のときなので、x＝{bv1}または{s2d}です。解は2つあります。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -160,6 +161,7 @@
     "次の二次方程式を解きなさい。\nx²＋{d1}x＋{q1}＝0"
    ],
    "answer_template": "答え x＝{s1d}，{s2d}",
+   "kaisetsu": "左辺を因数分解すると(x＋a)(x＋b)＝0の形になり、解はx＝−a、x＝−bです。因数の符号と解の符号が逆になることに注意して、x＝{s1d}、{s2d}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -224,6 +226,7 @@
     "次の二次方程式を解きなさい。\nx²−{d1}x＋{q1}＝0"
    ],
    "answer_template": "答え x＝{ans}",
+   "kaisetsu": "左辺が(x−a)²の形に因数分解できるときは、解は1つだけ（重解）です。x＝{ans}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -274,6 +277,7 @@
     "次の二次方程式を解きなさい。\nx²＝{k1}"
    ],
    "answer_template": "答え x＝±{sd1}",
+   "kaisetsu": "x²＝kの解は、kの平方根なのでx＝±√kです。正と負の2つがあることを忘れないようにします。根号の中はできるだけ簡単にして、x＝±{sd1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -329,6 +333,7 @@
     "次の二次方程式を解きなさい。\n(x−{m1})²＝{k1}"
    ],
    "answer_template": "答え x＝{m1}±{sd1}",
+   "kaisetsu": "(x−m)²＝kの形は、x−m＝±√kと考えます。mを右辺に移項して、x＝{m1}±{sd1}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -391,6 +396,7 @@
     "次の二次方程式を、解の公式を使って解きなさい。\nx²−{p1}x＋{q1}＝0"
    ],
    "answer_template": "答え x＝({p1}±{sdD})/2",
+   "kaisetsu": "ax²＋bx＋c＝0の解は、解の公式 x＝(−b±√(b²−4ac))/2a で求めます。a、b、cの値を代入し、根号の中を計算して簡単にすると、x＝({p1}±{sdD})/2です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
@@ -465,6 +471,7 @@
     "x についての二次方程式 x²＋ax−{q1}＝0 の1つの解が x＝{s1} のとき、a の値を求めなさい。"
    ],
    "answer_template": "答え a＝{ans_disp}",
+   "kaisetsu": "x＝{s1}が解なので、方程式にx＝{s1}を代入すると等式が成り立ちます。{s1}²＋a×{s1}−{q1}＝0をaについて解いて、a＝{ans_disp}です。",
    "kanji_policy": {
     "allowed_grades": [
      "g01",
