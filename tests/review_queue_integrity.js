@@ -6,6 +6,12 @@ const q = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'review_qu
 let bad = 0; const ids = new Set();
 const KIND = ['問題文', '図', '読み'], ST = ['未', '済', '×'], BY = ['まるこ', 'アイ'], DIST = ['未配布', '配布済', '配布済(v8)', '配布済(v4)'], SUBJ = ['算数', '国語'];   // 配布済(v8/v4)=既配布分(日付なし可)・配布済=日付必須
 q.entries.forEach(e => {
+  if (e['教科'] === '国語') {   // 国語行=生成物単位の7列スキーマ(まるこ 2026-09-08): 教科/経路/設問型/学年/record_id/判定(ok・suspect)/メモ
+    for (const k of ['id', '教科', '経路', '設問型', '学年', 'record_id', '判定', 'メモ']) if (!(k in e)) { bad++; console.log('  ❌ 国語行の欄欠落 ' + (e.id || '?') + ' ' + k); }
+    if (!['ok', 'suspect'].includes(e['判定'])) { bad++; console.log('  ❌ 国語行の判定 ' + e.id); }
+    if (ids.has(e.id)) { bad++; console.log('  ❌ id重複 ' + e.id); } ids.add(e.id);
+    return;
+  }
   for (const k of ['id', '教科', '種類', '対象', '見るべきこと', '状態', '見る人', '追加した便', '追加日', '配布']) if (!(k in e) || e[k] === '') { bad++; console.log('  ❌ 欄欠落 ' + (e.id || '?') + ' ' + k); }
   if (ids.has(e.id)) { bad++; console.log('  ❌ id重複 ' + e.id); } ids.add(e.id);
   if (!KIND.includes(e['種類'])) { bad++; console.log('  ❌ 種類 ' + e.id); }

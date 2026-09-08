@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """検収台帳(tests/fixtures/review_queue.json)への追記ツール(まるこ指示 2026-09-06)。§3-3/§5報告のたびにCodeが呼ぶ。
-使い方: python3 review_queue_add.py --subject 算数 --kind 図 --target graph_choice --check "時間の軸か種類かが図だけで分かるか" --by まるこ --batch graph_choice便
+使い方: python3 review_queue_add.py --subject 算数 --kind 図
+       国語: python3 review_queue_add.py --kokugo QG.generateQuestions 抜き出し g4 japanese_question_set_xxx#3 suspect "正答が本文に無い" --target graph_choice --check "時間の軸か種類かが図だけで分かるか" --by まるこ --batch graph_choice便
        python3 review_queue_add.py --kind 読み --target 棒 --check "ぼう: 気温、[棒]が降水量" --by アイ --batch line_bar_combo便
        python3 review_queue_add.py --set-status <id> 済|×
 種類=問題文(新パターンid)／図(新kind・描画変更+目視ポイント)／読み(1字=字ごと・多字語=便単位で語リスト)。状態=未/済/×。見る人=まるこ/アイ。配布=未配布/配布済(v8)=既配布分/配布済+配布日=まるこの指示でFableがシート出力時に記入(--distribute)(Fableのシート生成は『未・未配布』からの差分)。"""
@@ -10,6 +11,13 @@ def load():
     with open(QP, encoding='utf-8') as f: return json.load(f)
 def save(q):
     with open(QP, 'w', encoding='utf-8') as f: json.dump(q, f, ensure_ascii=False, indent=1); f.write('\n')
+def add_kokugo(route, qtype, grade, record_id, verdict, memo):
+    """国語行(生成物単位・7列): 教科/経路/設問型/学年/record_id/判定(ok・suspect)/メモ。抜き取りで読んだとき・怪しいときだけ追加する。"""
+    if verdict not in ('ok', 'suspect'): raise SystemExit('判定は ok / suspect')
+    q = load(); ids = {e['id'] for e in q['entries']}; n = 1
+    while f"rq-{n:04d}" in ids: n += 1
+    e = {"id": f"rq-{n:04d}", "教科": "国語", "経路": route, "設問型": qtype, "学年": grade, "record_id": record_id, "判定": verdict, "メモ": memo, "追加日": datetime.date.today().isoformat()}
+    q['entries'].append(e); save(q); return e['id']
 def add(kind, target, check, by, batch, status='未', dist='未配布', subject='算数'):
     q = load(); ids = {e['id'] for e in q['entries']}
     key = f"{kind}:{target}"
@@ -22,7 +30,10 @@ def add(kind, target, check, by, batch, status='未', dist='未配布', subject=
     q['entries'].append(e); save(q); return e['id']
 if __name__ == '__main__':
     ap = argparse.ArgumentParser(); ap.add_argument('--kind'); ap.add_argument('--target'); ap.add_argument('--check'); ap.add_argument('--by', default='アイ'); ap.add_argument('--batch'); ap.add_argument('--set-status', nargs=2, metavar=('ID', 'STATUS')); ap.add_argument('--distribute', nargs=2, metavar=('ID', 'DATE'), help='配布済にして配布日を記入'); ap.add_argument('--dist', default='未配布', help='未配布(既定)/配布済'); ap.add_argument('--subject', required=False, choices=['算数','国語'], help='教科(必須)')
+    ap.add_argument('--kokugo', nargs=6, metavar=('経路', '設問型', '学年', 'record_id', '判定', 'メモ'), help='国語行(生成物単位)を追加')
     a = ap.parse_args()
+    if a.kokugo:
+        print('added', add_kokugo(*a.kokugo)); sys.exit(0)
     if a.set_status:
         q = load(); hit = [e for e in q['entries'] if e['id'] == a.set_status[0]]
         if not hit or a.set_status[1] not in ('未', '済', '×'): sys.exit('id/状態が不正')

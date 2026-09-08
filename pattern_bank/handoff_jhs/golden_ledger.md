@@ -711,3 +711,7 @@
 - **転写33**: 関門54 GREEN(スロット集合一致・他フィールド不変・配当漢字・D10・類似度0.30〜0.75・文字数比窓内・golden=問題文行以外バイト一致)。golden md5: g04 8a4578fa → cb59041c(問題文行のみ変化・PASS 273不変)。furigana残存0・関門44一覧更新(新文の1字文脈=正)。**基線(iikae_baseline)は未更新=まるこ受理後に --update**。
 - **保留9(Fable差し戻し・本文は旧文のまま)**: ①申し送り自身の窓を超える7=div_2digit(文字数比3.18>3.0)・div_int(3.18)・men_conv(3.17)・gaisu_range(1.72>1.5・55字>45)・frac_addsub(1.63・49字)・estimate(1.53・46字)・div_bai(55字>45) ②本文に新しい数値定数を持ち込み nums_from_slots が赤=dec_addsub(「2つをあわせると」の2・かつ「水が5.3Lがあります」の助詞重複)・mult_trick(「99を（100−1）と考えて」の100/1)。定数追加は template_number_constants の変更=裁可1(他フィールド不変)に抵触するため転写不可→新文の書き直し待ち。
 - **抽出10(seed20260907・mulberry32)**: dec_div/box_mult/dist_law/bignum_write/dec_ikutsu/dec_atsume/kaku_chokkaku_do/kaku_do_chokkaku/kaz_kurai_big/tokei_choshin(旧/新の実生成文を報告に添付)。検収台帳: 問題文33件追記(抽出10=まるこ・23=アイ シート⑤・未配布・追記ツールは同一便内のみ更新に修正)。全54関門GREEN。
+
+### 2026-09-08 国語棚卸し(kokugo_inventory.md・6表+未検収一覧・コード変更なし)・検収台帳の国語規約
+- `handoff_jhs/kokugo_inventory.md`: 生成経路19+homework／静的教材8 JSON(実行時未参照=HTML内に手写し・drift関門なし)／設問型10(機械検査は抜き出しのみ実質)／国語に効く関門5(生成出力を読む関門0・実行時ガードは警告止まり)／既知不具合26／差し替え(QGは1問単位UIあり・本文は丸ごと・homeworkは全体再ビルド・既配布への自動反映なし)／アイの検収記録=国語0。
+- **検収台帳の国語規約(まるこ)**: 経路単位では投入しない。生成物単位(1問/1本文)で抜き取り時・怪しいときに追加。列=教科/経路/設問型/学年/record_id/判定(ok・suspect)/メモ の7列(関門53が国語行を7列で検査・追記ツール --kokugo)。現在0行。
